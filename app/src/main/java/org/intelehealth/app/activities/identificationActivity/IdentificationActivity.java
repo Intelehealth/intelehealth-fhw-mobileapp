@@ -140,8 +140,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter;
+    private ArrayAdapter<CharSequence> occupationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
-    private ArrayAdapter<CharSequence> economicStatusAdapter;
+    //    private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -166,14 +167,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     EditText mAge;
     MaterialAlertDialogBuilder mAgePicker;
     EditText mAddress1;
-    EditText mAddress2;
-    AutoCompleteTextView mCity;
+    //    EditText mAddress2;
+    Spinner mCity;
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
     RadioButton mGenderO;
-    EditText mRelationship;
-    EditText mOccupation;
+    //    EditText mRelationship;
+    Spinner mOccupation;
     EditText countryText;
     EditText stateText;
     EditText casteText;
@@ -181,13 +182,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     Spinner mState;
     EditText economicText;
     EditText educationText;
-    TextInputLayout casteLayout;
-    TextInputLayout economicLayout;
-    TextInputLayout educationLayout;
+    //    TextInputLayout casteLayout;
+//    TextInputLayout economicLayout;
+//    TextInputLayout educationLayout;
     LinearLayout countryStateLayout;
-    Spinner mCaste;
+    //    Spinner mCaste;
     Spinner mEducation;
-    Spinner mEconomicStatus;
+    //    Spinner mEconomicStatus;
     ImageView mImageView;
     String uuid = "";
     PatientDTO patientdto = new PatientDTO();
@@ -329,11 +330,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             } else {
                 mAddress1.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("mAddress2")) {
-                mAddress2.setVisibility(View.VISIBLE);
-            } else {
-                mAddress2.setVisibility(View.GONE);
-            }
+//            if (obj.getBoolean("mAddress2")) {
+//                mAddress2.setVisibility(View.VISIBLE);
+//            } else {
+//                mAddress2.setVisibility(View.GONE);
+//            }
             if (obj.getBoolean("mCity")) {
                 mCity.setVisibility(View.VISIBLE);
             } else {
@@ -361,31 +362,31 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             } else {
                 mGenderF.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("mRelationship")) {
-                mRelationship.setVisibility(View.VISIBLE);
-            } else {
-                mRelationship.setVisibility(View.GONE);
-            }
+//            if (obj.getBoolean("mRelationship")) {
+//                mRelationship.setVisibility(View.VISIBLE);
+//            } else {
+//                mRelationship.setVisibility(View.GONE);
+//            }
             if (obj.getBoolean("mOccupation")) {
                 mOccupation.setVisibility(View.VISIBLE);
             } else {
                 mOccupation.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("casteLayout")) {
-                casteLayout.setVisibility(View.VISIBLE);
-            } else {
-                casteLayout.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("educationLayout")) {
-                educationLayout.setVisibility(View.VISIBLE);
-            } else {
-                educationLayout.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("economicLayout")) {
-                economicLayout.setVisibility(View.VISIBLE);
-            } else {
-                economicLayout.setVisibility(View.GONE);
-            }
+//            if (obj.getBoolean("casteLayout")) {
+//                casteLayout.setVisibility(View.VISIBLE);
+//            } else {
+//                casteLayout.setVisibility(View.GONE);
+//            }
+//            if (obj.getBoolean("educationLayout")) {
+//                educationLayout.setVisibility(View.VISIBLE);
+//            } else {
+//                educationLayout.setVisibility(View.GONE);
+//            }
+//            if (obj.getBoolean("economicLayout")) {
+//                economicLayout.setVisibility(View.VISIBLE);
+//            } else {
+//                economicLayout.setVisibility(View.GONE);
+//            }
             country1 = obj.getString("mCountry");
             state = obj.getString("mState");
 
@@ -410,11 +411,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         mDOB.setText(patient1.getDate_of_birth());
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
-        mAddress2.setText(patient1.getAddress2());
-        mCity.setText(patient1.getCity_village());
+//        mAddress2.setText(patient1.getAddress2());
         mPostal.setText(patient1.getPostal_code());
-        mRelationship.setText(patient1.getSdw());
-        mOccupation.setText(patient1.getOccupation());
+//        mRelationship.setText(patient1.getSdw());
+//        mOccupation.setText(patient1.getOccupation());
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -433,24 +433,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                         castes, R.layout.custom_spinner);
 
             }
-            mCaste.setAdapter(casteAdapter);
+//            mCaste.setAdapter(casteAdapter);
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-        try {
-            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
-            int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
-            if (economics != 0) {
-                economicStatusAdapter = ArrayAdapter.createFromResource(this,
-                        economics, R.layout.custom_spinner);
-            }
-            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mEconomicStatus.setAdapter(economicStatusAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
+//        try {
+//            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
+//            int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
+//            if (economics != 0) {
+//                economicStatusAdapter = ArrayAdapter.createFromResource(this,
+//                        economics, R.layout.custom_spinner);
+//            }
+//            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            mEconomicStatus.setAdapter(economicStatusAdapter);
+//        } catch (Exception e) {
+//            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
+//            Logger.logE("Identification", "#648", e);
+//        }
         try {
             String educationLanguage = "education_" + sessionManager.getAppLanguage();
             int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
@@ -465,7 +465,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-
+        try {
+            String occupationLanguage = "occupation_" + sessionManager.getAppLanguage();
+            int occupations = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
+            if (occupations != 0) {
+                occupationAdapter = ArrayAdapter.createFromResource(this, occupations, R.layout.custom_spinner);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
+        }
+        mOccupation.setAdapter(occupationAdapter);
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
@@ -561,91 +570,91 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
 
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
-                mEconomicStatus.setSelection(0);
-//            else
-//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+//            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+//                mEconomicStatus.setSelection(0);
+////            else
+////                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                    String economic = switch_te_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                    String economic = switch_mr_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String economic = switch_as_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                    String economic = switch_ml_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                    String economic = switch_kn_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String economic = switch_ru_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String economic = switch_gu_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String economic = switch_bn_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                    String economic = switch_ta_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else {
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-                }
-            }
+//            else {
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+//                    String economic = switch_te_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                    String economic = switch_mr_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+//                    String economic = switch_as_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+//                    String economic = switch_ml_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+//                    String economic = switch_kn_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+//                    String economic = switch_ru_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                    String economic = switch_gu_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+//                    String economic = switch_bn_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+//                    String economic = switch_ta_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+//                } else {
+//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+//                }
+//            }
 
-            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
-                mCaste.setSelection(0);
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String caste = switch_hi_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String caste = switch_or_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                    String caste = switch_te_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                    String caste = switch_mr_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String caste = switch_as_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                    String caste = switch_ml_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                    String caste = switch_kn_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String caste = switch_ru_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String caste = switch_gu_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String caste = switch_bn_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                    String caste = switch_ta_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else {
-                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
-                }
-
-            }
+//            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+//                mCaste.setSelection(0);
+//            else {
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String caste = switch_hi_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    String caste = switch_or_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+//                    String caste = switch_te_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                    String caste = switch_mr_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+//                    String caste = switch_as_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+//                    String caste = switch_ml_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+//                    String caste = switch_kn_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+//                    String caste = switch_ru_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                    String caste = switch_gu_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+//                    String caste = switch_bn_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+//                    String caste = switch_ta_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter.getPosition(caste));
+//                } else {
+//                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+//                }
+//
+//            }
 
             // Edit of Roster Spinner
             //Roaster
@@ -657,166 +666,155 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states_india, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
-        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-                    String country = adapterView.getItemAtPosition(i).toString();
-//                    ArrayAdapter<CharSequence> stateAdapter = null;
-                /*todo for All Language Changes Regarding...
-                  if (country.matches(getResources().getString(R.string.str_check_India))) {
+        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(this, R.array.city_nashik, R.layout.custom_spinner);
+        mCity.setClickable(false);
+        mCity.setEnabled(false);
+        mCity.setAdapter(cityAdapter);
 
-                        try {
-                            String mStateLanguage = "states_india_" + sessionManager.getAppLanguage();
-                            int state = res.getIdentifier(mStateLanguage, "array", getApplicationContext().getPackageName());
-
-                            if (state != 0) {
-                                stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                        state, R.layout.custom_spinner);
-                            }
-                            mState.setAdapter(stateAdapter);
-                        } catch (Exception e) {
-
-                            Logger.logE("Identification", "#648", e);
-                        }
-
-                        if (patientID_edit != null)
-//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-
-                        mState.setSelection(stateAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_State_edit(patient1.getState_province(),sessionManager.getAppLanguage()))));
-
-                        else
+//        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (i != 0) {
+//                    String country = adapterView.getItemAtPosition(i).toString();
+////                    ArrayAdapter<CharSequence> stateAdapter = null;
+//                /*todo for All Language Changes Regarding...
+//                  if (country.matches(getResources().getString(R.string.str_check_India))) {
+//
+//                        try {
+//                            String mStateLanguage = "states_india_" + sessionManager.getAppLanguage();
+//                            int state = res.getIdentifier(mStateLanguage, "array", getApplicationContext().getPackageName());
+//
+//                            if (state != 0) {
+//                                stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                        state, R.layout.custom_spinner);
+//                            }
+//                            mState.setAdapter(stateAdapter);
+//                        } catch (Exception e) {
+//
+//                            Logger.logE("Identification", "#648", e);
+//                        }
+//
+//                        if (patientID_edit != null)
+////                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//
+//                        mState.setSelection(stateAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_State_edit(patient1.getState_province(),sessionManager.getAppLanguage()))));
+//
+//                        else
+////                            mState.setSelection(0);
+//                            mState.setSelection(stateAdapter.getPosition(getResources().getString(R.string.str_check_Odisha)));
+//
+//                    } else if (country.matches(getResources().getString(R.string.str_check_UnitedStates))) {
+//                        try {
+//                            String mStatesLanguage = "states_us_" + sessionManager.getAppLanguage();
+//                            int state = res.getIdentifier(mStatesLanguage, "array", getApplicationContext().getPackageName());
+//                            if (state != 0) {
+//                                stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                        state, R.layout.custom_spinner);
+//                            }
+//                            mState.setAdapter(stateAdapter);
+//                        } catch (Exception e) {
+//
+//                            Logger.logE("Identification", "#648", e);
+//                        }
+//                        if (patientID_edit != null) {
+//                            mState.setSelection(stateAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_State_edit(patient1.getState_province(),sessionManager.getAppLanguage()))));
+//
+////                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        } else {
 //                            mState.setSelection(0);
-                            mState.setSelection(stateAdapter.getPosition(getResources().getString(R.string.str_check_Odisha)));
-
-                    } else if (country.matches(getResources().getString(R.string.str_check_UnitedStates))) {
-                        try {
-                            String mStatesLanguage = "states_us_" + sessionManager.getAppLanguage();
-                            int state = res.getIdentifier(mStatesLanguage, "array", getApplicationContext().getPackageName());
-                            if (state != 0) {
-                                stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                        state, R.layout.custom_spinner);
-                            }
-                            mState.setAdapter(stateAdapter);
-                        } catch (Exception e) {
-
-                            Logger.logE("Identification", "#648", e);
-                        }
-                        if (patientID_edit != null) {
-                            mState.setSelection(stateAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_State_edit(patient1.getState_province(),sessionManager.getAppLanguage()))));
-
+//                        }
+//                    } else if (country.matches(getResources().getString(R.string.str_check_Philippines))) {
+//                        try {
+//                            String mStatesLanguage = "states_philippines_" + sessionManager.getAppLanguage();
+//                            int state = res.getIdentifier(mStatesLanguage, "array", getApplicationContext().getPackageName());
+//                            if (state != 0) {
+//                                stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                        state, R.layout.custom_spinner);
+//                            }
+//                            mState.setAdapter(stateAdapter);
+//                        } catch (Exception e) {
+//
+//                            Logger.logE("Identification", "#648", e);
+//                        }
+//
+//                        if (patientID_edit != null) {
+//                            mState.setSelection(stateAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_State_edit(patient1.getState_province(),sessionManager.getAppLanguage()))));
+//                        } else {
+//                            mState.setSelection(stateAdapter.getPosition(getResources().getString(R.string.str_check_Bukidnon)));
+//                        }
+//
+//                    } else {
+//                        stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.state_error, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//
+//                    }*/
+//
+//                    if (country.matches("India")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.states_india, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//                        // setting state according database when user clicks edit details
+//
+//                        if (patientID_edit != null)
 //                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        } else {
-                            mState.setSelection(0);
-                        }
-                    } else if (country.matches(getResources().getString(R.string.str_check_Philippines))) {
-                        try {
-                            String mStatesLanguage = "states_philippines_" + sessionManager.getAppLanguage();
-                            int state = res.getIdentifier(mStatesLanguage, "array", getApplicationContext().getPackageName());
-                            if (state != 0) {
-                                stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                        state, R.layout.custom_spinner);
-                            }
-                            mState.setAdapter(stateAdapter);
-                        } catch (Exception e) {
-
-                            Logger.logE("Identification", "#648", e);
-                        }
-
-                        if (patientID_edit != null) {
-                            mState.setSelection(stateAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_State_edit(patient1.getState_province(),sessionManager.getAppLanguage()))));
-                        } else {
-                            mState.setSelection(stateAdapter.getPosition(getResources().getString(R.string.str_check_Bukidnon)));
-                        }
-
-                    } else {
-                        stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.state_error, R.layout.custom_spinner);
-                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-
-                    }*/
-
-                    if (country.matches("India")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_india, R.layout.custom_spinner);
-                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-                        // setting state according database when user clicks edit details
-
-                        if (patientID_edit != null)
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        else
-                            mState.setSelection(stateAdapter.getPosition(state));
-
-                    } else if (country.matches("United States")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_us, R.layout.custom_spinner);
-                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-
-                        if (patientID_edit != null) {
-
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        }
-                    } else if (country.matches("Philippines")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_philippines, R.layout.custom_spinner);
-                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-
-                        if (patientID_edit != null) {
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        } else {
-                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
-                        }
-
-                    } else {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.state_error, R.layout.custom_spinner);
-                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String state = parent.getItemAtPosition(position).toString();
-                if (state.matches(getResources().getString(R.string.str_check_Odisha))) {
-                    //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.odisha_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else if (state.matches(getResources().getString(R.string.str_check_Bukidnon))) {
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.bukidnon_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else {
-                    mCity.setAdapter(null);
-                }
-
-
-//                if (state.matches("Odisha")) {
+//                        else
+//                            mState.setSelection(stateAdapter.getPosition(state));
+//
+//                    } else if (country.matches("United States")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.states_us, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//
+//                        if (patientID_edit != null) {
+//
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        }
+//                    } else if (country.matches("Philippines")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.states_philippines, R.layout.custom_spinner);
+//                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//
+//                        if (patientID_edit != null) {
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        } else {
+//                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
+//                        }
+//
+//                    } else {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.state_error, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String state = parent.getItemAtPosition(position).toString();
+//                if (state.matches(getResources().getString(R.string.str_check_Odisha))) {
 //                    //Creating the instance of ArrayAdapter containing list of fruit names
 //                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
 //                            R.array.odisha_villages, R.layout.custom_spinner);
 //                    mCity.setThreshold(1);//will start working from first character
 //                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-//                } else if (state.matches("Bukidnon")) {
+//                } else if (state.matches(getResources().getString(R.string.str_check_Bukidnon))) {
 //                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
 //                            R.array.bukidnon_villages, R.layout.custom_spinner);
 //                    mCity.setThreshold(1);//will start working from first character
@@ -824,13 +822,29 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //                } else {
 //                    mCity.setAdapter(null);
 //                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//
+//
+////                if (state.matches("Odisha")) {
+////                    //Creating the instance of ArrayAdapter containing list of fruit names
+////                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+////                            R.array.odisha_villages, R.layout.custom_spinner);
+////                    mCity.setThreshold(1);//will start working from first character
+////                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+////                } else if (state.matches("Bukidnon")) {
+////                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+////                            R.array.bukidnon_villages, R.layout.custom_spinner);
+////                    mCity.setThreshold(1);//will start working from first character
+////                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+////                } else {
+////                    mCity.setAdapter(null);
+////                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         //Roaster
         if (patientID_edit == null) {
@@ -2445,7 +2459,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
@@ -2468,9 +2482,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
-            }
+//            if (mCity.getText().toString().equals("")) {
+//                mCity.setError(getString(R.string.error_field_required));
+//            }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2743,8 +2757,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+//            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+//            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
@@ -2755,12 +2769,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2769,26 +2783,26 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3558,7 +3572,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
@@ -3581,9 +3595,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
-            }
+//            if (mCity.getText().toString().equals("")) {
+//                mCity.setError(getString(R.string.error_field_required));
+//            }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -3862,8 +3876,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             // patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+//            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+//            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
@@ -3872,12 +3886,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
 //           patientdto.setState_province(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3886,26 +3900,26 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -4011,11 +4025,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-        mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+//        mAddress2 = findViewById(R.id.identification_address2);
+//        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-        mCity = findViewById(R.id.identification_city);
-        mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        mCity = findViewById(R.id.spinner_city);
+//        mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -4025,24 +4039,26 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         mGenderO = findViewById(R.id.identification_gender_others);
-        mRelationship = findViewById(R.id.identification_relationship);
-        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+//        mRelationship = findViewById(R.id.identification_relationship);
+//        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        mOccupation = findViewById(R.id.identification_occupation);
-        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        mOccupation = findViewById(R.id.spinner_occupation);
+//        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        mCaste = findViewById(R.id.spinner_caste);
+//        mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
-        mEconomicStatus = findViewById(R.id.spinner_economic_status);
-        casteText = findViewById(R.id.identification_caste);
-        educationText = findViewById(R.id.identification_education);
-        economicText = findViewById(R.id.identification_econiomic_status);
+//        mEconomicStatus = findViewById(R.id.spinner_economic_status);
+//        casteText = findViewById(R.id.identification_caste);
+//        educationText = findViewById(R.id.identification_education);
+//        economicText = findViewById(R.id.identification_econiomic_status);
 
-        casteLayout = findViewById(R.id.identification_txtlcaste);
-        economicLayout = findViewById(R.id.identification_txtleconomic);
-        educationLayout = findViewById(R.id.identification_txtleducation);
+//        casteLayout = findViewById(R.id.identification_txtlcaste);
+//        economicLayout = findViewById(R.id.identification_txtleconomic);
+//        educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
+
+        TextView maritalStatus = findViewById(R.id.textview_marital_status);
 
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
