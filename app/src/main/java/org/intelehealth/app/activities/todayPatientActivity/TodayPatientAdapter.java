@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +53,16 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     ArrayList<String> listPatientUUID;
     String userRole;
     boolean vitalsPresent = false, complaintPresent = false;
-    SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+    SQLiteDatabase db;
 
 
-    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID, String userRole) {
+    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID, String userRole,
+                               SQLiteDatabase db) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.userRole = userRole;
+        this.db=db;
     }
 
     @Override

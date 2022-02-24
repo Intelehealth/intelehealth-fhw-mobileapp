@@ -1013,21 +1013,23 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     private boolean checkDBForRecord(String encounterVitalslocal, String encounterAdultIntialslocal) {
         String query = "SELECT encounteruuid FROM tbl_obs WHERE encounteruuid = ? OR encounteruuid = ?";
-        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterVitalslocal, encounterAdultIntialslocal});
-        if (searchCursor.moveToFirst()) {
-            do {
-                try {
-                    String encounterType = searchCursor.getString(searchCursor.getColumnIndexOrThrow("encounteruuid"));
-                    if (encounterType.equals(encounterVitalslocal))
-                        vitalsPresent = true;
-                    else
-                        complaintPresent = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } while (searchCursor.moveToNext());
+        if(encounterAdultIntialslocal!=null && encounterVitalslocal!=null) {
+            final Cursor searchCursor = db.rawQuery(query, new String[]{encounterVitalslocal, encounterAdultIntialslocal});
+            if (searchCursor.moveToFirst()) {
+                do {
+                    try {
+                        String encounterType = searchCursor.getString(searchCursor.getColumnIndexOrThrow("encounteruuid"));
+                        if (encounterType.equals(encounterVitalslocal))
+                            vitalsPresent = true;
+                        else
+                            complaintPresent = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (searchCursor.moveToNext());
+            }
+            searchCursor.close();
         }
-        searchCursor.close();
         return true;
     }
 

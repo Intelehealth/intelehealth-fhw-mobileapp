@@ -4,8 +4,13 @@
     package="org.intelehealth.app">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- needed only for scanning -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- for Android 12 and above, include the ones you really need -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
