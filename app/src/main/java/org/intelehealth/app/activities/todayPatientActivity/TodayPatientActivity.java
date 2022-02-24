@@ -198,7 +198,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             for (TodayPatientModel todayPatientModel : todayPatientList)
                 Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name());
 
-            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, userRole);
+            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, userRole,db);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
             mTodayPatientList.setLayoutManager(linearLayoutManager);
            /* mTodayPatientList.addItemDecoration(new
