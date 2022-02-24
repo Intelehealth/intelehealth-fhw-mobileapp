@@ -94,16 +94,28 @@ public class VisitAttributeListDAO {
 
             if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("ba1e259f-8911-439d-abde-fb6c24c1e3c2"))
             {
-                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-
-                if(createdRecordsCount != -1)
-                {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid =? AND visit_attribute_type_uuid =?", new String[]{visitDTO.getVisit_uuid(),visitDTO.getVisit_attribute_type_uuid()});
+                if(cursor.getCount() <= 0){
+                    createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                    if(createdRecordsCount != -1)
+                    {
+                        Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                    }
+                    else
+                    {
+                        Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                    }
+                }else{
+                    try {
+                        db.update("tbl_visit_attribute",
+                                values,
+                                "visit_uuid = ? AND " + " visit_attribute_type_uuid = ?",
+                                new String[]{visitDTO.getVisit_uuid(), "ba1e259f-8911-439d-abde-fb6c24c1e3c2"});
+                    } catch (SQLException sql) {
+                        throw new DAOException(sql.getMessage());
+                    }
                 }
-                else
-                {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
+                cursor.close();
             }
 
         }
@@ -339,6 +351,7 @@ public class VisitAttributeListDAO {
         ContentValues values = new ContentValues();
         try {
             values.put("value", medicineprovide);
+            values.put("sync", "0");
             db.update("tbl_visit_attribute",
                     values,
                     "visit_uuid = ? AND " + " visit_attribute_type_uuid = ?",
