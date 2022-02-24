@@ -2973,6 +2973,14 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("creatoruuid"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTO.setValue(sessionManager.getProviderID());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -4032,6 +4040,14 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
 //            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTO.setValue("nurse_app");
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("creatoruuid"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTO.setValue(sessionManager.getProviderID());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
