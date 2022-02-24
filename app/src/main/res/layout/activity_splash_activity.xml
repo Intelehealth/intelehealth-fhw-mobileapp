@@ -41,7 +41,7 @@
             android:fontFamily="@font/lato_bold"
             android:lines="2"
             android:minLines="2"
-            android:text="Swasthya Sampark\n Telecaller"
+            android:text="Telecaller App"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="26sp"
