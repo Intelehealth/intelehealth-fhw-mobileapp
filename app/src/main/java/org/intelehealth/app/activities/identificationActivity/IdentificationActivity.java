@@ -176,10 +176,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     RadioButton mGenderO;
     //    EditText mRelationship;
     Spinner mOccupation;
-    EditText countryText;
+    //    EditText countryText;
     EditText stateText;
     EditText casteText;
-    Spinner mCountry;
+    //    Spinner mCountry;
     Spinner mState;
     EditText economicText;
     EditText educationText;
@@ -424,9 +424,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.countries, R.layout.custom_spinner);
 
-        mCountry.setClickable(false);
-        mCountry.setEnabled(false);
-        mCountry.setAdapter(countryAdapter);
+//        mCountry.setClickable(false);
+//        mCountry.setEnabled(false);
+//        mCountry.setAdapter(countryAdapter);
 
         try {
             String casteLanguage = "caste_" + sessionManager.getAppLanguage();
@@ -520,7 +520,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
         if (patientID_edit != null) {
             // setting country according database
-            mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+//            mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 //            mCountry.setSelection(countryAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_Country_edit(patient1.getCountry(),sessionManager.getAppLanguage()))));
 
 
@@ -666,7 +666,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             editRosterQuestionsUIHandling();
 
         } else {
-            mCountry.setSelection(countryAdapter.getPosition(country1));
+//            mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states_india, R.layout.custom_spinner);
@@ -2464,8 +2464,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -2516,14 +2515,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (mCountry.getSelectedItemPosition() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
+//        if (mCountry.getSelectedItemPosition() == 0) {
+//            countryText.setError(getString(R.string.error_field_required));
+//            focusView = countryText;
+//            cancel = true;
+//            return;
+//        } else {
+//            countryText.setError(null);
+//        }
 
 
         if (mState.getSelectedItemPosition() == 0) {
@@ -2765,7 +2764,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
 //            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+//            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 //
 //            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
@@ -3577,8 +3576,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -3629,14 +3627,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (mCountry.getSelectedItemPosition() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
+//        if (mCountry.getSelectedItemPosition() == 0) {
+//            countryText.setError(getString(R.string.error_field_required));
+//            focusView = countryText;
+//            cancel = true;
+//            return;
+//        } else {
+//            countryText.setError(null);
+//        }
 
 
         if (mState.getSelectedItemPosition() == 0) {
@@ -3885,7 +3883,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+//            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
@@ -4039,8 +4037,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
         mPostal = findViewById(R.id.identification_postal_code);
-        countryText = findViewById(R.id.identification_country);
-        mCountry = findViewById(R.id.spinner_country);
+//        countryText = findViewById(R.id.identification_country);
+//        mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         mGenderO = findViewById(R.id.identification_gender_others);
