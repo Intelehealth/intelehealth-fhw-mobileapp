@@ -4768,6 +4768,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
                 ((!TextUtils.isEmpty(patient.getAddress2())) ? patient.getAddress2() : "");
         String mCityState = patient.getCity_village();
+        String mDistrict = patient.getDistrict();
         String mPhone = (!TextUtils.isEmpty(patient.getPhone_number())) ? patient.getPhone_number() : "";
         String mState = patient.getState_province();
         String mCountry = patient.getCountry();
@@ -4948,7 +4949,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                        SimpleDateFormat sdf2 = new SimpleDateFormat(newFormat, Locale.ENGLISH);
                        try {
                            System.out.println(sdf2.format(sdf1.parse(encountertime)));
-                           heading2 = heading2 + "<br/>" + sdf2.format(sdf1.parse(encountertime));
+                           heading2 = heading2 + "<br/>" + sdf2.format(sdf1.parse(encountertime)) + "<br/>" + "Location: " + mCityState + ", " + mState;
                        } catch (ParseException e) {
                            // TODO Auto-generated catch block
                            e.printStackTrace();

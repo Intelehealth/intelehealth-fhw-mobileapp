@@ -185,6 +185,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if(complaintExamsList!=null && complaintExamsList.size()==1 && complaintExamsList.get(0).equalsIgnoreCase("A. Live Camp Mode"))
             mFileName = "physExam_2.json";
 
+        if(complaintExamsList!=null && complaintExamsList.size()==1 && complaintExamsList.get(0).equalsIgnoreCase("A. Referral Follow up"))
+            mFileName = "physExam_3.json";
+
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
