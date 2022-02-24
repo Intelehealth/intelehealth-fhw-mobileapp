@@ -17,14 +17,19 @@ import org.intelehealth.ekalhelpline.models.pushRequestApiCall.PushRequestApiCal
 import org.intelehealth.ekalhelpline.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ekalhelpline.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ekalhelpline.models.statewise_location.State;
+
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -105,6 +110,8 @@ public interface ApiInterface {
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
 
-    @POST
-    Call<CallingPatientStatus>callPatient(@Url String url);
+    @Headers({"Content-Type: application/json"})
+    @FormUrlEncoded
+    @POST("/v1/Accounts/intelehealth2/Calls/connect.json")
+    Call<ResponseBody> callPatient(@FieldMap HashMap<String, String> data);
 }

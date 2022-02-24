@@ -81,6 +81,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ekalhelpline.models.CallingPatient;
 import org.intelehealth.ekalhelpline.models.CallingPatientStatus;
+import org.intelehealth.ekalhelpline.networkApiCalls.ApiClient;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,6 +94,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -136,6 +138,10 @@ import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -537,18 +543,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_call_doctor = findViewById(R.id.card_call_doctor);
 
         UrlModifiers urlModifiers = new UrlModifiers();
-        ApiInterface apiInterface = AppConstants.apiInterface;
-
+        String callPatientUrl = urlModifiers.getCallPatientExotelUrl();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("From", "919958392968");
+        map.put("To", "919810266228");
+        map.put("CallerId", "01141236457");
+        ApiClient.changeApiBaseUrl(callPatientUrl);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         card_call_patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apiInterface.callPatient(String.format(urlModifiers.getCallPatientExotelUrl(), "9958392968", "9810266228", "01141236457")).enqueue(new Callback<CallingPatientStatus>() {
+                apiService.callPatient(map).enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<CallingPatientStatus> call, Response<CallingPatientStatus> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        System.out.println(call);
                         System.out.println(response);
                     }
                     @Override
-                    public void onFailure(Call<CallingPatientStatus> call, Throwable t) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
                         new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
                     }
                 });

@@ -73,8 +73,7 @@ public class UrlModifiers {
     }
 
     public String getCallPatientExotelUrl() {
-//        return "https://d788e0b618b3143e0f2df466fdad155561aaee3b32e4327d:49df1e7a635d9c575365fc82cc07d1ac3eb770e2284fd25e@api.exotel.com/v1/Accounts/intelehealth2/Calls/connect.json";
-        return "https://d788e0b618b3143e0f2df466fdad155561aaee3b32e4327d:49df1e7a635d9c575365fc82cc07d1ac3eb770e2284fd25e@api.exotel.com/v1/Accounts/intelehealth2/Calls/connect?From=%s&To=%s&CallerId=%s";
+        return "https://d788e0b618b3143e0f2df466fdad155561aaee3b32e4327d:49df1e7a635d9c575365fc82cc07d1ac3eb770e2284fd25e@api.exotel.com/";
     }
 
 }

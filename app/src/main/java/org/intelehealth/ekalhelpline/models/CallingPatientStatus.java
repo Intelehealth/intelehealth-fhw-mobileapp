@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CallingPatientStatus {
-    @SerializedName("status")
+    @SerializedName("Status")
     @Expose
     public String status;
 }
