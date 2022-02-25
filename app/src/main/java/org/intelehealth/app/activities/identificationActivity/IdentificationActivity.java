@@ -1,5 +1,28 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,18 +34,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -30,7 +41,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,13 +52,45 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.activities.setupActivity.SetupActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.ActivityIdentificationBinding;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.EditTextUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.IReturnValues;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidGenerator;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,79 +105,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ImagesPushDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
-import org.intelehealth.app.models.Patient;
-import org.intelehealth.app.models.dto.PatientAttributesDTO;
-import org.intelehealth.app.models.dto.PatientDTO;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.EditTextUtils;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.IReturnValues;
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidGenerator;
-
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.setupActivity.SetupActivity;
-import org.intelehealth.app.utilities.NetworkConnection;
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.exception.DAOException;
-
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
-
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
-
-public class IdentificationActivity extends AppCompatActivity implements SurveyCallback {
+public class IdentificationActivity extends AppCompatActivity implements SurveyCallback, ViewPagerCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -1233,7 +1203,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
         healthIssuesList.add(survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -1246,9 +1216,20 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
         healthIssuesList.set(position, survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(position);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+    }
+
+    public void updateSurveyData(int position) {
+        healthIssuesList.remove(position);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        binding.mainViewPager.setAdapter(adapter);
+        if (!healthIssuesList.isEmpty()) {
+            binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+        }
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.mainViewPager);
     }
@@ -4171,4 +4152,33 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         ll18 = findViewById(R.id.ll18);
     }
 
+    @Override
+    public void getIssueClicked(HealthIssues survey, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{"Edit", "Delete"}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putString("healthIssueReported", survey.getHealthIssueReported());
+                bundle.putString("numberOfEpisodesInTheLastYear", survey.getNumberOfEpisodesInTheLastYear());
+                bundle.putString("primaryHealthcareProviderValue", survey.getPrimaryHealthcareProviderValue());
+                bundle.putString("firstLocationOfVisit", survey.getFirstLocationOfVisit());
+                bundle.putString("referredTo", survey.getReferredTo());
+                bundle.putString("modeOfTransportation", survey.getModeOfTransportation());
+                bundle.putString("averageCostOfTravelAndStayPerEpisode", survey.getAverageCostOfTravelAndStayPerEpisode());
+                bundle.putString("averageCostOfConsultation", survey.getAverageCostOfConsultation());
+                bundle.putString("averageCostOfMedicine", survey.getAverageCostOfMedicine());
+                bundle.putString("scoreForExperienceOfTreatment", survey.getScoreForExperienceOfTreatment());
+
+                MultipleDiseasesDialog diseasesDialog = new MultipleDiseasesDialog();
+                diseasesDialog.setArguments(bundle);
+                diseasesDialog.show(getSupportFragmentManager(), MultipleDiseasesDialog.TAG);
+            }
+
+            if (which == 1) {
+                updateSurveyData(position);
+            }
+        });
+
+        listDialog.show();
+    }
 }
