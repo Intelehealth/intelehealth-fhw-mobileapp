@@ -526,4 +526,44 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="sikkim">Sikkim</string>
 
+    <!--appointment module strings -->
+    <string name="book_appointment">কিতাপ সাক্ষাৎকাৰ</string>
+    <string name="reschedule_appointment">সাক্ষাৎকাৰ পুনৰ নিৰ্ধাৰণ কৰক</string>
+    <string name="appointment_booking_confirmation_txt">আপুনি এই স্লটটো বুক কৰাটো নিশ্চিতনে?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">আপুনি সাক্ষাৎকাৰ বাতিল কৰাটো নিশ্চিতনে?</string>
+    <string name="cancel_appointment">সাক্ষাৎকাৰ বাতিল কৰক</string>
+    <string name="slot_empty_message">নিৰ্বাচিত তাৰিখ আৰু বিশেষত্বৰ বাবে এপইণ্টমেণ্ট স্লট উপলব্ধ নহয়!</string>
+    <string name="appointment_empty_message">আপোনাৰ কোনো এপইণ্টমেণ্ট নাই!</string>
+    <string name="appointment_listing_title">সাক্ষাৎকাৰ তালিকা</string>
+    <string name="appointment_booking_title">এপইণ্টমেণ্ট বুকিং</string>
+    <string name="appointment_for">এপইণ্টমেণ্ট ৰ বাবে</string>
+    <string name="please_select_appointment_slot">অনুগ্ৰহ কৰি সাক্ষাৎকাৰ ৰ স্লট নিৰ্বাচন কৰক</string>
+    <string name="please_select_speciality">অনুগ্ৰহ কৰি বিশেষত্ব বাছনি কৰক!</string>
+
+    <string name="doctor_appointments">চিকিৎসকৰ এপইণ্টমেণ্ট</string>
+    <string name="slot_info">স্লট তথ্য</string>
+    <string name="appointment_booked">সাক্ষাৎকাৰ বুক কৰা হৈছে</string>
+    <string name="minutes_txt">মিনিট</string>
+    <string name="booked_txt">বুক কৰা হৈছে</string>
+    <string name="cancelled_txt">বাতিল কৰা হৈছে</string>
+    <string name="please_upload_visit">এপইণ্টমেণ্ট বুক কৰাৰ আগতে প্ৰথমে সাক্ষাৎটো আপলোড কৰক।</string>
+    <string name="appointment_booked_successfully">এপইণ্টমেণ্ট সফলতাৰে বুক কৰা হৈছে!</string>
+    <string name="appointment_booked_failed">বুক কৰা এপইণ্টমেণ্ট বিফল হৈছে!</string>
+    <string name="postal_code_invalid_txt">অনুগ্ৰহ কৰি বৈধ ডাক কোড প্ৰবিষ্ট কৰক</string>
+    <string name="failed_to_cancel_appointment">সাক্ষাৎকাৰ বাতিল কৰিবলৈ ব্যৰ্থ!</string>
+    <string name="appointment_cancelled_success_txt">এপইণ্টমেণ্টটো সফলতাৰে বাতিল কৰা হৈছিল!</string>
+    <string name="visit_closed">সাক্ষাৎ বন্ধ</string>
+
+    <string name="please_select_your_reschedule_reason">অনুগ্ৰহ কৰি আপোনাৰ পুনৰ নিৰ্ধাৰিত কাৰণ বাছনি কৰক</string>
+    <string name="please_select_your_cancel_reason">অনুগ্ৰহ কৰি আপোনাৰ বাতিল ৰখাৰ কাৰণ বাছনি কৰক</string>
+    <string name="doctor_is_not_available">ডাক্তৰ উপলব্ধ নহয়</string>
+    <string name="patient_is_not_available">ৰোগী উপলব্ধ নহয়</string>
+    <string name="others">আনবোৰ</string>
+    <string name="please_enter_the_reason_details">অনুগ্ৰহ কৰি কাৰণৰ বিৱৰণ প্ৰবিষ্ট কৰক</string>
+    <string name="save_amp_proceed">সংৰক্ষণ কৰক আৰু আগবাঢ়ক</string>
+    <string name="please_enter_reason_txt">অনুগ্ৰহ কৰি কাৰণটো প্ৰবিষ্ট কৰক!</string>
+    <string name="yes">হয়</string>
+    <string name="no">নহয়</string>
+
 </resources>
+

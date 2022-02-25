@@ -562,4 +562,43 @@
     <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
     <string name="sikkim">Sikkim</string>
 
+    <!--appointment module strings -->
+    <string name="book_appointment">ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକିଂ </string>
+    <string name="reschedule_appointment">ଆପଏଣ୍ଟମେଣ୍ଟ ପୁନଃନିର୍ଦ୍ଧାରଣ କରନ୍ତୁ</string>
+    <string name="appointment_booking_confirmation_txt">ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">ଆପଣ ଆପଏଣ୍ଟମେଣ୍ଟ ବାତିଲ୍ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
+    <string name="cancel_appointment">ଆପଏଣ୍ଟମେଣ୍ଟ ବାତିଲ୍ କରନ୍ତୁ</string>
+    <string name="slot_empty_message">ଚୟନିତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ଆପଏଣ୍ଟମେଣ୍ଟ ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନାହିଁ!</string>
+    <string name="appointment_empty_message">ଆପଣଙ୍କର କୌଣସି ଆପଏଣ୍ଟମେଣ୍ଟ ନାହିଁ!</string>
+    <string name="appointment_listing_title">ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକିଂ ଲସିଟ୍</string>
+    <string name="appointment_booking_title">ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକିଂ</string>
+    <string name="appointment_for">ଆପଏଣ୍ଟମେଣ୍ଟ ପାଇଁ</string>
+    <string name="please_select_appointment_slot">ଦୟାକରି ଆପଏଣ୍ଟମେଣ୍ଟ ସ୍ଲଟ୍ ଚୟନ କରନ୍ତୁ</string>
+    <string name="please_select_speciality">ଦୟାକରି ବିଶେଷତା ଚୟନ କରନ୍ତୁ!</string>
+
+    <string name="doctor_appointments">ଡାକ୍ତର ଆପଏଣ୍ଟମେଣ୍ଟ</string>
+    <string name="slot_info">ସ୍ଲଟ୍ ସୂଚନା</string>
+    <string name="appointment_booked">ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକ୍ ହୋଇଛି</string>
+    <string name="minutes_txt">ମିନିଟ୍</string>
+    <string name="booked_txt">ବୁକ୍ ହୋଇଛି</string>
+    <string name="cancelled_txt">ବାତିଲ୍ ହୋଇଛି</string>
+    <string name="please_upload_visit">ଦୟାକରି ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକିଂ କରିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପରିଦର୍ଶନ ଅପଲୋଡ୍ କରନ୍ତୁ।</string>
+    <string name="appointment_booked_successfully">ସଫଳତାର ସହ ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକ୍ ହୋଇଛି!</string>
+    <string name="appointment_booked_failed">ଆପଏଣ୍ଟମେଣ୍ଟ ବୁକ୍ ହୋଇଛି ବିଫଳ ହୋଇଛି!</string>
+    <string name="postal_code_invalid_txt">ଦୟାକରି ବୈଧ ଡାକ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="failed_to_cancel_appointment">ଆପଏଣ୍ଟମେଣ୍ଟ ବାତିଲ୍ କରିବାକୁ ବିଫଳ ହୋଇଛି!</string>
+    <string name="appointment_cancelled_success_txt">ଆପଏଣ୍ଟମେଣ୍ଟ ସଫଳତାର ସହ ବାତିଲ୍ ହୋଇଛି!</string>
+    <string name="visit_closed">ପରିଦର୍ଶନ ବନ୍ଦ ହୋଇଛି</string>
+
+    <string name="please_select_your_reschedule_reason">ଦୟାକରି ଆପଣଙ୍କ ପୁନଃନିର୍ଦ୍ଧାରଣ କାରଣ ଚୟନ କରନ୍ତୁ</string>
+    <string name="please_select_your_cancel_reason">ଦୟାକରି ଆପଣଙ୍କ ବାତିଲ୍ କାରଣ ଚୟନ କରନ୍ତୁ</string>
+    <string name="doctor_is_not_available">ଡାକ୍ତର ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="patient_is_not_available">ରୋଗୀ ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="others">ଅନ୍ୟ</string>
+    <string name="please_enter_the_reason_details">ଦୟାକରି କାରଣ ବିବରଣୀ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="save_amp_proceed">ସଞ୍ଚୟ କରନ୍ତୁ ଏବଂ ଆଗକୁ ବଢନ୍ତୁ></string>
+    <string name="please_enter_reason_txt">ଦୟାକରି କାରଣ ପ୍ରବେଶ କରନ୍ତୁ!</string>
+    <string name="yes">ହଁ</string>
+    <string name="no">ନାହିଁ</string>
+
 </resources>
