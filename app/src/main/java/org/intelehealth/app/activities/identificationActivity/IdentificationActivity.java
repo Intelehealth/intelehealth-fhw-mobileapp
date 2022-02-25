@@ -2663,12 +2663,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getSelectedItem().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2856,89 +2856,89 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTOList.add(patientAttributesDTO);
 
 //        //no episodes
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoofEpisodes"));
-//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_noofepisodes.getText().toString()));
-//        Log.d("HOH", "total family meme: " + edittext_noofepisodes.getText().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoofEpisodes"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_noofepisodes.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_noofepisodes.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //        //no episodes
 //
 //        // primary health provider
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryHealthProvider"));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_primaryhealthprovider));
-//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryHealthProvider"));
+        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_primaryhealthprovider));
+        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //
 //        // first location
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FirstLocation"));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_firstlocation));
-//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FirstLocation"));
+        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_firstlocation));
+        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //
 //        // referred to
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReferredTo"));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_referredto));
-//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReferredTo"));
+        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_referredto));
+        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //
 //        // mode of transport
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ModeofTransport"));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_modeoftransport));
-//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ModeofTransport"));
+        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_modeoftransport));
+        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //
 //        //cost travel
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofTravel"));
-//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcosttravel.getText().toString()));
-//        Log.d("HOH", "total family meme: " + edittext_avgcosttravel.getText().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofTravel"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcosttravel.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_avgcosttravel.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //        //cost travel
 //
 //        //cost consult
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofConsult"));
-//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostconsult.getText().toString()));
-//        Log.d("HOH", "total family meme: " + edittext_avgcostconsult.getText().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofConsult"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostconsult.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_avgcostconsult.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //        //cost consult
 //
-//        //cost medicines
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofMedicines"));
-//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostmedicines.getText().toString()));
-//        Log.d("HOH", "total family meme: " + edittext_avgcostmedicines.getText().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        //cost medicines
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofMedicines"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostmedicines.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_avgcostmedicines.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 //        //cost medicines
 //
 //        // score of experience
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ScoreofExperience"));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_experiencerscore));
-//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ScoreofExperience"));
+        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_experiencerscore));
+        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
 
         //how many times pregnant
         patientAttributesDTO = new PatientAttributesDTO();
