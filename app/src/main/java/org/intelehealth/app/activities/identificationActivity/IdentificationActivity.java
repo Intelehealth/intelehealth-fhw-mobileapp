@@ -2606,76 +2606,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 return;
             }
 
-            spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position == 0) {
-                        spinner_childalive.setVisibility(View.VISIBLE);
-                    } else {
-                        spinner_childalive.setVisibility(View.GONE);
-                    }
-
-                    if (position == 1) {
-
-                    }
-
-                    if (position == 2) {
-                        edittext_focalfacility.setVisibility(View.GONE);
-                        spinner_singlemultiplebirths.setVisibility(View.GONE);
-                        spinner_sexofbaby.setVisibility(View.GONE);
-                        spinner_pregnancycomplications.setVisibility(View.GONE);
-                    } else {
-                        edittext_focalfacility.setVisibility(View.VISIBLE);
-                        spinner_singlemultiplebirths.setVisibility(View.VISIBLE);
-                        spinner_sexofbaby.setVisibility(View.VISIBLE);
-                        spinner_pregnancycomplications.setVisibility(View.VISIBLE);
-                    }
-
-                    if (position == 3) {
-                        spinner_placeofdeliverypregnant.setVisibility(View.GONE);
-                        spinner_singlemultiplebirths.setVisibility(View.GONE);
-                    } else {
-                        spinner_placeofdeliverypregnant.setVisibility(View.VISIBLE);
-                        spinner_singlemultiplebirths.setVisibility(View.VISIBLE);
-                    }
-
-                    if (position == 4) {
-                        edittext_monthspregnancylast.setVisibility(View.GONE);
-                        edittext_monthsbeingpregnant.setVisibility(View.VISIBLE);
-                        spinner_placeofdeliverypregnant.setVisibility(View.GONE);
-                        edittext_focalfacility.setVisibility(View.GONE);
-                        spinner_singlemultiplebirths.setVisibility(View.GONE);
-                    } else {
-                        edittext_monthspregnancylast.setVisibility(View.VISIBLE);
-                        edittext_monthsbeingpregnant.setVisibility(View.GONE);
-                        spinner_placeofdeliverypregnant.setVisibility(View.VISIBLE);
-                        edittext_focalfacility.setVisibility(View.VISIBLE);
-                        spinner_singlemultiplebirths.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position == 0) {
-                        edittext_babyagedied.setVisibility(View.VISIBLE);
-                    } else {
-                        edittext_babyagedied.setVisibility(View.INVISIBLE);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
             if (spinner_pregnancyplanned.getVisibility() == View.VISIBLE && spinner_pregnancyplanned.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) spinner_pregnancyplanned.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -4094,30 +4024,97 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             }
         });
+
         spinner_childalive = findViewById(R.id.spinner_childalive);
-        spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
-        spinner_sexofbaby = findViewById(R.id.spinner_sexofbaby);
-        spinner_pregnancyplanned = findViewById(R.id.spinner_pregnancyplanned);
-        spinner_pregnancyhighriskcase = findViewById(R.id.spinner_pregnancyhighriskcase);
-        spinner_pregnancycomplications = findViewById(R.id.spinner_pregnancycomplications);
+
+        spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    edittext_babyagedied.setVisibility(View.VISIBLE);
+                }
+                if (position == 2) {
+                    edittext_babyagedied.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner_placeofdeliverypregnant =
+
+                findViewById(R.id.spinner_placeofdeliverypregnant);
+
+        spinner_sexofbaby =
+
+                findViewById(R.id.spinner_sexofbaby);
+
+        spinner_pregnancyplanned =
+
+                findViewById(R.id.spinner_pregnancyplanned);
+
+        spinner_pregnancyhighriskcase =
+
+                findViewById(R.id.spinner_pregnancyhighriskcase);
+
+        spinner_pregnancycomplications =
+
+                findViewById(R.id.spinner_pregnancycomplications);
         //Roaster Spinner End
 
         // Roster EditText
         // TODO: Add filters
-        edittext_noofepisodes = findViewById(R.id.edittext_noofepisodes);
-        edittext_avgcosttravel = findViewById(R.id.edittext_avgcosttravel);
-        edittext_avgcostconsult = findViewById(R.id.edittext_avgcostconsult);
-        edittext_avgcostmedicines = findViewById(R.id.edittext_avgcostmedicines);
-        edittext_howmanytimmespregnant = findViewById(R.id.edittext_howmanytimmespregnant);
-        edittext_yearofpregnancy = findViewById(R.id.edittext_yearofpregnancy);
-        edittext_monthspregnancylast = findViewById(R.id.edittext_monthspregnancylast);
-        edittext_monthsbeingpregnant = findViewById(R.id.edittext_monthsbeingpregnant);
-        edittext_focalfacility = findViewById(R.id.edittext_focalfacility);
-        edittext_babyagedied = findViewById(R.id.edittext_babyagedied);
+        edittext_noofepisodes =
+
+                findViewById(R.id.edittext_noofepisodes);
+
+        edittext_avgcosttravel =
+
+                findViewById(R.id.edittext_avgcosttravel);
+
+        edittext_avgcostconsult =
+
+                findViewById(R.id.edittext_avgcostconsult);
+
+        edittext_avgcostmedicines =
+
+                findViewById(R.id.edittext_avgcostmedicines);
+
+        edittext_howmanytimmespregnant =
+
+                findViewById(R.id.edittext_howmanytimmespregnant);
+
+        edittext_yearofpregnancy =
+
+                findViewById(R.id.edittext_yearofpregnancy);
+
+        edittext_monthspregnancylast =
+
+                findViewById(R.id.edittext_monthspregnancylast);
+
+        edittext_monthsbeingpregnant =
+
+                findViewById(R.id.edittext_monthsbeingpregnant);
+
+        edittext_focalfacility =
+
+                findViewById(R.id.edittext_focalfacility);
+
+        edittext_babyagedied =
+
+                findViewById(R.id.edittext_babyagedied);
         //Roster EditText
 
-        llPORoaster = findViewById(R.id.llPORoaster);
-        ll18 = findViewById(R.id.ll18);
+        llPORoaster =
+
+                findViewById(R.id.llPORoaster);
+
+        ll18 =
+
+                findViewById(R.id.ll18);
     }
 
 }
