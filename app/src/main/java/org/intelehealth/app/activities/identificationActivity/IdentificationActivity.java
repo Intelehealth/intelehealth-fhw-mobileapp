@@ -2580,7 +2580,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
 
         if (llPORoaster.getVisibility() == View.VISIBLE) {
-            if (edittext_howmanytimmespregnant.getVisibility() == View.VISIBLE && edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
+            if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
                     edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
                 edittext_howmanytimmespregnant.setError(getString(R.string.select));
                 focusView = edittext_howmanytimmespregnant;
@@ -2588,7 +2588,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 return;
             }
 
-            if (spinner_pregnantpasttwoyrs.getVisibility() == View.VISIBLE && spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
+            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -2606,81 +2606,75 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 return;
             }
 
-            if (spinner_childalive.getVisibility() == View.VISIBLE && spinner_childalive.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) spinner_childalive.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = spinner_childalive;
-                cancel = true;
-                return;
-            }
+            spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        spinner_childalive.setVisibility(View.VISIBLE);
+                    } else {
+                        spinner_childalive.setVisibility(View.GONE);
+                    }
 
-            if (edittext_yearofpregnancy.getVisibility() == View.VISIBLE && edittext_yearofpregnancy.getText().toString().equalsIgnoreCase("") &&
-                    edittext_yearofpregnancy.getText().toString().isEmpty()) {
-                edittext_yearofpregnancy.setError(getString(R.string.select));
-                focusView = edittext_yearofpregnancy;
-                cancel = true;
-                return;
-            }
+                    if (position == 1) {
 
-            if (edittext_monthspregnancylast.getVisibility() == View.VISIBLE && edittext_monthspregnancylast.getText().toString().equalsIgnoreCase("") &&
-                    edittext_monthspregnancylast.getText().toString().isEmpty()) {
-                edittext_monthspregnancylast.setError(getString(R.string.select));
-                focusView = edittext_monthspregnancylast;
-                cancel = true;
-                return;
-            }
+                    }
 
-            if (edittext_monthsbeingpregnant.getVisibility() == View.VISIBLE && edittext_monthsbeingpregnant.getText().toString().equalsIgnoreCase("") &&
-                    edittext_monthsbeingpregnant.getText().toString().isEmpty()) {
-                edittext_monthsbeingpregnant.setError(getString(R.string.select));
-                focusView = edittext_monthsbeingpregnant;
-                cancel = true;
-                return;
-            }
+                    if (position == 2) {
+                        edittext_focalfacility.setVisibility(View.GONE);
+                        spinner_singlemultiplebirths.setVisibility(View.GONE);
+                        spinner_sexofbaby.setVisibility(View.GONE);
+                        spinner_pregnancycomplications.setVisibility(View.GONE);
+                    } else {
+                        edittext_focalfacility.setVisibility(View.VISIBLE);
+                        spinner_singlemultiplebirths.setVisibility(View.VISIBLE);
+                        spinner_sexofbaby.setVisibility(View.VISIBLE);
+                        spinner_pregnancycomplications.setVisibility(View.VISIBLE);
+                    }
 
-            if (spinner_placeofdeliverypregnant.getVisibility() == View.VISIBLE && spinner_placeofdeliverypregnant.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) spinner_placeofdeliverypregnant.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = spinner_placeofdeliverypregnant;
-                cancel = true;
-                return;
-            }
+                    if (position == 3) {
+                        spinner_placeofdeliverypregnant.setVisibility(View.GONE);
+                        spinner_singlemultiplebirths.setVisibility(View.GONE);
+                    } else {
+                        spinner_placeofdeliverypregnant.setVisibility(View.VISIBLE);
+                        spinner_singlemultiplebirths.setVisibility(View.VISIBLE);
+                    }
 
-            if (spinner_singlemultiplebirths.getVisibility() == View.VISIBLE && spinner_singlemultiplebirths.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) spinner_singlemultiplebirths.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = spinner_singlemultiplebirths;
-                cancel = true;
-                return;
-            }
+                    if (position == 4) {
+                        edittext_monthspregnancylast.setVisibility(View.GONE);
+                        edittext_monthsbeingpregnant.setVisibility(View.VISIBLE);
+                        spinner_placeofdeliverypregnant.setVisibility(View.GONE);
+                        edittext_focalfacility.setVisibility(View.GONE);
+                        spinner_singlemultiplebirths.setVisibility(View.GONE);
+                    } else {
+                        edittext_monthspregnancylast.setVisibility(View.VISIBLE);
+                        edittext_monthsbeingpregnant.setVisibility(View.GONE);
+                        spinner_placeofdeliverypregnant.setVisibility(View.VISIBLE);
+                        edittext_focalfacility.setVisibility(View.VISIBLE);
+                        spinner_singlemultiplebirths.setVisibility(View.VISIBLE);
+                    }
+                }
 
-            if (edittext_focalfacility.getVisibility() == View.VISIBLE && edittext_focalfacility.getText().toString().equalsIgnoreCase("") &&
-                    edittext_focalfacility.getText().toString().isEmpty()) {
-                edittext_focalfacility.setError(getString(R.string.select));
-                focusView = edittext_focalfacility;
-                cancel = true;
-                return;
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            if (spinner_sexofbaby.getVisibility() == View.VISIBLE && spinner_sexofbaby.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) spinner_sexofbaby.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = spinner_sexofbaby;
-                cancel = true;
-                return;
-            }
+                }
+            });
 
-            if (edittext_babyagedied.getVisibility() == View.VISIBLE && edittext_babyagedied.getText().toString().equalsIgnoreCase("") &&
-                    edittext_babyagedied.getText().toString().isEmpty()) {
-                edittext_babyagedied.setError(getString(R.string.select));
-                focusView = edittext_babyagedied;
-                cancel = true;
-                return;
-            }
+            spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        edittext_babyagedied.setVisibility(View.VISIBLE);
+                    } else {
+                        edittext_babyagedied.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
 
             if (spinner_pregnancyplanned.getVisibility() == View.VISIBLE && spinner_pregnancyplanned.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) spinner_pregnancyplanned.getSelectedView();
@@ -2696,15 +2690,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = spinner_pregnancyhighriskcase;
-                cancel = true;
-                return;
-            }
-
-            if (spinner_pregnancycomplications.getVisibility() == View.VISIBLE && spinner_pregnancycomplications.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) spinner_pregnancycomplications.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = spinner_pregnancycomplications;
                 cancel = true;
                 return;
             }
