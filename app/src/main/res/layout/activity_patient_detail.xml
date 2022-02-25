@@ -509,6 +509,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Economic_Status"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -573,6 +574,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Caste"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView

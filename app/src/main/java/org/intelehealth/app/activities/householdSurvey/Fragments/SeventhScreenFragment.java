@@ -8,6 +8,8 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,14 +21,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentSeventhScreenBinding;
@@ -51,6 +56,7 @@ public class SeventhScreenFragment extends Fragment {
     private String patientUuid;
     private SessionManager sessionManager;
     private List<View> mandatoryFields = new ArrayList<>();
+    PatientsDAO patientsDAO = new PatientsDAO();
 
     public SeventhScreenFragment() {
         // Required empty public constructor
@@ -97,6 +103,7 @@ public class SeventhScreenFragment extends Fragment {
         });
 
         mandatoryFields.addAll(Arrays.asList(binding.distanceToSubCentreRadioGroup, binding.distanceToNearestPrimaryHealthCentresRadioGroup, binding.distanceToNearestCommunityHealthCentresRadioGroup, binding.distanceToNearestDistrictHospitalRadioGroup, binding.distanceToNearestPathologicalLabRadioGroup, binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup, binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup, binding.distanceToNearestTertiaryCareFacilityRadioGroup));
+        setData(patientUuid);
         return rootView;
     }
 
@@ -212,5 +219,80 @@ public class SeventhScreenFragment extends Fragment {
             startActivity(intent);
         }
 
+    }
+
+    private void setData(String patientUuid)
+    {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (name.equalsIgnoreCase("subCentreDistance")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToSubCentreRadioGroup, value1);
+
+                }
+                if (name.equalsIgnoreCase("nearestPrimaryHealthCenterDistance")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestPrimaryHealthCentresRadioGroup, value1);
+                }
+                if (name.equalsIgnoreCase("nearestCommunityHealthCenterDistance")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestCommunityHealthCentresRadioGroup, value1);
+                }
+                if (name.equalsIgnoreCase("nearestDistrictHospitalDistance")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestDistrictHospitalRadioGroup, value1);
+                }
+                if (name.equalsIgnoreCase("nearestPathologicalLabDistance")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestPathologicalLabRadioGroup, value1);
+                }
+                if (name.equalsIgnoreCase("nearestPrivateClinicMBBSDoctor")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup, value1);
+                }
+                if (name.equalsIgnoreCase("nearestPrivateClinicAlternateMedicine")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup, value1);
+                }
+                if (name.equalsIgnoreCase("nearestTertiaryCareFacility")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.distanceToNearestTertiaryCareFacilityRadioGroup, value1);
+                }
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+
+    }
+
+    void defaultSelectRB(RadioGroup radioGroup, String s) {
+        int childCount = radioGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            RadioButton rButton = (RadioButton) radioGroup.getChildAt(i);
+            if (rButton.getText().toString().equalsIgnoreCase(s)) {
+                rButton.setChecked(true);
+                return;
+            }
+
+        }
     }
 }

@@ -23,6 +23,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -44,6 +45,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
@@ -51,6 +53,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -81,6 +84,8 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     private int mDOBDay;
     private static final String TAG = FirstScreenFragment.class.getSimpleName();
     private List<View> mandatoryFields = new ArrayList<>();
+    PatientsDAO patientsDAO = new PatientsDAO();
+
 
     public FirstScreenFragment() {
         // Required empty public constructor
@@ -105,6 +110,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
             getActivity().getBaseContext().getResources().updateConfiguration(config,
                     getActivity().getBaseContext().getResources().getDisplayMetrics());
         }
+
     }
 
     @Override
@@ -114,6 +120,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         View rootView =  inflater.inflate(R.layout.fragment_first_screen, container, false);
         initUI(rootView);
         radioButtonClickListener();
+        setData(patientUuid);
         return rootView;
     }
 
@@ -386,5 +393,83 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         RadioGroup result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
         mandatoryFields.addAll(Arrays.asList(nameInvestigator, villageSurvey, blockSurvey, districtSurvey, dateofVisit, namePerson, householdNumber
                 , household_structure_radio_group, result_of_visit_radio_group));
+    }
+
+    private void setData(String patientUuid)
+    {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (name.equalsIgnoreCase("nameOfInvestigator")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        nameInvestigator.setText(value1);
+                }
+                if (name.equalsIgnoreCase("villageNameSurvey")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        villageSurvey.setText(value1);
+                }
+                if (name.equalsIgnoreCase("blockSurvey")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        blockSurvey.setText(value1);
+                }
+                if (name.equalsIgnoreCase("districtSurvey")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        districtSurvey.setText(value1);
+                }
+                if (name.equalsIgnoreCase("dateOfVisit")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        dateofVisit.setText(value1);
+                }
+                if (name.equalsIgnoreCase("NamePrimaryRespondent")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        namePerson.setText(value1);
+                }
+                if (name.equalsIgnoreCase("HouseholdNumber")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        householdNumber.setText(value1);
+                }
+                if (name.equalsIgnoreCase("HouseStructure")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null && value1.equalsIgnoreCase("Pucca"))
+                        puccaRadioButton.setChecked(true);
+                    else if(value1!=null && value1.equalsIgnoreCase("Kucha"))
+                        kuchaRadioButton.setChecked(true);
+                }
+                if (name.equalsIgnoreCase("ResultOfVisit")) {
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and accepted"))
+                        availableAccepted.setChecked(true);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and deferred"))
+                        availableDeferred.setChecked(true);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on Survey"))
+                        notavailableSurvey.setChecked(true);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on second visit"))
+                        notavailableSecondVisit.setChecked(true);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on third visit"))
+                        notavailableThirdVisit.setChecked(true);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Refused to Participate"))
+                        refusedParticipate.setChecked(true);
+                }
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+
     }
 }
