@@ -2851,7 +2851,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("HealthIssueReported"));
-        patientAttributesDTO.setValue(new Gson().toJson(healthIssuesList));
+        String value = new Gson().toJson(healthIssuesList);
+        patientAttributesDTO.setValue(value);
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 

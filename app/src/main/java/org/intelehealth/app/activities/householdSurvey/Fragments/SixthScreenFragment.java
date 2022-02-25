@@ -8,6 +8,8 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,11 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentFifthScreenBinding;
@@ -52,6 +57,7 @@ public class SixthScreenFragment extends Fragment {
     private String patientUuid;
     private SessionManager sessionManager;
     private List<View> mandatoryFields = new ArrayList<>();
+    PatientsDAO patientsDAO = new PatientsDAO();
 
     public SixthScreenFragment() {
         // Required empty public constructor
@@ -97,7 +103,7 @@ public class SixthScreenFragment extends Fragment {
         });
 
         mandatoryFields.addAll(Arrays.asList(binding.defecationInOpenRadioGroup, binding.foodPreparedInThePastTwentyFourHoursRadioGroup));
-
+        setData(patientUuid);
         return rootView;
     }
 
@@ -154,5 +160,51 @@ public class SixthScreenFragment extends Fragment {
             getFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_container, new SeventhScreenFragment())
                     .commit();
+    }
+
+    private void setData(String patientUuid)
+    {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (name.equalsIgnoreCase("householdOpenDefecationStatus")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.defecationInOpenRadioGroup, value1);
+
+                }
+                if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHrs")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        defaultSelectRB(binding.foodPreparedInThePastTwentyFourHoursRadioGroup, value1);
+
+                }
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+
+    }
+
+    void defaultSelectRB(RadioGroup radioGroup, String s) {
+        int childCount = radioGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            RadioButton rButton = (RadioButton) radioGroup.getChildAt(i);
+            if (rButton.getText().toString().equalsIgnoreCase(s)) {
+                rButton.setChecked(true);
+                return;
+            }
+
+        }
     }
 }
