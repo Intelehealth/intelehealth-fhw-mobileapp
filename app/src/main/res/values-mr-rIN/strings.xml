@@ -1054,14 +1054,14 @@
     <string name="nas_never_married">कधीही लग्न केलेले नाही</string>
 
     <string name="what_is_name_s_education_status">%1$s शिक्षण स्थिती काय आहे?</string>
-    <string name="education_level_cannot_read_or_write">वाचू किंवा लिहू शकत नाही</string>
-    <string name="education_level_can_read_and_write">वाचू आणि लिहू शकतो</string>
-    <string name="education_level_primary_education_till_class_five">प्राथमिक शिक्षण (वर्ग 5 पर्यंत)</string>
-    <string name="education_level_middle_school_sixth_eighth">मध्यम शाळा (6 व्या -8 वे)</string>
-    <string name="education_level_passed_secondary_school_tenth_boards">पास माध्यमिक शाळा (वर्ग 10 व्या बोर्ड)</string>
-    <string name="education_level_passed_senior_secondary_school_twelfth_boards">पास केलेल्या वरिष्ठ माध्यमिक शाळा (12 व्या बोर्ड)</string>
-    <string name="education_level_graduate">पदवीधर</string>
-    <string name="education_level_postgraduate">पदव्युत्तर शिक्षण</string>
+    <string name="cannot_read_or_write">वाचू किंवा लिहू शकत नाही</string>
+    <string name="can_read_and_write">वाचू आणि लिहू शकतो</string>
+    <string name="primary_education_till_class_five">प्राथमिक शिक्षण (वर्ग 5 पर्यंत)</string>
+    <string name="middle_school_sixth_eighth">मध्यम शाळा (6 व्या -8 वे)</string>
+    <string name="passed_secondary_school_tenth_boards">पास माध्यमिक शाळा (वर्ग 10 व्या बोर्ड)</string>
+    <string name="passed_senior_secondary_school_twelfth_boards">पास केलेल्या वरिष्ठ माध्यमिक शाळा (12 व्या बोर्ड)</string>
+    <string name="graduate">पदवीधर</string>
+    <string name="postgraduate">पदव्युत्तर शिक्षण</string>
 
     <string name="nas_none">नाही</string>
     <string name="phone_ownership">फोन मालकी</string>

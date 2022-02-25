@@ -67,7 +67,10 @@
         <item>Please select country first</item>
     </string-array>
     <string-array name="countries">
+        <item>Select Country</item>
         <item>India</item>
+        <item>United States</item>
+        <item>Philippines</item>
     </string-array>
     <string-array name="economic_gu">
         <item>પસંદ કરો</item>
@@ -86,14 +89,19 @@
 
     <string-array name="education_en">
         <item>Select</item>
-        <item>@string/education_level_cannot_read_or_write</item>
-        <item>@string/education_level_can_read_and_write</item>
-        <item>@string/education_level_primary_education_till_class_five</item>
-        <item>@string/education_level_middle_school_sixth_eighth</item>
-        <item>@string/education_level_passed_secondary_school_tenth_boards</item>
-        <item>@string/education_level_passed_senior_secondary_school_twelfth_boards</item>
-        <item>@string/education_level_graduate</item>
-        <item>@string/education_level_postgraduate</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+        <item>CANNOT READ OR WRITE</item>
+        <item>CAN READ AND WRITE</item>
+        <item>PRIMARY EDUCATION (TILL CLASS 5)</item>
+        <item>MIDDLE SCHOOL (6TH-8TH)</item>
+        <item>PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)</item>
+        <item>PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)</item>
+        <item>GRADUATE</item>
+        <item>POSTGRADUATE</item>
     </string-array>
 
     <string-array name="education_te">
@@ -149,17 +157,13 @@
         <item>उच्च माध्यमिक</item>
         <item>स्नातक और उच्चतर</item>
     </string-array>
-
     <string-array name="education_mr">
-        <item>Select</item>
-        <item>@string/education_level_cannot_read_or_write</item>
-        <item>@string/education_level_can_read_and_write</item>
-        <item>@string/education_level_primary_education_till_class_five</item>
-        <item>@string/education_level_middle_school_sixth_eighth</item>
-        <item>@string/education_level_passed_secondary_school_tenth_boards</item>
-        <item>@string/education_level_passed_senior_secondary_school_twelfth_boards</item>
-        <item>@string/education_level_graduate</item>
-        <item>@string/education_level_postgraduate</item>
+        <item>निवडा</item>
+        <item>निरक्षर</item>
+        <item>प्राथमिक</item>
+        <item>दुय्यम</item>
+        <item>उच्च माध्यमिक</item>
+        <item>पदवी आणि उच्च</item>
     </string-array>
 
     <string-array name="education_as">
@@ -201,22 +205,6 @@
         <item>ದ್ವಿತೀಯ</item>
         <item>ಹೈಯರ್ ಸೆಕೆಂಡರಿ</item>
         <item>ಪದವಿ ಮತ್ತು ಹೆಚ್ಚಿನ</item>
-    </string-array>
-
-    <string-array name="occupation_en">
-        <item>@string/select</item>
-        <item>@string/sale_of_cereal_production</item>
-        <item>@string/sale_of_animals_or_animal_products</item>
-        <item>@string/agricultural_wage_labor_employed_for_farm_work</item>
-        <item>@string/salaried_worker_fixed_monthly_salary</item>
-        <item>@string/self_employed_non_agricultural_petty_business</item>
-        <item>@string/daily_labor_unskilled_work_agricultural_non_agricultural</item>
-        <item>@string/nrega</item>
-        <item>@string/seasonal_labor</item>
-        <item>@string/no_paid_work</item>
-        <item>@string/pension</item>
-        <item>@string/remittances_checkbox</item>
-        <item>@string/other_please_specify</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -398,7 +386,36 @@
     </string-array>
 
     <string-array name="states_india">
+        <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
         <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
     </string-array>
 
     <string-array name="states_philippines">
@@ -597,10 +614,6 @@
 
     <string-array name="location_village">
         <item>Select Village</item>
-    </string-array>
-
-    <string-array name="city_nashik">
-        <item>@string/district_nashik</item>
     </string-array>
 
 
@@ -1660,8 +1673,8 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>One month to 3 months ago</item>
-        <item>Between 3 months - 6 months ago</item>
+        <item>between one week to 3 months ago</item>
+        <item>between 3 months-6months ago</item>
         <item>More than 6 months</item>
     </string-array>
 
@@ -1670,8 +1683,8 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>One month to 3 months ago</item>
-        <item>Between 3 months - 6 months ago</item>
+        <item>between one week to 3 months ago</item>
+        <item>between 3 months-6months ago</item>
         <item>More than 6 months</item>
     </string-array>
 
@@ -1794,9 +1807,9 @@
     <string-array name="placedelivery_en">
         <item>Select</item>
         <item>HOME</item>
-        <item>SUB CENTER</item>
+        <item>SUB CEBTER</item>
         <item>CHC/ CIVIL HOSPITAL AT BLOCK LEVEL</item>
-        <item>DISTRICT HOSPITAL / CIVIL HOSPITAL AT DISTRICT LEVEL</item>
+        <item>DISTRICT HOSPTIAL/ CIVIL HOSPITAL AT DISTRICT LEVEL</item>
         <item>PRIVATE CLINIC</item>
         <item>PRIVATE HOSPITAL</item>
     </string-array>

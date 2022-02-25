@@ -14,27 +14,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <!--            <com.google.android.material.textview.MaterialTextView-->
-            <!--                android:id="@+id/name_of_household_member_text_view"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:fontFamily="@font/poppins_medium"-->
-            <!--                android:text="@string/name_of_household_member"-->
-            <!--                android:textSize="@dimen/card_content_sub_text_size" />-->
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/name_of_household_member_text_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_medium"-->
+<!--                android:text="@string/name_of_household_member"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-            <!--            <com.google.android.material.textview.MaterialTextView-->
-            <!--                android:id="@+id/name_of_household_member_value_text_view"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:fontFamily="@font/poppins_medium"-->
-            <!--                android:text="@string/sample_text"-->
-            <!--                android:textSize="@dimen/card_content_sub_text_size" />-->
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/name_of_household_member_value_text_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_medium"-->
+<!--                android:text="@string/sample_text"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/health_issues_reported_text_view"
