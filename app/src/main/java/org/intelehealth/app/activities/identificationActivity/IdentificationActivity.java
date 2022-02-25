@@ -135,7 +135,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-public class IdentificationActivity extends AppCompatActivity implements SurveyCallback {
+public class IdentificationActivity extends AppCompatActivity implements SurveyCallback, ViewPagerCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -1213,8 +1213,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
+        if (binding.addHealthIssueButton.getVisibility() == View.VISIBLE) {
+            binding.addHealthIssueButton.setVisibility(View.GONE);
+        }
         healthIssuesList.add(survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -1226,10 +1229,27 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
+        if (binding.addHealthIssueButton.getVisibility() == View.VISIBLE) {
+            binding.addHealthIssueButton.setVisibility(View.GONE);
+        }
         healthIssuesList.set(position, survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(position);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+    }
+
+    public void updateSurveyData(int position) {
+        if (binding.addHealthIssueButton.getVisibility() == View.GONE) {
+            binding.addHealthIssueButton.setVisibility(View.VISIBLE);
+        }
+        healthIssuesList.remove(position);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        binding.mainViewPager.setAdapter(adapter);
+        if (!healthIssuesList.isEmpty()) {
+            binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+        }
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.mainViewPager);
     }
@@ -4112,9 +4132,37 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
                 findViewById(R.id.llPORoaster);
 
-        ll18 =
+        ll18 = findViewById(R.id.ll18);
+    }
 
-                findViewById(R.id.ll18);
+    @Override
+    public void getIssueClicked(HealthIssues survey, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{"Edit", "Delete"}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putString("healthIssueReported", survey.getHealthIssueReported());
+                bundle.putString("numberOfEpisodesInTheLastYear", survey.getNumberOfEpisodesInTheLastYear());
+                bundle.putString("primaryHealthcareProviderValue", survey.getPrimaryHealthcareProviderValue());
+                bundle.putString("firstLocationOfVisit", survey.getFirstLocationOfVisit());
+                bundle.putString("referredTo", survey.getReferredTo());
+                bundle.putString("modeOfTransportation", survey.getModeOfTransportation());
+                bundle.putString("averageCostOfTravelAndStayPerEpisode", survey.getAverageCostOfTravelAndStayPerEpisode());
+                bundle.putString("averageCostOfConsultation", survey.getAverageCostOfConsultation());
+                bundle.putString("averageCostOfMedicine", survey.getAverageCostOfMedicine());
+                bundle.putString("scoreForExperienceOfTreatment", survey.getScoreForExperienceOfTreatment());
+
+                MultipleDiseasesDialog diseasesDialog = new MultipleDiseasesDialog();
+                diseasesDialog.setArguments(bundle);
+                diseasesDialog.show(getSupportFragmentManager(), MultipleDiseasesDialog.TAG);
+            }
+
+            if (which == 1) {
+                updateSurveyData(position);
+            }
+        });
+
+        listDialog.show();
     }
 
 }

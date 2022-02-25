@@ -1301,7 +1301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginVertical="10dp"
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
                         app:cardPreventCornerOverlap="false">
@@ -1686,10 +1686,10 @@
                                 android:layout_width="30sp"
                                 android:layout_height="30sp"
                                 android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="10dp"
-                                android:layout_toStartOf="@id/add_health_issue_button"
                                 android:background="@android:color/transparent"
-                                android:src="@drawable/ic_mode_edit_white_48px"
+                                android:src="@drawable/ic_baseline_edit_24"
                                 android:visibility="gone" />
 
                             <androidx.appcompat.widget.AppCompatImageButton
@@ -1708,12 +1708,12 @@
                             android:id="@+id/main_view_pager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:minHeight="64dp"
-                            android:background="@android:color/darker_gray"
                             android:layout_below="@id/main_relative_layout"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true" />
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
 
                     </RelativeLayout>
 

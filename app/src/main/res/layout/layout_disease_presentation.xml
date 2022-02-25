@@ -15,6 +15,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
+            android:id="@+id/linearLayout"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp">
