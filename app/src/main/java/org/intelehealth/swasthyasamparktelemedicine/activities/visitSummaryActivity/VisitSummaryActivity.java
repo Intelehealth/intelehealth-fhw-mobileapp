@@ -4360,10 +4360,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rbR1) {
                     reasonEtv.setVisibility(View.GONE);
-                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    reasonEtv.setText("Doctor is not available"/*getString(R.string.doctor_is_not_available)*/);
                 } else if (checkedId == R.id.rbR2) {
                     reasonEtv.setVisibility(View.GONE);
-                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    reasonEtv.setText("Patient is not available"/*getString(R.string.patient_is_not_available)*/);
                 } else if (checkedId == R.id.rbR3) {
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);

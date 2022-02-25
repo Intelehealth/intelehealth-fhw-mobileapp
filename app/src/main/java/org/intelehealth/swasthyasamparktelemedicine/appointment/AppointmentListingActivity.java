@@ -101,7 +101,6 @@ public class AppointmentListingActivity extends AppCompatActivity {
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAllAppointments();
                         for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
                             try {
                                 appointmentDAO.insert(slotInfoResponse.getData().get(i));
                             } catch (DAOException e) {
