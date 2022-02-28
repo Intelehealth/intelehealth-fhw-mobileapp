@@ -1620,24 +1620,9 @@
         <item>NOT STATED</item>
     </string-array>
 
-    <string-array name="maritual_en">
-        <item>Select</item>
-        <item>CURRENTLY MARRIED</item>
-        <item>MARRIED, GAUNA NOT PERFORMED</item>
-        <item>WIDOWED</item>
-        <item>DIVORCED</item>
-        <item>SEPARATED</item>
-        <item>DESERTED</item>
-        <item>NEVER MARRIED</item>
-    </string-array>
 
-    <string-array name="phoneownership_en">
-        <item>Select</item>
-        <item>NONE</item>
-        <item>SHARED</item>
-        <item>OWNS SMARTPHONE</item>
-        <item>OWNS FEATURE PHONE</item>
-    </string-array>
+
+
 
     <string-array name="bp_en">
         <item>Select</item>
@@ -1762,57 +1747,17 @@
 
     <string-array name="outcomepregnancy_en">
         <item>Select</item>
-        <item>BORN ALIVE</item>
-        <item>STILL BIRTH</item>
-        <item>INDUCED ABORTION (MTP)</item>
-        <item>MISCARRIAGE</item>
-        <item>CURRENTLY PREGNANT</item>
+        <item>Born alive</item>
+        <item>Still birth</item>
+        <item>Induced abortion (mtp)</item>
+        <item>Miscarriage</item>
+        <item>Currently pregnant</item>
     </string-array>
 
     <string-array name="childalive_en">
         <item>Select</item>
         <item>Yes</item>
         <item>No</item>
-    </string-array>
-
-    <string-array name="placedelivery_en">
-        <item>Select</item>
-        <item>HOME</item>
-        <item>SUB CEBTER</item>
-        <item>CHC/ CIVIL HOSPITAL AT BLOCK LEVEL</item>
-        <item>DISTRICT HOSPTIAL/ CIVIL HOSPITAL AT DISTRICT LEVEL</item>
-        <item>PRIVATE CLINIC</item>
-        <item>PRIVATE HOSPITAL</item>
-    </string-array>
-
-    <string-array name="sexofbaby_en">
-        <item>Select</item>
-        <item>Male</item>
-        <item>Female</item>
-    </string-array>
-
-    <string-array name="pregnancyplanned_en">
-        <item>Select</item>
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
-
-    <string-array name="highriskpregnancy_en">
-        <item>Select</item>
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
-
-    <string-array name="complications_en">
-        <item>Select</item>
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
-
-    <string-array name="singlemultiplebirths_en">
-        <item>Select</item>
-        <item>Single</item>
-        <item>Multiple</item>
     </string-array>
 
     <string-array name="householdHeadReligion">
@@ -1854,5 +1799,226 @@
         <item>@string/pension</item>
         <item>@string/remittances_checkbox</item>
         <item>@string/other_please_specify</item>
+    </string-array>
+
+
+
+    <string-array name="relationshipHoH_mr">
+        <item>निवडा</item>
+        <item>घराचे प्रमुख</item>
+        <item>पती/पत्नी</item>
+        <item>मुलगा/मुलगी</item>
+        <item>मुलगा/सून</item>
+        <item>नातवंड</item>
+        <item>वडील/आई</item>
+        <item>वडील/सासू-सासरे</item>
+        <item>भाऊ/बहिण</item>
+        <item>भाऊ/बहिण-सासरे</item>
+        <item>भाची/भाचा</item>
+        <item>आजोबा/आजोबा-सासरे</item>
+        <item>इतर नातेवाईक</item>
+        <item>दत्तक/पालक/स्टेपचाइल्ड</item>
+        <item>घरगुती सेवक</item>
+        <item>इतर संबंधित नाही</item>
+        <item>इतर (निर्दिष्ट करा)</item>
+        <item>सांगित नाही</item>
+    </string-array>
+    <string-array name="maritual_en">
+        <item>Select</item>
+        <item>CURRENTLY MARRIED</item>
+        <item>MARRIED, GAUNA NOT PERFORMED</item>
+        <item>WIDOWED</item>
+        <item>DIVORCED</item>
+        <item>SEPARATED</item>
+        <item>DESERTED</item>
+        <item>NEVER MARRIED</item>
+        <item>Currently married</item>
+        <item>Married, gauna not performed</item>
+        <item>Widowed</item>
+        <item>Divorced</item>
+        <item>Separated</item>
+        <item>Deserted</item>
+        <item>Never married</item>
+    </string-array>
+
+    <string-array name="maritual_mr">
+        <item>निवडा</item>
+        <item>सध्या विवाहित</item>
+        <item>लग्न झाले आहे, गौणा केले नाही</item>
+        <item>विधवा झालेली</item>
+        <item>घटस्फोटित</item>
+        <item>विभक्त</item>
+        <item>ओसाड</item>
+        <item>कधीही लग्न केलेले नाही</item>
+    </string-array>
+
+    <string-array name="phoneownership_en">
+        <item>Select</item>
+        <item>None</item>
+        <item>Shared</item>
+        <item>Owns smartphone</item>
+        <item>Owns feature phone</item>
+    </string-array>
+
+
+    <string-array name="phoneownership_mr">
+        <item>निवडा</item>
+        <item>काहीही नाही</item>
+        <item>शेअर केलेले</item>
+        <item>स्मार्टफोनचा मालक आहे</item>
+        <item>मालकीचे वैशिष्ट्य फोन</item>
+    </string-array>
+
+
+
+    <string-array name="bp_mr">
+        <item>निवडा</item>
+        <item>कधीही तपासले नाही</item>
+        <item>गेल्या एका आठवड्यात</item>
+        <item>गेल्या महिन्याच्या आत</item>
+        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>3 महिने-6 महिन्यांपूर्वी</item>
+        <item>6 महिन्यांपेक्षा जास्त</item>
+
+    </string-array>
+
+
+    <string-array name="sugar_mr">
+        <item>निवडा</item>
+        <item>कधीही तपासले नाही</item>
+        <item>गेल्या एका आठवड्यात</item>
+        <item>गेल्या महिन्याच्या आत</item>
+        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>3 महिने-6 महिन्यांपूर्वी</item>
+        <item>6 महिन्यांपेक्षा जास्त</item>
+    </string-array>
+
+
+
+
+    <string-array name="hb_mr">
+        <item>निवडा</item>
+        <item>कधीही तपासले नाही</item>
+        <item>गेल्या एका आठवड्यात</item>
+        <item>गेल्या महिन्याच्या आत</item>
+        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>3 महिने-6 महिन्यांपूर्वी</item>
+        <item>6 महिन्यांपेक्षा जास्त</item>
+    </string-array>
+
+
+
+    <string-array name="bmi_mr">
+        <item>निवडा</item>
+        <item>कधीही तपासले नाही</item>
+        <item>गेल्या एका आठवड्यात</item>
+        <item>गेल्या महिन्याच्या आत</item>
+        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>3 महिने-6 महिन्यांपूर्वी</item>
+        <item>6 महिन्यांपेक्षा जास्त</item>
+    </string-array>
+
+
+    <string-array name="healthissuereported_mr">
+        <item>निवडा</item>
+        <item>ताप</item>
+        <item>खोकला/सर्दी</item>
+        <item>अतिसार</item>
+        <item>इजा</item>
+        <item>त्वचेच्या समस्या</item>
+        <item>डोळा /दृष्टी समस्या</item>
+        <item>सांधे/हाडांचे दुखणे</item>
+        <item>इतर (निर्दिष्ट करा)</item>
+    </string-array>
+
+
+    <string-array name="childalive_mr">
+        <item>निवडा</item>
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+
+    <string-array name="placedelivery_en">
+        <item>Select</item>
+        <item>HOME</item>
+        <item>SUB CEBTER</item>
+        <item>CHC/ CIVIL HOSPITAL AT BLOCK LEVEL</item>
+        <item>DISTRICT HOSPTIAL/ CIVIL HOSPITAL AT DISTRICT LEVEL</item>
+        <item>PRIVATE CLINIC</item>
+        <item>PRIVATE HOSPITAL</item>
+        <item>Home</item>
+        <item>Sub cebter</item>
+        <item>Chc/ civil hospital at block level</item>
+        <item>District hosptial/ civil hospital at district level</item>
+        <item>Private clinic</item>
+        <item>Private hospital</item>
+    </string-array>
+
+    <string-array name="placedelivery_mr">
+        <item>निवडा</item>
+        <item>घर</item>
+        <item>उपकेंद्र</item>
+        <item>सीएचसी/ ब्लॉक लेव्हलवर सिव्हिल हॉस्पिटल</item>
+        <item>जिल्हा स्तरावर जिल्हा रुग्णालय/ नागरी रुग्णालय</item>
+        <item>खाजगी क्लिनिक</item>
+        <item>खाजगी रुग्णालय</item>
+    </string-array>
+
+    <string-array name="sexofbaby_en">
+        @@ -1819,28 +2008,57 @@
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="sexofbaby_mr">
+        <item>निवडा</item>
+        <item>पुरुष</item>
+        <item>स्त्री</item>
+    </string-array>
+
+
+    <string-array name="pregnancyplanned_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="pregnancyplanned_mr">
+        <item>निवडा</item>
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+
+    <string-array name="highriskpregnancy_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="highriskpregnancy_mr">
+        <item>निवडा</item>
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+    <string-array name="complications_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="complications_mr">
+        <item>निवडा</item>
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+    <string-array name="singlemultiplebirths_en">
+        <item>Select</item>
+        <item>Single</item>
+        <item>Multiple</item>
+    </string-array>
+
+    <string-array name="singlemultiplebirths_mr">
+        <item>चुनें</item>
+        <item>एकल</item>
+        <item>एकाधिक</item>
     </string-array>
 </resources>

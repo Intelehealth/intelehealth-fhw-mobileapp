@@ -11,6 +11,24 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.getBMI_edit;
+import static org.intelehealth.app.utilities.StringUtils.getBP_edit;
+import static org.intelehealth.app.utilities.StringUtils.getChildAlive_edit;
+import static org.intelehealth.app.utilities.StringUtils.getComplications_edit;
+import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
+import static org.intelehealth.app.utilities.StringUtils.getHealthIsReported_edit;
+import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanned_edit;
+import static org.intelehealth.app.utilities.StringUtils.getModerateSport_edit;
+import static org.intelehealth.app.utilities.StringUtils.getOvercomePragnency_edit;
+import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
+import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
+import static org.intelehealth.app.utilities.StringUtils.getPlaceDelivery_edit;
+import static org.intelehealth.app.utilities.StringUtils.getPregnancyPlanned_edit;
+import static org.intelehealth.app.utilities.StringUtils.getReferedDTO_edit;
+import static org.intelehealth.app.utilities.StringUtils.getScoreExperience_edit;
+import static org.intelehealth.app.utilities.StringUtils.getSexOfBaby_edit;
+import static org.intelehealth.app.utilities.StringUtils.getSinglemultiplebirths_edit;
+import static org.intelehealth.app.utilities.StringUtils.getSuger_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
@@ -439,7 +457,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Logger.logE("Identification", "#648", e);
         }
         try {
-            String occupationLanguage = "occupation_" + sessionManager.getAppLanguage();
+//            String occupationLanguage = "occupation_" + sessionManager.getAppLanguage();
+            String occupationLanguage = "occupation_" + "en";
             int occupations = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
             if (occupations != 0) {
                 occupationAdapter = ArrayAdapter.createFromResource(this, occupations, R.layout.custom_spinner);
@@ -1293,18 +1312,381 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
     }
 
+//    private void editRosterQuestionsUIHandling() {
+//
+//        //Relations ship HOH
+//        if (patient1.getRelationshiphoh() != null && !patient1.getRelationshiphoh().equalsIgnoreCase("")) {
+//            String relationhoh_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                relationhoh_Transl = StringUtils.switch_as_caste_edit(patient1.getRelationshiphoh());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                relationhoh_Transl = patient1.getRelationshiphoh();
+//            }
+//
+//            int spinner_position = adapter_whatisyourrelation.getPosition(relationhoh_Transl);
+//            spinner_whatisyourrelation.setSelection(spinner_position);
+//        }
+//        //Relations ship HOH
+//
+//        //maritualstatus
+//        if (patient1.getMaritualstatus() != null && !patient1.getMaritualstatus().equalsIgnoreCase("")) {
+//            String maritualstatus_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                maritualstatus_Transl = StringUtils.switch_as_caste_edit(patient1.getMaritualstatus());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                maritualstatus_Transl = patient1.getMaritualstatus();
+//            }
+//
+//            int spinner_position = adapter_maritualstatus.getPosition(maritualstatus_Transl);
+//            spinner_maritualstatus.setSelection(spinner_position);
+//        }
+//        //maritualstatus
+//
+//        //phoneowner
+//        if (patient1.getPhoneownership() != null && !patient1.getPhoneownership().equalsIgnoreCase("")) {
+//            String phoneowner_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                phoneowner_Transl = StringUtils.switch_as_caste_edit(patient1.getPhoneownership());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                phoneowner_Transl = patient1.getPhoneownership();
+//            }
+//
+//            int spinner_position = adapter_phoneownership.getPosition(phoneowner_Transl);
+//            spinner_phoneownership.setSelection(spinner_position);
+//        }
+//        //phoneowner
+//
+//        //bp
+//        if (patient1.getBpchecked() != null && !patient1.getBpchecked().equalsIgnoreCase("")) {
+//            String bp_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                bp_Transl = StringUtils.switch_as_caste_edit(patient1.getBpchecked());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                bp_Transl = patient1.getBpchecked();
+//            }
+//
+//            int spinner_position = adapter_bpchecked.getPosition(bp_Transl);
+//            spinner_bpchecked.setSelection(spinner_position);
+//        }
+//        //bp
+//
+//        //sugar
+//        if (patient1.getSugarchecked() != null && !patient1.getSugarchecked().equalsIgnoreCase("")) {
+//            String sugar_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                sugar_Transl = StringUtils.switch_as_caste_edit(patient1.getSugarchecked());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                sugar_Transl = patient1.getSugarchecked();
+//            }
+//
+//            int spinner_position = adapter_sugarchecked.getPosition(sugar_Transl);
+//            spinner_sugarchecked.setSelection(spinner_position);
+//        }
+//        //sugar
+//
+//        //hb
+//        if (patient1.getHbtest() != null && !patient1.getHbtest().equalsIgnoreCase("")) {
+//            String hb_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                hb_Transl = StringUtils.switch_as_caste_edit(patient1.getHbtest());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                hb_Transl = patient1.getHbtest();
+//            }
+//
+//            int spinner_position = adapter_hbchecked.getPosition(hb_Transl);
+//            spinner_hbchecked.setSelection(spinner_position);
+//        }
+//        //hb
+//
+//        //bmi
+//        if (patient1.getBmi() != null && !patient1.getBmi().equalsIgnoreCase("")) {
+//            String bmi_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                bmi_Transl = StringUtils.switch_as_caste_edit(patient1.getBmi());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                bmi_Transl = patient1.getBmi();
+//            }
+//
+//            int spinner_position = adapter_bmi.getPosition(bmi_Transl);
+//            spinner_bmi.setSelection(spinner_position);
+//        }
+//        //bmi
+//
+//        //healthissuereported
+//        if (patient1.getHealthissuereported() != null && !patient1.getHealthissuereported().equalsIgnoreCase("")) {
+//            String healthissuereported_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                healthissuereported_Transl = StringUtils.switch_as_caste_edit(patient1.getHealthissuereported());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                healthissuereported_Transl = patient1.getHealthissuereported();
+//            }
+//
+//            int spinner_position = adapter_healthissuereported.getPosition(healthissuereported_Transl);
+//            spinner_healthissuereported.setSelection(spinner_position);
+//        }
+//        //healthissuereported
+//
+//        //no episodes
+//        edittext_noofepisodes.setText(patient1.getNoepisodes());
+//        //no episodes
+//
+//        //primaryhealthprovider
+//        if (patient1.getPrimaryhealthprovider() != null && !patient1.getPrimaryhealthprovider().equalsIgnoreCase("")) {
+//            String primaryhealthprovider_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                primaryhealthprovider_Transl = StringUtils.switch_as_caste_edit(patient1.getPrimaryhealthprovider());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                primaryhealthprovider_Transl = patient1.getPrimaryhealthprovider();
+//            }
+//
+//            int spinner_position = adapter_primaryhealthprovider.getPosition(primaryhealthprovider_Transl);
+//            spinner_primaryhealthprovider.setSelection(spinner_position);
+//        }
+//        //primaryhealthprovider
+//
+//        //firstlocation
+//        if (patient1.getFirstlocation() != null && !patient1.getFirstlocation().equalsIgnoreCase("")) {
+//            String firstlocation_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                firstlocation_Transl = StringUtils.switch_as_caste_edit(patient1.getFirstlocation());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                firstlocation_Transl = patient1.getFirstlocation();
+//            }
+//
+//            int spinner_position = adapter_firstlocation.getPosition(firstlocation_Transl);
+//            spinner_firstlocation.setSelection(spinner_position);
+//        }
+//        //firstlocation
+//
+//        //referredto
+//        if (patient1.getReferredto() != null && !patient1.getReferredto().equalsIgnoreCase("")) {
+//            String referredto_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                referredto_Transl = StringUtils.switch_as_caste_edit(patient1.getReferredto());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                referredto_Transl = patient1.getReferredto();
+//            }
+//
+//            int spinner_position = adapter_referredto.getPosition(referredto_Transl);
+//            spinner_referredto.setSelection(spinner_position);
+//        }
+//        //referredto
+//
+//        //modetransport
+//        if (patient1.getModetransport() != null && !patient1.getModetransport().equalsIgnoreCase("")) {
+//            String modetransport_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                modetransport_Transl = StringUtils.switch_as_caste_edit(patient1.getModetransport());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                modetransport_Transl = patient1.getModetransport();
+//            }
+//
+//            int spinner_position = adapter_modeoftransport.getPosition(modetransport_Transl);
+//            spinner_modeoftransport.setSelection(spinner_position);
+//        }
+//        //modetransport
+//
+//        //EditText
+//        edittext_avgcosttravel.setText(patient1.getCosttravel());
+//        edittext_avgcostconsult.setText(patient1.getCostconsult());
+//        edittext_avgcostmedicines.setText(patient1.getCostmedicines());
+//        //EditText
+//
+//        //scoreofexperience
+//        if (patient1.getScoreexperience() != null && !patient1.getScoreexperience().equalsIgnoreCase("")) {
+//            String scoreofexperience_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                scoreofexperience_Transl = StringUtils.switch_as_caste_edit(patient1.getScoreexperience());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                scoreofexperience_Transl = patient1.getScoreexperience();
+//            }
+//
+//            int spinner_position = adapter_experiencerscore.getPosition(scoreofexperience_Transl);
+//            spinner_experiencerscore.setSelection(spinner_position);
+//        }
+//        //scoreofexperience
+//
+//        // how many times
+//        edittext_howmanytimmespregnant.setText(patient1.getTimespregnant());
+//        // how many times
+//
+//        //pasttwoyrs
+//        if (patient1.getPasttwoyrs() != null && !patient1.getPasttwoyrs().equalsIgnoreCase("")) {
+//            String pasttwoyrs_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                pasttwoyrs_Transl = StringUtils.switch_as_caste_edit(patient1.getPasttwoyrs());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                pasttwoyrs_Transl = patient1.getPasttwoyrs();
+//            }
+//
+//            int spinner_position = adapter_pregnantpasttwoyrs.getPosition(pasttwoyrs_Transl);
+//            spinner_pregnantpasttwoyrs.setSelection(spinner_position);
+//        }
+//        //pasttwoyrs
+//
+//        //outcomeofpreg
+//        if (patient1.getOutcomepregnancy() != null && !patient1.getOutcomepregnancy().equalsIgnoreCase("")) {
+//            String outcomeofpreg_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                outcomeofpreg_Transl = StringUtils.switch_as_caste_edit(patient1.getOutcomepregnancy());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                outcomeofpreg_Transl = patient1.getOutcomepregnancy();
+//            }
+//
+//            int spinner_position = adapter_outcomepregnancy.getPosition(outcomeofpreg_Transl);
+//            spinner_outcomepregnancy.setSelection(spinner_position);
+//        }
+//        //outcomeofpreg
+//
+//        //childalive
+//        if (patient1.getChildalive() != null && !patient1.getChildalive().equalsIgnoreCase("")) {
+//            String childalive_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                childalive_Transl = StringUtils.switch_as_caste_edit(patient1.getChildalive());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                childalive_Transl = patient1.getChildalive();
+//            }
+//
+//            int spinner_position = adapter_childalive.getPosition(childalive_Transl);
+//            spinner_childalive.setSelection(spinner_position);
+//        }
+//        //childalive
+//
+//        //EditText
+//        edittext_yearofpregnancy.setText(patient1.getYearsofpregnancy());
+//        edittext_monthspregnancylast.setText(patient1.getLastmonthspregnancy());
+//        edittext_monthsbeingpregnant.setText(patient1.getMonthsofpregnancy());
+//        //EditText
+//
+//        //placedelivery
+//        if (patient1.getPlacedelivery() != null && !patient1.getPlacedelivery().equalsIgnoreCase("")) {
+//            String placedelivery_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                placedelivery_Transl = StringUtils.switch_as_caste_edit(patient1.getPlacedelivery());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                placedelivery_Transl = patient1.getPlacedelivery();
+//            }
+//
+//            int spinner_position = adapter_placeofdeliverypregnant.getPosition(placedelivery_Transl);
+//            spinner_placeofdeliverypregnant.setSelection(spinner_position);
+//        }
+//        //placedelivery
+//
+//        //Single/Multiple
+//        if (patient1.getSinglemultiplebirth() != null && !patient1.getSinglemultiplebirth().equalsIgnoreCase("")) {
+//            String singlemultiple_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                singlemultiple_Transl = StringUtils.switch_as_caste_edit(patient1.getSinglemultiplebirth());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                singlemultiple_Transl = patient1.getSinglemultiplebirth();
+//            }
+//
+//            int spinner_position = adapter_singlemultiplebirths.getPosition(singlemultiple_Transl);
+//            spinner_singlemultiplebirths.setSelection(spinner_position);
+//        }
+//        //Single/Multiple
+//
+//        //focal
+//        edittext_focalfacility.setText(patient1.getFocalfacility());
+//        //focal
+//
+//        //sexofbaby
+//        if (patient1.getSexofbaby() != null && !patient1.getSexofbaby().equalsIgnoreCase("")) {
+//            String sexofbaby_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                sexofbaby_Transl = StringUtils.switch_as_caste_edit(patient1.getSexofbaby());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                sexofbaby_Transl = patient1.getSexofbaby();
+//            }
+//
+//            int spinner_position = adapter_sexofbaby.getPosition(sexofbaby_Transl);
+//            spinner_sexofbaby.setSelection(spinner_position);
+//        }
+//        //sexofbaby
+//
+//        //baby age died
+//        edittext_babyagedied.setText(patient1.getAgediedbaby());
+//        //baby age died
+//
+//        //pregplanned
+//        if (patient1.getPlannedpregnancy() != null && !patient1.getPlannedpregnancy().equalsIgnoreCase("")) {
+//            String pregplanned_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                pregplanned_Transl = StringUtils.switch_as_caste_edit(patient1.getPlannedpregnancy());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                pregplanned_Transl = patient1.getPlannedpregnancy();
+//            }
+//
+//            int spinner_position = adapter_pregnancyplanned.getPosition(pregplanned_Transl);
+//            spinner_pregnancyplanned.setSelection(spinner_position);
+//        }
+//        //pregplanned
+//
+//        //highriskpreg
+//        if (patient1.getHighriskpregnancy() != null && !patient1.getHighriskpregnancy().equalsIgnoreCase("")) {
+//            String highriskpreg_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                highriskpreg_Transl = StringUtils.switch_as_caste_edit(patient1.getHighriskpregnancy());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                highriskpreg_Transl = patient1.getHighriskpregnancy();
+//            }
+//
+//            int spinner_position = adapter_pregnancyhighriskcase.getPosition(highriskpreg_Transl);
+//            spinner_pregnancyhighriskcase.setSelection(spinner_position);
+//        }
+//        //highriskpreg
+//
+//        //complications
+//        if (patient1.getComplications() != null && !patient1.getComplications().equalsIgnoreCase("")) {
+//            String complications_Transl = "";
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                complications_Transl = StringUtils.switch_as_caste_edit(patient1.getComplications());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                complications_Transl = patient1.getComplications();
+//            }
+//
+//            int spinner_position = adapter_pregnancycomplications.getPosition(complications_Transl);
+//            spinner_pregnancycomplications.setSelection(spinner_position);
+//        }
+//        //complications
+//    }
+
     private void editRosterQuestionsUIHandling() {
 
         //Relations ship HOH
         if (patient1.getRelationshiphoh() != null && !patient1.getRelationshiphoh().equalsIgnoreCase("")) {
             String relationhoh_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                relationhoh_Transl = StringUtils.switch_as_caste_edit(patient1.getRelationshiphoh());
-                // TODO: Add switch case in StringUtils
-            } else {
-                relationhoh_Transl = patient1.getRelationshiphoh();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                ===========
+//                relationhoh_Transl = StringUtils.switch_as_caste_edit(patient1.getRelationshiphoh());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                relationhoh_Transl = patient1.getRelationshiphoh();
+//
+//            }
+            relationhoh_Transl = getSuger_edit(patient1.getRelationshiphoh(),sessionManager.getAppLanguage());
             int spinner_position = adapter_whatisyourrelation.getPosition(relationhoh_Transl);
             spinner_whatisyourrelation.setSelection(spinner_position);
         }
@@ -1313,13 +1695,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //maritualstatus
         if (patient1.getMaritualstatus() != null && !patient1.getMaritualstatus().equalsIgnoreCase("")) {
             String maritualstatus_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                maritualstatus_Transl = StringUtils.switch_as_caste_edit(patient1.getMaritualstatus());
-                // TODO: Add switch case in StringUtils
-            } else {
-                maritualstatus_Transl = patient1.getMaritualstatus();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                maritualstatus_Transl = StringUtils.switch_as_caste_edit(patient1.getMaritualstatus());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                maritualstatus_Transl = patient1.getMaritualstatus();
+//            }
+            maritualstatus_Transl = StringUtils.getMaritual_edit(patient1.getMaritualstatus(),sessionManager.getAppLanguage());
             int spinner_position = adapter_maritualstatus.getPosition(maritualstatus_Transl);
             spinner_maritualstatus.setSelection(spinner_position);
         }
@@ -1328,13 +1710,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //phoneowner
         if (patient1.getPhoneownership() != null && !patient1.getPhoneownership().equalsIgnoreCase("")) {
             String phoneowner_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                phoneowner_Transl = StringUtils.switch_as_caste_edit(patient1.getPhoneownership());
-                // TODO: Add switch case in StringUtils
-            } else {
-                phoneowner_Transl = patient1.getPhoneownership();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                phoneowner_Transl = StringUtils.switch_as_caste_edit(patient1.getPhoneownership());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                phoneowner_Transl = patient1.getPhoneownership();
+//            }
+            phoneowner_Transl = getPhoneOwnerShip_edit(patient1.getPhoneownership(),sessionManager.getAppLanguage());
             int spinner_position = adapter_phoneownership.getPosition(phoneowner_Transl);
             spinner_phoneownership.setSelection(spinner_position);
         }
@@ -1343,13 +1725,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //bp
         if (patient1.getBpchecked() != null && !patient1.getBpchecked().equalsIgnoreCase("")) {
             String bp_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                bp_Transl = StringUtils.switch_as_caste_edit(patient1.getBpchecked());
-                // TODO: Add switch case in StringUtils
-            } else {
-                bp_Transl = patient1.getBpchecked();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                bp_Transl = StringUtils.switch_as_caste_edit(patient1.getBpchecked());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                bp_Transl = patient1.getBpchecked();
+//            }
+            bp_Transl = getBP_edit(patient1.getBpchecked(),sessionManager.getAppLanguage());
             int spinner_position = adapter_bpchecked.getPosition(bp_Transl);
             spinner_bpchecked.setSelection(spinner_position);
         }
@@ -1358,13 +1740,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //sugar
         if (patient1.getSugarchecked() != null && !patient1.getSugarchecked().equalsIgnoreCase("")) {
             String sugar_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                sugar_Transl = StringUtils.switch_as_caste_edit(patient1.getSugarchecked());
-                // TODO: Add switch case in StringUtils
-            } else {
-                sugar_Transl = patient1.getSugarchecked();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                sugar_Transl = StringUtils.switch_as_caste_edit(patient1.getSugarchecked());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                sugar_Transl = patient1.getSugarchecked();
+//            }
+            sugar_Transl = getSuger_edit(patient1.getSugarchecked(),sessionManager.getAppLanguage());
             int spinner_position = adapter_sugarchecked.getPosition(sugar_Transl);
             spinner_sugarchecked.setSelection(spinner_position);
         }
@@ -1373,13 +1755,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //hb
         if (patient1.getHbtest() != null && !patient1.getHbtest().equalsIgnoreCase("")) {
             String hb_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                hb_Transl = StringUtils.switch_as_caste_edit(patient1.getHbtest());
-                // TODO: Add switch case in StringUtils
-            } else {
-                hb_Transl = patient1.getHbtest();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                hb_Transl = StringUtils.switch_as_caste_edit(patient1.getHbtest());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                hb_Transl = patient1.getHbtest();
+//            }
+            hb_Transl = getHB_edit(patient1.getHbtest(),sessionManager.getAppLanguage());
             int spinner_position = adapter_hbchecked.getPosition(hb_Transl);
             spinner_hbchecked.setSelection(spinner_position);
         }
@@ -1388,13 +1770,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //bmi
         if (patient1.getBmi() != null && !patient1.getBmi().equalsIgnoreCase("")) {
             String bmi_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                bmi_Transl = StringUtils.switch_as_caste_edit(patient1.getBmi());
-                // TODO: Add switch case in StringUtils
-            } else {
-                bmi_Transl = patient1.getBmi();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                bmi_Transl = StringUtils.switch_as_caste_edit(patient1.getBmi());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                bmi_Transl = patient1.getBmi();
+//            }
+            bmi_Transl = getBMI_edit(patient1.getBmi(),sessionManager.getAppLanguage());
             int spinner_position = adapter_bmi.getPosition(bmi_Transl);
             spinner_bmi.setSelection(spinner_position);
         }
@@ -1403,12 +1785,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //healthissuereported
         if (patient1.getHealthissuereported() != null && !patient1.getHealthissuereported().equalsIgnoreCase("")) {
             String healthissuereported_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                healthissuereported_Transl = StringUtils.switch_as_caste_edit(patient1.getHealthissuereported());
-                // TODO: Add switch case in StringUtils
-            } else {
-                healthissuereported_Transl = patient1.getHealthissuereported();
-            }
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                healthissuereported_Transl = StringUtils.switch_as_caste_edit(patient1.getHealthissuereported());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                healthissuereported_Transl = patient1.getHealthissuereported();
+//            }
+            healthissuereported_Transl = getHealthIsReported_edit(patient1.getHealthissuereported(),sessionManager.getAppLanguage());
 
             int spinner_position = adapter_healthissuereported.getPosition(healthissuereported_Transl);
             spinner_healthissuereported.setSelection(spinner_position);
@@ -1437,13 +1820,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //firstlocation
         if (patient1.getFirstlocation() != null && !patient1.getFirstlocation().equalsIgnoreCase("")) {
             String firstlocation_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                firstlocation_Transl = StringUtils.switch_as_caste_edit(patient1.getFirstlocation());
-                // TODO: Add switch case in StringUtils
-            } else {
-                firstlocation_Transl = patient1.getFirstlocation();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                firstlocation_Transl = StringUtils.switch_as_caste_edit(patient1.getFirstlocation());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                firstlocation_Transl = patient1.getFirstlocation();
+//            }
+            firstlocation_Transl = StringUtils.getFirstLocation_edit(patient1.getFirstlocation(),sessionManager.getAppLanguage());
             int spinner_position = adapter_firstlocation.getPosition(firstlocation_Transl);
             spinner_firstlocation.setSelection(spinner_position);
         }
@@ -1452,13 +1835,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //referredto
         if (patient1.getReferredto() != null && !patient1.getReferredto().equalsIgnoreCase("")) {
             String referredto_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                referredto_Transl = StringUtils.switch_as_caste_edit(patient1.getReferredto());
-                // TODO: Add switch case in StringUtils
-            } else {
-                referredto_Transl = patient1.getReferredto();
-            }
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                referredto_Transl = StringUtils.switch_as_caste_edit(patient1.getReferredto());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                referredto_Transl = patient1.getReferredto();
+//            }
 
+            referredto_Transl = getReferedDTO_edit(patient1.getReferredto(),sessionManager.getAppLanguage());
             int spinner_position = adapter_referredto.getPosition(referredto_Transl);
             spinner_referredto.setSelection(spinner_position);
         }
@@ -1467,13 +1851,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //modetransport
         if (patient1.getModetransport() != null && !patient1.getModetransport().equalsIgnoreCase("")) {
             String modetransport_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                modetransport_Transl = StringUtils.switch_as_caste_edit(patient1.getModetransport());
-                // TODO: Add switch case in StringUtils
-            } else {
-                modetransport_Transl = patient1.getModetransport();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                modetransport_Transl = StringUtils.switch_as_caste_edit(patient1.getModetransport());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                modetransport_Transl = patient1.getModetransport();
+//            }
+            modetransport_Transl = getModerateSport_edit(patient1.getModetransport(),sessionManager.getAppLanguage());
             int spinner_position = adapter_modeoftransport.getPosition(modetransport_Transl);
             spinner_modeoftransport.setSelection(spinner_position);
         }
@@ -1488,13 +1872,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //scoreofexperience
         if (patient1.getScoreexperience() != null && !patient1.getScoreexperience().equalsIgnoreCase("")) {
             String scoreofexperience_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                scoreofexperience_Transl = StringUtils.switch_as_caste_edit(patient1.getScoreexperience());
-                // TODO: Add switch case in StringUtils
-            } else {
-                scoreofexperience_Transl = patient1.getScoreexperience();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                scoreofexperience_Transl = StringUtils.switch_as_caste_edit(patient1.getScoreexperience());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                scoreofexperience_Transl = patient1.getScoreexperience();
+//            }
+            scoreofexperience_Transl =getScoreExperience_edit(patient1.getScoreexperience(),sessionManager.getAppLanguage());
             int spinner_position = adapter_experiencerscore.getPosition(scoreofexperience_Transl);
             spinner_experiencerscore.setSelection(spinner_position);
         }
@@ -1507,13 +1891,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //pasttwoyrs
         if (patient1.getPasttwoyrs() != null && !patient1.getPasttwoyrs().equalsIgnoreCase("")) {
             String pasttwoyrs_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                pasttwoyrs_Transl = StringUtils.switch_as_caste_edit(patient1.getPasttwoyrs());
-                // TODO: Add switch case in StringUtils
-            } else {
-                pasttwoyrs_Transl = patient1.getPasttwoyrs();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                pasttwoyrs_Transl = StringUtils.switch_as_caste_edit(patient1.getPasttwoyrs());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                pasttwoyrs_Transl = patient1.getPasttwoyrs();
+//            }
+            pasttwoyrs_Transl = getPasttwoyrs_edit(patient1.getPasttwoyrs(),sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnantpasttwoyrs.getPosition(pasttwoyrs_Transl);
             spinner_pregnantpasttwoyrs.setSelection(spinner_position);
         }
@@ -1522,13 +1906,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //outcomeofpreg
         if (patient1.getOutcomepregnancy() != null && !patient1.getOutcomepregnancy().equalsIgnoreCase("")) {
             String outcomeofpreg_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                outcomeofpreg_Transl = StringUtils.switch_as_caste_edit(patient1.getOutcomepregnancy());
-                // TODO: Add switch case in StringUtils
-            } else {
-                outcomeofpreg_Transl = patient1.getOutcomepregnancy();
-            }
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                outcomeofpreg_Transl = StringUtils.switch_as_caste_edit(patient1.getOutcomepregnancy());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                outcomeofpreg_Transl = patient1.getOutcomepregnancy();
+//            }
 
+            outcomeofpreg_Transl = getOvercomePragnency_edit(patient1.getOutcomepregnancy(),sessionManager.getAppLanguage());
             int spinner_position = adapter_outcomepregnancy.getPosition(outcomeofpreg_Transl);
             spinner_outcomepregnancy.setSelection(spinner_position);
         }
@@ -1537,13 +1922,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //childalive
         if (patient1.getChildalive() != null && !patient1.getChildalive().equalsIgnoreCase("")) {
             String childalive_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                childalive_Transl = StringUtils.switch_as_caste_edit(patient1.getChildalive());
-                // TODO: Add switch case in StringUtils
-            } else {
-                childalive_Transl = patient1.getChildalive();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                childalive_Transl = StringUtils.switch_as_caste_edit(patient1.getChildalive());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                childalive_Transl = patient1.getChildalive();
+//            }
+            childalive_Transl =getChildAlive_edit(patient1.getChildalive(),sessionManager.getAppLanguage());
             int spinner_position = adapter_childalive.getPosition(childalive_Transl);
             spinner_childalive.setSelection(spinner_position);
         }
@@ -1558,13 +1943,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //placedelivery
         if (patient1.getPlacedelivery() != null && !patient1.getPlacedelivery().equalsIgnoreCase("")) {
             String placedelivery_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                placedelivery_Transl = StringUtils.switch_as_caste_edit(patient1.getPlacedelivery());
-                // TODO: Add switch case in StringUtils
-            } else {
-                placedelivery_Transl = patient1.getPlacedelivery();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                placedelivery_Transl = StringUtils.switch_as_caste_edit(patient1.getPlacedelivery());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                placedelivery_Transl = patient1.getPlacedelivery();
+//            }
+            placedelivery_Transl = getPlaceDelivery_edit(patient1.getPlacedelivery(),sessionManager.getAppLanguage());
             int spinner_position = adapter_placeofdeliverypregnant.getPosition(placedelivery_Transl);
             spinner_placeofdeliverypregnant.setSelection(spinner_position);
         }
@@ -1573,13 +1958,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //Single/Multiple
         if (patient1.getSinglemultiplebirth() != null && !patient1.getSinglemultiplebirth().equalsIgnoreCase("")) {
             String singlemultiple_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                singlemultiple_Transl = StringUtils.switch_as_caste_edit(patient1.getSinglemultiplebirth());
-                // TODO: Add switch case in StringUtils
-            } else {
-                singlemultiple_Transl = patient1.getSinglemultiplebirth();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                singlemultiple_Transl = StringUtils.switch_as_caste_edit(patient1.getSinglemultiplebirth());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                singlemultiple_Transl = patient1.getSinglemultiplebirth();
+//            }
+            singlemultiple_Transl = getSinglemultiplebirths_edit(patient1.getSinglemultiplebirth(),sessionManager.getAppLanguage());
             int spinner_position = adapter_singlemultiplebirths.getPosition(singlemultiple_Transl);
             spinner_singlemultiplebirths.setSelection(spinner_position);
         }
@@ -1592,13 +1977,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //sexofbaby
         if (patient1.getSexofbaby() != null && !patient1.getSexofbaby().equalsIgnoreCase("")) {
             String sexofbaby_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                sexofbaby_Transl = StringUtils.switch_as_caste_edit(patient1.getSexofbaby());
-                // TODO: Add switch case in StringUtils
-            } else {
-                sexofbaby_Transl = patient1.getSexofbaby();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                sexofbaby_Transl = StringUtils.switch_as_caste_edit(patient1.getSexofbaby());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                sexofbaby_Transl = patient1.getSexofbaby();
+//            }
+            sexofbaby_Transl = getSexOfBaby_edit(patient1.getSexofbaby(),sessionManager.getAppLanguage());
             int spinner_position = adapter_sexofbaby.getPosition(sexofbaby_Transl);
             spinner_sexofbaby.setSelection(spinner_position);
         }
@@ -1611,13 +1996,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //pregplanned
         if (patient1.getPlannedpregnancy() != null && !patient1.getPlannedpregnancy().equalsIgnoreCase("")) {
             String pregplanned_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                pregplanned_Transl = StringUtils.switch_as_caste_edit(patient1.getPlannedpregnancy());
-                // TODO: Add switch case in StringUtils
-            } else {
-                pregplanned_Transl = patient1.getPlannedpregnancy();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                pregplanned_Transl = StringUtils.switch_as_caste_edit(patient1.getPlannedpregnancy());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                pregplanned_Transl = patient1.getPlannedpregnancy();
+//            }
+            pregplanned_Transl = getPregnancyPlanned_edit(patient1.getPlannedpregnancy(),sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnancyplanned.getPosition(pregplanned_Transl);
             spinner_pregnancyplanned.setSelection(spinner_position);
         }
@@ -1626,13 +2011,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //highriskpreg
         if (patient1.getHighriskpregnancy() != null && !patient1.getHighriskpregnancy().equalsIgnoreCase("")) {
             String highriskpreg_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                highriskpreg_Transl = StringUtils.switch_as_caste_edit(patient1.getHighriskpregnancy());
-                // TODO: Add switch case in StringUtils
-            } else {
-                highriskpreg_Transl = patient1.getHighriskpregnancy();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                highriskpreg_Transl = StringUtils.switch_as_caste_edit(patient1.getHighriskpregnancy());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                highriskpreg_Transl = patient1.getHighriskpregnancy();
+//            }
+            highriskpreg_Transl = getHeighPregnancyPlanned_edit(patient1.getHighriskpregnancy(),sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnancyhighriskcase.getPosition(highriskpreg_Transl);
             spinner_pregnancyhighriskcase.setSelection(spinner_position);
         }
@@ -1641,13 +2026,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //complications
         if (patient1.getComplications() != null && !patient1.getComplications().equalsIgnoreCase("")) {
             String complications_Transl = "";
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                complications_Transl = StringUtils.switch_as_caste_edit(patient1.getComplications());
-                // TODO: Add switch case in StringUtils
-            } else {
-                complications_Transl = patient1.getComplications();
-            }
-
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                complications_Transl = StringUtils.switch_as_caste_edit(patient1.getComplications());
+//                // TODO: Add switch case in StringUtils
+//            } else {
+//                complications_Transl = patient1.getComplications();
+//            }
+            complications_Transl = getComplications_edit(patient1.getComplications(),sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnancycomplications.getPosition(complications_Transl);
             spinner_pregnancycomplications.setSelection(spinner_position);
         }
@@ -2788,7 +3173,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("RelationshipStatusHOH"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_whatisyourrelation));
+        patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_whatisyourrelation));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2797,7 +3183,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("MaritualStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_maritualstatus));
+        patientAttributesDTO.setValue(StringUtils.getMaritual(spinner_maritualstatus.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2806,7 +3193,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PhoneOwnership"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_phoneownership));
+        patientAttributesDTO.setValue(StringUtils.getPhoneOwnerShip(spinner_phoneownership.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_phoneownership));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2842,7 +3230,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BMI"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_bmi));
+        patientAttributesDTO.setValue(StringUtils.getBMI(spinner_bmi.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2871,7 +3259,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryHealthProvider"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_primaryhealthprovider));
+        patientAttributesDTO.setValue(StringUtils.getPrimeryHealthProvider(spinner_primaryhealthprovider.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 //
@@ -2880,7 +3268,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FirstLocation"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_firstlocation));
+        patientAttributesDTO.setValue(StringUtils.getFirstLocation(spinner_firstlocation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 //
@@ -2889,7 +3277,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReferredTo"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_referredto));
+        patientAttributesDTO.setValue(StringUtils.getReferedDTO(spinner_referredto.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 //
@@ -2898,7 +3286,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ModeofTransport"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_modeoftransport));
+        patientAttributesDTO.setValue(StringUtils.getModerateSport(spinner_modeoftransport.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 //
@@ -2937,7 +3325,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ScoreofExperience"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_experiencerscore));
+        patientAttributesDTO.setValue(StringUtils.getScoreExperience(spinner_experiencerscore.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3013,7 +3401,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PlaceOfDelivery"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_placeofdeliverypregnant));
+        patientAttributesDTO.setValue(StringUtils.getPlaceDelivery(spinner_placeofdeliverypregnant.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3032,7 +3420,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SingleMultipleBirth"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_singlemultiplebirths));
+        patientAttributesDTO.setValue(StringUtils.getSinglemultiplebirths(spinner_singlemultiplebirths.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_singlemultiplebirths.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
         //singlemultiple
@@ -3042,7 +3430,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SexOfBaby"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_sexofbaby));
+        patientAttributesDTO.setValue(StringUtils.getSexOfBaby(spinner_sexofbaby.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3061,7 +3449,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnancyPlanned"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_pregnancyplanned));
+        patientAttributesDTO.setValue(StringUtils.getPregnancyPlanned(spinner_pregnancyplanned.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3070,7 +3458,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("HighRiskPregnancy"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_pregnancyhighriskcase));
+        patientAttributesDTO.setValue(StringUtils.getHighRiskPregnancy(spinner_pregnancyhighriskcase.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3079,7 +3467,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Complications"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_pregnancycomplications));
+        patientAttributesDTO.setValue(StringUtils.getComplications(spinner_pregnancycomplications.getSelectedItem().toString(),sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
     }

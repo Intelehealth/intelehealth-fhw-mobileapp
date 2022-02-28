@@ -1292,4 +1292,49 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fill_required_fields">please fill all required fields</string>
 <!--    <string name="what_is_your_marital_status">What is your Marital Status</string>-->
+
+
+
+
+    <string name="txt_hedingRosters">Rosters</string>
+    <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household</string>
+    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
+    <string name="txt_phone_ownership">Phone Ownership</string>
+    <string name="txt_bp_checked">BP checked</string>
+    <string name="txt_sugar_checked">Sugar Checked</string>
+    <string name="txt_hb_test">HB test</string>
+
+    <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?</string>
+    <string name="txt_what_health_issue_is_reported">What Health issue is reported?</string>
+    <string name="txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, Which is the primary health provider you interacted with for this health issue?</string>
+    <string name="txt_first_location_of_visit_interaction">First Location of visit/interaction</string>
+    <string name="txt_referred_to">Referred to</string>
+    <string name="txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider">What is the mode of transportations used to reach facility/provider?</string>
+    <string name="txt_no_of_episodes_in_the_last_year">No. of episodes in the last year</string>
+    <string name="txt_average_cost_incurred_on_travel_and_stay_per_episode">Average Cost incurred on travel and stay per episode</string>
+    <string name="txt_average_cost_incurred_on_consultation_fees_per_episode">Average cost incurred on consultation fees per episode</string>
+    <string name="txt_score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="txt_how_many_times_have_you_been_pregnant">How many times have you been pregnant?</string>
+    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had a pregnancy outcomes in the past two years?</string>
+    <string name="txt_what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?</string>
+    <string name="txt_is_the_child_alive">Is the child alive?</string>
+    <string name="txt_what_was_the_year_of_pregnancy_outcome">What was the year of pregnancy outcome?</string>
+    <string name="txt_how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>
+    <string name="txt_how_many_months_have_you_been_pregnant">How many months have you been pregnant</string>
+    <string name="txt_what_is_the_place_of_delivery">What is the Place of Delivery?</string>
+    <string name="txt_focal_facility_for_this_pregnancy">Focal Facility for this pregnancy</string>
+    <string name="txt_was_this_a_single_multiple_births">Was this a single/multiple births?</string>
+    <string name="txt_how_old_was_the_baby_when_he_she_died">How old was the baby when he/she died?</string>
+    <string name="txt_what_is_was_the_sex_of_the_baby">What is/was the sex of the baby?</string>
+    <string name="txt_was_this_pregnancy_planned">Was this pregnancy planned?</string>
+    <string name="txt_were_you_identified_as_a_high_risk_pregnancy_case">Were you identified as a High-Risk Pregnancy case?</string>
+    <string name="txt_were_any_complications_identified_at_the_time_of_delivery">Were any complications identified at the time of delivery?</string>
+    <string name="txt_averagecost_incurred_on_medicines_per_episode">Averagecost incurred on medicines per episode</string>
+    <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">When was the last time you got your HB level tested?</string>
+    <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?</string>
+    <string name="txt_when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?</string>
+    <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
+
+
 </resources>
