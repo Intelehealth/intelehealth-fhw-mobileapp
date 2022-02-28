@@ -110,8 +110,7 @@ public interface ApiInterface {
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
 
-    @Headers({"Content-Type: application/json"})
     @FormUrlEncoded
     @POST("/v1/Accounts/intelehealth2/Calls/connect.json")
-    Call<ResponseBody> callPatient(@FieldMap HashMap<String, String> data);
+    Call<ResponseBody> callPatient(@Header("Authorization") String authHeader, @FieldMap HashMap<String, String> data);
 }

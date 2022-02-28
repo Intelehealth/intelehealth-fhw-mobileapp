@@ -543,6 +543,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_call_doctor = findViewById(R.id.card_call_doctor);
 
         UrlModifiers urlModifiers = new UrlModifiers();
+        String encoded = "ZDc4OGUwYjYxOGIzMTQzZTBmMmRmNDY2ZmRhZDE1NTU2MWFhZWUzYjMyZTQzMjdkOjQ5ZGYxZTdhNjM1ZDljNTc1MzY1ZmM4MmNjMDdkMWFjM2ViNzcwZTIyODRmZDI1ZQ==";
         String callPatientUrl = urlModifiers.getCallPatientExotelUrl();
         HashMap<String, String> map = new HashMap<>();
         map.put("From", "919958392968");
@@ -553,7 +554,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_call_patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apiService.callPatient(map).enqueue(new Callback<ResponseBody>() {
+                apiService.callPatient("Basic " + encoded, map).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         System.out.println(call);
