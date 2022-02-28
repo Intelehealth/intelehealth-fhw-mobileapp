@@ -65,6 +65,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
@@ -198,7 +199,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     public ViewPager2 viewPager2;
     private HouseholdSurveyAdapter adapter;
     private ActivityIdentificationBinding binding;
-    private final List<HealthIssues> healthIssuesList = new ArrayList<>();
+    private List<HealthIssues> healthIssuesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -2018,7 +2019,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         // EditText end
     }
 
-
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
         String calculatedAge = null;
         int resmonth;
@@ -2288,6 +2288,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 if (name.equalsIgnoreCase("Complications")) {
                     patient1.setComplications(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("HealthIssueReported")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    healthIssuesList = new Gson().fromJson(value, new TypeToken<List<HealthIssues>>(){}.getType());
+                    adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+                    binding.mainViewPager.setAdapter(adapter);
+                    binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(binding.mainViewPager);
                 }
 
             } while (idCursor1.moveToNext());
