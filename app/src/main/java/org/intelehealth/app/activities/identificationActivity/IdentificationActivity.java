@@ -1192,9 +1192,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             dialog.show(getSupportFragmentManager(), MultipleDiseasesDialog.TAG);
         });
 
-        binding.editHealthIssueButton.setOnClickListener(v -> {
-            editSurveyData();
-        });
+//        binding.editHealthIssueButton.setOnClickListener(v -> {
+//            editSurveyData();
+//        });
     }
 
     @Override
@@ -1223,7 +1223,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         setViewPagerOffset(binding.mainViewPager);
     }
 
-    public void updateSurveyData(int position) {
+    public void deleteSurveyData(int position) {
         healthIssuesList.remove(position);
         adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
         binding.mainViewPager.setAdapter(adapter);
@@ -1236,6 +1236,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     private void editSurveyData() {
         int position = binding.mainViewPager.getCurrentItem();
+        Logger.logD("Position", String.valueOf(position));
         HealthIssues healthIssues = healthIssuesList.get(position);
 
         Bundle bundle = new Bundle();
@@ -3935,6 +3936,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         listDialog.setItems(new String[]{"Edit", "Delete"}, (dialog, which) -> {
             if (which == 0) {
                 Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
                 bundle.putString("healthIssueReported", survey.getHealthIssueReported());
                 bundle.putString("numberOfEpisodesInTheLastYear", survey.getNumberOfEpisodesInTheLastYear());
                 bundle.putString("primaryHealthcareProviderValue", survey.getPrimaryHealthcareProviderValue());
@@ -3952,7 +3954,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
 
             if (which == 1) {
-                updateSurveyData(position);
+                deleteSurveyData(position);
             }
         });
 
