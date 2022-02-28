@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -136,7 +137,7 @@ public class MyCasesActivity extends AppCompatActivity {
 
     public List<MyCasesModel> getAllPatientsFromDB(String userUuid, int offset) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value = ?";
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value = ? GROUP BY c.patientuuid";
         final Cursor searchCursor = db.rawQuery(query,new String[]{userUuid} );
         if (searchCursor.moveToFirst()) {
             do {
@@ -184,10 +185,15 @@ public class MyCasesActivity extends AppCompatActivity {
         String[] creator_names = null;
         String[] creator_uuid = null;
         try {
-            creator_names = providerDAO.getProvidersList().toArray(new String[0]);
+            creator_names = providerDAO.getProvidersListUpdated().toArray(new String[0]);
             creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);
         } catch (DAOException e) {
             e.printStackTrace();
+        }
+
+        if(creator_names.length==0) { //no dialog should show up when none of the HWs have cases assigned to them.
+            Toast.makeText(MyCasesActivity.this, "No HWs have cases assigned to them.", Toast.LENGTH_LONG).show();
+            return null;
         }
         dialogBuilder = new MaterialAlertDialogBuilder(MyCasesActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
@@ -250,7 +256,7 @@ public class MyCasesActivity extends AppCompatActivity {
 
     private List<MyCasesModel> doQueryWithProviders(List<String> providersUuids) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "')";
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') GROUP BY c.patientuuid";
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
