@@ -1127,6 +1127,8 @@
     <!--    HealthServUtilizationRoster -->
     <string name="name_of_member_of_household">घरगुती सदस्याचे नाव</string>
     <string name="health_issue_reported">आरोग्य समस्या नोंदवली</string>
+
+    <string name="number_of_episodes_in_the_last_year">मागील वर्षातील भागांची संख्या</string>
     <string name="health_issue_reported_fever">ताप</string>
     <string name="health_issue_reported_cough_cold">खोकला / थंडी</string>
     <string name="health_issue_reported_diarrhoea">अतिसार</string>
@@ -1229,7 +1231,7 @@
 
 
 
-    <string name="health_serv_utilization_roster">HealthServUtilization Roster</string>
+    <string name="health_serv_utilization_roster">आरोग्य सेवा वापर रोस्टर</string>
     <string name = "txt_what_is_was_the_sex_of_the_baby">बाळाचे लिंग काय/होते?</string>
     <string name = "txt_was_this_pregnancy_planned">ही गर्भधारणा नियोजित होती का?</string>
     <string name = "txt_were_you_identified_as_a_high_risk_pregnancy_case"> तुमची उच्च-जोखीम गर्भधारणा प्रकरण म्हणून ओळख झाली होती का?</string>
@@ -1241,5 +1243,29 @@
     <string name="txt_when_was_the_last_time_you_got_your_bp_checked">तुमची बीपी शेवटची कधी तपासली होती?</string>
     <string name="what_is_your_education_status">तुमची शिक्षणाची स्थिती काय आहे?</string>
     <string name="what_is_your_marital_status">तुमची वैवाहिक स्थिती काय आहे?</string>
-    <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
+    <string name="what_is_the_place_of_delivery">वितरणाचे ठिकाण काय आहे?</string>
+
+
+    <string name="first_location_of_visit">भेट / संवादाचे पहिले स्थान</string>
+    <string name="household_survey">घरगुती सर्वेक्षण</string>
+    <string name="cough_cold">खोकला / सर्दी</string>
+    <string name="fever">ताप</string>
+    <string name = "diarrhoea"> अतिसार</string>
+    <string name = "injury"> दुखापत</string>
+    <string name = "skin_issues">त्वचेच्या समस्या</string>
+    <string name = "eye_vision_issues">डोळा / दृष्टी समस्या</string>
+    <string name = "joint_bone_pain">सांधे/हाडाचे दुखणे</string>
+    <string name="select_primary_health_care_provider">प्राथमिक आरोग्य सेवा प्रदाता निवडा</string>
+    <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
+
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">महिला</string>
+
+
+<!--    <string name = "annual_household_expenditure_on_health">आरोग्यावरील वार्षिक घरगुती खर्च</string>-->
+    <string name="annual_household_expenditure_on_food">खाद्यपानावरील वार्षिक घरगुती खर्च</string>
+    <string name="did_not_consult_any_health_provider_for_this_issue">या समस्येसाठी कोणत्याही आरोग्य डॉक्टरांचा सल्ला घेतला नाही</string>
+
+
+
 </resources>

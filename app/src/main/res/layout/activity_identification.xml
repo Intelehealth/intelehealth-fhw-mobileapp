@@ -823,216 +823,217 @@
                             android:layout_height="wrap_content"
                             android:entries="@array/bmi_en" />
 
-                        <LinearLayout
-                            android:id="@+id/llHelath"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/llHelath"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:visibility="gone"-->
+<!--                            tools:visibility="visible">-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_what_health_issue_is_reported"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_what_health_issue_is_reported"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_healthissuereported"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/healthissuereported_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_healthissuereported"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/healthissuereported_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_primaryhealthprovider"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/primaryhealthprovider_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_primaryhealthprovider"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/primaryhealthprovider_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_first_location_of_visit_interaction"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_first_location_of_visit_interaction"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_firstlocation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/firstlocation_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_firstlocation"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/firstlocation_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_referred_to"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_referred_to"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_referredto"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/referredto_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_referredto"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/referredto_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_modeoftransport"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/modetransport_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_modeoftransport"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/modetransport_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_noofepisodes"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/txt_no_of_episodes_in_the_last_year" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_noofepisodes"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_no_of_episodes_in_the_last_year" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_avgcosttravel"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/txt_average_cost_incurred_on_travel_and_stay_per_episode" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_avgcosttravel"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_average_cost_incurred_on_travel_and_stay_per_episode" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_avgcostconsult"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/txt_average_cost_incurred_on_consultation_fees_per_episode" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_avgcostconsult"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_average_cost_incurred_on_consultation_fees_per_episode" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_avgcostmedicines"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/txt_averagecost_incurred_on_medicines_per_episode" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_avgcostmedicines"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_averagecost_incurred_on_medicines_per_episode" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_score_for_experience_of_treatment"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_score_for_experience_of_treatment"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_experiencerscore"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/scoreexperience_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_experiencerscore"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/scoreexperience_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-                        </LinearLayout>
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
+<!--                        </LinearLayout>-->
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

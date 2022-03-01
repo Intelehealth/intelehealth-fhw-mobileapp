@@ -919,7 +919,7 @@
     <string name="more_than_ten_thousand">More than 10,000</string>
 
     <string name="annual_household_expenditure_on_health">Annual household expenditure on health</string>
-    <string name="annual_household_expenditure_on_food">Annual household expenditure on health</string>
+    <string name="annual_household_expenditure_on_food">Annual household expenditure on food</string>
     <string name="zero_five_thousand">0 – 5,000</string>
     <string name="five_thousand_one_ten_thousand">5,001 – 10,000</string>
     <string name="ten_thousand_one_twenty_thousand">10,001 – 20,000</string>
@@ -1336,5 +1336,6 @@
     <string name="txt_when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?</string>
     <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
 
+    <string name="household_survey">Household Survey</string>
 
 </resources>

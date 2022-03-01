@@ -836,7 +836,7 @@
                 android:fontFamily="@font/lato_bold"
                 tools:foreground="?android:attr/selectableItemBackground"
                 android:background="@color/orange3"
-                android:text="Household Survey" />
+                android:text="@string/household_survey" />
 
 
             <Button

@@ -3422,8 +3422,6 @@ public static String switch_ru_education(String val) {
                 case "सांगित नाही":
                     val = "NOT STATED";
                     break;
-
-
                 default:
                     return val;
             }
@@ -3435,7 +3433,7 @@ public static String switch_ru_education(String val) {
 
     public static String getRelationShipHoH_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "HEAD OF THE HOUSEHOLD":
                     val = "घराचे प्रमुख";
                     break;
@@ -3497,7 +3495,7 @@ public static String switch_ru_education(String val) {
 
     public static String getMaritual(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "सध्या विवाहित":
                     val = "Currently married";
                     break;
@@ -3529,7 +3527,7 @@ public static String switch_ru_education(String val) {
 
     public static String getMaritual_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "Currently married":
                     val = "सध्या विवाहित";
@@ -3562,6 +3560,107 @@ public static String switch_ru_education(String val) {
     }
 
 
+    public static String getOccupation_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits":
+                    val="अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री";
+                    break;
+                case "Sale of animals/animal products":
+                    val="प्राणी / प्राणी उत्पादने विक्री";
+                    break;
+                case "Agricultural wage labor (employed for farm work)":
+                    val="कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)";
+                    break;
+                case "Salaried worker (fixed monthly salary) - Government, private, etc.":
+                    val="पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.";
+                    break;
+                case "Self-employed (non-agriculture/petty business)":
+                    val="स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)";
+                    break;
+                case "Daily labor (unskilled work - Agricultural/non-Agricultural)":
+                    val="दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)";
+                    break;
+                case "NREGA":
+                    val="nrega.";
+                    break;
+                case "Seasonal Labor":
+                    val="हंगामी श्रम";
+                    break;
+                case "No paid work":
+                    val="पैसे दिले नाहीत";
+                    break;
+                case "Pension":
+                    val="पेंशन";
+                    break;
+                case "Remittances":
+                    val="प्रेषण";
+                    break;
+                case "Other (please specify)":
+                    val="इतर (कृपया निर्दिष्ट करा)";
+                    break;
+                case "Other sources of income":
+                    val="उत्पन्नाचे इतर स्त्रोत";
+
+                    break;
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+    public static String getOccupation(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री" :
+                    val ="Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits";
+                    break;
+                case "प्राणी / प्राणी उत्पादने विक्री" :
+                    val ="Sale of animals/animal products";
+                    break;
+                case "कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)" :
+                    val ="Agricultural wage labor (employed for farm work)";
+                    break;
+                case "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ." :
+                    val ="Salaried worker (fixed monthly salary) - Government, private, etc.";
+                    break;
+                case "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)" :
+                    val ="Self-employed (non-agriculture/petty business)";
+                    break;
+                case "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)" :
+                    val ="Daily labor (unskilled work - Agricultural/non-Agricultural)";
+                    break;
+                case "nrega." :
+                    val ="NREGA";
+                    break;
+                case "हंगामी श्रम" :
+                    val ="Seasonal Labor";
+                    break;
+                case "पैसे दिले नाहीत" :
+                    val ="No paid work";
+                    break;
+                case "पेंशन" :
+                    val ="Pension";
+                    break;
+                case "प्रेषण" :
+                    val ="Remittances";
+                    break;
+                case "इतर (कृपया निर्दिष्ट करा)" :
+                    val ="Other (please specify)";
+                    break;
+                case "उत्पन्नाचे इतर स्त्रोत" :
+                    val ="Other sources of income";
+                    break;
+
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
     public static String getBP(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val.toLowerCase()) {
@@ -3626,7 +3725,7 @@ public static String switch_ru_education(String val) {
 
     public static String getPhoneOwnerShip(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "काहीही नाही":
                     val = "None";
@@ -3652,7 +3751,7 @@ public static String switch_ru_education(String val) {
 
     public static String getPhoneOwnerShip_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "None":
                     val = "काहीही नाही";
@@ -3690,7 +3789,7 @@ public static String switch_ru_education(String val) {
 //    }
     public static String getSinglemultiplebirths(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "एकल":
                     val = "Single";
                     break;
@@ -3709,9 +3808,9 @@ public static String switch_ru_education(String val) {
 
     public static String getSinglemultiplebirths_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
-                case "एकल":
-                    val = "Single";
+            switch (val) {
+                case "Single":
+                    val = "एकल";
                     break;
                 case "Multiple":
                     val = "एकाधिक";
@@ -3730,7 +3829,7 @@ public static String switch_ru_education(String val) {
 
     public static String getHighRiskPregnancy(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "होय":
                     val = "Yes";
                     break;
@@ -3748,7 +3847,7 @@ public static String switch_ru_education(String val) {
 
     public static String getHighRiskPregnancy_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Yes":
                     val = "होय";
                     break;
@@ -3768,7 +3867,7 @@ public static String switch_ru_education(String val) {
 
     public static String getComplications(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "होय":
                     val = "Yes";
                     break;
@@ -3786,7 +3885,7 @@ public static String switch_ru_education(String val) {
 
     public static String getComplications_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Yes":
                     val = "होय";
                     break;
@@ -4037,7 +4136,7 @@ public static String switch_ru_education(String val) {
 
     public static String getOvercomePragnency_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Born alive":
                     val = "जिवंत जन्मलेला";
                     break;
@@ -4067,7 +4166,7 @@ public static String switch_ru_education(String val) {
 
     public static String getPasttwoyrs(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "होय":
                     val = "Yes";
@@ -4420,7 +4519,7 @@ public static String switch_ru_education(String val) {
 
     public static String getPrimeryHealthProvider(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "सरकारी डॉक्टर":
                     val = "Government doctor";
                     break;
@@ -4457,8 +4556,6 @@ public static String switch_ru_education(String val) {
                 case "इतर (निर्दिष्ट करा)":
                     val = "Other (specify)";
                     break;
-
-
                 default:
                     return val;
             }
@@ -4470,9 +4567,44 @@ public static String switch_ru_education(String val) {
 
     public static String getPrimeryHealthProvider_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
 
-
+                switch (val) {
+                    case "Government doctor":
+                        val = "सरकारी डॉक्टर";
+                        break;
+                    case "Private doctor":
+                        val = "खाजगी डॉक्टर";
+                        break;
+                    case "Staff nurse":
+                        val = "स्टाफ नर्स";
+                        break;
+                    case "ANM":
+                        val = "ANM";
+                        break;
+                    case "Asha":
+                        val = "आशा";
+                        break;
+                    case "AWW":
+                        val = "AWW";
+                        break;
+                    case "RMP":
+                        val = "RMP";
+                        break;
+                    case "Ayush doctor":
+                        val = "आयुष डॉक्टर";
+                        break;
+                    case "Homeopath doctor":
+                        val = "होमिओपॅथ डॉक्टर";
+                        break;
+                    case "Traditional healer/quack":
+                        val = "पारंपारिक उपचार करणारा/क्वॅक";
+                        break;
+                    case "Did not consult any health provider for this issue":
+                        val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
+                        break;
+                    case "Other (specify)":
+                        val = "इतर (निर्दिष्ट करा)";
+                        break;
                 default:
                     return val;
             }
@@ -4485,7 +4617,7 @@ public static String switch_ru_education(String val) {
 
     public static String getHealthIsReported(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "ताप":
                     val = "Fever";
@@ -4524,7 +4656,7 @@ public static String switch_ru_education(String val) {
 
     public static String getHealthIsReported_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Fever":
                     val = "ताप";
                     break;
@@ -4562,7 +4694,7 @@ public static String switch_ru_education(String val) {
 
     public static String getBMI(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "कधीही तपासले नाही":
                     val = "Never Checked";
                     break;
@@ -4593,7 +4725,7 @@ public static String switch_ru_education(String val) {
 
     public static String getBMI_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "Never Checked":
                     val = "कधीही तपासले नाही";
@@ -4625,7 +4757,7 @@ public static String switch_ru_education(String val) {
 
     public static String getHB(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "कधीही तपासले नाही":
                     val = "Never Checked";
                     break;
@@ -4656,7 +4788,7 @@ public static String switch_ru_education(String val) {
 
     public static String getHB_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Never Checked":
                     val = "कधीही तपासले नाही";
                     break;
@@ -4687,7 +4819,7 @@ public static String switch_ru_education(String val) {
 
     public static String getSuger(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "कधीही तपासले नाही":
                     val = "Never Checked";
                     break;
@@ -4718,7 +4850,7 @@ public static String switch_ru_education(String val) {
 
     public static String getSuger_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Never Checked":
                     val = "कधीही तपासले नाही";
                     break;
