@@ -1,6 +1,7 @@
 package org.intelehealth.ekalhelpline.networkApiCalls;
 
 
+import org.intelehealth.ekalhelpline.models.CallDoctorModel;
 import org.intelehealth.ekalhelpline.models.CallingPatient;
 import org.intelehealth.ekalhelpline.models.CallingPatientStatus;
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
@@ -113,4 +114,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("/v1/Accounts/intelehealth2/Calls/connect.json")
     Call<ResponseBody> callPatient(@Header("Authorization") String authHeader, @FieldMap HashMap<String, String> data);
+
+    @GET
+    Call<CallDoctorModel> getDoctorDetails(@Url String url);
 }

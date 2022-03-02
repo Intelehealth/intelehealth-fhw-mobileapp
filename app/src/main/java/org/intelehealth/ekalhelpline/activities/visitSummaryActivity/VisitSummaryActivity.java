@@ -79,6 +79,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.activities.callDoctor.CallDoctorActivity;
 import org.intelehealth.ekalhelpline.models.CallingPatient;
 import org.intelehealth.ekalhelpline.models.CallingPatientStatus;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiClient;
@@ -546,8 +547,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String encoded = "ZDc4OGUwYjYxOGIzMTQzZTBmMmRmNDY2ZmRhZDE1NTU2MWFhZWUzYjMyZTQzMjdkOjQ5ZGYxZTdhNjM1ZDljNTc1MzY1ZmM4MmNjMDdkMWFjM2ViNzcwZTIyODRmZDI1ZQ==";
         String callPatientUrl = urlModifiers.getCallPatientExotelUrl();
         HashMap<String, String> map = new HashMap<>();
-        map.put("From", "919958392968");
-        map.put("To", "919810266228");
+        map.put("From", "919958000000");
+        map.put("To", "919810266000");
         map.put("CallerId", "01141236457");
         ApiClient.changeApiBaseUrl(callPatientUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -565,6 +566,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
                     }
                 });
+            }
+        });
+
+        card_call_doctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, CallDoctorActivity.class);
+                startActivity(intent1);
             }
         });
 

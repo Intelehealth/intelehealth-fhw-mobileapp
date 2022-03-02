@@ -76,4 +76,10 @@ public class UrlModifiers {
         return "https://d788e0b618b3143e0f2df466fdad155561aaee3b32e4327d:49df1e7a635d9c575365fc82cc07d1ac3eb770e2284fd25e@api.exotel.com/";
     }
 
+    public String getDoctorDetails()
+    {
+        //TODO: make it generic for setup server
+        return "https://afitraining.ekalarogya.org:3004/api/openmrs/getDoctorDetails";
+    }
+
 }
