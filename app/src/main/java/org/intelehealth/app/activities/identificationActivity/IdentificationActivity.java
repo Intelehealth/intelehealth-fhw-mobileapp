@@ -87,6 +87,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -219,6 +221,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
             edittext_babyagedied;
+    TextInputLayout til_whatisyourrelation_other;
+    TextInputEditText et_whatisyourrelation_other;
 
     private LinearLayout llPORoaster, ll18;
     public ViewPager2 viewPager2;
@@ -2400,6 +2404,17 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             cancel = true;
             return;
         }
+
+        //Other
+        if(til_whatisyourrelation_other.getVisibility() == View.VISIBLE) {
+            if (et_whatisyourrelation_other.getText().toString().equals("")) {
+                et_whatisyourrelation_other.setError(getString(R.string.error_field_required));
+                focusView = et_whatisyourrelation_other;
+                cancel = true;
+                return;
+            }
+        }
+
         if (spinner_maritualstatus.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_maritualstatus.getSelectedView();
             t.setError(getString(R.string.select));
@@ -3424,6 +3439,17 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             cancel = true;
             return;
         }
+
+        //Other
+        if(til_whatisyourrelation_other.getVisibility() == View.VISIBLE) {
+            if (et_whatisyourrelation_other.getText().toString().equals("")) {
+                et_whatisyourrelation_other.setError(getString(R.string.error_field_required));
+                focusView = et_whatisyourrelation_other;
+                cancel = true;
+                return;
+            }
+        }
+
         if (spinner_maritualstatus.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_maritualstatus.getSelectedView();
             t.setError(getString(R.string.select));
@@ -3758,7 +3784,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
-        View til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
+        til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
+        et_whatisyourrelation_other = findViewById(R.id.et_whatisyourrelation_other);
         spinner_whatisyourrelation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

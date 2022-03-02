@@ -1630,7 +1630,7 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>One month to 3 months ago</item>
+        <item>Between 1 month to 3 months ago</item>
         <item>Between 3 months - 6 months ago</item>
         <item>More than 6 months</item>
     </string-array>
@@ -1640,7 +1640,7 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>One month to 3 months ago</item>
+        <item>Between 1 month to 3 months ago</item>
         <item>Between 3 months - 6 months ago</item>
         <item>More than 6 months</item>
     </string-array>
@@ -1650,8 +1650,8 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>One month to 3 months ago</item>
-        <item>between 3 months-6months ago</item>
+        <item>Between 1 month to 3 months ago</item>
+        <item>Between 3 months-6months ago</item>
         <item>More than 6 months</item>
     </string-array>
 
@@ -1660,8 +1660,8 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>between one month to 3 months ago</item>
-        <item>between 3 months-6months ago</item>
+        <item>Between 1 month to 3 months ago</item>
+        <item>Between 3 months-6months ago</item>
         <item>More than 6 months</item>
     </string-array>
 

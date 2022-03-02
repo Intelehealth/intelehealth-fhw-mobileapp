@@ -3705,10 +3705,10 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "Between 1 month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
-                case "between 3 months-6months ago":
+                case "Between 3 months - 6 months ago":
                     val = "3 महिने-6 महिन्यांपूर्वी";
                     break;
                 case "More than 6 months":
@@ -4705,7 +4705,7 @@ public static String switch_ru_education(String val) {
                     val = "Within last month";
                     break;
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "Between 1 month to 3 months ago";
                     break;
                 case "3 महिने-6 महिन्यांपूर्वी":
                     val = "between 3 months-6months ago";
@@ -4736,7 +4736,7 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "Between 1 month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
                 case "between 3 months-6months ago":
@@ -4768,7 +4768,7 @@ public static String switch_ru_education(String val) {
                     val = "Within last month";
                     break;
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "Between 1 month to 3 months ago";
                     break;
                 case "3 महिने-6 महिन्यांपूर्वी":
                     val = "between 3 months-6months ago";
@@ -4798,7 +4798,7 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "Between 1 month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
                 case "between 3 months-6months ago":
@@ -4830,10 +4830,10 @@ public static String switch_ru_education(String val) {
                     val = "Within last month";
                     break;
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "Between 1 month to 3 months ago";
                     break;
                 case "3 महिने-6 महिन्यांपूर्वी":
-                    val = "between 3 months-6months ago";
+                    val = "Between 3 months - 6 months ago";
                     break;
                 case "6 महिन्यांपेक्षा जास्त":
                     val = "More than 6 months";
@@ -4860,10 +4860,10 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "Between 1 month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
-                case "between 3 months-6months ago":
+                case "Between 3 months - 6 months ago":
                     val = "3 महिने-6 महिन्यांपूर्वी";
                     break;
                 case "More than 6 months":
