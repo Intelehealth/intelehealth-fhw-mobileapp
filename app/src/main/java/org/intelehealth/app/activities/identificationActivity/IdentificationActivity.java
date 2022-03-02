@@ -2365,22 +2365,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (spinner_bpchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_bpchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_bpchecked;
-            cancel = true;
-            return;
-        }
+        if(ll18.getVisibility() == View.VISIBLE) {
+            if (spinner_bpchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_bpchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_bpchecked;
+                cancel = true;
+                return;
+            }
 
-        if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_sugarchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_sugarchecked;
-            cancel = true;
-            return;
+            if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_sugarchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_sugarchecked;
+                cancel = true;
+                return;
+            }
         }
 
         if (spinner_hbchecked.getSelectedItemPosition() == 0) {
@@ -3411,22 +3413,24 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
             return;
         }
 
-        if (spinner_bpchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_bpchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_bpchecked;
-            cancel = true;
-            return;
-        }
+        if(ll18.getVisibility() == View.VISIBLE) {
+            if (spinner_bpchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_bpchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_bpchecked;
+                cancel = true;
+                return;
+            }
 
-        if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_sugarchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_sugarchecked;
-            cancel = true;
-            return;
+            if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_sugarchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_sugarchecked;
+                cancel = true;
+                return;
+            }
         }
 
         if (spinner_hbchecked.getSelectedItemPosition() == 0) {
