@@ -94,7 +94,8 @@ public class MultipleDiseasesDialog extends DialogFragment {
     private HealthIssuesValidationState validateData(HealthIssues survey) {
         HealthIssuesValidationState state = new HealthIssuesValidationState();
         state.setCorrect(true);
-        String errorString = " field cannot be empty";
+        String errorString = "  "+getResources().getString(R.string.error_field_required);
+//        String errorString = " field cannot be empty";
 
         if (survey.getHealthIssueReported() == null || survey.getHealthIssueReported().isEmpty()) {
             state.setCorrect(false);
@@ -141,12 +142,13 @@ public class MultipleDiseasesDialog extends DialogFragment {
         if (survey.getAverageCostOfConsultation() == null || survey.getAverageCostOfConsultation().isEmpty()) {
             state.setCorrect(false);
             state.setErrorMessage(getString(R.string.average_cost_incurred_on_consultation_fees_per_episode) + errorString);
+
             return state;
         }
 
         if (survey.getAverageCostOfMedicine() == null || survey.getAverageCostOfMedicine().isEmpty()) {
             state.setCorrect(false);
-            state.setErrorMessage(getString(R.string.score_for_experience_of_treatment) + errorString);
+            state.setErrorMessage(getString(R.string.average_cost_incurred_on_medicines_per_episode) + errorString);
             return state;
         }
 
