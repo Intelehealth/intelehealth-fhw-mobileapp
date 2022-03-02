@@ -221,8 +221,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
             edittext_babyagedied;
-    TextInputLayout til_whatisyourrelation_other;
-    TextInputEditText et_whatisyourrelation_other;
+    TextInputLayout til_whatisyourrelation_other, til_occupation_other;
+    TextInputEditText et_whatisyourrelation_other, et_occupation_other;
 
     private LinearLayout llPORoaster, ll18;
     public ViewPager2 viewPager2;
@@ -2441,6 +2441,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             cancel = true;
             return;
         }
+        //Other
+        if(til_occupation_other.getVisibility() == View.VISIBLE) {
+            if (et_occupation_other.getText().toString().equals("")) {
+                et_occupation_other.setError(getString(R.string.error_field_required));
+                focusView = et_occupation_other;
+                cancel = true;
+                return;
+            }
+        }
 
         if (spinner_phoneownership.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_phoneownership.getSelectedView();
@@ -3476,6 +3485,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             cancel = true;
             return;
         }
+        //Other
+        if(til_occupation_other.getVisibility() == View.VISIBLE) {
+            if (et_occupation_other.getText().toString().equals("")) {
+                et_occupation_other.setError(getString(R.string.error_field_required));
+                focusView = et_occupation_other;
+                cancel = true;
+                return;
+            }
+        }
 
         if (spinner_phoneownership.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_phoneownership.getSelectedView();
@@ -3746,7 +3764,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mOccupation = findViewById(R.id.spinner_occupation);
-        View til_occupation_other = findViewById(R.id.til_occupation_other);
+        til_occupation_other = findViewById(R.id.til_occupation_other);
+        et_occupation_other = findViewById(R.id.et_occupation_other);
         mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
