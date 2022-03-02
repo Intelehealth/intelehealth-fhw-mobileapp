@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">इंटेलहेल्थ</string>
+    <string name="app_name">आजारी संपत्ती</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">पुढे</string>
@@ -40,7 +40,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">इंटेलहेल्थ</string>
+    <string name="title_activity_login">आजारी संपत्ती</string>
     <string name="prompt_email">वापरकर्तानाव</string>
     <string name="prompt_password">संकेतशब्द</string>
     <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
@@ -591,7 +591,7 @@
     <string name="i_need_assistance">"आणि मला काही मदत हवी आहे."</string>
     <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
     <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
-    <string name="intelehealth_a_telemedicine_platform">इंटेलहेल्थ हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="intelehealth_a_telemedicine_platform">आजारी संपत्ती हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
     <string name="intelehealth_name">एकल आरोग्य</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
@@ -872,9 +872,9 @@
     <string name="amount_of_cultivable_land_owned_by_household">घरगुती मालकीची लागवड करण्यायोग्य जमीन</string>
     <string name="hectare">हेक्टर</string>
     <string name="acre">पाव</string>
-    <string name="bigha">bigha</string>
+    <string name="bigha">बिघा</string>
     <string name="gunta">गुंट</string>
-    <string name="enter_the_no">Enter the no.</string>
+    <string name="enter_the_no">क्रमांक प्रविष्ट करा</string>
     <string name="average_annual_household_income">सरासरी वार्षिक घरगुती उत्पन्न (आयएनआर)</string>
     <string name="zero_thirty_thousand">0 – 30,000</string>
     <string name="thirty_fifty_thousand">30,000 – 50,000</string>
@@ -925,7 +925,7 @@
     <string name="coal_lignite">कोळसा / लिग्नाइट</string>
     <string name="charcoal">चारकोल</string>
     <string name="wood">लाकूड</string>
-    <string name="straw_shrubs_grass">पेंढा / shrubs / गवत</string>
+    <string name="straw_shrubs_grass">पेंढा / झुडपे / गवत</string>
     <string name="agricultural_crop_waste">कृषी पीक कचरा</string>
     <string name="dung_cakes">डंग केक्स</string>
     <string name="other_specify">इतर (निर्दिष्ट करा)</string>
@@ -1266,6 +1266,6 @@
     <string name="annual_household_expenditure_on_food">खाद्यपानावरील वार्षिक घरगुती खर्च</string>
     <string name="did_not_consult_any_health_provider_for_this_issue">या समस्येसाठी कोणत्याही आरोग्य डॉक्टरांचा सल्ला घेतला नाही</string>
 
-
-
+    <string name="edit_dialog_button">सुधारणे</string>
+    <string name="delete_dialog_button">हटवा</string>
 </resources>

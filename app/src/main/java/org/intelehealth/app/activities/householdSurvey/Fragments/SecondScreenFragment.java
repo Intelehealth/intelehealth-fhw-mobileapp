@@ -10,6 +10,7 @@ import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyAct
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -42,6 +44,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentSecondScreenBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -179,6 +182,37 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         binding.otherIncomeCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.otherSourcesOfIncomeLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
+
+        Resources res = getResources();
+        try {
+            String relationshiphohLanguage = "householdHeadReligion_" + sessionManager.getAppLanguage();
+            int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getContext().getPackageName());
+
+            if (relationshiphoh_id != 0) {
+                religionAdapter= ArrayAdapter.createFromResource(getContext(),
+                        relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.religionDropDown.setAdapter(religionAdapter);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        try {
+            String castLanguage = "householdHeadCaste_" + sessionManager.getAppLanguage();
+            int relationshiphoh_id = res.getIdentifier(castLanguage, "array", getContext().getPackageName());
+
+            if (relationshiphoh_id != 0) {
+                casteAdapter= ArrayAdapter.createFromResource(getContext(),
+                        relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.casteDropDown.setAdapter(casteAdapter);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
 
         binding.religionDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -1337,5 +1337,7 @@
     <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
 
     <string name="household_survey">Household Survey</string>
+    <string name="edit_dialog_button">Edit</string>
+    <string name="delete_dialog_button">Delete</string>
 
 </resources>
