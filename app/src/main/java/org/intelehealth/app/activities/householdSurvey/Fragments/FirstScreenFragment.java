@@ -267,10 +267,15 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     }
 
     private void insertData() throws DAOException {
-//        if (!StringUtils.validateFields(mandatoryFields)) {
-//            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (refusedParticipate.isChecked()) {
+            getActivity().finish();
+            return;
+        }
+
+        if (!StringUtils.validateFields(mandatoryFields)) {
+            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -353,7 +358,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         Log.v("firstscreen", "firstscreen: \n"+ gson.toJson(patientAttributesDTOList));*/
 
         Log.v("puuid", "puuid__: "+patientUuid);
-      //  boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
+        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
 
 /*
         if (NetworkConnection.isOnline(getActivity().getApplication())) {
@@ -367,6 +372,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
       //  if (isPatientUpdated) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_container, new SecondScreenFragment())
+                    .addToBackStack(null)
                     .commit();
       //  }
     }

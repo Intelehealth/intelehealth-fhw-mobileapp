@@ -1015,12 +1015,12 @@
 
     <string name="in_the_past_week_has_anyone_in_your_household_including_children_defecated_in_the_open_for_example_in_the_field_or_in_the_river">In the past week has anyone in your household including children defecated in the open for example in the field or in the river?</string>
     <string name="what_kind_of_food_items_were_cooked_prepared_in_the_last_twenty_four_hours_in_your_household">What kind of food items were prepared in the last 24hr in your household?</string>
-    <string name="starch_staple_food">STARCH STAPLE FOOD</string>
-    <string name="beans_and_peas">BEANS AND PEAS</string>
-    <string name="nuts_and_seeds">NUTS AND SEEDS</string>
-    <string name="dairy">DAIRY</string>
-    <string name="eggs">EGGS</string>
-    <string name="flesh_food">FLESH FOOD</string>
+    <string name="starch_staple_food">Starch staple food</string>
+    <string name="beans_and_peas">Beans and peas</string>
+    <string name="nuts_and_seeds">Nuts and seeds</string>
+    <string name="dairy">Dairy</string>
+    <string name="eggs">Eggs</string>
+    <string name="flesh_food">Flesh food</string>
     <string name="any_vegetables">Any Vegetables</string>
 
     <string name="distance_to_sub_centre_in_walking_time">Distance to Sub-Centre (In walking time)</string>
@@ -1230,7 +1230,7 @@
     <string name="score_good">Good</string>
     <string name="score_very_good">Very Good</string>
 
-    <string name="health_serv_utilization_roster">HealthServUtilization Roster</string>
+    <string name="health_serv_utilization_roster">Health Service Utilization Roster</string>
     <string name="health_issue_reported">Health Issue Reported</string>
     <string name="number_of_episodes_in_the_last_year">No. Of Episodes In The Last Year</string>
     <string name="name_of_household_member">Name Of Household Member</string>
@@ -1337,6 +1337,11 @@
     <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
 
     <string name="household_survey">Household Survey</string>
+    <string name="rice_roti_bread">(Rice, Roti, Bread, Pressed rice, Muri, Potato, sweet potato, arbi, Cassava, Banana, any other roots and tubers, noodles, pasta)</string>
+    <string name="beans_peas_mung_dal_chana_dal">(Beans, peas, Mung dal, Chana dal, Arahar dal, Urad dal, kidney beans, Matter dal, other pulse and Soybeans, Seem, mustard)</string>
+    <string name="groundnut_apricort_almond_pista">(Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds )</string>
+    <string name="milk_cow_goat_buffalo">(Milk – cow/goat/buffalo, Powder milk, Liquid packet milk, Curd, Paneer, sewai, kheer, sweets, Butter, Ghee)</string>
+    <string name="meat_lamb_beef_pork">(Meat – Lamb/Beef/pork, Organ meat, chicken, duck, other birds, fish – big/small/shell fish/prawn)</string>
     <string name="edit_dialog_button">Edit</string>
     <string name="delete_dialog_button">Delete</string>
 

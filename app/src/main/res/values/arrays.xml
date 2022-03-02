@@ -89,19 +89,19 @@
 
     <string-array name="education_en">
         <item>Select</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
-        <item>CANNOT READ OR WRITE</item>
-        <item>CAN READ AND WRITE</item>
-        <item>PRIMARY EDUCATION (TILL CLASS 5)</item>
-        <item>MIDDLE SCHOOL (6TH-8TH)</item>
-        <item>PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)</item>
-        <item>PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)</item>
-        <item>GRADUATE</item>
-        <item>POSTGRADUATE</item>
+<!--        <item>Illiterate</item>-->
+<!--        <item>Primary</item>-->
+<!--        <item>Secondary</item>-->
+<!--        <item>Higher Secondary</item>-->
+<!--        <item>Graduation &amp; Higher</item>-->
+        <item>Cannot read or write</item>
+        <item>Can read and write</item>
+        <item>Primary education (till class 5)</item>
+        <item>Middle school (6th-8th)</item>
+        <item>Passed secondary school (class 10th boards)</item>
+        <item>Passed senior secondary school (12th boards)</item>
+        <item>Graduate</item>
+        <item>Postgraduate</item>
     </string-array>
 
     <string-array name="education_te">
@@ -1622,23 +1622,23 @@
 
     <string-array name="relationshipHoH_en">
         <item>Select</item>
-        <item>HEAD OF THE HOUSEHOLD</item>
-        <item>SPOUSE</item>
-        <item>SON/DAUGHTER</item>
-        <item>SON/DAUGHTER IN LAW</item>
-        <item>GRANDCHILD</item>
-        <item>FATHER/MOTHER</item>
-        <item>FATHER/MOTHER-IN-LAW</item>
-        <item>BROTHER/SISTER</item>
-        <item>BROTHER/SISTER-IN-LAW</item>
-        <item>NIECE/NEPHEW</item>
-        <item>GRANDPARENT/GRAND PARENT-IN-LAW</item>
-        <item>OTHER RELATIVE</item>
-        <item>ADOPTED/FOSTER/STEPCHILD</item>
-        <item>DOMESTIC SERVANT</item>
-        <item>OTHER NOT RELATED</item>
-        <item>OTHER (SPECIFY)</item>
-        <item>NOT STATED</item>
+        <item>Head of the household</item>
+        <item>Spouse</item>
+        <item>Son/daughter</item>
+        <item>Son/daughter in law</item>
+        <item>Grandchild</item>
+        <item>Father/mother</item>
+        <item>Father/mother-in-law</item>
+        <item>Brother/sister</item>
+        <item>Brother/sister-in-law</item>
+        <item>Niece/nephew</item>
+        <item>Grandparent/grand parent-in-law</item>
+        <item>Other relative</item>
+        <item>Adopted/foster/stepchild</item>
+        <item>Domestic servant</item>
+        <item>Other not related</item>
+        <item>Other (specify)</item>
+        <item>Not stated</item>
     </string-array>
 
 
@@ -1667,7 +1667,7 @@
         <item>Never Checked</item>
         <item>In past one week</item>
         <item>Within last month</item>
-        <item>between one week to 3 months ago</item>
+        <item>One month to 3 months ago</item>
         <item>between 3 months-6months ago</item>
         <item>More than 6 months</item>
     </string-array>
@@ -2020,7 +2020,7 @@
         <item>कधीही तपासले नाही</item>
         <item>गेल्या एका आठवड्यात</item>
         <item>गेल्या महिन्याच्या आत</item>
-        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>एक महिना ते 3 महिन्यांपूर्वी</item>
         <item>3 महिने-6 महिन्यांपूर्वी</item>
         <item>6 महिन्यांपेक्षा जास्त</item>
 
@@ -2032,7 +2032,7 @@
         <item>कधीही तपासले नाही</item>
         <item>गेल्या एका आठवड्यात</item>
         <item>गेल्या महिन्याच्या आत</item>
-        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>एक महिना ते 3 महिन्यांपूर्वी</item>
         <item>3 महिने-6 महिन्यांपूर्वी</item>
         <item>6 महिन्यांपेक्षा जास्त</item>
     </string-array>
@@ -2045,7 +2045,7 @@
         <item>कधीही तपासले नाही</item>
         <item>गेल्या एका आठवड्यात</item>
         <item>गेल्या महिन्याच्या आत</item>
-        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>एक महिना ते 3 महिन्यांपूर्वी</item>
         <item>3 महिने-6 महिन्यांपूर्वी</item>
         <item>6 महिन्यांपेक्षा जास्त</item>
     </string-array>
@@ -2057,7 +2057,7 @@
         <item>कधीही तपासले नाही</item>
         <item>गेल्या एका आठवड्यात</item>
         <item>गेल्या महिन्याच्या आत</item>
-        <item>एक आठवडा ते ३ महिन्यांपूर्वी</item>
+        <item>एक महिना ते 3 महिन्यांपूर्वी</item>
         <item>3 महिने-6 महिन्यांपूर्वी</item>
         <item>6 महिन्यांपेक्षा जास्त</item>
     </string-array>
@@ -2086,7 +2086,7 @@
         <item>Select</item>
 
         <item>Home</item>
-        <item>Sub cebter</item>
+        <item>Sub center</item>
         <item>Chc/ civil hospital at block level</item>
         <item>District hosptial/ civil hospital at district level</item>
         <item>Private clinic</item>

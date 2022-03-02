@@ -38,52 +38,52 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/head_of_household_gender_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/head_of_household_name_layout"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="20sp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/gender_of_head_of_household"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/head_of_household_gender_text_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/head_of_household_name_layout"-->
+<!--                android:layout_marginStart="5sp"-->
+<!--                android:layout_marginTop="20sp"-->
+<!--                android:fontFamily="@font/poppins"-->
+<!--                android:text="@string/gender_of_head_of_household"-->
+<!--                android:textColor="@color/text_color"-->
+<!--                android:textSize="14sp" />-->
 
-            <RadioGroup
-                android:id="@+id/head_of_household_gender_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/head_of_household_gender_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="horizontal">
+<!--            <RadioGroup-->
+<!--                android:id="@+id/head_of_household_gender_radio_group"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/head_of_household_gender_text_view"-->
+<!--                android:layout_marginTop="13dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/head_of_household_gender_male"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/gender_male"
-                    android:textSize="14sp" />
+<!--                <com.google.android.material.radiobutton.MaterialRadioButton-->
+<!--                    android:id="@+id/head_of_household_gender_male"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/poppins"-->
+<!--                    android:text="@string/gender_male"-->
+<!--                    android:textSize="14sp" />-->
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/head_of_household_gender_female"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/gender_female"
-                    android:textSize="14sp" />
+<!--                <com.google.android.material.radiobutton.MaterialRadioButton-->
+<!--                    android:id="@+id/head_of_household_gender_female"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/poppins"-->
+<!--                    android:text="@string/gender_female"-->
+<!--                    android:textSize="14sp" />-->
 
-            </RadioGroup>
+<!--            </RadioGroup>-->
 
             <LinearLayout
                 android:id="@+id/religion_drop_down_layout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/head_of_household_gender_radio_group"
+                android:layout_below="@id/head_of_household_name_layout"
                 android:layout_marginTop="7dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
@@ -328,16 +328,16 @@
                     android:text="@string/seasonal_labor"
                     android:textSize="13sp" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/no_paid_work_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/no_paid_work"
-                    android:textSize="13sp" />
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/no_paid_work_checkbox"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:paddingStart="4sp"-->
+<!--                    android:paddingEnd="4sp"-->
+<!--                    android:text="@string/no_paid_work"-->
+<!--                    android:textSize="13sp" />-->
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/pension_checkbox"

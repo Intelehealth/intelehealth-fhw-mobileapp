@@ -4065,7 +4065,7 @@ public final class StringUtils {
                     val = "Home";
                     break;
                 case "उपकेंद्र":
-                    val = "Sub cebter";
+                    val = "Sub center";
                     break;
                 case "सीएचसी/ ब्लॉक लेव्हलवर सिव्हिल हॉस्पिटल":
                     val = "Chc/ civil hospital at block level";
@@ -4093,7 +4093,7 @@ public final class StringUtils {
                 case "Home":
                     val = "घर";
                     break;
-                case "Sub cebter":
+                case "Sub center":
                     val = "उपकेंद्र";
                     break;
                 case "Chc/ civil hospital at block level":

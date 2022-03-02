@@ -89,6 +89,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
@@ -223,7 +224,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     public ViewPager2 viewPager2;
     private HouseholdSurveyAdapter adapter;
     private ActivityIdentificationBinding binding;
-    private final List<HealthIssues> healthIssuesList = new ArrayList<>();
+    private List<HealthIssues> healthIssuesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -961,9 +962,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             dialog.show(getSupportFragmentManager(), MultipleDiseasesDialog.TAG);
         });
 
-        binding.editHealthIssueButton.setOnClickListener(v -> {
-            editSurveyData();
-        });
+//        binding.editHealthIssueButton.setOnClickListener(v -> {
+//            editSurveyData();
+//        });
     }
 
     @Override
@@ -993,7 +994,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         setViewPagerOffset(binding.mainViewPager);
     }
 
-    public void updateSurveyData(int position) {
+    public void deleteSurveyData(int position) {
         healthIssuesList.remove(position);
         adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
         binding.mainViewPager.setAdapter(adapter);
@@ -1006,6 +1007,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     private void editSurveyData() {
         int position = binding.mainViewPager.getCurrentItem();
+        Logger.logD("Position", String.valueOf(position));
         HealthIssues healthIssues = healthIssuesList.get(position);
 
         Bundle bundle = new Bundle();
@@ -1789,7 +1791,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         // EditText end
     }
 
-
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
         String calculatedAge = null;
         int resmonth;
@@ -2059,6 +2060,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 if (name.equalsIgnoreCase("Complications")) {
                     patient1.setComplications(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("HealthIssueReported")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    healthIssuesList = new Gson().fromJson(value, new TypeToken<List<HealthIssues>>(){}.getType());
+                    adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+                    binding.mainViewPager.setAdapter(adapter);
+                    binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(binding.mainViewPager);
                 }
 
             } while (idCursor1.moveToNext());
@@ -3582,6 +3591,23 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
 //        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mOccupation = findViewById(R.id.spinner_occupation);
+        View til_occupation_other = findViewById(R.id.til_occupation_other);
+        mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 12) {
+                    til_occupation_other.setVisibility(View.VISIBLE);
+                } else {
+                    til_occupation_other.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 //        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
 //        mCaste = findViewById(R.id.spinner_caste);
@@ -3603,6 +3629,23 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
 
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
+        View til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
+        spinner_whatisyourrelation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 16) {
+                    til_whatisyourrelation_other.setVisibility(View.VISIBLE);
+                } else {
+                    til_whatisyourrelation_other.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         spinner_maritualstatus = findViewById(R.id.spinner_maritualstatus);
         spinner_phoneownership = findViewById(R.id.spinner_phoneownership);
         spinner_bpchecked = findViewById(R.id.spinner_bpchecked);
@@ -3714,6 +3757,7 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
         listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
             if (which == 0) {
                 Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
                 bundle.putString("healthIssueReported", survey.getHealthIssueReported());
                 bundle.putString("numberOfEpisodesInTheLastYear", survey.getNumberOfEpisodesInTheLastYear());
                 bundle.putString("primaryHealthcareProviderValue", survey.getPrimaryHealthcareProviderValue());
@@ -3731,7 +3775,7 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
             }
 
             if (which == 1) {
-                updateSurveyData(position);
+                deleteSurveyData(position);
             }
         });
 

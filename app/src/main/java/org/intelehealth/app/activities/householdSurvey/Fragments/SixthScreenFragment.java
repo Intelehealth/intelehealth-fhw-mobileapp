@@ -159,6 +159,7 @@ public class SixthScreenFragment extends Fragment {
 //        }
             getFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_container, new SeventhScreenFragment())
+                    .addToBackStack(null)
                     .commit();
     }
 

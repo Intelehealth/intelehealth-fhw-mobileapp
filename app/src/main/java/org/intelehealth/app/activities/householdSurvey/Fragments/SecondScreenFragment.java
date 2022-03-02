@@ -61,7 +61,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
     Spinner religionSpinner, casteSpinner;
     ArrayAdapter<CharSequence> religionAdapter, casteAdapter;
     MaterialCheckBox saleCerealCheckbox, saleAnimalsCheckbox, agriLaborCheckbox, salariedWorkerCheckbox, selfEmployedCheckbox, dailyLaborCheckbox,
-            nregaCheckbox, seasonalLaborCheckbox, noPaidWorkCheckbox, pensionCheckbox, remittancesCheckbox, otherCheckbox;
+            nregaCheckbox, seasonalLaborCheckbox, pensionCheckbox, remittancesCheckbox, otherCheckbox;
     SessionManager sessionManager = null;
     String patientUuid;
     ImageButton next_button;
@@ -138,11 +138,11 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         dailyLaborCheckbox = rootView.findViewById(R.id.daily_labor_checkbox);
         nregaCheckbox = rootView.findViewById(R.id.nrega_checkbox);
         seasonalLaborCheckbox = rootView.findViewById(R.id.seasonal_labor_checkbox);
-        noPaidWorkCheckbox = rootView.findViewById(R.id.no_paid_work_checkbox);
+//        noPaidWorkCheckbox = rootView.findViewById(R.id.no_paid_work_checkbox);
         pensionCheckbox = rootView.findViewById(R.id.pension_checkbox);
         remittancesCheckbox = rootView.findViewById(R.id.remittance_checkbox);
         otherCheckbox = rootView.findViewById(R.id.other_income_checkbox);
-        mandatoryFields.addAll(Arrays.asList(binding.headOfHouseholdNameEditText, binding.headOfHouseholdGenderRadioGroup, binding.religionDropDown, binding.casteDropDown, binding.editTextSmartphones, binding.editTextFeaturePhone, binding.editTextEarningmember));
+        mandatoryFields.addAll(Arrays.asList(binding.headOfHouseholdNameEditText, binding.religionDropDown, binding.casteDropDown, binding.editTextSmartphones, binding.editTextFeaturePhone, binding.editTextEarningmember));
     }
 
     private void ClickListener() {
@@ -268,14 +268,14 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
 
         //householdHeadGender
-        if (binding.headOfHouseholdGenderRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadGender"));
-            patientAttributesDTO.setValue(binding.headOfHouseholdGenderRadioGroup.getCheckedRadioButtonId() == binding.headOfHouseholdGenderMale.getId() ? binding.headOfHouseholdGenderMale.getText().toString() : binding.headOfHouseholdGenderFemale.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-        }
+//        if (binding.headOfHouseholdGenderRadioGroup.getCheckedRadioButtonId() != -1) {
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadGender"));
+//            patientAttributesDTO.setValue(binding.headOfHouseholdGenderRadioGroup.getCheckedRadioButtonId() == binding.headOfHouseholdGenderMale.getId() ? binding.headOfHouseholdGenderMale.getText().toString() : binding.headOfHouseholdGenderFemale.getText().toString());
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//        }
 
         //householdHeadReligion
         if (binding.religionDropDown.getSelectedItemPosition() != 0) {
@@ -336,7 +336,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
-//        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
+        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
 //        if (NetworkConnection.isOnline(getActivity().getApplication())) {
 //            SyncDAO syncDAO = new SyncDAO();
 //            boolean ispush = syncDAO.pushDataApi();
@@ -352,6 +352,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new ThirdScreenFragment())
+                .addToBackStack(null)
                 .commit();
 
     }
@@ -376,11 +377,11 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                     if (value1 != null)
                         nameHOHEditText.setText(value1);
                 }
-                if (name.equalsIgnoreCase("householdHeadGender")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.headOfHouseholdGenderRadioGroup, value1);
-                }
+//                if (name.equalsIgnoreCase("householdHeadGender")) {
+//                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if(value1!=null)
+//                        defaultSelectRB(binding.headOfHouseholdGenderRadioGroup, value1);
+//                }
                 if (name.equalsIgnoreCase("householdHeadReligion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null)
@@ -423,8 +424,8 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                         nregaCheckbox.setChecked(true);
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.seasonal_labor)))
                         seasonalLaborCheckbox.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.no_paid_work)))
-                        noPaidWorkCheckbox.setChecked(true);
+//                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.no_paid_work)))
+//                        noPaidWorkCheckbox.setChecked(true);
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.pension)))
                         pensionCheckbox.setChecked(true);
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.remittances_checkbox)))
