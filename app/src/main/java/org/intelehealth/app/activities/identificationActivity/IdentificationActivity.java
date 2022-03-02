@@ -15,23 +15,15 @@ import static org.intelehealth.app.utilities.StringUtils.getBMI_edit;
 import static org.intelehealth.app.utilities.StringUtils.getBP_edit;
 import static org.intelehealth.app.utilities.StringUtils.getChildAlive_edit;
 import static org.intelehealth.app.utilities.StringUtils.getComplications_edit;
-import static org.intelehealth.app.utilities.StringUtils.getFirstLocation_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
-import static org.intelehealth.app.utilities.StringUtils.getHealthIsReported_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanned_edit;
-import static org.intelehealth.app.utilities.StringUtils.getModerateSport_edit;
-import static org.intelehealth.app.utilities.StringUtils.getOccupation;
 import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOvercomePragnency_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPlaceDelivery_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPregnancyPlanned_edit;
-import static org.intelehealth.app.utilities.StringUtils.getPrimeryHealthProvider_edit;
-import static org.intelehealth.app.utilities.StringUtils.getReferedDTO_edit;
-import static org.intelehealth.app.utilities.StringUtils.getRelationShipHoH;
 import static org.intelehealth.app.utilities.StringUtils.getRelationShipHoH_edit;
-import static org.intelehealth.app.utilities.StringUtils.getScoreExperience_edit;
 import static org.intelehealth.app.utilities.StringUtils.getSexOfBaby_edit;
 import static org.intelehealth.app.utilities.StringUtils.getSinglemultiplebirths_edit;
 import static org.intelehealth.app.utilities.StringUtils.getSuger_edit;
@@ -87,6 +79,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -134,6 +127,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
+
+    private TextInputLayout til_whatisyourrelation_other;
+    private TextInputLayout til_occupation_other;
+
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> occupationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
@@ -1152,13 +1149,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     private void editRosterQuestionsUIHandling() {
 
-      if (patient1.getRelationshiphoh() != null && !patient1.getRelationshiphoh().equalsIgnoreCase("")) {
+        if (patient1.getRelationshiphoh() != null && !patient1.getRelationshiphoh().equalsIgnoreCase("")) {
             String relationhoh_Transl = "";
-            relationhoh_Transl = getRelationShipHoH_edit(patient1.getRelationshiphoh(),sessionManager.getAppLanguage());
-            Log.d("ritika","1164"+relationhoh_Transl);
+            relationhoh_Transl = getRelationShipHoH_edit(patient1.getRelationshiphoh(), sessionManager.getAppLanguage());
+            Log.d("ritika", "1164" + relationhoh_Transl);
             int spinner_position = adapter_whatisyourrelation.getPosition(relationhoh_Transl);
-            Log.d("ritika","1168"+spinner_position);
-          spinner_whatisyourrelation.setSelection(spinner_position);
+            Log.d("ritika", "1168" + spinner_position);
+            spinner_whatisyourrelation.setSelection(spinner_position);
         }
         //Relations ship HOH
 
@@ -1171,7 +1168,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                maritualstatus_Transl = patient1.getMaritualstatus();
 //            }
-            maritualstatus_Transl = StringUtils.getMaritual_edit(patient1.getMaritualstatus(),sessionManager.getAppLanguage());
+            maritualstatus_Transl = StringUtils.getMaritual_edit(patient1.getMaritualstatus(), sessionManager.getAppLanguage());
             int spinner_position = adapter_maritualstatus.getPosition(maritualstatus_Transl);
             spinner_maritualstatus.setSelection(spinner_position);
         }
@@ -1186,7 +1183,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                phoneowner_Transl = patient1.getPhoneownership();
 //            }
-            phoneowner_Transl = getPhoneOwnerShip_edit(patient1.getPhoneownership(),sessionManager.getAppLanguage());
+            phoneowner_Transl = getPhoneOwnerShip_edit(patient1.getPhoneownership(), sessionManager.getAppLanguage());
             int spinner_position = adapter_phoneownership.getPosition(phoneowner_Transl);
             spinner_phoneownership.setSelection(spinner_position);
         }
@@ -1201,14 +1198,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                bp_Transl = patient1.getBpchecked();
 //            }
-            bp_Transl = getBP_edit(patient1.getBpchecked(),sessionManager.getAppLanguage());
+            bp_Transl = getBP_edit(patient1.getBpchecked(), sessionManager.getAppLanguage());
             int spinner_position = adapter_bpchecked.getPosition(bp_Transl);
             spinner_bpchecked.setSelection(spinner_position);
         }
 
         if (patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
             String occupation_Transl = "";
-            occupation_Transl = getOccupation_edit(patient1.getOccupation(),sessionManager.getAppLanguage());
+            occupation_Transl = getOccupation_edit(patient1.getOccupation(), sessionManager.getAppLanguage());
             int spinner_position = occupationAdapter.getPosition(occupation_Transl);
             mOccupation.setSelection(spinner_position);
         }
@@ -1223,7 +1220,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                sugar_Transl = patient1.getSugarchecked();
 //            }
-            sugar_Transl = getSuger_edit(patient1.getSugarchecked(),sessionManager.getAppLanguage());
+            sugar_Transl = getSuger_edit(patient1.getSugarchecked(), sessionManager.getAppLanguage());
             int spinner_position = adapter_sugarchecked.getPosition(sugar_Transl);
             spinner_sugarchecked.setSelection(spinner_position);
         }
@@ -1238,7 +1235,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                hb_Transl = patient1.getHbtest();
 //            }
-            hb_Transl = getHB_edit(patient1.getHbtest(),sessionManager.getAppLanguage());
+            hb_Transl = getHB_edit(patient1.getHbtest(), sessionManager.getAppLanguage());
             int spinner_position = adapter_hbchecked.getPosition(hb_Transl);
             spinner_hbchecked.setSelection(spinner_position);
         }
@@ -1253,7 +1250,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                bmi_Transl = patient1.getBmi();
 //            }
-            bmi_Transl = getBMI_edit(patient1.getBmi(),sessionManager.getAppLanguage());
+            bmi_Transl = getBMI_edit(patient1.getBmi(), sessionManager.getAppLanguage());
             int spinner_position = adapter_bmi.getPosition(bmi_Transl);
             spinner_bmi.setSelection(spinner_position);
         }
@@ -1378,7 +1375,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                pasttwoyrs_Transl = patient1.getPasttwoyrs();
 //            }
-            pasttwoyrs_Transl = getPasttwoyrs_edit(patient1.getPasttwoyrs(),sessionManager.getAppLanguage());
+            pasttwoyrs_Transl = getPasttwoyrs_edit(patient1.getPasttwoyrs(), sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnantpasttwoyrs.getPosition(pasttwoyrs_Transl);
             spinner_pregnantpasttwoyrs.setSelection(spinner_position);
         }
@@ -1393,7 +1390,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                outcomeofpreg_Transl = patient1.getOutcomepregnancy();
 //            }
-            outcomeofpreg_Transl = getOvercomePragnency_edit(patient1.getOutcomepregnancy(),sessionManager.getAppLanguage());
+            outcomeofpreg_Transl = getOvercomePragnency_edit(patient1.getOutcomepregnancy(), sessionManager.getAppLanguage());
             int spinner_position = adapter_outcomepregnancy.getPosition(outcomeofpreg_Transl);
             spinner_outcomepregnancy.setSelection(spinner_position);
         }
@@ -1408,7 +1405,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                childalive_Transl = patient1.getChildalive();
 //            }
-            childalive_Transl = getChildAlive_edit(patient1.getChildalive(),sessionManager.getAppLanguage());
+            childalive_Transl = getChildAlive_edit(patient1.getChildalive(), sessionManager.getAppLanguage());
             int spinner_position = adapter_childalive.getPosition(childalive_Transl);
             spinner_childalive.setSelection(spinner_position);
         }
@@ -1429,7 +1426,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                placedelivery_Transl = patient1.getPlacedelivery();
 //            }
-            placedelivery_Transl = getPlaceDelivery_edit(patient1.getPlacedelivery(),sessionManager.getAppLanguage());
+            placedelivery_Transl = getPlaceDelivery_edit(patient1.getPlacedelivery(), sessionManager.getAppLanguage());
             int spinner_position = adapter_placeofdeliverypregnant.getPosition(placedelivery_Transl);
             spinner_placeofdeliverypregnant.setSelection(spinner_position);
         }
@@ -1444,7 +1441,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                singlemultiple_Transl = patient1.getSinglemultiplebirth();
 //            }
-            singlemultiple_Transl = getSinglemultiplebirths_edit(patient1.getSinglemultiplebirth(),sessionManager.getAppLanguage());
+            singlemultiple_Transl = getSinglemultiplebirths_edit(patient1.getSinglemultiplebirth(), sessionManager.getAppLanguage());
             int spinner_position = adapter_singlemultiplebirths.getPosition(singlemultiple_Transl);
             spinner_singlemultiplebirths.setSelection(spinner_position);
         }
@@ -1464,7 +1461,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //                sexofbaby_Transl = patient1.getSexofbaby();
 //            }
 
-            sexofbaby_Transl = getSexOfBaby_edit(patient1.getSexofbaby(),sessionManager.getAppLanguage());
+            sexofbaby_Transl = getSexOfBaby_edit(patient1.getSexofbaby(), sessionManager.getAppLanguage());
             int spinner_position = adapter_sexofbaby.getPosition(sexofbaby_Transl);
             spinner_sexofbaby.setSelection(spinner_position);
         }
@@ -1483,7 +1480,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                pregplanned_Transl = patient1.getPlannedpregnancy();
 //            }
-            pregplanned_Transl = getPregnancyPlanned_edit(patient1.getPlannedpregnancy(),sessionManager.getAppLanguage());
+            pregplanned_Transl = getPregnancyPlanned_edit(patient1.getPlannedpregnancy(), sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnancyplanned.getPosition(pregplanned_Transl);
             spinner_pregnancyplanned.setSelection(spinner_position);
         }
@@ -1498,7 +1495,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                highriskpreg_Transl = patient1.getHighriskpregnancy();
 //            }
-            highriskpreg_Transl = getHeighPregnancyPlanned_edit(patient1.getHighriskpregnancy(),sessionManager.getAppLanguage());
+            highriskpreg_Transl = getHeighPregnancyPlanned_edit(patient1.getHighriskpregnancy(), sessionManager.getAppLanguage());
             int spinner_position = adapter_pregnancyhighriskcase.getPosition(highriskpreg_Transl);
             spinner_pregnancyhighriskcase.setSelection(spinner_position);
         }
@@ -1513,14 +1510,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                complications_Transl = patient1.getComplications();
 //            }
-            complications_Transl = getComplications_edit(patient1.getComplications(),sessionManager.getAppLanguage());
+            complications_Transl = getComplications_edit(patient1.getComplications(), sessionManager.getAppLanguage());
 
             int spinner_position = adapter_pregnancycomplications.getPosition(complications_Transl);
             spinner_pregnancycomplications.setSelection(spinner_position);
         }
         //complications
     }
-
 
 
     private void roaster_spinnerAdapter() {
@@ -2158,7 +2154,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 if (name.equalsIgnoreCase("HealthIssueReported")) {
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    healthIssuesList = new Gson().fromJson(value, new TypeToken<List<HealthIssues>>(){}.getType());
+                    healthIssuesList = new Gson().fromJson(value, new TypeToken<List<HealthIssues>>() {
+                    }.getType());
                     adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
                     binding.mainViewPager.setAdapter(adapter);
                     binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -2400,6 +2397,17 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             cancel = true;
             return;
         }
+
+        if (((String) spinner_whatisyourrelation.getSelectedItem()).equals("Other (specify)")) {
+            String relationship = Objects.requireNonNull(til_whatisyourrelation_other.getEditText()).getText().toString();
+            if (relationship.equals("")) {
+                til_whatisyourrelation_other.getEditText().setError(getString(R.string.error_field_required));
+                focusView = til_whatisyourrelation_other.getEditText();
+                cancel = true;
+                return;
+            }
+        }
+
         if (spinner_maritualstatus.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_maritualstatus.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2425,6 +2433,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             focusView = mOccupation;
             cancel = true;
             return;
+        }
+
+        if (((String) mOccupation.getSelectedItem()).equals(getString(R.string.other_please_specify))) {
+            String occupation = Objects.requireNonNull(til_occupation_other.getEditText()).getText().toString();
+            if (occupation.equals("")) {
+                til_occupation_other.getEditText().setError(getString(R.string.error_field_required));
+                focusView = til_occupation_other.getEditText();
+                cancel = true;
+                return;
+            }
         }
 
         if (spinner_phoneownership.getSelectedItemPosition() == 0) {
@@ -2562,7 +2580,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
 //            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getSelectedItem().toString()));
-            patientAttributesDTO.setValue(StringUtils.getOccupation(mOccupation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(StringUtils.getOccupation(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
@@ -2683,7 +2701,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("RelationshipStatusHOH"));
-        patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 //        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_whatisyourrelation));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -2693,7 +2711,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("MaritualStatus"));
-        patientAttributesDTO.setValue(StringUtils.getMaritual(spinner_maritualstatus.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getMaritual(spinner_maritualstatus.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -2703,7 +2721,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PhoneOwnership"));
-        patientAttributesDTO.setValue(StringUtils.getPhoneOwnerShip(spinner_phoneownership.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getPhoneOwnerShip(spinner_phoneownership.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 //        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_phoneownership));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
@@ -2713,7 +2731,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BPchecked"));
-        patientAttributesDTO.setValue(StringUtils.getBP(spinner_bpchecked.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getBP(spinner_bpchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2722,7 +2740,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Sugarchecked"));
-        patientAttributesDTO.setValue(StringUtils.getSuger(spinner_sugarchecked.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getSuger(spinner_sugarchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2731,7 +2749,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("HBtest"));
-        patientAttributesDTO.setValue(StringUtils.getHB(spinner_hbchecked.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getHB(spinner_hbchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2740,7 +2758,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BMI"));
-        patientAttributesDTO.setValue(StringUtils.getBMI(spinner_bmi.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getBMI(spinner_bmi.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2854,7 +2872,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
-        patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2911,7 +2929,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PlaceOfDelivery"));
-        patientAttributesDTO.setValue(StringUtils.getPlaceDelivery(spinner_placeofdeliverypregnant.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getPlaceDelivery(spinner_placeofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2930,7 +2948,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SingleMultipleBirth"));
-        patientAttributesDTO.setValue(StringUtils.getSinglemultiplebirths(spinner_singlemultiplebirths.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getSinglemultiplebirths(spinner_singlemultiplebirths.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_singlemultiplebirths.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
         //singlemultiple
@@ -2940,7 +2958,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SexOfBaby"));
-        patientAttributesDTO.setValue(StringUtils.getSexOfBaby(spinner_sexofbaby.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getSexOfBaby(spinner_sexofbaby.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2959,7 +2977,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnancyPlanned"));
-        patientAttributesDTO.setValue(StringUtils.getPregnancyPlanned(spinner_pregnancyplanned.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getPregnancyPlanned(spinner_pregnancyplanned.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2968,7 +2986,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("HighRiskPregnancy"));
-        patientAttributesDTO.setValue(StringUtils.getHighRiskPregnancy(spinner_pregnancyhighriskcase.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getHighRiskPregnancy(spinner_pregnancyhighriskcase.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2977,7 +2995,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Complications"));
-        patientAttributesDTO.setValue(StringUtils.getComplications(spinner_pregnancycomplications.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getComplications(spinner_pregnancycomplications.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
     }
@@ -3424,6 +3442,17 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             cancel = true;
             return;
         }
+
+        if (((String) spinner_whatisyourrelation.getSelectedItem()).equals("Other (specify)")) {
+            String relationship = Objects.requireNonNull(til_whatisyourrelation_other.getEditText()).getText().toString();
+            if (relationship.equals("")) {
+                til_whatisyourrelation_other.getEditText().setError(getString(R.string.error_field_required));
+                focusView = til_whatisyourrelation_other.getEditText();
+                cancel = true;
+                return;
+            }
+        }
+
         if (spinner_maritualstatus.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_maritualstatus.getSelectedView();
             t.setError(getString(R.string.select));
@@ -3449,6 +3478,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             focusView = mOccupation;
             cancel = true;
             return;
+        }
+
+        if (((String) mOccupation.getSelectedItem()).equals(getString(R.string.other_please_specify))) {
+            String occupation = Objects.requireNonNull(til_occupation_other.getEditText()).getText().toString();
+            if (occupation.equals("")) {
+                til_occupation_other.getEditText().setError(getString(R.string.error_field_required));
+                focusView = til_occupation_other.getEditText();
+                cancel = true;
+                return;
+            }
         }
 
         if (spinner_phoneownership.getSelectedItemPosition() == 0) {
@@ -3720,7 +3759,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mOccupation = findViewById(R.id.spinner_occupation);
-        View til_occupation_other = findViewById(R.id.til_occupation_other);
+        til_occupation_other = findViewById(R.id.til_occupation_other);
         mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -3758,7 +3797,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
-        View til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
+        til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
         spinner_whatisyourrelation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

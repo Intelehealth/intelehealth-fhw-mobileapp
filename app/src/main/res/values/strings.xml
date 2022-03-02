@@ -822,18 +822,18 @@
     <!--    Questions for HoH -->
     <string name="select">Select</string>
 
-    <string name="name_of_investigator">Name of Investigator</string>
-    <string name="village">Village</string>
-    <string name="block">Block</string>
-    <string name="district">District</string>
+    <string name="name_of_investigator">Name of Investigator*</string>
+    <string name="village">Village*</string>
+    <string name="block">Block*</string>
+    <string name="district">District*</string>
     <string name="district_nashik">Nashik</string>
     <string name="date_of_visit">Date of Visit</string>
-    <string name="name_of_primary_respondent">Name of Primary Respondent</string>
-    <string name="household_number">Household No.</string>
-    <string name="household_structure_type">Household structure type</string>
+    <string name="name_of_primary_respondent">Name of Primary Respondent*</string>
+    <string name="household_number">Household No.*</string>
+    <string name="household_structure_type">Household structure type*</string>
     <string name="kucha">Kucha</string>
     <string name="pucca">Pucca</string>
-    <string name="result_of_visit">Result of Visit</string>
+    <string name="result_of_visit">Result of Visit*</string>
     <string name="available_and_accepted">Available and accepted</string>
     <string name="available_and_deferred">Available and deferred</string>
     <string name="not_available_at_time_of_the_survey">Not available at time of the survey</string>
@@ -1291,9 +1291,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fill_required_fields">please fill all required fields</string>
-<!--    <string name="what_is_your_marital_status">What is your Marital Status</string>-->
-
-
+    <!--    <string name="what_is_your_marital_status">What is your Marital Status</string>-->
 
 
     <string name="txt_hedingRosters">Rosters</string>

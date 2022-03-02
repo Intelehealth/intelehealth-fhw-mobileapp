@@ -1,66 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.householdSurvey.Fragments.FirstScreenFragment">
 
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/transparent"
-    android:paddingStart="15sp"
-    android:paddingEnd="15dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingStart="15sp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/investigator_name_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/name_of_investigator">
-
-            <EditText
-                android:id="@+id/investigator_name_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textSize="14sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/village_block_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/investigator_name_layout"
-            android:layout_marginTop="5dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/investigator_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1">
+                android:layout_marginTop="10dp"
+                android:hint="@string/name_of_investigator">
 
                 <EditText
-                    android:id="@+id/villageSurvey"
+                    android:id="@+id/investigator_name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/village"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxLines="1"
@@ -68,58 +40,79 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/village_block_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1">
+                android:layout_below="@id/investigator_name_layout"
+                android:layout_marginTop="5dp">
 
-                <EditText
-                    android:id="@+id/block_dropdown"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins"
-                    android:hint="@string/block"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/villageSurvey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:hint="@string/village"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="14sp" />
 
-            <!--
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/block_dropdown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:drawableEnd="@drawable/ic_keyboard_arrow_down"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/poppins"
-                            android:hint="@string/block"
-                            android:textSize="14sp" />
-            -->
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/district_dov_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/village_block_linear_layout"
-            android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/block_dropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:hint="@string/block"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/block_dropdown"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/poppins"
+                                android:hint="@string/block"
+                                android:textSize="14sp" />
+                -->
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/district_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1">
+                android:layout_below="@id/village_block_linear_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/districtSurvey"
@@ -134,221 +127,196 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/primary_respondent_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_weight="1">
+                android:layout_below="@id/district_layout"
+                android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dateVisit"
+                    android:id="@+id/primary_respondent_name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:drawableEnd="@drawable/ic_calendar_2"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/date_of_visit"
+                    android:hint="@string/name_of_primary_respondent"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/primary_respondent_name_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/district_dov_linear_layout"
-            android:layout_marginTop="10dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/primary_respondent_name_edit_text"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/household_number_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:hint="@string/name_of_primary_respondent"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textSize="14sp" />
+                android:layout_below="@id/primary_respondent_name_layout"
+                android:layout_marginTop="10dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/household_number_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/household_number"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/household_number_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/primary_respondent_name_layout"
-            android:layout_marginTop="10dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/household_number_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:hint="@string/household_number"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textSize="14sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/household_structure_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/household_number_layout"
-            android:layout_marginStart="5sp"
-            android:layout_marginTop="15sp"
-            android:alpha="0.6"
-            android:fontFamily="@font/poppins"
-            android:text="@string/household_structure_type"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-        <RadioGroup
-            android:id="@+id/household_structure_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/household_structure_text_view"
-            android:layout_marginTop="15sp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/kuchaRadioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/kucha"
-                android:textSize="14sp" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/puccaRadioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/pucca"
-                android:textSize="14sp" />
-
-        </RadioGroup>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/result_of_visit_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/household_structure_radio_group"
-            android:layout_marginStart="5sp"
-            android:layout_marginTop="25dp"
-            android:fontFamily="@font/poppins"
-            android:text="@string/result_of_visit"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-        <RadioGroup
-            android:id="@+id/result_of_visit_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/result_of_visit_text_view"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/availableAccepted"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins"
-                android:text="@string/available_and_accepted"
-                android:textSize="13sp" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/availableDeferred"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins"
-                android:text="@string/available_and_deferred"
-                android:textSize="13sp" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/notavailableSurvey"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins"
-                android:text="@string/not_available_at_time_of_the_survey"
-                android:textSize="13sp" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/notavailableSecondVisit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins"
-                android:text="@string/not_available_on_the_second_visit"
-                android:textSize="13sp" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/notavailableThirdVisit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins"
-                android:text="@string/not_available_on_the_third_visit"
-                android:textSize="13sp" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/RefusedParticipate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins"
-                android:text="@string/refused_to_participate"
-                android:textSize="13sp" />
-
-        </RadioGroup>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/result_of_visit_radio_group"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp"
-            android:orientation="horizontal">
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/next_button_text"
+                android:id="@+id/household_structure_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_number_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="15sp"
+                android:alpha="0.6"
+                android:fontFamily="@font/poppins"
+                android:text="@string/household_structure_type"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/household_structure_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_structure_text_view"
+                android:layout_marginTop="15sp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/kuchaRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/kucha"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/puccaRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/pucca"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/result_of_visit_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_structure_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/result_of_visit"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/result_of_visit_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/result_of_visit_text_view"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/availableAccepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/available_and_accepted"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/availableDeferred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/available_and_deferred"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/notavailableSurvey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/not_available_at_time_of_the_survey"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/notavailableSecondVisit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/not_available_on_the_second_visit"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/notavailableThirdVisit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/not_available_on_the_third_visit"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/RefusedParticipate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/refused_to_participate"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/next"
-                android:textSize="14sp"
-                app:fontFamily="@font/poppins_medium" />
+                android:layout_below="@id/result_of_visit_radio_group"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/next_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/rounded_image_button_background"
-                app:srcCompat="@drawable/ic_arrow_right" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/next_button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/next"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/poppins_medium" />
 
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/next_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/rounded_image_button_background"
+                    app:srcCompat="@drawable/ic_arrow_right" />
 
-    </RelativeLayout>
+            </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>
