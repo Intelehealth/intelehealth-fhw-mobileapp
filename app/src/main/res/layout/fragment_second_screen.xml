@@ -328,16 +328,16 @@
                     android:text="@string/seasonal_labor"
                     android:textSize="13sp" />
 
-<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
-<!--                    android:id="@+id/no_paid_work_checkbox"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:paddingStart="4sp"-->
-<!--                    android:paddingEnd="4sp"-->
-<!--                    android:text="@string/no_paid_work"-->
-<!--                    android:textSize="13sp" />-->
+                <!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+                <!--                    android:id="@+id/no_paid_work_checkbox"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:gravity="center_vertical"-->
+                <!--                    android:paddingStart="4sp"-->
+                <!--                    android:paddingEnd="4sp"-->
+                <!--                    android:text="@string/no_paid_work"-->
+                <!--                    android:textSize="13sp" />-->
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/pension_checkbox"

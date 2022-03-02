@@ -373,31 +373,66 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                     if (value1 != null)
                         noOfFeaturePhoneEditText.setText(value1);
                 }
+
+                //Checkboxes...
                 if (name.equalsIgnoreCase("primarySourceOfIncome")) {
+                    Log.v("checkbox", "checkboxarray_DB: \n" + idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.sale_of_cereal_production)))
                         saleCerealCheckbox.setChecked(true);
+                    else
+                        saleCerealCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.sale_of_animals_or_animal_products)))
                         saleAnimalsCheckbox.setChecked(true);
+                    else
+                        saleAnimalsCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.agricultural_wage_labor_employed_for_farm_work)))
                         agriLaborCheckbox.setChecked(true);
+                    else
+                        agriLaborCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.salaried_worker_fixed_monthly_salary)))
                         salariedWorkerCheckbox.setChecked(true);
+                    else
+                        salariedWorkerCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.self_employed_non_agricultural_petty_business)))
                         selfEmployedCheckbox.setChecked(true);
+                    else
+                        selfEmployedCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural)))
                         dailyLaborCheckbox.setChecked(true);
+                    else
+                        dailyLaborCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.nrega)))
                         nregaCheckbox.setChecked(true);
+                    else
+                        nregaCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.seasonal_labor)))
                         seasonalLaborCheckbox.setChecked(true);
+                    else
+                        seasonalLaborCheckbox.setChecked(false);
+
 //                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.no_paid_work)))
 //                        noPaidWorkCheckbox.setChecked(true);
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.pension)))
                         pensionCheckbox.setChecked(true);
+                    else
+                        pensionCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.remittances_checkbox)))
                         remittancesCheckbox.setChecked(true);
+                    else
+                        remittancesCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.other_please_specify)))
                         otherCheckbox.setChecked(true);
+                    else
+                        otherCheckbox.setChecked(false);
                 }
             } while (idCursor1.moveToNext());
         }

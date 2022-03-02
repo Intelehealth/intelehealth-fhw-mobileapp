@@ -852,7 +852,7 @@
     <string name="religion_muslim">Muslim</string>
     <string name="religion_christian">Christian</string>
     <string name="religion_sikh">Sikh</string>
-    <string name="religion_buddhist_neo_buddhist">Buddhist / Neo-Buddhist</string>
+    <string name="religion_buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
     <string name="religion_other">Other</string>
     <string name="religion_no_religion">No Religion</string>
     <string name="nas_caste">Caste</string>
@@ -867,11 +867,11 @@
     <string name="how_many_earning_members_are_there_in_the_household">How many earning members are there in the household?</string>
     <string name="what_is_the_primary_source_of_income_in_the_household">What is the primary source of income in the household?</string>
     <string name="sale_of_cereal_production">Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</string>
-    <string name="sale_of_animals_or_animal_products">Sale of animals/animal products</string>
+    <string name="sale_of_animals_or_animal_products">Sale of animals-animal products</string>
     <string name="agricultural_wage_labor_employed_for_farm_work">Agricultural wage labor (employed for farm work)</string>
     <string name="salaried_worker_fixed_monthly_salary">Salaried worker (fixed monthly salary) - Government, private, etc.</string>
-    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture/petty business)</string>
-    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labor (unskilled work - Agricultural/non-Agricultural)</string>
+    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture or petty business)</string>
+    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labor (unskilled work - Agricultural or non-Agricultural)</string>
     <string name="nrega">NREGA</string>
     <string name="seasonal_labor">Seasonal Labor</string>
     <string name="no_paid_work">No paid work</string>
@@ -945,20 +945,20 @@
     <string name="yes_card_not_seen">YES, CARD NOT SEEN</string>
     <string name="no_card">NO CARD</string>
     <string name="DO_NOT_KNOW">DO NOT KNOW</string>
-    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card/coupon?</string>
+    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card or coupon?</string>
     <string name="does_this_household_have_a_antodaya_card">Does this household have an Antodaya card/coupon?</string>
     <string name="does_this_household_have_a_rsby_card">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
     <string name="does_this_household_have_a_mgnrega_card">Does this household have an MGNREGA card?</string>
 
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">What type of fuel does your household mainly use for cooking?</string>
     <string name="electricity">ELECTRICITY</string>
-    <string name="lpg_natural_gas">LPG/NATURAL GAS</string>
+    <string name="lpg_natural_gas">LPG or NATURAL GAS</string>
     <string name="biogas_checkbox">BIOGAS</string>
     <string name="kerosene">KEROSENE</string>
-    <string name="coal_lignite">COAL/LIGNITE</string>
+    <string name="coal_lignite">COAL or LIGNITE</string>
     <string name="charcoal">CHARCOAL</string>
     <string name="wood">WOOD</string>
-    <string name="straw_shrubs_grass">STRAW/SHRUBS/GRASS</string>
+    <string name="straw_shrubs_grass">STRAW or SHRUBS or GRASS</string>
     <string name="agricultural_crop_waste">AGRICULTURAL CROP WASTE</string>
     <string name="dung_cakes">DUNG CAKES</string>
     <string name="other_specify">OTHER (SPECIFY)</string>
@@ -976,8 +976,8 @@
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
     <string name="piped_into_dwelling">PIPED INTO DWELLING</string>
     <string name="piped_into_yard_plot">PIPED TO YARD/PLOT</string>
-    <string name="public_tap_standpipe">PUBLIC TAP/STANDPIPE</string>
-    <string name="tube_well_borehole">TUBE WELL/BOREHOLE</string>
+    <string name="public_tap_standpipe">PUBLIC TAP or STANDPIPE</string>
+    <string name="tube_well_borehole">TUBE WELL or BOREHOLE</string>
     <string name="protected_well_checkbox">PROTECTED WELL</string>
     <string name="unprotected_well">UNPROTECTED WELL</string>
     <string name="protected_spring">PROTECTED SPRING</string>
@@ -991,9 +991,9 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
     <string name="boil">BOIL</string>
     <string name="use_alum">USE ALUM</string>
-    <string name="add_bleach_chlorine_tablets_drops">ADD BLEACH/CHLORINE TABLETS/DROPS</string>
+    <string name="add_bleach_chlorine_tablets_drops">ADD BLEACH/CHLORINE TABLETS or DROPS</string>
     <string name="strain_through_a_cloth">STRAIN THROUGH A CLOTH</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">USE WATER FILTER (CERAMIC/SAND/COMPOSITE/ETC.)</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">USE WATER FILTER (CERAMIC or SAND or COMPOSITE ETC.)</string>
     <string name="use_electronic_purifier">USE ELECTRONIC PURIFIER</string>
     <string name="let_it_stand_and_settle">LET IT STAND AND SETTLE</string>
 
@@ -1005,9 +1005,9 @@
     <string name="flush_to_pit_latrine">FLUSH TO PIT LATRINE</string>
     <string name="flush_to_somewhere_else">FLUSH TO SOMEWHERE ELSE</string>
     <string name="flush_dont_know_where">FLUSH DON\'T KNOW WHERE</string>
-    <string name="ventilated_improved_pit_biogas_latrine">VENTILATED IMPROVED PIT (VIP)/BIOGAS LATRINE</string>
+    <string name="ventilated_improved_pit_biogas_latrine">VENTILATED IMPROVED PIT (VIP) or BIOGAS LATRINE</string>
     <string name="pit_latrine_with_slab">PIT LATRINE WITH SLAB</string>
-    <string name="pit_latrine_without_slab_open_pit">PIT LATRINE WITHOUT SLAB/OPEN PIT</string>
+    <string name="pit_latrine_without_slab_open_pit">PIT LATRINE WITHOUT SLAB or OPEN PIT</string>
     <string name="twin_pit_composting_toilet">TWIN PIT/COMPOSTING TOILET</string>
     <string name="dry_toilet">DRY TOILET</string>
     <string name="communal_toilet">COMMUNAL TOILET</string>

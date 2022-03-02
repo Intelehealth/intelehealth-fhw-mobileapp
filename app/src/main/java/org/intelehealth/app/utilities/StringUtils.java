@@ -16,6 +16,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -3343,9 +3344,11 @@ public static String switch_ru_education(String val) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View childAt = viewGroup.getChildAt(i);
             if (childAt instanceof CheckBox) {
-                result.put(((CheckBox) childAt).getText());
+                if(((CheckBox) childAt).isChecked())
+                    result.put(((CheckBox) childAt).getText());
             }
         }
+        Log.v("checkbox", "checkboxarray: \n" + result.toString());
         return result.toString();
     }
 
