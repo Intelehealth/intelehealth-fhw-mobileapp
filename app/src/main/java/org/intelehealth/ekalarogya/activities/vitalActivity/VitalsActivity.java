@@ -1,6 +1,8 @@
 package org.intelehealth.ekalarogya.activities.vitalActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,10 +21,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +55,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
 
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.xml.sax.InputSource;
 
 public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
@@ -101,8 +108,6 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-
-
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
@@ -144,6 +149,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             }
         });
+
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
@@ -487,6 +493,17 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
 
                 }
+            }
+        });
+
+        mHemoglobin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] data = new String[20];
+                for(int i=0;i<=19;i++){
+                    data[i]=(i+1)+"";
+                }
+                setVitalInfoForHemoAndSugar(data, mHemoglobin, mHemoglobin.getText().toString().trim());
             }
         });
 
@@ -1414,6 +1431,49 @@ public class VitalsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    public void setVitalInfoForHemoAndSugar(String[] data, TextView textView, String selectedValue){
+        final Dialog dialog = new Dialog(VitalsActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.vitalnuberpickerdialog);
+
+        NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(data.length-1);
+        numberPicker.setDisplayedValues(data);
+        if(selectedValue!=null && !selectedValue.isEmpty() && selectedValue.length()>0){
+            int val=Integer.parseInt(selectedValue);
+            if(data.length>20){
+                numberPicker.setValue(val-10);
+            }else{
+                numberPicker.setValue(val-1);
+            }
+        }
+
+        TextView okButton = (TextView) dialog.findViewById(R.id.choose_number_btn);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(data.length>20){
+                    textView.setText((numberPicker.getValue()+10)+"");
+                }else{
+                    textView.setText((numberPicker.getValue()+1)+"");
+                }
+                dialog.dismiss();
+            }
+        });
+
+        TextView closeButton = (TextView) dialog.findViewById(R.id.close_number_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }
