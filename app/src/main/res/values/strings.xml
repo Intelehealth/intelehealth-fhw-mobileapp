@@ -827,6 +827,7 @@
     <string name="block">Block*</string>
     <string name="district">District*</string>
     <string name="district_nashik">Nashik</string>
+    <string name="state_Maharastra">Maharastra</string>
     <string name="date_of_visit">Date of Visit</string>
     <string name="name_of_primary_respondent">Name of Primary Respondent*</string>
     <string name="household_number">Household No.*</string>
@@ -1340,5 +1341,7 @@
     <string name="groundnut_apricort_almond_pista">(Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds )</string>
     <string name="milk_cow_goat_buffalo">(Milk – cow/goat/buffalo, Powder milk, Liquid packet milk, Curd, Paneer, sewai, kheer, sweets, Butter, Ghee)</string>
     <string name="meat_lamb_beef_pork">(Meat – Lamb/Beef/pork, Organ meat, chicken, duck, other birds, fish – big/small/shell fish/prawn)</string>
+    <string name="edit_dialog_button">Edit</string>
+    <string name="delete_dialog_button">Delete</string>
 
 </resources>

@@ -79,6 +79,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -127,9 +128,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-
-    private TextInputLayout til_whatisyourrelation_other;
-    private TextInputLayout til_occupation_other;
 
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> occupationAdapter;
@@ -216,6 +214,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
             edittext_babyagedied;
+    TextInputLayout til_whatisyourrelation_other, til_occupation_other;
+    TextInputEditText et_whatisyourrelation_other, et_occupation_other;
 
     private LinearLayout llPORoaster, ll18;
     public ViewPager2 viewPager2;
@@ -566,92 +566,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
             }
 
-
-//            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
-//                mEconomicStatus.setSelection(0);
-////            else
-////                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-
-//            else {
-//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//                    String economic = switch_te_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                    String economic = switch_mr_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//                    String economic = switch_as_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//                    String economic = switch_ml_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//                    String economic = switch_kn_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//                    String economic = switch_ru_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//                    String economic = switch_gu_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//                    String economic = switch_bn_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//                    String economic = switch_ta_economic_edit(patient1.getEconomic_status());
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-//                } else {
-//                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-//                }
-//            }
-
-//            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
-//                mCaste.setSelection(0);
-//            else {
-//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                    String caste = switch_hi_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//                    String caste = switch_or_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-//                    String caste = switch_te_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                    String caste = switch_mr_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-//                    String caste = switch_as_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-//                    String caste = switch_ml_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-//                    String caste = switch_kn_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-//                    String caste = switch_ru_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//                    String caste = switch_gu_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-//                    String caste = switch_bn_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-//                    String caste = switch_ta_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else {
-//                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
-//                }
-//
-//            }
 
             // Edit of Roster Spinner
             //Roaster
@@ -1061,6 +975,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.mainViewPager);
+        Log.d("1066", "hg" + healthIssuesList.size());
     }
 
     @Override
@@ -1143,7 +1058,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         if (mAgeYears >= 18) {
             ll18.setVisibility(View.VISIBLE);
         } else {
-            ll18.setVisibility(View.VISIBLE);
+            ll18.setVisibility(View.GONE);
         }
     }
 
@@ -1198,8 +1113,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            } else {
 //                bp_Transl = patient1.getBpchecked();
 //            }
+
             bp_Transl = getBP_edit(patient1.getBpchecked(), sessionManager.getAppLanguage());
+            Log.d("1113,", "bp" + bp_Transl);
             int spinner_position = adapter_bpchecked.getPosition(bp_Transl);
+            Log.d("115,", "bpmm" + spinner_position);
             spinner_bpchecked.setSelection(spinner_position);
         }
 
@@ -1209,7 +1127,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             int spinner_position = occupationAdapter.getPosition(occupation_Transl);
             mOccupation.setSelection(spinner_position);
         }
-        //bp
 
         //sugar
         if (patient1.getSugarchecked() != null && !patient1.getSugarchecked().equalsIgnoreCase("")) {
@@ -2398,11 +2315,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (((String) spinner_whatisyourrelation.getSelectedItem()).equals("Other (specify)")) {
-            String relationship = Objects.requireNonNull(til_whatisyourrelation_other.getEditText()).getText().toString();
-            if (relationship.equals("")) {
-                til_whatisyourrelation_other.getEditText().setError(getString(R.string.error_field_required));
-                focusView = til_whatisyourrelation_other.getEditText();
+        //Other
+        if (til_whatisyourrelation_other.getVisibility() == View.VISIBLE) {
+            if (et_whatisyourrelation_other.getText().toString().equals("")) {
+                et_whatisyourrelation_other.setError(getString(R.string.error_field_required));
+                focusView = et_whatisyourrelation_other;
                 cancel = true;
                 return;
             }
@@ -2433,6 +2350,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             focusView = mOccupation;
             cancel = true;
             return;
+        }
+        //Other
+        if (til_occupation_other.getVisibility() == View.VISIBLE) {
+            if (et_occupation_other.getText().toString().equals("")) {
+                et_occupation_other.setError(getString(R.string.error_field_required));
+                focusView = et_occupation_other;
+                cancel = true;
+                return;
+            }
         }
 
         if (((String) mOccupation.getSelectedItem()).equals(getString(R.string.other_please_specify))) {
@@ -2694,7 +2620,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     }
 
-    private void insertedit_RosterValuesIntoLocalDB(PatientAttributesDTO patientAttributesDTO,
+    private void insertedit_RosterValuesIntoLocalDB(PatientAttributesDTO
+                                                            patientAttributesDTO,
                                                     @NonNull List<PatientAttributesDTO> patientAttributesDTOList) {
         // relationsip hoh
         patientAttributesDTO = new PatientAttributesDTO();
@@ -2732,7 +2659,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BPchecked"));
         patientAttributesDTO.setValue(StringUtils.getBP(spinner_bpchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        Log.d("HOH", "2602: " + spinner_bpchecked.getSelectedItem());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // sugar checked
@@ -2867,32 +2794,35 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTOList.add(patientAttributesDTO);
         //how many times
 
-        // past two years
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
-        patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
+//             past two years//todo rriiz
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
+            patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        // outcome pregnancy
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("OutcomeOfPregnancy"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_outcomepregnancy));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+            // outcome pregnancy
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("OutcomeOfPregnancy"));
+            patientAttributesDTO.setValue(StringUtils.getOvercomePragnency(spinner_outcomepregnancy.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        // child alive
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ChildAlive"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_childalive));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+            // child alive
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ChildAlive"));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_childalive));
+            patientAttributesDTO.setValue(StringUtils.getChildAlive(spinner_childalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
 
         //year of pregnancy
         patientAttributesDTO = new PatientAttributesDTO();
@@ -3443,11 +3373,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (((String) spinner_whatisyourrelation.getSelectedItem()).equals("Other (specify)")) {
-            String relationship = Objects.requireNonNull(til_whatisyourrelation_other.getEditText()).getText().toString();
-            if (relationship.equals("")) {
-                til_whatisyourrelation_other.getEditText().setError(getString(R.string.error_field_required));
-                focusView = til_whatisyourrelation_other.getEditText();
+        //Other
+        if (til_whatisyourrelation_other.getVisibility() == View.VISIBLE) {
+            if (et_whatisyourrelation_other.getText().toString().equals("")) {
+                et_whatisyourrelation_other.setError(getString(R.string.error_field_required));
+                focusView = et_whatisyourrelation_other;
                 cancel = true;
                 return;
             }
@@ -3478,6 +3408,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             focusView = mOccupation;
             cancel = true;
             return;
+        }
+        //Other
+        if (til_occupation_other.getVisibility() == View.VISIBLE) {
+            if (et_occupation_other.getText().toString().equals("")) {
+                et_occupation_other.setError(getString(R.string.error_field_required));
+                focusView = et_occupation_other;
+                cancel = true;
+                return;
+            }
         }
 
         if (((String) mOccupation.getSelectedItem()).equals(getString(R.string.other_please_specify))) {
@@ -3558,7 +3497,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         if (cancel) {
             focusView.requestFocus();
-            Toast.makeText(this, "Please fill the required fields", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Please fill the required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
         } else {
             if (mCurrentPhotoPath == null)
                 mCurrentPhotoPath = patientdto.getPatient_photo();
@@ -3760,6 +3700,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         mOccupation = findViewById(R.id.spinner_occupation);
         til_occupation_other = findViewById(R.id.til_occupation_other);
+
+        et_occupation_other = findViewById(R.id.et_occupation_other);
         mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -3798,6 +3740,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
         til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
+        et_whatisyourrelation_other = findViewById(R.id.et_whatisyourrelation_other);
         spinner_whatisyourrelation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -3922,7 +3865,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     @Override
     public void getIssueClicked(HealthIssues survey, int position) {
         MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
-        listDialog.setItems(new String[]{"Edit", "Delete"}, (dialog, which) -> {
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
             if (which == 0) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("position", position);

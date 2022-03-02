@@ -595,6 +595,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/til_whatisyourrelation_other"
                             android:visibility="gone"
+                            tools:visibility="visible"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
@@ -703,6 +704,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/til_occupation_other"
                             android:visibility="gone"
+                            tools:visibility="visible"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->

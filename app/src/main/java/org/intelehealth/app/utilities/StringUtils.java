@@ -178,21 +178,19 @@ public final class StringUtils {
             val = switch_kn_caste(val);
             val = switch_kn_economic(val);
             val = switch_kn_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             val = switch_ru_caste(val);
             val = switch_ru_economic(val);
             val = switch_ru_education(val);
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_caste(val);
             val = switch_gu_economic(val);
             val = switch_gu_education(val);
-        } else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             val = switch_bn_caste(val);
             val = switch_bn_economic(val);
             val = switch_bn_education(val);
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
             val = switch_ta_caste(val);
             val = switch_ta_economic(val);
             val = switch_ta_education(val);
@@ -224,7 +222,7 @@ public final class StringUtils {
         return val;
     }
 
-  public static String switch_kn_education_edit(String val) {
+    public static String switch_kn_education_edit(String val) {
         switch (val) {
             case "Illiterate":
                 val = "ಅಶಿಕ್ಷಿತ";
@@ -272,31 +270,29 @@ public final class StringUtils {
     }
 
 
-
-
-
-public static String switch_ru_education(String val) {
-    switch (val) {
-        case "Безграмотный":
-            val = "Illiterate";
-            break;
-        case "Начальный":
-            val = "Primary";
-            break;
-        case "Вторичный":
-            val = "Secondary";
-            break;
-        case "Высшее среднее":
-            val = "Higher Secondary";
-            break;
-        case "Выпускной и высшее":
-            val = "Graduation & Higher";
-            break;
-        default:
-            return val;
+    public static String switch_ru_education(String val) {
+        switch (val) {
+            case "Безграмотный":
+                val = "Illiterate";
+                break;
+            case "Начальный":
+                val = "Primary";
+                break;
+            case "Вторичный":
+                val = "Secondary";
+                break;
+            case "Высшее среднее":
+                val = "Higher Secondary";
+                break;
+            case "Выпускной и высшее":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
     }
-    return val;
-}
+
     public static String switch_gu_education_edit(String val) {
         switch (val) {
             case "Illiterate":
@@ -626,6 +622,33 @@ public static String switch_ru_education(String val) {
             case "Graduation & Higher":
                 val = "पदवी आणि उच्च";
                 break;
+
+            case "CANNOT READ OR WRITE":
+                val = "वाचता किंवा लिहिता येत नाही";
+                break;
+            case "CAN READ AND WRITE":
+                val = "वाचता आणि लिहिता येतो";
+                break;
+            case "PRIMARY EDUCATION (TILL CLASS 5)":
+                val = "प्राथमिक शिक्षण (इयत्ता ५ वी पर्यंत)";
+                break;
+            case "MIDDLE SCHOOL (6TH-8TH)":
+                val = "मिडल स्कूल (6वी-8वी)";
+                break;
+            case "PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)":
+                val = "माध्यमिक शाळा (इयत्ता 10वी बोर्ड) उत्तीर्ण";
+                break;
+            case "PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)":
+                val = "वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण";
+                break;
+            case "GRADUATE":
+                val = "पदवीधर";
+                break;
+            case "POSTGRADUATE":
+                val = "पदव्युत्तर";
+                break;
+
+
             default:
                 return val;
         }
@@ -649,6 +672,30 @@ public static String switch_ru_education(String val) {
                 break;
             case "पदवी आणि उच्च":
                 val = "Graduation & Higher";
+                break;
+            case "वाचता किंवा लिहिता येत नाही":
+                val = "CANNOT READ OR WRITE";
+                break;
+            case "वाचता आणि लिहिता येतो":
+                val = "CAN READ AND WRITE";
+                break;
+            case "प्राथमिक शिक्षण (इयत्ता ५ वी पर्यंत)":
+                val = "PRIMARY EDUCATION (TILL CLASS 5)";
+                break;
+            case "मिडल स्कूल (6वी-8वी)":
+                val = "MIDDLE SCHOOL (6TH-8TH)";
+                break;
+            case "माध्यमिक शाळा (इयत्ता 10वी बोर्ड) उत्तीर्ण":
+                val = "PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)";
+                break;
+            case "वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण":
+                val = "PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)";
+                break;
+            case "पदवीधर":
+                val = "GRADUATE";
+                break;
+            case "पदव्युत्तर":
+                val = "POSTGRADUATE";
                 break;
             default:
                 return val;
@@ -1021,6 +1068,7 @@ public static String switch_ru_education(String val) {
         }
         return val;
     }
+
     public static String switch_kn_economic(String val) {
         switch (val) {
             case "ಬಡತನ ರೇಖೆಯ ಮೇಲೆ":
@@ -1777,6 +1825,7 @@ public static String switch_ru_education(String val) {
 
         return mdob_text;
     }
+
     public static String en__ru_dob(String dob) { //English dob is replaced to Odiya text.
         String mdob_text = dob
                 .replace("January", "Январь")
@@ -1994,8 +2043,7 @@ public static String switch_ru_education(String val) {
                     .replace("നവംബർ", "November")
                     .replace("ഡിസംബർ", "December");
             return dob;
-        }
-        else if (locale.equalsIgnoreCase("kn")) {
+        } else if (locale.equalsIgnoreCase("kn")) {
             //kannad
             String dob = dobString
                     .replace("ಜನವರಿ", "January")
@@ -2011,8 +2059,7 @@ public static String switch_ru_education(String val) {
                     .replace("ನವೆಂಬರ್", "November")
                     .replace("ಡಿಸೆಂಬರ್", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("ta")) {
+        } else if (locale.equalsIgnoreCase("ta")) {
             //Bengali
             String dob = dobString
                     .replace("ஜனவரி", "January")
@@ -2028,8 +2075,7 @@ public static String switch_ru_education(String val) {
                     .replace("நவம்பர்", "November")
                     .replace("டிசம்பர்", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("bn")) {
+        } else if (locale.equalsIgnoreCase("bn")) {
             //Bengali
             String dob = dobString
                     .replace("জানুয়ারী", "January")
@@ -2045,8 +2091,7 @@ public static String switch_ru_education(String val) {
                     .replace("নভেম্বর", "November")
                     .replace("ডিসেম্বর", "December");
             return dob;
-        }
-       else if (locale.equalsIgnoreCase("ru")) {
+        } else if (locale.equalsIgnoreCase("ru")) {
             String dob = dobString
                     //Russian
                     .replace("Январь", "January")
@@ -2062,9 +2107,7 @@ public static String switch_ru_education(String val) {
                     .replace("Ноябрь", "November")
                     .replace("Декабрь", "December");
             return dob;
-        }
-
-        else {
+        } else {
             return dobString;
         }
 
@@ -3253,8 +3296,7 @@ public static String switch_ru_education(String val) {
                     return val;
             }
 
-        }
-        else if (locale.equalsIgnoreCase("mr")) {
+        } else if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Sunday":
                     val = "रविवार";
@@ -3285,6 +3327,7 @@ public static String switch_ru_education(String val) {
 
         return val;
     }
+
     public static String getAppointmentBookStatus(String val, String locale) {
         if (locale.equalsIgnoreCase("ru")) {
             switch (val.toLowerCase()) {
@@ -3298,8 +3341,7 @@ public static String switch_ru_education(String val) {
                     return val;
             }
 
-        }
-        else if (locale.equalsIgnoreCase("mr")) {
+        } else if (locale.equalsIgnoreCase("mr")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "बुक केले";
@@ -3364,8 +3406,6 @@ public static String switch_ru_education(String val) {
         }
         return result;
     }
-
-
 
 
     public static String getRelationShipHoH(String val, String locale) {
@@ -3564,43 +3604,43 @@ public static String switch_ru_education(String val) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits":
-                    val="अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री";
+                    val = "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री";
                     break;
                 case "Sale of animals/animal products":
-                    val="प्राणी / प्राणी उत्पादने विक्री";
+                    val = "प्राणी / प्राणी उत्पादने विक्री";
                     break;
                 case "Agricultural wage labor (employed for farm work)":
-                    val="कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)";
+                    val = "कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)";
                     break;
                 case "Salaried worker (fixed monthly salary) - Government, private, etc.":
-                    val="पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.";
+                    val = "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.";
                     break;
                 case "Self-employed (non-agriculture/petty business)":
-                    val="स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)";
+                    val = "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)";
                     break;
                 case "Daily labor (unskilled work - Agricultural/non-Agricultural)":
-                    val="दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)";
+                    val = "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)";
                     break;
                 case "NREGA":
-                    val="nrega.";
+                    val = "nrega.";
                     break;
                 case "Seasonal Labor":
-                    val="हंगामी श्रम";
+                    val = "हंगामी श्रम";
                     break;
                 case "No paid work":
-                    val="पैसे दिले नाहीत";
+                    val = "पैसे दिले नाहीत";
                     break;
                 case "Pension":
-                    val="पेंशन";
+                    val = "पेंशन";
                     break;
                 case "Remittances":
-                    val="प्रेषण";
+                    val = "प्रेषण";
                     break;
                 case "Other (please specify)":
-                    val="इतर (कृपया निर्दिष्ट करा)";
+                    val = "इतर (कृपया निर्दिष्ट करा)";
                     break;
                 case "Other sources of income":
-                    val="उत्पन्नाचे इतर स्त्रोत";
+                    val = "उत्पन्नाचे इतर स्त्रोत";
 
                     break;
                 default:
@@ -3610,48 +3650,49 @@ public static String switch_ru_education(String val) {
 
         return val;
     }
+
     public static String getOccupation(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
 
-                case "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री" :
-                    val ="Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits";
+                case "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री":
+                    val = "Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits";
                     break;
-                case "प्राणी / प्राणी उत्पादने विक्री" :
-                    val ="Sale of animals/animal products";
+                case "प्राणी / प्राणी उत्पादने विक्री":
+                    val = "Sale of animals/animal products";
                     break;
-                case "कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)" :
-                    val ="Agricultural wage labor (employed for farm work)";
+                case "कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)":
+                    val = "Agricultural wage labor (employed for farm work)";
                     break;
-                case "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ." :
-                    val ="Salaried worker (fixed monthly salary) - Government, private, etc.";
+                case "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.":
+                    val = "Salaried worker (fixed monthly salary) - Government, private, etc.";
                     break;
-                case "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)" :
-                    val ="Self-employed (non-agriculture/petty business)";
+                case "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)":
+                    val = "Self-employed (non-agriculture/petty business)";
                     break;
-                case "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)" :
-                    val ="Daily labor (unskilled work - Agricultural/non-Agricultural)";
+                case "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)":
+                    val = "Daily labor (unskilled work - Agricultural/non-Agricultural)";
                     break;
-                case "nrega." :
-                    val ="NREGA";
+                case "nrega.":
+                    val = "NREGA";
                     break;
-                case "हंगामी श्रम" :
-                    val ="Seasonal Labor";
+                case "हंगामी श्रम":
+                    val = "Seasonal Labor";
                     break;
-                case "पैसे दिले नाहीत" :
-                    val ="No paid work";
+                case "पैसे दिले नाहीत":
+                    val = "No paid work";
                     break;
-                case "पेंशन" :
-                    val ="Pension";
+                case "पेंशन":
+                    val = "Pension";
                     break;
-                case "प्रेषण" :
-                    val ="Remittances";
+                case "प्रेषण":
+                    val = "Remittances";
                     break;
-                case "इतर (कृपया निर्दिष्ट करा)" :
-                    val ="Other (please specify)";
+                case "इतर (कृपया निर्दिष्ट करा)":
+                    val = "Other (please specify)";
                     break;
-                case "उत्पन्नाचे इतर स्त्रोत" :
-                    val ="Other sources of income";
+                case "उत्पन्नाचे इतर स्त्रोत":
+                    val = "Other sources of income";
                     break;
 
                 default:
@@ -3661,9 +3702,10 @@ public static String switch_ru_education(String val) {
 
         return val;
     }
+
     public static String getBP(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
 
                 case "कधीही तपासले नाही":
                     val = "Never Checked";
@@ -3676,11 +3718,11 @@ public static String switch_ru_education(String val) {
                     break;
 
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "One month to 3 months ago";
                     break;
 
                 case "3 महिने-6 महिन्यांपूर्वी":
-                    val = "between 3 months-6months ago";
+                    val = "Between 3 months-6months ago";
                     break;
                 case "6 महिन्यांपेक्षा जास्त":
                     val = "More than 6 months";
@@ -3693,9 +3735,10 @@ public static String switch_ru_education(String val) {
         return val;
     }
 
+
     public static String getBP_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Never Checked":
                     val = "कधीही तपासले नाही";
                     break;
@@ -3705,10 +3748,10 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "One month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
-                case "between 3 months-6months ago":
+                case "Between 3 months - 6 months ago":
                     val = "3 महिने-6 महिन्यांपूर्वी";
                     break;
                 case "More than 6 months":
@@ -4112,19 +4155,22 @@ public static String switch_ru_education(String val) {
 
     public static String getOvercomePragnency(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "जिवंत जन्मलेला":
                     val = "Born alive";
+                    break;
                 case "अजून जन्म":
                     val = "Still birth";
+                    break;
                 case "प्रेरित गर्भपात (mtp)":
                     val = "Induced abortion (mtp)";
+                    break;
                 case "गर्भपात":
                     val = "Miscarriage";
+                    break;
                 case "सध्या गरोदर आहे":
                     val = "Currently pregnant";
-
-
+                    break;
                 default:
                     return val;
             }
@@ -4167,16 +4213,12 @@ public static String switch_ru_education(String val) {
     public static String getPasttwoyrs(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
-
                 case "होय":
                     val = "Yes";
                     break;
-
                 case "नाही":
                     val = "No";
                     break;
-
-
                 default:
                     return val;
             }
@@ -4188,7 +4230,7 @@ public static String switch_ru_education(String val) {
 
     public static String getPasttwoyrs_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
+            switch (val) {
                 case "Yes":
                     val = "होय";
                     break;
@@ -4196,7 +4238,6 @@ public static String switch_ru_education(String val) {
                 case "No":
                     val = "नाही";
                     break;
-
 
                 default:
                     return val;
@@ -4568,43 +4609,43 @@ public static String switch_ru_education(String val) {
     public static String getPrimeryHealthProvider_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
 
-                switch (val) {
-                    case "Government doctor":
-                        val = "सरकारी डॉक्टर";
-                        break;
-                    case "Private doctor":
-                        val = "खाजगी डॉक्टर";
-                        break;
-                    case "Staff nurse":
-                        val = "स्टाफ नर्स";
-                        break;
-                    case "ANM":
-                        val = "ANM";
-                        break;
-                    case "Asha":
-                        val = "आशा";
-                        break;
-                    case "AWW":
-                        val = "AWW";
-                        break;
-                    case "RMP":
-                        val = "RMP";
-                        break;
-                    case "Ayush doctor":
-                        val = "आयुष डॉक्टर";
-                        break;
-                    case "Homeopath doctor":
-                        val = "होमिओपॅथ डॉक्टर";
-                        break;
-                    case "Traditional healer/quack":
-                        val = "पारंपारिक उपचार करणारा/क्वॅक";
-                        break;
-                    case "Did not consult any health provider for this issue":
-                        val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
-                        break;
-                    case "Other (specify)":
-                        val = "इतर (निर्दिष्ट करा)";
-                        break;
+            switch (val) {
+                case "Government doctor":
+                    val = "सरकारी डॉक्टर";
+                    break;
+                case "Private doctor":
+                    val = "खाजगी डॉक्टर";
+                    break;
+                case "Staff nurse":
+                    val = "स्टाफ नर्स";
+                    break;
+                case "ANM":
+                    val = "ANM";
+                    break;
+                case "Asha":
+                    val = "आशा";
+                    break;
+                case "AWW":
+                    val = "AWW";
+                    break;
+                case "RMP":
+                    val = "RMP";
+                    break;
+                case "Ayush doctor":
+                    val = "आयुष डॉक्टर";
+                    break;
+                case "Homeopath doctor":
+                    val = "होमिओपॅथ डॉक्टर";
+                    break;
+                case "Traditional healer/quack":
+                    val = "पारंपारिक उपचार करणारा/क्वॅक";
+                    break;
+                case "Did not consult any health provider for this issue":
+                    val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
+                    break;
+                case "Other (specify)":
+                    val = "इतर (निर्दिष्ट करा)";
+                    break;
                 default:
                     return val;
             }
@@ -4705,7 +4746,7 @@ public static String switch_ru_education(String val) {
                     val = "Within last month";
                     break;
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "Between 1 month to 3 months ago";
                     break;
                 case "3 महिने-6 महिन्यांपूर्वी":
                     val = "between 3 months-6months ago";
@@ -4736,7 +4777,7 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "Between 1 month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
                 case "between 3 months-6months ago":
@@ -4768,7 +4809,7 @@ public static String switch_ru_education(String val) {
                     val = "Within last month";
                     break;
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "Between 1 month to 3 months ago";
                     break;
                 case "3 महिने-6 महिन्यांपूर्वी":
                     val = "between 3 months-6months ago";
@@ -4798,7 +4839,7 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "Between 1 month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
                 case "between 3 months-6months ago":
@@ -4830,10 +4871,10 @@ public static String switch_ru_education(String val) {
                     val = "Within last month";
                     break;
                 case "एक आठवडा ते ३ महिन्यांपूर्वी":
-                    val = "between one week to 3 months ago";
+                    val = "One month to 3 months ago";
                     break;
                 case "3 महिने-6 महिन्यांपूर्वी":
-                    val = "between 3 months-6months ago";
+                    val = "Between 3 months - 6 months ago";
                     break;
                 case "6 महिन्यांपेक्षा जास्त":
                     val = "More than 6 months";
@@ -4860,10 +4901,10 @@ public static String switch_ru_education(String val) {
                 case "Within last month":
                     val = "गेल्या महिन्याच्या आत";
                     break;
-                case "between one week to 3 months ago":
+                case "One month to 3 months ago":
                     val = "एक आठवडा ते ३ महिन्यांपूर्वी";
                     break;
-                case "between 3 months-6months ago":
+                case "Between 3 months - 6 months ago":
                     val = "3 महिने-6 महिन्यांपूर्वी";
                     break;
                 case "More than 6 months":
