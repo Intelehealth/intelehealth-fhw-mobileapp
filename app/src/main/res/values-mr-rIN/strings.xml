@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">आजारी संपत्ती</string>
+    <string name="app_name">आरोग्य संपदा</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">पुढे</string>
@@ -40,7 +40,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">आजारी संपत्ती</string>
+    <string name="title_activity_login">आरोग्य संपदा</string>
     <string name="prompt_email">वापरकर्तानाव</string>
     <string name="prompt_password">संकेतशब्द</string>
     <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
@@ -591,7 +591,7 @@
     <string name="i_need_assistance">"आणि मला काही मदत हवी आहे."</string>
     <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
     <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
-    <string name="intelehealth_a_telemedicine_platform">आजारी संपत्ती हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="intelehealth_a_telemedicine_platform">आरोग्य संपदा हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
     <string name="intelehealth_name">एकल आरोग्य</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
@@ -800,6 +800,8 @@
     <string name="block">ब्लॉक</string>
     <string name="district">जिल्हा</string>
     <string name="district_nashik">नाशिक</string>
+    <string name="state_Maharastra">महाराष्ट्र</string>
+
     <string name="date_of_visit">भेट तारीख</string>
     <string name="name_of_primary_respondent">प्राथमिक उत्तरदायी नाव</string>
     <string name="household_number">घराच क्रमांक</string>
@@ -813,7 +815,7 @@
     <string name="not_available_on_the_second_visit">दुसर्या भेटीवर उपलब्ध नाही</string>
     <string name="not_available_on_the_third_visit">तिसऱ्या भेटीवर उपलब्ध नाही</string>
     <string name="refused_to_participate">सहभागी होण्यास नकार दिला</string>
-    <string name="household_identification_for_survey">Household Identification for Survey</string>
+    <string name="household_identification_for_survey">सर्वेक्षणासाठी घरगुती ओळख</string>
     <string name="nasik_district">नाशिक</string>
 
     <string name="name_of_head_of_household">कुंटूब प्रमुखांचे नाव</string>
@@ -1266,6 +1268,13 @@
     <string name="annual_household_expenditure_on_food">खाद्यपानावरील वार्षिक घरगुती खर्च</string>
     <string name="did_not_consult_any_health_provider_for_this_issue">या समस्येसाठी कोणत्याही आरोग्य डॉक्टरांचा सल्ला घेतला नाही</string>
 
+    <string name="rice_roti_bread">(तांदूळ, रोटी, ब्रेड, दाबलेला भात, मुरी, बटाटा, रताळे, आर्बी, कसावा, केळी, इतर कोणतीही मुळे आणि कंद, नूडल्स, पास्ता)</string>
+    <string name="beans_peas_mung_dal_chana_dal">(बीन्स, मटार, मूग डाळ, चना डाळ, अरहर डाळ, उडीद डाळ, राजमा, मटर डाळ, इतर डाळी आणि सोयाबीन, सीम, मोहरी)</string>
+    <string name="groundnut_apricort_almond_pista">(भुईमूग, जर्दाळू, बदाम, पिस्ता, नारळ, सीसम बी, कमळाचे बी, जॅकफ्रूट बी, काजू, अक्रोड, मोहरी, सूर्यफुलाचे बी, भोपळ्याच्या बिया)</string>
+    <string name="milk_cow_goat_buffalo">(दूध – गाय/बकरी/म्हशी, पावडर दूध, लिक्विड पॅकेट दूध, दही, पनीर, शेवई, खीर, मिठाई, लोणी, तूप)</string>
+    <string name="meat_lamb_beef_pork">(मांस – कोकरू/बीफ/डुकराचे मांस, ऑर्गन मीट, चिकन, बदक, इतर पक्षी, मासे – मोठा/लहान/शेल फिश/कोळंबी)</string>
     <string name="edit_dialog_button">सुधारणे</string>
     <string name="delete_dialog_button">हटवा</string>
+
+    <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
 </resources>

@@ -159,11 +159,7 @@
     </string-array>
     <string-array name="education_mr">
         <item>निवडा</item>
-        <item>निरक्षर</item>
-        <item>प्राथमिक</item>
-        <item>दुय्यम</item>
-        <item>उच्च माध्यमिक</item>
-        <item>पदवी आणि उच्च</item>
+
         <item>वाचता किंवा लिहिता येत नाही</item>
         <item>वाचता आणि लिहिता येतो</item>
         <item>प्राथमिक शिक्षण (इयत्ता ५ वी पर्यंत)</item>
@@ -403,7 +399,7 @@
     </string-array>
 
     <string-array name="states_india">
-        <item>Maharashtra</item>
+        <item>@string/state_Maharastra</item>
     </string-array>
 
     <string-array name="states_philippines">
@@ -1889,14 +1885,15 @@
         <item>Refused to answer</item>
     </string-array>
 
+
     <string-array name="householdHeadCaste_mr">
-        <item>Select</item>
-        <item>Schedule Caste(SC)</item>
-        <item>Schedule Tribe(ST)</item>
-        <item>Other Backward Caste(OBC)</item>
-        <item>General</item>
-        <item>Don’tknow</item>
-        <item>Refused to answer</item>
+        <item>निवडा</item>
+        <item>अनुसूचित जाती(SC)</item>
+        <item>अनुसूचित जमाती(ST)</item>
+        <item>इतर मागास जाती(OBC)</item>
+        <item>सामान्य</item>
+        <item>माहित नाही</item>
+        <item>उत्तर देण्यास नकार दिला</item>
     </string-array>
 
     <string-array name="city_nashik">

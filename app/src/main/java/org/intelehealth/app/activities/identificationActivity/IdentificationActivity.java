@@ -3390,7 +3390,8 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
 
         if (cancel) {
             focusView.requestFocus();
-            Toast.makeText(this, "Please fill the required fields", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Please fill the required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
         } else {
             if (mCurrentPhotoPath == null)
                 mCurrentPhotoPath = patientdto.getPatient_photo();

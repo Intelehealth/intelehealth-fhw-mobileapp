@@ -827,6 +827,7 @@
     <string name="block">Block</string>
     <string name="district">District</string>
     <string name="district_nashik">Nashik</string>
+    <string name="state_Maharastra">Maharastra</string>
     <string name="date_of_visit">Date of Visit</string>
     <string name="name_of_primary_respondent">Name of Primary Respondent</string>
     <string name="household_number">Household No.</string>
