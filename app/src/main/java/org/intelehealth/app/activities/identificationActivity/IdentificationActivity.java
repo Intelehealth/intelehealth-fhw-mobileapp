@@ -2409,6 +2409,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
+        if (mEducation.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) mEducation.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = mEducation;
+            cancel = true;
+            return;
+        }
+
+        if (mOccupation.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) mOccupation.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = mOccupation;
+            cancel = true;
+            return;
+        }
+
         if (spinner_phoneownership.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_phoneownership.getSelectedView();
             t.setError(getString(R.string.select));
@@ -3411,6 +3429,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = spinner_maritualstatus;
+            cancel = true;
+            return;
+        }
+
+        if (mEducation.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) mEducation.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = mEducation;
+            cancel = true;
+            return;
+        }
+
+        if (mOccupation.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) mOccupation.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = mOccupation;
             cancel = true;
             return;
         }
