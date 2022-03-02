@@ -4022,7 +4022,7 @@ public static String switch_ru_education(String val) {
                     val = "Home";
                     break;
                 case "उपकेंद्र":
-                    val = "Sub cebter";
+                    val = "Sub center";
                     break;
                 case "सीएचसी/ ब्लॉक लेव्हलवर सिव्हिल हॉस्पिटल":
                     val = "Chc/ civil hospital at block level";
@@ -4050,7 +4050,7 @@ public static String switch_ru_education(String val) {
                 case "Home":
                     val = "घर";
                     break;
-                case "Sub cebter":
+                case "Sub center":
                     val = "उपकेंद्र";
                     break;
                 case "Chc/ civil hospital at block level":

@@ -592,6 +592,27 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_whatisyourrelation_other"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
+                            <!--On the Left or Right of textview or Editext-->
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_whatisyourrelation_other"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/other"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -678,6 +699,27 @@
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_occupation_other"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
+                            <!--On the Left or Right of textview or Editext-->
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_occupation_other"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/other"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <View
                             android:layout_width="match_parent"

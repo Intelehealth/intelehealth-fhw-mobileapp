@@ -84,6 +84,11 @@
                     android:text="@string/starch_staple_food"
                     android:textSize="13sp" />
 
+                <TextView
+                    android:text="@string/rice_roti_bread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -92,6 +97,11 @@
                     android:text="@string/beans_and_peas"
                     android:textSize="13sp" />
 
+                <TextView
+                    android:text="@string/beans_peas_mung_dal_chana_dal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,6 +109,10 @@
                     android:fontFamily="@font/poppins"
                     android:text="@string/nuts_and_seeds"
                     android:textSize="13sp" />
+                <TextView
+                    android:text="@string/groundnut_apricort_almond_pista"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:layout_width="match_parent"
@@ -107,6 +121,11 @@
                     android:fontFamily="@font/poppins"
                     android:text="@string/dairy"
                     android:textSize="13sp" />
+
+                <TextView
+                    android:text="@string/milk_cow_goat_buffalo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:layout_width="match_parent"
@@ -123,6 +142,11 @@
                     android:fontFamily="@font/poppins"
                     android:text="@string/flesh_food"
                     android:textSize="13sp" />
+
+                <TextView
+                    android:text="@string/meat_lamb_beef_pork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:layout_width="match_parent"

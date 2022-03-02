@@ -131,11 +131,23 @@ public class ThirdScreenFragment extends Fragment {
                 binding.primarySourceOfWaterTextView.setVisibility(View.VISIBLE);
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.VISIBLE);
                 binding.waterSourceDistanceRadioGroup.setVisibility(View.VISIBLE);
+                binding.waterSourceDistanceTextView.setVisibility(View.VISIBLE);
+
+                binding.waterSupplyAvailabilityTextView.setVisibility(View.GONE);
+                binding.waterSupplyAvailabilityEditText.setVisibility(View.GONE);
             } else {
                 binding.primarySourceOfWaterTextView.setVisibility(View.GONE);
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.GONE);
                 binding.waterSourceDistanceRadioGroup.setVisibility(View.GONE);
+                binding.waterSourceDistanceTextView.setVisibility(View.GONE);
+
+                binding.waterSupplyAvailabilityTextView.setVisibility(View.VISIBLE);
+                binding.waterSupplyAvailabilityEditText.setVisibility(View.VISIBLE);
             }
+        });
+
+        binding.waterSourceDistanceRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            binding.waterSourceDistanceTextInput.setVisibility(View.VISIBLE);
         });
 
         mandatoryFields.addAll(Arrays.asList(binding.householdElectricityRadioGroup, binding.waterSourceDistanceRadioGroup, binding.bankAccountRadioGroup));
@@ -250,6 +262,7 @@ public class ThirdScreenFragment extends Fragment {
 //        }
                     getFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_container, new FourthScreenFragment())
+                    .addToBackStack(null)
                     .commit();
 
     }

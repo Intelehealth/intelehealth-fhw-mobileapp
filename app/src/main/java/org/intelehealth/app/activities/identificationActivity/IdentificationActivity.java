@@ -3684,6 +3684,23 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mOccupation = findViewById(R.id.spinner_occupation);
+        View til_occupation_other = findViewById(R.id.til_occupation_other);
+        mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 12) {
+                    til_occupation_other.setVisibility(View.VISIBLE);
+                } else {
+                    til_occupation_other.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 //        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
 //        mCaste = findViewById(R.id.spinner_caste);
@@ -3705,6 +3722,23 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
+        View til_whatisyourrelation_other = findViewById(R.id.til_whatisyourrelation_other);
+        spinner_whatisyourrelation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 16) {
+                    til_whatisyourrelation_other.setVisibility(View.VISIBLE);
+                } else {
+                    til_whatisyourrelation_other.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         spinner_maritualstatus = findViewById(R.id.spinner_maritualstatus);
         spinner_phoneownership = findViewById(R.id.spinner_phoneownership);
         spinner_bpchecked = findViewById(R.id.spinner_bpchecked);

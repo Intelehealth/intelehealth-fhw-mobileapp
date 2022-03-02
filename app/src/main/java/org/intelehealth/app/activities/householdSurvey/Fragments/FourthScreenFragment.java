@@ -258,6 +258,7 @@ public class FourthScreenFragment extends Fragment {
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new FifthScreenFragment())
+                .addToBackStack(null)
                 .commit();
 
     }

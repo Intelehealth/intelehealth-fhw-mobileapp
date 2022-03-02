@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
                     android:fontFamily="@font/poppins"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -325,8 +325,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/how_many_earning_members_are_there_in_the_household"
-                    android:inputType="text"
+                    android:hint="@string/enter_the_no"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -342,6 +342,7 @@
                 android:fontFamily="@font/poppins"
                 android:text="@string/available_of_water_supply_hours_per_day"
                 android:textColor="@color/text_color"
+                android:visibility="gone"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -356,6 +357,7 @@
                 android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="@color/text_color"
+                android:visibility="gone"
                 android:textSize="14sp" />
 
 <!--            <com.google.android.material.textview.MaterialTextView-->
