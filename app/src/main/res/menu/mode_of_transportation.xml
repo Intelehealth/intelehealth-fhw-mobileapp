@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/menu_item_own_vehicle"
-        android:title="@string/own_vehicle" />
+        android:title="@string/mode_of_transportation_own_vehicle" />
 
     <item
         android:id="@+id/menu_item_friends_neighbours_vehicle"

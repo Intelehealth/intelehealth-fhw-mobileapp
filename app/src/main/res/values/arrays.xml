@@ -159,11 +159,24 @@
     </string-array>
     <string-array name="education_mr">
         <item>निवडा</item>
-        <item>निरक्षर</item>
-        <item>प्राथमिक</item>
-        <item>दुय्यम</item>
-        <item>उच्च माध्यमिक</item>
-        <item>पदवी आणि उच्च</item>
+
+        <item>वाचता किंवा लिहिता येत नाही</item>
+        <item>वाचता आणि लिहिता येतो</item>
+        <item>प्राथमिक शिक्षण (इयत्ता ५ वी पर्यंत)</item>
+        <item>मिडल स्कूल (6वी-8वी)</item>
+        <item>माध्यमिक शाळा (इयत्ता 10वी बोर्ड) उत्तीर्ण</item>
+        <item>वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण</item>
+        <item>पदवीधर</item>
+        <item>पदव्युत्तर</item>
+
+
+
+
+
+
+
+
+
     </string-array>
 
     <string-array name="education_as">
@@ -386,7 +399,7 @@
     </string-array>
 
     <string-array name="states_india">
-        <item>Maharashtra</item>
+        <item>@string/state_Maharastra</item>
     </string-array>
 
     <string-array name="states_philippines">
@@ -1833,7 +1846,7 @@
         <item>No</item>
     </string-array>
 
-    <string-array name="householdHeadReligion">
+    <string-array name="householdHeadReligion_en">
         <item>Select</item>
         <item>Hindu</item>
         <item>Muslim</item>
@@ -1842,6 +1855,16 @@
         <item>Buddhist/Neo-Buddhist</item>
         <item>Other</item>
         <item>NoReligion</item>
+    </string-array>
+    <string-array name="householdHeadReligion_mr">
+        <item>निवडा</item>
+        <item>हिंदू</item>
+        <item>मुस्लिम</item>
+        <item>ख्रिश्चन</item>
+        <item>शीख</item>
+        <item>बौद्ध/नव-बौद्ध</item>
+        <item>इतर</item>
+        <item>कोणताही धर्म नाही</item>
     </string-array>
     <string-array name="outcomepregnancy_mr">
         <item>निवडा</item>
@@ -1852,7 +1875,7 @@
         <item>सध्या गरोदर आहे</item>
     </string-array>
 
-    <string-array name="householdHeadCaste">
+    <string-array name="householdHeadCaste_en">
         <item>Select</item>
         <item>Schedule Caste(SC)</item>
         <item>Schedule Tribe(ST)</item>
@@ -1860,6 +1883,17 @@
         <item>General</item>
         <item>Don’tknow</item>
         <item>Refused to answer</item>
+    </string-array>
+
+
+    <string-array name="householdHeadCaste_mr">
+        <item>निवडा</item>
+        <item>अनुसूचित जाती(SC)</item>
+        <item>अनुसूचित जमाती(ST)</item>
+        <item>इतर मागास जाती(OBC)</item>
+        <item>सामान्य</item>
+        <item>माहित नाही</item>
+        <item>उत्तर देण्यास नकार दिला</item>
     </string-array>
 
     <string-array name="city_nashik">
