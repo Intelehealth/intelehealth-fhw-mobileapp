@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/menu_item_dissatisfied"
-        android:title="@string/dissatisfied" />
+        android:title="@string/score_dissatisfied" />
 
     <item
         android:id="@+id/menu_item_below_average"
-        android:title="@string/below_average" />
+        android:title="@string/score_below_average" />
 
     <item
         android:id="@+id/menu_item_average"
-        android:title="@string/average" />
+        android:title="@string/score_average" />
 
     <item
         android:id="@+id/menu_item_good"
-        android:title="@string/good" />
+        android:title="@string/score_good" />
 
     <item
         android:id="@+id/menu_item_very_good"
-        android:title="@string/very_good" />
+        android:title="@string/score_very_good" />
 
 </menu>

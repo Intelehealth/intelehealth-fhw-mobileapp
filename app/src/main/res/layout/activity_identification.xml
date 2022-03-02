@@ -549,7 +549,7 @@
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
-                        android:text="Rosters"
+                        android:text="@string/txt_hedingRosters"
                         android:textSize="@dimen/card_content_text_size" />
 
                 </LinearLayout>
@@ -575,7 +575,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What is your relationship with Head of Household"
+                            android:text="@string/txt_what_is_your_relationship_with_head_of_household"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -673,7 +673,7 @@
                             android:id="@+id/spinner_occupation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:entries="@array/occupation_en" />
 
                         <Space
                             android:layout_width="10dp"
@@ -691,7 +691,7 @@
                             android:layout_height="wrap_content"
 
                             android:paddingStart="5dp"
-                            android:text="Phone Ownership"
+                            android:text="@string/txt_phone_ownership"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -725,7 +725,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
-                                android:text="When was the last time you got your BP checked?"
+                                android:text="@string/txt_when_was_the_last_time_you_got_your_bp_checked"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <Space
@@ -753,7 +753,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
-                                android:text="When was the last time you got your sugar level checked?"
+                                android:text="@string/txt_when_was_the_last_time_you_got_your_sugar_level_checked"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <Space
@@ -782,7 +782,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="When was the last time you got your HB level tested?"
+                            android:text="@string/txt_when_was_the_last_time_you_got_your_hb_level_tested"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -810,7 +810,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="When was the last time your BMI (Height and weight) was checked?"
+                            android:text="@string/txt_bmi_height_and_weight_checked"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -823,216 +823,217 @@
                             android:layout_height="wrap_content"
                             android:entries="@array/bmi_en" />
 
-                        <LinearLayout
-                            android:id="@+id/llHelath"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/llHelath"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:visibility="gone"-->
+<!--                            tools:visibility="visible">-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="What Health issue is reported?"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_what_health_issue_is_reported"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_healthissuereported"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/healthissuereported_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_healthissuereported"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/healthissuereported_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="Generally, Which is the primary health provider you interacted with for this health issue?"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_primaryhealthprovider"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/primaryhealthprovider_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_primaryhealthprovider"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/primaryhealthprovider_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="First Location of visit/interaction"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_first_location_of_visit_interaction"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_firstlocation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/firstlocation_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_firstlocation"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/firstlocation_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="Referred to"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_referred_to"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_referredto"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/referredto_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_referredto"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/referredto_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="What is the mode of transportations used to reach facility/provider?"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_modeoftransport"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/modetransport_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_modeoftransport"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/modetransport_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_noofepisodes"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="No. of episodes in the last year" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_noofepisodes"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_no_of_episodes_in_the_last_year" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_avgcosttravel"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Average Cost incurred on travel and stay per episode" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_avgcosttravel"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_average_cost_incurred_on_travel_and_stay_per_episode" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_avgcostconsult"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Average cost incurred on consultation fees per episode" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_avgcostconsult"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_average_cost_incurred_on_consultation_fees_per_episode" />-->
 
-                            <EditText
-                                android:id="@+id/edittext_avgcostmedicines"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Averagecost incurred on medicines per episode" />
+<!--                            <EditText-->
+<!--                                android:id="@+id/edittext_avgcostmedicines"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:hint="@string/txt_averagecost_incurred_on_medicines_per_episode" />-->
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="Score for experience of treatment"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:paddingStart="5dp"-->
+<!--                                android:text="@string/txt_score_for_experience_of_treatment"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <Spinner
-                                android:id="@+id/spinner_experiencerscore"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/scoreexperience_en" />
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_experiencerscore"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:entries="@array/scoreexperience_en" />-->
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+<!--                            <Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="10dp" />-->
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-                        </LinearLayout>
+<!--                            <View-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:layout_marginBottom="10dp"-->
+<!--                                android:background="?android:attr/listDivider" />-->
+<!--                        </LinearLayout>-->
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -1067,7 +1068,7 @@
                             android:fontFamily="@font/lato_bold"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
-                            android:text="Pregnancy Outcome Roster"
+                            android:text="@string/txt_heading_pregnancy_outcome_roster"
                             android:textSize="@dimen/card_content_text_size" />
 
                     </LinearLayout>
@@ -1093,7 +1094,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
-                                android:text="@string/how_many_times_have_you_been_pregnant_in_your_lifetime"
+                                android:text="@string/txt_how_many_times_have_you_been_pregnant"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <EditText
@@ -1107,7 +1108,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:paddingStart="5dp"
-                                android:text="@string/have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
+                                android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <Space
@@ -1141,7 +1142,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="What was the outcome of your pregnancy?"
+                                    android:text="@string/txt_what_was_the_outcome_of_your_pregnancy"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space
@@ -1175,7 +1176,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:paddingStart="5dp"
-                                        android:text="Is the child alive?"
+                                        android:text="@string/txt_is_the_child_alive"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                     <Space
@@ -1204,21 +1205,22 @@
                                     android:id="@+id/edittext_yearofpregnancy"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="What was the year of pregnancy outcome?"
+
+                                    android:hint="@string/txt_what_was_the_year_of_pregnancy_outcome"
                                     android:textSize="15sp" />
 
                                 <EditText
                                     android:id="@+id/edittext_monthspregnancylast"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="How many months did this pregnancy last?"
+                                    android:hint="@string/txt_how_many_months_did_this_pregnancy_last"
                                     android:textSize="15sp" />
 
                                 <EditText
                                     android:id="@+id/edittext_monthsbeingpregnant"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="How many months have you been pregnant"
+                                    android:hint="@string/txt_how_many_months_have_you_been_pregnant"
                                     android:textSize="15sp" />
 
                                 <LinearLayout
@@ -1231,7 +1233,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:paddingStart="5dp"
-                                        android:text="What is the Place of Delivery?"
+                                        android:text="@string/txt_what_is_the_place_of_delivery"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                     <Space
@@ -1260,7 +1262,7 @@
                                     android:id="@+id/edittext_focalfacility"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Focal Facility for this pregnancy" />
+                                    android:hint="@string/txt_focal_facility_for_this_pregnancy" />
 
                                 <!-- <EditText
                                     android:id="@+id/edittext_singlemultiplebirths"
@@ -1277,7 +1279,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:paddingStart="5dp"
-                                        android:text="Was this a single/multiple births?"
+                                        android:text="@string/txt_was_this_a_single_multiple_births"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                     <Space
@@ -1307,7 +1309,7 @@
                                     android:id="@+id/edittext_babyagedied"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="How old was the baby when he/she died?" />
+                                    android:hint="@string/txt_how_old_was_the_baby_when_he_she_died" />
 
                                 <LinearLayout
                                     android:id="@+id/llBabyGender"
@@ -1319,7 +1321,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:paddingStart="5dp"
-                                        android:text="What is/was the sex of the baby?"
+                                        android:text="@string/txt_what_is_was_the_sex_of_the_baby"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                     <Space
@@ -1348,7 +1350,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="Was this pregnancy planned?"
+                                    android:text="@string/was_this_pregnancy_planned"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space
@@ -1376,7 +1378,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="Were you identified as a High-Risk Pregnancy case?"
+                                    android:text="@string/txt_what_health_issue_is_reported"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space
@@ -1410,7 +1412,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:paddingStart="5dp"
-                                        android:text="Were any complications identified at the time of delivery?"
+                                        android:text="@string/txt_were_any_complications_identified_at_the_time_of_delivery"
+
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                     <Space

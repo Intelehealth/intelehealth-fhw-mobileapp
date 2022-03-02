@@ -3,23 +3,23 @@
 
     <item
         android:id="@+id/menu_item_walking"
-        android:title="@string/walking" />
+        android:title="@string/mode_of_transportation_walking" />
 
     <item
         android:id="@+id/menu_item_bus"
-        android:title="@string/bus" />
+        android:title="@string/mode_of_transportation_bus" />
 
     <item
         android:id="@+id/menu_item_private_taxi"
-        android:title="@string/private_taxi" />
+        android:title="@string/mode_of_transportation_private_taxi" />
 
     <item
         android:id="@+id/menu_item_shuttle_taxi"
-        android:title="@string/shuttle_taxi" />
+        android:title="@string/mode_of_transportation_shuttle_taxi" />
 
     <item
         android:id="@+id/menu_item_auto"
-        android:title="@string/auto" />
+        android:title="@string/mode_of_transportation_auto" />
 
     <item
         android:id="@+id/menu_item_own_vehicle"
@@ -27,11 +27,11 @@
 
     <item
         android:id="@+id/menu_item_friends_neighbours_vehicle"
-        android:title="@string/friends_neighbours_vehicle" />
+        android:title="@string/mode_of_transportation_friends_neighbours_vehicle" />
 
     <item
         android:id="@+id/menu_item_ambulance"
-        android:title="@string/ambulance" />
+        android:title="@string/mode_of_transportation_ambulance" />
 
     <item
         android:id="@+id/other_specify"

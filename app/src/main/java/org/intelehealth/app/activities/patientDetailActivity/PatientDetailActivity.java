@@ -107,6 +107,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
+import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
@@ -1181,12 +1182,22 @@ public class PatientDetailActivity extends AppCompatActivity {
             sdwRow.setVisibility(View.GONE);
         }
 //
-        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-            occuView.setText(patient_new.getOccupation());
-        } else {
-//            occuRow.setVisibility(View.GONE);
-            occuView.setText("");
+
+        if (patient_new.getOccupation().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            education_statusView.setText("नहीं दिया गया");
         }
+        else{
+
+            String occupation = getOccupation_edit(patient_new.getOccupation(),sessionManager.getAppLanguage());
+                occuView.setText(occupation);
+            }
+//        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
+//            occuView.setText(patient_new.getOccupation());
+//        } else {
+//           occuRow.setVisibility(View.GONE);
+//            occuView.setText("");
+//        }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);

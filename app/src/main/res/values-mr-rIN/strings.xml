@@ -1127,6 +1127,8 @@
     <!--    HealthServUtilizationRoster -->
     <string name="name_of_member_of_household">घरगुती सदस्याचे नाव</string>
     <string name="health_issue_reported">आरोग्य समस्या नोंदवली</string>
+
+    <string name="number_of_episodes_in_the_last_year">मागील वर्षातील भागांची संख्या</string>
     <string name="health_issue_reported_fever">ताप</string>
     <string name="health_issue_reported_cough_cold">खोकला / थंडी</string>
     <string name="health_issue_reported_diarrhoea">अतिसार</string>
@@ -1189,5 +1191,81 @@
     <string name="score_average">सरासरी</string>
     <string name="score_good">चांगले</string>
     <string name="score_very_good">खूप चांगले</string>
+
+
+
+
+    <string name = "txt_hedingRosters">रोस्टर्स</string>
+    <string name="txt_heading_pregnancy_outcome_roster">गर्भधारणा परिणाम रोस्टर</string>
+    <string name = "txt_what_is_your_relationship_with_head_of_household"> घराच्या प्रमुखाशी तुमचे नाते काय आहे</string>
+    <string name="txt_what_is_your_maritual_status">तुमची वैवाहिक स्थिती काय आहे</string>
+    <string name="txt_phone_ownership">फोन मालकी</string>
+    <string name = "txt_bp_checked">BP तपासले</string>
+    <string name = "txt_sugar_checked">साखर तपासली</string>
+    <string name = "txt_hb_test">HB चाचणी</string>
+
+
+    <string name = "txt_bmi_height_and_weight_checked">BMI (उंची आणि वजन) तपासले</string>
+    <string name="txt_what_health_issue_is_reported">कोणती आरोग्य समस्या नोंदवली आहे?</string>
+    <string name="txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">सामान्यत:, या आरोग्य समस्येसाठी तुम्ही कोणत्या प्राथमिक आरोग्य प्रदात्याशी संवाद साधला?</string>
+    <string name="txt_first_location_of_visit_interaction">भेटीचे/संवादाचे पहिले स्थान</string>
+    <string name="txt_referred_to">याला संदर्भित</string>
+    <string name="txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider">सुविधा/प्रदात्यापर्यंत पोहोचण्यासाठी वाहतुकीचा कोणता प्रकार वापरला जातो?</string>
+    <string name="txt_no_of_episodes_in_the_last_year">नाही. मागील वर्षातील भागांची</string>
+    <string name = "txt_average_cost_incurred_on_travel_and_stay_per_episode">प्रवास आणि मुक्कामासाठी प्रति एपिसोडचा सरासरी खर्च</string>
+    <string name="txt_average_cost_incurred_on_consultation_fees_per_episode">प्रति एपिसोड सल्लामसलत शुल्कासाठी सरासरी खर्च</string>
+    <string name = "txt_score_for_experience_of_treatment">उपचारांच्या अनुभवासाठी स्कोअर</string>
+
+
+    <string name = "txt_how_many_times_have_you_been_pregnant">तुम्ही किती वेळा गरोदर आहात?</string>
+    <string name = "txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">गेल्या दोन वर्षांत तुम्हाला गर्भधारणेचे परिणाम मिळाले आहेत का?</string>
+    <string name="txt_what_was_the_outcome_of_your_pregnancy">तुमच्या गर्भधारणेचा परिणाम काय होता?</string>
+    <string name = "txt_is_the_child_alive">मुल जिवंत आहे का?</string>
+    <string name = "txt_what_was_the_year_of_pregnancy_outcome">गर्भधारणेच्या निकालाचे वर्ष काय होते?</string>
+    <string name="txt_how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
+    <string name = "txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
+    <string name = "txt_what_is_the_place_of_delivery"> वितरणाचे ठिकाण काय आहे?</string>
+    <string name="txt_focal_facility_for_this_pregnancy">या गर्भधारणेसाठी फोकल सुविधा</string>
+    <string name="txt_was_this_a_single_multiple_births">हे एकच/एकाहून अधिक जन्म होते का?</string>
+    <string name = "txt_how_old_was_the_baby_when_he_she_died">बाळ/ती मरण पावले तेव्हा त्याचे वय किती होते?</string>
+
+
+
+    <string name="health_serv_utilization_roster">आरोग्य सेवा वापर रोस्टर</string>
+    <string name = "txt_what_is_was_the_sex_of_the_baby">बाळाचे लिंग काय/होते?</string>
+    <string name = "txt_was_this_pregnancy_planned">ही गर्भधारणा नियोजित होती का?</string>
+    <string name = "txt_were_you_identified_as_a_high_risk_pregnancy_case"> तुमची उच्च-जोखीम गर्भधारणा प्रकरण म्हणून ओळख झाली होती का?</string>
+    <string name="txt_were_any_complications_identified_at_the_time_of_delivery">डिलिव्हरीच्या वेळी काही गुंतागुंत ओळखल्या गेल्या होत्या?</string>
+    <string name="txt_averagecost_incurred_on_medicines_per_episode">प्रति एपिसोड औषधांवर होणारा सरासरी खर्च</string>
+
+    <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">तुमची एचबी पातळीची शेवटची चाचणी कधी झाली?</string>
+    <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">तुम्ही तुमची साखर पातळी शेवटच्या वेळी कधी तपासली होती?</string>
+    <string name="txt_when_was_the_last_time_you_got_your_bp_checked">तुमची बीपी शेवटची कधी तपासली होती?</string>
+    <string name="what_is_your_education_status">तुमची शिक्षणाची स्थिती काय आहे?</string>
+    <string name="what_is_your_marital_status">तुमची वैवाहिक स्थिती काय आहे?</string>
+    <string name="what_is_the_place_of_delivery">वितरणाचे ठिकाण काय आहे?</string>
+
+
+    <string name="first_location_of_visit">भेट / संवादाचे पहिले स्थान</string>
+    <string name="household_survey">घरगुती सर्वेक्षण</string>
+    <string name="cough_cold">खोकला / सर्दी</string>
+    <string name="fever">ताप</string>
+    <string name = "diarrhoea"> अतिसार</string>
+    <string name = "injury"> दुखापत</string>
+    <string name = "skin_issues">त्वचेच्या समस्या</string>
+    <string name = "eye_vision_issues">डोळा / दृष्टी समस्या</string>
+    <string name = "joint_bone_pain">सांधे/हाडाचे दुखणे</string>
+    <string name="select_primary_health_care_provider">प्राथमिक आरोग्य सेवा प्रदाता निवडा</string>
+    <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
+
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">महिला</string>
+
+
+<!--    <string name = "annual_household_expenditure_on_health">आरोग्यावरील वार्षिक घरगुती खर्च</string>-->
+    <string name="annual_household_expenditure_on_food">खाद्यपानावरील वार्षिक घरगुती खर्च</string>
+    <string name="did_not_consult_any_health_provider_for_this_issue">या समस्येसाठी कोणत्याही आरोग्य डॉक्टरांचा सल्ला घेतला नाही</string>
+
+
 
 </resources>

@@ -3364,4 +3364,1519 @@ public static String switch_ru_education(String val) {
         }
         return result;
     }
+
+
+
+
+    public static String getRelationShipHoH(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "घराचे प्रमुख":
+                    val = "HEAD OF THE HOUSEHOLD";
+                    break;
+                case "पती/पत्नी":
+                    val = "SPOUSE";
+                    break;
+                case "मुलगा/मुलगी":
+                    val = "SON/DAUGHTER";
+                    break;
+                case "मुलगा/सून":
+                    val = "SON/DAUGHTER IN LAW";
+                    break;
+                case "नातवंड":
+                    val = "GRANDCHILD";
+                    break;
+                case "वडील/आई":
+                    val = "FATHER/MOTHER";
+                    break;
+                case "वडील/सासू-सासरे":
+                    val = "FATHER/MOTHER-IN-LAW";
+                    break;
+                case "भाऊ/बहिण":
+                    val = "BROTHER/SISTER";
+                    break;
+                case "भाऊ/बहिण-सासरे":
+                    val = "BROTHER/SISTER-IN-LAW";
+                    break;
+                case "भाची/भाचा":
+                    val = "NIECE/NEPHEW";
+                    break;
+                case "आजोबा/आजोबा-सासरे":
+                    val = "GRANDPARENT/GRAND PARENT-IN-LAW";
+                    break;
+                case "इतर नातेवाईक":
+                    val = "OTHER RELATIVE";
+                    break;
+                case "दत्तक/पालक/स्टेपचाइल्ड":
+                    val = "ADOPTED/FOSTER/STEPCHILD";
+                    break;
+                case "घरगुती सेवक":
+                    val = "DOMESTIC SERVANT";
+                    break;
+                case "इतर संबंधित नाही":
+                    val = "OTHER NOT RELATED";
+                    break;
+                case "इतर (निर्दिष्ट करा)":
+                    val = "OTHER (SPECIFY)";
+                    break;
+                case "सांगित नाही":
+                    val = "NOT STATED";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getRelationShipHoH_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "HEAD OF THE HOUSEHOLD":
+                    val = "घराचे प्रमुख";
+                    break;
+                case "SPOUSE":
+                    val = "पती/पत्नी";
+                    break;
+                case "SON/DAUGHTER":
+                    val = "मुलगा/मुलगी";
+                    break;
+                case "SON/DAUGHTER IN LAW":
+                    val = "मुलगा/सून";
+                    break;
+                case "GRANDCHILD":
+                    val = "नातवंड";
+                    break;
+                case "FATHER/MOTHER":
+                    val = "वडील/आई";
+                    break;
+                case "FATHER/MOTHER-IN-LAW":
+                    val = "वडील/सासू-सासरे";
+                    break;
+                case "BROTHER/SISTER":
+                    val = "भाऊ/बहिण";
+                    break;
+                case "BROTHER/SISTER-IN-LAW":
+                    val = "भाऊ/बहिण-सासरे";
+                    break;
+                case "NIECE/NEPHEW":
+                    val = "भाची/भाचा";
+                    break;
+                case "GRANDPARENT/GRAND PARENT-IN-LAW":
+                    val = "आजोबा/आजोबा-सासरे";
+                    break;
+                case "OTHER RELATIVE":
+                    val = "इतर नातेवाईक";
+                    break;
+                case "ADOPTED/FOSTER/STEPCHILD":
+                    val = "दत्तक/पालक/स्टेपचाइल्ड";
+                    break;
+                case "DOMESTIC SERVANT":
+                    val = "घरगुती सेवक";
+                    break;
+                case "OTHER NOT RELATED":
+                    val = "इतर संबंधित नाही";
+                    break;
+                case "OTHER (SPECIFY)":
+                    val = "इतर (निर्दिष्ट करा)";
+                    break;
+                case "NOT STATED":
+                    val = "सांगित नाही";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        return val;
+    }
+
+
+    public static String getMaritual(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "सध्या विवाहित":
+                    val = "Currently married";
+                    break;
+                case "लग्न झाले आहे, गौणा केले नाही":
+                    val = "Married, gauna not performed";
+                    break;
+                case "विधवा झालेली":
+                    val = "Widowed";
+                    break;
+                case "घटस्फोटित":
+                    val = "Divorced";
+                    break;
+                case "विभक्त":
+                    val = "Separated";
+                    break;
+                case "ओसाड":
+                    val = "Deserted";
+                    break;
+                case "कधीही लग्न केलेले नाही":
+                    val = "Never married";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }
+
+    public static String getMaritual_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "Currently married":
+                    val = "सध्या विवाहित";
+                    break;
+                case "Married, gauna not performed":
+                    val = "लग्न झाले आहे, गौणा केले नाही";
+                    break;
+                case "Widowed":
+                    val = "विधवा झालेली";
+                    break;
+                case "Divorced":
+                    val = "घटस्फोटित";
+                    break;
+                case "Separated":
+                    val = "विभक्त";
+                    break;
+                case "Deserted":
+                    val = "ओसाड";
+                    break;
+                case "Never married":
+                    val = "कधीही लग्न केलेले नाही";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getOccupation_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits":
+                    val="अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री";
+                    break;
+                case "Sale of animals/animal products":
+                    val="प्राणी / प्राणी उत्पादने विक्री";
+                    break;
+                case "Agricultural wage labor (employed for farm work)":
+                    val="कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)";
+                    break;
+                case "Salaried worker (fixed monthly salary) - Government, private, etc.":
+                    val="पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.";
+                    break;
+                case "Self-employed (non-agriculture/petty business)":
+                    val="स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)";
+                    break;
+                case "Daily labor (unskilled work - Agricultural/non-Agricultural)":
+                    val="दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)";
+                    break;
+                case "NREGA":
+                    val="nrega.";
+                    break;
+                case "Seasonal Labor":
+                    val="हंगामी श्रम";
+                    break;
+                case "No paid work":
+                    val="पैसे दिले नाहीत";
+                    break;
+                case "Pension":
+                    val="पेंशन";
+                    break;
+                case "Remittances":
+                    val="प्रेषण";
+                    break;
+                case "Other (please specify)":
+                    val="इतर (कृपया निर्दिष्ट करा)";
+                    break;
+                case "Other sources of income":
+                    val="उत्पन्नाचे इतर स्त्रोत";
+
+                    break;
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+    public static String getOccupation(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री" :
+                    val ="Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits";
+                    break;
+                case "प्राणी / प्राणी उत्पादने विक्री" :
+                    val ="Sale of animals/animal products";
+                    break;
+                case "कृषि वेतन श्रम (शेतीच्या कामासाठी कार्यरत)" :
+                    val ="Agricultural wage labor (employed for farm work)";
+                    break;
+                case "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ." :
+                    val ="Salaried worker (fixed monthly salary) - Government, private, etc.";
+                    break;
+                case "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)" :
+                    val ="Self-employed (non-agriculture/petty business)";
+                    break;
+                case "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)" :
+                    val ="Daily labor (unskilled work - Agricultural/non-Agricultural)";
+                    break;
+                case "nrega." :
+                    val ="NREGA";
+                    break;
+                case "हंगामी श्रम" :
+                    val ="Seasonal Labor";
+                    break;
+                case "पैसे दिले नाहीत" :
+                    val ="No paid work";
+                    break;
+                case "पेंशन" :
+                    val ="Pension";
+                    break;
+                case "प्रेषण" :
+                    val ="Remittances";
+                    break;
+                case "इतर (कृपया निर्दिष्ट करा)" :
+                    val ="Other (please specify)";
+                    break;
+                case "उत्पन्नाचे इतर स्त्रोत" :
+                    val ="Other sources of income";
+                    break;
+
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+    public static String getBP(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+
+                case "कधीही तपासले नाही":
+                    val = "Never Checked";
+                    break;
+                case "गेल्या एका आठवड्यात":
+                    val = "In past one week";
+                    break;
+                case "गेल्या महिन्याच्या आत":
+                    val = "Within last month";
+                    break;
+
+                case "एक आठवडा ते ३ महिन्यांपूर्वी":
+                    val = "between one week to 3 months ago";
+                    break;
+
+                case "3 महिने-6 महिन्यांपूर्वी":
+                    val = "between 3 months-6months ago";
+                    break;
+                case "6 महिन्यांपेक्षा जास्त":
+                    val = "More than 6 months";
+                    break;
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+
+    public static String getBP_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Never Checked":
+                    val = "कधीही तपासले नाही";
+                    break;
+                case "In past one week":
+                    val = "गेल्या एका आठवड्यात";
+                    break;
+                case "Within last month":
+                    val = "गेल्या महिन्याच्या आत";
+                    break;
+                case "between one week to 3 months ago":
+                    val = "एक आठवडा ते ३ महिन्यांपूर्वी";
+                    break;
+                case "between 3 months-6months ago":
+                    val = "3 महिने-6 महिन्यांपूर्वी";
+                    break;
+                case "More than 6 months":
+                    val = "6 महिन्यांपेक्षा जास्त";
+                    break;
+                default:
+                    return val;
+
+            }
+        }
+        return val;
+    }
+
+
+    public static String getPhoneOwnerShip(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "काहीही नाही":
+                    val = "None";
+                    break;
+                case "शेअर केलेले":
+                    val = "Shared";
+                    break;
+                case "स्मार्टफोनचा मालक आहे":
+                    val = "Owns smartphone";
+                    break;
+                case "मालकीचे वैशिष्ट्य फोन":
+                    val = "Owns feature phone";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getPhoneOwnerShip_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "None":
+                    val = "काहीही नाही";
+                    break;
+                case "Shared":
+                    val = "शेअर केलेले";
+                    break;
+                case "Owns smartphone":
+                    val = "स्मार्टफोनचा मालक आहे";
+                    break;
+                case "Owns feature phone":
+                    val = "मालकीचे वैशिष्ट्य फोन";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    //    public static String get(String val, String locale) {
+//        if (locale.equalsIgnoreCase("mr")) {
+//            switch (val.toLowerCase()) {
+//
+//
+//                default:
+//                    return val;
+//            }
+//
+//        }
+//
+//        return val;
+//    }
+    public static String getSinglemultiplebirths(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "एकल":
+                    val = "Single";
+                    break;
+                case "एकाधिक":
+                    val = "Multiple";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getSinglemultiplebirths_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Single":
+                    val = "एकल";
+                    break;
+                case "Multiple":
+                    val = "एकाधिक";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getHighRiskPregnancy(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "होय":
+                    val = "Yes";
+                    break;
+                case "नाही":
+                    val = "No";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getHighRiskPregnancy_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Yes":
+                    val = "होय";
+                    break;
+
+                case "No":
+                    val = "नाही";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getComplications(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "होय":
+                    val = "Yes";
+                    break;
+                case "नाही":
+                    val = "No";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getComplications_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Yes":
+                    val = "होय";
+                    break;
+                case "No":
+                    val = "नाही";
+                    break;
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+
+
+    public static String getHeighPregnancyPlanned(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "होय":
+                    val = "Yes";
+                    break;
+                case "नाही":
+                    val = "No";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getHeighPregnancyPlanned_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Yes":
+                    val = "होय";
+                    break;
+                case "No":
+                    val = "नाही";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getPregnancyPlanned(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "होय":
+                    val = "Yes";
+                    break;
+                case "नाही":
+                    val = "No";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getPregnancyPlanned_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Yes":
+                    val = "होय";
+                    break;
+                case "No":
+                    val = "नाही";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        return val;
+    }
+
+
+    public static String getSexOfBaby(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+
+                case "पुरुष":
+                    val = "Male";
+                    break;
+                case "स्त्री":
+                    val = "Female";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getSexOfBaby_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Male":
+                    val = "पुरुष";
+                    break;
+                case "Female":
+                    val = "स्त्री";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getPlaceDelivery(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+
+                case "घर":
+                    val = "Home";
+                    break;
+                case "उपकेंद्र":
+                    val = "Sub cebter";
+                    break;
+                case "सीएचसी/ ब्लॉक लेव्हलवर सिव्हिल हॉस्पिटल":
+                    val = "Chc/ civil hospital at block level";
+                    break;
+                case "जिल्हा स्तरावर जिल्हा रुग्णालय/ नागरी रुग्णालय":
+                    val = "District hosptial/ civil hospital at district level";
+                    break;
+                case "खाजगी क्लिनिक":
+                    val = "Private clinic";
+                    break;
+                case "खाजगी रुग्णालय":
+                    val = "Private hospital";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        return val;
+    }
+
+    public static String getPlaceDelivery_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+
+                case "Home":
+                    val = "घर";
+                    break;
+                case "Sub cebter":
+                    val = "उपकेंद्र";
+                    break;
+                case "Chc/ civil hospital at block level":
+                    val = "सीएचसी/ ब्लॉक लेव्हलवर सिव्हिल हॉस्पिटल";
+                    break;
+                case "District hosptial/ civil hospital at district level":
+                    val = "जिल्हा स्तरावर जिल्हा रुग्णालय/ नागरी रुग्णालय";
+                    break;
+                case "Private clinic":
+                    val = "खाजगी क्लिनिक";
+                    break;
+                case "Private hospital":
+                    val = "खाजगी रुग्णालय";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getChildAlive(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "होय":
+                    val = "Yes";
+                    break;
+                case "नाही":
+                    val = "No";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        return val;
+    }
+
+    public static String getChildAlive_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Yes":
+                    val = "होय";
+                    break;
+                case "No":
+                    val = "नाही";
+                    break;
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+
+
+    public static String getOvercomePragnency(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "जिवंत जन्मलेला":
+                    val = "Born alive";
+                case "अजून जन्म":
+                    val = "Still birth";
+                case "प्रेरित गर्भपात (mtp)":
+                    val = "Induced abortion (mtp)";
+                case "गर्भपात":
+                    val = "Miscarriage";
+                case "सध्या गरोदर आहे":
+                    val = "Currently pregnant";
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getOvercomePragnency_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Born alive":
+                    val = "जिवंत जन्मलेला";
+                    break;
+                case "Still birth":
+                    val = "अजून जन्म";
+                    break;
+                case "Induced abortion (mtp)":
+                    val = "प्रेरित गर्भपात (mtp)";
+                    break;
+                case "Miscarriage":
+                    val = "गर्भपात";
+                    break;
+                case "Currently pregnant":
+                    val = "सध्या गरोदर आहे";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getPasttwoyrs(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "होय":
+                    val = "Yes";
+                    break;
+
+                case "नाही":
+                    val = "No";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getPasttwoyrs_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Yes":
+                    val = "होय";
+                    break;
+
+                case "No":
+                    val = "नाही";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getScoreExperience(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "असंतुष्ट":
+                    val = "Dissatisfied";
+                    break;
+                case "सरासरीच्या खाली":
+                    val = "Below Average";
+                    break;
+                case "सरासरी":
+                    val = "Average";
+                    break;
+                case "चांगले":
+                    val = "Good";
+                    break;
+                case "खूप छान":
+                    val = "Very Good";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getScoreExperience_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Dissatisfied":
+                    val = "असंतुष्ट";
+                case "Below Average":
+                    val = "सरासरीच्या खाली";
+                case "Average":
+                    val = "सरासरी";
+                case "Good":
+                    val = "चांगले";
+                case "Very Good":
+                    val = "खूप छान";
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getModerateSport(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+
+
+                case "चालणे":
+                    val = "Walking";
+                    break;
+                case "बस":
+                    val = "Bus";
+                    break;
+                case "खाजगी टॅक्सी":
+                    val = "Private taxi";
+                    break;
+                case "शटल टॅक्सी":
+                    val = "Shuttle taxi";
+                    break;
+                case "ऑटो":
+                    val = "Auto";
+                    break;
+                case "स्वतःचे वाहन":
+                    val = "Own vehicle";
+                    break;
+                case "मित्रांचे/शेजाऱ्यांचे वाहन":
+                    val = "Friends/neighbours vehicle";
+                    break;
+                case "अॅम्ब्युलन्स":
+                    val = "Ambulance";
+                    break;
+                case "इतर (निर्दिष्ट करा)":
+                    val = "Others (specify)";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getModerateSport_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Walking":
+                    val = "चालणे";
+                    break;
+                case "Bus":
+                    val = "बस";
+                    break;
+                case "Private taxi":
+                    val = "खाजगी टॅक्सी";
+                    break;
+                case "Shuttle taxi":
+                    val = "शटल टॅक्सी";
+                    break;
+                case "Auto":
+                    val = "ऑटो";
+                    break;
+                case "Own vehicle":
+                    val = "स्वतःचे वाहन";
+                    break;
+                case "Friends/neighbours vehicle":
+                    val = "मित्रांचे/शेजाऱ्यांचे वाहन";
+                    break;
+                case "Ambulance":
+                    val = "अॅम्ब्युलन्स";
+                    break;
+                case "Others (specify)":
+                    val = "इतर (निर्दिष्ट करा)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getReferedDTO(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+
+                case "संदर्भित नाही":
+                    val = "Not referred";
+                    break;
+
+                case "खाजगी क्लिनिक":
+                    val = "Private clinic";
+                    break;
+
+                case "प्राथमिक आरोग्य केंद्र":
+                    val = "Phc";
+                    break;
+
+                case "सामुदायिक आरोग्य केंद्र":
+                    val = "Chc";
+                    break;
+
+                case "जिल्हा रुग्णालय":
+                    val = "Dh";
+                    break;
+
+                case "खाजगी रुग्णालय":
+                    val = "Private hospital";
+                    break;
+
+                case "आयुष केंद्र":
+                    val = "Ayush center";
+                    break;
+
+                case "इतर (कृपया निर्दिष्ट करा)":
+                    val = "Others (please specify)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getReferedDTO_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Not referred":
+                    val = "संदर्भित नाही";
+                    break;
+                case "Private clinic":
+                    val = "खाजगी क्लिनिक";
+                    break;
+                case "Phc":
+                    val = "प्राथमिक आरोग्य केंद्र";
+                    break;
+                case "Chc":
+                    val = "सामुदायिक आरोग्य केंद्र";
+                    break;
+                case "Dh":
+                    val = "जिल्हा रुग्णालय";
+                    break;
+                case "Private hospital":
+                    val = "खाजगी रुग्णालय";
+                    break;
+                case "Ayush center":
+                    val = "आयुष केंद्र";
+                    break;
+                case "Others (please specify)":
+                    val = "इतर (कृपया निर्दिष्ट करा)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getFirstLocation(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "घर":
+                    val = "Home";
+                    break;
+                case "खाजगी दवाखाना":
+                    val = "Private clinic";
+                    break;
+                case "प्राथमिक आरोग्य केंद्र":
+                    val = "Phc";
+                    break;
+                case "सामुदायिक आरोग्य केंद्र":
+                    val = "Chc";
+                    break;
+                case "जिल्हा रुग्णालय":
+                    val = "Dh";
+                    break;
+                case "खाजगी रुग्णालय":
+                    val = "Private hospital";
+                    break;
+                case "आयुष केंद्र":
+                    val = "Ayush center";
+                    break;
+                case "फार्मसी":
+                    val = "Pharmacy";
+                    break;
+                case "इतर (कृपया निर्दिष्ट करा)":
+                    val = "Others (please specify)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getFirstLocation_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "Government doctor":
+                    val = "सरकारी डॉक्टर";
+                    break;
+                case "Private doctor":
+                    val = "खाजगी डॉक्टर";
+                    break;
+                case "Staff nurse":
+                    val = "स्टाफ नर्स";
+                    break;
+                case "ANM":
+                    val = "ANM";
+                    break;
+                case "Asha":
+                    val = "आशा";
+                    break;
+                case "AWW":
+                    val = "AWW";
+                    break;
+                case "RMP":
+                    val = "RMP";
+                    break;
+                case "Ayush doctor":
+                    val = "आयुष डॉक्टर";
+                    break;
+                case "Homeopath doctor":
+                    val = "होमिओपॅथ डॉक्टर";
+                    break;
+                case "Traditional healer/quack":
+                    val = "पारंपारिक उपचार करणारा/क्वॅक";
+                    break;
+                case "Did not consult any health provider for this issue":
+                    val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
+                    break;
+                case "Other (specify)":
+                    val = "इतर (निर्दिष्ट करा)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getPrimeryHealthProvider(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "सरकारी डॉक्टर":
+                    val = "Government doctor";
+                    break;
+                case "खाजगी डॉक्टर":
+                    val = "Private doctor";
+                    break;
+                case "स्टाफ नर्स":
+                    val = "Staff nurse";
+                    break;
+                case "ANM":
+                    val = "ANM";
+                    break;
+                case "आशा":
+                    val = "Asha";
+                    break;
+                case "AWW":
+                    val = "AWW";
+                    break;
+                case "RMP":
+                    val = "RMP";
+                    break;
+                case "आयुष डॉक्टर":
+                    val = "Ayush doctor";
+                    break;
+                case "होमिओपॅथ डॉक्टर":
+                    val = "Homeopath doctor";
+                    break;
+                case "पारंपारिक उपचार करणारा/क्वॅक":
+                    val = "Traditional healer/quack";
+                    break;
+                case "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही":
+                    val = "Did not consult any health provider for this issue";
+                    break;
+                case "इतर (निर्दिष्ट करा)":
+                    val = "Other (specify)";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getPrimeryHealthProvider_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+
+                switch (val) {
+                    case "Government doctor":
+                        val = "सरकारी डॉक्टर";
+                        break;
+                    case "Private doctor":
+                        val = "खाजगी डॉक्टर";
+                        break;
+                    case "Staff nurse":
+                        val = "स्टाफ नर्स";
+                        break;
+                    case "ANM":
+                        val = "ANM";
+                        break;
+                    case "Asha":
+                        val = "आशा";
+                        break;
+                    case "AWW":
+                        val = "AWW";
+                        break;
+                    case "RMP":
+                        val = "RMP";
+                        break;
+                    case "Ayush doctor":
+                        val = "आयुष डॉक्टर";
+                        break;
+                    case "Homeopath doctor":
+                        val = "होमिओपॅथ डॉक्टर";
+                        break;
+                    case "Traditional healer/quack":
+                        val = "पारंपारिक उपचार करणारा/क्वॅक";
+                        break;
+                    case "Did not consult any health provider for this issue":
+                        val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
+                        break;
+                    case "Other (specify)":
+                        val = "इतर (निर्दिष्ट करा)";
+                        break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getHealthIsReported(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "ताप":
+                    val = "Fever";
+                    break;
+                case "खोकला/सर्दी":
+                    val = "Cough/ Cold";
+                    break;
+                case "अतिसार":
+                    val = "Diarrhoea";
+                    break;
+                case "इजा":
+                    val = "Injury";
+                    break;
+                case "त्वचेच्या समस्या":
+                    val = "Skin Issues";
+                    break;
+                case "डोळा /दृष्टी समस्या":
+                    val = "Eye /Vision issues";
+                    break;
+                case "सांधे/हाडांचे दुखणे":
+                    val = "Joint/Bone pain";
+                    break;
+                case "इतर (निर्दिष्ट करा)":
+                    val = "Others (Specify)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getHealthIsReported_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Fever":
+                    val = "ताप";
+                    break;
+                case "Cough/ Cold":
+                    val = "खोकला/सर्दी";
+                    break;
+                case "Diarrhoea":
+                    val = "अतिसार";
+                    break;
+                case "Injury":
+                    val = "इजा";
+                    break;
+                case "Skin Issues":
+                    val = "त्वचेच्या समस्या";
+                    break;
+                case "Eye /Vision issues":
+                    val = "डोळा /दृष्टी समस्या";
+                    break;
+                case "Joint/Bone pain":
+                    val = "सांधे/हाडांचे दुखणे";
+                    break;
+                case "Others (Specify)":
+                    val = "इतर (निर्दिष्ट करा)";
+                    break;
+
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getBMI(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "कधीही तपासले नाही":
+                    val = "Never Checked";
+                    break;
+                case "गेल्या एका आठवड्यात":
+                    val = "In past one week";
+                    break;
+                case "गेल्या महिन्याच्या आत":
+                    val = "Within last month";
+                    break;
+                case "एक आठवडा ते ३ महिन्यांपूर्वी":
+                    val = "between one week to 3 months ago";
+                    break;
+                case "3 महिने-6 महिन्यांपूर्वी":
+                    val = "between 3 months-6months ago";
+                    break;
+                case "6 महिन्यांपेक्षा जास्त":
+                    val = "More than 6 months";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getBMI_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+
+                case "Never Checked":
+                    val = "कधीही तपासले नाही";
+                    break;
+                case "In past one week":
+                    val = "गेल्या एका आठवड्यात";
+                    break;
+                case "Within last month":
+                    val = "गेल्या महिन्याच्या आत";
+                    break;
+                case "between one week to 3 months ago":
+                    val = "एक आठवडा ते ३ महिन्यांपूर्वी";
+                    break;
+                case "between 3 months-6months ago":
+                    val = "3 महिने-6 महिन्यांपूर्वी";
+                    break;
+                case "More than 6 months":
+                    val = "6 महिन्यांपेक्षा जास्त";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+
+    public static String getHB(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "कधीही तपासले नाही":
+                    val = "Never Checked";
+                    break;
+                case "गेल्या एका आठवड्यात":
+                    val = "In past one week";
+                    break;
+                case "गेल्या महिन्याच्या आत":
+                    val = "Within last month";
+                    break;
+                case "एक आठवडा ते ३ महिन्यांपूर्वी":
+                    val = "between one week to 3 months ago";
+                    break;
+                case "3 महिने-6 महिन्यांपूर्वी":
+                    val = "between 3 months-6months ago";
+                    break;
+                case "6 महिन्यांपेक्षा जास्त":
+                    val = "More than 6 months";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getHB_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Never Checked":
+                    val = "कधीही तपासले नाही";
+                    break;
+                case "In past one week":
+                    val = "गेल्या एका आठवड्यात";
+                    break;
+                case "Within last month":
+                    val = "गेल्या महिन्याच्या आत";
+                    break;
+                case "between one week to 3 months ago":
+                    val = "एक आठवडा ते ३ महिन्यांपूर्वी";
+                    break;
+                case "between 3 months-6months ago":
+                    val = "3 महिने-6 महिन्यांपूर्वी";
+                    break;
+                case "More than 6 months":
+                    val = "6 महिन्यांपेक्षा जास्त";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getSuger(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "कधीही तपासले नाही":
+                    val = "Never Checked";
+                    break;
+                case "गेल्या एका आठवड्यात":
+                    val = "In past one week";
+                    break;
+                case "गेल्या महिन्याच्या आत":
+                    val = "Within last month";
+                    break;
+                case "एक आठवडा ते ३ महिन्यांपूर्वी":
+                    val = "between one week to 3 months ago";
+                    break;
+                case "3 महिने-6 महिन्यांपूर्वी":
+                    val = "between 3 months-6months ago";
+                    break;
+                case "6 महिन्यांपेक्षा जास्त":
+                    val = "More than 6 months";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
+    public static String getSuger_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Never Checked":
+                    val = "कधीही तपासले नाही";
+                    break;
+                case "In past one week":
+                    val = "गेल्या एका आठवड्यात";
+                    break;
+                case "Within last month":
+                    val = "गेल्या महिन्याच्या आत";
+                    break;
+                case "between one week to 3 months ago":
+                    val = "एक आठवडा ते ३ महिन्यांपूर्वी";
+                    break;
+                case "between 3 months-6months ago":
+                    val = "3 महिने-6 महिन्यांपूर्वी";
+                    break;
+                case "More than 6 months":
+                    val = "6 महिन्यांपेक्षा जास्त";
+                    break;
+
+                default:
+                    return val;
+            }
+
+        }
+
+        return val;
+    }
+
 }

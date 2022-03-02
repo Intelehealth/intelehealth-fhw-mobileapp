@@ -227,7 +227,7 @@
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="20sp"
                 android:fontFamily="@font/poppins"
-                android:text="@string/annual_household_expenditure_on_food"
+                android:text="@string/annual_household_expenditure_on_health"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
