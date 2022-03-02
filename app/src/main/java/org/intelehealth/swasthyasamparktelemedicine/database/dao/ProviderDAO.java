@@ -142,4 +142,30 @@ public class ProviderDAO {
 
     }
 
+    public List<String> getProvidersUuidListUpdated() throws DAOException {
+        List<String> providersList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "select distinct a.uuid,a.given_name,a.family_name, b.value from tbl_provider a, tbl_patient_attribute b where b.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND b.value = a.uuid";
+            Cursor cursor = db.rawQuery(query, new String[]{});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+
+        }
+        return providersList;
+
+    }
+
 }

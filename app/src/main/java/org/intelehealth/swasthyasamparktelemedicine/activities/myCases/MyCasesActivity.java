@@ -186,7 +186,7 @@ public class MyCasesActivity extends AppCompatActivity {
         String[] creator_uuid = null;
         try {
             creator_names = providerDAO.getProvidersListUpdated().toArray(new String[0]);
-            creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);
+            creator_uuid = providerDAO.getProvidersUuidListUpdated().toArray(new String[0]);
         } catch (DAOException e) {
             e.printStackTrace();
         }
