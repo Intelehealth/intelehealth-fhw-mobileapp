@@ -1150,7 +1150,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         if (mAgeYears >= 18) {
             ll18.setVisibility(View.VISIBLE);
         } else {
-            ll18.setVisibility(View.VISIBLE);
+            ll18.setVisibility(View.GONE);
         }
     }
 
