@@ -1078,7 +1078,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Log.d("ritika","1164"+relationhoh_Transl);
             int spinner_position = adapter_whatisyourrelation.getPosition(relationhoh_Transl);
             Log.d("ritika","1168"+spinner_position);
-          spinner_whatisyourrelation.setSelection(spinner_position);
+
+            if(spinner_position == -1) {
+                et_whatisyourrelation_other.setVisibility(View.VISIBLE);
+                spinner_whatisyourrelation.setSelection(16);
+                et_whatisyourrelation_other.setText(relationhoh_Transl);
+            }
+            else {
+                et_whatisyourrelation_other.setVisibility(View.GONE);
+                spinner_whatisyourrelation.setSelection(spinner_position);
+            }
         }
         //Relations ship HOH
 
@@ -2616,9 +2625,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("RelationshipStatusHOH"));
-        patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_whatisyourrelation));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        if(et_whatisyourrelation_other.getVisibility() == View.GONE)
+            patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(),
+                    sessionManager.getAppLanguage()));
+        else
+            patientAttributesDTO.setValue(et_whatisyourrelation_other.getText().toString());
+
+        Log.v("maiin", "value: "+ patientAttributesDTO.getValue());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // maritual

@@ -1145,7 +1145,8 @@
                                 android:id="@+id/edittext_howmanytimmespregnant"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:inputType="number"/>
 
                             <TextView
                                 android:layout_width="match_parent"
