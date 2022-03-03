@@ -469,7 +469,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Logger.logE("Identification", "#648", e);
         }
         try {
-            String occupationLanguage = "occupation_" + sessionManager.getAppLanguage();
+            String occupationLanguage = "occupation_identification_" + sessionManager.getAppLanguage();
 //            String occupationLanguage = "occupation_" + "en";
             int occupations = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
             if (occupations != 0) {
