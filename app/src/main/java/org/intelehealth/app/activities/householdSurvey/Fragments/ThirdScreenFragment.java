@@ -310,18 +310,39 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("primarySourceOfRunningWater")) {
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.village_tank)))
                         village_tank.setChecked(true);
+                    else
+                        village_tank.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.open_well)))
                         open_well.setChecked(true);
+                    else
+                        open_well.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.hand_pump_checkbox)))
                         handpump.setChecked(true);
+                    else
+                        handpump.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.bore_well)))
                         borewell.setChecked(true);
+                    else
+                        borewell.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.river)))
                         river.setChecked(true);
+                    else
+                        river.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.pond)))
                         pond.setChecked(true);
+                    else
+                        pond.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.other)))
                         other.setChecked(true);
+                    else
+                        other.setChecked(false);
+
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));

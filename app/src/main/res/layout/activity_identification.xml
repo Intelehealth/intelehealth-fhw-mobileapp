@@ -695,7 +695,7 @@
                             android:id="@+id/spinner_occupation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/occupation_en" />
+                            android:entries="@array/occupation_identification_en" />
 
                         <Space
                             android:layout_width="10dp"

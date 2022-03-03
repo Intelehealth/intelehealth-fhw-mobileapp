@@ -463,7 +463,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Logger.logE("Identification", "#648", e);
         }
         try {
-            String occupationLanguage = "occupation_" + sessionManager.getAppLanguage();
+            String occupationLanguage = "occupation_identification_" + sessionManager.getAppLanguage();
 //            String occupationLanguage = "occupation_" + "en";
             int occupations = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
             if (occupations != 0) {
@@ -2381,22 +2381,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (spinner_bpchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_bpchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_bpchecked;
-            cancel = true;
-            return;
-        }
+        if(ll18.getVisibility() == View.VISIBLE) {
+            if (spinner_bpchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_bpchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_bpchecked;
+                cancel = true;
+                return;
+            }
 
-        if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_sugarchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_sugarchecked;
-            cancel = true;
-            return;
+            if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_sugarchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_sugarchecked;
+                cancel = true;
+                return;
+            }
         }
 
         if (spinner_hbchecked.getSelectedItemPosition() == 0) {
@@ -3432,22 +3434,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (spinner_bpchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_bpchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_bpchecked;
-            cancel = true;
-            return;
-        }
+        if(ll18.getVisibility() == View.VISIBLE) {
+            if (spinner_bpchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_bpchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_bpchecked;
+                cancel = true;
+                return;
+            }
 
-        if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_sugarchecked.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_sugarchecked;
-            cancel = true;
-            return;
+            if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_sugarchecked.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_sugarchecked;
+                cancel = true;
+                return;
+            }
         }
 
         if (spinner_hbchecked.getSelectedItemPosition() == 0) {

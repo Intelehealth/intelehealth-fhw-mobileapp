@@ -1939,6 +1939,37 @@
         <item>Other sources of income</item>
     </string-array>
 
+    <string-array name="occupation_identification_en">
+        <item>SALARIED GOVERNMENT JOB</item>
+        <item>SALARIED PRIVATE JOB</item>
+        <item>PETTY BUSINESS/SHOP OWNER</item>
+        <item>TECHNICIAN/CRAFTSMAN/OTHER SKILLED WORK (DRIVER, MASON ETC)</item>
+        <item>AGRICULTURAL FARMER</item>
+        <item>TENANT FARMER/AGRICULTURAL DAILY WAGE WORKER</item>
+        <item>DAILY WAGE WORKER (UNSKILLED WORK)</item>
+        <item>HOUSEHOLD WORK</item>
+        <item>STUDENT</item>
+        <item>UNEMPLOYED</item>
+        <item>RETIRED (WITH PENSION)</item>
+        <item>RETIRED (WITHOUT PENSION)</item>
+        <item>OTHERS (SPECIFY)</item>
+    </string-array>
+
+    <string-array name="occupation_identification_mr">
+        <item>SALARIED GOVERNMENT JOB</item>
+        <item>SALARIED PRIVATE JOB</item>
+        <item>PETTY BUSINESS/SHOP OWNER</item>
+        <item>TECHNICIAN/CRAFTSMAN/OTHER SKILLED WORK (DRIVER, MASON ETC)</item>
+        <item>AGRICULTURAL FARMER</item>
+        <item>TENANT FARMER/AGRICULTURAL DAILY WAGE WORKER</item>
+        <item>DAILY WAGE WORKER (UNSKILLED WORK)</item>
+        <item>HOUSEHOLD WORK</item>
+        <item>STUDENT</item>
+        <item>UNEMPLOYED</item>
+        <item>RETIRED (WITH PENSION)</item>
+        <item>RETIRED (WITHOUT PENSION)</item>
+        <item>OTHERS (SPECIFY)</item>
+    </string-array>
 
     <string-array name="relationshipHoH_mr">
         <item>निवडा</item>
