@@ -3822,6 +3822,22 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
             }
         });
         spinner_childalive = findViewById(R.id.spinner_childalive);
+        spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if(position == 2)
+                    edittext_babyagedied.setVisibility(View.VISIBLE);
+                else
+                    edittext_babyagedied.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
         spinner_sexofbaby = findViewById(R.id.spinner_sexofbaby);
         spinner_pregnancyplanned = findViewById(R.id.spinner_pregnancyplanned);

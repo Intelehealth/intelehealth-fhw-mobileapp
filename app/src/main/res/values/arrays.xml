@@ -1950,38 +1950,38 @@
     </string-array>
 
     <string-array name="occupation_identification_en">
-        <Item>Select</Item>
-        <Item>Salaried Government Job</Item>
-        <Item>Salaried Private Job</Item>
-        <Item>Petty Business or Shop Owner</Item>
-        <Item>Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)</Item>
-        <Item>Agricultural Farmer</Item>
-        <Item>Tenant Farmer or Agricultural Daily Wage Worker</Item>
-        <Item>Daily Wage Worker (Unskilled Work)</Item>
-        <Item>Household Work</Item>
-        <Item>Student</Item>
-        <Item>Unemployed</Item>
-        <Item>Retired (With Pension)</Item>
-        <Item>Retired (Without Pension)</Item>
-        <Item>Others (Specify)</Item>
+        <item>Select</item>
+        <item>Salaried Government Job</item>
+        <item>Salaried Private Job</item>
+        <item>Petty Business or Shop Owner</item>
+        <item>Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)</item>
+        <item>Agricultural Farmer</item>
+        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
+        <item>Daily Wage Worker (Unskilled Work)</item>
+        <item>Household Work</item>
+        <item>Student</item>
+        <item>Unemployed</item>
+        <item>Retired (With Pension)</item>
+        <item>Retired (Without Pension)</item>
+        <item>Others (Specify)</item>
 
     </string-array>
 
     <string-array name="occupation_identification_mr">
-        <Item>निवडा</Item>
-        <Item>पगारदार सरकारी नोकरी</Item>
-        <Item>पगारदार खाजगी नोकरी</Item>
-        <Item>क्षुद्र व्यवसाय किंवा दुकान मालक</Item>
-        <Item>तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)</Item>
-        <Item>कृषी शेतकरी</Item>
-        <Item>भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार</Item>
-        <Item>रोजंदारी कामगार (अकुशल काम)</Item>
-        <Item>घरातील काम</Item>
-        <Item>विद्यार्थी</Item>
-        <Item>बेरोजगार</Item>
-        <Item>सेवानिवृत्त (पेन्शनसह)</Item>
-        <Item>सेवानिवृत्त (पेन्शनशिवाय)</Item>
-        <Item>इतर (निर्दिष्ट करा)</Item>
+        <item>निवडा</item>
+        <item>पगारदार सरकारी नोकरी</item>
+        <item>पगारदार खाजगी नोकरी</item>
+        <item>क्षुद्र व्यवसाय किंवा दुकान मालक</item>
+        <item>तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)</item>
+        <item>कृषी शेतकरी</item>
+        <item>भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार</item>
+        <item>रोजंदारी कामगार (अकुशल काम)</item>
+        <item>घरातील काम</item>
+        <item>विद्यार्थी</item>
+        <item>बेरोजगार</item>
+        <item>सेवानिवृत्त (पेन्शनसह)</item>
+        <item>सेवानिवृत्त (पेन्शनशिवाय)</item>
+        <item>इतर (निर्दिष्ट करा)</item>
     </string-array>
 
     <string-array name="relationshipHoH_mr">
