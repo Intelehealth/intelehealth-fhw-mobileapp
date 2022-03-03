@@ -283,7 +283,10 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
-            patientAttributesDTO.setValue(binding.religionDropDown.getSelectedItem().toString());
+            if(binding.otherReligionLayout.getVisibility() == View.GONE)
+                patientAttributesDTO.setValue(binding.religionDropDown.getSelectedItem().toString());
+            else
+                patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -384,8 +387,19 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 //                }
                 if (name.equalsIgnoreCase("householdHeadReligion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        binding.religionDropDown.setSelection(getIndex(binding.religionDropDown, value1));
+                    if (value1 != null) {
+                        int position = getIndex(binding.religionDropDown, value1);
+                        if (position == -1) { // If other was selected by user.
+                            binding.otherReligionLayout.setVisibility(View.VISIBLE);
+                            binding.religionDropDown.setSelection(6);
+                            binding.otherReligionTextView.setText(value1);
+                            Log.v("second", "praj" + value1);
+                        } else {
+                            binding.otherReligionLayout.setVisibility(View.GONE);
+                            binding.religionDropDown.setSelection(getIndex(binding.religionDropDown, value1));
+                        }
+                    }
+
                 }
                 if (name.equalsIgnoreCase("householdHeadCaste")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -480,7 +494,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             if(spinner.getItemAtPosition(i).toString().equalsIgnoreCase(s))
                 return i;
         }
-        return 0;
+        return -1;
     }
 
     void defaultSelectRB(RadioGroup radioGroup, String s) {
