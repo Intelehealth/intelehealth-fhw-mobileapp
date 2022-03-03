@@ -1,11 +1,13 @@
 package org.intelehealth.ekalarogya.database.dao;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.models.dto.LocationDTO;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_DistrictModel;
@@ -142,9 +144,9 @@ public class NewLocationDao {
         return isCreated;
     }
 
-    public List<String> getStateList() {
+    public List<String> getStateList(Context context) {
         List<String> state_locations = new ArrayList<String>();
-        state_locations.add("Select State");
+        state_locations.add(context.getResources().getString(R.string.setup_select_state_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT DISTINCT state FROM tbl_location_new", null);
         Log.d("count", "count: " + cursor.getCount());
@@ -158,9 +160,9 @@ public class NewLocationDao {
         return state_locations;
     }
 
-    public List<String> getDistrictList(String stateName) {
+    public List<String> getDistrictList(String stateName,Context context) {
         List<String> district_locations = new ArrayList<String>();
-        district_locations.add("Select District");
+        district_locations.add(context.getResources().getString(R.string.setup_select_district_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT DISTINCT district FROM tbl_location_new where state = ? COLLATE NOCASE", new String[]{stateName});
         Log.d("count", "count: " + cursor.getCount());
@@ -175,9 +177,9 @@ public class NewLocationDao {
         return district_locations;
     }
 
-    public List<String> getSanchList(String stateName, String districtName) {
+    public List<String> getSanchList(String stateName, String districtName,Context context) {
         List<String> sanch_locations = new ArrayList<String>();
-        sanch_locations.add("Select Sanch");
+        sanch_locations.add(context.getResources().getString(R.string.setup_select_sanch_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT DISTINCT tehsil FROM tbl_location_new where state = ? AND district=? COLLATE NOCASE", new String[]{stateName, districtName});
         Log.d("count", "count: " + cursor.getCount());
@@ -192,9 +194,9 @@ public class NewLocationDao {
         return sanch_locations;
     }
 
-    public List<String> getVillageList(String stateName, String districtName, String sanchName) {
+    public List<String> getVillageList(String stateName, String districtName, String sanchName, Context context) {
         List<String> village_locations = new ArrayList<String>();
-        village_locations.add("Select Village");
+        village_locations.add(context.getResources().getString(R.string.setup_select_village_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT DISTINCT village FROM tbl_location_new where state = ? AND district=? AND tehsil=? COLLATE NOCASE", new String[]{stateName, districtName, sanchName});
         Log.d("count", "count: " + cursor.getCount());

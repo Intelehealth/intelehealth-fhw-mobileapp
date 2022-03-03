@@ -709,4 +709,18 @@
     <string name="start_newvisit_confirmation_msg">Are you sure you want to start a visit?</string>
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
 
+    //Language Screen
+    <string name="choose_lang_title">Choose your Language</string>
+    <string name="save_button">Save</string>
+
+    //-------setup Location string-----
+    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
+    <string name="setup_select_district_str">Select District</string>
+    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
+    <string name="setup_select_sanch_str">Select Sanch</string>
+    <string name="setup_select_dropdown_sanch_msg">Select Sanch from dropdown</string>
+    <string name="setup_select_village_str">Select Village</string>
+    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+
 </resources>

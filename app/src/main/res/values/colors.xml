@@ -16,6 +16,13 @@
     <color name="yellow">#FFEB3B</color>
     <color name="amber">#FFC107</color>
     <color name="gray">#444440</color>
+    <color name="gray_0_0">#F3F3F3</color>
+    <color name="gray_1">#E4E2E2</color>
+    <color name="gray_2">#444440</color>
+    <color name="gray_3">#444440</color>
+    <color name="gray_4">#767272</color>
+    <color name="gray_5">#444440</color>
+    <color name="gray_6">#1A1919</color>
     <color name="medium_gray">#9E9E9E</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#80FFFFFF</color>

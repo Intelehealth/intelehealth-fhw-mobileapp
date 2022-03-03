@@ -36,7 +36,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.chmProfileActivity.HwProfileActivity"/>
+        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"></activity>
+        <activity android:name=".activities.chmProfileActivity.HwProfileActivity" />
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"

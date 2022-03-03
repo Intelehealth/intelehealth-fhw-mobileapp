@@ -1244,7 +1244,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         NewLocationDao newLocationDao=new NewLocationDao();
         List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(),sessionManager.getDistrictName()
-                ,sessionManager.getSanchName());
+                ,sessionManager.getSanchName(),context);
         if(villageList.size()>1) {
             LocationArrayAdapter locationArrayAdapter =
                     new LocationArrayAdapter(IdentificationActivity.this, villageList);

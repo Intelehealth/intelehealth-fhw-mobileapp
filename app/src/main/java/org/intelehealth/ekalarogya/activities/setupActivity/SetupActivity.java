@@ -274,7 +274,7 @@ public class SetupActivity extends AppCompatActivity {
                 if(position!=0){
                     String state_uuid = "";
                     selectedState = spinner_state.getSelectedItem().toString();
-                    List<String> district_locations = newLocationDao.getDistrictList(selectedState);
+                    List<String> district_locations = newLocationDao.getDistrictList(selectedState,context);
                     if(district_locations.size()>1) {
                         LocationArrayAdapter locationArrayAdapter =
                                 new LocationArrayAdapter(SetupActivity.this, district_locations);
@@ -348,7 +348,7 @@ public class SetupActivity extends AppCompatActivity {
                 if(position!=0){
                     String district_uuid = "";
                     selectedDistrict=spinner_district.getSelectedItem().toString();
-                    List<String> sanch_locations = newLocationDao.getSanchList(selectedState,selectedDistrict);
+                    List<String> sanch_locations = newLocationDao.getSanchList(selectedState,selectedDistrict,context);
                     if(sanch_locations.size()>1) {
                         LocationArrayAdapter locationArrayAdapter =
                                 new LocationArrayAdapter(SetupActivity.this, sanch_locations);
@@ -420,7 +420,7 @@ public class SetupActivity extends AppCompatActivity {
                 if(position!=0){
                     String sanch_uuid = "";
                     selectedSanch=spinner_sanch.getSelectedItem().toString();
-                    List<String> village_locations = newLocationDao.getVillageList(selectedState,selectedDistrict,selectedSanch);
+                    List<String> village_locations = newLocationDao.getVillageList(selectedState,selectedDistrict,selectedSanch,context);
                     if(village_locations.size()>1){
                     LocationArrayAdapter locationArrayAdapter =
                             new LocationArrayAdapter(SetupActivity.this, village_locations);
@@ -551,42 +551,42 @@ public class SetupActivity extends AppCompatActivity {
 
         if (value.equalsIgnoreCase("state")) {
             List<String> list_district = new ArrayList<>();
-            list_district.add("Select District");
+            list_district.add(getResources().getString(R.string.setup_select_district_str));
             spinner_district.setEnabled(false);
             spinner_district.setAlpha(0.4F);
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
             spinner_district.setAdapter(adapter_district);
 
             List<String> list_sanch = new ArrayList<>();
-            list_sanch.add("Select Sanch");
+            list_sanch.add(getResources().getString(R.string.setup_select_sanch_str));
             spinner_sanch.setEnabled(false);
             spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
             spinner_sanch.setAdapter(adapter_sanch);
 
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getResources().getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
         } else if (value.equalsIgnoreCase("district")) {
             List<String> list_sanch = new ArrayList<>();
-            list_sanch.add("Select Sanch");
+            list_sanch.add(getResources().getString(R.string.setup_select_sanch_str));
             spinner_sanch.setEnabled(false);
             spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
             spinner_sanch.setAdapter(adapter_sanch);
 
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getResources().getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
         } else if (value.equalsIgnoreCase("sanch")) {
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getResources().getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
@@ -595,28 +595,28 @@ public class SetupActivity extends AppCompatActivity {
             //do nothing
         } else {
             List<String> list_state = new ArrayList<>();
-            list_state.add("Select State");
+            list_state.add(getResources().getString(R.string.setup_select_state_str));
             spinner_state.setEnabled(false);
             spinner_state.setAlpha(0.4F);
             LocationArrayAdapter adapter_state = new LocationArrayAdapter(SetupActivity.this, list_state);
             spinner_state.setAdapter(adapter_state);
 
             List<String> list_district = new ArrayList<>();
-            list_district.add("Select District");
+            list_district.add(getResources().getString(R.string.setup_select_district_str));
             spinner_district.setEnabled(false);
             spinner_district.setAlpha(0.4F);
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
             spinner_district.setAdapter(adapter_district);
 
             List<String> list_sanch = new ArrayList<>();
-            list_sanch.add("Select Sanch");
+            list_sanch.add(getResources().getString(R.string.setup_select_sanch_str));
             spinner_sanch.setEnabled(false);
             spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
             spinner_sanch.setAdapter(adapter_sanch);
 
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getResources().getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
@@ -679,31 +679,31 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
             focusView = spinner_state;
             TextView t = (TextView) spinner_state.getSelectedView();
-            t.setError("Select State");
+            t.setError(getResources().getString(R.string.setup_select_state_str));
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select State from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this,getResources().getString(R.string.setup_select_dropdown_state_msg), Toast.LENGTH_LONG).show();
         } else if (spinner_district.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_district;
             TextView t = (TextView) spinner_district.getSelectedView();
-            t.setError("Select District");
+            t.setError(getResources().getString(R.string.setup_select_district_str));
             focusView.setEnabled(true);
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select District from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getResources().getString(R.string.setup_select_dropdown_district_msg), Toast.LENGTH_LONG).show();
         } else if (spinner_sanch.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_sanch;
             TextView t = (TextView) spinner_sanch.getSelectedView();
-            t.setError("Select Sanch");
+            t.setError(getResources().getString(R.string.setup_select_sanch_str));
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select Sanch from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getResources().getString(R.string.setup_select_dropdown_sanch_msg), Toast.LENGTH_LONG).show();
         } else if (spinner_village.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_village;
             TextView t = (TextView) spinner_village.getSelectedView();
-            t.setError("Select Village");
+            t.setError(getResources().getString(R.string.setup_select_village_str));
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select Village from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getResources().getString(R.string.setup_select_dropdown_village_msg), Toast.LENGTH_LONG).show();
         }
 
         if (cancel) {
@@ -927,7 +927,7 @@ public class SetupActivity extends AppCompatActivity {
                                     newLocationDao.insertSetupLocations(location);
                                     customProgressDialog.dismiss();
 
-                                    List<String> state_locations=newLocationDao.getStateList();
+                                    List<String> state_locations=newLocationDao.getStateList(context);
 
                                     if(state_locations.size()!=0) {
                                         LocationArrayAdapter locationArrayAdapter =
@@ -1047,7 +1047,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private List<String> getLocation(List<Result> resultList) {
         List<String> list = new ArrayList<>();
-        list.add("Select State");
+        list.add(getResources().getString(R.string.setup_select_state_str));
         for (int i = 0; i < resultList.size(); i++) {
             list.add(resultList.get(i).getDisplay());
         }
@@ -1059,11 +1059,11 @@ public class SetupActivity extends AppCompatActivity {
         List<String> list = new ArrayList<>();
 
         if (location_wise.equalsIgnoreCase("state")) {
-            list.add("Select District");
+            list.add(getResources().getString(R.string.setup_select_district_str));
         } else if (location_wise.equalsIgnoreCase("district")) {
-            list.add("Select Sanch");
+            list.add(getResources().getString(R.string.setup_select_sanch_str));
         } else if (location_wise.equalsIgnoreCase("sanch")) {
-            list.add("Select Village");
+            list.add(getResources().getString(R.string.setup_select_village_str));
         }
 
         for (int i = 0; i < childLocationList.size(); i++) {
