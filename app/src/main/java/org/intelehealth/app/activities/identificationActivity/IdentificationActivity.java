@@ -3803,12 +3803,14 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
                     binding.llBabyGender.setVisibility(View.GONE);
                     binding.llChildComplications.setVisibility(View.GONE);
+                    binding.edittextBabyagedied.setVisibility(View.GONE);
 
                 } else {
                     binding.edittextFocalfacility.setVisibility(View.VISIBLE);
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                     binding.llChildComplications.setVisibility(View.VISIBLE);
+                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
 
