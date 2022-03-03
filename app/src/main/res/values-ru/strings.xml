@@ -685,7 +685,7 @@
     <string name="notification_title">Синхронизация в реальном времени включена!</string>
     <string name="notification_message"></string>
     <string name="ticker_text">Ищу новую задачу</string>
-    <string name="identification_screen_prompt_citizen_id">ПИН (*)</string>
+    <string name="identification_screen_prompt_citizen_id">ПИН</string>
     <string name="citizen_id_validation_message">Пожалуйста введите 14 цифр вашего ПИН</string>
 
     <string name="country_matching_String_forIndia">Индия</string>

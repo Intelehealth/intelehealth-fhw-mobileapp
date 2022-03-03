@@ -675,7 +675,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
 
-        if(patient_new.getCitizenID()!=null && !patient_new.getCitizenID().isEmpty()) {
+        if(patient_new!=null && patient_new.getCitizenID()!=null && !patient_new.getCitizenID().isEmpty()) {
             citizenIDView.setText(String.format("%1$s-%2$s-%3$s-%4$s-%5$s",
                     patient_new.getCitizenID().substring(0, 1),
                     patient_new.getCitizenID().substring(1, 3),
@@ -688,13 +688,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
 //
-        if ((patient_new.getEducation_level() == null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            education_statusView.setText("Не предоставлен");
-        } else {
+        if (patient_new != null) {
+            if ((patient_new.getEducation_level() == null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                education_statusView.setText("Не предоставлен");
+            } else {
 
-            education_statusView.setText(patient_new.getEducation_level());
+                education_statusView.setText(patient_new.getEducation_level());
 
+            }
         }
         // education_statusView.setText(patient_new.getEducation_level());
         if ((patient_new.getEconomic_status() == null || patient_new.getEconomic_status().equalsIgnoreCase("Not provided")) &&
@@ -730,7 +732,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             // casteView.setText(patient_new.getCaste());
         }*/
 
-        if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
+        if (patient_new!=null && patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
             sdwView.setText(patient_new.getSdw());
         } else {
             sdwRow.setVisibility(View.GONE);

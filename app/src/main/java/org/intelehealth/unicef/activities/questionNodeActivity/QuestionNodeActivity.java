@@ -668,7 +668,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             .replace("time per day", getString(R.string.per_Day))
                             .replace("times per week", getString(R.string.per_Hour))
                             .replace("times per month", getString(R.string.per_Month))
-                            .replace("times per year", getString(R.string.per_Year)) ));
+                            .replace("times per year", getString(R.string.per_Year))));
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String a = currentNode.formQuestionAnswer(0);
             Log.d("tag", a);

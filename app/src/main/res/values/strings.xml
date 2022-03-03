@@ -682,7 +682,7 @@
     <string name="notification_title">Realtime sync is ON!</string>
     <string name="notification_message"></string>
     <string name="ticker_text">Looking for new task</string>
-    <string name="identification_screen_prompt_citizen_id">Citizen ID(*)</string>
+    <string name="identification_screen_prompt_citizen_id">Citizen ID</string>
     <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
     <string name="country_matching_String_forIndia">India</string>
     <string name="country_matching_String_forPhilippines">Philippines</string>

@@ -360,6 +360,16 @@ public class Node implements Serializable {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
+                Log.v(TAG, "currentNode - " + new Gson().toJson(node));
+                // Lincon - Managed for single selection from option list
+                if (!node.isMultiChoice()) {
+                    for (int i = 0; i < node.getOptionsList().size(); i++) {
+
+                        if (i != position) {
+                            node.getOption(i).setUnselected();
+                        }
+                    }
+                }
                 adapter.notifyDataSetChanged();
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
