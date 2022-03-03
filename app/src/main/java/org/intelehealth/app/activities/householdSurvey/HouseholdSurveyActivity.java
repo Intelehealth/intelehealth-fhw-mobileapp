@@ -27,6 +27,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_household_survey);
+        setTitle(getString(R.string.household_survey));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new FirstScreenFragment())
                 .commit();

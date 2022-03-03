@@ -18,6 +18,7 @@ import static org.intelehealth.app.utilities.StringUtils.getComplications_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanned_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
+import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getOvercomePragnency_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
@@ -1070,8 +1071,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             relationhoh_Transl = getRelationShipHoH_edit(patient1.getRelationshiphoh(), sessionManager.getAppLanguage());
             Log.d("ritika", "1164" + relationhoh_Transl);
             int spinner_position = adapter_whatisyourrelation.getPosition(relationhoh_Transl);
-            Log.d("ritika", "1168" + spinner_position);
-            spinner_whatisyourrelation.setSelection(spinner_position);
+
+            if (spinner_position == -1) {
+                et_whatisyourrelation_other.setVisibility(View.VISIBLE);
+                spinner_whatisyourrelation.setSelection(16);
+                et_whatisyourrelation_other.setText(relationhoh_Transl);
+            } else {
+                et_whatisyourrelation_other.setVisibility(View.GONE);
+                spinner_whatisyourrelation.setSelection(spinner_position);
+            }
         }
         //Relations ship HOH
 
@@ -1124,7 +1132,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         if (patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
             String occupation_Transl = "";
-            occupation_Transl = getOccupation_edit(patient1.getOccupation(), sessionManager.getAppLanguage());
+            occupation_Transl = getOccupationsIdentification_Edit(patient1.getOccupation(), sessionManager.getAppLanguage());
             int spinner_position = occupationAdapter.getPosition(occupation_Transl);
             mOccupation.setSelection(spinner_position);
         }
@@ -2381,7 +2389,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if(ll18.getVisibility() == View.VISIBLE) {
+        if (ll18.getVisibility() == View.VISIBLE) {
             if (spinner_bpchecked.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) spinner_bpchecked.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -2472,15 +2480,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
 //            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-//            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getSelectedItem().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 //
-//            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+            patientdto.setCountry(StringUtils.getValue("India"));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+            patientdto.setStateprovince(StringUtils.getValueForStateCity(mState.getSelectedItem().toString()));
+//            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
 //            patientAttributesDTO = new PatientAttributesDTO();
@@ -2509,7 +2518,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
 //            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getSelectedItem().toString()));
-            patientAttributesDTO.setValue(StringUtils.getOccupation(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
@@ -2631,9 +2640,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("RelationshipStatusHOH"));
-        patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_whatisyourrelation));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        if (et_whatisyourrelation_other.getVisibility() == View.GONE)
+            patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(),
+                    sessionManager.getAppLanguage()));
+        else
+            patientAttributesDTO.setValue(et_whatisyourrelation_other.getText().toString());
+
+        Log.v("maiin", "value: " + patientAttributesDTO.getValue());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // maritual
@@ -3434,7 +3447,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if(ll18.getVisibility() == View.VISIBLE) {
+        if (ll18.getVisibility() == View.VISIBLE) {
             if (spinner_bpchecked.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) spinner_bpchecked.getSelectedView();
                 t.setError(getString(R.string.select));
@@ -3802,11 +3815,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
 
                 if (position == 5) {
-                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
-                } else {
                     binding.edittextMonthspregnancylast.setVisibility(View.GONE);
+                } else {
+                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
                 }
 
+                if (position == 5) {
+                    binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
+                } else {
+                    binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
+                }
 
                 if (position == 4 || position == 5) {
                     binding.llDeliveryPlace.setVisibility(View.GONE);
@@ -3820,11 +3838,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
                     binding.llBabyGender.setVisibility(View.GONE);
                     binding.llChildComplications.setVisibility(View.GONE);
+                    binding.edittextBabyagedied.setVisibility(View.GONE);
                 } else {
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                     binding.llChildComplications.setVisibility(View.VISIBLE);
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
+                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -3834,6 +3854,22 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
         });
         spinner_childalive = findViewById(R.id.spinner_childalive);
+        spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 2)
+                    edittext_babyagedied.setVisibility(View.VISIBLE);
+                else
+                    edittext_babyagedied.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
         spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
         spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
