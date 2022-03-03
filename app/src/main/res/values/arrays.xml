@@ -89,11 +89,11 @@
 
     <string-array name="education_en">
         <item>Select</item>
-<!--        <item>Illiterate</item>-->
-<!--        <item>Primary</item>-->
-<!--        <item>Secondary</item>-->
-<!--        <item>Higher Secondary</item>-->
-<!--        <item>Graduation &amp; Higher</item>-->
+        <!--        <item>Illiterate</item>-->
+        <!--        <item>Primary</item>-->
+        <!--        <item>Secondary</item>-->
+        <!--        <item>Higher Secondary</item>-->
+        <!--        <item>Graduation &amp; Higher</item>-->
         <item>Cannot read or write</item>
         <item>Can read and write</item>
         <item>Primary education (till class 5)</item>
@@ -168,13 +168,6 @@
         <item>वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण</item>
         <item>पदवीधर</item>
         <item>पदव्युत्तर</item>
-
-
-
-
-
-
-
 
 
     </string-array>
@@ -1614,8 +1607,6 @@
     <!--Roster-->
 
 
-
-
     <string-array name="relationshipHoH_en">
         <item>Select</item>
         <item>Head of the household</item>
@@ -1689,7 +1680,6 @@
         <item>Joint/Bone pain</item>
         <item>Others (Specify)</item>
     </string-array>
-
 
 
     <string-array name="primaryhealthprovider_en">
@@ -1896,7 +1886,7 @@
         <item>उत्तर देण्यास नकार दिला</item>
     </string-array>
 
-    <string-array name="city_nashik">
+    <string-array name="nas_district">
         <item>@string/district_nashik</item>
     </string-array>
 
@@ -1933,7 +1923,7 @@
 
     </string-array>
     <string-array name="occupation_en">
-        <item>Select</item> 
+        <item>Select</item>
         <item>Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</item>
         <item>Sale of animals/animal products</item>
         <item>Agricultural wage labor (employed for farm work)</item>
@@ -1953,10 +1943,10 @@
         <item>Select</item>
         <item>Salaried Government Job</item>
         <item>Salaried Private Job</item>
-        <item>Petty Business or Shop Owner</item>
-        <item>Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)</item>
+        <item>Petty Business/Shop Owner</item>
+        <item>Technician/Craftsman/Other Skilled Work (Driver, Mason etc)</item>
         <item>Agricultural Farmer</item>
-        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
+        <item>Tenant Farmer/Agricultural Daily Wage Worker</item>
         <item>Daily Wage Worker (Unskilled Work)</item>
         <item>Household Work</item>
         <item>Student</item>
@@ -1964,24 +1954,23 @@
         <item>Retired (With Pension)</item>
         <item>Retired (Without Pension)</item>
         <item>Others (Specify)</item>
-
     </string-array>
 
     <string-array name="occupation_identification_mr">
         <item>निवडा</item>
         <item>पगारदार सरकारी नोकरी</item>
         <item>पगारदार खाजगी नोकरी</item>
-        <item>क्षुद्र व्यवसाय किंवा दुकान मालक</item>
-        <item>तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)</item>
+        <item>लहान व्यवसाय / दुकान मालक</item>
+        <item>तंत्रज्ञान / कारागीर / इतर कुशल काम (चालक, मेसन इ.)</item>
         <item>कृषी शेतकरी</item>
-        <item>भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार</item>
-        <item>रोजंदारी कामगार (अकुशल काम)</item>
-        <item>घरातील काम</item>
+        <item>भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता</item>
+        <item>दैनिक वेतन कर्मचारी (अकुशल काम)</item>
+        <item>घरगुती काम</item>
         <item>विद्यार्थी</item>
         <item>बेरोजगार</item>
-        <item>सेवानिवृत्त (पेन्शनसह)</item>
-        <item>सेवानिवृत्त (पेन्शनशिवाय)</item>
-        <item>इतर (निर्दिष्ट करा)</item>
+        <item>सेवानिवृत्त (पेंशनसह)</item>
+        <item>सेवानिवृत्त (पेंशनशिवाय)</item>
+        <item>इतर (निर्दिष्ट)</item>
     </string-array>
 
     <string-array name="relationshipHoH_mr">
@@ -2044,7 +2033,6 @@
     </string-array>
 
 
-
     <string-array name="bp_mr">
         <item>निवडा</item>
         <item>कधीही तपासले नाही</item>
@@ -2068,8 +2056,6 @@
     </string-array>
 
 
-
-
     <string-array name="hb_mr">
         <item>निवडा</item>
         <item>कधीही तपासले नाही</item>
@@ -2079,7 +2065,6 @@
         <item>3 महिने-6 महिन्यांपूर्वी</item>
         <item>6 महिन्यांपेक्षा जास्त</item>
     </string-array>
-
 
 
     <string-array name="bmi_mr">
@@ -2118,7 +2103,7 @@
         <item>Home</item>
         <item>Sub center</item>
         <item>Chc/ civil hospital at block level</item>
-        <item>District hosptial/ civil hospital at district level</item>
+        <item>District hospital / Civil hospital at district level</item>
         <item>Private clinic</item>
         <item>Private hospital</item>
     </string-array>
@@ -2193,5 +2178,48 @@
         <item>एकाधिक</item>
     </string-array>
 
+    <string-array name="block_en">
+        <item>Select Block</item>
+        <item>Peth Block</item>
+        <item>Suragana Block</item>
+    </string-array>
+
+    <string-array name="peth_block_village">
+        <item>Select Village</item>
+        <item>@string/surgane</item>
+        <item>@string/sadadapada</item>
+        <item>@string/bhatavihir</item>
+        <item>@string/borada</item>
+        <item>@string/ghubadasaka</item>
+        <item>@string/sheharipada</item>
+        <item>@string/mohalipada</item>
+        <item>@string/tungarapada</item>
+        <item>@string/hedapada</item>
+        <item>@string/kapurane</item>
+        <item>@string/ghotapada</item>
+        <item>@string/vadapada</item>
+        <item>@string/dabhadi</item>
+        <item>@string/gandole</item>
+        <item>@string/chaukada</item>
+        <item>@string/holamari</item>
+        <item>@string/badagi</item>
+        <item>@string/palashi</item>
+        <item>@string/jamale</item>
+        <item>@string/derapada</item>
+        <item>@string/golasapada</item>
+        <item>@string/chikhali</item>
+    </string-array>
+
+    <string-array name="suragana_block_villages">
+        <item>Select Village</item>
+        <item>@string/modhalapada</item>
+        <item>@string/khiramane</item>
+        <item>@string/kalamane</item>
+        <item>@string/bhegu_savarapada</item>
+        <item>@string/kotambi</item>
+        <item>@string/jambhulapada</item>
+        <item>@string/ambupada</item>
+        <item>@string/bedase</item>
+    </string-array>
 
 </resources>

@@ -27,10 +27,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -69,8 +73,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class FirstScreenFragment extends Fragment implements View.OnClickListener{
-    EditText nameInvestigator, villageSurvey, blockSurvey, districtSurvey, dateofVisit, namePerson, householdNumber;
+public class FirstScreenFragment extends Fragment implements View.OnClickListener {
+    EditText nameInvestigator, villageSurvey, blockSurvey, districtSurvey, namePerson, householdNumber;
+    //    EditText dateofVisit;
     RadioButton kuchaRadioButton, puccaRadioButton;
     RadioButton availableAccepted, availableDeferred, notavailableSurvey, notavailableSecondVisit, notavailableThirdVisit, refusedParticipate;
     ImageButton next_button;
@@ -117,10 +122,12 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_first_screen, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_first_screen, container, false);
         initUI(rootView);
         radioButtonClickListener();
         setData(patientUuid);
+
+
         return rootView;
     }
 
@@ -147,7 +154,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         //Set the DOB calendar to the date selected by the user
                         dob.set(year, monthOfYear, dayOfMonth);
-                        dateofVisit.setError(null);
+//                        dateofVisit.setError(null);
                         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                         mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                         // Locale.setDefault(Locale.ENGLISH);
@@ -155,44 +162,44 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
                         dob.set(year, monthOfYear, dayOfMonth);
                         String dobString = simpleDateFormat.format(dob.getTime());
-                       // dob_indexValue = monthOfYear; //fetching the inex value of month selected...
+                        // dob_indexValue = monthOfYear; //fetching the inex value of month selected...
 
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                            String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                            String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                            String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                            String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                            String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
-                            dateofVisit.setText(dob_text);
-                        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                            String dob_text = en__as_dob(dobString); //to show text of English into telugu...
-                            dateofVisit.setText(dob_text);
-                        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                            String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
-                            dateofVisit.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                            String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
-                            dateofVisit.setText(dob_text);
-                        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
-                            dateofVisit.setText(dob_text);
-                        } else {
-                            dateofVisit.setText(dobString);
-                        }
+//                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+//                            String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+//                            String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                            String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+//                            String dob_text = en__te_dob(dobString); //to show text of English into telugu...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                            String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+//                            String dob_text = en__as_dob(dobString); //to show text of English into telugu...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+//                            String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+//                            String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
+//                            dateofVisit.setText(dob_text);
+//                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+//                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
+//                            dateofVisit.setText(dob_text);
+//                        } else {
+//                            dateofVisit.setText(dobString);
+//                        }
                         mDOBYear = year;
                         mDOBMonth = monthOfYear;
                         mDOBDay = dayOfMonth;
@@ -202,18 +209,18 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
         //DOB Picker is shown when clicked
         mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dateofVisit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDOBPicker.show();
-            }
-        });
+//        dateofVisit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mDOBPicker.show();
+//            }
+//        });
     }
 
     @Override
     public void onClick(View view) {
         boolean checked = false;
-        if(view.getId() != R.id.next_button)
+        if (view.getId() != R.id.next_button)
             checked = ((RadioButton) view).isChecked();
 
         switch (view.getId()) {
@@ -267,11 +274,6 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     }
 
     private void insertData() throws DAOException {
-        if (refusedParticipate.isChecked()) {
-            getActivity().finish();
-            return;
-        }
-
         if (!StringUtils.validateFields(mandatoryFields)) {
             Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
             return;
@@ -279,7 +281,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-       // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         //investigator
         patientAttributesDTO = new PatientAttributesDTO();
@@ -314,12 +316,12 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //Date of Visit
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("dateOfVisit"));
-        patientAttributesDTO.setValue(dateofVisit.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("dateOfVisit"));
+//        patientAttributesDTO.setValue(dateofVisit.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
         //Name primary respondent
         patientAttributesDTO = new PatientAttributesDTO();
@@ -357,7 +359,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         gson.toJson(patientAttributesDTOList);
         Log.v("firstscreen", "firstscreen: \n"+ gson.toJson(patientAttributesDTOList));*/
 
-        Log.v("puuid", "puuid__: "+patientUuid);
+        Log.v("puuid", "puuid__: " + patientUuid);
         boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
 
 /*
@@ -369,12 +371,17 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         }
 */
 
-      //  if (isPatientUpdated) {
+        //  if (isPatientUpdated) {
+
+        if (refusedParticipate.isChecked()) {
+            getActivity().finish();
+        } else {
             getFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_container, new SecondScreenFragment())
                     .addToBackStack(null)
                     .commit();
-      //  }
+            //  }
+        }
     }
 
     private void initUI(View rootView) {
@@ -382,7 +389,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         villageSurvey = rootView.findViewById(R.id.villageSurvey);
         blockSurvey = rootView.findViewById(R.id.block_dropdown);
         districtSurvey = rootView.findViewById(R.id.districtSurvey);
-        dateofVisit = rootView.findViewById(R.id.dateVisit);
+//        dateofVisit = rootView.findViewById(R.id.dateVisit);
         namePerson = rootView.findViewById(R.id.primary_respondent_name_edit_text);
         householdNumber = rootView.findViewById(R.id.household_number_edit_text);
         kuchaRadioButton = rootView.findViewById(R.id.kuchaRadioButton);
@@ -397,12 +404,51 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
         RadioGroup household_structure_radio_group = rootView.findViewById(R.id.household_structure_radio_group);
         RadioGroup result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
-        mandatoryFields.addAll(Arrays.asList(nameInvestigator, villageSurvey, blockSurvey, districtSurvey, dateofVisit, namePerson, householdNumber
+        mandatoryFields.addAll(Arrays.asList(nameInvestigator, villageSurvey, blockSurvey, districtSurvey, namePerson, householdNumber
                 , household_structure_radio_group, result_of_visit_radio_group));
+
+        setMenus();
     }
 
-    private void setData(String patientUuid)
-    {
+    private void setMenus() {
+        districtSurvey.setOnClickListener(v -> showMenu(districtSurvey, R.menu.menu_nas_district));
+        blockSurvey.setOnClickListener(v -> showMenu(blockSurvey, R.menu.menu_nas_block));
+        blockSurvey.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                switch (s.toString()) {
+                    case "Peth Block":
+                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
+                        break;
+
+                    case "Suragana Block":
+                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void showMenu(EditText editText, @MenuRes Integer menuRes) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), editText);
+        popupMenu.getMenuInflater().inflate(menuRes, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            editText.setText(item.getTitle());
+            if (editText == blockSurvey)
+                villageSurvey.setText(null);
+            return true;
+        });
+        popupMenu.show();
+    }
+
+    private void setData(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -419,58 +465,58 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                 }
                 if (name.equalsIgnoreCase("nameOfInvestigator")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         nameInvestigator.setText(value1);
                 }
                 if (name.equalsIgnoreCase("villageNameSurvey")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         villageSurvey.setText(value1);
                 }
                 if (name.equalsIgnoreCase("blockSurvey")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         blockSurvey.setText(value1);
                 }
                 if (name.equalsIgnoreCase("districtSurvey")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         districtSurvey.setText(value1);
                 }
-                if (name.equalsIgnoreCase("dateOfVisit")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        dateofVisit.setText(value1);
-                }
+//                if (name.equalsIgnoreCase("dateOfVisit")) {
+//                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if (value1 != null)
+//                        dateofVisit.setText(value1);
+//                }
                 if (name.equalsIgnoreCase("NamePrimaryRespondent")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         namePerson.setText(value1);
                 }
                 if (name.equalsIgnoreCase("HouseholdNumber")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         householdNumber.setText(value1);
                 }
                 if (name.equalsIgnoreCase("HouseStructure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase("Pucca"))
+                    if (value1 != null && value1.equalsIgnoreCase("Pucca"))
                         puccaRadioButton.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase("Kucha"))
+                    else if (value1 != null && value1.equalsIgnoreCase("Kucha"))
                         kuchaRadioButton.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("ResultOfVisit")) {
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and accepted"))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and accepted"))
                         availableAccepted.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and deferred"))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and deferred"))
                         availableDeferred.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on Survey"))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on Survey"))
                         notavailableSurvey.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on second visit"))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on second visit"))
                         notavailableSecondVisit.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on third visit"))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on third visit"))
                         notavailableThirdVisit.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))!= null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Refused to Participate"))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Refused to Participate"))
                         refusedParticipate.setChecked(true);
                 }
             } while (idCursor1.moveToNext());

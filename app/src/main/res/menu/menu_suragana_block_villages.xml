@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/modhalapada_menu_item"
+        android:title="@string/modhalapada" />
+
+    <item
+        android:id="@+id/khiramane_menu_item"
+        android:title="@string/khiramane" />
+
+    <item
+        android:id="@+id/kalamane_menu_item"
+        android:title="@string/kalamane" />
+
+    <item
+        android:id="@+id/bhegu_savarapada_menu_item"
+        android:title="@string/bhegu_savarapada" />
+
+    <item
+        android:id="@+id/kotambi_menu_item"
+        android:title="@string/kotambi" />
+
+    <item
+        android:id="@+id/jambhulapada_menu_item"
+        android:title="@string/jambhulapada" />
+
+    <item
+        android:id="@+id/ambupada_menu_item"
+        android:title="@string/ambupada" />
+
+    <item
+        android:id="@+id/bedase"
+        android:title="@string/bedase" />
+
+</menu>
