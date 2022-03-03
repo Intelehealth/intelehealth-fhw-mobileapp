@@ -15,8 +15,6 @@ public class DialogUtils {
 
     public void showOkDialog(Context context, String title, String message, String ok) {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
-
-        //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(ok,

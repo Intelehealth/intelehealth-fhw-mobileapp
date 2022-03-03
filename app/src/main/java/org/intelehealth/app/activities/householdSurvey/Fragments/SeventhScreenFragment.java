@@ -6,12 +6,14 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -24,6 +26,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -32,11 +35,13 @@ import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentSeventhScreenBinding;
 import org.intelehealth.app.databinding.FragmentSixthScreenBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -108,15 +113,9 @@ public class SeventhScreenFragment extends Fragment {
     }
 
     private void insertData() throws DAOException {
-//        if (!StringUtils.validateFields(mandatoryFields)) {
-//            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-        // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         //subCentreDistance
         if (binding.distanceToSubCentreRadioGroup.getCheckedRadioButtonId() != -1) {
@@ -213,12 +212,24 @@ public class SeventhScreenFragment extends Fragment {
         // Upto here so that data is stored in localdb and pushed by clicking on FAB...
 
         if (isPatientUpdated) {
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(getActivity());
+            alertDialog.setTitle(getActivity().getResources().getString(R.string.surveyDialogTitle));
+            alertDialog.setMessage(getActivity().getResources().getString(R.string.surveyDialogMessage));
+            alertDialog.setPositiveButton(getActivity().getResources().getString(R.string.ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.putExtra("hasPrescription", "false");
+                            startActivity(intent);
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog dialog = alertDialog.show();
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+            IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), dialog);
         }
-
     }
 
     private void setData(String patientUuid)

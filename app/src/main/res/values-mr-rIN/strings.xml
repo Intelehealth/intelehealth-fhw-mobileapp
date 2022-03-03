@@ -1274,4 +1274,6 @@
     <string name="delete_dialog_button">हटवा</string>
 
     <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
+    <string name="surveyDialogTitle">जतन यशस्वी</string>
+    <string name="surveyDialogMessage">सर्वेक्षण यशस्वीरित्या जोडले</string>
 </resources>

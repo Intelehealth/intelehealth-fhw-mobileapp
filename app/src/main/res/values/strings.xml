@@ -1376,5 +1376,7 @@
 
     <string name="peth_block">Peth Block</string>
     <string name="suragana_block">Suragana Block</string>
+    <string name="surveyDialogTitle">Saved Successful</string>
+    <string name="surveyDialogMessage">Survey added successfully</string>
 
 </resources>
