@@ -227,14 +227,6 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
             case R.id.next_button:
                 try {
                     insertData();
-                    if (refusedParticipate.isChecked()) {
-                        getActivity().finish();
-                    } else {
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.framelayout_container, new SecondScreenFragment())
-                                .addToBackStack(null)
-                                .commit();
-                    }
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }

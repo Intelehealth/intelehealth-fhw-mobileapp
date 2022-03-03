@@ -1940,35 +1940,37 @@
     </string-array>
 
     <string-array name="occupation_identification_en">
-        <item>SALARIED GOVERNMENT JOB</item>
-        <item>SALARIED PRIVATE JOB</item>
-        <item>PETTY BUSINESS/SHOP OWNER</item>
-        <item>TECHNICIAN/CRAFTSMAN/OTHER SKILLED WORK (DRIVER, MASON ETC)</item>
-        <item>AGRICULTURAL FARMER</item>
-        <item>TENANT FARMER/AGRICULTURAL DAILY WAGE WORKER</item>
-        <item>DAILY WAGE WORKER (UNSKILLED WORK)</item>
-        <item>HOUSEHOLD WORK</item>
-        <item>STUDENT</item>
-        <item>UNEMPLOYED</item>
-        <item>RETIRED (WITH PENSION)</item>
-        <item>RETIRED (WITHOUT PENSION)</item>
-        <item>OTHERS (SPECIFY)</item>
+        <item>Select</item>
+        <item>Salaried Government Job</item>
+        <item>Salaried Private Job</item>
+        <item>Petty Business/Shop Owner</item>
+        <item>Technician/Craftsman/Other Skilled Work (Driver, Mason etc)</item>
+        <item>Agricultural Farmer</item>
+        <item>Tenant Farmer/Agricultural Daily Wage Worker</item>
+        <item>Daily Wage Worker (Unskilled Work)</item>
+        <item>Household Work</item>
+        <item>Student</item>
+        <item>Unemployed</item>
+        <item>Retired (With Pension)</item>
+        <item>Retired (Without Pension)</item>
+        <item>Others (Specify)</item>
     </string-array>
 
     <string-array name="occupation_identification_mr">
-        <item>SALARIED GOVERNMENT JOB</item>
-        <item>SALARIED PRIVATE JOB</item>
-        <item>PETTY BUSINESS/SHOP OWNER</item>
-        <item>TECHNICIAN/CRAFTSMAN/OTHER SKILLED WORK (DRIVER, MASON ETC)</item>
-        <item>AGRICULTURAL FARMER</item>
-        <item>TENANT FARMER/AGRICULTURAL DAILY WAGE WORKER</item>
-        <item>DAILY WAGE WORKER (UNSKILLED WORK)</item>
-        <item>HOUSEHOLD WORK</item>
-        <item>STUDENT</item>
-        <item>UNEMPLOYED</item>
-        <item>RETIRED (WITH PENSION)</item>
-        <item>RETIRED (WITHOUT PENSION)</item>
-        <item>OTHERS (SPECIFY)</item>
+        <item>Select</item>
+        <item>Salaried Government Job</item>
+        <item>Salaried Private Job</item>
+        <item>Petty Business/Shop Owner</item>
+        <item>Technician/Craftsman/Other Skilled Work (Driver, Mason etc)</item>
+        <item>Agricultural Farmer</item>
+        <item>Tenant Farmer/Agricultural Daily Wage Worker</item>
+        <item>Daily Wage Worker (Unskilled Work)</item>
+        <item>Household Work</item>
+        <item>Student</item>
+        <item>Unemployed</item>
+        <item>Retired (With Pension)</item>
+        <item>Retired (Without Pension)</item>
+        <item>Others (Specify)</item>
     </string-array>
 
     <string-array name="relationshipHoH_mr">
@@ -2101,7 +2103,7 @@
         <item>Home</item>
         <item>Sub center</item>
         <item>Chc/ civil hospital at block level</item>
-        <item>District hosptial/ civil hospital at district level</item>
+        <item>District hospital / Civil hospital at district level</item>
         <item>Private clinic</item>
         <item>Private hospital</item>
     </string-array>
