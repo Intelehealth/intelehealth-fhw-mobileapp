@@ -89,11 +89,11 @@
 
     <string-array name="education_en">
         <item>Select</item>
-<!--        <item>Illiterate</item>-->
-<!--        <item>Primary</item>-->
-<!--        <item>Secondary</item>-->
-<!--        <item>Higher Secondary</item>-->
-<!--        <item>Graduation &amp; Higher</item>-->
+        <!--        <item>Illiterate</item>-->
+        <!--        <item>Primary</item>-->
+        <!--        <item>Secondary</item>-->
+        <!--        <item>Higher Secondary</item>-->
+        <!--        <item>Graduation &amp; Higher</item>-->
         <item>Cannot read or write</item>
         <item>Can read and write</item>
         <item>Primary education (till class 5)</item>
@@ -168,13 +168,6 @@
         <item>वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण</item>
         <item>पदवीधर</item>
         <item>पदव्युत्तर</item>
-
-
-
-
-
-
-
 
 
     </string-array>
@@ -1614,8 +1607,6 @@
     <!--Roster-->
 
 
-
-
     <string-array name="relationshipHoH_en">
         <item>Select</item>
         <item>Head of the household</item>
@@ -1689,7 +1680,6 @@
         <item>Joint/Bone pain</item>
         <item>Others (Specify)</item>
     </string-array>
-
 
 
     <string-array name="primaryhealthprovider_en">
@@ -1933,7 +1923,7 @@
 
     </string-array>
     <string-array name="occupation_en">
-        <item>Select</item> 
+        <item>Select</item>
         <item>Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</item>
         <item>Sale of animals/animal products</item>
         <item>Agricultural wage labor (employed for farm work)</item>
@@ -1948,7 +1938,6 @@
         <item>Other (please specify)</item>
         <item>Other sources of income</item>
     </string-array>
-
 
 
     <string-array name="relationshipHoH_mr">
@@ -2011,7 +2000,6 @@
     </string-array>
 
 
-
     <string-array name="bp_mr">
         <item>निवडा</item>
         <item>कधीही तपासले नाही</item>
@@ -2035,8 +2023,6 @@
     </string-array>
 
 
-
-
     <string-array name="hb_mr">
         <item>निवडा</item>
         <item>कधीही तपासले नाही</item>
@@ -2046,7 +2032,6 @@
         <item>3 महिने-6 महिन्यांपूर्वी</item>
         <item>6 महिन्यांपेक्षा जास्त</item>
     </string-array>
-
 
 
     <string-array name="bmi_mr">
@@ -2160,5 +2145,48 @@
         <item>एकाधिक</item>
     </string-array>
 
+    <string-array name="block_en">
+        <item>Select Block</item>
+        <item>Peth Block</item>
+        <item>Suragana Block</item>
+    </string-array>
+
+    <string-array name="peth_block_village">
+        <item>Select Village</item>
+        <item>Surgane</item>
+        <item>Sadadapada</item>
+        <item>Bhatavihir</item>
+        <item>Borada</item>
+        <item>Ghubadasaka</item>
+        <item>Sheharipada</item>
+        <item>Mohalipada</item>
+        <item>Tungarapada</item>
+        <item>Hedapada</item>
+        <item>Kapurane</item>
+        <item>Ghotapada</item>
+        <item>Vadapada</item>
+        <item>Dabhadi</item>
+        <item>Gandole</item>
+        <item>Chaukada</item>
+        <item>Holamari</item>
+        <item>Badagi</item>
+        <item>Palashi</item>
+        <item>Jamale</item>
+        <item>Derapada</item>
+        <item>Golasapada</item>
+        <item>Chikhali</item>
+    </string-array>
+
+    <string-array name="suragana_block_villages">
+        <item>Select Village</item>
+        <item>Modhalapada</item>
+        <item>Khiramane</item>
+        <item>Kalamane</item>
+        <item>Bhegu-Savarapada</item>
+        <item>Kotambi</item>
+        <item>Jambhulapada</item>
+        <item>Ambupada</item>
+        <item>Bedase</item>
+    </string-array>
 
 </resources>

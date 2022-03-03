@@ -203,7 +203,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     Spinner spinner_whatisyourrelation, spinner_maritualstatus, spinner_phoneownership, spinner_bpchecked, spinner_sugarchecked, spinner_hbchecked,
             spinner_bmi, spinner_healthissuereported, spinner_primaryhealthprovider, spinner_firstlocation, spinner_referredto, spinner_modeoftransport,
             spinner_experiencerscore, spinner_pregnantpasttwoyrs, spinner_outcomepregnancy, spinner_childalive, spinner_placeofdeliverypregnant,
-            spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications, spinner_singlemultiplebirths;
+            spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications, spinner_singlemultiplebirths,
+            spinner_focalPointBlock, spinner_focalPointVillage;
 
     ArrayAdapter<CharSequence> adapter_whatisyourrelation, adapter_maritualstatus, adapter_phoneownership, adapter_bpchecked, adapter_sugarchecked,
             adapter_hbchecked, adapter_bmi, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto,
@@ -212,7 +213,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             adapter_singlemultiplebirths;
 
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
-            edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
+            edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant,
             edittext_babyagedied;
     TextInputLayout til_whatisyourrelation_other, til_occupation_other;
     TextInputEditText et_whatisyourrelation_other, et_occupation_other;
@@ -1365,7 +1366,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //Single/Multiple
 
         //focal
-        edittext_focalfacility.setText(patient1.getFocalfacility());
+
         //focal
 
         //sexofbaby
@@ -2868,8 +2869,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
-        patientAttributesDTO.setValue(StringUtils.getValue(edittext_focalfacility.getText().toString()));
-        Log.d("HOH", "total family meme: " + edittext_focalfacility.getText().toString());
+//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_focalfacility.getText().toString()));
+//        Log.d("HOH", "total family meme: " + edittext_focalfacility.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
         //focal facility
 
@@ -3157,13 +3158,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (edittext_focalfacility.getText().toString().equalsIgnoreCase("") &&
-                edittext_focalfacility.getText().toString().isEmpty()) {
-            edittext_focalfacility.setError(getString(R.string.select));
-            focusView = edittext_focalfacility;
-            cancel = true;
-            return;
-        }
 
         if (spinner_sexofbaby.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_sexofbaby.getSelectedView();
@@ -3818,16 +3812,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
 
                 if (position == 3 || position == 4 || position == 5) {
-                    binding.edittextFocalfacility.setVisibility(View.GONE);
+                    binding.llFocalPoint.setVisibility(View.GONE);
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
                     binding.llBabyGender.setVisibility(View.GONE);
                     binding.llChildComplications.setVisibility(View.GONE);
-
                 } else {
-                    binding.edittextFocalfacility.setVisibility(View.VISIBLE);
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                     binding.llChildComplications.setVisibility(View.VISIBLE);
+                    binding.llFocalPoint.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -3838,6 +3831,38 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         });
         spinner_childalive = findViewById(R.id.spinner_childalive);
         spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
+        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
+        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
+
+        spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 1:
+                        ArrayAdapter<CharSequence> focalPointBlock = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.peth_block_village, R.layout.custom_spinner);
+                        spinner_focalPointVillage.setAdapter(focalPointBlock);
+                        spinner_focalPointVillage.setVisibility(View.VISIBLE);
+                        break;
+
+                    case 2:
+                        ArrayAdapter<CharSequence> focalPointVillage = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.suragana_block_villages, R.layout.custom_spinner);
+                        spinner_focalPointVillage.setAdapter(focalPointVillage);
+                        spinner_focalPointVillage.setVisibility(View.VISIBLE);
+                        break;
+
+                    default:
+                        spinner_focalPointVillage.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         spinner_sexofbaby = findViewById(R.id.spinner_sexofbaby);
         spinner_pregnancyplanned = findViewById(R.id.spinner_pregnancyplanned);
         spinner_pregnancyhighriskcase = findViewById(R.id.spinner_pregnancyhighriskcase);
@@ -3854,7 +3879,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         edittext_yearofpregnancy = findViewById(R.id.edittext_yearofpregnancy);
         edittext_monthspregnancylast = findViewById(R.id.edittext_monthspregnancylast);
         edittext_monthsbeingpregnant = findViewById(R.id.edittext_monthsbeingpregnant);
-        edittext_focalfacility = findViewById(R.id.edittext_focalfacility);
         edittext_babyagedied = findViewById(R.id.edittext_babyagedied);
         //Roster EditText
 
