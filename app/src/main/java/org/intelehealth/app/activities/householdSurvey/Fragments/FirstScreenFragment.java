@@ -126,6 +126,8 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         initUI(rootView);
         radioButtonClickListener();
         setData(patientUuid);
+
+
         return rootView;
     }
 
@@ -225,6 +227,14 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
             case R.id.next_button:
                 try {
                     insertData();
+                    if (refusedParticipate.isChecked()) {
+                        getActivity().finish();
+                    } else {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.framelayout_container, new SecondScreenFragment())
+                                .addToBackStack(null)
+                                .commit();
+                    }
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
@@ -272,11 +282,6 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     }
 
     private void insertData() throws DAOException {
-        if (refusedParticipate.isChecked()) {
-            getActivity().finish();
-            return;
-        }
-
         if (!StringUtils.validateFields(mandatoryFields)) {
             Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
             return;
@@ -375,11 +380,16 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 */
 
         //  if (isPatientUpdated) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.framelayout_container, new SecondScreenFragment())
-                .addToBackStack(null)
-                .commit();
-        //  }
+
+        if (refusedParticipate.isChecked()) {
+            getActivity().finish();
+        } else {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.framelayout_container, new SecondScreenFragment())
+                    .addToBackStack(null)
+                    .commit();
+            //  }
+        }
     }
 
     private void initUI(View rootView) {
