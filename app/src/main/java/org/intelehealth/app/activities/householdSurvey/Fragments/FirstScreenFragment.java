@@ -413,7 +413,6 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     private void setMenus() {
         districtSurvey.setOnClickListener(v -> showMenu(districtSurvey, R.menu.menu_nas_district));
         blockSurvey.setOnClickListener(v -> showMenu(blockSurvey, R.menu.menu_nas_block));
-
         blockSurvey.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -421,7 +420,6 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                villageSurvey.setText(null);
                 switch (s.toString()) {
                     case "Peth Block":
                         villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
@@ -443,6 +441,8 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         popupMenu.getMenuInflater().inflate(menuRes, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
             editText.setText(item.getTitle());
+            if (editText == blockSurvey)
+                villageSurvey.setText(null);
             return true;
         });
         popupMenu.show();
