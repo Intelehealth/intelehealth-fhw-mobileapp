@@ -42,7 +42,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
         <activity
             android:name=".activities.householdSurvey.HouseholdSurveyActivity"
-            android:label="Household Survey"
+            android:label="@string/household_survey"
             android:exported="false" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"

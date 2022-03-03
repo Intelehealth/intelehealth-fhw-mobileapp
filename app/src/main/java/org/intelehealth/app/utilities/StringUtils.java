@@ -129,6 +129,40 @@ public final class StringUtils {
 
     }
 
+    public static String getValueForStateCity(String value) {
+        String val = "";
+        if (value != null)
+            val = value;
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (value.equalsIgnoreCase("नाशिक")) {
+                val = "Nashik";
+            } else if (value.equalsIgnoreCase("महाराष्ट्र")) {
+                val = "Maharastra";
+            }
+        }
+        return val;
+
+    }
+    public static String getValueForStateCity_edit(String value) {
+        String val = "";
+        if (value != null)
+            val = value;
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (value.equalsIgnoreCase("Nashik")) {
+                val = "नाशिक";
+            } else if (value.equalsIgnoreCase("Maharastra")) {
+                val = "महाराष्ट्र";
+            }
+        }
+        return val;
+
+    }
+
+
     public static String getValue1(String value) {
         String val = " ";
         if (value != null)
@@ -624,28 +658,28 @@ public final class StringUtils {
                 val = "पदवी आणि उच्च";
                 break;
 
-            case "CANNOT READ OR WRITE":
+            case "Cannot read or write":
                 val = "वाचता किंवा लिहिता येत नाही";
                 break;
-            case "CAN READ AND WRITE":
+            case "Can read and write":
                 val = "वाचता आणि लिहिता येतो";
                 break;
-            case "PRIMARY EDUCATION (TILL CLASS 5)":
+            case "Primary education (till class 5)":
                 val = "प्राथमिक शिक्षण (इयत्ता ५ वी पर्यंत)";
                 break;
-            case "MIDDLE SCHOOL (6TH-8TH)":
+            case "Middle school (6th-8th)":
                 val = "मिडल स्कूल (6वी-8वी)";
                 break;
-            case "PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)":
+            case "Passed secondary school (class 10th boards)":
                 val = "माध्यमिक शाळा (इयत्ता 10वी बोर्ड) उत्तीर्ण";
                 break;
-            case "PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)":
+            case "Passed senior secondary school (12th boards)":
                 val = "वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण";
                 break;
-            case "GRADUATE":
+            case "Graduate":
                 val = "पदवीधर";
                 break;
-            case "POSTGRADUATE":
+            case "Postgraduate":
                 val = "पदव्युत्तर";
                 break;
 
@@ -675,28 +709,28 @@ public final class StringUtils {
                 val = "Graduation & Higher";
                 break;
             case "वाचता किंवा लिहिता येत नाही":
-                val = "CANNOT READ OR WRITE";
+                val = "Cannot read or write";
                 break;
             case "वाचता आणि लिहिता येतो":
-                val = "CAN READ AND WRITE";
+                val = "Can read and write";
                 break;
             case "प्राथमिक शिक्षण (इयत्ता ५ वी पर्यंत)":
-                val = "PRIMARY EDUCATION (TILL CLASS 5)";
+                val = "Primary education (till class 5)";
                 break;
             case "मिडल स्कूल (6वी-8वी)":
-                val = "MIDDLE SCHOOL (6TH-8TH)";
+                val = "Middle school (6th-8th)";
                 break;
             case "माध्यमिक शाळा (इयत्ता 10वी बोर्ड) उत्तीर्ण":
-                val = "PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)";
+                val = "Passed secondary school (class 10th boards)";
                 break;
             case "वरिष्ठ माध्यमिक शाळा (12वी बोर्ड) उत्तीर्ण":
-                val = "PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)";
+                val = "Passed senior secondary school (12th boards)";
                 break;
             case "पदवीधर":
-                val = "GRADUATE";
+                val = "Graduate";
                 break;
             case "पदव्युत्तर":
-                val = "POSTGRADUATE";
+                val = "Postgraduate";
                 break;
             default:
                 return val;

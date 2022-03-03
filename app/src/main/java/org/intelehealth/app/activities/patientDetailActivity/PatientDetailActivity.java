@@ -108,6 +108,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
 import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
+import static org.intelehealth.app.utilities.StringUtils.getValueForStateCity_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
@@ -902,7 +903,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             String addrFinalLine;
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
                 addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
+                        getValueForStateCity_edit(city_village),getValueForStateCity_edit(patient_new.getState_province()),
                         patient_new.getPostal_code(), patient_new.getCountry());
             } else {
                 addrFinalLine = String.format("%s, %s, %s",
