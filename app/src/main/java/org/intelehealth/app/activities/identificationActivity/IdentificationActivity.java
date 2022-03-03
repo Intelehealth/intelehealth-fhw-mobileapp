@@ -2412,15 +2412,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
 //            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-//            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getSelectedItem().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 //
-//            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+            patientdto.setCountry(StringUtils.getValue("India"));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+            patientdto.setStateprovince(StringUtils.getValueForStateCity(mState.getSelectedItem().toString()));
+//            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
 //            patientAttributesDTO = new PatientAttributesDTO();

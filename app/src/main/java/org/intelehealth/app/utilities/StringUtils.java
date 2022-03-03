@@ -128,6 +128,40 @@ public final class StringUtils {
 
     }
 
+    public static String getValueForStateCity(String value) {
+        String val = "";
+        if (value != null)
+            val = value;
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (value.equalsIgnoreCase("नाशिक")) {
+                val = "Nashik";
+            } else if (value.equalsIgnoreCase("महाराष्ट्र")) {
+                val = "Maharastra";
+            }
+        }
+        return val;
+
+    }
+    public static String getValueForStateCity_edit(String value) {
+        String val = "";
+        if (value != null)
+            val = value;
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (value.equalsIgnoreCase("Nashik")) {
+                val = "नाशिक";
+            } else if (value.equalsIgnoreCase("Maharastra")) {
+                val = "महाराष्ट्र";
+            }
+        }
+        return val;
+
+    }
+
+
     public static String getValue1(String value) {
         String val = " ";
         if (value != null)
