@@ -3602,6 +3602,14 @@ public final class StringUtils {
         return val;
     }
 
+    //TODO: Add occupations new data...
+    public static String getOccupationsIdentification(String val, String locale) {
+        return val;
+    }
+
+    public static String getOccupationsIdentification_Edit(String val, String locale) {
+        return val;
+    }
 
     public static String getOccupation_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {

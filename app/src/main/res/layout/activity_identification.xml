@@ -1422,7 +1422,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="@string/txt_what_health_issue_is_reported"
+                                    android:text="@string/txt_were_you_identified_as_a_high_risk_pregnancy_case"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space

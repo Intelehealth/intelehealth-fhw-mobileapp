@@ -3780,11 +3780,16 @@ if(llPORoaster.getVisibility()==View.VISIBLE) {
                 }
 
                 if (position == 5) {
-                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
-                } else {
                     binding.edittextMonthspregnancylast.setVisibility(View.GONE);
+                } else {
+                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
                 }
 
+                if (position == 5) {
+                    binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
+                } else {
+                    binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
+                }
 
                 if (position == 4 || position == 5) {
                     binding.llDeliveryPlace.setVisibility(View.GONE);
