@@ -1950,35 +1950,38 @@
     </string-array>
 
     <string-array name="occupation_identification_en">
-        <item>SALARIED GOVERNMENT JOB</item>
-        <item>SALARIED PRIVATE JOB</item>
-        <item>PETTY BUSINESS/SHOP OWNER</item>
-        <item>TECHNICIAN/CRAFTSMAN/OTHER SKILLED WORK (DRIVER, MASON ETC)</item>
-        <item>AGRICULTURAL FARMER</item>
-        <item>TENANT FARMER/AGRICULTURAL DAILY WAGE WORKER</item>
-        <item>DAILY WAGE WORKER (UNSKILLED WORK)</item>
-        <item>HOUSEHOLD WORK</item>
-        <item>STUDENT</item>
-        <item>UNEMPLOYED</item>
-        <item>RETIRED (WITH PENSION)</item>
-        <item>RETIRED (WITHOUT PENSION)</item>
-        <item>OTHERS (SPECIFY)</item>
+        <Item>Select</Item>
+        <Item>Salaried Government Job</Item>
+        <Item>Salaried Private Job</Item>
+        <Item>Petty Business or Shop Owner</Item>
+        <Item>Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)</Item>
+        <Item>Agricultural Farmer</Item>
+        <Item>Tenant Farmer or Agricultural Daily Wage Worker</Item>
+        <Item>Daily Wage Worker (Unskilled Work)</Item>
+        <Item>Household Work</Item>
+        <Item>Student</Item>
+        <Item>Unemployed</Item>
+        <Item>Retired (With Pension)</Item>
+        <Item>Retired (Without Pension)</Item>
+        <Item>Others (Specify)</Item>
+
     </string-array>
 
     <string-array name="occupation_identification_mr">
-        <item>SALARIED GOVERNMENT JOB</item>
-        <item>SALARIED PRIVATE JOB</item>
-        <item>PETTY BUSINESS/SHOP OWNER</item>
-        <item>TECHNICIAN/CRAFTSMAN/OTHER SKILLED WORK (DRIVER, MASON ETC)</item>
-        <item>AGRICULTURAL FARMER</item>
-        <item>TENANT FARMER/AGRICULTURAL DAILY WAGE WORKER</item>
-        <item>DAILY WAGE WORKER (UNSKILLED WORK)</item>
-        <item>HOUSEHOLD WORK</item>
-        <item>STUDENT</item>
-        <item>UNEMPLOYED</item>
-        <item>RETIRED (WITH PENSION)</item>
-        <item>RETIRED (WITHOUT PENSION)</item>
-        <item>OTHERS (SPECIFY)</item>
+        <Item>निवडा</Item>
+        <Item>पगारदार सरकारी नोकरी</Item>
+        <Item>पगारदार खाजगी नोकरी</Item>
+        <Item>क्षुद्र व्यवसाय किंवा दुकान मालक</Item>
+        <Item>तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)</Item>
+        <Item>कृषी शेतकरी</Item>
+        <Item>भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार</Item>
+        <Item>रोजंदारी कामगार (अकुशल काम)</Item>
+        <Item>घरातील काम</Item>
+        <Item>विद्यार्थी</Item>
+        <Item>बेरोजगार</Item>
+        <Item>सेवानिवृत्त (पेन्शनसह)</Item>
+        <Item>सेवानिवृत्त (पेन्शनशिवाय)</Item>
+        <Item>इतर (निर्दिष्ट करा)</Item>
     </string-array>
 
     <string-array name="relationshipHoH_mr">

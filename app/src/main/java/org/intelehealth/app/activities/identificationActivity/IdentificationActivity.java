@@ -22,6 +22,7 @@ import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanne
 import static org.intelehealth.app.utilities.StringUtils.getModerateSport_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupation;
 import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
+import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getOvercomePragnency_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
@@ -1124,7 +1125,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         if (patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
             String occupation_Transl = "";
-            occupation_Transl = getOccupation_edit(patient1.getOccupation(),sessionManager.getAppLanguage());
+            occupation_Transl = getOccupationsIdentification_Edit(patient1.getOccupation(),sessionManager.getAppLanguage());
             int spinner_position = occupationAdapter.getPosition(occupation_Transl);
             mOccupation.setSelection(spinner_position);
         }
@@ -2494,7 +2495,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
 //            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getSelectedItem().toString()));
-            patientAttributesDTO.setValue(StringUtils.getOccupation(mOccupation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(),sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();

@@ -3638,10 +3638,102 @@ public final class StringUtils {
 
     //TODO: Add occupations new data...
     public static String getOccupationsIdentification(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "पगारदार सरकारी नोकरी":
+                    val = "Salaried Government Job";
+                    break;
+                case "पगारदार खाजगी नोकरी":
+                    val = "Salaried Private Job";
+                    break;
+                case "क्षुद्र व्यवसाय किंवा दुकान मालक":
+                    val = "Petty Business or Shop Owner";
+                    break;
+                case "तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)":
+                    val = "Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)";
+                    break;
+                case "कृषी शेतकरी":
+                    val = "Agricultural Farmer";
+                    break;
+                case "भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार":
+                    val = "Tenant Farmer or Agricultural Daily Wage Worker";
+                    break;
+                case "रोजंदारी कामगार (अकुशल काम)":
+                    val = "Daily Wage Worker (Unskilled Work)";
+                    break;
+                case "घरातील काम":
+                    val = "Household Work";
+                    break;
+                case "विद्यार्थी":
+                    val = "Student";
+                    break;
+                case "बेरोजगार":
+                    val = "Unemployed";
+                    break;
+                case "सेवानिवृत्त (पेन्शनसह)":
+                    val = "Retired (With Pension)";
+                    break;
+                case "सेवानिवृत्त (पेन्शनशिवाय)":
+                    val = "Retired (Without Pension)";
+                    break;
+                case "इतर (निर्दिष्ट करा)":
+                    val = "Others (Specify)";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
         return val;
     }
 
     public static String getOccupationsIdentification_Edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Salaried Government Job":
+                    val = "पगारदार सरकारी नोकरी";
+                    break;
+                case "Salaried Private Job":
+                    val = "पगारदार खाजगी नोकरी";
+                    break;
+                case "Petty Business or Shop Owner":
+                    val = "क्षुद्र व्यवसाय किंवा दुकान मालक";
+                    break;
+                case "Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)":
+                    val = "तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)";
+                    break;
+                case "Agricultural Farmer":
+                    val = "कृषी शेतकरी";
+                    break;
+                case "Tenant Farmer or Agricultural Daily Wage Worker":
+                    val = "भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार";
+                    break;
+                case "Daily Wage Worker (Unskilled Work)":
+                    val = "रोजंदारी कामगार (अकुशल काम)";
+                    break;
+                case "Household Work":
+                    val = "घरातील काम";
+                    break;
+                case "Student":
+                    val = "विद्यार्थी";
+                    break;
+                case "Unemployed":
+                    val = "बेरोजगार";
+                    break;
+                case "Retired (With Pension)":
+                    val = "सेवानिवृत्त (पेन्शनसह)";
+                    break;
+                case "Retired (Without Pension)":
+                    val = "सेवानिवृत्त (पेन्शनशिवाय)";
+                    break;
+                case "Others (Specify)":
+                    val = "इतर (निर्दिष्ट करा)";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
         return val;
     }
 
