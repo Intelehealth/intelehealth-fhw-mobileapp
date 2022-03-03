@@ -1957,20 +1957,20 @@
     </string-array>
 
     <string-array name="occupation_identification_mr">
-        <item>Select</item>
-        <item>Salaried Government Job</item>
-        <item>Salaried Private Job</item>
-        <item>Petty Business/Shop Owner</item>
-        <item>Technician/Craftsman/Other Skilled Work (Driver, Mason etc)</item>
-        <item>Agricultural Farmer</item>
-        <item>Tenant Farmer/Agricultural Daily Wage Worker</item>
-        <item>Daily Wage Worker (Unskilled Work)</item>
-        <item>Household Work</item>
-        <item>Student</item>
-        <item>Unemployed</item>
-        <item>Retired (With Pension)</item>
-        <item>Retired (Without Pension)</item>
-        <item>Others (Specify)</item>
+        <item>निवडा</item>
+        <item>पगारदार सरकारी नोकरी</item>
+        <item>पगारदार खाजगी नोकरी</item>
+        <item>लहान व्यवसाय / दुकान मालक</item>
+        <item>तंत्रज्ञान / कारागीर / इतर कुशल काम (चालक, मेसन इ.)</item>
+        <item>कृषी शेतकरी</item>
+        <item>भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता</item>
+        <item>दैनिक वेतन कर्मचारी (अकुशल काम)</item>
+        <item>घरगुती काम</item>
+        <item>विद्यार्थी</item>
+        <item>बेरोजगार</item>
+        <item>सेवानिवृत्त (पेंशनसह)</item>
+        <item>सेवानिवृत्त (पेंशनशिवाय)</item>
+        <item>इतर (निर्दिष्ट)</item>
     </string-array>
 
     <string-array name="relationshipHoH_mr">
