@@ -1453,14 +1453,11 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (mCitizenIdEditText.getText().toString().equals("")) {
-            mCitizenIdEditText.setError(getString(R.string.error_field_required));
-            return;
-        } else if (mCitizenIdEditText.getText().toString().length() != 14) {
+        if (!mCitizenIdEditText.getText().toString().trim().isEmpty() && mCitizenIdEditText.getText().toString().length() != 14) {
             mCitizenIdEditText.setError(getString(R.string.citizen_id_validation_message));
             return;
         } else {
-            mCountryEditText.setError(null);
+            mCitizenIdEditText.setError(null);
         }
 
         if (mCountrySpinner.getSelectedItemPosition() == 0) {
@@ -1548,12 +1545,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress1(StringUtils.getValue(mAddress1EditText.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2EditText.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCityAutoCompleteTextView.getText().toString()));
-            if (StringUtils.getValue(mPostalEditText.getText().toString()).length() != 6) {
+            if (!mPostalEditText.getText().toString().isEmpty() && StringUtils.getValue(mPostalEditText.getText().toString().trim()).length() != 6) {
                 mPostalEditText.setError(getString(R.string.postal_code_invalid_txt));
                 mPostalEditText.requestFocus();
                 return;
             } else {
-                mStateEditText.setError(null);
+                mPostalEditText.setError(null);
             }
             patientdto.setPostalcode(StringUtils.getValue(mPostalEditText.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mCountrySpinner.getSelectedItem().toString()));
@@ -1843,7 +1840,12 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
-
+        if (!mCitizenIdEditText.getText().toString().trim().isEmpty() && mCitizenIdEditText.getText().toString().length() != 14) {
+            mCitizenIdEditText.setError(getString(R.string.citizen_id_validation_message));
+            return;
+        } else {
+            mCitizenIdEditText.setError(null);
+        }
         if (mCountrySpinner.getSelectedItemPosition() == 0) {
             mCountryEditText.setError(getString(R.string.error_field_required));
             focusView = mCountryEditText;
@@ -1914,6 +1916,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob_value)));
+            }
+
+            if (!mPostalEditText.getText().toString().isEmpty() && StringUtils.getValue(mPostalEditText.getText().toString().trim()).length() != 6) {
+                mPostalEditText.setError(getString(R.string.postal_code_invalid_txt));
+                mPostalEditText.requestFocus();
+                return;
+            } else {
+                mPostalEditText.setError(null);
             }
 
             // patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
