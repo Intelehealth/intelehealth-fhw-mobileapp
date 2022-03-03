@@ -54,20 +54,24 @@ public class FileUtils {
 
         try {
             File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + File.separator + FILENAME);
-            FileInputStream fileIn = new FileInputStream(myDir);
-            InputStreamReader InputRead = new InputStreamReader(fileIn);
-            final int READ_BLOCK_SIZE = 100;
-            char[] inputBuffer = new char[READ_BLOCK_SIZE];
-            String s = "";
-            int charRead;
+            if(myDir.exists()) {
+                FileInputStream fileIn = new FileInputStream(myDir);
+                InputStreamReader InputRead = new InputStreamReader(fileIn);
+                final int READ_BLOCK_SIZE = 100;
+                char[] inputBuffer = new char[READ_BLOCK_SIZE];
+                String s = "";
+                int charRead;
 
-            while ((charRead = InputRead.read(inputBuffer)) > 0) {
-                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
-                s += readstring;
+                while ((charRead = InputRead.read(inputBuffer)) > 0) {
+                    String readstring = String.copyValueOf(inputBuffer, 0, charRead);
+                    s += readstring;
+                }
+                InputRead.close();
+                Log.i("FILEREAD>", s);
+                return s;
+            }else{
+                return  "";
             }
-            InputRead.close();
-            Log.i("FILEREAD>", s);
-            return s;
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);

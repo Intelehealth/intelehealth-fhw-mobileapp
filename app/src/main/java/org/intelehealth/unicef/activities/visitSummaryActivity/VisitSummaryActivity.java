@@ -1,7 +1,6 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
 import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
-import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_PROVIDER;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
@@ -11,7 +10,6 @@ import static org.intelehealth.unicef.utilities.UuidDictionary.OBS_DOCTORDETAILS
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -88,7 +86,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.apprtc.ChatActivity;
@@ -3784,7 +3781,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (objClsDoctorDetails != null) {
             doctorSpecialization = objClsDoctorDetails.getSpecialization();
-            if (!doctorSpecialization.equalsIgnoreCase("")) {
+            if (doctorSpecialization != null && !doctorSpecialization.equalsIgnoreCase("")) {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     if (doctorSpecialization.equalsIgnoreCase("Infectionist")) {
                         doctorSpecialization = "Инфекционист";

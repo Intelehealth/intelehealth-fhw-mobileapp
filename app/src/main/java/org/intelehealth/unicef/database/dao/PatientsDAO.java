@@ -416,8 +416,7 @@ public class PatientsDAO {
 
 
         }
-        Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
-        IntelehealthApplication.getAppContext().startService(intent);
+
         return isUpdated;
     }
 

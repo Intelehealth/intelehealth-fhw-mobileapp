@@ -8,21 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.intelehealth.unicef.utilities.Logger;
-import org.intelehealth.unicef.utilities.NotificationID;
-import org.intelehealth.unicef.utilities.PatientsFrameJson;
-import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -32,7 +20,20 @@ import org.intelehealth.unicef.models.dto.ResponseDTO;
 import org.intelehealth.unicef.models.dto.VisitDTO;
 import org.intelehealth.unicef.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.unicef.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.unicef.services.MyIntentService;
+import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.NotificationID;
+import org.intelehealth.unicef.utilities.PatientsFrameJson;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.exception.DAOException;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -196,11 +197,13 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
+        if (sessionManager.getServerUrl() == null || sessionManager.getServerUrl().isEmpty() || sessionManager.getLocationUuid() == null || sessionManager.getLocationUuid().isEmpty())
+            return false;
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD(TAG, "Start pull request - Started");
-        Logger.logD(TAG, "Start pull url"+ url);
+        Logger.logD(TAG, "Start pull url" + url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -304,8 +307,7 @@ public class SyncDAO {
         return true;
     }
 
-    public void setLocale(String appLanguage)
-    {
+    public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -390,10 +392,16 @@ public class SyncDAO {
                             Logger.logD(TAG, "success" + pushResponseApiCall);
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
-                                    patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    boolean isUpdated = patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    if (isUpdated) {
+                                        Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
+                                        IntelehealthApplication.getAppContext().startService(intent);
+                                    }
                                 } catch (DAOException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
+                                } catch (IllegalStateException e) {
+                                    e.printStackTrace();
                                 }
                             }
 

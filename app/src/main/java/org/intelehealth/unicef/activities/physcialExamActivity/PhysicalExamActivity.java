@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.physcialExamActivity;
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -70,8 +72,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -166,14 +166,14 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
-            Log.d(TAG, TAG+" - selectedExams - "+selectedExams);
-            Log.d(TAG, TAG+" - encounterAdultIntials - "+encounterAdultIntials);
+            Log.d(TAG, TAG + " - selectedExams - " + selectedExams);
+            Log.d(TAG, TAG + " - encounterAdultIntials - " + encounterAdultIntials);
             ObsDAO obsDAO = new ObsDAO();
             try {
                 mSelectedComplainName = obsDAO.getObsValue(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT);
-                Log.v(TAG, "mSelectedComplainName - "+mSelectedComplainName);
-                if(mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
-                        mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича") ){
+                Log.v(TAG, "mSelectedComplainName - " + mSelectedComplainName);
+                if (mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
+                        mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича")) {
                     mFileName = "physExam1.json";
 
                 }
@@ -185,7 +185,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
-        Log.v(TAG, "mFileName - "+mFileName);
+        Log.v(TAG, "mFileName - " + mFileName);
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
@@ -206,7 +206,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (hasLicense) {
                 try {
                     JSONObject currentFile = null;
-                    currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
+                    String content = FileUtils.readFileRoot(mFileName, this);
+                    if (content == null) finish();
+                    currentFile = new JSONObject(content);
                     physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -320,10 +322,10 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-            if(sessionManager.getAppLanguage().equals("ru")){
-                physicalString =  physicalString.replace("General exams", "Общие экзамены");
-                physicalString =  physicalString.replace("Neonate", "Новорожденный");
-                physicalString =  physicalString.replace("Child", "Ребенок");
+            if (sessionManager.getAppLanguage().equals("ru")) {
+                physicalString = physicalString.replace("General exams", "Общие экзамены");
+                physicalString = physicalString.replace("Neonate", "Новорожденный");
+                physicalString = physicalString.replace("Child", "Ребенок");
             }
             List<String> imagePathList = physicalExamMap.getImagePathList();
 
@@ -679,7 +681,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             case android.R.id.home:
                 if (intentTag != null && intentTag.equals("edit")) {
                     finish();
-                }else {
+                } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
                     dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -689,7 +691,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                                 // remove the visit
                                 VisitsDAO visitsDAO = new VisitsDAO();
                                 int count = visitsDAO.deleteByVisitUUID(visitUuid);
-                                if(count!=0) {
+                                if (count != 0) {
 
                                     ObsDAO obsDAO = new ObsDAO();
                                     obsDAO.deleteByEncounterUud(encounterAdultIntials);
