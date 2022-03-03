@@ -281,6 +281,7 @@ public class FourthScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdCultivableLand")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    binding.cultivableLandEditText.setText(value1); // set value to the editText
                     if(value1!=null && value1.contains("Hectare"))
                         defaultSelectRB(binding.cultivableLandRadioGroup, "Hectare");
                     else if(value1!=null && value1.contains("Acre"))
@@ -290,6 +291,7 @@ public class FourthScreenFragment extends Fragment {
                     else if(value1!=null && value1.contains("Gunta"))
                         defaultSelectRB(binding.cultivableLandRadioGroup, "Gunta");
                 }
+
                 if (name.equalsIgnoreCase("averageAnnualHouseholdIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if(value1!=null)

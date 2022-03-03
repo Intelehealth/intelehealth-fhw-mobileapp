@@ -67,7 +67,8 @@
                 android:hint="@string/number_of_hours_of_load_shedding_per_day"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/load_shedding_hours_text_view"
@@ -89,7 +90,8 @@
                 android:hint="@string/number_of_days_with_load_shedding_per_week"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/load_shedding_days_per_week_text_view"
@@ -163,7 +165,8 @@
                 android:layout_below="@id/primary_source_of_water_text_view"
                 android:layout_marginTop="20sp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/village_tank_checkbox"
@@ -251,7 +254,8 @@
                 android:layout_below="@id/primary_source_of_water_checkbox_linear_layout"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/other_sources_of_water_edit_text"
@@ -318,7 +322,8 @@
                 android:layout_marginTop="10dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/water_source_distance_edit_text"
@@ -343,6 +348,7 @@
                 android:text="@string/available_of_water_supply_hours_per_day"
                 android:textColor="@color/text_color"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -357,8 +363,9 @@
                 android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="@color/text_color"
+                android:textSize="14sp"
                 android:visibility="gone"
-                android:textSize="14sp" />
+                tools:visibility="visible" />
 
 <!--            <com.google.android.material.textview.MaterialTextView-->
 <!--                android:id="@+id/water_supply_availability_text_view_2"-->

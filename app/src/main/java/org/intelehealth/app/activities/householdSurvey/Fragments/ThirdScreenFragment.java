@@ -120,13 +120,16 @@ public class ThirdScreenFragment extends Fragment {
                 binding.loadSheddingHoursLayout.setVisibility(View.VISIBLE);
                 binding.loadSheddingDaysPerWeekLayout.setVisibility(View.VISIBLE);
             } else {
+                //reset the fields as well...
+                binding.loadSheddingHoursTextView.setText("0");
+                binding.loadSheddingDaysPerWeekTextView.setText("0");
+
                 binding.loadSheddingHoursLayout.setVisibility(View.GONE);
                 binding.loadSheddingDaysPerWeekLayout.setVisibility(View.GONE);
             }
         });
 
         binding.runningWaterRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-//            primary_source_of_water_text_view primary_source_of_water_checkbox_linear_layout
             if (checkedId == R.id.running_water_no_checkbox) {
                 binding.primarySourceOfWaterTextView.setVisibility(View.VISIBLE);
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.VISIBLE);
@@ -135,6 +138,7 @@ public class ThirdScreenFragment extends Fragment {
 
                 binding.waterSupplyAvailabilityTextView.setVisibility(View.GONE);
                 binding.waterSupplyAvailabilityEditText.setVisibility(View.GONE);
+                binding.waterSupplyAvailabilityEditText.setText("0");
             } else {
                 binding.primarySourceOfWaterTextView.setVisibility(View.GONE);
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.GONE);
