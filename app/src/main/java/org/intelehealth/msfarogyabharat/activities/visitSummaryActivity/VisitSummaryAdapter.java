@@ -91,17 +91,20 @@ OnVisitItemClickListner onClickingIteListner;
 
     @Override
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
-        if(complaintList.size() > 0 && position != complaintList.size())
+        if(complaintList.size() > 0 && position < complaintList.size())
             complaint = complaintList.get(position);
         else
             complaint = visitsumContext.getString(R.string.something_went_wrong);
 
-        if(physexamList.size() > 0 && position != physexamList.size())
-            physexam = physexamList.get(position);
+        if(physexamList.size() > 0 && position < physexamList.size())
+        { physexam = physexamList.get(position);
+        Log.d("rr","100"+position);
+        Log.d("rr","101"+physexamList.size());
+        }
         else
             physexam = visitsumContext.getString(R.string.something_went_wrong);
 
-        if(visitStartDatesList.size() > 0 && position != visitStartDatesList.size())
+        if(visitStartDatesList.size() > 0 && position < visitStartDatesList.size())
             holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1)
                     + " : " + visitStartDatesList.get(position));
         else
