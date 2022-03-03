@@ -584,7 +584,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         mState.setClickable(false);
         mState.setAdapter(stateAdapter);
 
-        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(this, R.array.city_nashik, R.layout.custom_spinner);
+        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(this, R.array.nas_district, R.layout.custom_spinner);
         mCity.setClickable(false);
         mCity.setEnabled(false);
         mCity.setAdapter(cityAdapter);

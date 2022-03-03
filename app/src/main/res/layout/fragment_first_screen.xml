@@ -40,11 +40,36 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/district_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/investigator_name_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:endIconDrawable="@drawable/ic_keyboard_arrow_down"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/districtSurvey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/district"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/village_block_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/investigator_name_layout"
+                android:layout_below="@id/district_layout"
                 android:layout_marginTop="5dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -52,14 +77,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:endIconDrawable="@drawable/ic_keyboard_arrow_down"
+                    app:endIconMode="custom">
 
                     <EditText
-                        android:id="@+id/villageSurvey"
+                        android:id="@+id/block_dropdown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:fontFamily="@font/poppins"
-                        android:hint="@string/village"
+                        android:hint="@string/block"
                         android:importantForAutofill="no"
                         android:inputType="text"
                         android:maxLines="1"
@@ -72,14 +102,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:endIconDrawable="@drawable/ic_keyboard_arrow_down"
+                    app:endIconMode="custom">
 
                     <EditText
-                        android:id="@+id/block_dropdown"
+                        android:id="@+id/villageSurvey"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:fontFamily="@font/poppins"
-                        android:hint="@string/block"
+                        android:hint="@string/village"
                         android:importantForAutofill="no"
                         android:inputType="text"
                         android:maxLines="1"
@@ -107,30 +142,10 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/district_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/village_block_linear_layout"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/districtSurvey"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins"
-                    android:hint="@string/district"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/primary_respondent_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/district_layout"
+                android:layout_below="@id/village_block_linear_layout"
                 android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText

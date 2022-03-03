@@ -1886,7 +1886,7 @@
         <item>उत्तर देण्यास नकार दिला</item>
     </string-array>
 
-    <string-array name="city_nashik">
+    <string-array name="nas_district">
         <item>@string/district_nashik</item>
     </string-array>
 
@@ -2153,40 +2153,40 @@
 
     <string-array name="peth_block_village">
         <item>Select Village</item>
-        <item>Surgane</item>
-        <item>Sadadapada</item>
-        <item>Bhatavihir</item>
-        <item>Borada</item>
-        <item>Ghubadasaka</item>
-        <item>Sheharipada</item>
-        <item>Mohalipada</item>
-        <item>Tungarapada</item>
-        <item>Hedapada</item>
-        <item>Kapurane</item>
-        <item>Ghotapada</item>
-        <item>Vadapada</item>
-        <item>Dabhadi</item>
-        <item>Gandole</item>
-        <item>Chaukada</item>
-        <item>Holamari</item>
-        <item>Badagi</item>
-        <item>Palashi</item>
-        <item>Jamale</item>
-        <item>Derapada</item>
-        <item>Golasapada</item>
-        <item>Chikhali</item>
+        <item>@string/surgane</item>
+        <item>@string/sadadapada</item>
+        <item>@string/bhatavihir</item>
+        <item>@string/borada</item>
+        <item>@string/ghubadasaka</item>
+        <item>@string/sheharipada</item>
+        <item>@string/mohalipada</item>
+        <item>@string/tungarapada</item>
+        <item>@string/hedapada</item>
+        <item>@string/kapurane</item>
+        <item>@string/ghotapada</item>
+        <item>@string/vadapada</item>
+        <item>@string/dabhadi</item>
+        <item>@string/gandole</item>
+        <item>@string/chaukada</item>
+        <item>@string/holamari</item>
+        <item>@string/badagi</item>
+        <item>@string/palashi</item>
+        <item>@string/jamale</item>
+        <item>@string/derapada</item>
+        <item>@string/golasapada</item>
+        <item>@string/chikhali</item>
     </string-array>
 
     <string-array name="suragana_block_villages">
         <item>Select Village</item>
-        <item>Modhalapada</item>
-        <item>Khiramane</item>
-        <item>Kalamane</item>
-        <item>Bhegu-Savarapada</item>
-        <item>Kotambi</item>
-        <item>Jambhulapada</item>
-        <item>Ambupada</item>
-        <item>Bedase</item>
+        <item>@string/modhalapada</item>
+        <item>@string/khiramane</item>
+        <item>@string/kalamane</item>
+        <item>@string/bhegu_savarapada</item>
+        <item>@string/kotambi</item>
+        <item>@string/jambhulapada</item>
+        <item>@string/ambupada</item>
+        <item>@string/bedase</item>
     </string-array>
 
 </resources>

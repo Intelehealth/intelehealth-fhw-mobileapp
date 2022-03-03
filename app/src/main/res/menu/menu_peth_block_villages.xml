@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/surgane_menu_item"
+        android:title="@string/surgane" />
+
+    <item
+        android:id="@+id/sadadapada_menu_item"
+        android:title="@string/sadadapada" />
+
+    <item
+        android:id="@+id/bhatavihir_menu_item"
+        android:title="@string/bhatavihir" />
+
+    <item
+        android:id="@+id/borada_menu_item"
+        android:title="@string/borada" />
+
+    <item
+        android:id="@+id/ghubadasaka_menu_item"
+        android:title="@string/ghubadasaka" />
+
+    <item
+        android:id="@+id/sheharipada_menu_item"
+        android:title="@string/sheharipada" />
+
+    <item
+        android:id="@+id/mohalipada_menu_item"
+        android:title="@string/mohalipada" />
+
+    <item
+        android:id="@+id/tungarapada_menu_item"
+        android:title="@string/tungarapada" />
+
+    <item
+        android:id="@+id/hedapada_menu_item"
+        android:title="@string/hedapada" />
+
+    <item
+        android:id="@+id/kapurane_menu_item"
+        android:title="@string/kapurane" />
+
+    <item
+        android:id="@+id/ghotapada_menu_item"
+        android:title="@string/ghotapada" />
+
+    <item
+        android:id="@+id/vadapada_menu_item"
+        android:title="@string/vadapada" />
+
+    <item
+        android:id="@+id/dabhadi_menu_item"
+        android:title="@string/dabhadi" />
+
+    <item
+        android:id="@+id/gandole_menu_item"
+        android:title="@string/gandole" />
+
+    <item
+        android:id="@+id/holamari_menu_item"
+        android:title="@string/holamari" />
+
+    <item
+        android:id="@+id/badagi"
+        android:title="@string/badagi" />
+
+    <item
+        android:id="@+id/palashi_menu_item"
+        android:title="@string/palashi" />
+
+    <item
+        android:id="@+id/jamale_menu_item"
+        android:title="@string/jamale" />
+
+    <item
+        android:id="@+id/derapada_menu_item"
+        android:title="@string/mohalipada" />
+
+    <item
+        android:id="@+id/golasapada_menu_item"
+        android:title="@string/golasapada" />
+
+    <item
+        android:id="@+id/chikhali"
+        android:title="@string/chikhali" />
+
+</menu>

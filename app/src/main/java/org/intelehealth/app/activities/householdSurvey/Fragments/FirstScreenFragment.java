@@ -27,10 +27,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -400,6 +404,46 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         RadioGroup result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
         mandatoryFields.addAll(Arrays.asList(nameInvestigator, villageSurvey, blockSurvey, districtSurvey, namePerson, householdNumber
                 , household_structure_radio_group, result_of_visit_radio_group));
+
+        setMenus();
+    }
+
+    private void setMenus() {
+        districtSurvey.setOnClickListener(v -> showMenu(districtSurvey, R.menu.menu_nas_district));
+        blockSurvey.setOnClickListener(v -> showMenu(blockSurvey, R.menu.menu_nas_block));
+
+        blockSurvey.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                villageSurvey.setText(null);
+                switch (s.toString()) {
+                    case "Peth Block":
+                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
+                        break;
+
+                    case "Suragana Block":
+                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void showMenu(EditText editText, @MenuRes Integer menuRes) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), editText);
+        popupMenu.getMenuInflater().inflate(menuRes, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            editText.setText(item.getTitle());
+            return true;
+        });
+        popupMenu.show();
     }
 
     private void setData(String patientUuid) {
