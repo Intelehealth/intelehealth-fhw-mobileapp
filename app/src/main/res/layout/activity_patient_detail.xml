@@ -829,7 +829,23 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/lato_bold"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="@string/button_new_visit" />
+                tools:background="@color/colorPrimary"
+                android:text="@string/text_new_visit" />
+
+            <Button
+                android:id="@+id/btn_new_advice"
+                style="@style/SelectableItemBackground"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="10dp"
+                android:elevation="5dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/lato_bold"
+                android:background="@color/colorPrimary"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/text_new_advice" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_previous_visits"

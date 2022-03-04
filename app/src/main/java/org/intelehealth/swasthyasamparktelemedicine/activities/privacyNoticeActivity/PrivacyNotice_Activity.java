@@ -1,5 +1,6 @@
 package org.intelehealth.swasthyasamparktelemedicine.activities.privacyNoticeActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -33,11 +34,19 @@ import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
 import org.intelehealth.swasthyasamparktelemedicine.activities.identificationActivity.IdentificationActivity;
 
 public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
+    private static final String EXTRA_DISABLE_ACTIONS = "EXTRA_DISABLE_ACTIONS";
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     Button accept, reject;
     MaterialCheckBox checkBox_cho;
+    boolean disableActions;
+
+    public static void start(Context context, boolean disableActions) {
+        Intent starter = new Intent(context, PrivacyNotice_Activity.class);
+        starter.putExtra(EXTRA_DISABLE_ACTIONS, disableActions);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +185,14 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+        }
+
+        disableActions = getIntent().getBooleanExtra(EXTRA_DISABLE_ACTIONS, false);
+        // no need to accept here if redirected from identification activity
+        if (disableActions) {
+            accept.setVisibility(View.GONE);
+            reject.setVisibility(View.GONE);
+            checkBox_cho.setVisibility(View.GONE);
         }
     }
 

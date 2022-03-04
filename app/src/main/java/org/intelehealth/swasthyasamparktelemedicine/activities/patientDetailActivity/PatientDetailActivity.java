@@ -14,14 +14,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -41,28 +33,27 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-
 import org.intelehealth.swasthyasamparktelemedicine.R;
+import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
+import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
 import org.intelehealth.swasthyasamparktelemedicine.database.InteleHealthDatabaseHelper;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.EncounterDAO;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesDAO;
@@ -77,16 +68,23 @@ import org.intelehealth.swasthyasamparktelemedicine.utilities.DateAndTimeUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.DownloadFilesUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.FileUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.Logger;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.UrlModifiers;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.UuidDictionary;
-
-import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -102,6 +100,7 @@ import okhttp3.ResponseBody;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    public static final String EXTRA_SHOW_MEDICAL_ADVICE = "EXTRA_SHOW_MEDICAL_ADVICE";
     String patientName;
     String visitUuid = null;
     List<String> visitUuidList;
@@ -126,7 +125,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, newAdvice;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView, whatsapp_no, calling;
@@ -142,6 +141,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Context context;
     float float_ageYear_Month;
     private TextView phoneView;
+    private boolean isMedicalAdvice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +168,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -344,6 +345,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //  LoadFamilyMembers();
 
+        if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
+            newAdvice.setVisibility(View.VISIBLE);
+            newAdvice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                }
+            });
+        }
     }
 
     private void LoadFamilyMembers() {
@@ -976,7 +986,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } else {
                         Log.e("Check", "No complaint");
                         //add arrow with Self Assessment here...
-                        complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
+                        //if medical advice change heading accordingly
+                        if (isMedicalAdvice)
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.text_medical_advice));
+                        else
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     // complaintxt1.setLayoutParams(layoutParams);
@@ -1021,6 +1035,33 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
+    }
+
+    //function to check if visit is of medical advise type
+    //end date must be exact 5 minutes greater than start date
+    private boolean isMedicalAdvice(String datetime, String end_datetime) {
+        if (TextUtils.isEmpty(datetime) || TextUtils.isEmpty(end_datetime))
+            return false;
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        try {
+            Date startTime = startFormat.parse(datetime);
+            Date endTime = endFormat.parse(end_datetime);
+            long diff = endTime.getTime() - startTime.getTime();
+            if (diff == TimeUnit.MINUTES.toMillis(5))
+                return true;
+        } catch (Exception e) {
+            try {
+                Date startTime = startFormat.parse(datetime);
+                Date endTime = startFormat.parse(end_datetime);
+                long diff = endTime.getTime() - startTime.getTime();
+                if (diff == TimeUnit.MINUTES.toMillis(5))
+                    return true;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return false;
     }
 
     /**
@@ -1218,6 +1259,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                    isMedicalAdvice = isMedicalAdvice(date, end_date);
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;

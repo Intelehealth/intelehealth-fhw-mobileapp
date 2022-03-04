@@ -23,6 +23,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +60,7 @@ import org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
 
 public class SearchPatientActivity extends AppCompatActivity {
+    private static final String EXTRA_MOBILE = "EXTRA_MOBILE";
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;
@@ -71,6 +73,12 @@ public class SearchPatientActivity extends AppCompatActivity {
     FloatingActionButton new_patient;
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
+
+    public static void start(Context context, String mobile) {
+        Intent starter = new Intent(context, SearchPatientActivity.class);
+        starter.putExtra(EXTRA_MOBILE, mobile);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,6 +227,21 @@ public class SearchPatientActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("firstquery", "exception", e);
         }
+    }
+
+    // code to autopopulate given mobile number from identification activity
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
+        String mobile = getIntent().getStringExtra(EXTRA_MOBILE);
+        if (!TextUtils.isEmpty(mobile)) {
+            query = mobile;
+            searchView.setIconified(false);
+            searchView.setQuery(mobile, true);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
