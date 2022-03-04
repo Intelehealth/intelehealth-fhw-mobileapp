@@ -3364,7 +3364,7 @@ public class IdentificationActivity extends AppCompatActivity {
                /* SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
-                //boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();*/
 
             }
 

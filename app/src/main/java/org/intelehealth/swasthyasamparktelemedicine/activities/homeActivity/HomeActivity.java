@@ -76,17 +76,6 @@ import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.OfflineLogin;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
 import org.intelehealth.swasthyasamparktelemedicine.widget.materialprogressbar.CustomProgressDialog;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -115,8 +104,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6, cvMedicalAdvice;
-    CardView c1, c2, c3, c4, c5, c6, c7, c8;
+    CardView c1, c2, c3, c4, c5, c6, c7, c8, cvMedicalAdvice;
     private String key = null;
     private String licenseUrl = null;
 
