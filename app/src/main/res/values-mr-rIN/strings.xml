@@ -1276,4 +1276,39 @@
     <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
     <string name="surveyDialogTitle">जतन यशस्वी</string>
     <string name="surveyDialogMessage">सर्वेक्षण यशस्वीरित्या जोडले</string>
+
+    <string name="surgane">सुरगाने</string>
+    <string name="sadadapada">सादडपाडा</string>
+    <string name="bhatavihir">भाटविहिर</string>
+    <string name="borada">बोरदा</string>
+    <string name="ghubadasaka">घुबडसाका</string>
+    <string name="sheharipada">शेहरिपाडा</string>
+    <string name="mohalipada">मोहलीपाडा</string>
+    <string name="tungarapada">तुंगारपाडा</string>
+    <string name="hedapada">हेदपाडा</string>
+    <string name="kapurane">कापूर्णे</string>
+    <string name="ghotapada">घोटपाडा</string>
+    <string name="vadapada">वडपाडा</string>
+    <string name="dabhadi">दाभाडी</string>
+    <string name="gandole">गांडोळे</string>
+    <string name="chaukada">चौकाडा</string>
+    <string name="holamari">होलमारी</string>
+    <string name="badagi">बाडगी</string>
+    <string name="palashi">पळशी</string>
+    <string name="jamale">जामले</string>
+    <string name="derapada">डेरापाडा</string>
+    <string name="golasapada">गोळसपाडा</string>
+    <string name="chikhali">चिखली</string>
+    <string name="modhalapada">मोधळपाडा</string>
+    <string name="khiramane">खिरमाणे</string>
+    <string name="kalamane">कळमणे</string>
+    <string name="bhegu_savarapada">भेगु-सावरपाडा</string>
+    <string name="kotambi">कोटमबी</string>
+    <string name="jambhulapada">जामभुळपाडा</string>
+    <string name="ambupada">आंबूपाडा</string>
+    <string name="bedase">बेडसे</string>
+
+    <string name="peth_block">पेठ तालुका</string>
+    <string name="suragana_block">सुरगाणा तालुका</string>
+
 </resources>

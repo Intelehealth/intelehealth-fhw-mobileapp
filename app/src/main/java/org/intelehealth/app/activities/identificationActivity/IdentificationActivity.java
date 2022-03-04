@@ -1378,33 +1378,36 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
            /* int spinner_positionVillage = adapter_focalPointVillage.getPosition(focalVillageTransl);
             spinner_focalPointVillage.setSelection(spinner_positionVillage);*/
 
-
             switch (spinner_positionBlock) {
                 case 1:
+                    String focalVillagePeth_Language = "peth_block_village_" + sessionManager.getAppLanguage();
+                    int focalVillage_Peth_id = getResources().getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
+                    if (focalVillage_Peth_id != 0) {
+                        adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
+                    }
                     adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.peth_block_village, R.layout.custom_spinner);
+                            focalVillage_Peth_id, R.layout.custom_spinner);
                     spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
                     spinner_focalPointVillage.setVisibility(View.VISIBLE);
-
-                    int spinner_positionVillagePeth = adapter_FocalVillage_Peth.getPosition(focalVillageTransl);
-                    spinner_focalPointVillage.setSelection(spinner_positionVillagePeth);
                     break;
 
                 case 2:
+                    String focalVillageSurgane_Language = "suragana_block_villages_" + sessionManager.getAppLanguage();
+                    int focalVillage_Surgane_id = getResources().getIdentifier(focalVillageSurgane_Language, "array", getApplicationContext().getPackageName());
+                    if (focalVillage_Surgane_id != 0) {
+                        adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                focalVillage_Surgane_id, android.R.layout.simple_spinner_dropdown_item);
+                    }
                     adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.suragana_block_villages, R.layout.custom_spinner);
+                            focalVillage_Surgane_id, R.layout.custom_spinner);
                     spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Surgana);
                     spinner_focalPointVillage.setVisibility(View.VISIBLE);
-
-                    int spinner_positionVillageSurgana = adapter_FocalVillage_Surgana.getPosition(focalVillageTransl);
-                    spinner_focalPointVillage.setSelection(spinner_positionVillageSurgana);
                     break;
 
                 default:
                     spinner_focalPointVillage.setVisibility(View.GONE);
             }
-
-
         }
         //focal
 
@@ -3962,18 +3965,30 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(patientID_edit == null) {
+                if (patientID_edit == null) {
                     switch (position) {
                         case 1:
+                            String focalVillagePeth_Language = "peth_block_village_" + sessionManager.getAppLanguage();
+                            int focalVillage_Peth_id = getResources().getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
+                            if (focalVillage_Peth_id != 0) {
+                                adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                        focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
+                            }
                             adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.peth_block_village, R.layout.custom_spinner);
+                                    focalVillage_Peth_id, R.layout.custom_spinner);
                             spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
                             spinner_focalPointVillage.setVisibility(View.VISIBLE);
                             break;
 
                         case 2:
+                            String focalVillageSurgane_Language = "suragana_block_villages_" + sessionManager.getAppLanguage();
+                            int focalVillage_Surgane_id = getResources().getIdentifier(focalVillageSurgane_Language, "array", getApplicationContext().getPackageName());
+                            if (focalVillage_Surgane_id != 0) {
+                                adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                        focalVillage_Surgane_id, android.R.layout.simple_spinner_dropdown_item);
+                            }
                             adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.suragana_block_villages, R.layout.custom_spinner);
+                                    focalVillage_Surgane_id, R.layout.custom_spinner);
                             spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Surgana);
                             spinner_focalPointVillage.setVisibility(View.VISIBLE);
                             break;
