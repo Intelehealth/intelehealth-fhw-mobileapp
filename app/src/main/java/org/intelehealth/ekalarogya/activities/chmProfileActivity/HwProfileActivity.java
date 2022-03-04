@@ -189,9 +189,9 @@ public class HwProfileActivity extends AppCompatActivity {
             hw_designation_value.setText(hwProfileModel.getDesignation());
             hw_aboutme_value.setText(hwProfileModel.getAboutMe());
 
-            total_patregistered_value.setText(hwProfileModel.getPatientRegistered() + "+");
-            total_visitprogress_value.setText(hwProfileModel.getVisitInProgress() + "+");
-            total_consultaion_value.setText(hwProfileModel.getCompletedConsultation() + "+");
+            total_patregistered_value.setText(hwProfileModel.getPatientRegistered()+"");
+            total_visitprogress_value.setText(hwProfileModel.getVisitInProgress()+"");
+            total_consultaion_value.setText(hwProfileModel.getCompletedConsultation()+"");
 
             HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
 
