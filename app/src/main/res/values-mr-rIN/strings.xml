@@ -1276,4 +1276,41 @@
     <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
     <string name="surveyDialogTitle">जतन यशस्वी</string>
     <string name="surveyDialogMessage">सर्वेक्षण यशस्वीरित्या जोडले</string>
+
+    <!-- TODO: Add translations... -->
+    <!--Focal Facility-->
+    <string name="surgane">Surgane</string>
+    <string name="sadadapada">Sadadapada</string>
+    <string name="bhatavihir">Bhatavihir</string>
+    <string name="borada">Borada</string>
+    <string name="ghubadasaka">Ghubadasaka</string>
+    <string name="sheharipada">Sheharipada</string>
+    <string name="mohalipada">Mohalipada</string>
+    <string name="tungarapada">Tungarapada</string>
+    <string name="hedapada">Hedapada</string>
+    <string name="kapurane">Kapurane</string>
+    <string name="ghotapada">Ghotapada</string>
+    <string name="vadapada">Vadapada</string>
+    <string name="dabhadi">Dabhadi</string>
+    <string name="gandole">Gandole</string>
+    <string name="chaukada">Chaukada</string>
+    <string name="holamari">Holamari</string>
+    <string name="badagi">Badagi</string>
+    <string name="palashi">Palashi</string>
+    <string name="jamale">Jamale</string>
+    <string name="derapada">Derapada</string>
+    <string name="golasapada">Golasapada</string>
+    <string name="chikhali">Chikhali</string>
+    <string name="modhalapada">Modhalapada</string>
+    <string name="khiramane">Khiramane</string>
+    <string name="kalamane">Kalamane</string>
+    <string name="bhegu_savarapada">Bhegu-Savarapada</string>
+    <string name="kotambi">Kotambi</string>
+    <string name="jambhulapada">Jambhulapada</string>
+    <string name="ambupada">Ambupada</string>
+    <string name="bedase">Bedase</string>
+    <string name="peth_block">Peth Block</string>
+    <string name="suragana_block">Suragana Block</string>
+
+    <!--Focal Facility-->
 </resources>
