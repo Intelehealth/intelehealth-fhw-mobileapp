@@ -1136,7 +1136,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             String occupation_Transl = "";
             occupation_Transl = getOccupationsIdentification_Edit(patient1.getOccupation(), sessionManager.getAppLanguage());
             int spinner_position = occupationAdapter.getPosition(occupation_Transl);
-            mOccupation.setSelection(spinner_position);
+            if(spinner_position == -1) {
+                mOccupation.setSelection(13);
+                et_occupation_other.setVisibility(View.VISIBLE);
+                et_occupation_other.setText(patient1.getOccupation());
+            }
+            else {
+                mOccupation.setSelection(spinner_position);
+            }
         }
 
         //sugar
@@ -2599,8 +2606,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getSelectedItem().toString()));
-            patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            if (et_occupation_other.getVisibility() == View.GONE)
+                patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            else
+                patientAttributesDTO.setValue(et_occupation_other.getText().toString());
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
@@ -3659,12 +3669,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            if (et_occupation_other.getVisibility() == View.GONE)
+                patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            else
+                patientAttributesDTO.setValue(et_occupation_other.getText().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3801,7 +3814,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 12) {
+                if (position == 13) {
                     til_occupation_other.setVisibility(View.VISIBLE);
                 } else {
                     til_occupation_other.setVisibility(View.GONE);
