@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="app_name">એકલ આરોગ્ય હેલ્પલાઇન</string>
+    <string name="app_name">ટેલીકોલર એપ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">આગળ</string>
@@ -42,7 +42,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">એકલ આરોગ્ય હેલ્પલાઇન</string>
+    <string name="title_activity_login">ટેલીકોલર એપ</string>
     <string name="prompt_email">વપરાશકર્તા નામ</string>
     <string name="prompt_password">પાસવર્ડ</string>
     <string name="prompt_admin_password">એડમિન પાસવર્ડ</string>
@@ -554,7 +554,7 @@
     <string name="economic_values_missing">આર્થિક વિગતો ખૂટે છે</string>
     <string name="education_values_missing">શૈક્ષણિક વિગતો ખૂટે છે</string>
     <string name="intelehealth_a_telemedicine_platform">માયટેલિડોક, ટેલિમેડિસીન ઍપ્લિકેશન છે જે ગ્રામ અને અંતરિયાળ વિસ્તારના હેલ્થ વર્કરોને, દૂર બેઠેલા ડૉક્ટરોની સાથે જોડે છે, જેથી તેઓ પોતાના દરદીઓને ઉચ્ચ ગુણવત્તાની આરોગ્ય સેવાઓ પૂરી પાડી શકે.</string>
-    <string name="intelehealth_name">એકલ આરોગ્ય હેલ્પલાઇન</string>
+    <string name="intelehealth_name">ટેલીકોલર એપ</string>
     <string name="Ayu_name">આયુ</string>
     <string name="close_button">બંધ કરાયું</string>
     <string name="active_tag_patientDetail">"સક્રિય"</string>

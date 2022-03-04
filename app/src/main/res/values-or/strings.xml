@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ଏକଲ ଆରୋଗିଆ ହେଲ୍ପଲାଇନ</string>
+    <string name="app_name">ଟେଲିକଲର୍ ଆପ୍</string>
     <string name="generic_the_flipping_word_next">ପରବତ୍ତର୍ତ୍ତୀ</string>
     <string name="button_ok">ଓକେ</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
@@ -168,7 +168,7 @@
     <string name="title_activity_family_history">ପରିବାର ଇତିହାସ</string>
     <string name="title_activity_get_patient_history">ରୋଗୀ ଇତିିହାସ</string>
     <string name="title_activity_identification">ନୂତନ ରୋଗୀମାନଙ୍କୁ ଯୋଡ଼ିବା</string>
-    <string name="title_activity_login">ଏକଲ ଆରୋଗିଆ ହେଲ୍ପଲାଇନ</string>
+    <string name="title_activity_login">ଟେଲିକଲର୍ ଆପ୍</string>
     <string name="title_activity_patient_detail">ରୋଗୀ ବିବରଣୀ</string>
     <string name="title_activity_patient_history">ତୀତ ପୁରୁଣା ଚିକିସତ୍ା ଇଚ୍ଛିହାସ</string>
     <string name="title_activity_patient_summary">ଯାତ୍ରା ସାରାଂଶ</string>
@@ -461,7 +461,7 @@
     <string name="economic_values_missing">ଆଥ୍କି ମୂଲୟାଙ୍କଗୁଡ଼କି ଅନୁପସ୍ଥିତ</string>
     <string name="education_values_missing">ଶେି ା ମୂଲୟାଙ୍କଗୁଡ଼କି ଅନୁପସ୍ଥିତ</string>
     <string name="intelehealth_a_telemedicine_platform">"ଏକଲ ଆରୋଗିଆ ହେଲ୍ପଲାଇନ ଆପିଲସକଶନ୍ ଯାହା ଗ୍ରାମୀଣ ଓ ଦୁଗଡମ ଅଞ୍ଚଳର ସ୍ୱାସ୍ଥୟକମଡୀଙ୍କୁଦୂରାନ୍ତ ର୍ାକ୍ତରଙ୍କ ସହ ସାଂଯୁକ୍ତ କରିଥ୍ାଏ, ଯାହାଦ୍ୱାରା ସସମାସନ ନଜି ସରାଗୀମାନଙ୍କୁ ଉଚ୍ଚମାନର ସ୍ୱାସ୍ଥୟସସବା ସଯାଗାଇପାରନ୍ତି। "</string>
-    <string name="intelehealth_name">ଏକଲ ଆରୋଗିଆ ହେଲ୍ପଲାଇନ</string>
+    <string name="intelehealth_name">ଟେଲିକଲର୍ ଆପ୍</string>
     <string name="close_button">ବନ୍ଦ କରନ</string>
     <string name="temperature_F">ତାପମାତ୍ର(F):</string>
     <string name="temperature_C">ତାପମାତ୍ର(C):</string>
