@@ -673,4 +673,44 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="sikkim">Sikkim</string>
 
+    <!--appointment module strings -->
+    <string name="book_appointment">બુકિંગ એપોઇન્ટમેન્ટ</string>
+    <string name="reschedule_appointment">મુલાકાતને ફરીથી ગોઠવો</string>
+    <string name="appointment_booking_confirmation_txt">શું તમે ખરેખર આ સ્લોટને બુક કરવા માટે છો?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">શું તમે મુલાકાત રદ કરવા માટે ચોક્કસ છો?</string>
+    <string name="cancel_appointment">મુલાકાત રદ કરો</string>
+    <string name="slot_empty_message">પસંદ કરેલ તારીખ અને વિશેષતા માટે મુલાકાત સ્લોટ ઉપલબ્ધ નથી!</string>
+    <string name="appointment_empty_message">તમારી પાસે કોઈ એપોઇન્ટમેન્ટ નથી!</string>
+    <string name="appointment_listing_title">મુલાકાત યાદી</string>
+    <string name="appointment_booking_title">એપોઇન્ટમેન્ટ બુકિંગ</string>
+    <string name="appointment_for">માટે મુલાકાત</string>
+    <string name="please_select_appointment_slot">મહેરબાની કરીને મુલાકાત સ્લોટને પસંદ કરો</string>
+    <string name="please_select_speciality">કૃપા કરીને વિશેષતા પસંદ કરો!</string>
+
+    <string name="doctor_appointments">ડોક્ટર મુલાકાતો</string>
+    <string name="slot_info">સ્લોટ જાણકારી</string>
+    <string name="appointment_booked">મુલાકાત બુક થયેલ છે</string>
+    <string name="minutes_txt">મિનિટો</string>
+    <string name="booked_txt">બુક થયેલ</string>
+    <string name="cancelled_txt">રદ થયેલ</string>
+    <string name="please_upload_visit">કૃપા કરીને એપોઇન્ટમેન્ટ બુક કરાવતા પહેલા મુલાકાતને પ્રથમ અપલોડ કરો.</string>
+    <string name="appointment_booked_successfully">મુલાકાત સફળતાપૂર્વક બુક થઈ!</string>
+    <string name="appointment_booked_failed">પુસ્તિકા થયેલ મુલાકાત નિષ્ફળ!</string>
+    <string name="postal_code_invalid_txt">કૃપા કરીને માન્ય પોસ્ટલ કોડ દાખલ કરો</string>
+    <string name="failed_to_cancel_appointment">મુલાકાત રદ કરવામાં નિષ્ફળ!</string>
+    <string name="appointment_cancelled_success_txt">મુલાકાત સફળતાપૂર્વક રદ થઈ ગઈ!</string>
+    <string name="visit_closed">બંધ થયેલ મુલાકાત</string>
+
+    <string name="please_select_your_reschedule_reason">કૃપા કરીને તમારો ફરીથી નક્કી કરવાનું કારણ પસંદ કરો</string>
+    <string name="please_select_your_cancel_reason">મહેરબાની કરીને રદ કરવાનું કારણ પસંદ કરો</string>
+    <string name="doctor_is_not_available">ડોક્ટર ઉપલબ્ધ નથી</string>
+    <string name="patient_is_not_available">દર્દી ઉપલબ્ધ નથી</string>
+    <string name="others">બીજાંઓ</string>
+    <string name="please_enter_the_reason_details">મહેરબાની કરીને કારણ વિગતોને દાખલ કરો</string>
+    <string name="save_amp_proceed">સંગ્રહ કરો અને આગળ વધો</string>
+    <string name="please_enter_reason_txt">કૃપા કરીને કારણ દાખલ કરો!</string>
+    <string name="yes">હા</string>
+    <string name="no">ના</string>
+
+
 </resources>

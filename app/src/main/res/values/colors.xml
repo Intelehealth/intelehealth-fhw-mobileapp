@@ -52,5 +52,19 @@
     <color name="dot_light_screen4">#e4b5fc</color>
     <color name="transparent_tab">#75000000</color>
 
-
+    <color name="gray_0_0">#F3F3F3</color>
+    <color name="gray_0">#F1F1F1</color>
+    <color name="gray_0_trans">#55F1F1F1</color>
+    <color name="gray_3_trans">#55a7a7a7</color>
+    <color name="gray_4_trans">#55767272</color>
+    <color name="gray_5_trans">#551a1919</color>
+    <color name="gray_6_trans">#991a1919</color>
+    <color name="gray_1">#e4e2e2</color>
+    <color name="gray_2">#cecdcd</color>
+    <color name="gray_3">#a7a7a7</color>
+    <color name="gray_4">#767272</color>
+    <color name="gray_5">#403d3d</color>
+    <color name="gray_6">#1a1919</color>
+    <color name="gray_7">#080808</color>
+    <color name="gray_4_1">#adb7c0</color>
 </resources>

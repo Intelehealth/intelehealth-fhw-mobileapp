@@ -993,4 +993,56 @@ public final class StringUtils {
         }
 
     }
+
+    public static String getTranslatedDays(String val, String locale) {
+
+        if (locale.equalsIgnoreCase("hi")) {
+
+            switch (val) {
+                case "Sunday":
+                    val = "रविवार";
+                    break;
+                case "Monday":
+                    val = "सोमवार";
+                    break;
+                case "Tuesday":
+                    val = "मंगलवार";
+                    break;
+                case "Wednesday":
+                    val = "बुधवार";
+                    break;
+
+                case "Thursday":
+                    val = "गुरूवार";
+                    break;
+                case "शुक्रवार":
+                    val = "Пятница";
+                    break;
+                case "Saturday":
+                    val = "शानिवार";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }public static String getAppointmentBookStatus(String val, String locale) {
+
+        if (locale.equalsIgnoreCase("hi")) {
+
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "बुक";
+                    break;
+                case "cancelled":
+                    val = "रद्द";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }
 }
