@@ -1343,6 +1343,8 @@
     <string name="meat_lamb_beef_pork">(Meat – Lamb/Beef/pork, Organ meat, chicken, duck, other birds, fish – big/small/shell fish/prawn)</string>
     <string name="edit_dialog_button">Edit</string>
     <string name="delete_dialog_button">Delete</string>
+
+    <!--Focal Facility-->
     <string name="surgane">Surgane</string>
     <string name="sadadapada">Sadadapada</string>
     <string name="bhatavihir">Bhatavihir</string>
@@ -1373,9 +1375,10 @@
     <string name="jambhulapada">Jambhulapada</string>
     <string name="ambupada">Ambupada</string>
     <string name="bedase">Bedase</string>
-
     <string name="peth_block">Peth Block</string>
     <string name="suragana_block">Suragana Block</string>
+
+    <!--Focal Facility-->
     <string name="surveyDialogTitle">Saved Successful</string>
     <string name="surveyDialogMessage">Survey added successfully</string>
 

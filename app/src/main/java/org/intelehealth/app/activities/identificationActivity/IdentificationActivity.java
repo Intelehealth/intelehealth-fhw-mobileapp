@@ -1789,7 +1789,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         //focal Village - Peth
         try {
-            String focalVillagePeth_Language = "block_" + sessionManager.getAppLanguage();
+            String focalVillagePeth_Language = "peth_block_village" + sessionManager.getAppLanguage();
             int focalVillage_Peth_id = res.getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
             if (focalVillage_Peth_id != 0) {
                 adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(this,
