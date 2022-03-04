@@ -3,16 +3,21 @@ package org.intelehealth.ekalhelpline.activities.callDoctor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +25,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchPatientActivity;
+import org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchSuggestionProvider;
+import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.models.CallDoctorModel;
 import org.intelehealth.ekalhelpline.models.DoctorDetailsModel;
@@ -41,13 +49,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CallDoctorActivity extends AppCompatActivity {
-
+    SearchView searchView;
     RecyclerView recyclerView;
     SessionManager sessionManager = null;
     Toolbar toolbar;
     Context context;
     private String TAG = CallDoctorActivity.class.getSimpleName();
     CustomProgressDialog customProgressDialog;
+    List<DoctorDetailsModel> doctorList;
+    CallDoctorAdapter callDoctorAdapter;
 
 
     @Override
@@ -77,12 +87,13 @@ public class CallDoctorActivity extends AppCompatActivity {
                 System.out.println(response);
                 if(response.body()!=null && response.body().getDoctorList()!= null && response.body().getDoctorList().size()>0)
                 {
-                    List<DoctorDetailsModel> doctorList = new ArrayList<>();
+                    doctorList = new ArrayList<>();
                     for(DoctorDetailsModel doctorDetailsModel: response.body().getDoctorList())
                         doctorList.add(doctorDetailsModel);
 
                     customProgressDialog.dismiss();
-                    recyclerView.setAdapter(new CallDoctorAdapter(doctorList, CallDoctorActivity.this));
+                    callDoctorAdapter = new CallDoctorAdapter(doctorList, CallDoctorActivity.this);
+                    recyclerView.setAdapter(callDoctorAdapter);
                 }
                 else
                 {
@@ -136,9 +147,56 @@ public class CallDoctorActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_search, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
+
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("Hack", "in query text change");
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(CallDoctorActivity.this,
+                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                suggestions.clearHistory();
+                filter(newText);
+                return true;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<DoctorDetailsModel> filteredlist = new ArrayList<>();
+
+        for (DoctorDetailsModel item : doctorList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getDoctorName().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            callDoctorAdapter.filterList(filteredlist);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -158,7 +216,7 @@ public class CallDoctorActivity extends AppCompatActivity {
         String encoded = "ZDc4OGUwYjYxOGIzMTQzZTBmMmRmNDY2ZmRhZDE1NTU2MWFhZWUzYjMyZTQzMjdkOjQ5ZGYxZTdhNjM1ZDljNTc1MzY1ZmM4MmNjMDdkMWFjM2ViNzcwZTIyODRmZDI1ZQ==";
         String callPatientUrl = urlModifiers.getCallPatientExotelUrl();
         HashMap<String, String> map = new HashMap<>();
-        map.put("From", "919958392968");
+        map.put("From", sessionManager.getProviderPhoneno());
         map.put("To", doctorPhoneNo);
         map.put("CallerId", "01141236457");
         ApiClient.changeApiBaseUrl(callPatientUrl);

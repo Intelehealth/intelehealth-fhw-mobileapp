@@ -17,6 +17,10 @@ public class DoctorAttributes {
     @Expose
     private String doctorWhatsApp;
 
+    @SerializedName("timings")
+    @Expose
+    private String doctorTimings;
+
     @SerializedName("specialization")
     @Expose
     private String doctorSpecialization;
@@ -51,5 +55,13 @@ public class DoctorAttributes {
 
     public void setDoctorSpecialization(String doctorSpecialization) {
         this.doctorSpecialization = doctorSpecialization;
+    }
+
+    public String getDoctorTimings() {
+        return doctorTimings;
+    }
+
+    public void setDoctorTimings(String doctorTimings) {
+        this.doctorTimings = doctorTimings;
     }
 }

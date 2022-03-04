@@ -21,6 +21,17 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
+    /**
+     * @param CLEAN_URL : The base url that user has entered in the editText of setup screen.
+     * @param USER_UUID : The uuid of the provider who has been authenticated in the app.
+     * @return : formatted completed url to the hit by RX.
+     */
+    //TODO: Generalise the url after testing
+    public String loginUrlProvider_phone(String CLEAN_URL, String USER_UUID) {
+        return String.format("https://%s/openmrs/ws/rest/v1/provider?user=%s&v=custom:(uuid,person:(uuid,display,gender),attributes)", CLEAN_URL, USER_UUID);
+    }
+
+
     public String patientProfileImageUrl(String patientUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "personimage/" + patientUuid;

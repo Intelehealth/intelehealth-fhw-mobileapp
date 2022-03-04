@@ -543,12 +543,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_call_patient = findViewById(R.id.card_call_patient);
         card_call_doctor = findViewById(R.id.card_call_doctor);
 
+        queryData(String.valueOf(patientUuid));
+
         UrlModifiers urlModifiers = new UrlModifiers();
         String encoded = "ZDc4OGUwYjYxOGIzMTQzZTBmMmRmNDY2ZmRhZDE1NTU2MWFhZWUzYjMyZTQzMjdkOjQ5ZGYxZTdhNjM1ZDljNTc1MzY1ZmM4MmNjMDdkMWFjM2ViNzcwZTIyODRmZDI1ZQ==";
         String callPatientUrl = urlModifiers.getCallPatientExotelUrl();
         HashMap<String, String> map = new HashMap<>();
-        map.put("From", "919958000000");
-        map.put("To", "919810266000");
+        map.put("From", sessionManager.getProviderPhoneno());
+        map.put("To", patient.getPhone_number());
         map.put("CallerId", "01141236457");
         ApiClient.changeApiBaseUrl(callPatientUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -1175,19 +1177,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setEnabled(false);
         }
 
-        queryData(String.valueOf(patientUuid));
-        nameView =
-
-                findViewById(R.id.textView_name_value);
+        nameView = findViewById(R.id.textView_name_value);
 
         //OpenMRS Id
-        idView =
+        idView = findViewById(R.id.textView_id_value);
 
-                findViewById(R.id.textView_id_value);
-
-        visitView =
-
-                findViewById(R.id.textView_visit_value);
+        visitView = findViewById(R.id.textView_visit_value);
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().
 
                 isEmpty()) {

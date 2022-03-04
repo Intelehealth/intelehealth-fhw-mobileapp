@@ -13,6 +13,10 @@ public class DoctorDetailsModel {
     @Expose
     private String doctorGender;
 
+    @SerializedName("status")
+    @Expose
+    private String doctorStatus;
+
     @SerializedName("attributes")
     @Expose
     public DoctorAttributes doctorAtributesList;
@@ -39,5 +43,13 @@ public class DoctorDetailsModel {
 
     public void setDoctorAtributesList(DoctorAttributes doctorAtributesList) {
         this.doctorAtributesList = doctorAtributesList;
+    }
+
+    public String getDoctorStatus() {
+        return doctorStatus;
+    }
+
+    public void setDoctorStatus(String doctorStatus) {
+        this.doctorStatus = doctorStatus;
     }
 }

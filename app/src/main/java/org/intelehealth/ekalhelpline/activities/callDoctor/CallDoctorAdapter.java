@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.activities.callDoctor;
 
 import android.content.Context;
 import android.telecom.Call;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,12 @@ public class CallDoctorAdapter extends RecyclerView.Adapter<CallDoctorAdapter.My
         this.context = context;
     }
 
+    // method for filtering our recyclerview items.
+    public void filterList(List<DoctorDetailsModel> filterllist) {
+        doctorDetailsModelList = filterllist;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,11 +51,18 @@ public class CallDoctorAdapter extends RecyclerView.Adapter<CallDoctorAdapter.My
         holder.setIsRecyclable(false);
         if(doctorDetailsModel!=null)
         {
-            holder.nameTextView.setText(doctorDetailsModel.getDoctorName() + " (" + doctorDetailsModel.getDoctorGender() + ") ");
-            holder.specialityTextView.setText(doctorAttributes.getDoctorQualification() + ", " + doctorAttributes.getDoctorSpecialization());
-            //TODO: Timings and status to be added.
+            holder.nameTextView.setText(doctorDetailsModel.getDoctorName() + " (" + ((!TextUtils.isEmpty(doctorDetailsModel.getDoctorGender())) ? doctorDetailsModel.getDoctorGender() : "N/A") + ") ");
+            holder.specialityTextView.setText(((!TextUtils.isEmpty(doctorAttributes.getDoctorQualification())) ? doctorAttributes.getDoctorQualification() : "N/A") + ", " + ((!TextUtils.isEmpty(doctorAttributes.getDoctorSpecialization())) ? doctorAttributes.getDoctorSpecialization() : "N/A"));
+            if(doctorAttributes.getDoctorTimings()!=null && !doctorAttributes.getDoctorTimings().isEmpty())
+                holder.timingTextView.setText("Timings: " + doctorAttributes.getDoctorTimings());
+            else
+                holder.timingTextView.setText("Timings: N/A");
+            if(doctorDetailsModel.getDoctorStatus().equalsIgnoreCase("active"))
+                holder.statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.online_green));
+            else
+                holder.statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.offline_red));
 
-            if(doctorAttributes.getDoctorPhoneNo()!=null && !doctorAttributes.getDoctorPhoneNo().isEmpty())
+            if(doctorAttributes.getDoctorPhoneNo()!=null && !doctorAttributes.getDoctorPhoneNo().isEmpty() && doctorDetailsModel.getDoctorStatus().equalsIgnoreCase("active") )
             {
                 holder.callImageView.setVisibility(View.VISIBLE);
                 holder.callImageView.setOnClickListener(new View.OnClickListener() {
@@ -61,18 +75,19 @@ public class CallDoctorAdapter extends RecyclerView.Adapter<CallDoctorAdapter.My
                 });
             }
 
-            if(doctorDetailsModel.getDoctorAtributesList().getDoctorWhatsApp()!=null)
-            {
-                holder.whatsAppImageView.setVisibility(View.VISIBLE);
-                holder.whatsAppImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (context instanceof CallDoctorActivity) {
-                            ((CallDoctorActivity)context).whatsAppDoctor(doctorDetailsModel.getDoctorAtributesList().getDoctorPhoneNo());
-                        }
-                    }
-                });
-            }
+            //commenting out code as not required for now.
+//            if(doctorDetailsModel.getDoctorAtributesList().getDoctorWhatsApp()!=null)
+//            {
+//                holder.whatsAppImageView.setVisibility(View.VISIBLE);
+//                holder.whatsAppImageView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (context instanceof CallDoctorActivity) {
+//                            ((CallDoctorActivity)context).whatsAppDoctor(doctorDetailsModel.getDoctorAtributesList().getDoctorPhoneNo());
+//                        }
+//                    }
+//                });
+//            }
         }
 
     }
