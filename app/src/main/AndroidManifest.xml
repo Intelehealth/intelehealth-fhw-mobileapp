@@ -163,6 +163,14 @@
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="org.intelehealth.swasthyasamparktelemedicine.activities.myCases.MyCasesActivity"
+            android:label="@string/my_cases"
+            android:screenOrientation="portrait"
+            android:configChanges="uiMode"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name="org.intelehealth.swasthyasamparktelemedicine.activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"

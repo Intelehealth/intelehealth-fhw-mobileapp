@@ -42,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.swasthyasamparktelemedicine.appointment.AppointmentListingActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.myCases.MyCasesActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -101,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6, c7;
+    CardView c1, c2, c3, c4, c5, c6, c7, c8;
     private String key = null;
     private String licenseUrl = null;
 
@@ -114,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, myCases_textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +165,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        c8 = findViewById(R.id.cardview_my_cases);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -171,6 +173,10 @@ public class HomeActivity extends AppCompatActivity {
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
+
+        //new my cases card added: By Nishita
+        myCases_textView = findViewById(R.id.myCases_textview);
+        myCases_textView.setText(R.string.my_cases);
 
         todaysVisits_textview = findViewById(R.id.todaysVisits_textview);
         todaysVisits_textview.setText(R.string.today_visits);
@@ -248,8 +254,13 @@ public class HomeActivity extends AppCompatActivity {
                 videoLibrary();
             }
         });
-
-
+        c8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MyCasesActivity.class);
+                startActivity(intent);
+            }
+        });
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")

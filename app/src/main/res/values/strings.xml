@@ -521,6 +521,7 @@
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Refreshed - </string>
     <string name="today_visits">Today\'s Visits</string>
+    <string name="my_cases">My Cases</string>
     <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
@@ -596,7 +597,7 @@
     <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
     <string name="dr_registration_no">Registration No: </string>
     <string name="dr_phone_number">Phone Number: </string>
-    <string name="dr_email">Email: </string>
+    <string name="dr_email">"Email: "</string>
     <string name="_visit_summary"> Visit Summary</string>
     <string name="patient_id_">Patient Id: </string>
     <string name="patient_name_title">Patient Name: </string>
@@ -692,6 +693,7 @@
     <string name="try_again_later">Something went wrong. Please try again later.</string>
     <string name="sikkim">Sikkim</string>
     <string name="loading_more">Loading more…</string>
+    <string name="no_cases">No cases assigned to you.</string>
 
     <!--appointment module strings -->
     <string name="book_appointment">Book Appointment</string>
