@@ -4255,6 +4255,22 @@ public final class StringUtils {
         return val;
     }
 
+    // Focal Block
+    public static String getFocalFacility_Block(String val, String locale) {
+        return val;
+    }
+    public static String getFocalFacility_Block_Edit(String val, String locale) {
+        return val;
+    }
+
+    //Focal Village
+    public static String getFocalFacility_Village(String val, String locale) {
+        return val;
+    }
+    public static String getFocalFacility_Village_Edit(String val, String locale) {
+        return val;
+    }
+
 
     public static String getChildAlive(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {

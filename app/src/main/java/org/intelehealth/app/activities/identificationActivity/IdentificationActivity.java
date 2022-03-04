@@ -15,6 +15,8 @@ import static org.intelehealth.app.utilities.StringUtils.getBMI_edit;
 import static org.intelehealth.app.utilities.StringUtils.getBP_edit;
 import static org.intelehealth.app.utilities.StringUtils.getChildAlive_edit;
 import static org.intelehealth.app.utilities.StringUtils.getComplications_edit;
+import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Block_Edit;
+import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Village_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanned_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
@@ -211,7 +213,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             adapter_hbchecked, adapter_bmi, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto,
             adapter_modeoftransport, adapter_experiencerscore, adapter_pregnantpasttwoyrs, adapter_outcomepregnancy, adapter_childalive,
             adapter_placeofdeliverypregnant, adapter_sexofbaby, adapter_pregnancyplanned, adapter_pregnancyhighriskcase, adapter_pregnancycomplications,
-            adapter_singlemultiplebirths;
+            adapter_singlemultiplebirths, adapter_focalPointBlock, adapter_FocalVillage_Peth, adapter_FocalVillage_Surgana;
 
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant,
@@ -1358,6 +1360,54 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
         //placedelivery
 
+        //focal
+        if (patient1.getFocalfacility() != null && !patient1.getFocalfacility().equalsIgnoreCase("")) {
+            String focal_Transl = "";
+            String focalBlockTransl = "", focalVillageTransl = "", StringBlock = "", StingVillage = "";
+
+            String[] block_village_split = patient1.getFocalfacility().split(":");
+            StringBlock = block_village_split[0]; // This contains Block selected in Spinner
+            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
+
+            focalBlockTransl = getFocalFacility_Block_Edit(StringBlock, sessionManager.getAppLanguage());
+            focalVillageTransl = getFocalFacility_Village_Edit(StingVillage, sessionManager.getAppLanguage());
+
+            int spinner_positionBlock = adapter_focalPointBlock.getPosition(focalBlockTransl);
+            spinner_focalPointBlock.setSelection(spinner_positionBlock);
+
+           /* int spinner_positionVillage = adapter_focalPointVillage.getPosition(focalVillageTransl);
+            spinner_focalPointVillage.setSelection(spinner_positionVillage);*/
+
+
+            switch (spinner_positionBlock) {
+                case 1:
+                    adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.peth_block_village, R.layout.custom_spinner);
+                    spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
+                    spinner_focalPointVillage.setVisibility(View.VISIBLE);
+
+                    int spinner_positionVillagePeth = adapter_FocalVillage_Peth.getPosition(focalVillageTransl);
+                    spinner_focalPointVillage.setSelection(spinner_positionVillagePeth);
+                    break;
+
+                case 2:
+                    adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.suragana_block_villages, R.layout.custom_spinner);
+                    spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Surgana);
+                    spinner_focalPointVillage.setVisibility(View.VISIBLE);
+
+                    int spinner_positionVillageSurgana = adapter_FocalVillage_Surgana.getPosition(focalVillageTransl);
+                    spinner_focalPointVillage.setSelection(spinner_positionVillageSurgana);
+                    break;
+
+                default:
+                    spinner_focalPointVillage.setVisibility(View.GONE);
+            }
+
+
+        }
+        //focal
+
         //Single/Multiple
         if (patient1.getSinglemultiplebirth() != null && !patient1.getSinglemultiplebirth().equalsIgnoreCase("")) {
             String singlemultiple_Transl = "";
@@ -1720,6 +1770,38 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Logger.logE("Identification", "#648", e);
         }
         //place delivery spinner adapter
+
+        //focal Block
+        try {
+            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
+            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
+            if (focalBlock_id != 0) {
+                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
+                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+        //focal Block
+
+        //focal Village - Peth
+        try {
+            String focalVillagePeth_Language = "block_" + sessionManager.getAppLanguage();
+            int focalVillage_Peth_id = res.getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
+            if (focalVillage_Peth_id != 0) {
+                adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(this,
+                        focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+        //focal Village - Peth
 
         //single/multiple Spinner adapter
         try {
@@ -2875,7 +2957,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PlaceOfDelivery"));
-        patientAttributesDTO.setValue(StringUtils.getPlaceDelivery(spinner_placeofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        patientAttributesDTO.setValue(StringUtils.getPlaceDelivery(spinner_placeofdeliverypregnant.getSelectedItem().toString(),
+                sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2884,8 +2967,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
-//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_focalfacility.getText().toString()));
-//        Log.d("HOH", "total family meme: " + edittext_focalfacility.getText().toString());
+        String blockData = StringUtils.getFocalFacility_Block(spinner_focalPointBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
+        String villageData = StringUtils.getFocalFacility_Village(spinner_focalPointVillage.getSelectedItem().toString(), sessionManager.getAppLanguage());
+        patientAttributesDTO.setValue(blockData + ":" + villageData);
+        Log.d("HOH", "FocalFaclity: " + blockData + " - " + villageData);
         patientAttributesDTOList.add(patientAttributesDTO);
         //focal facility
 
@@ -3877,23 +3962,25 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 1:
-                        ArrayAdapter<CharSequence> focalPointBlock = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.peth_block_village, R.layout.custom_spinner);
-                        spinner_focalPointVillage.setAdapter(focalPointBlock);
-                        spinner_focalPointVillage.setVisibility(View.VISIBLE);
-                        break;
+                if(patientID_edit == null) {
+                    switch (position) {
+                        case 1:
+                            adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    R.array.peth_block_village, R.layout.custom_spinner);
+                            spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
+                            spinner_focalPointVillage.setVisibility(View.VISIBLE);
+                            break;
 
-                    case 2:
-                        ArrayAdapter<CharSequence> focalPointVillage = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.suragana_block_villages, R.layout.custom_spinner);
-                        spinner_focalPointVillage.setAdapter(focalPointVillage);
-                        spinner_focalPointVillage.setVisibility(View.VISIBLE);
-                        break;
+                        case 2:
+                            adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    R.array.suragana_block_villages, R.layout.custom_spinner);
+                            spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Surgana);
+                            spinner_focalPointVillage.setVisibility(View.VISIBLE);
+                            break;
 
-                    default:
-                        spinner_focalPointVillage.setVisibility(View.GONE);
+                        default:
+                            spinner_focalPointVillage.setVisibility(View.GONE);
+                    }
                 }
             }
 
