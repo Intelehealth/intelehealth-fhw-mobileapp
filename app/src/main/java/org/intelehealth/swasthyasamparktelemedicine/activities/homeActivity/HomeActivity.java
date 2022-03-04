@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6, c7;
+    CardView c1, c2, c3, c4, c5, c6, c7, c8;
     private String key = null;
     private String licenseUrl = null;
 
@@ -165,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        c7 = findViewById(R.id.cardview_my_cases);
+        c8 = findViewById(R.id.cardview_my_cases);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -254,7 +254,7 @@ public class HomeActivity extends AppCompatActivity {
                 videoLibrary();
             }
         });
-        c7.setOnClickListener(new View.OnClickListener() {
+        c8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, MyCasesActivity.class);
