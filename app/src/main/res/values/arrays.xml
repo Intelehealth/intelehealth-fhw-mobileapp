@@ -2179,13 +2179,13 @@
     </string-array>
 
     <string-array name="block_en">
-        <item>Select Block</item>
-        <item>Peth Block</item>
-        <item>Suragana Block</item>
+        <item>@string/select</item>
+        <item>@string/peth_block</item>
+        <item>@string/suragana_block</item>
     </string-array>
 
-    <string-array name="peth_block_village">
-        <item>Select Village</item>
+    <string-array name="peth_block_village_en">
+        <item>@string/select</item>
         <item>@string/surgane</item>
         <item>@string/sadadapada</item>
         <item>@string/bhatavihir</item>
@@ -2210,8 +2210,52 @@
         <item>@string/chikhali</item>
     </string-array>
 
-    <string-array name="suragana_block_villages">
-        <item>Select Village</item>
+    <string-array name="suragana_block_villages_en">
+        <item>@string/select</item>
+        <item>@string/modhalapada</item>
+        <item>@string/khiramane</item>
+        <item>@string/kalamane</item>
+        <item>@string/bhegu_savarapada</item>
+        <item>@string/kotambi</item>
+        <item>@string/jambhulapada</item>
+        <item>@string/ambupada</item>
+        <item>@string/bedase</item>
+    </string-array>
+
+    <string-array name="block_mr">
+        <item>@string/select</item>
+        <item>@string/peth_block</item>
+        <item>@string/suragana_block</item>
+    </string-array>
+
+    <string-array name="peth_block_village_mr">
+        <item>@string/select</item>
+        <item>@string/surgane</item>
+        <item>@string/sadadapada</item>
+        <item>@string/bhatavihir</item>
+        <item>@string/borada</item>
+        <item>@string/ghubadasaka</item>
+        <item>@string/sheharipada</item>
+        <item>@string/mohalipada</item>
+        <item>@string/tungarapada</item>
+        <item>@string/hedapada</item>
+        <item>@string/kapurane</item>
+        <item>@string/ghotapada</item>
+        <item>@string/vadapada</item>
+        <item>@string/dabhadi</item>
+        <item>@string/gandole</item>
+        <item>@string/chaukada</item>
+        <item>@string/holamari</item>
+        <item>@string/badagi</item>
+        <item>@string/palashi</item>
+        <item>@string/jamale</item>
+        <item>@string/derapada</item>
+        <item>@string/golasapada</item>
+        <item>@string/chikhali</item>
+    </string-array>
+
+    <string-array name="suragana_block_villages_mr">
+        <item>@string/select</item>
         <item>@string/modhalapada</item>
         <item>@string/khiramane</item>
         <item>@string/kalamane</item>

@@ -1277,40 +1277,38 @@
     <string name="surveyDialogTitle">जतन यशस्वी</string>
     <string name="surveyDialogMessage">सर्वेक्षण यशस्वीरित्या जोडले</string>
 
-    <!-- TODO: Add translations... -->
-    <!--Focal Facility-->
-    <string name="surgane">Surgane</string>
-    <string name="sadadapada">Sadadapada</string>
-    <string name="bhatavihir">Bhatavihir</string>
-    <string name="borada">Borada</string>
-    <string name="ghubadasaka">Ghubadasaka</string>
-    <string name="sheharipada">Sheharipada</string>
-    <string name="mohalipada">Mohalipada</string>
-    <string name="tungarapada">Tungarapada</string>
-    <string name="hedapada">Hedapada</string>
-    <string name="kapurane">Kapurane</string>
-    <string name="ghotapada">Ghotapada</string>
-    <string name="vadapada">Vadapada</string>
-    <string name="dabhadi">Dabhadi</string>
-    <string name="gandole">Gandole</string>
-    <string name="chaukada">Chaukada</string>
-    <string name="holamari">Holamari</string>
-    <string name="badagi">Badagi</string>
-    <string name="palashi">Palashi</string>
-    <string name="jamale">Jamale</string>
-    <string name="derapada">Derapada</string>
-    <string name="golasapada">Golasapada</string>
-    <string name="chikhali">Chikhali</string>
-    <string name="modhalapada">Modhalapada</string>
-    <string name="khiramane">Khiramane</string>
-    <string name="kalamane">Kalamane</string>
-    <string name="bhegu_savarapada">Bhegu-Savarapada</string>
-    <string name="kotambi">Kotambi</string>
-    <string name="jambhulapada">Jambhulapada</string>
-    <string name="ambupada">Ambupada</string>
-    <string name="bedase">Bedase</string>
-    <string name="peth_block">Peth Block</string>
-    <string name="suragana_block">Suragana Block</string>
+    <string name="surgane">सुरगाने</string>
+    <string name="sadadapada">सादडपाडा</string>
+    <string name="bhatavihir">भाटविहिर</string>
+    <string name="borada">बोरदा</string>
+    <string name="ghubadasaka">घुबडसाका</string>
+    <string name="sheharipada">शेहरिपाडा</string>
+    <string name="mohalipada">मोहलीपाडा</string>
+    <string name="tungarapada">तुंगारपाडा</string>
+    <string name="hedapada">हेदपाडा</string>
+    <string name="kapurane">कापूर्णे</string>
+    <string name="ghotapada">घोटपाडा</string>
+    <string name="vadapada">वडपाडा</string>
+    <string name="dabhadi">दाभाडी</string>
+    <string name="gandole">गांडोळे</string>
+    <string name="chaukada">चौकाडा</string>
+    <string name="holamari">होलमारी</string>
+    <string name="badagi">बाडगी</string>
+    <string name="palashi">पळशी</string>
+    <string name="jamale">जामले</string>
+    <string name="derapada">डेरापाडा</string>
+    <string name="golasapada">गोळसपाडा</string>
+    <string name="chikhali">चिखली</string>
+    <string name="modhalapada">मोधळपाडा</string>
+    <string name="khiramane">खिरमाणे</string>
+    <string name="kalamane">कळमणे</string>
+    <string name="bhegu_savarapada">भेगु-सावरपाडा</string>
+    <string name="kotambi">कोटमबी</string>
+    <string name="jambhulapada">जामभुळपाडा</string>
+    <string name="ambupada">आंबूपाडा</string>
+    <string name="bedase">बेडसे</string>
 
-    <!--Focal Facility-->
+    <string name="peth_block">पेठ तालुका</string>
+    <string name="suragana_block">सुरगाणा तालुका</string>
+
 </resources>

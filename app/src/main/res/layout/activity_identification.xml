@@ -1145,8 +1145,8 @@
                                 android:id="@+id/edittext_howmanytimmespregnant"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="15sp"
-                                android:inputType="number"/>
+                                android:inputType="number"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -1323,8 +1323,7 @@
                                     <Spinner
                                         android:id="@+id/spinner_focal_block"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:entries="@array/block_en" />
+                                        android:layout_height="wrap_content" />
 
                                     <Space
                                         android:layout_width="10dp"
