@@ -17,9 +17,13 @@ public class DoctorAttributes {
     @Expose
     private String doctorWhatsApp;
 
-    @SerializedName("timings")
+    @SerializedName("startTime")
     @Expose
-    private String doctorTimings;
+    private String doctorStartTimings;
+
+    @SerializedName("endTime")
+    @Expose
+    private String doctorEndTimings;
 
     @SerializedName("specialization")
     @Expose
@@ -57,11 +61,19 @@ public class DoctorAttributes {
         this.doctorSpecialization = doctorSpecialization;
     }
 
-    public String getDoctorTimings() {
-        return doctorTimings;
+    public String getDoctorStartTimings() {
+        return doctorStartTimings;
     }
 
-    public void setDoctorTimings(String doctorTimings) {
-        this.doctorTimings = doctorTimings;
+    public void setDoctorStartTimings(String doctorStartTimings) {
+        this.doctorStartTimings = doctorStartTimings;
+    }
+
+    public String getDoctorEndTimings() {
+        return doctorEndTimings;
+    }
+
+    public void setDoctorEndTimings(String doctorEndTimings) {
+        this.doctorEndTimings = doctorEndTimings;
     }
 }
