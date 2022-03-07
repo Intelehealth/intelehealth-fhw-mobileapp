@@ -9,16 +9,10 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.getPethBlock;
+import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage;
+import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage_edit;
+import static org.intelehealth.app.utilities.StringUtils.getPethBlock_edit;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -296,7 +290,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
-        patientAttributesDTO.setValue(villageSurvey.getText().toString());
+        patientAttributesDTO.setValue(getPethBlockVillage(villageSurvey.getText().toString(),sessionManager.getAppLanguage()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //block no
@@ -304,7 +298,8 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
-        patientAttributesDTO.setValue(blockSurvey.getText().toString());
+//        patientAttributesDTO.setValue(blockSurvey.getText().toString());
+        patientAttributesDTO.setValue(getPethBlock(blockSurvey.getText().toString(),sessionManager.getAppLanguage()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //District
@@ -427,6 +422,15 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
                     case "Suragana Block":
                         villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
+
+                        break;
+                    case "पेठ तालुका":
+                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
+                        break;
+                    case "सुरगाणा तालुका":
+                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
+
+                        break;
                 }
             }
 
@@ -471,12 +475,14 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                 if (name.equalsIgnoreCase("villageNameSurvey")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null)
-                        villageSurvey.setText(value1);
+                        villageSurvey.setText(getPethBlockVillage_edit(value1,sessionManager.getAppLanguage()));
+//                        villageSurvey.setText(value1);
                 }
                 if (name.equalsIgnoreCase("blockSurvey")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null)
-                        blockSurvey.setText(value1);
+                        blockSurvey.setText(getPethBlock_edit(value1,sessionManager.getAppLanguage()));
+//                        blockSurvey.setText(value1);
                 }
                 if (name.equalsIgnoreCase("districtSurvey")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));

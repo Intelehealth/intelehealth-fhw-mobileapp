@@ -15,11 +15,10 @@ import static org.intelehealth.app.utilities.StringUtils.getBMI_edit;
 import static org.intelehealth.app.utilities.StringUtils.getBP_edit;
 import static org.intelehealth.app.utilities.StringUtils.getChildAlive_edit;
 import static org.intelehealth.app.utilities.StringUtils.getComplications_edit;
-import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Block_Edit;
-import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Village_Edit;
+import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Block_edit;
+import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Village_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanned_edit;
-import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getOvercomePragnency_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
@@ -1075,11 +1074,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             int spinner_position = adapter_whatisyourrelation.getPosition(relationhoh_Transl);
 
             if (spinner_position == -1) {
-                et_whatisyourrelation_other.setVisibility(View.VISIBLE);
+                til_whatisyourrelation_other.setVisibility(View.VISIBLE);
+//                et_whatisyourrelation_other.setVisibility(View.VISIBLE);
                 spinner_whatisyourrelation.setSelection(16);
                 et_whatisyourrelation_other.setText(relationhoh_Transl);
             } else {
-                et_whatisyourrelation_other.setVisibility(View.GONE);
+                til_whatisyourrelation_other.setVisibility(View.GONE);
+//                et_whatisyourrelation_other.setVisibility(View.GONE);
                 spinner_whatisyourrelation.setSelection(spinner_position);
             }
         }
@@ -1376,8 +1377,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             StringBlock = block_village_split[0]; // This contains Block selected in Spinner
             StingVillage = block_village_split[1]; // This contains Village selected in Spinner
 
-            focalBlockTransl = getFocalFacility_Block_Edit(StringBlock, sessionManager.getAppLanguage());
-            focalVillageTransl = getFocalFacility_Village_Edit(StingVillage, sessionManager.getAppLanguage());
+            focalBlockTransl = getFocalFacility_Block_edit(StringBlock, sessionManager.getAppLanguage());
+            focalVillageTransl = getFocalFacility_Village_edit(StingVillage, sessionManager.getAppLanguage());
 
             int spinner_positionBlock = adapter_focalPointBlock.getPosition(focalBlockTransl);
             spinner_focalPointBlock.setSelection(spinner_positionBlock);
@@ -1397,6 +1398,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                             focalVillage_Peth_id, R.layout.custom_spinner);
                     spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
                     spinner_focalPointVillage.setVisibility(View.VISIBLE);
+                    int spinner_positionVillage = adapter_FocalVillage_Peth.getPosition(focalVillageTransl);
+                    spinner_focalPointVillage.setSelection(spinner_positionVillage);
                     break;
 
                 case 2:
@@ -1410,6 +1413,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                             focalVillage_Surgane_id, R.layout.custom_spinner);
                     spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Surgana);
                     spinner_focalPointVillage.setVisibility(View.VISIBLE);
+
+                    int spinner_village = adapter_FocalVillage_Surgana.getPosition(focalVillageTransl);
+                    spinner_focalPointVillage.setSelection(spinner_village);
+
                     break;
 
                 default:
@@ -1428,6 +1435,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //                singlemultiple_Transl = patient1.getSinglemultiplebirth();
 //            }
             singlemultiple_Transl = getSinglemultiplebirths_edit(patient1.getSinglemultiplebirth(), sessionManager.getAppLanguage());
+
+           Log.d("1437","singlemultiplebirths " +patient1.getSinglemultiplebirth());
+           Log.d("1438","singlemultiplebirths " +singlemultiple_Transl);
+
             int spinner_position = adapter_singlemultiplebirths.getPosition(singlemultiple_Transl);
             spinner_singlemultiplebirths.setSelection(spinner_position);
         }
@@ -2609,7 +2620,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            if (et_occupation_other.getVisibility() == View.GONE)
+            if (til_whatisyourrelation_other.getVisibility() == View.GONE)
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             else
                 patientAttributesDTO.setValue(et_occupation_other.getText().toString());
@@ -2735,7 +2746,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("RelationshipStatusHOH"));
-        if (et_whatisyourrelation_other.getVisibility() == View.GONE)
+        if (til_whatisyourrelation_other.getVisibility() == View.GONE)
             patientAttributesDTO.setValue(StringUtils.getRelationShipHoH(spinner_whatisyourrelation.getSelectedItem().toString(),
                     sessionManager.getAppLanguage()));
         else
@@ -2906,7 +2917,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //how many times
 
         if (llPORoaster.getVisibility() == View.VISIBLE) {
-//             past two years//todo rriiz
+//             past two years//todo
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
@@ -2974,39 +2985,45 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
-
-        //focal facility
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
-        String blockData = StringUtils.getFocalFacility_Block(spinner_focalPointBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
-        String villageData = StringUtils.getFocalFacility_Village(spinner_focalPointVillage.getSelectedItem().toString(), sessionManager.getAppLanguage());
-        patientAttributesDTO.setValue(blockData + ":" + villageData);
-        Log.d("HOH", "FocalFaclity: " + blockData + " - " + villageData);
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //focal facility
-
+        if (binding.llFocalPoint.getVisibility() == View.VISIBLE) {
+            //focal facility
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
+            String blockData = StringUtils.getFocalFacility_Block(spinner_focalPointBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
+            String villageData = StringUtils.getFocalFacility_Village(spinner_focalPointVillage.getSelectedItem().toString(), sessionManager.getAppLanguage());
+            patientAttributesDTO.setValue(blockData + ":" + villageData);
+            Log.d("HOH", "FocalFaclity: " + blockData + " - " + villageData);
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //focal facility
+        }
         // single/multiple
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SingleMultipleBirth"));
-        patientAttributesDTO.setValue(StringUtils.getSinglemultiplebirths(spinner_singlemultiplebirths.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        //  Log.d("HOH", "Bankacc: " + spinner_singlemultiplebirths.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //singlemultiple
+        if (binding.llSingleMultipleBirth.getVisibility() == View.VISIBLE) {
 
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SingleMultipleBirth"));
+            patientAttributesDTO.setValue(StringUtils.getSinglemultiplebirths(spinner_singlemultiplebirths.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            Log.d("HOH", "3005 : " + spinner_singlemultiplebirths.getSelectedItem().toString());
+            Log.d("HOH", "3006 : " + patientAttributesDTO.getValue());
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //singlemultiple
+        }
         // sex of baby
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SexOfBaby"));
-        patientAttributesDTO.setValue(StringUtils.getSexOfBaby(spinner_sexofbaby.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+        if (binding.llBabyGender.getVisibility() == View.VISIBLE) {
 
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SexOfBaby"));
+            patientAttributesDTO.setValue(StringUtils.getSexOfBaby(spinner_sexofbaby.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
         //baby age died
+
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
@@ -3676,12 +3693,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            if (et_occupation_other.getVisibility() == View.GONE)
+            if (til_occupation_other.getVisibility() == View.GONE) {
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            }
             else
                 patientAttributesDTO.setValue(et_occupation_other.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            Log.d("3695","3697rrr "+patientAttributesDTO.getValue());
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);

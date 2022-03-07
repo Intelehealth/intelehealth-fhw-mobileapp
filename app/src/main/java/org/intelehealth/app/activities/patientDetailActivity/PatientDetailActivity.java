@@ -1190,7 +1190,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             education_statusView.setText("नहीं दिया गया");
         }
         else{
-
             String occupation = getOccupationsIdentification_Edit(patient_new.getOccupation(),sessionManager.getAppLanguage());
                 occuView.setText(occupation);
             }
