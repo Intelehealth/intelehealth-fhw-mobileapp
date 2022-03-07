@@ -3,29 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout-small/welcome_slide2.xml" value="1.2" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_active_patient.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_complaint_node.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_home.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_identification.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_intro.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_login.xml" value="0.25407608695652173" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.25407608695652173" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_question_node.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_search_patient.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_setup.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_splash_activity.xml" value="0.25407608695652173" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_today_patient.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_visit_summary.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_vitals.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/content_visit_summary.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/custom_progress_dialog.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/dialog_mindmap_cred.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/welcome_slide1.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/menu/menu_visit_summary.xml" value="0.27447916666666666" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/webrtc/src/main/res/layout/activity_chat.xml" value="0.2" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/webrtc/src/main/res/layout/activity_launch.xml" value="0.16032608695652173" />
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/webrtc/src/main/res/layout/activity_sample_peer_connection.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable-xxhdpi/ic_icons8_whatsapp.xml" value="0.155" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_icon8_whatsapp_green.xml" value="0.155" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/offline_red.xml" value="0.1645" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/online_green.xml" value="0.1645" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_call_doctor.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_identification.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_patient_detail.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_search_patient.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/content_visit_summary.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/fragment_health_serv_utilization_roster.xml" value="0.1671875" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/fragment_second_screen.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/fragment_third_screen.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/layout_disease_presentation.xml" value="0.264" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/list_item_doctor.xml" value="0.264" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/list_item_search.xml" value="0.25" />
       </map>
     </option>
   </component>
