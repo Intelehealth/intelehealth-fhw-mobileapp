@@ -70,19 +70,19 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     public void onBindViewHolder(ActivePatientViewHolder holder, int position) {
         final ActivePatientModel activePatientModel = activePatientModels.get(position);
         String header;
-        if (activePatientModel.getOpenmrs_id() != null) {
+        /*if (activePatientModel.getOpenmrs_id() != null) {
             header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
 
-//            holder.getTv_not_uploaded().setVisibility(View.GONE);
-        } else {
+//          holder.getTv_not_uploaded().setVisibility(View.GONE);
+        } else {*/
             header = String.format("%s %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name());
 
 //            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
 //            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
 //            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
-        }
+       // }
 
         if (activePatientModel.getSync().equalsIgnoreCase("0")){
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
@@ -102,7 +102,9 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
 
         holder.getHeadTextView().setText(header);
-        holder.getBodyTextView().setText(body);
+        if (activePatientModel.getOpenmrs_id() != null) {
+            holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
+        }
         holder.tvAgeGender.setText(body);
         if (activePatientModel.getEnddate() == null) {
             holder.getIndicatorTextView().setText(R.string.active);
