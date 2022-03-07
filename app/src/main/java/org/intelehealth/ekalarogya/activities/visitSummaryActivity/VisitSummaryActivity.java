@@ -374,6 +374,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
                 return true;
             }
+
             case R.id.summary_endVisit: {
                 //meera
                 if (hasPrescription.equalsIgnoreCase("true")) {

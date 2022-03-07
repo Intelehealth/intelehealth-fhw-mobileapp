@@ -709,4 +709,8 @@
     <string name="start_newvisit_confirmation_msg">Are you sure you want to start a visit?</string>
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
 
+    <string name="visit_closed">Visit Closed</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="loading_more">Loading more...</string>
 </resources>
