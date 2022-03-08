@@ -200,12 +200,16 @@ public class SixthScreenFragment extends Fragment {
     void defaultSelectRB(RadioGroup radioGroup, String s) {
         int childCount = radioGroup.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            RadioButton rButton = (RadioButton) radioGroup.getChildAt(i);
-            if (rButton.getText().toString().equalsIgnoreCase(s)) {
-                rButton.setChecked(true);
-                return;
+            try {
+                RadioButton rButton = (RadioButton) radioGroup.getChildAt(i);
+                if (rButton.getText().toString().equalsIgnoreCase(s)) {
+                    rButton.setChecked(true);
+                    return;
+                }
             }
+            catch (Exception e) {
 
+            }
         }
     }
 }
