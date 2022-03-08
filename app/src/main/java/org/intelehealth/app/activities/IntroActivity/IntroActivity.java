@@ -222,8 +222,8 @@ public class IntroActivity extends AppCompatActivity {
             button_custom_visit = findViewById(R.id.button_custom_visit);
 
             //Highlighting Text
-            String introOne = getString(R.string.intelehealth_a_telemedicine_platform);
-            String textToHighlightOne = getString(R.string.intelehealth_name);
+            String introOne = getString(R.string.arogya_sampada_a_telemedicine_platform);
+            String textToHighlightOne = getString(R.string.app_name);
             String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
             tvIntroOne.setText(Html.fromHtml(newString));
 
