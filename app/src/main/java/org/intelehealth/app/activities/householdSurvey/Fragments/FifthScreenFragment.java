@@ -428,6 +428,11 @@ public class FifthScreenFragment extends Fragment {
                     else
                         binding.letItStandAndSettleCheckbox.setChecked(false);
 
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.not_treated)))
+                        setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.not_treated));
+                    else
+                        binding.notTreatedCheckbox.setChecked(false);
+
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.other_specify)))
                         setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.other_specify));
                     else

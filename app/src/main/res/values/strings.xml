@@ -1381,5 +1381,6 @@
     <!--Focal Facility-->
     <string name="surveyDialogTitle">Saved Successful</string>
     <string name="surveyDialogMessage">Survey added successfully</string>
+    <string name="not_treated">Not Treated</string>
 
 </resources>

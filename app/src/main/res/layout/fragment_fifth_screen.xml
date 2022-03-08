@@ -620,6 +620,17 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/not_treated_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/not_treated"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/other_ways_of_purifying_water_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

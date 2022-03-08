@@ -1310,5 +1310,6 @@
 
     <string name="peth_block">पेठ तालुका</string>
     <string name="suragana_block">सुरगाणा तालुका</string>
+    <string name="not_treated">उपचार नाही</string>
 
 </resources>
