@@ -1254,6 +1254,24 @@
     <string name="skin_issues">त्वचेच्या समस्या</string>
     <string name="eye_vision_issues">डोळा / दृष्टी समस्या</string>
     <string name="joint_bone_pain">सांधे/हाडाचे दुखणे</string>
+   <string name="typhoid">विषमज्वर</string>
+   <string name="jaundice">कावीळ</string>
+   <string name="malaria">मलेरिया</string>
+   <string name="dengue">डेंग्यू</string>
+   <string name="diabetes">मधुमेह</string>
+   <string name="hypertensionBP">उच्च रक्तदाब/बीपी</string>
+   <string name="asthama">अस्थमा</string>
+   <string name="cancer">कर्करोग</string>
+
+
+
+
+
+
+
+
+
+
     <string name="select_primary_health_care_provider">प्राथमिक आरोग्य सेवा प्रदाता निवडा</string>
     <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
 

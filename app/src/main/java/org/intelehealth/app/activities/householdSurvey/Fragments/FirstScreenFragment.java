@@ -277,38 +277,38 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
-        //investigator
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nameOfInvestigator"));
-        patientAttributesDTO.setValue(nameInvestigator.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        //investigator
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nameOfInvestigator"));
+//        patientAttributesDTO.setValue(nameInvestigator.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
-        //Village name
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
-        patientAttributesDTO.setValue(getPethBlockVillage(villageSurvey.getText().toString(),sessionManager.getAppLanguage()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        //Village name
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
+//        patientAttributesDTO.setValue(getPethBlockVillage(villageSurvey.getText().toString(),sessionManager.getAppLanguage()));
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
-        //block no
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
-//        patientAttributesDTO.setValue(blockSurvey.getText().toString());
-        patientAttributesDTO.setValue(getPethBlock(blockSurvey.getText().toString(),sessionManager.getAppLanguage()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        //block no
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
+////        patientAttributesDTO.setValue(blockSurvey.getText().toString());
+//        patientAttributesDTO.setValue(getPethBlock(blockSurvey.getText().toString(),sessionManager.getAppLanguage()));
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
-        //District
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("districtSurvey"));
-        patientAttributesDTO.setValue(districtSurvey.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        //District
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("districtSurvey"));
+//        patientAttributesDTO.setValue(districtSurvey.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
         //Date of Visit
 //        patientAttributesDTO = new PatientAttributesDTO();
@@ -380,10 +380,10 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     }
 
     private void initUI(View rootView) {
-        nameInvestigator = rootView.findViewById(R.id.investigator_name_edit_text);
-        villageSurvey = rootView.findViewById(R.id.villageSurvey);
-        blockSurvey = rootView.findViewById(R.id.block_dropdown);
-        districtSurvey = rootView.findViewById(R.id.districtSurvey);
+//        nameInvestigator = rootView.findViewById(R.id.investigator_name_edit_text);
+//        villageSurvey = rootView.findViewById(R.id.villageSurvey);
+//        blockSurvey = rootView.findViewById(R.id.block_dropdown);
+//        districtSurvey = rootView.findViewById(R.id.districtSurvey);
 //        dateofVisit = rootView.findViewById(R.id.dateVisit);
         namePerson = rootView.findViewById(R.id.primary_respondent_name_edit_text);
         householdNumber = rootView.findViewById(R.id.household_number_edit_text);
@@ -399,45 +399,45 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
         RadioGroup household_structure_radio_group = rootView.findViewById(R.id.household_structure_radio_group);
         RadioGroup result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
-        mandatoryFields.addAll(Arrays.asList(nameInvestigator, villageSurvey, blockSurvey, districtSurvey, namePerson, householdNumber
+        mandatoryFields.addAll(Arrays.asList( namePerson, householdNumber
                 , household_structure_radio_group, result_of_visit_radio_group));
 
         setMenus();
     }
 
     private void setMenus() {
-        districtSurvey.setOnClickListener(v -> showMenu(districtSurvey, R.menu.menu_nas_district));
-        blockSurvey.setOnClickListener(v -> showMenu(blockSurvey, R.menu.menu_nas_block));
-        blockSurvey.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                switch (s.toString()) {
-                    case "Peth Block":
-                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
-                        break;
-
-                    case "Suragana Block":
-                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
-
-                        break;
-                    case "पेठ तालुका":
-                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
-                        break;
-                    case "सुरगाणा तालुका":
-                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
-
-                        break;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+//        districtSurvey.setOnClickListener(v -> showMenu(districtSurvey, R.menu.menu_nas_district));
+//        blockSurvey.setOnClickListener(v -> showMenu(blockSurvey, R.menu.menu_nas_block));
+//        blockSurvey.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                switch (s.toString()) {
+//                    case "Peth Block":
+//                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
+//                        break;
+//
+//                    case "Suragana Block":
+//                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
+//
+//                        break;
+//                    case "पेठ तालुका":
+//                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_peth_block_villages));
+//                        break;
+//                    case "सुरगाणा तालुका":
+//                        villageSurvey.setOnClickListener(v -> showMenu(villageSurvey, R.menu.menu_suragana_block_villages));
+//
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//        });
     }
 
     private void showMenu(EditText editText, @MenuRes Integer menuRes) {
@@ -467,28 +467,28 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
-                if (name.equalsIgnoreCase("nameOfInvestigator")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        nameInvestigator.setText(value1);
-                }
-                if (name.equalsIgnoreCase("villageNameSurvey")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        villageSurvey.setText(getPethBlockVillage_edit(value1,sessionManager.getAppLanguage()));
-//                        villageSurvey.setText(value1);
-                }
-                if (name.equalsIgnoreCase("blockSurvey")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        blockSurvey.setText(getPethBlock_edit(value1,sessionManager.getAppLanguage()));
-//                        blockSurvey.setText(value1);
-                }
-                if (name.equalsIgnoreCase("districtSurvey")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        districtSurvey.setText(value1);
-                }
+//                if (name.equalsIgnoreCase("nameOfInvestigator")) {
+//                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if (value1 != null)
+//                        nameInvestigator.setText(value1);
+//                }
+////                if (name.equalsIgnoreCase("villageNameSurvey")) {
+//                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if (value1 != null)
+//                        villageSurvey.setText(getPethBlockVillage_edit(value1,sessionManager.getAppLanguage()));
+////                        villageSurvey.setText(value1);
+//                }
+//                if (name.equalsIgnoreCase("blockSurvey")) {
+//                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if (value1 != null)
+//                        blockSurvey.setText(getPethBlock_edit(value1,sessionManager.getAppLanguage()));
+////                        blockSurvey.setText(value1);
+//                }
+//                if (name.equalsIgnoreCase("districtSurvey")) {
+//                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+//                    if (value1 != null)
+//                        districtSurvey.setText(value1);
+//                }
 //                if (name.equalsIgnoreCase("dateOfVisit")) {
 //                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
 //                    if (value1 != null)

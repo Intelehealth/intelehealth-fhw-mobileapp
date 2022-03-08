@@ -47,7 +47,7 @@ import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyAct
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ThirdScreenFragment#newInstance} factory method to
+ * Use the {@link ThirdScreenFragment#} factory method to
  * create an instance of this fragment.
  */
 
@@ -289,9 +289,10 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdElectricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase("Yes"))
+                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.electricityYesCheckbox.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase("No"))
+
+                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.electricityNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay")) {
@@ -306,9 +307,9 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("runningWaterStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase("Yes"))
+                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.runningWaterYesCheckbox.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase("No"))
+                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.runningWaterNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("primarySourceOfRunningWater")) {
@@ -350,9 +351,9 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase("Meter"))
+                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.meter)))
                         binding.waterSourceDistanceMeter.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase("KM"))
+                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.km)))
                         binding.waterSourceDistanceKilometer.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) {
@@ -362,9 +363,9 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdBankAccountStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase("Yes"))
+                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.bankAccountYes.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase("No"))
+                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.bankAccountNo.setChecked(true);
                 }
             } while (idCursor1.moveToNext());

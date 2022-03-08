@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:hint="@string/name_of_investigator">
 
                 <EditText
@@ -36,6 +37,7 @@
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxLines="1"
+
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -47,6 +49,8 @@
                 android:layout_below="@id/investigator_name_layout"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:visibility="gone"
+
                 app:endIconDrawable="@drawable/ic_keyboard_arrow_down"
                 app:endIconMode="custom">
 
@@ -70,6 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/district_layout"
+                android:visibility="gone"
+
                 android:layout_marginTop="5dp">
 
                 <com.google.android.material.textfield.TextInputLayout

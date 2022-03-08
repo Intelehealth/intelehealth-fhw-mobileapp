@@ -273,6 +273,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
             }
+            if(intent.hasExtra("newMember")){
+                setAddressDetails();
+            }
         }
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -948,6 +951,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         });
 
         setupHealthCard();
+    }
+
+    private void setAddressDetails() {
+//        mAddress1.setText(""+getIntent().getStringExtra("address1"));
+//        mPostal.setText(""+getIntent().getStringExtra("postalCode"));
+
+        Log.d("960","960+"+getIntent().getStringExtra("address1")+",,,,"+getIntent().getStringExtra("postalCode"));
     }
 
     private void setupHealthCard() {
@@ -3903,6 +3913,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        spinner_experiencerscore = findViewById(R.id.spinner_experiencerscore);
         spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
         spinner_outcomepregnancy = findViewById(R.id.spinner_outcomepregnancy);
+        spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
+        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
+        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
 
         spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -3929,17 +3942,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.edittextBabyagedied.setVisibility(View.GONE);
                     spinner_childalive.setSelection(0);
                 }
-
-//                if(position != 1)
-//                    binding.edittextBabyagedied.setVisibility(View.GONE);
-//                else
-//                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-
-//                if (position == 2) {
-//                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-//                } else {
-//                    binding.edittextBabyagedied.setVisibility(View.GONE);
-//                }
 
                 if (position == 5) {
                     binding.edittextMonthspregnancylast.setVisibility(View.GONE);
@@ -3971,6 +3973,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                     binding.llChildComplications.setVisibility(View.VISIBLE);
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
+
+                    //todo for place of deleivery is home so fockl is not shown at that time
+                    if(spinner_placeofdeliverypregnant.getSelectedItemPosition()==1){
+                        spinner_placeofdeliverypregnant.setSelection(0);
+
+                    }
                    // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
@@ -3984,7 +3992,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (position == 2)
+                if(position == 2)
                     edittext_babyagedied.setVisibility(View.VISIBLE);
                 else
                     edittext_babyagedied.setVisibility(View.GONE);
@@ -3997,9 +4005,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         });
 
 
-        spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
-        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
-        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
+
 
         spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -4040,6 +4046,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        spinner_placeofdeliverypregnant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                if(pos==1){
+                    binding.llFocalPoint.setVisibility(View.GONE);
+                }
+                else{
+                    binding.llFocalPoint.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
