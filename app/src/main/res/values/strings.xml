@@ -1316,7 +1316,7 @@
     <string name="txt_average_cost_incurred_on_consultation_fees_per_episode">Average cost incurred on consultation fees per episode</string>
     <string name="txt_score_for_experience_of_treatment">Score for experience of treatment</string>
     <string name="txt_how_many_times_have_you_been_pregnant">How many times have you been pregnant?</string>
-    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had a pregnancy outcomes in the past two years?</string>
+    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had any pregnancy outcomes in the past 2 years?</string>
     <string name="txt_what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?</string>
     <string name="txt_is_the_child_alive">Is the child alive?</string>
     <string name="txt_what_was_the_year_of_pregnancy_outcome">What was the year of pregnancy outcome?</string>
@@ -1385,8 +1385,9 @@
     <string name="block_values_are_missing">Block values are missing</string>
     <string name="more_than_twenty_km">More than 20km</string>
     <string name="within_ten_km">Within 10km</string>
-    <string name="twenty_to_forty_km">20-40km</string>
-    <string name="fifty_to_seventy_km">50-70km</string>
+    <string name="twenty_to_forty_km">20–40km</string>
+    <string name="fifty_to_seventy_km">50–70km</string>
     <string name="more_than_seventy_km">More than 70km</string>
+    <string name="not_treated">Not Treated</string>
 
 </resources>

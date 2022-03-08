@@ -2768,7 +2768,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            if (til_whatisyourrelation_other.getVisibility() == View.GONE)
+            if (til_occupation_other.getVisibility() == View.GONE)
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             else
                 patientAttributesDTO.setValue(et_occupation_other.getText().toString());
@@ -4072,6 +4072,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position != 0) {
                 if (position == 1) {
                     binding.llChildAlive.setVisibility(View.VISIBLE);
                 } else {
@@ -4079,17 +4080,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.edittextBabyagedied.setVisibility(View.GONE);
                     spinner_childalive.setSelection(0);
                 }
-
-//                if(position != 1)
-//                    binding.edittextBabyagedied.setVisibility(View.GONE);
-//                else
-//                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-
-//                if (position == 2) {
-//                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-//                } else {
-//                    binding.edittextBabyagedied.setVisibility(View.GONE);
-//                }
 
                 if (position == 5) {
                     binding.edittextMonthspregnancylast.setVisibility(View.GONE);
@@ -4123,6 +4113,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
                     // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
+            }
             }
 
             @Override

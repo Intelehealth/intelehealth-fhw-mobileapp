@@ -1219,7 +1219,7 @@
 
 
     <string name="txt_how_many_times_have_you_been_pregnant">तुम्ही किती वेळा गरोदर आहात?</string>
-    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">गेल्या दोन वर्षांत तुम्हाला गर्भधारणेचे परिणाम मिळाले आहेत का?</string>
+    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">गेल्या 2 वर्षांमध्ये तुम्हाला गर्भधारणेचे कोणतेही परिणाम मिळाले आहेत का?</string>
     <string name="txt_what_was_the_outcome_of_your_pregnancy">तुमच्या गर्भधारणेचा परिणाम काय होता?</string>
     <string name="txt_is_the_child_alive">मुल जिवंत आहे का?</string>
     <string name="txt_what_was_the_year_of_pregnancy_outcome">गर्भधारणेच्या निकालाचे वर्ष काय होते?</string>
@@ -1311,5 +1311,6 @@
 
     <string name="peth_block">पेठ तालुका</string>
     <string name="suragana_block">सुरगाणा तालुका</string>
+    <string name="not_treated">उपचार नाही</string>
 
 </resources>
