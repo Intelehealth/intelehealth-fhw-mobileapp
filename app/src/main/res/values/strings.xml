@@ -899,6 +899,7 @@
     <string name="meter">Meter</string>
     <string name="km">KM</string>
     <string name="available_of_water_supply_hours_per_day">Availability of water supply (hours per day)</string>
+    <string name="available_of_water_supply_days_per_week">Availability of water supply (days per week)</string>
     <string name="does_the_house_have_a_bank_account">Does the household have a bank account?</string>
 
     <string name="amount_of_cultivable_land_owned_by_household">Amount of cultivable land owned by household</string>

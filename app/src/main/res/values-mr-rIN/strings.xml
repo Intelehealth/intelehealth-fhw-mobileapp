@@ -871,6 +871,7 @@
     <string name="meter">मीटर</string>
     <string name="km">किमी</string>
     <string name="available_of_water_supply_hours_per_day">पाणी पुरवठा उपलब्ध (दररोज तास)</string>
+    <string name="available_of_water_supply_days_per_week">पाणीपुरवठ्याची उपलब्धता (दर आठवड्याला दिवस)</string>
     <string name="does_the_house_have_a_bank_account">घरात एक बँक खाते आहे का?</string>
     <string name="amount_of_cultivable_land_owned_by_household">घरगुती मालकीची लागवड करण्यायोग्य जमीन</string>
     <string name="hectare">हेक्टर</string>

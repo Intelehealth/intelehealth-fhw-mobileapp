@@ -347,9 +347,9 @@
                 android:fontFamily="@font/poppins"
                 android:text="@string/available_of_water_supply_hours_per_day"
                 android:textColor="@color/text_color"
+                android:textSize="14sp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:textSize="14sp" />
+                tools:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/water_supply_availability_edit_text"
@@ -367,36 +367,37 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:id="@+id/water_supply_availability_text_view_2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/water_supply_availability_edit_text"-->
-<!--                android:layout_marginStart="5sp"-->
-<!--                android:layout_marginTop="20sp"-->
-<!--                android:fontFamily="@font/poppins"-->
-<!--                android:text="@string/available_of_water_supply_hours_per_day"-->
-<!--                android:textColor="@color/text_color"-->
-<!--                android:textSize="14sp" />-->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/water_supply_availabilityDaysPerWeek_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/water_supply_availability_edit_text"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/available_of_water_supply_days_per_week"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
 
-<!--            <androidx.appcompat.widget.AppCompatEditText-->
-<!--                android:id="@+id/water_supply_availability_edit_text_2"-->
-<!--                android:layout_width="68dp"-->
-<!--                android:layout_height="31dp"-->
-<!--                android:layout_below="@id/water_supply_availability_text_view_2"-->
-<!--                android:layout_marginTop="13dp"-->
-<!--                android:background="@drawable/drawable_custom_edit_text_background"-->
-<!--                android:fontFamily="@font/poppins"-->
-<!--                android:inputType="number"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textColor="@color/text_color"-->
-<!--                android:textSize="14sp" />-->
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/water_supply_availability_DaysPerWeek_EditText"
+                android:layout_width="68dp"
+                android:layout_height="31dp"
+                android:layout_below="@id/water_supply_availabilityDaysPerWeek_TextView"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/drawable_custom_edit_text_background"
+                android:fontFamily="@font/poppins"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bank_account_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/water_supply_availability_edit_text"
+                android:layout_below="@id/water_supply_availability_DaysPerWeek_EditText"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="20sp"
                 android:fontFamily="@font/poppins"
