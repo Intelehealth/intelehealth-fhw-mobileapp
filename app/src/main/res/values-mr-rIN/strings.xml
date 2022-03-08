@@ -592,7 +592,8 @@
     <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
     <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
     <string name="intelehealth_a_telemedicine_platform">आरोग्य संपदा हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
-    <string name="intelehealth_name">एकल आरोग्य</string>
+    <string name="arogya_sampada_a_telemedicine_platform">आरोग्य संपदा हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="intelehealth_name">आरोग्य संपदा</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">"सक्रिय"</string>
