@@ -2620,7 +2620,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            if (til_whatisyourrelation_other.getVisibility() == View.GONE)
+            if (til_occupation_other.getVisibility() == View.GONE)
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             else
                 patientAttributesDTO.setValue(et_occupation_other.getText().toString());
