@@ -198,6 +198,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private int retainPickerMonth;
     private int retainPickerDate;
     int dob_indexValue = 15;
+    String mAddress1Value = "", mPostalValue = "";
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
@@ -225,6 +226,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private HouseholdSurveyAdapter adapter;
     private ActivityIdentificationBinding binding;
     private List<HealthIssues> healthIssuesList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,8 +275,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
             }
-            if(intent.hasExtra("newMember")){
-                setAddressDetails();
+            if (intent.hasExtra("newMember")) {
+                mPostalValue = getIntent().getStringExtra("postalCode");
+                mAddress1Value = getIntent().getStringExtra("address1");
             }
         }
 //        if (sessionManager.valueContains("licensekey"))
@@ -410,9 +413,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         mLastName.setText(patient1.getLast_name());
         mDOB.setText(patient1.getDate_of_birth());
         mPhoneNum.setText(patient1.getPhone_number());
-        mAddress1.setText(patient1.getAddress1());
+
+        if (patientID_edit == null) {
+            mAddress1.setText(mAddress1Value);
+            mPostal.setText(mPostalValue);
+        } else {
+            mAddress1.setText(patient1.getAddress1());
 //        mAddress2.setText(patient1.getAddress2());
-        mPostal.setText(patient1.getPostal_code());
+            mPostal.setText(patient1.getPostal_code());
+        }
 //        mRelationship.setText(patient1.getSdw());
 //        mOccupation.setText(patient1.getOccupation());
 
@@ -953,12 +962,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         setupHealthCard();
     }
 
-    private void setAddressDetails() {
-//        mAddress1.setText(""+getIntent().getStringExtra("address1"));
-//        mPostal.setText(""+getIntent().getStringExtra("postalCode"));
-
-        Log.d("960","960+"+getIntent().getStringExtra("address1")+",,,,"+getIntent().getStringExtra("postalCode"));
-    }
 
     private void setupHealthCard() {
 //        if (fragmentList.isEmpty()) {
@@ -1147,12 +1150,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             String occupation_Transl = "";
             occupation_Transl = getOccupationsIdentification_Edit(patient1.getOccupation(), sessionManager.getAppLanguage());
             int spinner_position = occupationAdapter.getPosition(occupation_Transl);
-            if(spinner_position == -1) {
+            if (spinner_position == -1) {
                 mOccupation.setSelection(13);
                 et_occupation_other.setVisibility(View.VISIBLE);
                 et_occupation_other.setText(patient1.getOccupation());
-            }
-            else {
+            } else {
                 mOccupation.setSelection(spinner_position);
             }
         }
@@ -1446,8 +1448,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            }
             singlemultiple_Transl = getSinglemultiplebirths_edit(patient1.getSinglemultiplebirth(), sessionManager.getAppLanguage());
 
-           Log.d("1437","singlemultiplebirths " +patient1.getSinglemultiplebirth());
-           Log.d("1438","singlemultiplebirths " +singlemultiple_Transl);
+            Log.d("1437", "singlemultiplebirths " + patient1.getSinglemultiplebirth());
+            Log.d("1438", "singlemultiplebirths " + singlemultiple_Transl);
 
             int spinner_position = adapter_singlemultiplebirths.getPosition(singlemultiple_Transl);
             spinner_singlemultiplebirths.setSelection(spinner_position);
@@ -3705,12 +3707,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
             if (til_occupation_other.getVisibility() == View.GONE) {
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-            }
-            else
+            } else
                 patientAttributesDTO.setValue(et_occupation_other.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            Log.d("3695","3697rrr "+patientAttributesDTO.getValue());
+            Log.d("3695", "3697rrr " + patientAttributesDTO.getValue());
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);
@@ -3967,7 +3968,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
                     binding.llBabyGender.setVisibility(View.GONE);
                     binding.llChildComplications.setVisibility(View.GONE);
-                  //  binding.edittextBabyagedied.setVisibility(View.GONE);
+                    //  binding.edittextBabyagedied.setVisibility(View.GONE);
                 } else {
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                     binding.llBabyGender.setVisibility(View.VISIBLE);
@@ -3975,11 +3976,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
 
                     //todo for place of deleivery is home so fockl is not shown at that time
-                    if(spinner_placeofdeliverypregnant.getSelectedItemPosition()==1){
+                    if (spinner_placeofdeliverypregnant.getSelectedItemPosition() == 1) {
                         spinner_placeofdeliverypregnant.setSelection(0);
 
                     }
-                   // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
+                    // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -3992,7 +3993,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_childalive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if(position == 2)
+                if (position == 2)
                     edittext_babyagedied.setVisibility(View.VISIBLE);
                 else
                     edittext_babyagedied.setVisibility(View.GONE);
@@ -4003,8 +4004,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             }
         });
-
-
 
 
         spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -4054,10 +4053,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_placeofdeliverypregnant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                if(pos==1){
+                if (pos == 1) {
                     binding.llFocalPoint.setVisibility(View.GONE);
-                }
-                else{
+                } else {
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
                 }
             }
