@@ -596,6 +596,7 @@
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
     <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">Arogya Sampada is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
     <string name="intelehealth_name">Intelehealth</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
@@ -1381,6 +1382,12 @@
     <!--Focal Facility-->
     <string name="surveyDialogTitle">Saved Successful</string>
     <string name="surveyDialogMessage">Survey added successfully</string>
+    <string name="block_values_are_missing">Block values are missing</string>
+    <string name="more_than_twenty_km">More than 20km</string>
+    <string name="within_ten_km">Within 10km</string>
+    <string name="twenty_to_forty_km">20–40km</string>
+    <string name="fifty_to_seventy_km">50–70km</string>
+    <string name="more_than_seventy_km">More than 70km</string>
     <string name="not_treated">Not Treated</string>
 
 </resources>
