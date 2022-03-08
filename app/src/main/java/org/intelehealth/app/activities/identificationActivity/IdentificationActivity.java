@@ -3922,6 +3922,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position != 0) {
                 if (position == 1) {
                     binding.llChildAlive.setVisibility(View.VISIBLE);
                 } else {
@@ -3929,17 +3930,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.edittextBabyagedied.setVisibility(View.GONE);
                     spinner_childalive.setSelection(0);
                 }
-
-//                if(position != 1)
-//                    binding.edittextBabyagedied.setVisibility(View.GONE);
-//                else
-//                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-
-//                if (position == 2) {
-//                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-//                } else {
-//                    binding.edittextBabyagedied.setVisibility(View.GONE);
-//                }
 
                 if (position == 5) {
                     binding.edittextMonthspregnancylast.setVisibility(View.GONE);
@@ -3965,14 +3955,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
                     binding.llBabyGender.setVisibility(View.GONE);
                     binding.llChildComplications.setVisibility(View.GONE);
-                  //  binding.edittextBabyagedied.setVisibility(View.GONE);
+                    //  binding.edittextBabyagedied.setVisibility(View.GONE);
                 } else {
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                     binding.llChildComplications.setVisibility(View.VISIBLE);
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
-                   // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
+                    // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
+            }
             }
 
             @Override
