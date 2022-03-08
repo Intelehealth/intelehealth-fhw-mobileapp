@@ -1382,5 +1382,6 @@
     <!--Focal Facility-->
     <string name="surveyDialogTitle">Saved Successful</string>
     <string name="surveyDialogMessage">Survey added successfully</string>
+    <string name="block_values_are_missing">Block values are missing</string>
 
 </resources>
