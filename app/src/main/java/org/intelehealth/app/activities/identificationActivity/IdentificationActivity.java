@@ -206,9 +206,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             spinner_bmi, spinner_healthissuereported, spinner_primaryhealthprovider, spinner_firstlocation, spinner_referredto, spinner_modeoftransport,
             spinner_experiencerscore, spinner_pregnantpasttwoyrs, spinner_outcomepregnancy, spinner_childalive, spinner_placeofdeliverypregnant,
             spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications, spinner_singlemultiplebirths,
-            spinner_block, spinner_village;
+            spinner_block, spinner_village, spinner_focalPointBlock;
 
-//    Spinner spinner_focalPointBlock, spinner_focalPointVillage;
+//    Spinner spinner_focalPointVillage;
 
     ArrayAdapter<CharSequence> adapter_whatisyourrelation, adapter_maritualstatus, adapter_phoneownership, adapter_bpchecked, adapter_sugarchecked,
             adapter_hbchecked, adapter_bmi, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto,
@@ -1382,22 +1382,22 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //placedelivery
 
         //focal
-//        if (patient1.getFocalfacility() != null && !patient1.getFocalfacility().equalsIgnoreCase("")) {
-//            String focal_Transl = "";
-//            String focalBlockTransl = "", focalVillageTransl = "", StringBlock = "", StingVillage = "";
-//
-//            String[] block_village_split = patient1.getFocalfacility().split(":");
-//            StringBlock = block_village_split[0]; // This contains Block selected in Spinner
-//            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
-//
-//            focalBlockTransl = getFocalFacility_Block_edit(StringBlock, sessionManager.getAppLanguage());
-//            focalVillageTransl = getFocalFacility_Village_edit(StingVillage, sessionManager.getAppLanguage());
-//
-//            int spinner_positionBlock = adapter_focalPointBlock.getPosition(focalBlockTransl);
-//            spinner_focalPointBlock.setSelection(spinner_positionBlock);
-//
-//           /* int spinner_positionVillage = adapter_focalPointVillage.getPosition(focalVillageTransl);
-//            spinner_focalPointVillage.setSelection(spinner_positionVillage);*/
+        if (patient1.getFocalfacility() != null && !patient1.getFocalfacility().equalsIgnoreCase("")) {
+            String focal_Transl = "";
+            String focalBlockTransl = "", focalVillageTransl = "", StringBlock = "", StingVillage = "";
+
+            String[] block_village_split = patient1.getFocalfacility().split(":");
+            StringBlock = block_village_split[0]; // This contains Block selected in Spinner
+            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
+
+            focalBlockTransl = getFocalFacility_Block_edit(StringBlock, sessionManager.getAppLanguage());
+            focalVillageTransl = getFocalFacility_Village_edit(StingVillage, sessionManager.getAppLanguage());
+
+            int spinner_positionBlock = adapter_focalPointBlock.getPosition(focalBlockTransl);
+            spinner_focalPointBlock.setSelection(spinner_positionBlock);
+
+           /* int spinner_positionVillage = adapter_focalPointVillage.getPosition(focalVillageTransl);
+            spinner_focalPointVillage.setSelection(spinner_positionVillage);*/
 //
 //            switch (spinner_positionBlock) {
 //                case 1:
@@ -1435,7 +1435,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //                default:
 //                    spinner_focalPointVillage.setVisibility(View.GONE);
 //            }
-//        }
+        }
 //        //focal
 
         //Single/Multiple
@@ -1806,19 +1806,19 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //place delivery spinner adapter
 
         //focal Block
-//        try {
-//            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
-//            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
-//            if (focalBlock_id != 0) {
-//                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
-//                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
+        try {
+            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
+            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
+            if (focalBlock_id != 0) {
+                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
+                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
         //focal Block
 
         //focal Village - Peth
@@ -3135,15 +3135,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         patientAttributesDTOList.add(patientAttributesDTO);
         //focal facility
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
-//        String blockData = StringUtils.getFocalFacility_Block(spinner_focalFacilityBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
+        String blockData = StringUtils.getFocalFacility_Block(spinner_focalPointBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
 //        String villageData = StringUtils.getFocalFacility_Village(spinner_focalFacilityVillage.getSelectedItem().toString(), sessionManager.getAppLanguage());
-//        patientAttributesDTO.setValue(blockData + ":" + villageData);
+        patientAttributesDTO.setValue(blockData);
 //        Log.d("HOH", "FocalFaclity: " + blockData + " - " + villageData);
-//        patientAttributesDTOList.add(patientAttributesDTO);
+        patientAttributesDTOList.add(patientAttributesDTO);
         //focal facility
 
         // single/multiple
@@ -4111,7 +4111,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
 
                 if (position == 3 || position == 4 || position == 5) {
-//                    binding.llFocalPoint.setVisibility(View.GONE);
+                    binding.llFocalPoint.setVisibility(View.GONE);
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
                     binding.llBabyGender.setVisibility(View.GONE);
                     binding.llChildComplications.setVisibility(View.GONE);
@@ -4120,7 +4120,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                     binding.llChildComplications.setVisibility(View.VISIBLE);
-//                    binding.llFocalPoint.setVisibility(View.VISIBLE);
+                    binding.llFocalPoint.setVisibility(View.VISIBLE);
                     // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
@@ -4193,7 +4193,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         });
 
         spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
-//        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
+        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
 //        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
 
 //        spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -1376,54 +1376,54 @@
                                         android:background="?android:attr/listDivider" />
                                 </LinearLayout>
 
-                                <!--                                <LinearLayout-->
-                                <!--                                    android:id="@+id/llFocalPoint"-->
-                                <!--                                    android:layout_width="match_parent"-->
-                                <!--                                    android:layout_height="wrap_content"-->
-                                <!--                                    android:orientation="vertical">-->
+                                <LinearLayout
+                                    android:id="@+id/llFocalPoint"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
 
-                                <!--                                    <TextView-->
-                                <!--                                        android:layout_width="match_parent"-->
-                                <!--                                        android:layout_height="wrap_content"-->
-                                <!--                                        android:paddingStart="5dp"-->
-                                <!--                                        android:text="@string/focal_facility_for_this_pregnancy"-->
-                                <!--                                        android:textSize="@dimen/card_content_sub_text_size" />-->
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:text="@string/focal_facility_for_this_pregnancy"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
 
-                                <!--                                    <Space-->
-                                <!--                                        android:layout_width="10dp"-->
-                                <!--                                        android:layout_height="10dp" />-->
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
 
-                                <!--                                    <Spinner-->
-                                <!--                                        android:id="@+id/spinner_focal_block"-->
-                                <!--                                        android:layout_width="match_parent"-->
-                                <!--                                        android:layout_height="wrap_content" />-->
+                                    <Spinner
+                                        android:id="@+id/spinner_focal_block"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
 
-                                <!--                                    <Space-->
-                                <!--                                        android:layout_width="10dp"-->
-                                <!--                                        android:layout_height="10dp" />-->
+<!--                                    <Space-->
+                                    <!--                                        android:layout_width="10dp"-->
+                                    <!--                                        android:layout_height="10dp" />-->
 
-                                <!--                                    <Spinner-->
-                                <!--                                        android:id="@+id/spinner_focal_village"-->
-                                <!--                                        android:layout_width="match_parent"-->
-                                <!--                                        android:layout_height="wrap_content"-->
-                                <!--                                        android:layout_marginStart="5dp"-->
-                                <!--                                        android:layout_marginBottom="10dp"-->
-                                <!--                                        android:visibility="gone" />-->
+                                    <!--                                    <Spinner-->
+                                    <!--                                        android:id="@+id/spinner_focal_village"-->
+                                    <!--                                        android:layout_width="match_parent"-->
+                                    <!--                                        android:layout_height="wrap_content"-->
+                                    <!--                                        android:layout_marginStart="5dp"-->
+                                    <!--                                        android:layout_marginBottom="10dp"-->
+                                    <!--                                        android:visibility="gone" />-->
 
-                                <!--                                    <View-->
-                                <!--                                        android:layout_width="match_parent"-->
-                                <!--                                        android:layout_height="1dp"-->
-                                <!--                                        android:layout_marginTop="5dp"-->
-                                <!--                                        android:layout_marginBottom="10dp"-->
-                                <!--                                        android:background="?android:attr/listDivider" />-->
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="?android:attr/listDivider" />
 
-                                <!--                                </LinearLayout>-->
+                                </LinearLayout>
 
-                                <!--                                <EditText-->
-                                <!--                                    android:id="@+id/edittext_focalfacility"-->
-                                <!--                                    android:layout_width="match_parent"-->
-                                <!--                                    android:layout_height="wrap_content"-->
-                                <!--                                    android:hint="@string/txt_focal_facility_for_this_pregnancy" />-->
+<!--                                <EditText-->
+<!--                                    android:id="@+id/edittext_focalfacility"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:hint="@string/txt_focal_facility_for_this_pregnancy" />-->
 
                                 <!-- <EditText
                                     android:id="@+id/edittext_singlemultiplebirths"
