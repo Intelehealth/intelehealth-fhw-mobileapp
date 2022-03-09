@@ -1248,6 +1248,7 @@
     <string name="score_for_experience_of_treatment">Score For Experience Of Treatment</string>
     <string name="select_health_issue">Select Health Issue</string>
     <string name="others_specify_lowercase">Others (Specify)</string>
+
     <string name="fever">Fever</string>
     <string name="cough_cold">Cough / Cold</string>
     <string name="diarrhoea">Diarrhoea</string>
@@ -1255,6 +1256,14 @@
     <string name="skin_issues">Skin Issues</string>
     <string name="eye_vision_issues">Eye / Vision Issues</string>
     <string name="joint_bone_pain">Joint / Bone Pain</string>
+    <string name="typhoid">Typhoid</string>
+    <string name="jaundice">Jaundice</string>
+    <string name="malaria">Malaria</string>
+    <string name="dengue">Dengue</string>
+    <string name="diabetes">Diabetes</string>
+    <string name="hypertensionBP">Hypertension/BP</string>
+    <string name="asthama">Asthama</string>
+    <string name="cancer">Cancer</string>
     <string name="select_primary_health_care_provider">Select Primary Healthcare Provider</string>
     <string name="government_doctor">Government Doctor</string>
     <string name="private_doctor">Private Doctor</string>

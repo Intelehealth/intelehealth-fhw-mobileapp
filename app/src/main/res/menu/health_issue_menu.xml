@@ -30,6 +30,33 @@
         android:title="@string/joint_bone_pain" />
 
     <item
+        android:id="@+id/menu_item_typhoid"
+        android:title="@string/typhoid" />
+
+    <item
+        android:id="@+id/menu_item_jaundice"
+        android:title="@string/jaundice" />
+    <item
+        android:id="@+id/menu_item_malaria"
+        android:title="@string/malaria" />
+    <item
+        android:id="@+id/menu_item_dengue"
+        android:title="@string/dengue" />
+    <item
+        android:id="@+id/menu_item_diabetes"
+        android:title="@string/diabetes" />
+
+    <item
+        android:id="@+id/menu_item_HypertensionBP"
+        android:title="@string/hypertensionBP" />
+    <item
+        android:id="@+id/menu_item_astma"
+        android:title="@string/asthama" />
+    <item
+        android:id="@+id/menu_item_cancer"
+        android:title="@string/cancer" />
+
+    <item
         android:id="@+id/menu_item_other"
         android:title="@string/other" />
 
