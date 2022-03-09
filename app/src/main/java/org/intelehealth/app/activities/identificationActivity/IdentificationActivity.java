@@ -1388,7 +1388,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             String[] block_village_split = patient1.getFocalfacility().split(":");
             StringBlock = block_village_split[0]; // This contains Block selected in Spinner
-            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
+//            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
 
             focalBlockTransl = getFocalFacility_Block_edit(StringBlock, sessionManager.getAppLanguage());
             focalVillageTransl = getFocalFacility_Village_edit(StingVillage, sessionManager.getAppLanguage());
@@ -4072,48 +4072,48 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position != 0) {
-                if (position == 1) {
-                    binding.llChildAlive.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llChildAlive.setVisibility(View.GONE);
-                    binding.edittextBabyagedied.setVisibility(View.GONE);
-                    spinner_childalive.setSelection(0);
-                }
+                if (position != 0) {
+                    if (position == 1) {
+                        binding.llChildAlive.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.llChildAlive.setVisibility(View.GONE);
+                        binding.edittextBabyagedied.setVisibility(View.GONE);
+                        spinner_childalive.setSelection(0);
+                    }
 
-                if (position == 5) {
-                    binding.edittextMonthspregnancylast.setVisibility(View.GONE);
-                } else {
-                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
-                }
+                    if (position == 5) {
+                        binding.edittextMonthspregnancylast.setVisibility(View.GONE);
+                    } else {
+                        binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
+                    }
 
-                if (position == 5) {
-                    binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
-                } else {
-                    binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
-                }
+                    if (position == 5) {
+                        binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
+                    }
 
-                if (position == 4 || position == 5) {
-                    binding.llDeliveryPlace.setVisibility(View.GONE);
-                } else {
-                    binding.llDeliveryPlace.setVisibility(View.VISIBLE);
-                }
+                    if (position == 4 || position == 5) {
+                        binding.llDeliveryPlace.setVisibility(View.GONE);
+                    } else {
+                        binding.llDeliveryPlace.setVisibility(View.VISIBLE);
+                    }
 
 
-                if (position == 3 || position == 4 || position == 5) {
-                    binding.llFocalPoint.setVisibility(View.GONE);
-                    binding.llSingleMultipleBirth.setVisibility(View.GONE);
-                    binding.llBabyGender.setVisibility(View.GONE);
-                    binding.llChildComplications.setVisibility(View.GONE);
-                    //  binding.edittextBabyagedied.setVisibility(View.GONE);
-                } else {
-                    binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
-                    binding.llBabyGender.setVisibility(View.VISIBLE);
-                    binding.llChildComplications.setVisibility(View.VISIBLE);
-                    binding.llFocalPoint.setVisibility(View.VISIBLE);
-                    // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
+                    if (position == 3 || position == 4 || position == 5) {
+                        binding.llFocalPoint.setVisibility(View.GONE);
+                        binding.llSingleMultipleBirth.setVisibility(View.GONE);
+                        binding.llBabyGender.setVisibility(View.GONE);
+                        binding.llChildComplications.setVisibility(View.GONE);
+                        //  binding.edittextBabyagedied.setVisibility(View.GONE);
+                    } else {
+                        binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
+                        binding.llBabyGender.setVisibility(View.VISIBLE);
+                        binding.llChildComplications.setVisibility(View.VISIBLE);
+                        binding.llFocalPoint.setVisibility(View.VISIBLE);
+                        // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
             }
 
             @Override
