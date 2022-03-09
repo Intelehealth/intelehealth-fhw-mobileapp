@@ -21,6 +21,17 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
+    /**
+     * @param CLEAN_URL : The base url that user has entered in the editText of setup screen.
+     * @param USER_UUID : The uuid of the provider who has been authenticated in the app.
+     * @return : formatted completed url to the hit by RX.
+     */
+    //TODO: Generalise the url after testing
+    public String loginUrlProvider_phone(String CLEAN_URL, String USER_UUID) {
+        return String.format("https://%s/openmrs/ws/rest/v1/provider?user=%s&v=custom:(uuid,person:(uuid,display,gender),attributes)", CLEAN_URL, USER_UUID);
+    }
+
+
     public String patientProfileImageUrl(String patientUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "personimage/" + patientUuid;
@@ -72,5 +83,12 @@ public class UrlModifiers {
         return BASE_URL;
     }
 
+    public String getCallPatientExotelUrl() {
+        return "https://d788e0b618b3143e0f2df466fdad155561aaee3b32e4327d:49df1e7a635d9c575365fc82cc07d1ac3eb770e2284fd25e@api.exotel.com/";
+    }
+
+    public String getDoctorDetails()
+    {   sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        return "https://"+ sessionManager.getServerUrl() +":3004/api/openmrs/getDoctorDetails"; }
 
 }

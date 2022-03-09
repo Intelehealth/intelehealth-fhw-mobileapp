@@ -1,6 +1,9 @@
 package org.intelehealth.ekalhelpline.networkApiCalls;
 
 
+import org.intelehealth.ekalhelpline.models.CallDoctorModel;
+import org.intelehealth.ekalhelpline.models.CallingPatient;
+import org.intelehealth.ekalhelpline.models.CallingPatientStatus;
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
 import org.intelehealth.ekalhelpline.models.Location;
@@ -15,13 +18,20 @@ import org.intelehealth.ekalhelpline.models.pushRequestApiCall.PushRequestApiCal
 import org.intelehealth.ekalhelpline.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ekalhelpline.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ekalhelpline.models.statewise_location.State;
+
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -100,4 +110,11 @@ public interface ApiInterface {
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
+
+    @FormUrlEncoded
+    @POST("/v1/Accounts/intelehealth2/Calls/connect.json")
+    Call<ResponseBody> callPatient(@Header("Authorization") String authHeader, @FieldMap HashMap<String, String> data);
+
+    @GET
+    Call<CallDoctorModel> getDoctorDetails(@Url String url);
 }
