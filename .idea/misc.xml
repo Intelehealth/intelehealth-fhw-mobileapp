@@ -14,6 +14,10 @@
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_search.xml" value="0.25" />
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/my_cases_filter.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/today_filter.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_medical_advice.xml" value="0.264" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_search_patient.xml" value="0.1" />
       </map>
     </option>
   </component>
