@@ -571,14 +571,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        card_call_doctor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, CallDoctorActivity.class);
-                startActivity(intent1);
-            }
-        });
-
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -646,7 +638,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-                } else {
+                }
+                else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
                     alertDialog.setPositiveButton(getResources().getString(R.string.ok),
@@ -704,11 +697,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
-        isVisitSpecialityExists =
-
-                speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists)
+        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+        if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
+        }
+
+        card_call_doctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isVisitSpecialityExists) {
+                    Intent intent1 = new Intent(VisitSummaryActivity.this, CallDoctorActivity.class);
+                    startActivity(intent1);
+                }
+                else
+                    Toast.makeText(VisitSummaryActivity.this, "Upload the visit before making call to doctor.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();

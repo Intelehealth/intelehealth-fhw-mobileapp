@@ -88,9 +88,7 @@ public class UrlModifiers {
     }
 
     public String getDoctorDetails()
-    {
-        //TODO: make it generic for setup server
-        return "https://afitraining.ekalarogya.org:3004/api/openmrs/getDoctorDetails";
-    }
+    {   sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        return "https://"+ sessionManager.getServerUrl() +":3004/api/openmrs/getDoctorDetails"; }
 
 }

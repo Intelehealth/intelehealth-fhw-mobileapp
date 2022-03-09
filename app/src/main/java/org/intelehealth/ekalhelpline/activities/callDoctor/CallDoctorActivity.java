@@ -103,6 +103,8 @@ public class CallDoctorActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<CallDoctorModel> call, Throwable t) {
+                customProgressDialog.dismiss();
+                Toast.makeText(CallDoctorActivity.this, "No doctors available", Toast.LENGTH_LONG).show();
                 System.out.println(t);
             }
         });
