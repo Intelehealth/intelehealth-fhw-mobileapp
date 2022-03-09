@@ -4118,7 +4118,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_outcomepregnancy = findViewById(R.id.spinner_outcomepregnancy);
         spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
         spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
-        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
+//        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
 
         spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -4185,6 +4185,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     }
                     // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
+            }
             }
 
             @Override
