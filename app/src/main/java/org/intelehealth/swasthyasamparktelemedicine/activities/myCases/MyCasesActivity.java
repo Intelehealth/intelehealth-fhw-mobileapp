@@ -267,18 +267,26 @@ public class MyCasesActivity extends AppCompatActivity {
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
-                try {
-                    modelList.add(new MyCasesModel(
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"))))));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String query1 = "Select count(*) from tbl_visit where patientuuid = ?";
+                Cursor mCount = db.rawQuery(query1, new String[]{searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"))});
+                mCount.moveToFirst();
+                int count = mCount.getInt(0);
+                mCount.close();
+                if (count == 0) {
+                    try {
+                        modelList.add(new MyCasesModel(
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"))))));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } while (searchCursor.moveToNext());
+            }
+            while (searchCursor.moveToNext());
         }
         searchCursor.close();
         return modelList;
