@@ -283,31 +283,35 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
+                        if (slotInfoResponse != null) {
+                            SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
+                                    ScheduleListingActivity.this,
+                                    slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
+                                @Override
+                                public void onSelect(SlotInfo slotInfo) {
+                                    //------before reschedule need to cancel appointment----
+                                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                    if (appointmentId != 0) {
+                                        askReason(slotInfo);
+                                    } else {
+                                        bookAppointment(slotInfo, null);
+                                    }
 
-                        SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
-                                ScheduleListingActivity.this,
-                                slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
-                            @Override
-                            public void onSelect(SlotInfo slotInfo) {
-                                //------before reschedule need to cancel appointment----
-                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                if (appointmentId != 0) {
-                                    askReason(slotInfo);
-                                } else {
-                                    bookAppointment(slotInfo, null);
                                 }
-
+                            });
+                            rvSlots.setAdapter(slotListingAdapter);
+                            if (slotListingAdapter.getItemCount() == 0) {
+                                findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
+                            } else {
+                                findViewById(R.id.llEmptyView).setVisibility(View.GONE);
                             }
-                        });
-                        rvSlots.setAdapter(slotListingAdapter);
-                        if (slotListingAdapter.getItemCount() == 0) {
+                        }
+                        else
+                        {
                             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        } else {
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
                         }
                     }
-
                     @Override
                     public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
