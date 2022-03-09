@@ -4187,7 +4187,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     }
                 }
             }
-            }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
