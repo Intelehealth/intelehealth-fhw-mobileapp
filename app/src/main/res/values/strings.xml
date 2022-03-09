@@ -703,6 +703,10 @@
     <string name="dealing_problems">Dealing problems of attention, memory and clarity</string>
     <string name="managing_mental_health">Managing Mental Health</string>
     <string name="exercises">Exercises</string>
+    <string name="denied_covid">Denied having COVID</string>
+    <string name="died">Patient Died</string>
+    <string name="not_reachable">Patient\'s number was not reachable.</string>
+    <string name="not_picked_up">Patient did not picked up.</string>
     <string name="error_medical_visit_data">Please select or enter medical advice</string>
     <string name="txt_additional_info">Additional information</string>
     <string name="text_patient_and_advice_created">Patient &amp; Medical Advice is Registered Successfully</string>
