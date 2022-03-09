@@ -22,6 +22,9 @@ public class Patient {
     private String education_level;
     private String caste;
     private String emergency;
+    private String villageNameSurvey;
+    private String blockSurvey;
+
     // Roster
     private String relationshiphoh;
     private String maritualstatus;
@@ -158,6 +161,22 @@ public class Patient {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getVillageNameSurvey() {
+        return villageNameSurvey;
+    }
+
+    public void setVillageNameSurvey(String villageNameSurvey) {
+        this.villageNameSurvey = villageNameSurvey;
+    }
+
+    public String getBlockSurvey() {
+        return blockSurvey;
+    }
+
+    public void setBlockSurvey(String blockSurvey) {
+        this.blockSurvey = blockSurvey;
     }
 
     public String getGender() {

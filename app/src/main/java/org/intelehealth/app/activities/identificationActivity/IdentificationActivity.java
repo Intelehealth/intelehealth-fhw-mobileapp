@@ -3195,18 +3195,18 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
 
         patientAttributesDTOList.add(patientAttributesDTO);
-        if (binding.llFocalPoint.getVisibility() == View.VISIBLE && llPORoaster.getVisibility()==View.VISIBLE) {
-        //focal facility
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
-        String blockData = StringUtils.getFocalFacility_Block(spinner_focalPointBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
+        if (binding.llFocalPoint.getVisibility() == View.VISIBLE && llPORoaster.getVisibility() == View.VISIBLE) {
+            //focal facility
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
+            String blockData = StringUtils.getFocalFacility_Block(spinner_focalPointBlock.getSelectedItem().toString(), sessionManager.getAppLanguage());
 //        String villageData = StringUtils.getFocalFacility_Village(spinner_focalFacilityVillage.getSelectedItem().toString(), sessionManager.getAppLanguage());
-        patientAttributesDTO.setValue(blockData);
+            patientAttributesDTO.setValue(blockData);
 //        Log.d("HOH", "FocalFaclity: " + blockData + " - " + villageData);
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //focal facility
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //focal facility
 
         }
         // single/multiple
@@ -4166,24 +4166,25 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     }
 
 
-                if (position == 3 || position == 4 || position == 5) {
-                    binding.llFocalPoint.setVisibility(View.GONE);
-                    binding.llSingleMultipleBirth.setVisibility(View.GONE);
-                    binding.llBabyGender.setVisibility(View.GONE);
-                    binding.llChildComplications.setVisibility(View.GONE);
-                    //  binding.edittextBabyagedied.setVisibility(View.GONE);
-                } else {
-                    binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
-                    binding.llBabyGender.setVisibility(View.VISIBLE);
-                    binding.llChildComplications.setVisibility(View.VISIBLE);
-                    binding.llFocalPoint.setVisibility(View.VISIBLE);
+                    if (position == 3 || position == 4 || position == 5) {
+                        binding.llFocalPoint.setVisibility(View.GONE);
+                        binding.llSingleMultipleBirth.setVisibility(View.GONE);
+                        binding.llBabyGender.setVisibility(View.GONE);
+                        binding.llChildComplications.setVisibility(View.GONE);
+                        //  binding.edittextBabyagedied.setVisibility(View.GONE);
+                    } else {
+                        binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
+                        binding.llBabyGender.setVisibility(View.VISIBLE);
+                        binding.llChildComplications.setVisibility(View.VISIBLE);
+                        binding.llFocalPoint.setVisibility(View.VISIBLE);
 
-                    //todo for place of deleivery is home so fockl is not shown at that time
-                    if (spinner_placeofdeliverypregnant.getSelectedItemPosition() == 1) {
-                        spinner_placeofdeliverypregnant.setSelection(0);
+                        //todo for place of deleivery is home so fockl is not shown at that time
+                        if (spinner_placeofdeliverypregnant.getSelectedItemPosition() == 1) {
+                            spinner_placeofdeliverypregnant.setSelection(0);
 
+                        }
+                        // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                     }
-                    // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
             }
@@ -4248,6 +4249,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     }
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -4318,7 +4320,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            }
 //        });
 
-       
+
         spinner_sexofbaby = findViewById(R.id.spinner_sexofbaby);
         spinner_pregnancyplanned = findViewById(R.id.spinner_pregnancyplanned);
         spinner_pregnancyhighriskcase = findViewById(R.id.spinner_pregnancyhighriskcase);
