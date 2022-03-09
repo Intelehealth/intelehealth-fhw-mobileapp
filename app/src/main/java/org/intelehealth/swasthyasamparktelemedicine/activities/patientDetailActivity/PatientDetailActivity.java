@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.PathInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -350,7 +351,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
                 }
             });
         }
@@ -1336,11 +1336,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     // Called when we close app on vitals screen and Didn't select any complaints
                     //Here, we don't get any complaints so we will use this block...
                     /*This block is called in two cases :
-                    * 1. When user closes the app after filling vitals screen.
-                    * 2. Patient app creates Self-Assessment.
-                    * TODO: Need to add code logic for distinguishing visit created by Patient app to be shown as Self-Assessment
-                    *  and app forcely closed by user at Vitals screen...
-                    *  */
+                     * 1. When user closes the app after filling vitals screen.
+                     * 2. Patient app creates Self-Assessment.
+                     * TODO: Need to add code logic for distinguishing visit created by Patient app to be shown as Self-Assessment
+                     *  and app forcely closed by user at Vitals screen...
+                     *  */
                     else {
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         try {
@@ -1395,7 +1395,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(receiver))
             return;
         UrlModifiers urlModifiers = new UrlModifiers();
-      //  String caller = "1246825811"; //dummy
+        //  String caller = "1246825811"; //dummy
         String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
         String url = urlModifiers.getIvrCallUrl(caller, receiver);
         Logger.logD(TAG, "ivr call url" + url);
@@ -1415,13 +1415,62 @@ public class PatientDetailActivity extends AppCompatActivity {
                 });
     }
 
+    private void storeCallResponse() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+        alertDialogBuilder.setMessage("Were you able to connect with patient?");
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String[] items = {"Denied having covid", "Died", "Need not be registered", "Patient Registered - Specialist", "Patient Registered- Tele Caller"};
+                boolean[] checkedItems = {false, false, false, false, false};
+                showOptionDialog(items,checkedItems, true);
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String[] items = {"Not a valid number", "Not reachable", "Patient Did Not Pick Up"};
+                boolean[] checkedItems = {false, false, false};
+                showOptionDialog(items,checkedItems, false);
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void showOptionDialog(String[] items,boolean[] checkedItems, boolean success) {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+        alertDialog.setTitle("Select Call Output");
+        alertDialog.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                Toast.makeText(PatientDetailActivity.this, items[which], Toast.LENGTH_LONG).show();
+            }
+        });
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                if(!success)
+                    onBackPressed();
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
+    }
+
     void showAlert(int messageRes) {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
         alertDialogBuilder.setMessage(messageRes);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                storeCallResponse();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
