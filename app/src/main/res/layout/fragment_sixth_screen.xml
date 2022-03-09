@@ -73,7 +73,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/food_prepared_in_the_past_twenty_four_hours_text_view"
-                android:layout_marginTop="13dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
