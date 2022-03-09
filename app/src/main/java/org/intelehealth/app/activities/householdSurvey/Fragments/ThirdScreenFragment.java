@@ -245,7 +245,7 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay")); //TODO add here new value
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
         patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -377,7 +377,7 @@ public class ThirdScreenFragment extends Fragment {
                         binding.waterSupplyAvailabilityEditText.setText(value1);
                 }
 
-                if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) { //TODO: Add new uuid here
+                if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek")) { //TODO: Add new uuid here
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if(value1!=null)
                         binding.waterSupplyAvailabilityDaysPerWeekEditText.setText(value1);
