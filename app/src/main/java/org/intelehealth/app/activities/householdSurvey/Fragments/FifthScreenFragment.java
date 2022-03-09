@@ -38,6 +38,8 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -125,9 +127,33 @@ public class FifthScreenFragment extends Fragment {
                 binding.otherWaysOfPurifyingWaterEditText.setVisibility(View.GONE);
             }
         });
-        setData(patientUuid);
+        getPatientUuidsForHouseholdValue(patientUuid);
+       // setData(patientUuid);
         return rootView;
     }
+
+    public void getPatientUuidsForHouseholdValue(String patientUuid) {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDss", "" + patientUUIDs);
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    setData(patientUUIDs.get(i));
+                }
+            }
+            catch (Exception e) {
+            }
+        }
+    }
+
 
     private void insertData() throws DAOException {
         PatientsDAO patientsDAO = new PatientsDAO();

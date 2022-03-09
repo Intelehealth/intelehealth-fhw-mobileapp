@@ -103,9 +103,34 @@ public class SixthScreenFragment extends Fragment {
         });
 
         mandatoryFields.addAll(Arrays.asList(binding.defecationInOpenRadioGroup, binding.foodPreparedInThePastTwentyFourHoursRadioGroup));
-        setData(patientUuid);
+
+        getPatientUuidsForHouseholdValue(patientUuid);
+       // setData(patientUuid);
         return rootView;
     }
+
+    public void getPatientUuidsForHouseholdValue(String patientUuid) {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDss", "" + patientUUIDs);
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    setData(patientUUIDs.get(i));
+                }
+            }
+            catch (Exception e) {
+            }
+        }
+    }
+
 
     private void insertData() throws DAOException {
 //        if (!StringUtils.validateFields(mandatoryFields)) {
