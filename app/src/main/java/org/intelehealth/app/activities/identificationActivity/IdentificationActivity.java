@@ -2997,7 +2997,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 sessionManager.getAppLanguage()));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
-        if (binding.llFocalPoint.getVisibility() == View.VISIBLE) {
+
+        if (binding.llFocalPoint.getVisibility() == View.VISIBLE && llPORoaster.getVisibility()==View.VISIBLE) {
             //focal facility
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3008,7 +3009,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue(blockData + ":" + villageData);
             Log.d("HOH", "FocalFaclity: " + blockData + " - " + villageData);
             patientAttributesDTOList.add(patientAttributesDTO);
-            //focal facility
         }
         // single/multiple
         if (binding.llSingleMultipleBirth.getVisibility() == View.VISIBLE) {
