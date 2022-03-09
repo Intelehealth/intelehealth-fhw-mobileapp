@@ -102,7 +102,7 @@ public class SixthScreenFragment extends Fragment {
             }
         });
 
-        mandatoryFields.addAll(Arrays.asList(binding.defecationInOpenRadioGroup, binding.foodPreparedInThePastTwentyFourHoursRadioGroup));
+        mandatoryFields.addAll(Arrays.asList(binding.defecationInOpenRadioGroup));
         setData(patientUuid);
         return rootView;
     }
@@ -128,19 +128,17 @@ public class SixthScreenFragment extends Fragment {
         }
 
         //foodItemsPreparedInTwentyFourHrs
-        if (binding.foodPreparedInThePastTwentyFourHoursRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHrs"));
-            patientAttributesDTO.setValue(((RadioButton) binding.foodPreparedInThePastTwentyFourHoursRadioGroup.findViewById(binding.foodPreparedInThePastTwentyFourHoursRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-        }
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHrs"));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.foodPreparedInThePastTwentyFourHoursLinearLayout));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);
-        Log.v("screen", "secondscreen: \n"+ gson.toJson(patientAttributesDTOList));
+        Log.v("screen", "secondscreen: \n" + gson.toJson(patientAttributesDTOList));
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
@@ -157,14 +155,13 @@ public class SixthScreenFragment extends Fragment {
 //                    .replace(R.id.framelayout_container, new SeventhScreenFragment())
 //                    .commit();
 //        }
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.framelayout_container, new SeventhScreenFragment())
-                    .addToBackStack(null)
-                    .commit();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.framelayout_container, new SeventhScreenFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
-    private void setData(String patientUuid)
-    {
+    private void setData(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -181,15 +178,34 @@ public class SixthScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdOpenDefecationStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.defecationInOpenRadioGroup, value1);
 
                 }
                 if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHrs")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.foodPreparedInThePastTwentyFourHoursRadioGroup, value1);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null) {
 
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.starch_staple_food)))
+                            binding.starchStapleFoodCheckbox.setChecked(true);
+
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.beans_and_peas)))
+                            binding.beansAndPeasCheckbox.setChecked(true);
+
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.nuts_and_seeds)))
+                            binding.nutsAndSeedsCheckbox.setChecked(true);
+
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.dairy)))
+                            binding.dairyCheckbox.setChecked(true);
+
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.eggs)))
+                            binding.eggsCheckbox.setChecked(true);
+
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.flesh_food)))
+                            binding.fleshFoodCheckbox.setChecked(true);
+
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.any_vegetables)))
+                            binding.anyVegetablesCheckbox.setChecked(true);
+                    }
                 }
             } while (idCursor1.moveToNext());
         }
@@ -206,8 +222,7 @@ public class SixthScreenFragment extends Fragment {
                     rButton.setChecked(true);
                     return;
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
 
             }
         }

@@ -68,15 +68,16 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
-            <RadioGroup
-                android:id="@+id/food_prepared_in_the_past_twenty_four_hours_radio_group"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/food_prepared_in_the_past_twenty_four_hours_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/food_prepared_in_the_past_twenty_four_hours_text_view"
                 android:layout_marginTop="13dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/starch_staple_food_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -85,11 +86,12 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:text="@string/rice_roti_bread"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/rice_roti_bread" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/beans_and_peas_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -98,23 +100,26 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:text="@string/beans_peas_mung_dal_chana_dal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/beans_peas_mung_dal_chana_dal" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/nuts_and_seeds_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins"
                     android:text="@string/nuts_and_seeds"
                     android:textSize="13sp" />
-                <TextView
-                    android:text="@string/groundnut_apricort_almond_pista"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/groundnut_apricort_almond_pista" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/dairy_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -123,11 +128,12 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:text="@string/milk_cow_goat_buffalo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/milk_cow_goat_buffalo" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/eggs_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -135,7 +141,8 @@
                     android:text="@string/eggs"
                     android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flesh_food_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -144,11 +151,12 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:text="@string/meat_lamb_beef_pork"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/meat_lamb_beef_pork" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/any_vegetables_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -156,12 +164,12 @@
                     android:text="@string/any_vegetables"
                     android:textSize="13sp" />
 
-            </RadioGroup>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/food_prepared_in_the_past_twenty_four_hours_radio_group"
+                android:layout_below="@id/food_prepared_in_the_past_twenty_four_hours_linear_layout"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
