@@ -500,7 +500,48 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         } catch (Exception e) {
             Toast.makeText(this, getString(R.string.block_values_are_missing), Toast.LENGTH_SHORT).show();
         }
+
         spinner_block.setAdapter(adapter_block);
+        spinner_block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 1:
+                        spinner_village.setAdapter(null);
+                        String focalVillagePeth_Language = "peth_block_village_" + sessionManager.getAppLanguage();
+                        int focalVillage_Peth_id = getResources().getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
+                        if (focalVillage_Peth_id != 0) {
+                            adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
+                        }
+                        adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                focalVillage_Peth_id, R.layout.custom_spinner);
+                        spinner_village.setAdapter(adapter_FocalVillage_Peth);
+                        break;
+
+                    case 2:
+                        spinner_village.setAdapter(null);
+                        String focalVillageSurgane_Language = "suragana_block_villages_" + sessionManager.getAppLanguage();
+                        int focalVillage_Surgane_id = getResources().getIdentifier(focalVillageSurgane_Language, "array", getApplicationContext().getPackageName());
+                        if (focalVillage_Surgane_id != 0) {
+                            adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    focalVillage_Surgane_id, android.R.layout.simple_spinner_dropdown_item);
+                        }
+                        adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                focalVillage_Surgane_id, R.layout.custom_spinner);
+                        spinner_village.setAdapter(adapter_FocalVillage_Surgana);
+                        break;
+
+                    default:
+                        spinner_village.setAdapter(null);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
@@ -672,7 +713,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //DOB is set using an AlertDialog
         // Locale.setDefault(Locale.ENGLISH);
 
-        mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+        mDOBPicker = new
+
+                DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -753,7 +796,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().
+
+                setMaxDate(System.currentTimeMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -965,7 +1010,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
         });
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
+        fab.setOnClickListener(v ->
+
+        {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
@@ -974,6 +1021,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         });
 
         setupHealthCard();
+
     }
 
 
@@ -1401,7 +1449,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
             String[] block_village_split = patient1.getFocalfacility().split(":");
             StringBlock = block_village_split[0]; // This contains Block selected in Spinner
-            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
+//            StingVillage = block_village_split[1]; // This contains Village selected in Spinner
 
             focalBlockTransl = getFocalFacility_Block_edit(StringBlock, sessionManager.getAppLanguage());
             focalVillageTransl = getFocalFacility_Village_edit(StingVillage, sessionManager.getAppLanguage());
@@ -4090,32 +4138,32 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position != 0) {
-                if (position == 1) {
-                    binding.llChildAlive.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llChildAlive.setVisibility(View.GONE);
-                    binding.edittextBabyagedied.setVisibility(View.GONE);
-                    spinner_childalive.setSelection(0);
-                }
+                if (position != 0) {
+                    if (position == 1) {
+                        binding.llChildAlive.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.llChildAlive.setVisibility(View.GONE);
+                        binding.edittextBabyagedied.setVisibility(View.GONE);
+                        spinner_childalive.setSelection(0);
+                    }
 
-                if (position == 5) {
-                    binding.edittextMonthspregnancylast.setVisibility(View.GONE);
-                } else {
-                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
-                }
+                    if (position == 5) {
+                        binding.edittextMonthspregnancylast.setVisibility(View.GONE);
+                    } else {
+                        binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
+                    }
 
-                if (position == 5) {
-                    binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
-                } else {
-                    binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
-                }
+                    if (position == 5) {
+                        binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
+                    }
 
-                if (position == 4 || position == 5) {
-                    binding.llDeliveryPlace.setVisibility(View.GONE);
-                } else {
-                    binding.llDeliveryPlace.setVisibility(View.VISIBLE);
-                }
+                    if (position == 4 || position == 5) {
+                        binding.llDeliveryPlace.setVisibility(View.GONE);
+                    } else {
+                        binding.llDeliveryPlace.setVisibility(View.VISIBLE);
+                    }
 
 
                 if (position == 3 || position == 4 || position == 5) {
@@ -4137,7 +4185,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     }
                     // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
-            }
             }
 
             @Override
