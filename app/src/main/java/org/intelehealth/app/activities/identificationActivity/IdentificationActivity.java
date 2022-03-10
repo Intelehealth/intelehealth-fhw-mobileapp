@@ -129,7 +129,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class IdentificationActivity extends AppCompatActivity implements SurveyCallback, ViewPagerCallback {
+public class IdentificationActivity extends AppCompatActivity implements SurveyCallback, ViewPagerCallback, PregnancyOutcomeCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -235,7 +235,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private HouseholdSurveyAdapter adapter;
     private ActivityIdentificationBinding binding;
     private List<HealthIssues> healthIssuesList = new ArrayList<>();
-
+    private List<PregnancyRosterData> pregnancyOutcomesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -4539,5 +4539,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         });
 
         listDialog.show();
+    }
+
+    @Override
+    public void savePregnancyData(PregnancyRosterData data) {
+        pregnancyOutcomesList.add(data);
+
+    }
+
+    @Override
+    public void savePregnancyDataAtPosition(PregnancyRosterData data, int position) {
+        pregnancyOutcomesList.add(data);
     }
 }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     public static final String TAG = "PregnancyRosterDialog";
     private DialogPregnancyRosterBinding binding;
+    private PregnancyOutcomeCallback callback;
     private SessionManager sessionManager;
     private Bundle bundle;
 
@@ -38,6 +40,7 @@ public class PregnancyRosterDialog extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        callback = (PregnancyOutcomeCallback) context;
     }
 
     @Override
@@ -69,7 +72,16 @@ public class PregnancyRosterDialog extends DialogFragment {
             positiveButton.setOnClickListener(v -> {
                 PregnancyRosterData data = fetchData();
                 boolean areDetailsCorrect = validateData(data);
-                Logger.logD("Valid", String.valueOf(areDetailsCorrect));
+                if (areDetailsCorrect) {
+                    if (bundle != null) {
+                        // TODO - add edit feature on pregnancy outcomes
+                    } else {
+                        callback.savePregnancyData(data);
+                    }
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+                }
             });
         });
 
