@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,19 @@ import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.DialogPregnancyRosterBinding;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SessionManager;
 
 public class PregnancyRosterDialog extends DialogFragment {
 
     public static final String TAG = "PregnancyRosterDialog";
     private DialogPregnancyRosterBinding binding;
+    private SessionManager sessionManager;
     private Bundle bundle;
+
+    // Adapters
+    private ArrayAdapter<CharSequence> adapter_pregnantPastTwoYears, adapter_outcomepregnancy, adapter_childalive, adapter_placeofdeliverypregnant, adapter_pregnancyplanned,
+            adapter_focalPointBlock, adapter_sexofbaby, adapter_pregnancyhighriskcase, adapter_pregnancycomplications, adapter_singlemultiplebirths;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -31,6 +39,7 @@ public class PregnancyRosterDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(requireActivity());
         bundle = getArguments();
     }
 
@@ -62,7 +71,131 @@ public class PregnancyRosterDialog extends DialogFragment {
     }
 
     private void setAdapters() {
+        // Pregnant Past Two Years Adapter
+        try {
+            String pastTwoYearsLanguage = "pasttwoyrs_" + sessionManager.getAppLanguage();
+            int pastTwoYearsId = getResources().getIdentifier(pastTwoYearsLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (pastTwoYearsId != 0) {
+                adapter_pregnantPastTwoYears = ArrayAdapter.createFromResource(requireContext(), pastTwoYearsId, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerPregnantpasttwoyrs.setAdapter(adapter_pregnantPastTwoYears);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
 
+        // Pregnancy Outcome Adapter
+        try {
+            String outcomepregnancyLanguage = "outcomepregnancy_" + sessionManager.getAppLanguage();
+            int outcomepregnancy_id = getResources().getIdentifier(outcomepregnancyLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (outcomepregnancy_id != 0) {
+                adapter_outcomepregnancy = ArrayAdapter.createFromResource(requireContext(), outcomepregnancy_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerOutcomepregnancy.setAdapter(adapter_outcomepregnancy);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Child Alive Adapter
+        try {
+            String childaliveLanguage = "childalive_" + sessionManager.getAppLanguage();
+            int childalive_id = getResources().getIdentifier(childaliveLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (childalive_id != 0) {
+                adapter_childalive = ArrayAdapter.createFromResource(getContext(), childalive_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerChildalive.setAdapter(adapter_childalive);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Place Of Delivery Adapter
+        try {
+            String placedeliveryLanguage = "placedelivery_" + sessionManager.getAppLanguage();
+            int placedelivery_id = getResources().getIdentifier(placedeliveryLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (placedelivery_id != 0) {
+                adapter_placeofdeliverypregnant = ArrayAdapter.createFromResource(getContext(), placedelivery_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerPlaceofdeliverypregnant.setAdapter(adapter_placeofdeliverypregnant);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Focal Facility Adapter
+        try {
+            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
+            int focalBlock_id = getResources().getIdentifier(focalBlockLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (focalBlock_id != 0) {
+                adapter_focalPointBlock = ArrayAdapter.createFromResource(getContext(), focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerFocalBlock.setAdapter(adapter_focalPointBlock);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Single / Multiple Births Adapter
+        try {
+            String singlemultipleLanguage = "singlemultiplebirths_" + sessionManager.getAppLanguage();
+            int singlemultiple_id = getResources().getIdentifier(singlemultipleLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (singlemultiple_id != 0) {
+                adapter_singlemultiplebirths = ArrayAdapter.createFromResource(getContext(), singlemultiple_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerSinglemultiplebirths.setAdapter(adapter_singlemultiplebirths);
+
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+
+        // Sex of the Baby Adapter
+        try {
+            String sexbabyLanguage = "sexofbaby_" + sessionManager.getAppLanguage();
+            int sexbaby_id = getResources().getIdentifier(sexbabyLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (sexbaby_id != 0) {
+                adapter_sexofbaby = ArrayAdapter.createFromResource(getContext(), sexbaby_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerSexofbaby.setAdapter(adapter_sexofbaby);
+
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Pregnancy Planned Adapter
+        try {
+            String pregnancyplannedLanguage = "pregnancyplanned_" + sessionManager.getAppLanguage();
+            int pregnancyplanned_id = getResources().getIdentifier(pregnancyplannedLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (pregnancyplanned_id != 0) {
+                adapter_pregnancyplanned = ArrayAdapter.createFromResource(getContext(),
+                        pregnancyplanned_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerPregnancyplanned.setAdapter(adapter_pregnancyplanned);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // High Risk Pregnancy Adapter
+        try {
+            String highriskpregnancyLanguage = "highriskpregnancy_" + sessionManager.getAppLanguage();
+            int highriskpregnancy_id = getResources().getIdentifier(highriskpregnancyLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (highriskpregnancy_id != 0) {
+                adapter_pregnancyhighriskcase = ArrayAdapter.createFromResource(getContext(), highriskpregnancy_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerPregnancyhighriskcase.setAdapter(adapter_pregnancyhighriskcase);
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Pregnancy Complications Adapter
+        try {
+            String complicationsLanguage = "complications_" + sessionManager.getAppLanguage();
+            int complications_id = getResources().getIdentifier(complicationsLanguage, "array", requireActivity().getApplicationContext().getPackageName());
+            if (complications_id != 0) {
+                adapter_pregnancycomplications = ArrayAdapter.createFromResource(getContext(), complications_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.spinnerPregnancycomplications.setAdapter(adapter_pregnancycomplications);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
     }
 
     private void setListeners() {

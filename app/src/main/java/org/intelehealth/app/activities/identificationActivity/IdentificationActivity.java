@@ -4271,7 +4271,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
 //        spinner_outcomepregnancy = findViewById(R.id.spinner_outcomepregnancy);
 //        spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
-        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
+//        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
 //        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
 
 //        spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -4440,7 +4440,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            }
 //        });
 
-        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
+//        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
 //        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
 
 //        spinner_focalPointBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
