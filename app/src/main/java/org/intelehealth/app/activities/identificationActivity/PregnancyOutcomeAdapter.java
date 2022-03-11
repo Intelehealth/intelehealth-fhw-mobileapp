@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.identificationActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +15,11 @@ import java.util.List;
 public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutcomeAdapter.PregnancyViewHolder> {
 
     private final List<PregnancyRosterData> pregnancyOutcomesList;
+    private final ViewPagerCallback callback;
 
-    public PregnancyOutcomeAdapter(List<PregnancyRosterData> pregnancyOutcomesList) {
+    public PregnancyOutcomeAdapter(List<PregnancyRosterData> pregnancyOutcomesList, ViewPagerCallback callback) {
         this.pregnancyOutcomesList = pregnancyOutcomesList;
+        this.callback = callback;
     }
 
     @NonNull
@@ -28,36 +31,39 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 false
         );
 
-        return new PregnancyViewHolder(binding);
+        return new PregnancyViewHolder(binding, callback);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PregnancyViewHolder holder, int position) {
-        holder.initData(pregnancyOutcomesList.get(position));
+        holder.initData(pregnancyOutcomesList.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        if (pregnancyOutcomesList.isEmpty())
-            return 0;
-        else
-            return pregnancyOutcomesList.size();
+        return pregnancyOutcomesList.size();
     }
 
     static class PregnancyViewHolder extends RecyclerView.ViewHolder {
-
         public PresentationPregnancyRosterBinding binding;
         public PregnancyRosterData data;
+        public ViewPagerCallback callback;
+        public int position;
+
         public final String SELECT = "Select";
         public final String SELECT_BLOCK = "Select Block";
 
-        public PregnancyViewHolder(@NonNull PresentationPregnancyRosterBinding binding) {
+        public PregnancyViewHolder(@NonNull PresentationPregnancyRosterBinding binding, ViewPagerCallback callback) {
             super(binding.getRoot());
             this.binding = binding;
+            this.callback = callback;
+            binding.mainLinearLayout.setOnClickListener(v -> callback.getPregnancyIssueClicked(data, position));
         }
 
-        public void initData(PregnancyRosterData data) {
+        public void initData(PregnancyRosterData data, int position) {
             this.data = data;
+            this.position = position;
+
             binding.textviewHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
             binding.textviewPregnantpasttwoyrs.setText(data.getAnyPregnancyOutcomesInThePastTwoYears());
 

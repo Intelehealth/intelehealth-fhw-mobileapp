@@ -4196,7 +4196,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         TextView maritalStatus = findViewById(R.id.textview_marital_status);
 
-        pregnancyQuestionsLinearLayout = findViewById(R.id.pregnancy_questions_linear_layout);
+//        pregnancyQuestionsLinearLayout = findViewById(R.id.pregnancy_questions_linear_layout);
 
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
@@ -4500,15 +4500,28 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         setViewPagerOffset(binding.mainViewPager);
     }
 
-    public void deleteSurveyData(int position) {
-        healthIssuesList.remove(position);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
-        binding.mainViewPager.setAdapter(adapter);
-        if (!healthIssuesList.isEmpty()) {
-            binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+    public void deleteSurveyData(int position, Object object) {
+        if (object instanceof HealthIssues) {
+            healthIssuesList.remove(position);
+            adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+            binding.mainViewPager.setAdapter(adapter);
+            if (!healthIssuesList.isEmpty()) {
+                binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+            }
+            binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(binding.mainViewPager);
         }
-        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        setViewPagerOffset(binding.mainViewPager);
+
+        if (object instanceof PregnancyRosterData) {
+            pregnancyOutcomesList.remove(position);
+            pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this);
+            binding.poViewPager.setAdapter(adapter);
+            if (!pregnancyOutcomesList.isEmpty()) {
+                binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
+            }
+            binding.poViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(binding.poViewPager);
+        }
     }
 
     @Override
@@ -4535,17 +4548,31 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
 
             if (which == 1) {
-                deleteSurveyData(position);
+                deleteSurveyData(position, survey);
             }
         });
+        listDialog.show();
+    }
 
+    @Override
+    public void getPregnancyIssueClicked(PregnancyRosterData data, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, data);
+            }
+        });
         listDialog.show();
     }
 
     @Override
     public void savePregnancyData(PregnancyRosterData data) {
         pregnancyOutcomesList.add(data);
-        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList);
+        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this);
         binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
         binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -4554,6 +4581,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     @Override
     public void savePregnancyDataAtPosition(PregnancyRosterData data, int position) {
-        pregnancyOutcomesList.add(data);
+
     }
 }
