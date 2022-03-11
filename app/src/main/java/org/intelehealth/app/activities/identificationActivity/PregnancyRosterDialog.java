@@ -366,7 +366,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                 }
             }
 
-            if (pregnancyOutcomePosition == 5 && data.getMonthsBeenPregnant() == null) {
+            if (pregnancyOutcomePosition == 5) {
                 if (binding.edittextMonthsbeingpregnant.getText().toString().equalsIgnoreCase("") || binding.edittextMonthsbeingpregnant.getText().toString().isEmpty()) {
                     setEditTextError(binding.edittextMonthsbeingpregnant);
                     areDetailsCorrect = false;
