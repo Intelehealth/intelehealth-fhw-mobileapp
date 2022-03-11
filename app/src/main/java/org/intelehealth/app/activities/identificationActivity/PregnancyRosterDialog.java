@@ -425,16 +425,16 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     private PregnancyRosterData fetchData() {
         PregnancyRosterData data = new PregnancyRosterData();
+        data.setNumberOfTimesPregnant(binding.edittextHowmanytimmespregnant.getText().toString());
         int pregnancyOutcomePosition = binding.spinnerOutcomepregnancy.getSelectedItemPosition();
 
-        data.setNumberOfTimesPregnant(binding.edittextHowmanytimmespregnant.getText().toString());
-        data.setAnyPregnancyOutcomesInThePastTwoYears(binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString());
+        data.setAnyPregnancyOutcomesInThePastTwoYears(StringUtils.getPasttwoyrs(binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
         if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
-            data.setPregnancyOutcome(binding.spinnerOutcomepregnancy.getSelectedItem().toString());
+            data.setPregnancyOutcome(StringUtils.getOutcomePregnancy(binding.spinnerOutcomepregnancy.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
             if (pregnancyOutcomePosition == 1)
-                data.setIsChildAlive(binding.spinnerChildalive.getSelectedItem().toString());
+                data.setIsChildAlive(StringUtils.getChildAlive(binding.spinnerChildalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
             data.setYearOfPregnancyOutcome(binding.edittextYearofpregnancy.getText().toString());
 
@@ -445,25 +445,25 @@ public class PregnancyRosterDialog extends DialogFragment {
                 data.setMonthsBeenPregnant(binding.edittextMonthsbeingpregnant.getText().toString());
 
             if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)
-                data.setPlaceOfDelivery(binding.spinnerPlaceofdeliverypregnant.getSelectedItem().toString());
+                data.setPlaceOfDelivery(StringUtils.getPlaceDelivery(binding.spinnerPlaceofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-            if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 &&
+            if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 ||
                     (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
-                data.setFocalFacilityForPregnancy(binding.spinnerFocalBlock.getSelectedItem().toString());
+                data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block(binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }
 
             if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
-                data.setSingleMultipleBirths(binding.spinnerSinglemultiplebirths.getSelectedItem().toString());
-                data.setSexOfBaby(binding.spinnerSexofbaby.getSelectedItem().toString());
-                data.setPregnancyComplications(binding.spinnerPregnancycomplications.getSelectedItem().toString());
+                data.setSingleMultipleBirths(StringUtils.getSinglemultiplebirths(binding.spinnerSinglemultiplebirths.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                data.setSexOfBaby(StringUtils.getSexOfBaby(binding.spinnerSexofbaby.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                data.setPregnancyComplications(StringUtils.getComplications(binding.spinnerPregnancycomplications.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }
 
             if (pregnancyOutcomePosition == 1 && binding.spinnerChildalive.getSelectedItemPosition() == 2) {
                 data.setBabyAgeDied(binding.edittextBabyagedied.getText().toString());
             }
 
-            data.setPregnancyPlanned(binding.spinnerPregnancyplanned.getSelectedItem().toString());
-            data.setHighRiskPregnancy(binding.spinnerPregnancyhighriskcase.getSelectedItem().toString());
+            data.setPregnancyPlanned(StringUtils.getPregnancyPlanned(binding.spinnerPregnancyplanned.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            data.setHighRiskPregnancy(StringUtils.getHighRiskPregnancy(binding.spinnerPregnancyhighriskcase.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         }
 
         return data;
@@ -482,16 +482,16 @@ public class PregnancyRosterDialog extends DialogFragment {
     private void setBundleData() {
         binding.edittextHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
 
-        int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(data.getAnyPregnancyOutcomesInThePastTwoYears());
+        int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), sessionManager.getAppLanguage()));
         binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
 
         if (!checkIfEmpty(data.getPregnancyOutcome())) {
-            spinnerPosition = adapter_outcomepregnancy.getPosition(data.getPregnancyOutcome());
+            spinnerPosition = adapter_outcomepregnancy.getPosition(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), sessionManager.getAppLanguage()));
             binding.spinnerOutcomepregnancy.setSelection(spinnerPosition);
         }
 
         if (!checkIfEmpty(data.getIsChildAlive())) {
-            spinnerPosition = adapter_childalive.getPosition(data.getIsChildAlive());
+            spinnerPosition = adapter_childalive.getPosition(StringUtils.getChildAlive_edit(data.getIsChildAlive(), sessionManager.getAppLanguage()));
             binding.spinnerChildalive.setSelection(spinnerPosition);
         }
 
@@ -500,7 +500,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getMonthsOfPregnancy())) {
-            binding.edittextMonthsbeingpregnant.setText(data.getMonthsOfPregnancy());
+            binding.edittextMonthspregnancylast.setText(data.getMonthsOfPregnancy());
         }
 
         if (!checkIfEmpty(data.getMonthsBeenPregnant())) {
@@ -508,12 +508,12 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getPlaceOfDelivery())) {
-            spinnerPosition = adapter_placeofdeliverypregnant.getPosition(data.getPlaceOfDelivery());
+            spinnerPosition = adapter_placeofdeliverypregnant.getPosition(StringUtils.getPlaceDelivery_edit(data.getPlaceOfDelivery(), sessionManager.getAppLanguage()));
             binding.spinnerPlaceofdeliverypregnant.setSelection(spinnerPosition);
         }
 
         if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
-            spinnerPosition = adapter_focalPointBlock.getPosition(data.getFocalFacilityForPregnancy());
+            spinnerPosition = adapter_focalPointBlock.getPosition(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), sessionManager.getAppLanguage()));
             binding.spinnerFocalBlock.setSelection(spinnerPosition);
         }
 
@@ -522,22 +522,22 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getSexOfBaby())) {
-            spinnerPosition = adapter_sexofbaby.getPosition(data.getSexOfBaby());
+            spinnerPosition = adapter_sexofbaby.getPosition(StringUtils.getSexOfBaby_edit(data.getSexOfBaby(), sessionManager.getAppLanguage()));
             binding.spinnerSexofbaby.setSelection(spinnerPosition);
         }
 
         if (!checkIfEmpty(data.getPregnancyPlanned())) {
-            spinnerPosition = adapter_pregnancyplanned.getPosition(data.getPregnancyPlanned());
+            spinnerPosition = adapter_pregnancyplanned.getPosition(StringUtils.getPregnancyPlanned_edit(data.getPregnancyPlanned(), sessionManager.getAppLanguage()));
             binding.spinnerPregnancyplanned.setSelection(spinnerPosition);
         }
 
         if (!checkIfEmpty(data.getHighRiskPregnancy())) {
-            spinnerPosition = adapter_pregnancyhighriskcase.getPosition(data.getHighRiskPregnancy());
+            spinnerPosition = adapter_pregnancyhighriskcase.getPosition(StringUtils.getHighRiskPregnancy_edit(data.getHighRiskPregnancy(), sessionManager.getAppLanguage()));
             binding.spinnerPregnancyhighriskcase.setSelection(spinnerPosition);
         }
 
         if (!checkIfEmpty(data.getPregnancyComplications())) {
-            spinnerPosition = adapter_pregnancycomplications.getPosition(data.getPregnancyComplications());
+            spinnerPosition = adapter_pregnancycomplications.getPosition(StringUtils.getComplications_edit(data.getPregnancyComplications(), sessionManager.getAppLanguage()));
             binding.spinnerPregnancycomplications.setSelection(spinnerPosition);
         }
     }

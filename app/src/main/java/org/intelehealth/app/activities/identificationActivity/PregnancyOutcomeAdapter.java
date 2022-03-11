@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.databinding.PresentationPregnancyRosterBinding;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.List;
 
@@ -16,10 +18,12 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
 
     private final List<PregnancyRosterData> pregnancyOutcomesList;
     private final ViewPagerCallback callback;
+    private String appLanguage;
 
-    public PregnancyOutcomeAdapter(List<PregnancyRosterData> pregnancyOutcomesList, ViewPagerCallback callback) {
+    public PregnancyOutcomeAdapter(List<PregnancyRosterData> pregnancyOutcomesList, ViewPagerCallback callback, String appLanguage) {
         this.pregnancyOutcomesList = pregnancyOutcomesList;
         this.callback = callback;
+        this.appLanguage = appLanguage;
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 false
         );
 
-        return new PregnancyViewHolder(binding, callback);
+        return new PregnancyViewHolder(binding, callback, appLanguage);
     }
 
     @Override
@@ -48,15 +52,17 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
         public PresentationPregnancyRosterBinding binding;
         public PregnancyRosterData data;
         public ViewPagerCallback callback;
+        public String appLanguage;
         public int position;
 
         public final String SELECT = "Select";
         public final String SELECT_BLOCK = "Select Block";
 
-        public PregnancyViewHolder(@NonNull PresentationPregnancyRosterBinding binding, ViewPagerCallback callback) {
+        public PregnancyViewHolder(@NonNull PresentationPregnancyRosterBinding binding, ViewPagerCallback callback, String appLanguage) {
             super(binding.getRoot());
             this.binding = binding;
             this.callback = callback;
+            this.appLanguage = appLanguage;
             binding.mainLinearLayout.setOnClickListener(v -> callback.getPregnancyIssueClicked(data, position));
         }
 
@@ -65,7 +71,7 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
             this.position = position;
 
             binding.textviewHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
-            binding.textviewPregnantpasttwoyrs.setText(data.getAnyPregnancyOutcomesInThePastTwoYears());
+            binding.textviewPregnantpasttwoyrs.setText(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), appLanguage));
 
             if (data.getAnyPregnancyOutcomesInThePastTwoYears().equals("No")) {
                 binding.pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
@@ -73,14 +79,14 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 binding.pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
 
                 if (!checkIfEmpty(data.getPregnancyOutcome())) {
-                    binding.textviewOutcomepregnancy.setText(data.getPregnancyOutcome());
+                    binding.textviewOutcomepregnancy.setText(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), appLanguage));
                     binding.llPregnancyOutcome.setVisibility(View.VISIBLE);
                 } else {
                     binding.llPregnancyOutcome.setVisibility(View.GONE);
                 }
 
                 if (!checkIfEmpty(data.getIsChildAlive())) {
-                    binding.textviewChildalive.setText(data.getIsChildAlive());
+                    binding.textviewChildalive.setText(StringUtils.getChildAlive_edit(data.getIsChildAlive(), appLanguage));
                     binding.llChildAlive.setVisibility(View.VISIBLE);
                 } else {
                     binding.llChildAlive.setVisibility(View.GONE);
@@ -108,21 +114,21 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 }
 
                 if (!checkIfEmpty(data.getPlaceOfDelivery())) {
-                    binding.textviewPlaceofdeliverypregnant.setText(data.getPlaceOfDelivery());
+                    binding.textviewPlaceofdeliverypregnant.setText(StringUtils.getPlaceDelivery_edit(data.getPlaceOfDelivery(), appLanguage));
                     binding.llDeliveryPlace.setVisibility(View.VISIBLE);
                 } else {
                     binding.llDeliveryPlace.setVisibility(View.GONE);
                 }
 
                 if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
-                    binding.textviewFocalBlock.setText(data.getFocalFacilityForPregnancy());
+                    binding.textviewFocalBlock.setText(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), appLanguage));
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
                 } else {
                     binding.llFocalPoint.setVisibility(View.GONE);
                 }
 
                 if (!checkIfEmpty(data.getSingleMultipleBirths())) {
-                    binding.textviewSinglemultiplebirths.setText(data.getSingleMultipleBirths());
+                    binding.textviewSinglemultiplebirths.setText(StringUtils.getSinglemultiplebirths_edit(data.getSingleMultipleBirths(), appLanguage));
                     binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
                 } else {
                     binding.llSingleMultipleBirth.setVisibility(View.GONE);
@@ -136,28 +142,28 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 }
 
                 if (!checkIfEmpty(data.getSexOfBaby())) {
-                    binding.textviewSexofbaby.setText(data.getSexOfBaby());
+                    binding.textviewSexofbaby.setText(StringUtils.getSexOfBaby_edit(data.getSexOfBaby(), appLanguage));
                     binding.llBabyGender.setVisibility(View.VISIBLE);
                 } else {
                     binding.llBabyGender.setVisibility(View.GONE);
                 }
 
                 if (!checkIfEmpty(data.getPregnancyPlanned())) {
-                    binding.textviewPregnancyplanned.setText(data.getPregnancyPlanned());
+                    binding.textviewPregnancyplanned.setText(StringUtils.getPregnancyPlanned_edit(data.getPregnancyPlanned(), appLanguage));
                     binding.llPregnancyPlanned.setVisibility(View.VISIBLE);
                 } else {
                     binding.llPregnancyPlanned.setVisibility(View.GONE);
                 }
 
                 if (!checkIfEmpty(data.getHighRiskPregnancy())) {
-                    binding.textviewPregnancyhighriskcase.setText(data.getHighRiskPregnancy());
+                    binding.textviewPregnancyhighriskcase.setText(StringUtils.getHighRiskPregnancy_edit(data.getHighRiskPregnancy(), appLanguage));
                     binding.llPregnancyHighRiskCase.setVisibility(View.VISIBLE);
                 } else {
                     binding.llPregnancyHighRiskCase.setVisibility(View.GONE);
                 }
 
                 if (!checkIfEmpty(data.getPregnancyComplications())) {
-                    binding.textviewPregnancycomplications.setText(data.getPregnancyComplications());
+                    binding.textviewPregnancycomplications.setText(StringUtils.getComplications_edit(data.getPregnancyComplications(), appLanguage));
                     binding.llChildComplications.setVisibility(View.VISIBLE);
                 } else {
                     binding.llChildComplications.setVisibility(View.GONE);

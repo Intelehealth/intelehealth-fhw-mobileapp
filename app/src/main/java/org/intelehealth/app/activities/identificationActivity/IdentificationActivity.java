@@ -13,24 +13,14 @@ import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getBMI_edit;
 import static org.intelehealth.app.utilities.StringUtils.getBP_edit;
-import static org.intelehealth.app.utilities.StringUtils.getChildAlive_edit;
-import static org.intelehealth.app.utilities.StringUtils.getComplications_edit;
 import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Block_edit;
 import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Village_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
-import static org.intelehealth.app.utilities.StringUtils.getHeighPregnancyPlanned_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
-import static org.intelehealth.app.utilities.StringUtils.getOvercomePragnency_edit;
-import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
-import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlock_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
-import static org.intelehealth.app.utilities.StringUtils.getPlaceDelivery_edit;
-import static org.intelehealth.app.utilities.StringUtils.getPregnancyPlanned_edit;
 import static org.intelehealth.app.utilities.StringUtils.getRelationShipHoH_edit;
-import static org.intelehealth.app.utilities.StringUtils.getSexOfBaby_edit;
-import static org.intelehealth.app.utilities.StringUtils.getSinglemultiplebirths_edit;
 import static org.intelehealth.app.utilities.StringUtils.getSuger_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
@@ -2309,9 +2299,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 if (name.equalsIgnoreCase("PregnanyPastTwoYears")) {
                     patient1.setPasttwoyrs(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("OutcomeOfPregnancy")) {
-                    patient1.setOutcomepregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
                 if (name.equalsIgnoreCase("ChildAlive")) {
                     patient1.setChildalive(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2356,6 +2343,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     binding.mainViewPager.setAdapter(adapter);
                     binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                     setViewPagerOffset(binding.mainViewPager);
+                }
+                if (name.equalsIgnoreCase("PregnancyOutcomesReported")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    pregnancyOutcomesList = new Gson().fromJson(value, new TypeToken<List<PregnancyRosterData>>() {
+                    }.getType());
+                    pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
+                    binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
+                    binding.poViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(binding.poViewPager);
                 }
 
             } while (idCursor1.moveToNext());
@@ -3138,6 +3134,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         String value = new Gson().toJson(healthIssuesList);
         patientAttributesDTO.setValue(value);
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        // pregnancy issue reported
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnancyOutcomesReported"));
+        String pregnancyValue = new Gson().toJson(pregnancyOutcomesList);
+        patientAttributesDTO.setValue(pregnancyValue);
+        Log.d(TAG, "insertedit_RosterValuesIntoLocalDB: " + pregnancyValue);
         patientAttributesDTOList.add(patientAttributesDTO);
 
 //        //no episodes
@@ -4514,8 +4520,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         if (object instanceof PregnancyRosterData) {
             pregnancyOutcomesList.remove(position);
-            pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this);
-            binding.poViewPager.setAdapter(adapter);
+            pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
+            binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
             if (!pregnancyOutcomesList.isEmpty()) {
                 binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
             }
@@ -4592,7 +4598,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     @Override
     public void savePregnancyData(PregnancyRosterData data) {
         pregnancyOutcomesList.add(data);
-        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this);
+        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
         binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
         binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -4602,9 +4608,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     @Override
     public void savePregnancyDataAtPosition(PregnancyRosterData data, int position) {
         pregnancyOutcomesList.set(position, data);
-        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this);
+        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
         binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
-        binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
+        binding.poViewPager.setCurrentItem(position);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.poViewPager);
     }

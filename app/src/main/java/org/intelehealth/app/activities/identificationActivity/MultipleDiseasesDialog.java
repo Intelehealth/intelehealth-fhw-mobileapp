@@ -22,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.LayoutDiseaseBinding;
-import org.intelehealth.app.utilities.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
