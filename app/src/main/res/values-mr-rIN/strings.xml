@@ -1334,4 +1334,12 @@
     <string name="suragana_block">सुरगाणा तालुका</string>
     <string name="not_treated">उपचार नाही</string>
 
+
+    <string name="setup_internet_available">सेटअपसाठी एक मजबूत इंटरनेट कनेक्शन आवश्यक आहे.</string>
+    <string name="setup_internet_not_available">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही.</string>
+    <string name="generic_info">माहिती!</string>
+    <string name="speciality_cardview_title">विशेषता</string>
+    <string name="select_specialization_text">स्पेशलायझेशन निवडा</string>
+    <string name="please_select_specialization_msg">कृपया स्पेशलायझेशन निवडा</string>
+    <string name="chat_fab">चॅट फॅब</string>
 </resources>
