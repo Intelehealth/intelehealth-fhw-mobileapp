@@ -4559,7 +4559,27 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
         listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
             if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("numberOfTimesPregnant", data.getNumberOfTimesPregnant());
+                bundle.putString("anyPregnancyOutcomesInThePastTwoYears", data.getAnyPregnancyOutcomesInThePastTwoYears());
+                bundle.putString("pregnancyOutcome", data.getPregnancyOutcome());
+                bundle.putString("isChildAlive", data.getIsChildAlive());
+                bundle.putString("yearOfPregnancyOutcome", data.getYearOfPregnancyOutcome());
+                bundle.putString("monthsOfPregnancy", data.getMonthsOfPregnancy());
+                bundle.putString("monthsBeenPregnant", data.getMonthsBeenPregnant());
+                bundle.putString("placeOfDelivery", data.getPlaceOfDelivery());
+                bundle.putString("focalFacilityForPregnancy", data.getFocalFacilityForPregnancy());
+                bundle.putString("singleMultipleBirths", data.getSingleMultipleBirths());
+                bundle.putString("babyAgeDied", data.getBabyAgeDied());
+                bundle.putString("sexOfBaby", data.getSexOfBaby());
+                bundle.putString("pregnancyPlanned", data.getPregnancyPlanned());
+                bundle.putString("highRiskPregnancy", data.getHighRiskPregnancy());
+                bundle.putString("pregnancyComplications", data.getPregnancyComplications());
 
+                PregnancyRosterDialog pregnancyDialog = new PregnancyRosterDialog();
+                pregnancyDialog.setArguments(bundle);
+                pregnancyDialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
             }
 
             if (which == 1) {
@@ -4581,6 +4601,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     @Override
     public void savePregnancyDataAtPosition(PregnancyRosterData data, int position) {
-
+        pregnancyOutcomesList.set(position, data);
+        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this);
+        binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
+        binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.poViewPager);
     }
 }

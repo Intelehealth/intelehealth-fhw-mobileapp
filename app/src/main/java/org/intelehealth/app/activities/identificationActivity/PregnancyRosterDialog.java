@@ -24,6 +24,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.DialogPregnancyRosterBinding;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 
 public class PregnancyRosterDialog extends DialogFragment {
 
@@ -31,11 +32,15 @@ public class PregnancyRosterDialog extends DialogFragment {
     private DialogPregnancyRosterBinding binding;
     private PregnancyOutcomeCallback callback;
     private SessionManager sessionManager;
+    private PregnancyRosterData data;
     private Bundle bundle;
 
     // Adapters
     private ArrayAdapter<CharSequence> adapter_pregnantPastTwoYears, adapter_outcomepregnancy, adapter_childalive, adapter_placeofdeliverypregnant, adapter_pregnancyplanned,
             adapter_focalPointBlock, adapter_sexofbaby, adapter_pregnancyhighriskcase, adapter_pregnancycomplications, adapter_singlemultiplebirths;
+
+    public final String SELECT = "Select";
+    public final String SELECT_BLOCK = "Select Block";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,14 +62,19 @@ public class PregnancyRosterDialog extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         binding = DialogPregnancyRosterBinding.inflate(inflater);
 
+        setListeners();
+        setAdapters();
+
+        if (bundle != null) {
+            extractBundleData(bundle);
+            setBundleData();
+        }
+
         builder
                 .setView(binding.getRoot())
                 .setPositiveButton(getString(R.string.ok), ((dialog, which) -> {
                 }))
                 .setNegativeButton(getString(R.string.cancel), ((dialog, which) -> dialog.dismiss()));
-
-        setAdapters();
-        setListeners();
 
         final AlertDialog dialog = builder.create();
         dialog.setOnShowListener(dialog1 -> {
@@ -74,7 +84,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                 boolean areDetailsCorrect = validateData(data);
                 if (areDetailsCorrect) {
                     if (bundle != null) {
-                        // TODO - add edit feature on pregnancy outcomes
+                        callback.savePregnancyDataAtPosition(data, bundle.getInt("position"));
                     } else {
                         callback.savePregnancyData(data);
                     }
@@ -236,52 +246,46 @@ public class PregnancyRosterDialog extends DialogFragment {
         binding.spinnerOutcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    if (position == 1) {
-                        binding.llChildAlive.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.llChildAlive.setVisibility(View.GONE);
-                        binding.edittextBabyagedied.setVisibility(View.GONE);
-                        binding.spinnerChildalive.setSelection(0);
+                if (position == 1) {
+                    binding.llChildAlive.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llChildAlive.setVisibility(View.GONE);
+                    binding.edittextBabyagedied.setVisibility(View.GONE);
+                    binding.spinnerChildalive.setSelection(0);
+                }
+
+                if (position == 5) {
+                    binding.edittextMonthspregnancylast.setVisibility(View.GONE);
+                    binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
+                } else {
+                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
+                    binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
+                }
+
+                if (position == 4 || position == 5) {
+                    binding.llDeliveryPlace.setVisibility(View.GONE);
+                } else {
+                    binding.llDeliveryPlace.setVisibility(View.VISIBLE);
+                }
+
+                if (position == 0 || position == 3 || position == 4 || position == 5) {
+                    binding.llFocalPoint.setVisibility(View.GONE);
+                    binding.llSingleMultipleBirth.setVisibility(View.GONE);
+                    binding.llBabyGender.setVisibility(View.GONE);
+                    binding.llChildComplications.setVisibility(View.GONE);
+                    //  binding.edittextBabyagedied.setVisibility(View.GONE);
+                } else {
+                    binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
+                    binding.llBabyGender.setVisibility(View.VISIBLE);
+                    binding.llChildComplications.setVisibility(View.VISIBLE);
+                    binding.llFocalPoint.setVisibility(View.VISIBLE);
+
+                    //todo for place of deleivery is home so fockl is not shown at that time
+                    if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() == 1) {
+                        binding.spinnerPlaceofdeliverypregnant.setSelection(0);
+
                     }
-
-                    if (position == 5) {
-                        binding.edittextMonthspregnancylast.setVisibility(View.GONE);
-                    } else {
-                        binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
-                    }
-
-                    if (position == 5) {
-                        binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
-                    }
-
-                    if (position == 4 || position == 5) {
-                        binding.llDeliveryPlace.setVisibility(View.GONE);
-                    } else {
-                        binding.llDeliveryPlace.setVisibility(View.VISIBLE);
-                    }
-
-                    if (position == 3 || position == 4 || position == 5) {
-                        binding.llFocalPoint.setVisibility(View.GONE);
-                        binding.llSingleMultipleBirth.setVisibility(View.GONE);
-                        binding.llBabyGender.setVisibility(View.GONE);
-                        binding.llChildComplications.setVisibility(View.GONE);
-                        //  binding.edittextBabyagedied.setVisibility(View.GONE);
-                    } else {
-                        binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
-                        binding.llBabyGender.setVisibility(View.VISIBLE);
-                        binding.llChildComplications.setVisibility(View.VISIBLE);
-                        binding.llFocalPoint.setVisibility(View.VISIBLE);
-
-                        //todo for place of deleivery is home so fockl is not shown at that time
-                        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() == 1) {
-                            binding.spinnerPlaceofdeliverypregnant.setSelection(0);
-
-                        }
-                        // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
-                    }
+                    // binding.edittextBabyagedied.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -309,7 +313,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         binding.spinnerPlaceofdeliverypregnant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                if (pos == 1) {
+                if (pos == 0 || pos == 1) {
                     binding.llFocalPoint.setVisibility(View.GONE);
                 } else {
                     binding.llFocalPoint.setVisibility(View.VISIBLE);
@@ -473,5 +477,90 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     private void setEditTextError(EditText editText) {
         editText.setError(getString(R.string.error_field_required));
+    }
+
+    private void setBundleData() {
+        binding.edittextHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
+
+        int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(data.getAnyPregnancyOutcomesInThePastTwoYears());
+        binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
+
+        if (!checkIfEmpty(data.getPregnancyOutcome())) {
+            spinnerPosition = adapter_outcomepregnancy.getPosition(data.getPregnancyOutcome());
+            binding.spinnerOutcomepregnancy.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getIsChildAlive())) {
+            spinnerPosition = adapter_childalive.getPosition(data.getIsChildAlive());
+            binding.spinnerChildalive.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
+            binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+        }
+
+        if (!checkIfEmpty(data.getMonthsOfPregnancy())) {
+            binding.edittextMonthsbeingpregnant.setText(data.getMonthsOfPregnancy());
+        }
+
+        if (!checkIfEmpty(data.getMonthsBeenPregnant())) {
+            binding.edittextMonthsbeingpregnant.setText(data.getMonthsBeenPregnant());
+        }
+
+        if (!checkIfEmpty(data.getPlaceOfDelivery())) {
+            spinnerPosition = adapter_placeofdeliverypregnant.getPosition(data.getPlaceOfDelivery());
+            binding.spinnerPlaceofdeliverypregnant.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
+            spinnerPosition = adapter_focalPointBlock.getPosition(data.getFocalFacilityForPregnancy());
+            binding.spinnerFocalBlock.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getBabyAgeDied())) {
+            binding.edittextBabyagedied.setText(data.getBabyAgeDied());
+        }
+
+        if (!checkIfEmpty(data.getSexOfBaby())) {
+            spinnerPosition = adapter_sexofbaby.getPosition(data.getSexOfBaby());
+            binding.spinnerSexofbaby.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getPregnancyPlanned())) {
+            spinnerPosition = adapter_pregnancyplanned.getPosition(data.getPregnancyPlanned());
+            binding.spinnerPregnancyplanned.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getHighRiskPregnancy())) {
+            spinnerPosition = adapter_pregnancyhighriskcase.getPosition(data.getHighRiskPregnancy());
+            binding.spinnerPregnancyhighriskcase.setSelection(spinnerPosition);
+        }
+
+        if (!checkIfEmpty(data.getPregnancyComplications())) {
+            spinnerPosition = adapter_pregnancycomplications.getPosition(data.getPregnancyComplications());
+            binding.spinnerPregnancycomplications.setSelection(spinnerPosition);
+        }
+    }
+
+    private void extractBundleData(Bundle bundle) {
+        data = new PregnancyRosterData();
+        data.setNumberOfTimesPregnant(bundle.getString("numberOfTimesPregnant"));
+        data.setAnyPregnancyOutcomesInThePastTwoYears(bundle.getString("anyPregnancyOutcomesInThePastTwoYears"));
+        data.setPregnancyOutcome(bundle.getString("pregnancyOutcome"));
+        data.setIsChildAlive(bundle.getString("isChildAlive"));
+        data.setYearOfPregnancyOutcome(bundle.getString("yearOfPregnancyOutcome"));
+        data.setMonthsOfPregnancy(bundle.getString("monthsOfPregnancy"));
+        data.setMonthsBeenPregnant(bundle.getString("monthsBeenPregnant"));
+        data.setPlaceOfDelivery(bundle.getString("placeOfDelivery"));
+        data.setFocalFacilityForPregnancy(bundle.getString("focalFacilityForPregnancy"));
+        data.setBabyAgeDied(bundle.getString("babyAgeDied"));
+        data.setSexOfBaby(bundle.getString("sexOfBaby"));
+        data.setPregnancyPlanned(bundle.getString("pregnancyPlanned"));
+        data.setHighRiskPregnancy(bundle.getString("highRiskPregnancy"));
+        data.setPregnancyComplications(bundle.getString("pregnancyComplications"));
+    }
+
+    private Boolean checkIfEmpty(String text) {
+        return text == null || text.equals(SELECT) || text.equals(SELECT_BLOCK);
     }
 }
