@@ -233,6 +233,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private LinearLayout llPORoaster, ll18;
     public ViewPager2 viewPager2;
     private HouseholdSurveyAdapter adapter;
+    private PregnancyOutcomeAdapter pregnancyOutcomeAdapter;
     private ActivityIdentificationBinding binding;
     private List<HealthIssues> healthIssuesList = new ArrayList<>();
     private List<PregnancyRosterData> pregnancyOutcomesList = new ArrayList<>();
@@ -1054,44 +1055,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             PregnancyRosterDialog dialog = new PregnancyRosterDialog();
             dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
         });
-    }
-
-    @Override
-    public void saveSurveyData(HealthIssues survey) {
-//        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
-//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
-//        }
-        healthIssuesList.add(survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
-        binding.mainViewPager.setAdapter(adapter);
-        binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
-        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        setViewPagerOffset(binding.mainViewPager);
-        Log.d("1066", "hg" + healthIssuesList.size());
-    }
-
-    @Override
-    public void saveSurveyDataAtPosition(HealthIssues survey, int position) {
-//        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
-//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
-//        }
-        healthIssuesList.set(position, survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
-        binding.mainViewPager.setAdapter(adapter);
-        binding.mainViewPager.setCurrentItem(position);
-        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        setViewPagerOffset(binding.mainViewPager);
-    }
-
-    public void deleteSurveyData(int position) {
-        healthIssuesList.remove(position);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
-        binding.mainViewPager.setAdapter(adapter);
-        if (!healthIssuesList.isEmpty()) {
-            binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
-        }
-        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        setViewPagerOffset(binding.mainViewPager);
     }
 
     private void editSurveyData() {
@@ -1977,19 +1940,19 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         // village
 
         //focal Block
-        try {
-            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
-            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
-            if (focalBlock_id != 0) {
-                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
-                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
-            }
-            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
-
-        } catch (Exception e) {
-            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
+//        try {
+//            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
+//            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
+//            if (focalBlock_id != 0) {
+//                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
+//                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
+//            }
+//            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
+//
+//        } catch (Exception e) {
+//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+//            Logger.logE("Identification", "#648", e);
+//        }
         //focal Block
 
         //focal Village - Peth
@@ -4511,6 +4474,44 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     }
 
     @Override
+    public void saveSurveyData(HealthIssues survey) {
+//        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
+//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
+//        }
+        healthIssuesList.add(survey);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        binding.mainViewPager.setAdapter(adapter);
+        binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+        Log.d("1066", "hg" + healthIssuesList.size());
+    }
+
+    @Override
+    public void saveSurveyDataAtPosition(HealthIssues survey, int position) {
+//        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
+//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
+//        }
+        healthIssuesList.set(position, survey);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        binding.mainViewPager.setAdapter(adapter);
+        binding.mainViewPager.setCurrentItem(position);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+    }
+
+    public void deleteSurveyData(int position) {
+        healthIssuesList.remove(position);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        binding.mainViewPager.setAdapter(adapter);
+        if (!healthIssuesList.isEmpty()) {
+            binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+        }
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+    }
+
+    @Override
     public void getIssueClicked(HealthIssues survey, int position) {
         MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
         listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
@@ -4544,7 +4545,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     @Override
     public void savePregnancyData(PregnancyRosterData data) {
         pregnancyOutcomesList.add(data);
-
+        pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList);
+        binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
+        binding.poViewPager.setCurrentItem(pregnancyOutcomesList.size() - 1);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.poViewPager);
     }
 
     @Override
