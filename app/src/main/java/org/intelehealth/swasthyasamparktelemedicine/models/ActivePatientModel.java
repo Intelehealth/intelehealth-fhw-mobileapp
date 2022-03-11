@@ -1,6 +1,8 @@
 package org.intelehealth.swasthyasamparktelemedicine.models;
 
 
+import android.service.controls.actions.BooleanAction;
+
 public class ActivePatientModel {
 
     String uuid;
@@ -14,8 +16,9 @@ public class ActivePatientModel {
     String date_of_birth;
     String phone_number;
     String sync;
+    Boolean hasPrescription;
 
-    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
+    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync, Boolean hasPrescription) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -27,6 +30,7 @@ public class ActivePatientModel {
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
         this.sync = sync;
+        this.hasPrescription = hasPrescription;
     }
 
     public String getUuid() {
@@ -115,5 +119,13 @@ public class ActivePatientModel {
 
     public void setSync(String sync) {
         this.sync = sync;
+    }
+
+    public Boolean getHasPrescription() {
+        return hasPrescription;
+    }
+
+    public void setHasPrescription(Boolean hasPrescription) {
+        this.hasPrescription = hasPrescription;
     }
 }

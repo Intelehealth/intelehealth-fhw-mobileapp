@@ -113,7 +113,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         });
 
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (activePatientModels.get(position).getHasPrescription()) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
             }
