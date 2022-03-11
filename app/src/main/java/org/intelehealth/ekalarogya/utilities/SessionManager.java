@@ -18,6 +18,7 @@ public class SessionManager {
     private static final String SESSION_ID = "sessionid";
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
+    private static final String HWORKER_ID = "healthworkerid";
     private static final String CHWNAME = "chwname";
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
@@ -151,6 +152,15 @@ public class SessionManager {
 
     public void setProviderID(String providerID) {
         editor.putString(PROVIDER_ID, providerID);
+        editor.commit();
+    }
+
+    public String getHwID() {
+        return pref.getString(HWORKER_ID, "");
+    }
+
+    public void setHwID(String hwID) {
+        editor.putString(HWORKER_ID, hwID);
         editor.commit();
     }
 

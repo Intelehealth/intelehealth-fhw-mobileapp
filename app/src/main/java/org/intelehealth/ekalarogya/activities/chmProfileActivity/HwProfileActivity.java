@@ -9,13 +9,17 @@ import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
 import org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
+import org.intelehealth.ekalarogya.database.dao.ImagesPushDAO;
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.models.DocumentObject;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwPersonalInformationModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
+import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.ekalarogya.services.DownloadProtocolsTask;
+import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
@@ -36,6 +40,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,23 +56,31 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaderFactory;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 public class HwProfileActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     SessionManager sessionManager = null;
+    String mCurrentPhotoPath;
     TextView hw_name_value, hw_designation_value, total_patregistered_value, total_visitprogress_value,
             total_consultaion_value, hw_gender_value, hw_state_value, hw_mobile_value,
             hw_whatsapp_value, hw_email_value, hw_aboutme_value;
@@ -93,21 +106,21 @@ public class HwProfileActivity extends AppCompatActivity {
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        hw_profile_image=(CircularImageView)findViewById(R.id.hw_profile_image);
+        hw_profile_image = (CircularImageView) findViewById(R.id.hw_profile_image);
 
-        hw_name_value=(TextView)findViewById(R.id.hw_name_value);
-        hw_designation_value=(TextView)findViewById(R.id.hw_designation_value);
-        hw_aboutme_value=(TextView)findViewById(R.id.hw_aboutme_value);
+        hw_name_value = (TextView) findViewById(R.id.hw_name_value);
+        hw_designation_value = (TextView) findViewById(R.id.hw_designation_value);
+        hw_aboutme_value = (TextView) findViewById(R.id.hw_aboutme_value);
 
-        total_patregistered_value=(TextView)findViewById(R.id.total_patregistered_value);
-        total_visitprogress_value=(TextView)findViewById(R.id.total_visitprogress_value);
-        total_consultaion_value=(TextView)findViewById(R.id.total_consultaion_value);
+        total_patregistered_value = (TextView) findViewById(R.id.total_patregistered_value);
+        total_visitprogress_value = (TextView) findViewById(R.id.total_visitprogress_value);
+        total_consultaion_value = (TextView) findViewById(R.id.total_consultaion_value);
 
-        hw_gender_value=(TextView)findViewById(R.id.hw_gender_value);
-        hw_state_value=(TextView)findViewById(R.id.hw_state_value);
-        hw_mobile_value=(TextView)findViewById(R.id.hw_mobile_value);
-        hw_whatsapp_value=(TextView)findViewById(R.id.hw_whatsapp_value);
-        hw_email_value=(TextView)findViewById(R.id.hw_email_value);
+        hw_gender_value = (TextView) findViewById(R.id.hw_gender_value);
+        hw_state_value = (TextView) findViewById(R.id.hw_state_value);
+        hw_mobile_value = (TextView) findViewById(R.id.hw_mobile_value);
+        hw_whatsapp_value = (TextView) findViewById(R.id.hw_whatsapp_value);
+        hw_email_value = (TextView) findViewById(R.id.hw_email_value);
 
     }
 
@@ -120,13 +133,13 @@ public class HwProfileActivity extends AppCompatActivity {
     protected void onResume() {
         if (NetworkConnection.isOnline(this)) {
             getHw_Information();
-        }else{
+        } else {
             DisplayUserDetail();
         }
         super.onResume();
     }
 
-    public void getHw_Information(){
+    public void getHw_Information() {
         Dialog progressDialog = new Dialog(this, android.R.style.Theme_Black);
         View view = LayoutInflater.from(HwProfileActivity.this).inflate(
                 R.layout.custom_progress_dialog, null);
@@ -136,7 +149,7 @@ public class HwProfileActivity extends AppCompatActivity {
         progressDialog.setContentView(view);
         progressDialog.show();
 
-        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID()+"?type=hw";
+        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID() + "?type=hw";
         Logger.logD("Profile", "get profile Info url" + url);
         Observable<MainProfileModel> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
@@ -144,13 +157,13 @@ public class HwProfileActivity extends AppCompatActivity {
                 .subscribe(new DisposableObserver<MainProfileModel>() {
                     @Override
                     public void onNext(MainProfileModel mainProfileModel) {
-                        System.out.println(mainProfileModel.toString()+"");
-                        if(mainProfileModel!=null && mainProfileModel.getStatus()==true) {
+                        System.out.println(mainProfileModel.toString() + "");
+                        if (mainProfileModel != null && mainProfileModel.getStatus() == true) {
                             Gson gson = new Gson();
-                            String userprofile= gson.toJson(mainProfileModel);
+                            String userprofile = gson.toJson(mainProfileModel);
                             sessionManager.setUserProfileDetail(userprofile);
                             DisplayUserDetail();
-                       }
+                        }
                         progressDialog.dismiss();
                     }
 
@@ -163,7 +176,7 @@ public class HwProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         Logger.logD("ProfileInfo", "complete");
-                       }
+                    }
                 });
     }
 
@@ -184,7 +197,7 @@ public class HwProfileActivity extends AppCompatActivity {
                 return true;
 
             case R.id.hw_profile_image_edit:
-               selectImage();
+                selectImage();
                 return true;
 
             default:
@@ -192,7 +205,7 @@ public class HwProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void selectImage(){
+    public void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(HwProfileActivity.this);
         builder.setTitle(R.string.hw_profile_image_picker_title);
@@ -217,26 +230,21 @@ public class HwProfileActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void DisplayUserDetail(){
+    public void DisplayUserDetail() {
         Gson gson = new Gson();
         String userDetail = sessionManager.getUserProfileDetail();
-        if(userDetail!=null && !userDetail.isEmpty()) {
+        if (userDetail != null && !userDetail.isEmpty()) {
             MainProfileModel mainProfileModel = gson.fromJson(userDetail, MainProfileModel.class);
-        /* Glide.with(HwProfileActivity.this)
-                                .load(hwProfileModel.getImage())
-                                .thumbnail(0.3f)
-                                .centerCrop()
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(hw_profile_image);*/
+            String profile_image_url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/personimage/" + sessionManager.getHwID();
+
             HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
             hw_name_value.setText(hwProfileModel.getUserName());
             hw_designation_value.setText(hwProfileModel.getDesignation());
             hw_aboutme_value.setText(hwProfileModel.getAboutMe());
 
-            total_patregistered_value.setText(hwProfileModel.getPatientRegistered()+"");
-            total_visitprogress_value.setText(hwProfileModel.getVisitInProgress()+"");
-            total_consultaion_value.setText(hwProfileModel.getCompletedConsultation()+"");
+            total_patregistered_value.setText(hwProfileModel.getPatientRegistered() + "");
+            total_visitprogress_value.setText(hwProfileModel.getVisitInProgress() + "");
+            total_consultaion_value.setText(hwProfileModel.getCompletedConsultation() + "");
 
             HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
 
@@ -251,7 +259,9 @@ public class HwProfileActivity extends AppCompatActivity {
             hw_mobile_value.setText(personalInformationModel.getMobile());
             hw_whatsapp_value.setText(personalInformationModel.getWhatsApp());
             hw_email_value.setText(personalInformationModel.getEmail());
-        }else{
+
+            profilePicDownloaded();
+        } else {
             Toast.makeText(HwProfileActivity.this, HwProfileActivity.this.getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
         }
     }
@@ -261,7 +271,7 @@ public class HwProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                mCurrentPhotoPath = data.getStringExtra("RESULT");
                 File photo = new File(mCurrentPhotoPath);
                 Glide.with(HwProfileActivity.this)
                         .load(photo)
@@ -270,18 +280,20 @@ public class HwProfileActivity extends AppCompatActivity {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(hw_profile_image);
+
+                UploadHW_ProfileImage();
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (resultCode == RESULT_OK && null != data) {
                 Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String picturePath = cursor.getString(columnIndex);
+                mCurrentPhotoPath = cursor.getString(columnIndex);
                 cursor.close();
-                File file=new File(picturePath);
+                File file = new File(mCurrentPhotoPath);
                 Glide.with(HwProfileActivity.this)
                         .load(file)
                         .thumbnail(0.3f)
@@ -290,7 +302,82 @@ public class HwProfileActivity extends AppCompatActivity {
                         .skipMemoryCache(true)
                         .into(hw_profile_image);
                 // String picturePath contains the path of selected Image
+                UploadHW_ProfileImage();
             }
         }
     }
+
+    public boolean UploadHW_ProfileImage() {
+        String encoded = sessionManager.getEncoded();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.setPatientProfileImageUrl();
+        Base64Utils base64Utils = new Base64Utils();
+        PatientProfile p = new PatientProfile();
+        p.setPerson(sessionManager.getHwID());
+        p.setBase64EncodedImage(base64Utils.getBase64FromFileWithConversion(mCurrentPhotoPath));
+        Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
+        personProfilePicUpload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody responseBody) {
+                        Logger.logD("HwProfileImage", "success" + responseBody);
+//                      AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("HwProfileImage", "Onerror " + e.getMessage());
+//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+                    }
+                });
+
+        sessionManager.setPullSyncFinished(true);
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
+//        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
+        return true;
+    }
+
+    public void profilePicDownloaded() {
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(sessionManager.getHwID());
+        Logger.logD("URL", "profileimage url" + url);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, sessionManager.getHwID());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("Error", e.getMessage());
+                        Glide.with(HwProfileActivity.this)
+                                .load("")
+                                .error(R.drawable.ic_person_black_24dp)
+                                .thumbnail(0.3f)
+                                .centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .into(hw_profile_image);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Glide.with(HwProfileActivity.this)
+                                .load(AppConstants.IMAGE_PATH + sessionManager.getHwID() + ".jpg")
+                                .thumbnail(0.3f)
+                                .centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .into(hw_profile_image);
+                        }
+
+                });
+    }
+
 }

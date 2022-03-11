@@ -312,6 +312,7 @@ public class LoginActivity extends AppCompatActivity {
                 sessionManager.setSessionID(loginModel.getSessionId());
                 Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                sessionManager.setHwID(loginModel.getUser().getPerson().getUuid());
                 Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
                 Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
 

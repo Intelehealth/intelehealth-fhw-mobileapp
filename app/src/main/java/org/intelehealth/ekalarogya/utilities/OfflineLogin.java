@@ -208,7 +208,7 @@ public class OfflineLogin {
         {
             user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
             pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-           chw_name = cursor.getString(cursor.getColumnIndexOrThrow("chwname"));
+            chw_name = cursor.getString(cursor.getColumnIndexOrThrow("chwname"));
             provider_uuid = cursor.getString(cursor.getColumnIndexOrThrow("provider_uuid_cred"));
             creator_uuid = cursor.getString(cursor.getColumnIndexOrThrow("creator_uuid_cred"));
            // Log.d("OFF_USER","DB_DATA"+user+" "+pass);

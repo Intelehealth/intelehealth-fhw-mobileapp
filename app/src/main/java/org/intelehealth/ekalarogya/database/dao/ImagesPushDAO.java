@@ -34,8 +34,6 @@ public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
 
-
-
     public boolean patientProfileImagesPush() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String encoded = sessionManager.getEncoded();
