@@ -946,20 +946,20 @@
     <string name="none">काहीही नाही</string>
 
     <string name="nas_what_is_the_main_source_of_drinking_water_for_members_of_your_household">आपल्या घराच्या सदस्यांसाठी पिण्याच्या पाण्याचा मुख्य स्त्रोत काय आहे?</string>
-    <string name="piped_into_dwelling">निवास मध्ये पाइप</string>
-    <string name="piped_into_yard_plot">यार्ड / प्लॉट करण्यासाठी पाइप</string>
-    <string name="public_tap_standpipe">सार्वजनिक टॅप / स्टँडपाइप</string>
-    <string name="tube_well_borehole">ट्यूब चांगले / बोअरहोल</string>
+    <string name="piped_into_dwelling">घरामध्येच पाइपद्वारे</string>
+    <string name="piped_into_yard_plot">अंगणात किंवा आसपास परिसरात पाइपद्वारे</string>
+    <string name="public_tap_standpipe">सार्वजनिक नळ / स्टँडपाइप</string>
+    <string name="tube_well_borehole">कूपनलिका / विंधन विहीर / बोअरवेल</string>
     <string name="protected_well_checkbox">संरक्षित विहिर</string>
-    <string name="unprotected_well">असुरक्षित विहिर</string>
-    <string name="protected_spring">संरक्षित झऱ्याचे पाणी</string>
-    <string name="unprotected_spring">असुरक्षित झऱ्याचे पाणी</string>
+    <string name="unprotected_well">असंरक्षित विहिर</string>
+    <string name="protected_spring">संरक्षित झऱ्याचे पाणीी</string>
+    <string name="unprotected_spring">असंरक्षित झऱ्याचे पाणी</string>
     <string name="rainwater">पावसाचे पाणी</string>
     <string name="tanker_truck">टँकर ट्रक</string>
-    <string name="cart_with_small_tank">लहान टाकी गाडी</string>
-    <string name="surface_water">भूतलावरील पाणी</string>
-    <string name="common_hand_pump">सामान्य हात पंप</string>
-    <string name="hand_pump_at_home">हँड पंप घरी</string>
+    <string name="cart_with_small_tank">लहान टाकी-गाडी</string>
+    <string name="surface_water">पृष्ठभागाचे पाणी</string>
+    <string name="common_hand_pump">सामान्य हात पंप/ हापसा</string>
+    <string name="hand_pump_at_home"> हँड पंप (घरी)</string>
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">पाणी प्यायला देण्यासाठी आपण सहसा पाण्यावर काय करता?</string>
     <string name="boil">उकळणे</string>
     <string name="use_alum">तुरटी वापरा</string>
@@ -992,7 +992,7 @@
     <string name="dairy">दुधाचे पदार्थ</string>
     <string name="eggs">अंडी</string>
     <string name="flesh_food">मांसाहारी आहार</string>
-    <string name="any_vegetables">कोणतेही भाज्या</string>
+    <string name="any_vegetables">कोणत्याही भाज्या</string>
 
     <string name="distance_to_sub_centre_in_walking_time">उपकेंद्रापर्यंतचे अंतर (केंद्रापर्यंत चालत जाण्यासाठी लागणारा वेळ)</string>
     <string name="within_5_minutes">5 मिनिटांत</string>
