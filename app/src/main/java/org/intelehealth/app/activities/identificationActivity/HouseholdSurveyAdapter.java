@@ -59,10 +59,10 @@ public class HouseholdSurveyAdapter extends RecyclerView.Adapter<HouseholdSurvey
         public ViewPagerCallback callback;
         public int position;
 
-        public SurveyViewHolder(@NonNull LayoutDiseasePresentationBinding binding, ViewPagerCallback viewPagerCallback) {
+        public SurveyViewHolder(@NonNull LayoutDiseasePresentationBinding binding, ViewPagerCallback callback) {
             super(binding.getRoot());
             this.binding = binding;
-            this.callback = viewPagerCallback;
+            this.callback = callback;
             binding.linearLayout.setOnClickListener(v -> this.callback.getIssueClicked(healthIssues, position));
         }
 
