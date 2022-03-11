@@ -1868,9 +1868,9 @@
 
     <string-array name="householdHeadCaste_mr">
         <item>निवडा</item>
-        <item>अनुसूचित जाती(SC)</item>
-        <item>अनुसूचित जमाती(ST)</item>
-        <item>इतर मागास जाती(OBC)</item>
+        <item>अनुसूचित जाति (अनुसूचित जाती)</item>
+        <item>अनुसूचित जमाती((एस टी)</item>
+        <item>इतर मागास जात (ओबीसी)</item>
         <item>सामान्य</item>
         <item>माहित नाही</item>
         <item>उत्तर देण्यास नकार दिला</item>
