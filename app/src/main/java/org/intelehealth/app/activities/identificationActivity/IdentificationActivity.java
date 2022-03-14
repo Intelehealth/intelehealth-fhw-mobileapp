@@ -4403,10 +4403,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                                 focalVillage_Peth_id, R.layout.custom_spinner);
                         spinner_village.setAdapter(adapter_FocalVillage_Peth);
 
-                        String village_Peth_Transl = "";
-                        village_Peth_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
-                        int spinner_peth_position = adapter_FocalVillage_Peth.getPosition(village_Peth_Transl);
-                        spinner_village.setSelection(spinner_peth_position);
+                        try {
+                            String village_Peth_Transl = "";
+                            village_Peth_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
+                            int spinner_peth_position = adapter_FocalVillage_Peth.getPosition(village_Peth_Transl);
+                            spinner_village.setSelection(spinner_peth_position);
+                        } catch (NullPointerException exception) {
+                            exception.printStackTrace();
+                        }
                         break;
 
                     case 2:
@@ -4421,14 +4425,18 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                                 focalVillage_Surgane_id, R.layout.custom_spinner);
                         spinner_village.setAdapter(adapter_FocalVillage_Surgana);
 
-                        String village_Surgane_Transl = "";
-                        village_Surgane_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
-                        int spinner_surgana_position = adapter_FocalVillage_Surgana.getPosition(village_Surgane_Transl);
-                        spinner_village.setSelection(spinner_surgana_position);
+                        try {
+                            String village_Surgane_Transl = "";
+                            village_Surgane_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
+                            int spinner_surgana_position = adapter_FocalVillage_Surgana.getPosition(village_Surgane_Transl);
+                            spinner_village.setSelection(spinner_surgana_position);
+                        } catch (NullPointerException exception) {
+                            exception.printStackTrace();
+                        }
                         break;
 
                     default:
-//                            spinner_village.setAdapter(null);
+                        spinner_village.setAdapter(null);
                 }
 //                } else {
 //
