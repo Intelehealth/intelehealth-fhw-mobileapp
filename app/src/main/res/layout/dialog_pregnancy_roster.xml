@@ -225,6 +225,19 @@
                     <!--                                        android:layout_marginBottom="10dp"-->
                     <!--                                        android:visibility="gone" />-->
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_pregnancyblock_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/lato_regular"
+                        android:hint="@string/enter_block_name_other"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

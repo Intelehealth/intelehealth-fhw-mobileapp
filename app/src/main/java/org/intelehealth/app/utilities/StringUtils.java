@@ -5512,8 +5512,9 @@ public final class StringUtils {
                 case "सुरगाणा तालुका":
                     val = "Suragana Block";
                     break;
-
-
+                case "इतर ब्लॉक":
+                    val = "Other Block";
+                    break;
                 default:
                     return val;
             }
@@ -5531,6 +5532,9 @@ public final class StringUtils {
                     break;
                 case "Suragana Block":
                     val = "सुरगाणा तालुका";
+                    break;
+                case "Other Block":
+                    val = "इतर ब्लॉक";
                     break;
 
                 default:

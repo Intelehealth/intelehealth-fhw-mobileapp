@@ -1400,5 +1400,7 @@
     <string name="more_than_seventy_km">More than 70km</string>
     <string name="not_treated">Not Treated</string>
     <string name="select_village">Select Village</string>
+    <string name="enter_block_name_other">Enter Block Name</string>
+    <string name="enter_village_name_other">Enter Village Name</string>
 
 </resources>

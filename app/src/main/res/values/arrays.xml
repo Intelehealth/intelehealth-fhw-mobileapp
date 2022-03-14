@@ -2176,11 +2176,13 @@
         <item>Select Block</item>
         <item>Peth Block</item>
         <item>Suragana Block</item>
+        <item>Other Block</item>
     </string-array>
     <string-array name="block_mr">
         <item>ब्लॉक निवडा</item>
         <item>पेठ ब्लॉक</item>
         <item>सुरगाना ब्लॉक</item>
+        <item>इतर ब्लॉक</item>
     </string-array>
 
     <string-array name="peth_block_village_mr">

@@ -216,7 +216,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //    EditText edittext_howmanytimmespregnant, edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_babyagedied;
 
     TextInputLayout til_whatisyourrelation_other, til_occupation_other;
-    TextInputEditText et_whatisyourrelation_other, et_occupation_other;
+    LinearLayout textinputlayout_blockVillageOther;
+    TextInputEditText et_whatisyourrelation_other, et_occupation_other, et_block_other, et_village_other;
 
     private TextView blockTextView, villageTextView;
 
@@ -432,9 +433,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.countries, R.layout.custom_spinner);
 
-//        mCountry.setClickable(false);
-//        mCountry.setEnabled(false);
-//        mCountry.setAdapter(countryAdapter);
 
         try {
             String casteLanguage = "caste_" + sessionManager.getAppLanguage();
@@ -449,19 +447,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-//        try {
-//            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
-//            int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
-//            if (economics != 0) {
-//                economicStatusAdapter = ArrayAdapter.createFromResource(this,
-//                        economics, R.layout.custom_spinner);
-//            }
-//            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            mEconomicStatus.setAdapter(economicStatusAdapter);
-//        } catch (Exception e) {
-//            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
+
         try {
             String educationLanguage = "education_" + sessionManager.getAppLanguage();
             int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
@@ -470,7 +456,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                         educations, R.layout.custom_spinner);
 
             }
-            // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);def9f7dc-3ac4-4a3d-a618-fcb48e853c5b
             mEducation.setAdapter(educationAdapter);
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
@@ -478,7 +463,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
         try {
             String occupationLanguage = "occupation_identification_" + sessionManager.getAppLanguage();
-//            String occupationLanguage = "occupation_" + "en";
             int occupations = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
             if (occupations != 0) {
                 occupationAdapter = ArrayAdapter.createFromResource(this, occupations, R.layout.custom_spinner);
@@ -487,59 +471,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
         }
         mOccupation.setAdapter(occupationAdapter);
-
-//        try {
-//            String blockLanguage = "block_" + sessionManager.getAppLanguage();
-//            int blocks = res.getIdentifier(blockLanguage, "array", getApplicationContext().getPackageName());
-//            if (blocks != 0)
-//                adapter_block = ArrayAdapter.createFromResource(this, blocks, R.layout.custom_spinner);
-//        } catch (Exception e) {
-//            Toast.makeText(this, getString(R.string.block_values_are_missing), Toast.LENGTH_SHORT).show();
-//        }
-
-//        spinner_block.setAdapter(adapter_block);
-//        spinner_block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (patientID_edit == null) {
-//                    switch (position) {
-//                        case 1:
-////                        spinner_village.setAdapter(null);
-//                            String focalVillagePeth_Language = "peth_block_village_" + sessionManager.getAppLanguage();
-//                            int focalVillage_Peth_id = getResources().getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
-//                            if (focalVillage_Peth_id != 0) {
-//                                adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
-//                                        focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
-//                            }
-//                            adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
-//                                    focalVillage_Peth_id, R.layout.custom_spinner);
-//                            spinner_village.setAdapter(adapter_FocalVillage_Peth);
-//                            break;
-//
-//                        case 2:
-////                        spinner_village.setAdapter(null);
-//                            String focalVillageSurgane_Language = "suragana_block_villages_" + sessionManager.getAppLanguage();
-//                            int focalVillage_Surgane_id = getResources().getIdentifier(focalVillageSurgane_Language, "array", getApplicationContext().getPackageName());
-//                            if (focalVillage_Surgane_id != 0) {
-//                                adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
-//                                        focalVillage_Surgane_id, android.R.layout.simple_spinner_dropdown_item);
-//                            }
-//                            adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
-//                                    focalVillage_Surgane_id, R.layout.custom_spinner);
-//                            spinner_village.setAdapter(adapter_FocalVillage_Surgana);
-//                            break;
-//
-//                        default:
-////                        spinner_village.setAdapter(null);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
@@ -1114,41 +1045,20 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             block_Transl = getPethBlock_edit(patient1.getBlockSurvey(), sessionManager.getAppLanguage());
             int spinner_position = adapter_block.getPosition(block_Transl);
             Logger.logD("Position", String.valueOf(spinner_position));
-            spinner_block.setSelection(spinner_position);
+            if (spinner_position == -1) {
+                spinner_block.setSelection(3);
+                spinner_village.setVisibility(View.GONE);
+                et_block_other.setVisibility(View.VISIBLE);
+                et_village_other.setVisibility(View.VISIBLE);
+                et_block_other.setText(patient1.getBlockSurvey());
+                et_village_other.setText(patient1.getVillageNameSurvey());
+            } else {
+                spinner_block.setSelection(spinner_position);
+                spinner_village.setVisibility(View.VISIBLE);
+                et_block_other.setVisibility(View.GONE);
+                et_village_other.setVisibility(View.GONE);
+            }
 
-//            if (spinner_position != 0) {
-//                if (spinner_position == 1) {
-//                    String village_Peth_Transl = "";
-//                    village_Peth_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
-//                    int spinner_peth_position = adapter_FocalVillage_Peth.getPosition(village_Peth_Transl);
-//                    Logger.logD("Position", String.valueOf(spinner_position));
-//                    spinner_village.setSelection(spinner_peth_position);
-//                } else if (spinner_position == 2) {
-//                    try {
-//                        String villageLanguage = "suragana_block_villages_" + sessionManager.getAppLanguage();
-//                        int village_id = getResources().getIdentifier(villageLanguage, "array", getApplicationContext().getPackageName());
-//                        if (village_id != 0) {
-//                            adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(this,
-//                                    village_id, android.R.layout.simple_spinner_dropdown_item);
-//                        }
-//                        spinner_village.setAdapter(adapter_FocalVillage_Surgana);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    String village_Surgane_Transl = "";
-//                    village_Surgane_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
-//                    int spinner_surgana_position = adapter_FocalVillage_Surgana.getPosition(village_Surgane_Transl);
-//                    Logger.logD("Position", String.valueOf(spinner_position));
-//                    spinner_village.setSelection(spinner_surgana_position);
-//                }
-//            } else {
-//                String village_Peth_Transl = "";
-//                village_Peth_Transl = getPethBlockVillage_edit(patient1.getVillageNameSurvey(), sessionManager.getAppLanguage());
-//                int spinner_peth_position = adapter_FocalVillage_Peth.getPosition(village_Peth_Transl);
-//                Logger.logD("Position", String.valueOf(spinner_position));
-//                spinner_village.setSelection(spinner_peth_position);
-//            }
         }
 
         if (patient1.getRelationshiphoh() != null && !patient1.getRelationshiphoh().equalsIgnoreCase("")) {
@@ -1902,164 +1812,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        } else if (spinner_block.getSelectedItemPosition() == 2) {
-//            try {
-//                String villageLanguage = "suragana_block_villages_" + sessionManager.getAppLanguage();
-//                int village_id = res.getIdentifier(villageLanguage, "array", getApplicationContext().getPackageName());
-//                if (village_id != 0) {
-//                    adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(this,
-//                            village_id, android.R.layout.simple_spinner_dropdown_item);
-//                }
-//                spinner_village.setAdapter(adapter_FocalVillage_Surgana);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            try {
-//                String villageLanguage = "peth_block_village_" + sessionManager.getAppLanguage();
-//                int village_id = res.getIdentifier(villageLanguage, "array", getApplicationContext().getPackageName());
-//                if (village_id != 0) {
-//                    adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(this,
-//                            village_id, android.R.layout.simple_spinner_dropdown_item);
-//                }
-//                spinner_village.setAdapter(adapter_FocalVillage_Peth);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-        // village
 
-        //focal Block
-//        try {
-//            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
-//            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
-//            if (focalBlock_id != 0) {
-//                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
-//                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //focal Block
-
-        //focal Village - Peth
-//        try {
-//            String focalVillagePeth_Language = "peth_block_village" + sessionManager.getAppLanguage();
-//            int focalVillage_Peth_id = res.getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
-//            if (focalVillage_Peth_id != 0) {
-//                adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(this,
-//                        focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_focalPointVillage.setAdapter(adapter_FocalVillage_Peth);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //focal Village - Peth
-
-//        //Block
-//        try {
-//            String focalBlockLanguage = "block_" + sessionManager.getAppLanguage();
-//            int focalBlock_id = res.getIdentifier(focalBlockLanguage, "array", getApplicationContext().getPackageName());
-//            if (focalBlock_id != 0) {
-//                adapter_focalPointBlock = ArrayAdapter.createFromResource(this,
-//                        focalBlock_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_focalPointBlock.setAdapter(adapter_focalPointBlock);
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-
-        //single/multiple Spinner adapter
-//        try {
-//            String singlemultipleLanguage = "singlemultiplebirths_" + sessionManager.getAppLanguage();
-//            int singlemultiple_id = res.getIdentifier(singlemultipleLanguage, "array", getApplicationContext().getPackageName());
-//            if (singlemultiple_id != 0) {
-//                adapter_singlemultiplebirths = ArrayAdapter.createFromResource(this,
-//                        singlemultiple_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_singlemultiplebirths.setAdapter(adapter_singlemultiplebirths);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //single/multiple spinner adapter
-
-        // sex of baby Spinner adapter
-//        try {
-//            String sexbabyLanguage = "sexofbaby_" + sessionManager.getAppLanguage();
-//            int sexbaby_id = res.getIdentifier(sexbabyLanguage, "array", getApplicationContext().getPackageName());
-//            if (sexbaby_id != 0) {
-//                adapter_sexofbaby = ArrayAdapter.createFromResource(this,
-//                        sexbaby_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_sexofbaby.setAdapter(adapter_sexofbaby);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //sex of baby spinner adapter
-
-        // pregnancyplanned Spinner adapter
-//        try {
-//            String pregnancyplannedLanguage = "pregnancyplanned_" + sessionManager.getAppLanguage();
-//            int pregnancyplanned_id = res.getIdentifier(pregnancyplannedLanguage, "array", getApplicationContext().getPackageName());
-//            if (pregnancyplanned_id != 0) {
-//                adapter_pregnancyplanned = ArrayAdapter.createFromResource(this,
-//                        pregnancyplanned_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_pregnancyplanned.setAdapter(adapter_pregnancyplanned);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //pregnancyplanned spinner adapter
-
-        // highriskpregnancy Spinner adapter
-//        try {
-//            String highriskpregnancyLanguage = "highriskpregnancy_" + sessionManager.getAppLanguage();
-//            int highriskpregnancy_id = res.getIdentifier(highriskpregnancyLanguage, "array", getApplicationContext().getPackageName());
-//            if (highriskpregnancy_id != 0) {
-//                adapter_pregnancyhighriskcase = ArrayAdapter.createFromResource(this,
-//                        highriskpregnancy_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_pregnancyhighriskcase.setAdapter(adapter_pregnancyhighriskcase);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //highriskpregnancy spinner adapter
-
-        // complications Spinner adapter
-//        try {
-//            String complicationsLanguage = "complications_" + sessionManager.getAppLanguage();
-//            int complications_id = res.getIdentifier(complicationsLanguage, "array", getApplicationContext().getPackageName());
-//            if (complications_id != 0) {
-//                adapter_pregnancycomplications = ArrayAdapter.createFromResource(this,
-//                        complications_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_pregnancycomplications.setAdapter(adapter_pregnancycomplications);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
-        //complications spinner adapter
-
-        //Spinner End
-
-        // EditText start
-
-        // EditText end
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -2569,14 +2322,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             blockTextView.setError(null);
         }
 
-        if (spinner_village == null || spinner_village.getSelectedItemPosition() == 0) {
-            villageTextView.setError(getString(R.string.select));
-            spinner_village.setSelection(0);
-            focusView = spinner_village;
-            cancel = true;
-            return;
-        } else {
-            villageTextView.setError(null);
+        if (spinner_village.getVisibility() == View.VISIBLE) {
+            if (spinner_village == null || spinner_village.getSelectedItemPosition() == 0) {
+                villageTextView.setError(getString(R.string.select));
+                spinner_village.setSelection(0);
+                focusView = spinner_village;
+                cancel = true;
+                return;
+            } else {
+                villageTextView.setError(null);
+            }
         }
 
         if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
@@ -3057,7 +2812,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
-        patientAttributesDTO.setValue(StringUtils.getPethBlock(spinner_block.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        if (spinner_block.getSelectedItemPosition() == 3) {
+            patientAttributesDTO.setValue(et_block_other.getText().toString());
+        } else {
+            patientAttributesDTO.setValue(StringUtils.getPethBlock(spinner_block.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        }
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // village
@@ -3065,7 +2824,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
-        patientAttributesDTO.setValue(StringUtils.getPethBlockVillage(spinner_village.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        if (spinner_block.getSelectedItemPosition() == 3) {
+            patientAttributesDTO.setValue(et_village_other.getText().toString());
+        } else {
+            patientAttributesDTO.setValue(StringUtils.getPethBlockVillage(spinner_village.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        }
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // relationsip hoh
@@ -3852,14 +3615,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             blockTextView.setError(null);
         }
 
-        if (spinner_village == null || spinner_village.getSelectedItemPosition() == 0) {
-            villageTextView.setError(getString(R.string.select));
-            spinner_village.setSelection(0);
-            focusView = spinner_village;
-            cancel = true;
-            return;
-        } else {
-            villageTextView.setError(null);
+        if (spinner_village.getVisibility() == View.VISIBLE) {
+            if (spinner_village == null || spinner_village.getSelectedItemPosition() == 0) {
+                villageTextView.setError(getString(R.string.select));
+                spinner_village.setSelection(0);
+                focusView = spinner_village;
+                cancel = true;
+                return;
+            } else {
+                villageTextView.setError(null);
+            }
         }
 
         //Roster Insert Validations - Start
@@ -4101,8 +3866,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
-            Logger.logD("Block", spinner_block.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getPethBlock_edit(spinner_block.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            if (spinner_block.getSelectedItemPosition() == 3) {
+                patientAttributesDTO.setValue(et_block_other.getText().toString());
+            } else {
+                patientAttributesDTO.setValue(StringUtils.getPethBlock(spinner_block.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            }
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // village
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
+            if (spinner_block.getSelectedItemPosition() == 3) {
+                patientAttributesDTO.setValue(et_village_other.getText().toString());
+            } else {
+                patientAttributesDTO.setValue(StringUtils.getPethBlockVillage(spinner_village.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            }
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {
@@ -4217,6 +3998,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         mOccupation = findViewById(R.id.spinner_occupation);
         til_occupation_other = findViewById(R.id.til_occupation_other);
+        textinputlayout_blockVillageOther = findViewById(R.id.textinputlayout_blockVillageOther);
+        et_block_other = findViewById(R.id.et_block_other);
+        et_village_other = findViewById(R.id.et_village_other);
 
         et_occupation_other = findViewById(R.id.et_occupation_other);
         mOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -4389,10 +4173,14 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (patient1.getVillageNameSurvey() != null) {
                 switch (position) {
                     case 1:
-//                            spinner_village.setAdapter(null);
+                        spinner_village.setVisibility(View.VISIBLE);
+                        et_block_other.setVisibility(View.GONE);
+                        et_village_other.setVisibility(View.GONE);
+                        et_block_other.setText("");
+                        et_village_other.setText("");
+
                         String focalVillagePeth_Language = "peth_block_village_" + sessionManager.getAppLanguage();
                         int focalVillage_Peth_id = getResources().getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
                         if (focalVillage_Peth_id != 0) {
@@ -4414,7 +4202,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                         break;
 
                     case 2:
-//                            spinner_village.setAdapter(null);
+                        spinner_village.setVisibility(View.VISIBLE);
+                        et_block_other.setVisibility(View.GONE);
+                        et_village_other.setVisibility(View.GONE);
+                        et_block_other.setText("");
+                        et_village_other.setText("");
+
                         String focalVillageSurgane_Language = "suragana_block_villages_" + sessionManager.getAppLanguage();
                         int focalVillage_Surgane_id = getResources().getIdentifier(focalVillageSurgane_Language, "array", getApplicationContext().getPackageName());
                         if (focalVillage_Surgane_id != 0) {
@@ -4434,13 +4227,17 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                             exception.printStackTrace();
                         }
                         break;
+                    case 3:
+                        spinner_village.setVisibility(View.GONE);
+                        spinner_village.setSelection(0);
+                        textinputlayout_blockVillageOther.setVisibility(View.VISIBLE);
+                        et_block_other.setVisibility(View.VISIBLE);
+                        et_village_other.setVisibility(View.VISIBLE);
+                        break;
 
                     default:
                         spinner_village.setAdapter(null);
                 }
-//                } else {
-//
-//                }
             }
 
 

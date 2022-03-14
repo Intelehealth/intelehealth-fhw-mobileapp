@@ -544,6 +544,42 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/textinputlayout_blockVillageOther"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_block_other"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/enter_block_name_other"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_village_other"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/enter_village_name_other"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </LinearLayout>
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
