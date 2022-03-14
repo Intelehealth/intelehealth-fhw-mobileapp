@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+
+import com.google.gms.googleservices.GoogleServicesPlugin
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -18,7 +21,7 @@ android {
         applicationId "org.intelehealth.handinhand"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 12
+        versionCode 15
         buildToolsVersion('29.0.2')
         versionName '2.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -126,11 +129,12 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 
 //    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation "com.google.firebase:firebase-core:17.4.3"
-    implementation "com.google.firebase:firebase-messaging:20.2.1"
-//    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.8'
+    implementation 'com.google.firebase:firebase-analytics:20.1.0'
+    implementation "com.google.firebase:firebase-core:20.1.0"
+    implementation "com.google.firebase:firebase-messaging:23.0.0"
+    implementation "com.google.firebase:firebase-iid:21.1.0"
+//  implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
