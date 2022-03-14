@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -325,6 +326,24 @@ public class PregnancyRosterDialog extends DialogFragment {
 
             }
         });
+
+        binding.spinnerFocalBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if(position == 3) {
+                    binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.etPregnancyblockOther.setVisibility(View.GONE);
+                    binding.etPregnancyblockOther.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private boolean validateData(PregnancyRosterData data) {
@@ -381,7 +400,8 @@ public class PregnancyRosterDialog extends DialogFragment {
             }
 
             if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 &&
-                    (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
+                    (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 &&
+                            pregnancyOutcomePosition != 5)) {
                 if (data.getFocalFacilityForPregnancy().equals("Select Block")) {
                     setSpinnerError(binding.spinnerFocalBlock);
                     areDetailsCorrect = false;
@@ -449,7 +469,15 @@ public class PregnancyRosterDialog extends DialogFragment {
 
             if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 ||
                     (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
-                data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block(binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                if(binding.spinnerFocalBlock.getSelectedItemPosition() == 3) {
+                    data.setFocalFacilityForPregnancy(binding.etPregnancyblockOther.getText().toString());
+                    Log.v(TAG, "focal_other: "+ data.getFocalFacilityForPregnancy());
+                }
+                else {
+                    data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block
+                            (binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                }
+
             }
 
             if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
@@ -513,8 +541,19 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
-            spinnerPosition = adapter_focalPointBlock.getPosition(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), sessionManager.getAppLanguage()));
-            binding.spinnerFocalBlock.setSelection(spinnerPosition);
+            spinnerPosition = adapter_focalPointBlock.getPosition
+                    (StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(),
+                            sessionManager.getAppLanguage()));
+            if(spinnerPosition == -1) {
+                binding.spinnerFocalBlock.setSelection(3);
+                binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
+                binding.etPregnancyblockOther.setText(data.getFocalFacilityForPregnancy());
+            }
+            else {
+                binding.spinnerFocalBlock.setSelection(spinnerPosition);
+                binding.etPregnancyblockOther.setVisibility(View.GONE);
+                binding.etPregnancyblockOther.setText("");
+            }
         }
 
         if (!checkIfEmpty(data.getBabyAgeDied())) {
