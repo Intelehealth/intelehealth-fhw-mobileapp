@@ -2209,7 +2209,7 @@
         <item>@string/chikhali</item>
     </string-array>
     <string-array name="peth_block_village_en">
-        <item>Select Village</item>
+        <item>Select</item>
         <item>Surgane</item>
         <item>Sadadapada</item>
         <item>Bhatavihir</item>

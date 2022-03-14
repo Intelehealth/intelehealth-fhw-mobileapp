@@ -1399,5 +1399,6 @@
     <string name="fifty_to_seventy_km">50–70km</string>
     <string name="more_than_seventy_km">More than 70km</string>
     <string name="not_treated">Not Treated</string>
+    <string name="select_village">Select Village</string>
 
 </resources>

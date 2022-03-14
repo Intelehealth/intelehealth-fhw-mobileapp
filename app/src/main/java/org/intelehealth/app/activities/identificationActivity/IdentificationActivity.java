@@ -2563,24 +2563,36 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         if (spinner_block.getSelectedItemPosition() == 0) {
             blockTextView.setError(getString(R.string.select));
+            focusView = blockTextView;
+            return;
         } else {
             blockTextView.setError(null);
         }
 
         if (spinner_village == null || spinner_village.getSelectedItemPosition() == 0) {
             villageTextView.setError(getString(R.string.select));
+            spinner_village.setSelection(0);
+            focusView = spinner_village;
+            cancel = true;
+            return;
         } else {
             villageTextView.setError(null);
         }
 
         if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
             mAddress1.setError(getString(R.string.error_field_required));
+            focusView = mAddress1;
+            cancel = true;
+            return;
         } else {
             mAddress1.setError(null);
         }
 
         if (mPostal.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
             mPostal.setError(getString(R.string.error_field_required));
+            focusView = mPostal;
+            cancel = true;
+            return;
         } else {
             mPostal.setError(null);
         }
@@ -3813,6 +3825,43 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            stateText.setError(null);
 //        }
 
+        if (mAddress1.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
+            mAddress1.setError(getString(R.string.error_field_required));
+            focusView = mAddress1;
+            cancel = true;
+            return;
+        } else {
+            mAddress1.setError(null);
+        }
+
+        if (mPostal.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
+            mPostal.setError(getString(R.string.error_field_required));
+            focusView = mPostal;
+            cancel = true;
+            return;
+        } else {
+            mPostal.setError(null);
+        }
+
+        if (spinner_block.getSelectedItemPosition() == 0) {
+            blockTextView.setError(getString(R.string.select));
+            focusView = spinner_block;
+            cancel = true;
+            return;
+        } else {
+            blockTextView.setError(null);
+        }
+
+        if (spinner_village == null || spinner_village.getSelectedItemPosition() == 0) {
+            villageTextView.setError(getString(R.string.select));
+            spinner_village.setSelection(0);
+            focusView = spinner_village;
+            cancel = true;
+            return;
+        } else {
+            villageTextView.setError(null);
+        }
+
         //Roster Insert Validations - Start
 
         if (spinner_whatisyourrelation.getSelectedItemPosition() == 0) {
@@ -4091,6 +4140,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
 
         }
+
         try {
             Logger.logD(TAG, "update ");
             boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
