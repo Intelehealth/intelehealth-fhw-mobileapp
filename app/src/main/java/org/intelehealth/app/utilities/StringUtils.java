@@ -3742,7 +3742,7 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits":
-                    val = "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री";
+                    val = "अन्नधान्य उत्पादन (गहू, मका, बार्ली), नगदी  पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री";
                     break;
                 case "Sale of animals/animal products":
                     val = "प्राणी / प्राणी उत्पादने विक्री";
@@ -3754,13 +3754,13 @@ public final class StringUtils {
                     val = "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.";
                     break;
                 case "Self-employed (non-agriculture/petty business)":
-                    val = "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)";
+                    val = "स्वयंरोजगार (बिगर शेती/ किरकोळ व्यवसाय)";
                     break;
                 case "Daily labor (unskilled work - Agricultural/non-Agricultural)":
-                    val = "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)";
+                    val = "दैनंदिन मजूर (अकुशल काम - कृषी, कृषी सोडून इतर)";
                     break;
                 case "NREGA":
-                    val = "nrega.";
+                    val = "नरेगा";
                     break;
                 case "Seasonal Labor":
                     val = "हंगामी श्रम";
@@ -3775,7 +3775,7 @@ public final class StringUtils {
                     val = "प्रेषण";
                     break;
                 case "Other (please specify)":
-                    val = "इतर (कृपया निर्दिष्ट करा)";
+                    val = "इतर (कृपया स्पष्ट करा)";
                     break;
                 case "Other sources of income":
                     val = "उत्पन्नाचे इतर स्त्रोत";
@@ -3793,7 +3793,7 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
 
-                case "अन्नधान्य उत्पादन (गहू, मका, बार्ली), कॅश पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री":
+                case "अन्नधान्य उत्पादन (गहू, मका, बार्ली), नगदी  पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री":
                     val = "Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits";
                     break;
                 case "प्राणी / प्राणी उत्पादने विक्री":
@@ -3805,13 +3805,13 @@ public final class StringUtils {
                 case "पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.":
                     val = "Salaried worker (fixed monthly salary) - Government, private, etc.";
                     break;
-                case "स्वयंरोजगार (गैर-शेती / लहान व्यवसाय)":
+                case "स्वयंरोजगार (बिगर शेती/ किरकोळ व्यवसाय )":
                     val = "Self-employed (non-agriculture/petty business)";
                     break;
-                case "दैनिक श्रम (अकुशल काम- शेती / गैर-कृषी)":
+                case "दैनंदिन मजूर (अकुशल काम - कृषी, कृषी सोडून इतर)":
                     val = "Daily labor (unskilled work - Agricultural/non-Agricultural)";
                     break;
-                case "nrega.":
+                case "नरेगा":
                     val = "NREGA";
                     break;
                 case "हंगामी श्रम":
@@ -3826,7 +3826,7 @@ public final class StringUtils {
                 case "प्रेषण":
                     val = "Remittances";
                     break;
-                case "इतर (कृपया निर्दिष्ट करा)":
+                case "इतर (कृपया स्पष्ट करा)":
                     val = "Other (please specify)";
                     break;
                 case "उत्पन्नाचे इतर स्त्रोत":
@@ -3855,7 +3855,7 @@ public final class StringUtils {
                     val = "Within last month";
                     break;
 
-                case "एक आठवडा ते ३ महिन्यांपूर्वी":
+                case "एक महिना ते 3 महिन्यांपूर्वी":
                     val = "One month to 3 months ago";
                     break;
 
@@ -3886,7 +3886,7 @@ public final class StringUtils {
                     val = "गेल्या महिन्याच्या आत";
                     break;
                 case "One month to 3 months ago":
-                    val = "एक आठवडा ते ३ महिन्यांपूर्वी";
+                    val = "एक महिना ते 3 महिन्यांपूर्वी";
                     break;
                 case "Between 3 months - 6 months ago":
                     val = "3 महिने-6 महिन्यांपूर्वी";
