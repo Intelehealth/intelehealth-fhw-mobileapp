@@ -930,6 +930,7 @@
     <string name="more_than_thirty_thousand">More than 30,000</string>
     <string name="if_more_than_30000_a_year_specify_an_estimate">If more than Rs. 30,000 - specify an estimate</string>
     <string name="annual_expenditure_on_education">Annual expenditure on Education</string>
+
     <string name="zero_ten_thousand">0 – 10,000</string>
     <string name="ten_twenty_thousand">10,000 – 20,000</string>
     <string name="twenty_forty_thousand">20,000 – 40,000</string>
@@ -1264,6 +1265,14 @@
     <string name="hypertensionBP">Hypertension/BP</string>
     <string name="asthama">Asthama</string>
     <string name="cancer">Cancer</string>
+    <string name="tB">TB</string>
+    <string name="skin_diseases">Skin diseases</string>
+    <string name="water_related_diseases">Water-related diseases</string>
+
+
+
+
+
     <string name="select_primary_health_care_provider">Select Primary Healthcare Provider</string>
     <string name="government_doctor">Government Doctor</string>
     <string name="private_doctor">Private Doctor</string>

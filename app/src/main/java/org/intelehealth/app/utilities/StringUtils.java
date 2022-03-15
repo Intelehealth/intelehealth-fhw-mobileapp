@@ -3494,7 +3494,7 @@ public final class StringUtils {
                 case "इतर संबंधित नाही":
                     val = "Other not related";
                     break;
-                case "इतर (निर्दिष्ट करा)":
+                case "इतर (स्पष्ट करा)":
                     val = "Other (specify)";
                     break;
                 case "सांगित नाही":
@@ -3647,22 +3647,22 @@ public final class StringUtils {
                 case "पगारदार खाजगी नोकरी":
                     val = "Salaried Private Job";
                     break;
-                case "क्षुद्र व्यवसाय किंवा दुकान मालक":
+                case "लहान व्यवसाय / दुकान मालक":
                     val = "Petty Business or Shop Owner";
                     break;
-                case "तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)":
+                case "तंत्रज्ञान / कारागीर / इतर कुशल काम (चालक, मेसन इ.)":
                     val = "Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)";
                     break;
                 case "कृषी शेतकरी":
                     val = "Agricultural Farmer";
                     break;
-                case "भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार":
+                case "भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता":
                     val = "Tenant Farmer or Agricultural Daily Wage Worker";
                     break;
-                case "रोजंदारी कामगार (अकुशल काम)":
+                case "दैनिक वेतन कर्मचारी (अकुशल काम)":
                     val = "Daily Wage Worker (Unskilled Work)";
                     break;
-                case "घरातील काम":
+                case "घरगुती काम":
                     val = "Household Work";
                     break;
                 case "विद्यार्थी":
@@ -3671,13 +3671,13 @@ public final class StringUtils {
                 case "बेरोजगार":
                     val = "Unemployed";
                     break;
-                case "सेवानिवृत्त (पेन्शनसह)":
+                case "सेवानिवृत्त (पेंशनसह)":
                     val = "Retired (With Pension)";
                     break;
-                case "सेवानिवृत्त (पेन्शनशिवाय)":
+                case "सेवानिवृत्त (पेंशनशिवाय)":
                     val = "Retired (Without Pension)";
                     break;
-                case "इतर (निर्दिष्ट करा)":
+                case "इतर (स्पष्ट करा)":
                     val = "Others (Specify)";
                     break;
                 default:
@@ -3692,28 +3692,28 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Salaried Government Job":
-                    val = "पगारदार सरकारी नोकरी";
+               val = "पगारदार सरकारी नोकरी";
                     break;
                 case "Salaried Private Job":
                     val = "पगारदार खाजगी नोकरी";
                     break;
                 case "Petty Business or Shop Owner":
-                    val = "क्षुद्र व्यवसाय किंवा दुकान मालक";
+                    val = "लहान व्यवसाय / दुकान मालक";
                     break;
                 case "Technician or Craftsman or Other Skilled Work (Driver, Mason Etc)":
-                    val = "तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)";
+                    val = "तंत्रज्ञान / कारागीर / इतर कुशल काम (चालक, मेसन इ.)";
                     break;
                 case "Agricultural Farmer":
                     val = "कृषी शेतकरी";
                     break;
                 case "Tenant Farmer or Agricultural Daily Wage Worker":
-                    val = "भाडेकरू शेतकरी किंवा शेती रोजंदारी कामगार";
+                    val = "भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता";
                     break;
                 case "Daily Wage Worker (Unskilled Work)":
-                    val = "रोजंदारी कामगार (अकुशल काम)";
+                    val = "दैनिक वेतन कर्मचारी (अकुशल काम)";
                     break;
                 case "Household Work":
-                    val = "घरातील काम";
+                    val = "घरगुती काम";
                     break;
                 case "Student":
                     val = "विद्यार्थी";
@@ -3722,13 +3722,13 @@ public final class StringUtils {
                     val = "बेरोजगार";
                     break;
                 case "Retired (With Pension)":
-                    val = "सेवानिवृत्त (पेन्शनसह)";
+                    val = "सेवानिवृत्त (पेंशनसह)";
                     break;
                 case "Retired (Without Pension)":
-                    val = "सेवानिवृत्त (पेन्शनशिवाय)";
+                    val = "सेवानिवृत्त (पेंशनशिवाय)";
                     break;
                 case "Others (Specify)":
-                    val = "इतर (निर्दिष्ट करा)";
+                    val = "इतर (स्पष्ट करा)";
                     break;
                 default:
                     return val;
@@ -4259,10 +4259,14 @@ public final class StringUtils {
                     val = "ब्लॉक निवडा";
                     break;
                 case "Peth Block":
-                    val = "पेठ ब्लॉक";
+                    val = "पेठ तालुका";
                     break;
                 case "Suragana Block":
-                    val = "सुरगाना ब्लॉक";
+                    val = "सुरगाना तालुका";
+                    break;
+
+                    case "Other Block":
+                    val = "इतर तालुका";
                     break;
                 default:
                     return val;
@@ -4277,11 +4281,14 @@ public final class StringUtils {
                 case "ब्लॉक निवडा":
                     val = "Select Block";
                     break;
-                case "पेठ ब्लॉक":
+                case "पेठ तालुका":
                     val = "Peth Block";
                     break;
-                case "सुरगाना ब्लॉक":
+                case "सुरगाना तालुका":
                     val = "Suragana Block";
+                    break;
+                    case "इतर तालुका":
+                    val = "Other Block";
                     break;
                 default:
                     return val;
@@ -4701,7 +4708,7 @@ public final class StringUtils {
                 case "अॅम्ब्युलन्स":
                     val = "Ambulance";
                     break;
-                case "इतर (निर्दिष्ट करा)":
+                case "इतर (स्पष्ट करा)":
                     val = "Others (specify)";
                     break;
                 default:
@@ -4741,7 +4748,7 @@ public final class StringUtils {
                     val = "अॅम्ब्युलन्स";
                     break;
                 case "Others (specify)":
-                    val = "इतर (निर्दिष्ट करा)";
+                    val = "इतर (स्पष्ट करा)";
                     break;
 
 
@@ -4787,7 +4794,7 @@ public final class StringUtils {
                     val = "Ayush center";
                     break;
 
-                case "इतर (कृपया निर्दिष्ट करा)":
+                case "इतर (कृपया स्पष्ट करा)":
                     val = "Others (please specify)";
                     break;
 
@@ -4826,7 +4833,7 @@ public final class StringUtils {
                     val = "आयुष केंद्र";
                     break;
                 case "Others (please specify)":
-                    val = "इतर (कृपया निर्दिष्ट करा)";
+                    val = "इतर (कृपया स्पष्ट करा)";
                     break;
 
 
@@ -4866,7 +4873,7 @@ public final class StringUtils {
                 case "फार्मसी":
                     val = "Pharmacy";
                     break;
-                case "इतर (कृपया निर्दिष्ट करा)":
+                case "इतर (कृपया स्पष्ट करा)":
                     val = "Others (please specify)";
                     break;
 
@@ -4917,7 +4924,7 @@ public final class StringUtils {
                     val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
                     break;
                 case "Other (specify)":
-                    val = "इतर (निर्दिष्ट करा)";
+                    val = "इतर (स्पष्ट करा)";
                     break;
 
 
@@ -4967,7 +4974,7 @@ public final class StringUtils {
                 case "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही":
                     val = "Did not consult any health provider for this issue";
                     break;
-                case "इतर (निर्दिष्ट करा)":
+                case "इतर (स्पष्ट करा)":
                     val = "Other (specify)";
                     break;
                 default:
@@ -5017,7 +5024,7 @@ public final class StringUtils {
                     val = "या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही";
                     break;
                 case "Other (specify)":
-                    val = "इतर (निर्दिष्ट करा)";
+                    val = "इतर (स्पष्ट करा)";
                     break;
                 default:
                     return val;
@@ -5054,7 +5061,7 @@ public final class StringUtils {
                 case "सांधे/हाडांचे दुखणे":
                     val = "Joint/Bone pain";
                     break;
-                case "इतर (निर्दिष्ट करा)":
+                case "इतर (स्पष्ट करा)":
                     val = "Others (Specify)";
                     break;
 
@@ -5093,7 +5100,7 @@ public final class StringUtils {
                     val = "सांधे/हाडांचे दुखणे";
                     break;
                 case "Others (Specify)":
-                    val = "इतर (निर्दिष्ट करा)";
+                    val = "इतर (स्पष्ट करा)";
                     break;
 
 
@@ -5509,7 +5516,7 @@ public final class StringUtils {
                 case "पेठ तालुका":
                     val = "Peth Block";
                     break;
-                case "सुरगाणा तालुका":
+                case "सुरगाना तालुका":
                     val = "Suragana Block";
                     break;
                 case "इतर तालुका":

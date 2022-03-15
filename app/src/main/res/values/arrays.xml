@@ -1702,7 +1702,7 @@
         <item>होमिओपॅथ डॉक्टर</item>
         <item>पारंपारिक उपचार करणारा/क्वॅक</item>
         <item>या समस्येसाठी कोणत्याही आरोग्य प्रदात्याचा सल्ला घेतला नाही</item>
-        <item>इतर (निर्दिष्ट करा)</item>
+        <item>इतर (स्पष्ट करा)</item>
     </string-array>
 
     <string-array name="firstlocation_en">
@@ -1728,7 +1728,7 @@
         <item>खाजगी रुग्णालय</item>
         <item>आयुष केंद्र</item>
         <item>फार्मसी</item>
-        <item>इतर (कृपया निर्दिष्ट करा)</item>
+        <item>इतर (कृपया स्पष्ट करा)</item>
     </string-array>
 
 
@@ -1754,7 +1754,7 @@
         <item>जिल्हा रुग्णालय</item>
         <item>खाजगी रुग्णालय</item>
         <item>आयुष केंद्र</item>
-        <item>इतर (कृपया निर्दिष्ट करा)</item>
+        <item>इतर (कृपया स्पष्ट करा)</item>
     </string-array>
 
 
@@ -1780,7 +1780,7 @@
         <item>स्वतःचे वाहन</item>
         <item>मित्रांचे/शेजाऱ्यांचे वाहन</item>
         <item>अॅम्ब्युलन्स</item>
-        <item>इतर (निर्दिष्ट करा)</item>
+        <item>इतर (स्पष्ट करा)</item>
     </string-array>
 
     <string-array name="scoreexperience_en">
@@ -1960,7 +1960,7 @@
         <item>बेरोजगार</item>
         <item>सेवानिवृत्त (पेंशनसह)</item>
         <item>सेवानिवृत्त (पेंशनशिवाय)</item>
-        <item>इतर (निर्दिष्ट)</item>
+        <item>इतर (स्पष्ट)</item>
     </string-array>
 
     <string-array name="relationshipHoH_mr">
@@ -1980,7 +1980,7 @@
         <item>दत्तक/पालक/स्टेपचाइल्ड</item>
         <item>घरगुती सेवक</item>
         <item>इतर संबंधित नाही</item>
-        <item>इतर (निर्दिष्ट करा)</item>
+        <item>इतर (स्पष्ट करा)</item>
         <item>सांगित नाही</item>
     </string-array>
 
@@ -2082,7 +2082,7 @@
         <item>त्वचेच्या समस्या</item>
         <item>डोळा /दृष्टी समस्या</item>
         <item>सांधे/हाडांचे दुखणे</item>
-        <item>इतर (निर्दिष्ट करा)</item>
+        <item>इतर (स्पष्ट करा)</item>
     </string-array>
 
 

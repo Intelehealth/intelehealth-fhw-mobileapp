@@ -1142,7 +1142,7 @@
     <string name="health_issue_reported_skin_issues">त्वचा समस्या</string>
     <string name="health_issue_reported_eye_vision_issues">डोळा / दृष्टी समस्या</string>
     <string name="health_issue_reported_joint_bone_pain">संयुक्त / हाडांच्या वेदना</string>
-    <string name="health_issue_reported_others_specify">इतर(निर्दिष्ट करा)</string>
+    <string name="health_issue_reported_others_specify">इतर(स्पष्ट करा)</string>
 
     <string name="no_of_episodes_in_the_last_year">गेल्या वर्षी एपिसोडची संख्या</string>
     <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">सामान्यतः, या आरोग्य समस्येसाठी आपण प्राथमिक आरोग्य प्रदाता कोणता आहात</string>
@@ -1176,7 +1176,7 @@
     <string name="dh">जिल्हा हॉस्पिटल</string>
     <string name="private_hospital">खाजगी हॉस्पिटल</string>
     <string name="ayush_center">अयूश सेंटर</string>
-    <string name="others_please_specify">इतर (कृपया निर्दिष्ट करा)</string>
+    <string name="others_please_specify">इतर (कृपया स्पष्ट करा)</string>
 
     <string name="mode_of_transportations_used_to_reach_facility_provider">सुविधा / प्रदात्यापर्यंत पोहोचण्यासाठी वापरल्या जाणार्या वाहतूक पद्धती</string>
     <string name="mode_of_transportation_walking">चालणे</string>
@@ -1266,15 +1266,9 @@
    <string name="hypertensionBP">उच्च रक्तदाब/बीपी</string>
    <string name="asthama">अस्थमा</string>
    <string name="cancer">कर्करोग</string>
-
-
-
-
-
-
-
-
-
+    <string name = "tB">टीबी</string>
+    <string name = "skin_diseases">त्वचा रोग</string>
+    <string name="water_related_diseases">पाण्याशी संबंधित रोग</string>
 
     <string name="select_primary_health_care_provider">प्राथमिक आरोग्य सेवा प्रदाता निवडा</string>
     <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
