@@ -1609,7 +1609,7 @@
 
     <string-array name="relationshipHoH_en">
         <item>Select</item>
-        <item>Head of the household</item>
+        <item>Self</item>
         <item>Spouse</item>
         <item>Son/daughter</item>
         <item>Son/daughter in law</item>
@@ -1965,7 +1965,7 @@
 
     <string-array name="relationshipHoH_mr">
         <item>निवडा</item>
-        <item>घराचे प्रमुख</item>
+        <item>स्वत:</item>
         <item>पती/पत्नी</item>
         <item>मुलगा/मुलगी</item>
         <item>मुलगा/सून</item>
@@ -2180,9 +2180,9 @@
     </string-array>
     <string-array name="block_mr">
         <item>ब्लॉक निवडा</item>
-        <item>पेठ ब्लॉक</item>
-        <item>सुरगाना ब्लॉक</item>
-        <item>इतर ब्लॉक</item>
+        <item>पेठ तालुका</item>
+        <item>सुरगाना तालुका</item>
+        <item>इतर तालुका</item>
     </string-array>
 
     <string-array name="peth_block_village_mr">

@@ -3449,8 +3449,8 @@ public final class StringUtils {
     public static String getRelationShipHoH(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
-                case "घराचे प्रमुख":
-                    val = "Head of the household";
+                case "स्वत:":
+                    val = "Self";
                     break;
                 case "पती/पत्नी":
                     val = "Spouse";
@@ -3512,8 +3512,8 @@ public final class StringUtils {
     public static String getRelationShipHoH_edit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
-                case "Head of the household":
-                    val = "घराचे प्रमुख";
+                case "Self":
+                    val = "स्वत:";
                     break;
                 case "Spouse":
                     val = "पती/पत्नी";
@@ -5512,7 +5512,7 @@ public final class StringUtils {
                 case "सुरगाणा तालुका":
                     val = "Suragana Block";
                     break;
-                case "इतर ब्लॉक":
+                case "इतर तालुका":
                     val = "Other Block";
                     break;
                 default:
@@ -5534,7 +5534,7 @@ public final class StringUtils {
                     val = "सुरगाणा तालुका";
                     break;
                 case "Other Block":
-                    val = "इतर ब्लॉक";
+                    val = "इतर तालुका";
                     break;
 
                 default:
