@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_margin="16dp"
+                    android:paddingBottom="20dp"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/include">
 
@@ -49,8 +50,9 @@
                         android:layout_gravity="center_horizontal"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
                         android:textSize="@dimen/card_content_sub_text_size"
-                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_bg_rounded_corners"
                         android:textStyle="bold" />
 
                     <EditText
@@ -61,6 +63,7 @@
                         android:imeOptions="actionUnspecified"
                         android:maxLines="1"
                         android:paddingLeft="10dp"
+                        android:background="@drawable/button_bg_rounded_corners"
                         android:paddingRight="10dp"
                         android:backgroundTint="@color/white"
                         android:cursorVisible="false"
@@ -70,7 +73,6 @@
                         android:textColor="@color/font_black_0"
                         android:singleLine="true"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="-20dp"
                         android:gravity="center_horizontal"
                         android:hint="@string/hw_qualification_hint"
                         android:textColorHint="@color/hint_light_gray"
@@ -92,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:imeOptions="actionUnspecified"
-                        android:layout_marginTop="-20dp"
+                        android:background="@drawable/button_bg_rounded_corners"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:backgroundTint="@color/white"
@@ -100,6 +102,8 @@
                         android:focusableInTouchMode="false"
                         android:focusable="false"
                         android:clickable="false"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:textColor="@color/font_black_0"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
