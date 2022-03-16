@@ -433,7 +433,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 spinner_block.setAdapter(adapter_block);
 
                 String block_Transl = "";
-                block_Transl = getPethBlock(blockValue, sessionManager.getAppLanguage());
+                block_Transl = getPethBlock_edit(blockValue, sessionManager.getAppLanguage());
                 int spinner_position = adapter_block.getPosition(block_Transl);
                 spinner_block.setSelection(spinner_position);
 
