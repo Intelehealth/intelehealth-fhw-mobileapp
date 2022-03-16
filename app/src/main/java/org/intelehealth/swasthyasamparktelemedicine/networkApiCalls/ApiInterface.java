@@ -11,6 +11,7 @@ import org.intelehealth.swasthyasamparktelemedicine.models.NewUserCreationCall.U
 import org.intelehealth.swasthyasamparktelemedicine.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.swasthyasamparktelemedicine.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.Results;
+import org.intelehealth.swasthyasamparktelemedicine.models.SendCallData;
 import org.intelehealth.swasthyasamparktelemedicine.models.dto.ResponseDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.loginModel.LoginModel;
 import org.intelehealth.swasthyasamparktelemedicine.models.loginProviderModel.LoginProviderModel;
@@ -121,5 +122,5 @@ public interface ApiInterface {
 
 
     @POST
-    Call<ResponseBody> callPatientData(@Url String url, @Body GetPassword getPassword);
+    Call<ResponseBody> callPatientData(@Url String url, @Body SendCallData sendCallData);
 }

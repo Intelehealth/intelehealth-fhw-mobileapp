@@ -726,4 +726,17 @@
     <string name="yes">हां</string>
     <string name="no">नहीं</string>
 
+    //Call Patient Strings
+    <string name="denied_covid">COVID होने से इनकार किया</string>
+    <string name="died">रोगी मर गया</string>
+    <string name="not_reachable">मरीज का नंबर नहीं मिल रहा था।</string>
+    <string name="not_picked_up">मरीज ने नहीं उठाया</string>
+    <string name="able_to_connect">क्या आप रोगी से जुड़ने में सक्षम थे?</string>
+    <string name="need_not_registered">पंजीकृत होने की आवश्यकता नहीं है</string>
+    <string name="patient_reg_specialist">रोगी पंजीकृत - विशेषज्ञ</string>
+    <string name="patient_reg_caller">रोगी पंजीकृत- टेली कॉलर</string>
+    <string name="not_valid_number">मान्य फ़ोन नंबर नहीं है</string>
+    <string name="select_call_output">कॉल आउटपुट चुनें</string>
+    <string name="data_stored_successfully">डेटा सफलतापूर्वक संग्रहीत!</string>
+
 </resources>

@@ -186,6 +186,37 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_hi_en_call_reason(String val) {
+        switch (val) {
+            case "रोगी पंजीकृत - विशेषज्ञ":
+                val = "Patient Registered - Specialist";
+                break;
+            case "रोगी पंजीकृत- टेली कॉलर":
+                val = "Patient Registered- Tele Caller";
+                break;
+            case "पंजीकृत होने की आवश्यकता नहीं है":
+                val = "Need not to be registered";
+                break;
+            case "मान्य फ़ोन नंबर नहीं है":
+                val = "Not a valid phone number";
+                break;
+            case "COVID होने से इनकार किया":
+                val = "Denied having COVID";
+                break;
+            case "रोगी मर गया":
+                val = "Patient Died";
+                break;
+            case "मरीज का नंबर नहीं मिल रहा था":
+                val = "Patient\'s number was not reachable.";
+                break;
+            case "मरीज ने नहीं उठाया":
+                val = "Patient did not picked up";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_hi_housestructure_edit(String val) {
         switch (val) {

@@ -1,5 +1,6 @@
 package org.intelehealth.swasthyasamparktelemedicine.activities.patientDetailActivity;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -63,8 +64,10 @@ import org.intelehealth.swasthyasamparktelemedicine.database.dao.VisitsDAO;
 import org.intelehealth.swasthyasamparktelemedicine.knowledgeEngine.Node;
 import org.intelehealth.swasthyasamparktelemedicine.models.FamilyMemberRes;
 import org.intelehealth.swasthyasamparktelemedicine.models.Patient;
+import org.intelehealth.swasthyasamparktelemedicine.models.SendCallData;
 import org.intelehealth.swasthyasamparktelemedicine.models.dto.EncounterDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.dto.VisitDTO;
+import org.intelehealth.swasthyasamparktelemedicine.networkApiCalls.ApiInterface;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.DateAndTimeUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.DownloadFilesUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.FileUtils;
@@ -95,6 +98,9 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
@@ -1415,15 +1421,16 @@ public class PatientDetailActivity extends AppCompatActivity {
                 });
     }
 
+    //This function will ask the user that whether the call was success or not, based on the answer, the other dialog will show up.
     private void storeCallResponse() {
+        final int[] checkedItems = {-1};
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
-        alertDialogBuilder.setMessage("Were you able to connect with patient?");
+        alertDialogBuilder.setMessage(getString(R.string.able_to_connect));
         alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                String[] items = {"Denied having covid", "Died", "Need not be registered", "Patient Registered - Specialist", "Patient Registered- Tele Caller"};
-                boolean[] checkedItems = {false, false, false, false, false};
+                String[] items = {getString(R.string.denied_covid), getString(R.string.died), getString(R.string.need_not_registered), getString(R.string.patient_reg_specialist), getString(R.string.patient_reg_caller)};
                 showOptionDialog(items,checkedItems, true);
             }
         });
@@ -1431,8 +1438,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                String[] items = {"Not a valid number", "Not reachable", "Patient Did Not Pick Up"};
-                boolean[] checkedItems = {false, false, false};
+                String[] items = {getString(R.string.not_valid_number), getString(R.string.not_reachable), getString(R.string.not_picked_up)};
                 showOptionDialog(items,checkedItems, false);
             }
         });
@@ -1441,22 +1447,32 @@ public class PatientDetailActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    private void showOptionDialog(String[] items,boolean[] checkedItems, boolean success) {
+    private void showOptionDialog(String[] items, int[] checkedItems, boolean success) {
+        final String[] selectedItem = {""};
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
-        alertDialog.setTitle("Select Call Output");
-        alertDialog.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        alertDialog.setTitle(getString(R.string.select_call_output));
+        alertDialog.setSingleChoiceItems(items, checkedItems[0], new DialogInterface.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                Toast.makeText(PatientDetailActivity.this, items[which], Toast.LENGTH_LONG).show();
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem[0] = items[which];
             }
         });
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                storeCallData();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedItem[0] = org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_en_call_reason(selectedItem[0]);
+
                 dialogInterface.dismiss();
-                if(!success)
+                if(!success) {
+                    storeCallData("Unable to reach patient", selectedItem[0]); //these strings has to be sent in same format and in english only
                     onBackPressed();
+                }
+                else
+                {
+                    storeCallData("Able to reach patient", selectedItem[0]); //these strings has to be sent in same format and in english only
+                }
             }
         });
         AlertDialog alert = alertDialog.create();
@@ -1464,7 +1480,37 @@ public class PatientDetailActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void storeCallData() {
+    private void storeCallData(String callStatus, String callAction) {
+
+        //get system date; Format need to be same as per Satyadeep's request.
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String callDate = currentDate.format(todayDate) + " 00:00";
+
+        //populate the body for
+        SendCallData sendCallData = new SendCallData();
+        sendCallData.state = patient_new.getState_province();
+        sendCallData.district = patient_new.getCity_village();
+        sendCallData.callStatus = callStatus;
+        sendCallData.callAction = callAction;
+        sendCallData.callDate = callDate;
+        sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+        String sendDataUrl = urlModifiers.sendCallData();
+        apiInterface.callPatientData(sendDataUrl,sendCallData).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(PatientDetailActivity.this, getString(R.string.data_stored_successfully), Toast.LENGTH_LONG).show();
+                System.out.println(call);
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+            }
+        });
     }
 
     void showAlert(int messageRes) {
