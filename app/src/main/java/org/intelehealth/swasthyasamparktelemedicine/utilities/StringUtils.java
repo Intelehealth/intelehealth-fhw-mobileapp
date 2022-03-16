@@ -807,6 +807,58 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_hi_helplineInfo(String val) {
+        switch (val) {
+            case "रोबो/वॉयस कॉल्स":
+                val = "Robo/ Voice calls";
+                break;
+            case "एसएमएस":
+                val = "SMS";
+                break;
+            case "फेसबुक":
+                val = "Facebook";
+                break;
+            case "ट्विटर":
+                val = "Twitter";
+                break;
+            case "दोस्त/रिश्तेदार":
+                val = "Friends/Relatives";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_helplineInfo_edit(String val) {
+        switch (val) {
+            case "Robo/ Voice calls":
+                val = "रोबो/वॉयस कॉल्स";
+                break;
+            case "SMS":
+                val = "एसएमएस";
+                break;
+            case "Facebook":
+                val = "फेसबुक";
+                break;
+            case "Twitter":
+                val = "ट्विटर";
+                break;
+            case "Friends/Relatives":
+                val = "दोस्त/रिश्तेदार";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String getFileNameWithoutExtension(File file) {
         String fileName = "";
 

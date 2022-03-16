@@ -85,6 +85,30 @@
         <item>स्नातक और उच्चतर</item>
     </string-array>
 
+    <string-array name="helpline_en">
+        <item>Select</item>
+        <item>Robo/ Voice calls</item>
+        <item>SMS</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>Linkedin</item>
+        <item>Friends/Relatives</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="helpline_hi">
+        <item>चयन करें</item>
+        <item>रोबो/वॉयस कॉल्स</item>
+        <item>एसएमएस</item>
+        <item>Instagram</item>
+        <item>फेसबुक</item>
+        <item>ट्विटर</item>
+        <item>Linkedin</item>
+        <item>दोस्त/रिश्तेदार</item>
+        <item>अन्य</item>
+    </string-array>
+
     <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
