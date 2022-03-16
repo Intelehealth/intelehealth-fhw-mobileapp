@@ -17,6 +17,8 @@ import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Block_
 import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Village_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
+import static org.intelehealth.app.utilities.StringUtils.getPethBlock;
+import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlock_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
@@ -191,7 +193,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private int retainPickerMonth;
     private int retainPickerDate;
     int dob_indexValue = 15;
-    String mAddress1Value = "", mPostalValue = "";
+    String mAddress1Value = "", mPostalValue = "", blockValue = "", villageValue = "";
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
@@ -279,6 +281,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             if (intent.hasExtra("newMember")) {
                 mPostalValue = getIntent().getStringExtra("postalCode");
                 mAddress1Value = getIntent().getStringExtra("address1");
+                blockValue = getIntent().getStringExtra("blockSurvey");
+                villageValue = getIntent().getStringExtra("villageSurvey");
             }
         }
 //        if (sessionManager.valueContains("licensekey"))
@@ -418,6 +422,104 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         if (patientID_edit == null) {
             mAddress1.setText(mAddress1Value);
             mPostal.setText(mPostalValue);
+
+            // block
+            try {
+                String blockLanguage = "block_" + sessionManager.getAppLanguage();
+                int block_id = getResources().getIdentifier(blockLanguage, "array", getApplicationContext().getPackageName());
+                if (block_id != 0) {
+                    adapter_block = ArrayAdapter.createFromResource(this, block_id, android.R.layout.simple_spinner_dropdown_item);
+                }
+                spinner_block.setAdapter(adapter_block);
+
+                String block_Transl = "";
+                block_Transl = getPethBlock(blockValue, sessionManager.getAppLanguage());
+                int spinner_position = adapter_block.getPosition(block_Transl);
+                spinner_block.setSelection(spinner_position);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // block
+
+            // village
+            spinner_block.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 1:
+                            spinner_village.setVisibility(View.VISIBLE);
+                            et_block_other.setVisibility(View.GONE);
+                            et_village_other.setVisibility(View.GONE);
+                            et_block_other.setText("");
+                            et_village_other.setText("");
+
+                            String focalVillagePeth_Language = "peth_block_village_" + sessionManager.getAppLanguage();
+                            int focalVillage_Peth_id = getResources().getIdentifier(focalVillagePeth_Language, "array", getApplicationContext().getPackageName());
+                            if (focalVillage_Peth_id != 0) {
+                                adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                        focalVillage_Peth_id, android.R.layout.simple_spinner_dropdown_item);
+                            }
+                            adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    focalVillage_Peth_id, R.layout.custom_spinner);
+                            spinner_village.setAdapter(adapter_FocalVillage_Peth);
+
+                            try {
+                                String village_Peth_Transl = "";
+                                village_Peth_Transl = getPethBlockVillage_edit(villageValue, sessionManager.getAppLanguage());
+                                int spinner_peth_position = adapter_FocalVillage_Peth.getPosition(village_Peth_Transl);
+                                spinner_village.setSelection(spinner_peth_position);
+                            } catch (NullPointerException exception) {
+                                exception.printStackTrace();
+                            }
+                            break;
+
+                        case 2:
+                            spinner_village.setVisibility(View.VISIBLE);
+                            et_block_other.setVisibility(View.GONE);
+                            et_village_other.setVisibility(View.GONE);
+                            et_block_other.setText("");
+                            et_village_other.setText("");
+
+                            String focalVillageSurgane_Language = "suragana_block_villages_" + sessionManager.getAppLanguage();
+                            int focalVillage_Surgane_id = getResources().getIdentifier(focalVillageSurgane_Language, "array", getApplicationContext().getPackageName());
+                            if (focalVillage_Surgane_id != 0) {
+                                adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                        focalVillage_Surgane_id, android.R.layout.simple_spinner_dropdown_item);
+                            }
+                            adapter_FocalVillage_Surgana = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    focalVillage_Surgane_id, R.layout.custom_spinner);
+                            spinner_village.setAdapter(adapter_FocalVillage_Surgana);
+
+                            try {
+                                String village_Surgane_Transl = "";
+                                village_Surgane_Transl = getPethBlockVillage_edit(villageValue, sessionManager.getAppLanguage());
+                                int spinner_surgana_position = adapter_FocalVillage_Surgana.getPosition(village_Surgane_Transl);
+                                spinner_village.setSelection(spinner_surgana_position);
+                            } catch (NullPointerException exception) {
+                                exception.printStackTrace();
+                            }
+                            break;
+
+                        case 3:
+                            spinner_village.setVisibility(View.GONE);
+                            spinner_village.setSelection(0);
+                            textinputlayout_blockVillageOther.setVisibility(View.VISIBLE);
+                            et_block_other.setVisibility(View.VISIBLE);
+                            et_village_other.setVisibility(View.VISIBLE);
+                            break;
+
+                        default:
+//                        spinner_village.setAdapter(null);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
         } else {
             mAddress1.setText(patient1.getAddress1());
 //        mAddress2.setText(patient1.getAddress2());
@@ -1785,34 +1887,35 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        }
         //place delivery spinner adapter
 
-        // block
-        try {
-            String blockLanguage = "block_" + sessionManager.getAppLanguage();
-            int block_id = res.getIdentifier(blockLanguage, "array", getApplicationContext().getPackageName());
-            if (block_id != 0) {
-                adapter_block = ArrayAdapter.createFromResource(this,
-                        block_id, android.R.layout.simple_spinner_dropdown_item);
+        if (!getIntent().hasExtra("newMember") && patientID_edit != null) {
+            // block
+            try {
+                String blockLanguage = "block_" + sessionManager.getAppLanguage();
+                int block_id = res.getIdentifier(blockLanguage, "array", getApplicationContext().getPackageName());
+                if (block_id != 0) {
+                    adapter_block = ArrayAdapter.createFromResource(this,
+                            block_id, android.R.layout.simple_spinner_dropdown_item);
+                }
+                spinner_block.setAdapter(adapter_block);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            spinner_block.setAdapter(adapter_block);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // block
+            // block
 
-        // village
-//        if (spinner_block.getSelectedItemPosition() == 1) {
-        try {
-            String villageLanguage = "peth_block_village_" + sessionManager.getAppLanguage();
-            int village_id = res.getIdentifier(villageLanguage, "array", getApplicationContext().getPackageName());
-            if (village_id != 0) {
-                adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(this,
-                        village_id, android.R.layout.simple_spinner_dropdown_item);
+            // village
+            //        if (spinner_block.getSelectedItemPosition() == 1) {
+            try {
+                String villageLanguage = "peth_block_village_" + sessionManager.getAppLanguage();
+                int village_id = res.getIdentifier(villageLanguage, "array", getApplicationContext().getPackageName());
+                if (village_id != 0) {
+                    adapter_FocalVillage_Peth = ArrayAdapter.createFromResource(this,
+                            village_id, android.R.layout.simple_spinner_dropdown_item);
+                }
+                spinner_village.setAdapter(adapter_FocalVillage_Peth);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            spinner_village.setAdapter(adapter_FocalVillage_Peth);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -4236,7 +4339,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                         break;
 
                     default:
-                        spinner_village.setAdapter(null);
+//                        spinner_village.setAdapter(null);
                 }
             }
 
