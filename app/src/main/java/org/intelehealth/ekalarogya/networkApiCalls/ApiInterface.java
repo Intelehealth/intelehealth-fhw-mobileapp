@@ -109,6 +109,10 @@ public interface ApiInterface {
     Single<CheckAppUpdateRes> checkAppUpdate();
 
     @GET
+    Observable<ResponseBody> PERSON_PROFILE_INFO1(@Url String url,
+                                                     @Header("Authorization") String authHeader);
+
+    @GET
     Observable<MainProfileModel> PERSON_PROFILE_INFO(@Url String url,
                                                      @Header("Authorization") String authHeader);
 

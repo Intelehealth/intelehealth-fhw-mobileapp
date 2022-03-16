@@ -712,4 +712,6 @@
     <string name="take_photo">Take Photo</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="hw_profile_image_picker_title">Health Worker Profile Image!</string>
+
+    <string name="hw_qualification_hint">Enter Qualification</string>
 </resources>

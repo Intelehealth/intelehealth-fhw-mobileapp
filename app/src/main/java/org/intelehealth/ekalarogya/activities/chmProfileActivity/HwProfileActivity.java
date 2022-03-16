@@ -48,6 +48,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -81,9 +82,11 @@ public class HwProfileActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     SessionManager sessionManager = null;
     String mCurrentPhotoPath;
-    TextView hw_name_value, hw_designation_value, total_patregistered_value, total_visitprogress_value,
-            total_consultaion_value, hw_gender_value, hw_state_value, hw_mobile_value,
-            hw_whatsapp_value, hw_email_value, hw_aboutme_value;
+
+    EditText hw_designation_value, hw_aboutme_value;
+    TextView hw_name_value, total_patregistered_value, total_visitprogress_value,
+            total_consultaion_value,hw_gender_value, hw_state_value, hw_mobile_value,
+            hw_whatsapp_value, hw_email_value;
     CircularImageView hw_profile_image;
     private DownloadProtocolsTask BitmapUtils;
 
@@ -109,8 +112,8 @@ public class HwProfileActivity extends AppCompatActivity {
         hw_profile_image = (CircularImageView) findViewById(R.id.hw_profile_image);
 
         hw_name_value = (TextView) findViewById(R.id.hw_name_value);
-        hw_designation_value = (TextView) findViewById(R.id.hw_designation_value);
-        hw_aboutme_value = (TextView) findViewById(R.id.hw_aboutme_value);
+        hw_designation_value = (EditText) findViewById(R.id.hw_designation_value);
+        hw_aboutme_value = (EditText) findViewById(R.id.hw_aboutme_value);
 
         total_patregistered_value = (TextView) findViewById(R.id.total_patregistered_value);
         total_visitprogress_value = (TextView) findViewById(R.id.total_visitprogress_value);
@@ -151,6 +154,7 @@ public class HwProfileActivity extends AppCompatActivity {
 
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/" + sessionManager.getCreatorID() + "?type=hw";
         Logger.logD("Profile", "get profile Info url" + url);
+
         Observable<MainProfileModel> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_INFO(url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -197,7 +201,15 @@ public class HwProfileActivity extends AppCompatActivity {
                 return true;
 
             case R.id.hw_profile_image_edit:
-                selectImage();
+                hw_designation_value.setClickable(true);
+                hw_designation_value.setFocusable(true);
+                hw_designation_value.setCursorVisible(true);
+                hw_designation_value.setFocusableInTouchMode(true);
+                hw_designation_value.requestFocus();
+                hw_designation_value.setSelection(hw_designation_value.getText().length());
+
+                hw_aboutme_value.setVisibility(View.VISIBLE);
+                //selectImage();
                 return true;
 
             default:
@@ -240,7 +252,11 @@ public class HwProfileActivity extends AppCompatActivity {
             HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
             hw_name_value.setText(hwProfileModel.getUserName());
             hw_designation_value.setText(hwProfileModel.getDesignation());
-            hw_aboutme_value.setText(hwProfileModel.getAboutMe());
+            if(!hwProfileModel.getAboutMe().isEmpty() && hwProfileModel.getAboutMe()!=null) {
+                hw_aboutme_value.setText(hwProfileModel.getAboutMe());
+            }else{
+                hw_aboutme_value.setVisibility(View.GONE);
+            }
 
             total_patregistered_value.setText(hwProfileModel.getPatientRegistered() + "");
             total_visitprogress_value.setText(hwProfileModel.getVisitInProgress() + "");
