@@ -1453,6 +1453,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                storeCallData();
                 dialogInterface.dismiss();
                 if(!success)
                     onBackPressed();
@@ -1461,6 +1462,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         AlertDialog alert = alertDialog.create();
         alert.setCanceledOnTouchOutside(false);
         alert.show();
+    }
+
+    private void storeCallData() {
     }
 
     void showAlert(int messageRes) {

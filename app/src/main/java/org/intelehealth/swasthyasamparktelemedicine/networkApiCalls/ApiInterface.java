@@ -118,4 +118,8 @@ public interface ApiInterface {
 
     @POST
     Observable<GetPassword> getUserMapping(@Url String url, @Header("Authorization") String authHeader, @Body GetPassword getPassword);
+
+
+    @POST
+    Call<ResponseBody> callPatientData(@Url String url, @Body GetPassword getPassword);
 }
