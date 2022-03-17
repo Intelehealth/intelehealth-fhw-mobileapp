@@ -3473,6 +3473,12 @@ public final class StringUtils {
             if (context.getString(R.string.no_paid_work).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.no_paid_work);
 
+            if (context.getString(R.string.other_please_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other_please_specify);
+
+            if (context.getString(R.string.others_please_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.others_please_specify);
+
             if (context.getString(R.string.electricity).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.electricity);
 
