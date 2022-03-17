@@ -16,6 +16,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -3670,6 +3671,86 @@ public final class StringUtils {
             if (context.getString(R.string.other).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.other);
         }
+        return text;
+    }
+
+    public static String getHouseholdHeadReligion(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.religion_hindu).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_hindu);
+            }
+
+            if (context.getString(R.string.religion_muslim).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_muslim);
+            }
+
+            if (context.getString(R.string.religion_christian).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_christian);
+            }
+
+            if (context.getString(R.string.religion_sikh).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_sikh);
+            }
+
+            if (context.getString(R.string.religion_buddhist_neo_buddhist).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_buddhist_neo_buddhist);
+            }
+
+            if (context.getString(R.string.religion_other).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_other);
+            }
+
+            if (context.getString(R.string.religion_no_religion).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_no_religion);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getHouseholdHeadReligionEdit(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (updatedContext.getString(R.string.religion_hindu).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_hindu);
+            }
+
+            if (updatedContext.getString(R.string.religion_muslim).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_muslim);
+            }
+
+            if (updatedContext.getString(R.string.religion_christian).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_christian);
+            }
+
+            if (updatedContext.getString(R.string.religion_sikh).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_sikh);
+            }
+
+            if (updatedContext.getString(R.string.religion_buddhist_neo_buddhist).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_buddhist_neo_buddhist);
+            }
+
+            if (updatedContext.getString(R.string.religion_other).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_other);
+            }
+
+            if (updatedContext.getString(R.string.religion_no_religion).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_no_religion);
+            }
+        }
+
         return text;
     }
 

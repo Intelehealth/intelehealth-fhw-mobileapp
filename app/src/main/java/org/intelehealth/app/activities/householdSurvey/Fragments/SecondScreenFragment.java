@@ -7,6 +7,8 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  */
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligion;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligionEdit;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,14 +17,10 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,7 +28,8 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
@@ -41,13 +40,10 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentSecondScreenBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -301,7 +297,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
             if (binding.otherReligionLayout.getVisibility() == View.GONE)
-                patientAttributesDTO.setValue(binding.religionDropDown.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
             else
                 patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -415,7 +411,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                 if (name.equalsIgnoreCase("householdHeadReligion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null) {
-                        int position = getIndex(binding.religionDropDown, value1);
+                        String translatedValue = getHouseholdHeadReligionEdit(value1, requireContext(), sessionManager.getAppLanguage());
+
+                        int position = getIndex(binding.religionDropDown, translatedValue);
                         if (position == -1) { // If other was selected by user.
                             binding.otherReligionLayout.setVisibility(View.VISIBLE);
                             binding.religionDropDown.setSelection(6);
@@ -423,11 +421,12 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                             Log.v("second", "praj" + value1);
                         } else {
                             binding.otherReligionLayout.setVisibility(View.GONE);
-                            binding.religionDropDown.setSelection(getIndex(binding.religionDropDown, value1));
+//                            binding.religionDropDown.setSelection(getIndex(binding.religionDropDown, value1));
+                            binding.religionDropDown.setSelection(position);
                         }
                     }
-
                 }
+
                 if (name.equalsIgnoreCase("householdHeadCaste")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null)
