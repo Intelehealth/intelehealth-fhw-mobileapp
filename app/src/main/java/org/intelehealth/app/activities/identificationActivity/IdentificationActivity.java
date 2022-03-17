@@ -1075,7 +1075,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     private void setupPOCard() {
         //TODO: Validations
-        sessionManager.setNoOfclicks(0);
+        if(patientID_edit == null)
+            sessionManager.setNoOfclicks(0);
+
+
         binding.addPregnancyOutcomeButton.setOnClickListener(v -> {
             if(sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
                 PregnancyRosterDialog dialog = new PregnancyRosterDialog(
@@ -1086,7 +1089,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
             }
             else {
-                Toast.makeText(context, R.string.no_of_times_pasttwoyrs_limit_toast, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.no_of_times_pasttwoyrs_limit_toast, Toast.LENGTH_SHORT
+                ).show();
             }
         });
     }
@@ -2157,6 +2161,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 if (name.equalsIgnoreCase("NoOfTimesPregnant")) {
                     patient1.setTimespregnant(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("No_Pregnancy_Outcome_2years")) {
+                    patient1.setNoOfPregnancyOutcomeTwoYrs(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("PregnanyPastTwoYears")) {
                     patient1.setPasttwoyrs(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -3889,6 +3896,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     cancel = true;
                     return;
                 }
+            }
+
+            Log.v(TAG, "adapter count: " + pregnancyOutcomeAdapter.getItemCount());
+            if(pregnancyOutcomeAdapter.getItemCount() != Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
+                focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                cancel = true;
+                binding.edittextNoOfPregnancyOutcomePastTwoYrs.setFocusable(true);
+                binding.edittextNoOfPregnancyOutcomePastTwoYrs.requestFocus();
+                return;
             }
         }
 

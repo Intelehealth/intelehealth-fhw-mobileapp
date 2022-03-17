@@ -71,6 +71,7 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
             this.position = position;
 
             binding.textviewHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
+            binding.textviewNoofpregnancyoutcomepasttwoyrs.setText(data.getNumberOfPregnancyOutcomePastTwoYrs());
             binding.textviewPregnantpasttwoyrs.setText(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), appLanguage));
 
             if (data.getAnyPregnancyOutcomesInThePastTwoYears().equals("No")) { // TODO replace with identification value
