@@ -631,6 +631,7 @@
                     android:paddingEnd="4sp"
                     android:text="@string/not_treated"
                     android:textSize="13sp" />
+
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/other_source_of_water_no_measures_taken_for_purification_drinking_as_it_is"
                     android:layout_width="wrap_content"

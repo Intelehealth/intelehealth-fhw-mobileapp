@@ -3629,6 +3629,10 @@ public final class StringUtils {
             if (context.getString(R.string.not_treated).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.not_treated);
 
+            if (context.getString(R.string.no_measures_taken_for_purification_drinking_as_it_is).equalsIgnoreCase(text)) {
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.no_measures_taken_for_purification_drinking_as_it_is);
+            }
+
             if (context.getString(R.string.starch_staple_food).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.starch_staple_food);
 
@@ -3861,6 +3865,59 @@ public final class StringUtils {
 
             if (text.contains(updatedContext.getString(R.string.km))) {
                 return context.getString(R.string.km);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getCultivableLand(String text, Context context, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            Context updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.hectare).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.hectare);
+            }
+
+            if (context.getString(R.string.acre).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.acre);
+            }
+
+            if (context.getString(R.string.bigha).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.bigha);
+            }
+
+            if (context.getString(R.string.gunta).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.gunta);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getCultivableLandEdit(String text, Context context, String locale) {
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            Context updatedContext = context.createConfigurationContext(configuration);
+
+            if (text.contains(updatedContext.getText(R.string.hectare))) {
+                return context.getString(R.string.hectare);
+            }
+
+            if (text.contains(updatedContext.getText(R.string.acre))) {
+                return context.getString(R.string.acre);
+            }
+
+            if (text.contains(updatedContext.getText(R.string.bigha))) {
+                return context.getString(R.string.bigha);
+            }
+
+            if (text.contains(updatedContext.getText(R.string.gunta))) {
+                return context.getString(R.string.gunta);
             }
         }
 
