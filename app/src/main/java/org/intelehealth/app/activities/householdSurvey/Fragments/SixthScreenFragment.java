@@ -104,7 +104,7 @@ public class SixthScreenFragment extends Fragment {
 
         mandatoryFields.addAll(Arrays.asList(binding.defecationInOpenRadioGroup));
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -124,8 +124,7 @@ public class SixthScreenFragment extends Fragment {
                 for (int i = 0; i < patientUUIDs.size(); i++) {
                     setData(patientUUIDs.get(i));
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -156,7 +155,7 @@ public class SixthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHrs"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.foodPreparedInThePastTwentyFourHoursLinearLayout));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.foodPreparedInThePastTwentyFourHoursLinearLayout, sessionManager.getAppLanguage(), getContext()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 

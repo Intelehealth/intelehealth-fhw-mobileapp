@@ -108,7 +108,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         initUI(rootView);
         ClickListener();
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -129,8 +129,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                     setData(patientUUIDs.get(i));
                 }
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -205,7 +204,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getContext().getPackageName());
 
             if (relationshiphoh_id != 0) {
-                religionAdapter= ArrayAdapter.createFromResource(getContext(),
+                religionAdapter = ArrayAdapter.createFromResource(getContext(),
                         relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.religionDropDown.setAdapter(religionAdapter);
@@ -220,7 +219,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             int relationshiphoh_id = res.getIdentifier(castLanguage, "array", getContext().getPackageName());
 
             if (relationshiphoh_id != 0) {
-                casteAdapter= ArrayAdapter.createFromResource(getContext(),
+                casteAdapter = ArrayAdapter.createFromResource(getContext(),
                         relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.casteDropDown.setAdapter(casteAdapter);
@@ -299,7 +298,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
-            if(binding.otherReligionLayout.getVisibility() == View.GONE)
+            if (binding.otherReligionLayout.getVisibility() == View.GONE)
                 patientAttributesDTO.setValue(binding.religionDropDown.getSelectedItem().toString());
             else
                 patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
@@ -345,7 +344,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -504,10 +503,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private int getIndex(Spinner spinner, String s){
-        for(int i=0;i<spinner.getCount();i++)
-        {
-            if(spinner.getItemAtPosition(i).toString().equalsIgnoreCase(s))
+    private int getIndex(Spinner spinner, String s) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(s))
                 return i;
         }
         return -1;

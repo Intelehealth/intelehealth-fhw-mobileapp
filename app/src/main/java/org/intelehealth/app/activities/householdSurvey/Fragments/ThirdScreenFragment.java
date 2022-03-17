@@ -64,6 +64,7 @@ public class ThirdScreenFragment extends Fragment {
     PatientsDAO patientsDAO = new PatientsDAO();
 
     MaterialCheckBox village_tank, open_well, handpump, borewell, river, pond, other;
+
     public ThirdScreenFragment() {
         // Required empty public constructor
     }
@@ -164,7 +165,7 @@ public class ThirdScreenFragment extends Fragment {
         mandatoryFields.addAll(Arrays.asList(binding.householdElectricityRadioGroup, binding.waterSourceDistanceRadioGroup, binding.bankAccountRadioGroup));
 
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -184,8 +185,7 @@ public class ThirdScreenFragment extends Fragment {
                 for (int i = 0; i < patientUUIDs.size(); i++) {
                     setData(patientUUIDs.get(i));
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -242,7 +242,7 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //waterSourceDistance
@@ -285,7 +285,7 @@ public class ThirdScreenFragment extends Fragment {
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);
-        Log.v("screen", "secondscreen: \n"+ gson.toJson(patientAttributesDTOList));
+        Log.v("screen", "secondscreen: \n" + gson.toJson(patientAttributesDTOList));
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
@@ -302,15 +302,14 @@ public class ThirdScreenFragment extends Fragment {
 //                    .replace(R.id.framelayout_container, new FourthScreenFragment())
 //                    .commit();
 //        }
-                    getFragmentManager().beginTransaction()
-                    .replace(R.id.framelayout_container, new FourthScreenFragment())
-                    .addToBackStack(null)
-                    .commit();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.framelayout_container, new FourthScreenFragment())
+                .addToBackStack(null)
+                .commit();
 
     }
 
-    private void setData(String patientUuid)
-    {
+    private void setData(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -327,27 +326,27 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdElectricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.electricityYesCheckbox.setChecked(true);
 
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.electricityNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.loadSheddingHoursTextView.setText(value1);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerWeek")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.loadSheddingDaysPerWeekTextView.setText(value1);
                 }
                 if (name.equalsIgnoreCase("runningWaterStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.runningWaterYesCheckbox.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.runningWaterNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("primarySourceOfRunningWater")) {
@@ -389,29 +388,29 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.meter)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.meter)))
                         binding.waterSourceDistanceMeter.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.km)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.km)))
                         binding.waterSourceDistanceKilometer.setChecked(true);
                 }
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.waterSupplyAvailabilityEditText.setText(value1);
                 }
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek")) { //TODO: Add new uuid here
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.waterSupplyAvailabilityDaysPerWeekEditText.setText(value1);
                 }
 
                 if (name.equalsIgnoreCase("householdBankAccountStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.bankAccountYes.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.bankAccountNo.setChecked(true);
                 }
             } while (idCursor1.moveToNext());
