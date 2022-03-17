@@ -39,6 +39,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,8 +167,19 @@ public class FifthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuelType"));
+
+        String otherCookingFuel;
+        if (binding.otherCheckbox.isChecked()) {
+            otherCookingFuel = binding.otherSourcesOfFuelLayout.getEditText().getText().toString();
+        } else {
+            otherCookingFuel = "";
+        }
+
         patientAttributesDTO.setValue(StringUtils
-                .getSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+                .getSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout,
+                        sessionManager.getAppLanguage(),
+                        getContext(),
+                        otherCookingFuel));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -176,7 +188,18 @@ public class FifthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mainLightingSource"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+
+        String otherLightingSource;
+        if (binding.otherSourceOfLightingCheckbox.isChecked()) {
+            otherLightingSource = binding.otherSourcesOfLightingLayout.getEditText().getText().toString();
+        } else {
+            otherLightingSource = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherLightingSource));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //mainDrinkingWaterSource
@@ -184,7 +207,18 @@ public class FifthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mainDrinkingWaterSource"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+
+        String otherDrinkingWaterSource;
+        if (binding.otherSourceOfWaterCheckbox.isChecked()) {
+            otherDrinkingWaterSource = binding.otherSourcesOfDrinkingWaterLayout.getEditText().getText().toString();
+        } else {
+            otherDrinkingWaterSource = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherDrinkingWaterSource));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //saferWaterProcess
@@ -192,7 +226,18 @@ public class FifthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("saferWaterProcess"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+
+        String otherSaferWaterProcess;
+        if (binding.otherWaysOfPurifyingWaterCheckbox.isChecked()) {
+            otherSaferWaterProcess = binding.otherWaysOfPurifyingWaterEditText.getEditText().getText().toString();
+        } else {
+            otherSaferWaterProcess = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherSaferWaterProcess));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //householdToiletFacility
@@ -200,7 +245,7 @@ public class FifthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdToiletFacility"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext(), ""));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         Gson gson = new Gson();
@@ -304,9 +349,35 @@ public class FifthScreenFragment extends Fragment {
                     else
                         binding.dungCakesCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify))) {
                         setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, getString(R.string.other_specify));
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherSourceOfFuel = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                    otherSourceOfFuel = jsonArray.getString(i);
+                                    otherSourceOfFuel = otherSourceOfFuel.substring(otherSourceOfFuel.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfFuelLayout.getEditText().setText(otherSourceOfFuel);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else
                         binding.otherCheckbox.setChecked(false);
                 }
 
@@ -346,9 +417,33 @@ public class FifthScreenFragment extends Fragment {
                     else
                         binding.noneCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify))) {
                         setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, getString(R.string.other_specify));
-                    else
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String mainSourceOfLighting = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                    mainSourceOfLighting = jsonArray.getString(i);
+                                    mainSourceOfLighting = mainSourceOfLighting.substring(mainSourceOfLighting.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfLightingLayout.getEditText().setText(mainSourceOfLighting);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else
                         binding.otherSourceOfLightingCheckbox.setChecked(false);
                 }
 
@@ -423,9 +518,35 @@ public class FifthScreenFragment extends Fragment {
                     else
                         binding.handPumpAtHomeCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify))) {
                         setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout, getString(R.string.other_specify));
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherSourceOfWater = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                    otherSourceOfWater = jsonArray.getString(i);
+                                    otherSourceOfWater = otherSourceOfWater.substring(otherSourceOfWater.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfDrinkingWaterLayout.getEditText().setText(otherSourceOfWater);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else
                         binding.otherSourceOfWaterCheckbox.setChecked(false);
                 }
 
@@ -474,9 +595,35 @@ public class FifthScreenFragment extends Fragment {
                     else
                         binding.notTreatedCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify))) {
                         setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout, getString(R.string.other_specify));
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherSourceOfPurifyingWater = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                    otherSourceOfPurifyingWater = jsonArray.getString(i);
+                                    otherSourceOfPurifyingWater = otherSourceOfPurifyingWater.substring(otherSourceOfPurifyingWater.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherWaysOfPurifyingWaterEditText.getEditText().setText(otherSourceOfPurifyingWater);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else
                         binding.otherWaysOfPurifyingWaterCheckbox.setChecked(false);
                 }
 
@@ -536,9 +683,9 @@ public class FifthScreenFragment extends Fragment {
                     else
                         binding.communalToiletCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.no_facility_uses_open_space_or_field))) {
                         setSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout, getString(R.string.no_facility_uses_open_space_or_field));
-                    else
+                    } else
                         binding.noFacilityUsesOpenFieldCheckbox.setChecked(false);
 
                 }

@@ -49,6 +49,8 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -344,7 +346,18 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+
+        String otherIncome;
+        if (binding.otherIncomeCheckbox.isChecked()) {
+            otherIncome = binding.otherSourcesOfIncomeEditText.getText().toString();
+        } else {
+            otherIncome = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherIncome));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -505,10 +518,37 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                     else
                         remittancesCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_please_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_please_specify))) {
                         otherCheckbox.setChecked(true);
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherIncome = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other_please_specify))) {
+                                    otherIncome = jsonArray.getString(i);
+                                    otherIncome = otherIncome.substring(otherIncome.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfIncomeEditText.setText(otherIncome);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
                         otherCheckbox.setChecked(false);
+                    }
                 }
             } while (idCursor1.moveToNext());
         }

@@ -3416,7 +3416,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String getSelectedCheckboxes(ViewGroup viewGroup, String locale, Context context) {
+    public static String getSelectedCheckboxes(ViewGroup viewGroup, String locale, Context context, String otherString) {
         if (viewGroup == null)
             return null;
 
@@ -3429,7 +3429,18 @@ public final class StringUtils {
             if (childAt instanceof CheckBox) {
                 if (((CheckBox) childAt).isChecked()) {
                     String text = ((CheckBox) childAt).getText().toString();
-                    result.put(getSurveyString(text, locale, configuration, context));
+
+                    if (text.equalsIgnoreCase(context.getString(R.string.other_please_specify)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.others)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.others_please_specify)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.other)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.other_specify))
+                    ) {
+                        text = getSurveyString(text, locale, configuration, context);
+                        text = text.concat(" : " + otherString);
+                        result.put(text);
+                    } else
+                        result.put(getSurveyString(text, locale, configuration, context));
                 }
             }
         }

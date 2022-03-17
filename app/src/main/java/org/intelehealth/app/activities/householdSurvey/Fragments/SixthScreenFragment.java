@@ -157,7 +157,7 @@ public class SixthScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHrs"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.foodPreparedInThePastTwentyFourHoursLinearLayout, sessionManager.getAppLanguage(), getContext()));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.foodPreparedInThePastTwentyFourHoursLinearLayout, sessionManager.getAppLanguage(), getContext(), ""));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 

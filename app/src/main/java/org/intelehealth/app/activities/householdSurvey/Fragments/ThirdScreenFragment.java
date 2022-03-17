@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,6 +122,13 @@ public class ThirdScreenFragment extends Fragment {
             }
         });
 
+        binding.otherCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.otherSourcesOfWaterLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.otherSourcesOfWaterLayout.setVisibility(View.GONE);
+            }
+        });
 
         binding.householdElectricityRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.electricity_yes_checkbox) {
@@ -246,7 +256,18 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout, sessionManager.getAppLanguage(), getContext()));
+
+        String otherSourceOfRunningWater;
+        if (binding.otherCheckbox.isChecked()) {
+            otherSourceOfRunningWater = binding.otherSourcesOfWaterEditText.getText().toString();
+        } else {
+            otherSourceOfRunningWater = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherSourceOfRunningWater));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //waterSourceDistance
@@ -401,10 +422,37 @@ public class ThirdScreenFragment extends Fragment {
                     else
                         pond.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other))) {
                         other.setChecked(true);
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherSourceOfWater = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other))) {
+                                    otherSourceOfWater = jsonArray.getString(i);
+                                    otherSourceOfWater = otherSourceOfWater.substring(otherSourceOfWater.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfWaterEditText.setText(otherSourceOfWater);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
                         other.setChecked(false);
+                    }
 
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
