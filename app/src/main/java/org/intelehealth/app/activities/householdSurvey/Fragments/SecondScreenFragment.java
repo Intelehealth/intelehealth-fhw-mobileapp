@@ -7,6 +7,8 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  */
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdCaste;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdCasteEdit;
 import static org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligion;
 import static org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligionEdit;
 
@@ -309,7 +311,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
-            patientAttributesDTO.setValue(binding.casteDropDown.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getHouseholdCaste(binding.casteDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -430,7 +432,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                 if (name.equalsIgnoreCase("householdHeadCaste")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null)
-                        binding.casteDropDown.setSelection(getIndex(binding.casteDropDown, value1));
+                        binding.casteDropDown.setSelection(getIndex(binding.casteDropDown, getHouseholdCasteEdit(value1, requireContext(), sessionManager.getAppLanguage())));
                 }
                 if (name.equalsIgnoreCase("noOfSmartphones")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));

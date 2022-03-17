@@ -1856,24 +1856,24 @@
     </string-array>
 
     <string-array name="householdHeadCaste_en">
-        <item>Select</item>
-        <item>Schedule Caste(SC)</item>
-        <item>Schedule Tribe(ST)</item>
-        <item>Other Backward Caste(OBC)</item>
-        <item>General</item>
-        <item>Don’tknow</item>
-        <item>Refused to answer</item>
+        <item>@string/select</item>
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
     </string-array>
 
 
     <string-array name="householdHeadCaste_mr">
-        <item>निवडा</item>
-        <item>अनुसूचित जाति (अनुसूचित जाती)</item>
-        <item>अनुसूचित जमाती((एस टी)</item>
-        <item>इतर मागास जात (ओबीसी)</item>
-        <item>सामान्य</item>
-        <item>माहित नाही</item>
-        <item>उत्तर देण्यास नकार दिला</item>
+        <item>@string/select</item>
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
     </string-array>
 
     <string-array name="nas_district">

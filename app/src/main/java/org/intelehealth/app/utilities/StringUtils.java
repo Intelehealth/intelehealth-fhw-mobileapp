@@ -3754,6 +3754,79 @@ public final class StringUtils {
         return text;
     }
 
+    public static String getHouseholdCaste(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.caste_schedule_caste).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_schedule_caste);
+            }
+
+            if (context.getString(R.string.caste_schedule_tribe).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_schedule_tribe);
+            }
+
+            if (context.getString(R.string.caste_other_backward_caste).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_other_backward_caste);
+            }
+
+            if (context.getString(R.string.caste_general).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_general);
+            }
+
+            if (context.getString(R.string.caste_dont_know).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_dont_know);
+            }
+
+            if (context.getString(R.string.caste_refused_to_answer).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_refused_to_answer);
+            }
+        }
+
+        return text;
+    }
+
+
+    public static String getHouseholdCasteEdit(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (updatedContext.getString(R.string.caste_schedule_caste).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_schedule_caste);
+            }
+
+            if (updatedContext.getString(R.string.caste_schedule_tribe).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_schedule_tribe);
+            }
+
+            if (updatedContext.getString(R.string.caste_other_backward_caste).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_other_backward_caste);
+            }
+
+            if (updatedContext.getString(R.string.caste_general).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_general);
+            }
+
+            if (updatedContext.getString(R.string.caste_dont_know).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_dont_know);
+            }
+
+            if (updatedContext.getString(R.string.caste_refused_to_answer).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_refused_to_answer);
+            }
+        }
+
+        return text;
+    }
+
     public static boolean validateFields(List<View> mandatoryFields) {
         boolean result = true;
         for (View mandatoryField : mandatoryFields) {
