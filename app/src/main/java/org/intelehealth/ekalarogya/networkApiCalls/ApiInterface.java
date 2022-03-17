@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.networkApiCalls;
 
 import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
+import org.intelehealth.ekalarogya.models.HwProfileJsonObj;
 import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsPushDTO;
@@ -122,4 +123,9 @@ public interface ApiInterface {
                                                                   @Header("Authorization") String authHeader,
                                                                   @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
 
+    @Headers({"Accept: application/json"})
+    @POST
+    Single<ResponseBody> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
+                                                        @Header("Authorization") String authHeader,
+                                                        @Body HwProfileJsonObj hwProfileJsonObj);
 }

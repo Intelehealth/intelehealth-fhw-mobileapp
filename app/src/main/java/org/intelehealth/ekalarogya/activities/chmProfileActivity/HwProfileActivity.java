@@ -14,6 +14,7 @@ import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
 import org.intelehealth.ekalarogya.database.dao.ImagesPushDAO;
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.models.DocumentObject;
+import org.intelehealth.ekalarogya.models.HwProfileJsonObj;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwPersonalInformationModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
@@ -28,6 +29,7 @@ import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -79,16 +81,17 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 public class HwProfileActivity extends AppCompatActivity {
+    public static String TAG = "HwProfileUpdate";
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     SessionManager sessionManager = null;
     String mCurrentPhotoPath;
 
-    EditText hw_designation_value, hw_aboutme_value;
+    EditText hw_designation_value, hw_aboutme_value, hw_gender_value, hw_mobile_value,hw_whatsapp_value,
+            hw_email_value;
     TextView hw_name_value, total_patregistered_value, total_visitprogress_value,
-            total_consultaion_value,hw_gender_value, hw_state_value, hw_mobile_value,
-            hw_whatsapp_value, hw_email_value;
+            total_consultaion_value, hw_state_value, save_hw_detail;
     CircularImageView hw_profile_image;
-    private DownloadProtocolsTask BitmapUtils;
+    MainProfileModel mainProfileModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +122,19 @@ public class HwProfileActivity extends AppCompatActivity {
         total_visitprogress_value = (TextView) findViewById(R.id.total_visitprogress_value);
         total_consultaion_value = (TextView) findViewById(R.id.total_consultaion_value);
 
-        hw_gender_value = (TextView) findViewById(R.id.hw_gender_value);
+        hw_gender_value = (EditText) findViewById(R.id.hw_gender_value);
         hw_state_value = (TextView) findViewById(R.id.hw_state_value);
-        hw_mobile_value = (TextView) findViewById(R.id.hw_mobile_value);
-        hw_whatsapp_value = (TextView) findViewById(R.id.hw_whatsapp_value);
-        hw_email_value = (TextView) findViewById(R.id.hw_email_value);
+        hw_mobile_value = (EditText) findViewById(R.id.hw_mobile_value);
+        hw_whatsapp_value = (EditText) findViewById(R.id.hw_whatsapp_value);
+        hw_email_value = (EditText) findViewById(R.id.hw_email_value);
 
+        save_hw_detail=(TextView)findViewById(R.id.save_hw_detail);
+        save_hw_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  updateHwDetail();
+            }
+        });
     }
 
     @Override
@@ -160,11 +170,11 @@ public class HwProfileActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<MainProfileModel>() {
                     @Override
-                    public void onNext(MainProfileModel mainProfileModel) {
-                        System.out.println(mainProfileModel.toString() + "");
-                        if (mainProfileModel != null && mainProfileModel.getStatus() == true) {
+                    public void onNext(MainProfileModel mainProfileModel1) {
+                        System.out.println(mainProfileModel1.toString() + "");
+                        if (mainProfileModel1 != null && mainProfileModel1.getStatus() == true) {
                             Gson gson = new Gson();
-                            String userprofile = gson.toJson(mainProfileModel);
+                            String userprofile = gson.toJson(mainProfileModel1);
                             sessionManager.setUserProfileDetail(userprofile);
                             DisplayUserDetail();
                         }
@@ -201,6 +211,7 @@ public class HwProfileActivity extends AppCompatActivity {
                 return true;
 
             case R.id.hw_profile_image_edit:
+
                 hw_designation_value.setClickable(true);
                 hw_designation_value.setFocusable(true);
                 hw_designation_value.setCursorVisible(true);
@@ -208,8 +219,40 @@ public class HwProfileActivity extends AppCompatActivity {
                 hw_designation_value.requestFocus();
                 hw_designation_value.setSelection(hw_designation_value.getText().length());
 
+                hw_aboutme_value.setClickable(true);
+                hw_aboutme_value.setFocusable(true);
+                hw_aboutme_value.setCursorVisible(true);
+                hw_aboutme_value.setFocusableInTouchMode(true);
                 hw_aboutme_value.setVisibility(View.VISIBLE);
-                //selectImage();
+
+                hw_gender_value.setClickable(true);
+                hw_gender_value.setFocusable(true);
+                hw_gender_value.setCursorVisible(true);
+                hw_gender_value.setFocusableInTouchMode(true);
+
+                hw_mobile_value.setClickable(true);
+                hw_mobile_value.setFocusable(true);
+                hw_mobile_value.setCursorVisible(true);
+                hw_mobile_value.setFocusableInTouchMode(true);
+
+                hw_whatsapp_value.setClickable(true);
+                hw_whatsapp_value.setFocusable(true);
+                hw_whatsapp_value.setCursorVisible(true);
+                hw_whatsapp_value.setFocusableInTouchMode(true);
+
+                hw_email_value.setClickable(true);
+                hw_email_value.setFocusable(true);
+                hw_email_value.setCursorVisible(true);
+                hw_email_value.setFocusableInTouchMode(true);
+
+                save_hw_detail.setVisibility(View.VISIBLE);
+                hw_profile_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selectImage();
+                    }
+                });
+
                 return true;
 
             default:
@@ -246,7 +289,7 @@ public class HwProfileActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String userDetail = sessionManager.getUserProfileDetail();
         if (userDetail != null && !userDetail.isEmpty()) {
-            MainProfileModel mainProfileModel = gson.fromJson(userDetail, MainProfileModel.class);
+            mainProfileModel = gson.fromJson(userDetail, MainProfileModel.class);
             String profile_image_url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/personimage/" + sessionManager.getHwID();
 
             HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
@@ -396,4 +439,82 @@ public class HwProfileActivity extends AppCompatActivity {
                 });
     }
 
+    public void updateHwDetail(){
+        if(mainProfileModel!=null){
+            HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
+            if(hwProfileModel!=null) {
+                if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())){
+
+                }
+
+                if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())){
+                    HwProfileJsonObj hwProfileJsonObj=new HwProfileJsonObj();
+                    hwProfileJsonObj.setAttributeType("e519784c-572c-43a4-b049-03e937eb501c");
+                    hwProfileJsonObj.setValue(hw_aboutme_value.getText().toString());
+                    updateOnSever(hwProfileJsonObj, "5e9b9192-b483-402b-905b-087f8d45a3ec");
+                }
+
+                HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
+
+                if(personalInformationModel!=null) {
+                    if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())){
+                       // updateGenderOnSever();
+                    }
+
+                    if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
+                        HwProfileJsonObj hwProfileJsonObj=new HwProfileJsonObj();
+                        hwProfileJsonObj.setAttributeType("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37");
+                        hwProfileJsonObj.setValue(hw_mobile_value.getText().toString());
+                        updateOnSever(hwProfileJsonObj,"");
+                    }
+
+                    if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
+
+                    }
+
+                    if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
+
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateOnSever(HwProfileJsonObj hwProfileJsonObj, String uuid){
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/provider/"+sessionManager.getHwID()+"/attribute/"+uuid;
+        String encoded = sessionManager.getEncoded();
+        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, hwProfileJsonObj);
+        hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody responseBody) {
+                        Logger.logD(TAG, "success" + responseBody);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Onerror " + e.getMessage());
+                    }
+                });
+    }
+
+    public void updateGenderOnSever(HwProfileJsonObj hwProfileJsonObj){
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/person/"+sessionManager.getHwID();
+        String encoded = sessionManager.getEncoded();
+        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, hwProfileJsonObj);
+        hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody responseBody) {
+                        Logger.logD(TAG, "success" + responseBody);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Onerror " + e.getMessage());
+                    }
+                });
+    }
 }

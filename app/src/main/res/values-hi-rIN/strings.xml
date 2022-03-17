@@ -712,4 +712,7 @@
     <string name="take_photo">फोटो लो</string>
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="hw_profile_image_picker_title">स्वास्थ्य कार्यकर्ता प्रोफ़ाइल छवि!</string>
+
+    <string name="hw_qualification_hint">योग्यता</string>
+    <string name="hw_aboutme_hint">मेरे बारे में</string>
 </resources>
