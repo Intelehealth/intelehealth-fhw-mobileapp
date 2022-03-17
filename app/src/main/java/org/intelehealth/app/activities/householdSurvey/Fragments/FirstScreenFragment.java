@@ -119,10 +119,34 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         View rootView = inflater.inflate(R.layout.fragment_first_screen, container, false);
         initUI(rootView);
         radioButtonClickListener();
-        setData(patientUuid);
-
-
+        getPatientUuidsForHouseholdValue(patientUuid);
+//        setData(patientUuid);
         return rootView;
+    }
+
+    public void getPatientUuidsForHouseholdValue(String patientUuid) {
+        // Getting the household value and then getting all the Patientuuids listed to it so that we
+        // can insert all of this data into each of them.
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDss", "" + patientUUIDs);
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    setData(patientUUIDs.get(i));
+                }
+
+            }
+            catch (Exception e) {
+            }
+        }
     }
 
     private void radioButtonClickListener() {

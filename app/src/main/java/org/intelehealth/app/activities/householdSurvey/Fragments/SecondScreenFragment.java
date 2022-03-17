@@ -52,6 +52,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -106,17 +107,32 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         View rootView = binding.getRoot();
         initUI(rootView);
         ClickListener();
-        setData(patientUuid);
-       /* ImageButton next_button = rootView.findViewById(R.id.next_button);
-        next_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.framelayout_container, new ThirdScreenFragment())
-                        .commit();
-            }
-        });*/
+        getPatientUuidsForHouseholdValue(patientUuid);
+       // setData(patientUuid);
         return rootView;
+    }
+
+    public void getPatientUuidsForHouseholdValue(String patientUuid) {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDss", "" + patientUUIDs);
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    setData(patientUUIDs.get(i));
+                }
+
+            }
+            catch (Exception e) {
+            }
+        }
     }
 
     private void initUI(View rootView) {

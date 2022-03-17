@@ -137,8 +137,12 @@ public class ThirdScreenFragment extends Fragment {
                 binding.waterSourceDistanceTextView.setVisibility(View.VISIBLE);
 
                 binding.waterSupplyAvailabilityTextView.setVisibility(View.GONE);
+                binding.waterSupplyAvailabilityDaysPerWeekTextView.setVisibility(View.GONE);
+
                 binding.waterSupplyAvailabilityEditText.setVisibility(View.GONE);
                 binding.waterSupplyAvailabilityEditText.setText("0");
+                binding.waterSupplyAvailabilityDaysPerWeekEditText.setVisibility(View.GONE);
+                binding.waterSupplyAvailabilityDaysPerWeekEditText.setText("0");
             } else {
                 binding.primarySourceOfWaterTextView.setVisibility(View.GONE);
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.GONE);
@@ -147,6 +151,9 @@ public class ThirdScreenFragment extends Fragment {
 
                 binding.waterSupplyAvailabilityTextView.setVisibility(View.VISIBLE);
                 binding.waterSupplyAvailabilityEditText.setVisibility(View.VISIBLE);
+
+                binding.waterSupplyAvailabilityDaysPerWeekTextView.setVisibility(View.VISIBLE);
+                binding.waterSupplyAvailabilityDaysPerWeekEditText.setVisibility(View.VISIBLE);
             }
         });
 
@@ -156,8 +163,31 @@ public class ThirdScreenFragment extends Fragment {
 
         mandatoryFields.addAll(Arrays.asList(binding.householdElectricityRadioGroup, binding.waterSourceDistanceRadioGroup, binding.bankAccountRadioGroup));
 
-        setData(patientUuid);
+        getPatientUuidsForHouseholdValue(patientUuid);
+       // setData(patientUuid);
         return rootView;
+    }
+
+    public void getPatientUuidsForHouseholdValue(String patientUuid) {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDss", "" + patientUUIDs);
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    setData(patientUUIDs.get(i));
+                }
+            }
+            catch (Exception e) {
+            }
+        }
     }
 
     private void insertData() throws DAOException {
@@ -232,6 +262,14 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
         patientAttributesDTO.setValue(binding.waterSupplyAvailabilityEditText.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //waterSupplyAvailabilityDaysPerWeek
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
+        patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //householdBankAccountStatus
@@ -356,11 +394,19 @@ public class ThirdScreenFragment extends Fragment {
                     else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.km)))
                         binding.waterSourceDistanceKilometer.setChecked(true);
                 }
+
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if(value1!=null)
                         binding.waterSupplyAvailabilityEditText.setText(value1);
                 }
+
+                if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek")) { //TODO: Add new uuid here
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if(value1!=null)
+                        binding.waterSupplyAvailabilityDaysPerWeekEditText.setText(value1);
+                }
+
                 if (name.equalsIgnoreCase("householdBankAccountStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="50dp"
+    android:layout_marginEnd="50dp"
+    android:background="@color/white">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:id="@+id/main_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_how_many_times_have_you_been_pregnant"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+
+            <TextView
+                android:id="@+id/textview_howmanytimmespregnant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <TextView
+                android:id="@+id/textview_pregnantpasttwoyrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/pregnancy_questions_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_pregnancy_outcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_what_was_the_outcome_of_your_pregnancy"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_outcomepregnancy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llChildAlive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_is_the_child_alive"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_childalive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_year_of_pregnancy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_what_was_the_year_of_pregnancy_outcome"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_yearofpregnancy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_months_pregnancy_last"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_how_many_months_did_this_pregnancy_last"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/textview_monthspregnancylast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_months_being_pregnant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_how_many_months_have_you_been_pregnant"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/textview_monthsbeingpregnant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDeliveryPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_what_is_the_place_of_delivery"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_placeofdeliverypregnant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llFocalPoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/focal_facility_for_this_pregnancy"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_focal_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                    <!--                                    <Space-->
+                    <!--                                        android:layout_width="10dp"-->
+                    <!--                                        android:layout_height="10dp" />-->
+
+                    <!--                                    <Spinner-->
+                    <!--                                        android:id="@+id/spinner_focal_village"-->
+                    <!--                                        android:layout_width="match_parent"-->
+                    <!--                                        android:layout_height="wrap_content"-->
+                    <!--                                        android:layout_marginStart="5dp"-->
+                    <!--                                        android:layout_marginBottom="10dp"-->
+                    <!--                                        android:visibility="gone" />-->
+
+                </LinearLayout>
+
+                <!--                                <EditText-->
+                <!--                                    android:id="@+id/edittext_focalfacility"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:hint="@string/txt_focal_facility_for_this_pregnancy" />-->
+
+                <!-- <EditText
+                    android:id="@+id/edittext_singlemultiplebirths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Was this a single/multiple births?"/>-->
+                <LinearLayout
+                    android:id="@+id/llSingleMultipleBirth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_was_this_a_single_multiple_births"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_singlemultiplebirths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                    <!--                        single/multiple-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_baby_age_died"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_how_old_was_the_baby_when_he_she_died"
+                        android:textSize="15sp"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/textview_babyagedied"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llBabyGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_what_is_was_the_sex_of_the_baby"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_sexofbaby"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pregnancy_planned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/was_this_pregnancy_planned"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_pregnancyplanned"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pregnancy_high_risk_case"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_were_you_identified_as_a_high_risk_pregnancy_case"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_pregnancyhighriskcase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llChildComplications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_were_any_complications_identified_at_the_time_of_delivery"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/textview_pregnancycomplications"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

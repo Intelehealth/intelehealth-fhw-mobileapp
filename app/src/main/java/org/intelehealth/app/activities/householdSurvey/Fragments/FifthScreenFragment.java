@@ -38,6 +38,8 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -125,9 +127,33 @@ public class FifthScreenFragment extends Fragment {
                 binding.otherWaysOfPurifyingWaterEditText.setVisibility(View.GONE);
             }
         });
-        setData(patientUuid);
+        getPatientUuidsForHouseholdValue(patientUuid);
+       // setData(patientUuid);
         return rootView;
     }
+
+    public void getPatientUuidsForHouseholdValue(String patientUuid) {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDss", "" + patientUUIDs);
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    setData(patientUUIDs.get(i));
+                }
+            }
+            catch (Exception e) {
+            }
+        }
+    }
+
 
     private void insertData() throws DAOException {
         PatientsDAO patientsDAO = new PatientsDAO();
@@ -422,11 +448,20 @@ public class FifthScreenFragment extends Fragment {
                         setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.use_electronic_purifier));
                     else
                         binding.useElectronicPurifierCheckbox.setChecked(false);
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.no_measures_taken_for_purification_drinking_as_it_is)))
+                        setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.no_measures_taken_for_purification_drinking_as_it_is));
+                    else
+                        binding.otherSourceOfWaterNoMeasuresTakenForPurificationDrinkingAsItIs.setChecked(false);
 
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.let_it_stand_and_settle)))
                         setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.let_it_stand_and_settle));
                     else
                         binding.letItStandAndSettleCheckbox.setChecked(false);
+
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.not_treated)))
+                        setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.not_treated));
+                    else
+                        binding.notTreatedCheckbox.setChecked(false);
 
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.other_specify)))
                         setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,getString(R.string.other_specify));

@@ -55,6 +55,12 @@
     <item
         android:id="@+id/menu_item_cancer"
         android:title="@string/cancer" />
+    <item
+        android:id="@+id/menu_item_tb"
+        android:title="@string/tB" />
+    <item
+        android:id="@+id/menu_item_water_related_diseases"
+        android:title="@string/water_related_diseases" />
 
     <item
         android:id="@+id/menu_item_other"
