@@ -50,6 +50,7 @@ public class SessionManager {
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
+    private static final String NO_OFCLICKS = "NO_OFCLICKS";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -131,6 +132,18 @@ public class SessionManager {
         editor.commit();
     }
     //Household
+
+    // no of clicks
+    public int getNoOfclicks() {
+        return pref.getInt(NO_OFCLICKS, 0);
+    }
+
+    public void setNoOfclicks(int noOfclicks) {
+        editor.putInt(NO_OFCLICKS, noOfclicks);
+        editor.commit();
+    }
+    // no of clicks
+
 
     public String getSessionID() {
         return pref.getString(SESSION_ID, "");

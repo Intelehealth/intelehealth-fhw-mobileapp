@@ -34,6 +34,8 @@ public class PregnancyRosterDialog extends DialogFragment {
     private PregnancyOutcomeCallback callback;
     private SessionManager sessionManager;
     private PregnancyRosterData data;
+    int noOfClicks;
+    String howmanytimespregnant, pregnancyoutcomeInTwoYrs, noOftimesPregnantTwoYrs;
     private Bundle bundle;
 
     // Adapters
@@ -42,6 +44,17 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     public final String SELECT = "Select";
     public final String SELECT_BLOCK = "Select Block";
+
+    public PregnancyRosterDialog(int noOfClicks, String howmanytimespregnant, String pregnancyoutcomeInTwoYrs, String noOftimesPregnantTwoYrs) {
+        this.noOfClicks = noOfClicks;
+        this.howmanytimespregnant = howmanytimespregnant;
+        this.pregnancyoutcomeInTwoYrs = pregnancyoutcomeInTwoYrs;
+        this.noOftimesPregnantTwoYrs = noOftimesPregnantTwoYrs;
+    }
+
+    public PregnancyRosterDialog() {
+
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,6 +102,8 @@ public class PregnancyRosterDialog extends DialogFragment {
                     } else {
                         callback.savePregnancyData(data);
                     }
+                    noOfClicks = noOfClicks + 1;
+                    sessionManager.setNoOfclicks(noOfClicks);
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getContext(), getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
@@ -101,7 +116,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     private void setAdapters() {
         // Pregnant Past Two Years Adapter
-        try {
+       /* try {
             String pastTwoYearsLanguage = "pasttwoyrs_" + sessionManager.getAppLanguage();
             int pastTwoYearsId = getResources().getIdentifier(pastTwoYearsLanguage, "array", requireActivity().getApplicationContext().getPackageName());
             if (pastTwoYearsId != 0) {
@@ -110,7 +125,7 @@ public class PregnancyRosterDialog extends DialogFragment {
             binding.spinnerPregnantpasttwoyrs.setAdapter(adapter_pregnantPastTwoYears);
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
-        }
+        }*/
 
         // Pregnancy Outcome Adapter
         try {
@@ -229,6 +244,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     private void setListeners() {
         // Pregnant Past Two Years Listener
+/*
         binding.spinnerPregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -243,6 +259,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 
             }
         });
+*/
 
         binding.spinnerOutcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -350,7 +367,8 @@ public class PregnancyRosterDialog extends DialogFragment {
         boolean areDetailsCorrect = true;
         int pregnancyOutcomePosition = binding.spinnerOutcomepregnancy.getSelectedItemPosition();
 
-        if (binding.edittextHowmanytimmespregnant.getText().toString().equalsIgnoreCase("") || binding.edittextHowmanytimmespregnant.getText().toString().isEmpty()) {
+       /* if (binding.edittextHowmanytimmespregnant.getText().toString().equalsIgnoreCase("") ||
+                binding.edittextHowmanytimmespregnant.getText().toString().isEmpty()) {
             setEditTextError(binding.edittextHowmanytimmespregnant);
             areDetailsCorrect = false;
         }
@@ -358,9 +376,9 @@ public class PregnancyRosterDialog extends DialogFragment {
         if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 0) {
             setSpinnerError(binding.spinnerPregnantpasttwoyrs);
             areDetailsCorrect = false;
-        }
+        }*/
 
-        if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+     //   if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
             if (data.getPregnancyOutcome().equals(getString(R.string.select))) {
                 setSpinnerError(binding.spinnerOutcomepregnancy);
                 areDetailsCorrect = false;
@@ -438,19 +456,23 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.spinnerPregnancyhighriskcase);
                 areDetailsCorrect = false;
             }
-        }
+       // }
 
         return areDetailsCorrect;
     }
 
     private PregnancyRosterData fetchData() {
         PregnancyRosterData data = new PregnancyRosterData();
-        data.setNumberOfTimesPregnant(binding.edittextHowmanytimmespregnant.getText().toString());
+
+      //  data.setNumberOfTimesPregnant(binding.edittextHowmanytimmespregnant.getText().toString());
+        data.setNumberOfTimesPregnant(howmanytimespregnant);
+        data.setAnyPregnancyOutcomesInThePastTwoYears(pregnancyoutcomeInTwoYrs);
+        data.setNumberOfPregnancyOutcomePastTwoYrs(noOftimesPregnantTwoYrs);
         int pregnancyOutcomePosition = binding.spinnerOutcomepregnancy.getSelectedItemPosition();
 
-        data.setAnyPregnancyOutcomesInThePastTwoYears(StringUtils.getPasttwoyrs(binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+      //  data.setAnyPregnancyOutcomesInThePastTwoYears(StringUtils.getPasttwoyrs(binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-        if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+       // if (pregnancyoutcomeSpinnerPosition == 1) {
             data.setPregnancyOutcome(StringUtils.getOutcomePregnancy(binding.spinnerOutcomepregnancy.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
             if (pregnancyOutcomePosition == 1)
@@ -492,7 +514,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 
             data.setPregnancyPlanned(StringUtils.getPregnancyPlanned(binding.spinnerPregnancyplanned.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             data.setHighRiskPregnancy(StringUtils.getHighRiskPregnancy(binding.spinnerPregnancyhighriskcase.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        }
+      //  }
 
         return data;
     }
@@ -508,10 +530,12 @@ public class PregnancyRosterDialog extends DialogFragment {
     }
 
     private void setBundleData() {
-        binding.edittextHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
+       /// binding.edittextHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
 
-        int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), sessionManager.getAppLanguage()));
-        binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
+        int spinnerPosition = 0;
+//        int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(
+//                StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), sessionManager.getAppLanguage()));
+//        binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
 
         if (!checkIfEmpty(data.getPregnancyOutcome())) {
             spinnerPosition = adapter_outcomepregnancy.getPosition(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), sessionManager.getAppLanguage()));
@@ -601,5 +625,13 @@ public class PregnancyRosterDialog extends DialogFragment {
 
     private Boolean checkIfEmpty(String text) {
         return text == null || text.equals(SELECT) || text.equals(SELECT_BLOCK);
+    }
+
+    public int getNoOfClicks() {
+        return noOfClicks;
+    }
+
+    public void setNoOfClicks(int noOfClicks) {
+        this.noOfClicks = noOfClicks;
     }
 }

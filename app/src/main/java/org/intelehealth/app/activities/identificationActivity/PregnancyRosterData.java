@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.identificationActivity;
 public class PregnancyRosterData {
     private String numberOfTimesPregnant;
     private String anyPregnancyOutcomesInThePastTwoYears;
+    private String numberOfPregnancyOutcomePastTwoYrs;
     private String pregnancyOutcome;
     private String isChildAlive;
     private String yearOfPregnancyOutcome;
@@ -23,6 +24,14 @@ public class PregnancyRosterData {
 
     public void setNumberOfTimesPregnant(String numberOfTimesPregnant) {
         this.numberOfTimesPregnant = numberOfTimesPregnant;
+    }
+
+    public String getNumberOfPregnancyOutcomePastTwoYrs() {
+        return numberOfPregnancyOutcomePastTwoYrs;
+    }
+
+    public void setNumberOfPregnancyOutcomePastTwoYrs(String numberOfPregnancyOutcomePastTwoYrs) {
+        this.numberOfPregnancyOutcomePastTwoYrs = numberOfPregnancyOutcomePastTwoYrs;
     }
 
     public String getAnyPregnancyOutcomesInThePastTwoYears() {
