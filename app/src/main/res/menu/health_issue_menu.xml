@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/menu_item_skin_issues"
-        android:title="@string/skin_issues" />
+        android:title="@string/skin_diseases" />
 
     <item
         android:id="@+id/menu_item_eye_vision_issues"

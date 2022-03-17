@@ -596,7 +596,7 @@
                                 android:freezesText="true"
                                 android:hint="@string/household_number"
                                 android:imeOptions="actionUnspecified"
-                                android:inputType="textCapWords"
+                                android:inputType="number"
                                 android:maxLength="50"
                                 android:maxLines="2"
                                 android:singleLine="false"
