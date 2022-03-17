@@ -3648,6 +3648,27 @@ public final class StringUtils {
 
             if (context.getString(R.string.any_vegetables).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.any_vegetables);
+
+            if (context.getString(R.string.village_tank).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.village_tank);
+
+            if (context.getString(R.string.open_well).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.open_well);
+
+            if (context.getString(R.string.hand_pump_checkbox).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.hand_pump_checkbox);
+
+            if (context.getString(R.string.bore_well).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.bore_well);
+
+            if (context.getString(R.string.river).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.river);
+
+            if (context.getString(R.string.pond).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.pond);
+
+            if (context.getString(R.string.other).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other);
         }
         return text;
     }

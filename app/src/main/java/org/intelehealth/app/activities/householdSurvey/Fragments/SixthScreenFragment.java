@@ -6,6 +6,7 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentFifthScreenBinding;
@@ -185,6 +187,16 @@ public class SixthScreenFragment extends Fragment {
     }
 
     private void setData(String patientUuid) {
+        Context updatedContext;
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = requireContext().createConfigurationContext(configuration);
+        } else {
+            updatedContext = requireContext();
+        }
+
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -208,25 +220,25 @@ public class SixthScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHrs")) {
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null) {
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.starch_staple_food)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.starch_staple_food)))
                             binding.starchStapleFoodCheckbox.setChecked(true);
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.beans_and_peas)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.beans_and_peas)))
                             binding.beansAndPeasCheckbox.setChecked(true);
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.nuts_and_seeds)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.nuts_and_seeds)))
                             binding.nutsAndSeedsCheckbox.setChecked(true);
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.dairy)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.dairy)))
                             binding.dairyCheckbox.setChecked(true);
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.eggs)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.eggs)))
                             binding.eggsCheckbox.setChecked(true);
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.flesh_food)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.flesh_food)))
                             binding.fleshFoodCheckbox.setChecked(true);
 
-                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(getString(R.string.any_vegetables)))
+                        if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")).contains(updatedContext.getString(R.string.any_vegetables)))
                             binding.anyVegetablesCheckbox.setChecked(true);
                     }
                 }

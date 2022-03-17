@@ -979,7 +979,7 @@
     <string name="nas_what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
     <string name="piped_into_dwelling">Piped Into Dwelling</string>
-    <string name="piped_into_yard_plot">Piped to Yard/Plot</string>
+    <string name="piped_into_yard_plot">Piped to Yard or Plot</string>
     <string name="public_tap_standpipe">Public Tap or Standpipe</string>
     <string name="tube_well_borehole">Tube Well or Borehole</string>
     <string name="protected_well_checkbox">Protected Well</string>
@@ -995,7 +995,7 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
     <string name="boil">Boil</string>
     <string name="use_alum">Use Alum</string>
-    <string name="add_bleach_chlorine_tablets_drops">Add Bleach/Chlorine Tablets or Drops</string>
+    <string name="add_bleach_chlorine_tablets_drops">Add Bleach or Chlorine Tablets or Drops</string>
     <string name="strain_through_a_cloth">Strain Through a Cloth</string>
     <string name="use_water_filter_ceramic_sand_composite_etc">Use Water Filter (Ceramic or Sand or Composite etc.)</string>
     <string name="use_electronic_purifier">Use Electronic Purifier</string>
@@ -1012,7 +1012,7 @@
     <string name="ventilated_improved_pit_biogas_latrine">Ventilated Improved Pit (VIP) or Biogas Latrine</string>
     <string name="pit_latrine_with_slab">Pit Latrine With Slab</string>
     <string name="pit_latrine_without_slab_open_pit">Pit Latrine Without Slab or Open Pit</string>
-    <string name="twin_pit_composting_toilet">Twin Pit / Composting Toilet</string>
+    <string name="twin_pit_composting_toilet">Twin Pit or Composting Toilet</string>
     <string name="dry_toilet">Dry Toilet</string>
     <string name="communal_toilet">Communal Toilet</string>
     <string name="no_facility_uses_open_space_or_field">No Facility / Uses Open Space or Field</string>
@@ -1268,9 +1268,6 @@
     <string name="tB">TB</string>
     <string name="skin_diseases">Skin diseases</string>
     <string name="water_related_diseases">Water-related diseases</string>
-
-
-
 
 
     <string name="select_primary_health_care_provider">Select Primary Healthcare Provider</string>
