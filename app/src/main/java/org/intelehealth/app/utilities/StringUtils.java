@@ -3827,6 +3827,46 @@ public final class StringUtils {
         return text;
     }
 
+    public static String getWaterSourceDistance(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.meter).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.meter);
+            }
+
+            if (context.getString(R.string.km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.km);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getWaterSourceDistanceEdit(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (text.contains(updatedContext.getString(R.string.meter))) {
+                return context.getString(R.string.meter);
+            }
+
+            if (text.contains(updatedContext.getString(R.string.km))) {
+                return context.getString(R.string.km);
+            }
+        }
+
+        return text;
+    }
+
     public static boolean validateFields(List<View> mandatoryFields) {
         boolean result = true;
         for (View mandatoryField : mandatoryFields) {

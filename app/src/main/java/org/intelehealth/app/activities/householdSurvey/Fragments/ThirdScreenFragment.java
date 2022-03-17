@@ -46,6 +46,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistance;
+import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistanceEdit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -253,8 +255,15 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
-            patientAttributesDTO.setValue(binding.waterSourceDistanceEditText.getText().toString() + " " +
-                    (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() == binding.waterSourceDistanceMeter.getId() ? binding.waterSourceDistanceMeter.getText().toString() : binding.waterSourceDistanceKilometer.getText().toString()));
+
+            String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
+                    (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
+                            binding.waterSourceDistanceMeter.getId() ?
+                            getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
+                            getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
+                    );
+
+            patientAttributesDTO.setValue(distance);
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -400,10 +409,17 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.meter)))
-                        binding.waterSourceDistanceMeter.setChecked(true);
-                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.km)))
-                        binding.waterSourceDistanceKilometer.setChecked(true);
+                    if (value1 != null) {
+                        String[] splitString = value1.split(" ");
+                        splitString[1] = getWaterSourceDistanceEdit(splitString[1], requireContext(), sessionManager.getAppLanguage());
+
+                        if (splitString[1].equalsIgnoreCase(getString(R.string.meter)))
+                            binding.waterSourceDistanceMeter.setChecked(true);
+                        else
+                            binding.waterSourceDistanceKilometer.setChecked(true);
+
+                        binding.waterSourceDistanceEditText.setText(splitString[0]);
+                    }
                 }
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) {
