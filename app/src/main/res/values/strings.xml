@@ -965,6 +965,7 @@
     <string name="straw_shrubs_grass">Straw or Shrubs or Grass</string>
     <string name="agricultural_crop_waste">Agricultural Crop Waste</string>
     <string name="dung_cakes">Dung Cakes</string>
+    <string name="no_measures_taken_for_purification_drinking_as_it_is">No measures taken for purification, drinking as it is</string>
     <string name="other_specify">Other (Specify)</string>
     <string name="others">Others</string>
     <string name="what_is_the_main_source_of_lighting_in_this_household">What is the main source of lighting in this household?</string>

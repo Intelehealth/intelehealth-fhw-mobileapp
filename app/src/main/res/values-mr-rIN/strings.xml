@@ -934,6 +934,7 @@
     <string name="straw_shrubs_grass">पेंढा / पाला - पाचोळा, झुडुपे  / गवत</string>
     <string name="agricultural_crop_waste">कृषी पीक कचरा</string>
     <string name="dung_cakes">गवऱ्या</string>
+    <string name="no_measures_taken_for_purification_drinking_as_it_is">शुद्धीकरणासाठी उपाययोजना केल्या नाहीत, पाणी जसे आहे तसे प्याले"</string>
     <string name="other_specify">इतर (स्पष्ट करा)</string>
     <string name="others">इतर</string>
     <string name="what_is_the_main_source_of_lighting_in_this_household">या घरात प्रकाशाचा मुख्य स्त्रोत काय आहे?</string>

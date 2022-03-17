@@ -330,6 +330,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins"
+                    android:text="@string/zero"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
                     android:text="@string/zero_ten_thousand"
                     android:textSize="13sp" />
 
@@ -487,6 +495,13 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins"
                     android:text="@string/more_than_twenty_five_hundred"
+                    android:textSize="13sp" />
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/none"
                     android:textSize="13sp" />
 
             </RadioGroup>
