@@ -2,48 +2,31 @@ package org.intelehealth.ekalarogya.activities.chmProfileActivity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
-import org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
-import org.intelehealth.ekalarogya.database.dao.ImagesPushDAO;
-import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
-import org.intelehealth.ekalarogya.models.DocumentObject;
-import org.intelehealth.ekalarogya.models.HwProfileJsonObj;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwPersonalInformationModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
 import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfile;
-import org.intelehealth.ekalarogya.services.DownloadProtocolsTask;
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
-import org.intelehealth.ekalarogya.utilities.UuidDictionary;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.json.JSONObject;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,24 +34,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaderFactory;
-import com.bumptech.glide.load.model.LazyHeaders;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -440,69 +414,70 @@ public class HwProfileActivity extends AppCompatActivity {
     }
 
     public void updateHwDetail(){
-        if(mainProfileModel!=null){
-            HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
-            if(hwProfileModel!=null) {
-                if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())){
 
-                }
-
-                if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())){
-                    HwProfileJsonObj hwProfileJsonObj=new HwProfileJsonObj();
-                    hwProfileJsonObj.setAttributeType("e519784c-572c-43a4-b049-03e937eb501c");
-                    hwProfileJsonObj.setValue(hw_aboutme_value.getText().toString());
-                    updateOnSever(hwProfileJsonObj, "5e9b9192-b483-402b-905b-087f8d45a3ec");
-                }
-
-                HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
-
-                if(personalInformationModel!=null) {
-                    if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())){
-                       // updateGenderOnSever();
+        /*{
+            "phoneNumber": "7867",
+                "qualification": "MBBS, MD",
+                "fontOfSign": "almondita",
+                "whatsapp": "7972269174",
+                "registrationNumber": "MAR1208632",
+                "emailId": "hiren@elxrsmarthealth.com",
+                "address": "14, Shreeji Arcade, Opp Nitin Company, 400601",
+                "textOfSign": "DrGenPhy",
+                "specialization": "Allopathy",
+                "visitState": "All",
+                "aboutMe": "test",
+                "timings": "12:00 AM - 3:00 AM"
+                "gender":"female"
+        }*/
+        try{
+            if(mainProfileModel!=null){
+                JSONObject obj=new JSONObject();
+                HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
+                if(hwProfileModel!=null) {
+                    if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())){
+                        obj.put("qualification",hw_designation_value.getText().toString().trim());
                     }
 
-                    if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
-                        HwProfileJsonObj hwProfileJsonObj=new HwProfileJsonObj();
-                        hwProfileJsonObj.setAttributeType("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37");
-                        hwProfileJsonObj.setValue(hw_mobile_value.getText().toString());
-                        updateOnSever(hwProfileJsonObj,"");
+                    if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())){
+                        obj.put("aboutMe",hw_aboutme_value.getText().toString().trim());
                     }
 
-                    if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
+                    HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
 
+                    if(personalInformationModel!=null) {
+                        if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())){
+                            obj.put("gender",hw_gender_value.getText().toString().trim());
+                        }
+
+                        if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
+                            obj.put("phoneNumber",hw_mobile_value.getText().toString().trim());
+                        }
+
+                        if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
+                            obj.put("whatsapp",hw_whatsapp_value.getText().toString().trim());
+                        }
+
+                        if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
+                            obj.put("emailId",hw_email_value.getText().toString().trim());
+                        }
                     }
-
-                    if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
-
+                    if(obj!=null) {
+                        updateOnSever(obj);
                     }
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
-    public void updateOnSever(HwProfileJsonObj hwProfileJsonObj, String uuid){
-        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/provider/"+sessionManager.getHwID()+"/attribute/"+uuid;
+    public void updateOnSever(JSONObject obj){
+        //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
+        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getProviderID();
         String encoded = sessionManager.getEncoded();
-        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, hwProfileJsonObj);
-        hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<ResponseBody>() {
-                    @Override
-                    public void onSuccess(ResponseBody responseBody) {
-                        Logger.logD(TAG, "success" + responseBody);
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, "Onerror " + e.getMessage());
-                    }
-                });
-    }
-
-    public void updateGenderOnSever(HwProfileJsonObj hwProfileJsonObj){
-        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/person/"+sessionManager.getHwID();
-        String encoded = sessionManager.getEncoded();
-        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, hwProfileJsonObj);
+        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<ResponseBody>() {

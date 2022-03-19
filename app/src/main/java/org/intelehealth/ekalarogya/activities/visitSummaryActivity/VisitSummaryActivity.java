@@ -534,6 +534,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
 
+        diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
+        prescriptionTextView = findViewById(R.id.textView_content_rx);
+        medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
+        requestedTestsTextView = findViewById(R.id.textView_content_tests);
+        additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
+        followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -632,12 +639,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
 //        speciality_spinner = findViewById(R.id.speciality_spinner);
-        diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
-        prescriptionTextView = findViewById(R.id.textView_content_rx);
-        medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
-        requestedTestsTextView = findViewById(R.id.textView_content_tests);
-        additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
-        followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
