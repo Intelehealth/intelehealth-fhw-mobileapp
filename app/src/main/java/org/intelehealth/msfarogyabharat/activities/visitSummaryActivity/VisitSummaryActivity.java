@@ -972,11 +972,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 try {
 
                     String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-
-                    String[] FacilityHistArgs = {encounterAdultInitList.get(pos), UuidDictionary.Facility};
-                    Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
-                    medHistCursor.moveToLast();
-                    String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                    String facilityText = null;
+                    if (pos < encounterAdultInitList.size()) {
+                        String[] FacilityHistArgs = {encounterAdultInitList.get(pos), UuidDictionary.Facility};
+                        Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
+                        medHistCursor.moveToLast();
+                        facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                        medHistCursor.close();
+                    }
 //todo single textutill
                     if (!TextUtils.isEmpty(facilityText)) {
                         if (facilityText == null) {
@@ -1010,7 +1013,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         txtViewFacility.setText("");
                         mFacilityValue="";
                     }
-                    medHistCursor.close();
+//                    medHistCursor.close();
                 } catch (CursorIndexOutOfBoundsException e) {
                     autocompleteState.setText("");
                     autocompleteDistrict.setText("");

@@ -93,16 +93,20 @@ OnVisitItemClickListner onClickingIteListner;
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
         if(complaintList.size() > 0 && position < complaintList.size())
             complaint = complaintList.get(position);
-        else
-            complaint = visitsumContext.getString(R.string.something_went_wrong);
+        else {
+//            complaint = visitsumContext.getString(R.string.something_went_wrong);
+            complaint = "";
+        }
 
         if(physexamList.size() > 0 && position < physexamList.size())
         { physexam = physexamList.get(position);
         Log.d("rr","100"+position);
         Log.d("rr","101"+physexamList.size());
         }
-        else
-            physexam = visitsumContext.getString(R.string.something_went_wrong);
+        else {
+//            physexam = visitsumContext.getString(R.string.something_went_wrong);
+            physexam = "";
+        }
 
         if(visitStartDatesList.size() > 0 && position < visitStartDatesList.size())
             holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1)
@@ -129,7 +133,8 @@ OnVisitItemClickListner onClickingIteListner;
 
     @Override
     public int getItemCount() {
-        return visitUuidList.size();
+//        return visitUuidList.size();
+        return complaintList.size();
     }
 
     public class VisitSummaryViewHolder extends RecyclerView.ViewHolder {
@@ -217,58 +222,59 @@ OnVisitItemClickListner onClickingIteListner;
 
                     }
                     else {
-                        complaintText.setText(visitsumContext.getString(R.string.something_went_wrong));
+//                        complaintText.setText(visitsumContext.getString(R.string.something_went_wrong));
+                        complaintText.setText("");
                     }
 
                     complaintText.setEnabled(false);
 
-                    complaintDialog.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_manual_entry),
-                            new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(visitsumContext);
-                            textInput.setTitle(visitsumContext.getResources().getString(R.string.question_text_input));
-                            final EditText dialogEditText = new EditText(visitsumContext);
-
-                            if (complaintList != null && getAdapterPosition() != complaintList.size()) {
-                                if(complaintList.size() > 0)
-                                    dialogEditText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
-                                else
-                                    dialogEditText.setText(visitsumContext.getString(R.string.something_went_wrong));
-
-                            } else {
-                                dialogEditText.setText("");
-                            }
-                            textInput.setView(dialogEditText);
-                            textInput.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_ok),
-                                    new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String input = dialogEditText.getText().toString();
-                                    input = summaryActivity.applyBoldTag(input);
-                                   // complaint.setValue(input.replace("\n", "<br>"));
-                                    complaintList.add(getAdapterPosition(), input.replace("\n", "<br>"));
-//                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-                                    if (complaintList.get(getAdapterPosition()) != null) {
-                                        complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
-                                        textView_content_complaint.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
-                                    }
-                                    updateDatabase(complaintList.get(getAdapterPosition()), UuidDictionary.CURRENT_COMPLAINT);
-                                    dialog.dismiss();
-                                }
-                            });
-                            textInput.setNeutralButton(visitsumContext.getResources().getString(R.string.generic_cancel),
-                                    new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog alertDialog = textInput.show();
-                            IntelehealthApplication.setAlertDialogCustomTheme(visitsumContext, alertDialog);
-                            dialogInterface.dismiss();
-                        }
-                    });
+//                    complaintDialog.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_manual_entry),
+//                            new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(visitsumContext);
+//                            textInput.setTitle(visitsumContext.getResources().getString(R.string.question_text_input));
+//                            final EditText dialogEditText = new EditText(visitsumContext);
+//
+//                            if (complaintList != null && getAdapterPosition() != complaintList.size()) {
+//                                if(complaintList.size() > 0)
+//                                    dialogEditText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+//                                else
+//                                    dialogEditText.setText(visitsumContext.getString(R.string.something_went_wrong));
+//
+//                            } else {
+//                                dialogEditText.setText("");
+//                            }
+//                            textInput.setView(dialogEditText);
+//                            textInput.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_ok),
+//                                    new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    String input = dialogEditText.getText().toString();
+//                                    input = summaryActivity.applyBoldTag(input);
+//                                   // complaint.setValue(input.replace("\n", "<br>"));
+//                                    complaintList.add(getAdapterPosition(), input.replace("\n", "<br>"));
+////                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+//                                    if (complaintList.get(getAdapterPosition()) != null) {
+//                                        complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+//                                        textView_content_complaint.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+//                                    }
+//                                    updateDatabase(complaintList.get(getAdapterPosition()), UuidDictionary.CURRENT_COMPLAINT);
+//                                    dialog.dismiss();
+//                                }
+//                            });
+//                            textInput.setNeutralButton(visitsumContext.getResources().getString(R.string.generic_cancel),
+//                                    new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            });
+//                            AlertDialog alertDialog = textInput.show();
+//                            IntelehealthApplication.setAlertDialogCustomTheme(visitsumContext, alertDialog);
+//                            dialogInterface.dismiss();
+//                        }
+//                    });
 
                     complaintDialog.setNegativeButton(visitsumContext.getResources().getString(R.string.generic_erase_redo),
                             new DialogInterface.OnClickListener() {
@@ -344,8 +350,10 @@ OnVisitItemClickListner onClickingIteListner;
                     if (physexamList != null)
                         if(physexamList.size() > 0 && getAdapterPosition() != physexamList.size())
                             physicalText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
-                        else
-                            physicalText.setText(visitsumContext.getString(R.string.something_went_wrong));
+                        else {
+//                            physicalText.setText(visitsumContext.getString(R.string.something_went_wrong));
+                            physicalText.setText("");
+                        }
 
                     physicalText.setEnabled(false);
 

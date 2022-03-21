@@ -29,7 +29,7 @@
 
     <application
         android:name="org.intelehealth.msfarogyabharat.app.IntelehealthApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher_ibis"
         android:label="@string/app_name"
         android:largeHeap="true"
