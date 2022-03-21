@@ -515,7 +515,8 @@ public class PregnancyRosterDialog extends DialogFragment {
             data.setMonthsOfPregnancy(binding.edittextMonthspregnancylast.getText().toString());
 
         if (pregnancyOutcomePosition == 5)
-            data.setMonthsBeenPregnant(binding.edittextMonthsbeingpregnant.getText().toString());
+            if (pregnancyOutcomePosition == 5)
+                data.setMonthsBeenPregnant(binding.edittextMonthsbeingpregnant.getText().toString());
 
         if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)
             data.setPlaceOfDelivery(StringUtils.getPlaceDelivery(binding.spinnerPlaceofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
@@ -525,8 +526,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                 data.setFocalFacilityForPregnancy(binding.etPregnancyblockOther.getText().toString());
                 Log.v(TAG, "focal_other: " + data.getFocalFacilityForPregnancy());
             } else {
-                data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block
-                        (binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block(binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }
 
             data.setFacilityName(binding.facilityNameEditText.getText().toString());
@@ -600,9 +600,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
-            spinnerPosition = adapter_focalPointBlock.getPosition
-                    (StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(),
-                            sessionManager.getAppLanguage()));
+            spinnerPosition = adapter_focalPointBlock.getPosition(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), sessionManager.getAppLanguage()));
             if (spinnerPosition == -1) {
                 binding.spinnerFocalBlock.setSelection(3);
                 binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
@@ -612,6 +610,10 @@ public class PregnancyRosterDialog extends DialogFragment {
                 binding.etPregnancyblockOther.setVisibility(View.GONE);
                 binding.etPregnancyblockOther.setText("");
             }
+        }
+
+        if (!checkIfEmpty(data.getFacilityName())) {
+            binding.facilityNameEditText.setText(data.getFacilityName());
         }
 
         if (!checkIfEmpty(data.getBabyAgeDied())) {
@@ -656,6 +658,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         data.setMonthsBeenPregnant(bundle.getString("monthsBeenPregnant"));
         data.setPlaceOfDelivery(bundle.getString("placeOfDelivery"));
         data.setFocalFacilityForPregnancy(bundle.getString("focalFacilityForPregnancy"));
+        data.setFacilityName(bundle.getString("facilityName"));
         data.setBabyAgeDied(bundle.getString("babyAgeDied"));
         data.setSexOfBaby(bundle.getString("sexOfBaby"));
         data.setSingleMultipleBirths(bundle.getString("singleMultipleBirths"));

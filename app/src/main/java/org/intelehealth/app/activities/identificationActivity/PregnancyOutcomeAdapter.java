@@ -3,13 +3,11 @@ package org.intelehealth.app.activities.identificationActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.databinding.PresentationPregnancyRosterBinding;
-import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.List;
@@ -93,6 +91,13 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 binding.llChildAlive.setVisibility(View.GONE);
             }
 
+            if (!checkIfEmpty(data.getIsPreTerm())) {
+                binding.preTermTextView.setText(StringUtils.getPreTermEdit(data.getIsPreTerm(), appLanguage));
+                binding.llPreTerm.setVisibility(View.VISIBLE);
+            } else {
+                binding.llPreTerm.setVisibility(View.GONE);
+            }
+
             if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
                 binding.textviewYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
                 binding.llYearOfPregnancy.setVisibility(View.VISIBLE);
@@ -124,6 +129,7 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
             if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
                 binding.textviewFocalBlock.setText(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), appLanguage));
                 binding.llFocalPoint.setVisibility(View.VISIBLE);
+                binding.textviewFacilityName.setText(data.getFacilityName());
             } else {
                 binding.llFocalPoint.setVisibility(View.GONE);
             }
