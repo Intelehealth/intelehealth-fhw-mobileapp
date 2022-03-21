@@ -448,6 +448,11 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setEditTextError(binding.etPregnancyblockOther);
                 areDetailsCorrect = false;
             }
+
+            if (binding.facilityNameEditText.getText().toString().equalsIgnoreCase("") || binding.facilityNameEditText.getText().toString().isEmpty()) {
+                setEditTextError(binding.facilityNameEditText);
+                areDetailsCorrect = false;
+            }
         }
 
         if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
@@ -524,6 +529,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                         (binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }
 
+            data.setFacilityName(binding.facilityNameEditText.getText().toString());
         }
 
         if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {

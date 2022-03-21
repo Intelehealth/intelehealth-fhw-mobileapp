@@ -294,6 +294,18 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/facility_name_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/lato_regular"
+                        android:hint="@string/what_was_the_name_of_the_facility"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        tools:visibility="visible" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
