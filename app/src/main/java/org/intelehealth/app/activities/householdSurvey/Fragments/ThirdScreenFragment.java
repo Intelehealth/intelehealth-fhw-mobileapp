@@ -6,6 +6,7 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentSecondScreenBinding;
@@ -36,6 +39,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +49,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistance;
+import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistanceEdit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +71,7 @@ public class ThirdScreenFragment extends Fragment {
     PatientsDAO patientsDAO = new PatientsDAO();
 
     MaterialCheckBox village_tank, open_well, handpump, borewell, river, pond, other;
+
     public ThirdScreenFragment() {
         // Required empty public constructor
     }
@@ -114,6 +122,13 @@ public class ThirdScreenFragment extends Fragment {
             }
         });
 
+        binding.otherCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.otherSourcesOfWaterLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.otherSourcesOfWaterLayout.setVisibility(View.GONE);
+            }
+        });
 
         binding.householdElectricityRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.electricity_yes_checkbox) {
@@ -164,7 +179,7 @@ public class ThirdScreenFragment extends Fragment {
         mandatoryFields.addAll(Arrays.asList(binding.householdElectricityRadioGroup, binding.waterSourceDistanceRadioGroup, binding.bankAccountRadioGroup));
 
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -184,8 +199,7 @@ public class ThirdScreenFragment extends Fragment {
                 for (int i = 0; i < patientUUIDs.size(); i++) {
                     setData(patientUUIDs.get(i));
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -242,7 +256,18 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout));
+
+        String otherSourceOfRunningWater;
+        if (binding.otherCheckbox.isChecked()) {
+            otherSourceOfRunningWater = binding.otherSourcesOfWaterEditText.getText().toString();
+        } else {
+            otherSourceOfRunningWater = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherSourceOfRunningWater));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //waterSourceDistance
@@ -251,8 +276,15 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
-            patientAttributesDTO.setValue(binding.waterSourceDistanceEditText.getText().toString() + " " +
-                    (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() == binding.waterSourceDistanceMeter.getId() ? binding.waterSourceDistanceMeter.getText().toString() : binding.waterSourceDistanceKilometer.getText().toString()));
+
+            String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
+                    (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
+                            binding.waterSourceDistanceMeter.getId() ?
+                            getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
+                            getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
+                    );
+
+            patientAttributesDTO.setValue(distance);
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -285,7 +317,7 @@ public class ThirdScreenFragment extends Fragment {
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);
-        Log.v("screen", "secondscreen: \n"+ gson.toJson(patientAttributesDTOList));
+        Log.v("screen", "secondscreen: \n" + gson.toJson(patientAttributesDTOList));
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
@@ -302,15 +334,24 @@ public class ThirdScreenFragment extends Fragment {
 //                    .replace(R.id.framelayout_container, new FourthScreenFragment())
 //                    .commit();
 //        }
-                    getFragmentManager().beginTransaction()
-                    .replace(R.id.framelayout_container, new FourthScreenFragment())
-                    .addToBackStack(null)
-                    .commit();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.framelayout_container, new FourthScreenFragment())
+                .addToBackStack(null)
+                .commit();
 
     }
 
-    private void setData(String patientUuid)
-    {
+    private void setData(String patientUuid) {
+        Context updatedContext;
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = requireContext().createConfigurationContext(configuration);
+        } else {
+            updatedContext = requireContext();
+        }
+
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -327,91 +368,125 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdElectricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.electricityYesCheckbox.setChecked(true);
 
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.electricityNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.loadSheddingHoursTextView.setText(value1);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerWeek")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.loadSheddingDaysPerWeekTextView.setText(value1);
                 }
                 if (name.equalsIgnoreCase("runningWaterStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.runningWaterYesCheckbox.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.runningWaterNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("primarySourceOfRunningWater")) {
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.village_tank)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.village_tank)))
                         village_tank.setChecked(true);
                     else
                         village_tank.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.open_well)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.open_well)))
                         open_well.setChecked(true);
                     else
                         open_well.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.hand_pump_checkbox)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.hand_pump_checkbox)))
                         handpump.setChecked(true);
                     else
                         handpump.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.bore_well)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.bore_well)))
                         borewell.setChecked(true);
                     else
                         borewell.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.river)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.river)))
                         river.setChecked(true);
                     else
                         river.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.pond)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.pond)))
                         pond.setChecked(true);
                     else
                         pond.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.other)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other))) {
                         other.setChecked(true);
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherSourceOfWater = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other))) {
+                                    otherSourceOfWater = jsonArray.getString(i);
+                                    otherSourceOfWater = otherSourceOfWater.substring(otherSourceOfWater.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfWaterEditText.setText(otherSourceOfWater);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
                         other.setChecked(false);
+                    }
 
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.meter)))
-                        binding.waterSourceDistanceMeter.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.km)))
-                        binding.waterSourceDistanceKilometer.setChecked(true);
+                    if (value1 != null) {
+                        String[] splitString = value1.split(" ");
+                        splitString[1] = getWaterSourceDistanceEdit(splitString[1], requireContext(), sessionManager.getAppLanguage());
+
+                        if (splitString[1].equalsIgnoreCase(getString(R.string.meter)))
+                            binding.waterSourceDistanceMeter.setChecked(true);
+                        else
+                            binding.waterSourceDistanceKilometer.setChecked(true);
+
+                        binding.waterSourceDistanceEditText.setText(splitString[0]);
+                    }
                 }
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.waterSupplyAvailabilityEditText.setText(value1);
                 }
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek")) { //TODO: Add new uuid here
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         binding.waterSupplyAvailabilityDaysPerWeekEditText.setText(value1);
                 }
 
                 if (name.equalsIgnoreCase("householdBankAccountStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
                         binding.bankAccountYes.setChecked(true);
-                    else if(value1!=null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
                         binding.bankAccountNo.setChecked(true);
                 }
             } while (idCursor1.moveToNext());

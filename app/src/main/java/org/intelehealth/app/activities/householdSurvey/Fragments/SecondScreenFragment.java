@@ -7,21 +7,22 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  */
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdCaste;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdCasteEdit;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligion;
+import static org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligionEdit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,7 +30,8 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,16 +41,16 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.database.dao.ImagesPushDAO;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.FragmentSecondScreenBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,7 +111,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         initUI(rootView);
         ClickListener();
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -130,8 +132,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                     setData(patientUUIDs.get(i));
                 }
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -215,7 +216,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getContext().getPackageName());
 
             if (relationshiphoh_id != 0) {
-                religionAdapter= ArrayAdapter.createFromResource(getContext(),
+                religionAdapter = ArrayAdapter.createFromResource(getContext(),
                         relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.religionDropDown.setAdapter(religionAdapter);
@@ -230,7 +231,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             int relationshiphoh_id = res.getIdentifier(castLanguage, "array", getContext().getPackageName());
 
             if (relationshiphoh_id != 0) {
-                casteAdapter= ArrayAdapter.createFromResource(getContext(),
+                casteAdapter = ArrayAdapter.createFromResource(getContext(),
                         relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.casteDropDown.setAdapter(casteAdapter);
@@ -309,8 +310,8 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
-            if(binding.otherReligionLayout.getVisibility() == View.GONE)
-                patientAttributesDTO.setValue(binding.religionDropDown.getSelectedItem().toString());
+            if (binding.otherReligionLayout.getVisibility() == View.GONE)
+                patientAttributesDTO.setValue(getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
             else
                 patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -322,7 +323,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
-            patientAttributesDTO.setValue(binding.casteDropDown.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getHouseholdCaste(binding.casteDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -355,7 +356,18 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout));
+
+        String otherIncome;
+        if (binding.otherIncomeCheckbox.isChecked()) {
+            otherIncome = binding.otherSourcesOfIncomeEditText.getText().toString();
+        } else {
+            otherIncome = "";
+        }
+
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout,
+                sessionManager.getAppLanguage(),
+                getContext(),
+                otherIncome));
         patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -387,6 +399,16 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
     }
 
     private void setData(String patientUuid) {
+        Context updatedContext;
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = requireContext().createConfigurationContext(configuration);
+        } else {
+            updatedContext = requireContext();
+        }
+
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -414,7 +436,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                 if (name.equalsIgnoreCase("householdHeadReligion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null) {
-                        int position = getIndex(binding.religionDropDown, value1);
+                        String translatedValue = getHouseholdHeadReligionEdit(value1, requireContext(), sessionManager.getAppLanguage());
+
+                        int position = getIndex(binding.religionDropDown, translatedValue);
                         if (position == -1) { // If other was selected by user.
                             binding.otherReligionLayout.setVisibility(View.VISIBLE);
                             binding.religionDropDown.setSelection(6);
@@ -422,15 +446,16 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                             Log.v("second", "praj" + value1);
                         } else {
                             binding.otherReligionLayout.setVisibility(View.GONE);
-                            binding.religionDropDown.setSelection(getIndex(binding.religionDropDown, value1));
+//                            binding.religionDropDown.setSelection(getIndex(binding.religionDropDown, value1));
+                            binding.religionDropDown.setSelection(position);
                         }
                     }
-
                 }
+
                 if (name.equalsIgnoreCase("householdHeadCaste")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null)
-                        binding.casteDropDown.setSelection(getIndex(binding.casteDropDown, value1));
+                        binding.casteDropDown.setSelection(getIndex(binding.casteDropDown, getHouseholdCasteEdit(value1, requireContext(), sessionManager.getAppLanguage())));
                 }
                 if (name.equalsIgnoreCase("noOfSmartphones")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -451,62 +476,89 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                 //Checkboxes...
                 if (name.equalsIgnoreCase("primarySourceOfIncome")) {
                     Log.v("checkbox", "checkboxarray_DB: \n" + idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.sale_of_cereal_production)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.sale_of_cereal_production)))
                         saleCerealCheckbox.setChecked(true);
                     else
                         saleCerealCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.sale_of_animals_or_animal_products)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.sale_of_animals_or_animal_products)))
                         saleAnimalsCheckbox.setChecked(true);
                     else
                         saleAnimalsCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.agricultural_wage_labor_employed_for_farm_work)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.agricultural_wage_labor_employed_for_farm_work)))
                         agriLaborCheckbox.setChecked(true);
                     else
                         agriLaborCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.salaried_worker_fixed_monthly_salary)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.salaried_worker_fixed_monthly_salary)))
                         salariedWorkerCheckbox.setChecked(true);
                     else
                         salariedWorkerCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.self_employed_non_agricultural_petty_business)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.self_employed_non_agricultural_petty_business)))
                         selfEmployedCheckbox.setChecked(true);
                     else
                         selfEmployedCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural)))
                         dailyLaborCheckbox.setChecked(true);
                     else
                         dailyLaborCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.nrega)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.nrega)))
                         nregaCheckbox.setChecked(true);
                     else
                         nregaCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.seasonal_labor)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.seasonal_labor)))
                         seasonalLaborCheckbox.setChecked(true);
                     else
                         seasonalLaborCheckbox.setChecked(false);
 
 //                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.no_paid_work)))
 //                        noPaidWorkCheckbox.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.pension)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.pension)))
                         pensionCheckbox.setChecked(true);
                     else
                         pensionCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.remittances_checkbox)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.remittances_checkbox)))
                         remittancesCheckbox.setChecked(true);
                     else
                         remittancesCheckbox.setChecked(false);
 
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(getString(R.string.other_please_specify)))
+                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).contains(updatedContext.getString(R.string.other_please_specify))) {
                         otherCheckbox.setChecked(true);
-                    else
+
+                        Context tempContext;
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+                            configuration.setLocale(new Locale("en"));
+                            tempContext = requireContext().createConfigurationContext(configuration);
+                        } else {
+                            tempContext = requireContext();
+                        }
+
+                        try {
+                            String otherIncome = "";
+                            JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String element = jsonArray.getString(i);
+                                if (element.contains(tempContext.getString(R.string.other_please_specify))) {
+                                    otherIncome = jsonArray.getString(i);
+                                    otherIncome = otherIncome.substring(otherIncome.indexOf(":") + 2);
+                                }
+                            }
+                            binding.otherSourcesOfIncomeEditText.setText(otherIncome);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
                         otherCheckbox.setChecked(false);
+                    }
                 }
             } while (idCursor1.moveToNext());
         }
@@ -514,10 +566,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private int getIndex(Spinner spinner, String s){
-        for(int i=0;i<spinner.getCount();i++)
-        {
-            if(spinner.getItemAtPosition(i).toString().equalsIgnoreCase(s))
+    private int getIndex(Spinner spinner, String s) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(s))
                 return i;
         }
         return -1;

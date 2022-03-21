@@ -45,6 +45,8 @@ public class Patient {
     private String scoreexperience;
     private String timespregnant;
     private String pasttwoyrs;
+    private String noOfPregnancyOutcomeTwoYrs;
+
     private String outcomepregnancy;
     private String childalive;
     private String yearsofpregnancy;
@@ -58,6 +60,7 @@ public class Patient {
     private String plannedpregnancy;
     private String highriskpregnancy;
     private String complications;
+
 
     public String getUuid() {
         return uuid;
@@ -497,5 +500,13 @@ public class Patient {
 
     public void setComplications(String complications) {
         this.complications = complications;
+    }
+
+    public String getNoOfPregnancyOutcomeTwoYrs() {
+        return noOfPregnancyOutcomeTwoYrs;
+    }
+
+    public void setNoOfPregnancyOutcomeTwoYrs(String noOfPregnancyOutcomeTwoYrs) {
+        this.noOfPregnancyOutcomeTwoYrs = noOfPregnancyOutcomeTwoYrs;
     }
 }

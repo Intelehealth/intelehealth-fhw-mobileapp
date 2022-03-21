@@ -15,6 +15,8 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,12 +26,13 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import java.io.File;
-import java.util.List;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONArray;
+
+import java.io.File;
+import java.util.List;
+import java.util.Locale;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -3413,20 +3416,529 @@ public final class StringUtils {
         return val;
     }
 
-    public static String getSelectedCheckboxes(ViewGroup viewGroup) {
+    public static String getSelectedCheckboxes(ViewGroup viewGroup, String locale, Context context, String otherString) {
         if (viewGroup == null)
             return null;
+
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
 
         JSONArray result = new JSONArray();
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View childAt = viewGroup.getChildAt(i);
             if (childAt instanceof CheckBox) {
-                if (((CheckBox) childAt).isChecked())
-                    result.put(((CheckBox) childAt).getText());
+                if (((CheckBox) childAt).isChecked()) {
+                    String text = ((CheckBox) childAt).getText().toString();
+
+                    if (text.equalsIgnoreCase(context.getString(R.string.other_please_specify)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.others)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.others_please_specify)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.other)) ||
+                            text.equalsIgnoreCase(context.getString(R.string.other_specify))
+                    ) {
+                        text = getSurveyString(text, locale, configuration, context);
+                        text = text.concat(" : " + otherString);
+                        result.put(text);
+                    } else
+                        result.put(getSurveyString(text, locale, configuration, context));
+                }
             }
         }
         Log.v("checkbox", "checkboxarray: \n" + result.toString());
         return result.toString();
+    }
+
+    public static String getSurveyString(String text, String locale, Configuration configuration, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+
+            if (context.getString(R.string.sale_of_cereal_production).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.sale_of_cereal_production);
+
+            if (context.getString(R.string.sale_of_animals_or_animal_products).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.sale_of_animals_or_animal_products);
+
+            if (context.getString(R.string.agricultural_wage_labor_employed_for_farm_work).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.agricultural_wage_labor_employed_for_farm_work);
+
+            if (context.getString(R.string.salaried_worker_fixed_monthly_salary).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.salaried_worker_fixed_monthly_salary);
+
+            if (context.getString(R.string.self_employed_non_agricultural_petty_business).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.self_employed_non_agricultural_petty_business);
+
+            if (context.getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural);
+
+            if (context.getString(R.string.nrega).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.nrega);
+
+            if (context.getString(R.string.seasonal_labor).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.seasonal_labor);
+
+            if (context.getString(R.string.pension).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.pension);
+
+            if (context.getString(R.string.remittances_checkbox).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.remittances_checkbox);
+
+            if (context.getString(R.string.no_paid_work).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.no_paid_work);
+
+            if (context.getString(R.string.other_please_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other_please_specify);
+
+            if (context.getString(R.string.others_please_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.others_please_specify);
+
+            if (context.getString(R.string.electricity).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.electricity);
+
+            if (context.getString(R.string.lpg_natural_gas).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.lpg_natural_gas);
+
+            if (context.getString(R.string.biogas_checkbox).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.biogas_checkbox);
+
+            if (context.getString(R.string.kerosene).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.kerosene);
+
+            if (context.getString(R.string.coal_lignite).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.coal_lignite);
+
+            if (context.getString(R.string.charcoal).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.charcoal);
+
+            if (context.getString(R.string.wood).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.wood);
+
+            if (context.getString(R.string.straw_shrubs_grass).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.straw_shrubs_grass);
+
+            if (context.getString(R.string.agricultural_crop_waste).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.agricultural_crop_waste);
+
+            if (context.getString(R.string.dung_cakes).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.dung_cakes);
+
+            if (context.getString(R.string.lantern).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.lantern);
+
+            if (context.getString(R.string.kerosene_lamp).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.kerosene_lamp);
+
+            if (context.getString(R.string.candle).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.candle);
+
+            if (context.getString(R.string.electric).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.electric);
+
+            if (context.getString(R.string.lpg).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.lpg);
+
+            if (context.getString(R.string.solar_energy).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.solar_energy);
+
+            if (context.getString(R.string.none).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.none);
+
+            if (context.getString(R.string.piped_into_dwelling).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.piped_into_dwelling);
+
+            if (context.getString(R.string.piped_into_yard_plot).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.piped_into_yard_plot);
+
+            if (context.getString(R.string.public_tap_standpipe).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.public_tap_standpipe);
+
+            if (context.getString(R.string.tube_well_borehole).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.tube_well_borehole);
+
+            if (context.getString(R.string.protected_well_checkbox).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.protected_well_checkbox);
+
+            if (context.getString(R.string.unprotected_well).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.unprotected_well);
+
+            if (context.getString(R.string.protected_spring).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.protected_spring);
+
+            if (context.getString(R.string.unprotected_spring).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.unprotected_spring);
+
+            if (context.getString(R.string.rainwater).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.rainwater);
+
+            if (context.getString(R.string.tanker_truck).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.tanker_truck);
+
+            if (context.getString(R.string.cart_with_small_tank).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.cart_with_small_tank);
+
+            if (context.getString(R.string.surface_water).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.surface_water);
+
+            if (context.getString(R.string.common_hand_pump).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.common_hand_pump);
+
+            if (context.getString(R.string.hand_pump_at_home).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.hand_pump_at_home);
+
+            if (context.getString(R.string.what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink);
+
+            if (context.getString(R.string.boil).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.boil);
+
+            if (context.getString(R.string.use_alum).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.use_alum);
+
+            if (context.getString(R.string.add_bleach_chlorine_tablets_drops).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.add_bleach_chlorine_tablets_drops);
+
+            if (context.getString(R.string.strain_through_a_cloth).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.strain_through_a_cloth);
+
+            if (context.getString(R.string.use_water_filter_ceramic_sand_composite_etc).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.use_water_filter_ceramic_sand_composite_etc);
+
+            if (context.getString(R.string.use_electronic_purifier).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.use_electronic_purifier);
+
+            if (context.getString(R.string.let_it_stand_and_settle).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.let_it_stand_and_settle);
+
+            if (context.getString(R.string.flush_to_piped_sewer_system).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.flush_to_piped_sewer_system);
+
+            if (context.getString(R.string.flush_to_septic_tank).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.flush_to_septic_tank);
+
+            if (context.getString(R.string.flush_to_pit_latrine).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.flush_to_pit_latrine);
+
+            if (context.getString(R.string.flush_to_somewhere_else).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.flush_to_somewhere_else);
+
+            if (context.getString(R.string.flush_dont_know_where).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.flush_dont_know_where);
+
+            if (context.getString(R.string.ventilated_improved_pit_biogas_latrine).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.ventilated_improved_pit_biogas_latrine);
+
+            if (context.getString(R.string.pit_latrine_with_slab).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.pit_latrine_with_slab);
+
+            if (context.getString(R.string.pit_latrine_without_slab_open_pit).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.pit_latrine_without_slab_open_pit);
+
+            if (context.getString(R.string.twin_pit_composting_toilet).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.twin_pit_composting_toilet);
+
+            if (context.getString(R.string.dry_toilet).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.dry_toilet);
+
+            if (context.getString(R.string.communal_toilet).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.communal_toilet);
+
+            if (context.getString(R.string.no_facility_uses_open_space_or_field).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.no_facility_uses_open_space_or_field);
+
+            if (context.getString(R.string.not_treated).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.not_treated);
+
+            if (context.getString(R.string.no_measures_taken_for_purification_drinking_as_it_is).equalsIgnoreCase(text)) {
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.no_measures_taken_for_purification_drinking_as_it_is);
+            }
+
+            if (context.getString(R.string.starch_staple_food).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.starch_staple_food);
+
+            if (context.getString(R.string.beans_and_peas).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.beans_and_peas);
+
+            if (context.getString(R.string.nuts_and_seeds).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.nuts_and_seeds);
+
+            if (context.getString(R.string.dairy).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.dairy);
+
+            if (context.getString(R.string.eggs).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.eggs);
+
+            if (context.getString(R.string.flesh_food).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.flesh_food);
+
+            if (context.getString(R.string.any_vegetables).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.any_vegetables);
+
+            if (context.getString(R.string.village_tank).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.village_tank);
+
+            if (context.getString(R.string.open_well).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.open_well);
+
+            if (context.getString(R.string.hand_pump_checkbox).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.hand_pump_checkbox);
+
+            if (context.getString(R.string.bore_well).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.bore_well);
+
+            if (context.getString(R.string.river).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.river);
+
+            if (context.getString(R.string.pond).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.pond);
+
+            if (context.getString(R.string.other).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other);
+        }
+        return text;
+    }
+
+    public static String getHouseholdHeadReligion(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.religion_hindu).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_hindu);
+            }
+
+            if (context.getString(R.string.religion_muslim).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_muslim);
+            }
+
+            if (context.getString(R.string.religion_christian).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_christian);
+            }
+
+            if (context.getString(R.string.religion_sikh).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_sikh);
+            }
+
+            if (context.getString(R.string.religion_buddhist_neo_buddhist).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_buddhist_neo_buddhist);
+            }
+
+            if (context.getString(R.string.religion_other).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_other);
+            }
+
+            if (context.getString(R.string.religion_no_religion).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.religion_no_religion);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getHouseholdHeadReligionEdit(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (updatedContext.getString(R.string.religion_hindu).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_hindu);
+            }
+
+            if (updatedContext.getString(R.string.religion_muslim).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_muslim);
+            }
+
+            if (updatedContext.getString(R.string.religion_christian).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_christian);
+            }
+
+            if (updatedContext.getString(R.string.religion_sikh).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_sikh);
+            }
+
+            if (updatedContext.getString(R.string.religion_buddhist_neo_buddhist).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_buddhist_neo_buddhist);
+            }
+
+            if (updatedContext.getString(R.string.religion_other).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_other);
+            }
+
+            if (updatedContext.getString(R.string.religion_no_religion).equalsIgnoreCase(text)) {
+                return context.getString(R.string.religion_no_religion);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getHouseholdCaste(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.caste_schedule_caste).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_schedule_caste);
+            }
+
+            if (context.getString(R.string.caste_schedule_tribe).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_schedule_tribe);
+            }
+
+            if (context.getString(R.string.caste_other_backward_caste).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_other_backward_caste);
+            }
+
+            if (context.getString(R.string.caste_general).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_general);
+            }
+
+            if (context.getString(R.string.caste_dont_know).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_dont_know);
+            }
+
+            if (context.getString(R.string.caste_refused_to_answer).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_refused_to_answer);
+            }
+        }
+
+        return text;
+    }
+
+
+    public static String getHouseholdCasteEdit(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (updatedContext.getString(R.string.caste_schedule_caste).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_schedule_caste);
+            }
+
+            if (updatedContext.getString(R.string.caste_schedule_tribe).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_schedule_tribe);
+            }
+
+            if (updatedContext.getString(R.string.caste_other_backward_caste).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_other_backward_caste);
+            }
+
+            if (updatedContext.getString(R.string.caste_general).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_general);
+            }
+
+            if (updatedContext.getString(R.string.caste_dont_know).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_dont_know);
+            }
+
+            if (updatedContext.getString(R.string.caste_refused_to_answer).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_refused_to_answer);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getWaterSourceDistance(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.meter).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.meter);
+            }
+
+            if (context.getString(R.string.km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.km);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getWaterSourceDistanceEdit(String text, Context context, String locale) {
+        Context updatedContext;
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (text.contains(updatedContext.getString(R.string.meter))) {
+                return context.getString(R.string.meter);
+            }
+
+            if (text.contains(updatedContext.getString(R.string.km))) {
+                return context.getString(R.string.km);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getCultivableLand(String text, Context context, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            Context updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.hectare).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.hectare);
+            }
+
+            if (context.getString(R.string.acre).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.acre);
+            }
+
+            if (context.getString(R.string.bigha).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.bigha);
+            }
+
+            if (context.getString(R.string.gunta).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.gunta);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getCultivableLandEdit(String text, Context context, String locale) {
+
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            Context updatedContext = context.createConfigurationContext(configuration);
+
+            if (text.contains(updatedContext.getText(R.string.hectare))) {
+                return context.getString(R.string.hectare);
+            }
+
+            if (text.contains(updatedContext.getText(R.string.acre))) {
+                return context.getString(R.string.acre);
+            }
+
+            if (text.contains(updatedContext.getText(R.string.bigha))) {
+                return context.getString(R.string.bigha);
+            }
+
+            if (text.contains(updatedContext.getText(R.string.gunta))) {
+                return context.getString(R.string.gunta);
+            }
+        }
+
+        return text;
     }
 
     public static boolean validateFields(List<View> mandatoryFields) {
@@ -3692,7 +4204,7 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Salaried Government Job":
-               val = "पगारदार सरकारी नोकरी";
+                    val = "पगारदार सरकारी नोकरी";
                     break;
                 case "Salaried Private Job":
                     val = "पगारदार खाजगी नोकरी";
@@ -4264,7 +4776,7 @@ public final class StringUtils {
                     val = "सुरगाना तालुका";
                     break;
 
-                    case "Other Block":
+                case "Other Block":
                     val = "इतर तालुका";
                     break;
                 default:
@@ -4286,7 +4798,7 @@ public final class StringUtils {
                 case "सुरगाना तालुका":
                     val = "Suragana Block";
                     break;
-                    case "इतर तालुका":
+                case "इतर तालुका":
                     val = "Other Block";
                     break;
                 default:

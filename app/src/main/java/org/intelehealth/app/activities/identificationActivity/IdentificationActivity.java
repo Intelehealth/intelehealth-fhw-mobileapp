@@ -17,6 +17,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Block_
 import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Village_edit;
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
+import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlock;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage_edit;
@@ -202,20 +203,17 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             spinner_bmi, spinner_healthissuereported, spinner_primaryhealthprovider, spinner_firstlocation, spinner_referredto, spinner_modeoftransport,
             spinner_experiencerscore, spinner_block, spinner_village, spinner_focalPointBlock;
 
-//    Spinner spinner_focalPointVillage, spinner_pregnantpasttwoyrs, spinner_outcomepregnancy, spinner_childalive, spinner_placeofdeliverypregnant,
-//            spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications, spinner_singlemultiplebirths,;
+    Spinner spinner_focalPointVillage, spinner_pregnantpasttwoyrs, spinner_outcomepregnancy, spinner_childalive, spinner_placeofdeliverypregnant,
+            spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications, spinner_singlemultiplebirths;
 
-    ArrayAdapter<CharSequence> adapter_whatisyourrelation, adapter_maritualstatus, adapter_phoneownership, adapter_bpchecked, adapter_sugarchecked,
-            adapter_hbchecked, adapter_bmi, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto,
-            adapter_modeoftransport, adapter_experiencerscore, adapter_focalPointBlock, adapter_FocalVillage_Peth, adapter_FocalVillage_Surgana, adapter_block;
+    ArrayAdapter<CharSequence> adapter_whatisyourrelation, adapter_maritualstatus, adapter_phoneownership, adapter_bpchecked, adapter_sugarchecked, adapter_hbchecked, adapter_bmi, adapter_focalPointBlock, adapter_FocalVillage_Peth, adapter_FocalVillage_Surgana, adapter_block, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto, adapter_modeoftransport, adapter_experiencerscore;
 
-//    ArrayAdapter<CharSequence> adapter_pregnantpasttwoyrs, adapter_outcomepregnancy, adapter_childalive,
-//            adapter_placeofdeliverypregnant, adapter_sexofbaby, adapter_pregnancyplanned, adapter_pregnancyhighriskcase, adapter_pregnancycomplications,
-//            adapter_singlemultiplebirths;
+
+    ArrayAdapter<CharSequence> adapter_pregnantpasttwoyrs, adapter_outcomepregnancy, adapter_childalive, adapter_placeofdeliverypregnant, adapter_sexofbaby, adapter_pregnancyplanned, adapter_pregnancyhighriskcase, adapter_pregnancycomplications, adapter_singlemultiplebirths;
 
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines;
 
-//    EditText edittext_howmanytimmespregnant, edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_babyagedied;
+    EditText edittext_howmanytimmespregnant, edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_babyagedied;
 
     TextInputLayout til_whatisyourrelation_other, til_occupation_other;
     LinearLayout textinputlayout_blockVillageOther;
@@ -230,6 +228,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private ActivityIdentificationBinding binding;
     private List<HealthIssues> healthIssuesList = new ArrayList<>();
     private List<PregnancyRosterData> pregnancyOutcomesList = new ArrayList<>();
+    int noOfClicks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -524,6 +523,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             mAddress1.setText(patient1.getAddress1());
 //        mAddress2.setText(patient1.getAddress2());
             mPostal.setText(patient1.getPostal_code());
+
         }
 //        mRelationship.setText(patient1.getSdw());
 //        mOccupation.setText(patient1.getOccupation());
@@ -1074,9 +1074,24 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     }
 
     private void setupPOCard() {
+        //TODO: Validations
+        if(patientID_edit == null)
+            sessionManager.setNoOfclicks(0);
+
+
         binding.addPregnancyOutcomeButton.setOnClickListener(v -> {
-            PregnancyRosterDialog dialog = new PregnancyRosterDialog();
-            dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
+            if(sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                PregnancyRosterDialog dialog = new PregnancyRosterDialog(
+                        sessionManager.getNoOfclicks(),
+                        edittext_howmanytimmespregnant.getText().toString(),
+                        spinner_pregnantpasttwoyrs.getSelectedItem().toString(),
+                        binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()); //TODO: support transaltions...
+                dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
+            }
+            else {
+                Toast.makeText(context, R.string.no_of_times_pasttwoyrs_limit_toast, Toast.LENGTH_SHORT
+                ).show();
+            }
         });
     }
 
@@ -1393,23 +1408,18 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        }
         //scoreofexperience
 
-        // how many times
-//        edittext_howmanytimmespregnant.setText(patient1.getTimespregnant());
-        // how many times
+        // how many times & no of pregnancy outcome in 2yrs
+        edittext_howmanytimmespregnant.setText(patient1.getTimespregnant());
+        binding.edittextNoOfPregnancyOutcomePastTwoYrs.setText(patient1.getNoOfPregnancyOutcomeTwoYrs());
+        // how many times & no of pregnancy outcome in 2yrs
 
         //pasttwoyrs
-//        if (patient1.getPasttwoyrs() != null && !patient1.getPasttwoyrs().equalsIgnoreCase("")) {
-//            String pasttwoyrs_Transl = "";
-////            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-////                pasttwoyrs_Transl = StringUtils.switch_as_caste_edit(patient1.getPasttwoyrs());
-////                // TODO: Add switch case in StringUtils
-////            } else {
-////                pasttwoyrs_Transl = patient1.getPasttwoyrs();
-////            }
-//            pasttwoyrs_Transl = getPasttwoyrs_edit(patient1.getPasttwoyrs(), sessionManager.getAppLanguage());
-//            int spinner_position = adapter_pregnantpasttwoyrs.getPosition(pasttwoyrs_Transl);
-//            spinner_pregnantpasttwoyrs.setSelection(spinner_position);
-//        }
+        if (patient1.getPasttwoyrs() != null && !patient1.getPasttwoyrs().equalsIgnoreCase("")) {
+            String pasttwoyrs_Transl = "";
+            pasttwoyrs_Transl = getPasttwoyrs_edit(patient1.getPasttwoyrs(), sessionManager.getAppLanguage());
+            int spinner_position = adapter_pregnantpasttwoyrs.getPosition(pasttwoyrs_Transl);
+            spinner_pregnantpasttwoyrs.setSelection(spinner_position);
+        }
 //        //pasttwoyrs
 
         //outcomeofpreg
@@ -1824,19 +1834,19 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //score experience spinner adapter
 
         // past 2 yrs Spinner adapter
-//        try {
-//            String pasttwoyrsLanguage = "pasttwoyrs_" + sessionManager.getAppLanguage();
-//            int pasttwoyrs_id = res.getIdentifier(pasttwoyrsLanguage, "array", getApplicationContext().getPackageName());
-//            if (pasttwoyrs_id != 0) {
-//                adapter_pregnantpasttwoyrs = ArrayAdapter.createFromResource(this,
-//                        pasttwoyrs_id, android.R.layout.simple_spinner_dropdown_item);
-//            }
-//            spinner_pregnantpasttwoyrs.setAdapter(adapter_pregnantpasttwoyrs);
-//
-//        } catch (Exception e) {
-//            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
-//            Logger.logE("Identification", "#648", e);
-//        }
+        try {
+            String pasttwoyrsLanguage = "pasttwoyrs_" + sessionManager.getAppLanguage();
+            int pasttwoyrs_id = res.getIdentifier(pasttwoyrsLanguage, "array", getApplicationContext().getPackageName());
+            if (pasttwoyrs_id != 0) {
+                adapter_pregnantpasttwoyrs = ArrayAdapter.createFromResource(this,
+                        pasttwoyrs_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner_pregnantpasttwoyrs.setAdapter(adapter_pregnantpasttwoyrs);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
         //past 2 yrs spinner adapter
 
         // outcome pregnancy Spinner adapter
@@ -2152,6 +2162,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 if (name.equalsIgnoreCase("NoOfTimesPregnant")) {
                     patient1.setTimespregnant(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("No_Pregnancy_Outcome_2years")) {
+                    patient1.setNoOfPregnancyOutcomeTwoYrs(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("PregnanyPastTwoYears")) {
                     patient1.setPasttwoyrs(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2202,8 +2215,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 if (name.equalsIgnoreCase("PregnancyOutcomesReported")) {
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    pregnancyOutcomesList = new Gson().fromJson(value, new TypeToken<List<PregnancyRosterData>>() {
-                    }.getType());
+                    pregnancyOutcomesList = new Gson().fromJson(value, new TypeToken<List<PregnancyRosterData>>() {}.getType());
                     pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
                     binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
                     binding.poViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -2587,34 +2599,35 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-//        if (llPORoaster.getVisibility() == View.VISIBLE) {
-//            if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
-//                    edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
-//                edittext_howmanytimmespregnant.setError(getString(R.string.select));
-//                focusView = edittext_howmanytimmespregnant;
-//                cancel = true;
-//                return;
-//            }
-//
-//            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
-//                TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
-//                t.setError(getString(R.string.select));
-//                t.setTextColor(Color.RED);
-//                focusView = spinner_pregnantpasttwoyrs;
-//                cancel = true;
-//                return;
-//            }
-//
-//            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 1) {
-//                if (spinner_outcomepregnancy.getSelectedItemPosition() == 0) {
-//                    TextView t = (TextView) spinner_outcomepregnancy.getSelectedView();
-//                    t.setError(getString(R.string.select));
-//                    t.setTextColor(Color.RED);
-//                    focusView = spinner_outcomepregnancy;
-//                    cancel = true;
-//                    return;
-//                }
-//
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
+            if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
+                    edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
+                edittext_howmanytimmespregnant.setError(getString(R.string.select));
+                focusView = edittext_howmanytimmespregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnantpasttwoyrs;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+                if (binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                        binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty()) {
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
+                    focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                    cancel = true;
+                    return;
+                }
+            }
+        }
+
 //                if (spinner_outcomepregnancy.getSelectedItemPosition() == 1) {
 //                    if (spinner_childalive.getSelectedItemPosition() == 0) {
 //                        TextView t = (TextView) spinner_childalive.getSelectedView();
@@ -2717,49 +2730,49 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            }
 //        }
 
-        // Roster Insert Validations - End
+                // Roster Insert Validations - End
 
-        if (cancel) {
-            focusView.requestFocus();
-            Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
-        } else {
+                if (cancel) {
+                    focusView.requestFocus();
+                    Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
+                } else {
 
-            patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
-            patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-            patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
+                    patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
+                    patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
+                    patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+                    patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+                    patientdto.setGender(StringUtils.getValue(mGender));
 
-            String[] dob_array = mDOB.getText().toString().split(" ");
-            Log.d("dob_array", "0: " + dob_array[0]);
-            Log.d("dob_array", "0: " + dob_array[1]);
-            Log.d("dob_array", "0: " + dob_array[2]);
+                    String[] dob_array = mDOB.getText().toString().split(" ");
+                    Log.d("dob_array", "0: " + dob_array[0]);
+                    Log.d("dob_array", "0: " + dob_array[1]);
+                    Log.d("dob_array", "0: " + dob_array[2]);
 
-            //get month index and return English value for month.
-            if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_bn_en_noEdit
-                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob)));
-            } else {
-                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-                dob_array[1] = dob_array[1].replace(dob_array[1], dob);
-                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob_value)));
-            }
+                    //get month index and return English value for month.
+                    if (dob_indexValue == 15) {
+                        String dob = StringUtils.hi_or_bn_en_noEdit
+                                (mDOB.getText().toString(), sessionManager.getAppLanguage());
+                        patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
+                                (StringUtils.getValue(dob)));
+                    } else {
+                        String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
+                        dob_array[1] = dob_array[1].replace(dob_array[1], dob);
+                        String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+                        patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
+                                (StringUtils.getValue(dob_value)));
+                    }
 
-            patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+                    patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
 //            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getSelectedItem().toString()));
-            patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
+                    patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getSelectedItem().toString()));
+                    patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 //
-            patientdto.setCountry(StringUtils.getValue("India"));
-            patientdto.setPatientPhoto(mCurrentPhotoPath);
+                    patientdto.setCountry(StringUtils.getValue("India"));
+                    patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValueForStateCity(mState.getSelectedItem().toString()));
+                    patientdto.setStateprovince(StringUtils.getValueForStateCity(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
@@ -2770,12 +2783,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+                    patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2784,16 +2797,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            if (til_occupation_other.getVisibility() == View.GONE)
-                patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-            else
-                patientAttributesDTO.setValue(et_occupation_other.getText().toString());
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+                    if (til_occupation_other.getVisibility() == View.GONE)
+                        patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                    else
+                        patientAttributesDTO.setValue(et_occupation_other.getText().toString());
 
-            patientAttributesDTOList.add(patientAttributesDTO);
+                    patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2802,62 +2815,62 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
-            patientAttributesDTOList.add(patientAttributesDTO);
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+                    patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+                    patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+                    patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
-            //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")) {
+                    //House Hold Registration
+                    if (sessionManager.getHouseholdUuid().equals("")) {
 
-                String HouseHold_UUID = UUID.randomUUID().toString();
-                sessionManager.setHouseholdUuid(HouseHold_UUID);
+                        String HouseHold_UUID = UUID.randomUUID().toString();
+                        sessionManager.setHouseholdUuid(HouseHold_UUID);
 
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("HouseHold"));
-                patientAttributesDTO.setValue(HouseHold_UUID);
+                        patientAttributesDTO = new PatientAttributesDTO();
+                        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                        patientAttributesDTO.setPatientuuid(uuid);
+                        patientAttributesDTO.setPersonAttributeTypeUuid
+                                (patientsDAO.getUuidForAttribute("HouseHold"));
+                        patientAttributesDTO.setValue(HouseHold_UUID);
 
-            } else {
+                    } else {
 
-                String HouseHold_UUID = sessionManager.getHouseholdUuid();
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("HouseHold"));
-                patientAttributesDTO.setValue(HouseHold_UUID);
+                        String HouseHold_UUID = sessionManager.getHouseholdUuid();
+                        patientAttributesDTO = new PatientAttributesDTO();
+                        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                        patientAttributesDTO.setPatientuuid(uuid);
+                        patientAttributesDTO.setPersonAttributeTypeUuid
+                                (patientsDAO.getUuidForAttribute("HouseHold"));
+                        patientAttributesDTO.setValue(HouseHold_UUID);
 
-            }
-            //House Hold Registration - End
+                    }
+                    //House Hold Registration - End
 
-            //Roster Values Insert Into DB
-            insertedit_RosterValuesIntoLocalDB(patientAttributesDTO, patientAttributesDTOList);
-            //end
-            patientAttributesDTOList.add(patientAttributesDTO);
-            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
-            patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
-            patientdto.setSyncd(false);
-            Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+                    //Roster Values Insert Into DB
+                    insertedit_RosterValuesIntoLocalDB(patientAttributesDTO, patientAttributesDTOList);
+                    //end
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                    Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+                    patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+                    patientdto.setSyncd(false);
+                    Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
 
-        }
+                }
 
-        try {
-            Logger.logD(TAG, "insertpatinet ");
-            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
-            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+                try {
+                    Logger.logD(TAG, "insertpatinet ");
+                    boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
+                    boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
 
-            if (NetworkConnection.isOnline(getApplication())) {
+                    if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
 
@@ -2865,10 +2878,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //                        getString(R.string.uploading) + patientdto.getFirstname() + "" + patientdto.getLastname() +
 //                                "'s data", 2, getApplication());
 
-                SyncDAO syncDAO = new SyncDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean push = syncDAO.pushDataApi();
-                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                        SyncDAO syncDAO = new SyncDAO();
+                        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                        boolean push = syncDAO.pushDataApi();
+                        boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
 //                if (push)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
@@ -2882,33 +2895,32 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
 
 //
-            }
+                    }
 //            else {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
 //            }
-            if (isPatientInserted && isPatientImageInserted) {
-                Logger.logD(TAG, "inserted");
-                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
-                i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
-                i.putExtra("tag", "newPatient");
-                i.putExtra("privacy", privacy_value);
-                i.putExtra("hasPrescription", "false");
-                Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                getApplication().startActivity(i);
-            } else {
-                Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
+                    if (isPatientInserted && isPatientImageInserted) {
+                        Logger.logD(TAG, "inserted");
+                        Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                        i.putExtra("patientUuid", uuid);
+                        i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                        i.putExtra("tag", "newPatient");
+                        i.putExtra("privacy", privacy_value);
+                        i.putExtra("hasPrescription", "false");
+                        Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        getApplication().startActivity(i);
+                    } else {
+                        Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
             }
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
 
-    }
-
-    private void insertedit_RosterValuesIntoLocalDB(PatientAttributesDTO
-                                                            patientAttributesDTO,
-                                                    @NonNull List<PatientAttributesDTO> patientAttributesDTOList) {
+    private void insertedit_RosterValuesIntoLocalDB(PatientAttributesDTO patientAttributesDTO,
+            @NonNull List<PatientAttributesDTO> patientAttributesDTOList) {
 
         // block
         patientAttributesDTO = new PatientAttributesDTO();
@@ -3109,27 +3121,41 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);*/
 
-        //how many times pregnant
-//        patientAttributesDTO = new PatientAttributesDTO();
-//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//        patientAttributesDTO.setPatientuuid(uuid);
-//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoOfTimesPregnant"));
-//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_howmanytimmespregnant.getText().toString()));
-//        Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
-//        patientAttributesDTOList.add(patientAttributesDTO);
-//        //how many times
 
         if (llPORoaster.getVisibility() == View.VISIBLE) {
-//             past two years//todo
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
-//            patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-//            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-//            patientAttributesDTOList.add(patientAttributesDTO);
-//
-//            // outcome pregnancy
+
+            //how many times pregnant
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoOfTimesPregnant"));
+            patientAttributesDTO.setValue(StringUtils.getValue(edittext_howmanytimmespregnant.getText().toString()));
+            Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        //how many times
+
+//             past two years
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
+            patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            Log.d("HOH", "pregtwoyrs: " + spinner_pregnantpasttwoyrs.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //no of times pregnant past 2yrs
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No_Pregnancy_Outcome_2years"));
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()));
+            Log.d("HOH", "total family meme: " + binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //no of times pregnant past 2yrs
+        }
+        // past two yrs - end
+
+            // outcome pregnancy
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);
@@ -3147,7 +3173,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getChildAlive(spinner_childalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 //            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
-        }
+ //       }
 
         //year of pregnancy
 //        patientAttributesDTO = new PatientAttributesDTO();
@@ -3845,22 +3871,42 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
 
         if (llPORoaster.getVisibility() == View.VISIBLE) {
-//            if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
-//                    edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
-//                edittext_howmanytimmespregnant.setError(getString(R.string.select));
-//                focusView = edittext_howmanytimmespregnant;
-//                cancel = true;
-//                return;
-//            }
-//
-//            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
-//                TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
-//                t.setError(getString(R.string.select));
-//                t.setTextColor(Color.RED);
-//                focusView = spinner_pregnantpasttwoyrs;
-//                cancel = true;
-//                return;
-//            }
+            if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
+                    edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
+                edittext_howmanytimmespregnant.setError(getString(R.string.select));
+                focusView = edittext_howmanytimmespregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnantpasttwoyrs;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+                if (binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                        binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty()) {
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
+                    focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                    cancel = true;
+                    return;
+                }
+            }
+
+            Log.v(TAG, "adapter count: " + pregnancyOutcomeAdapter.getItemCount());
+            if(pregnancyOutcomeAdapter.getItemCount() != Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
+                focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                cancel = true;
+                binding.edittextNoOfPregnancyOutcomePastTwoYrs.setFocusable(true);
+                binding.edittextNoOfPregnancyOutcomePastTwoYrs.requestFocus();
+                return;
+            }
         }
 
         // Roster Insert Validations - End
@@ -4174,26 +4220,26 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        spinner_singlemultiplebirths = findViewById(R.id.spinner_singlemultiplebirths);
 //        spinner_modeoftransport = findViewById(R.id.spinner_modeoftransport);
 //        spinner_experiencerscore = findViewById(R.id.spinner_experiencerscore);
-//        spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
+        spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
 //        spinner_outcomepregnancy = findViewById(R.id.spinner_outcomepregnancy);
 //        spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
 //        spinner_focalPointBlock = findViewById(R.id.spinner_focal_block);
 //        spinner_focalPointVillage = findViewById(R.id.spinner_focal_village);
 
-//        spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (position == 1)
-//                    pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
-//                else
-//                    pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1)
+                    binding.linearNoOfPregrnancyOutcome.setVisibility(View.VISIBLE);
+                else
+                    binding.linearNoOfPregrnancyOutcome.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 //        spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -4426,7 +4472,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //        edittext_avgcosttravel = findViewById(R.id.edittext_avgcosttravel);
 //        edittext_avgcostconsult = findViewById(R.id.edittext_avgcostconsult);
 //        edittext_avgcostmedicines = findViewById(R.id.edittext_avgcostmedicines);
-//        edittext_howmanytimmespregnant = findViewById(R.id.edittext_howmanytimmespregnant);
+        edittext_howmanytimmespregnant = findViewById(R.id.edittext_howmanytimmespregnant);
 //        edittext_yearofpregnancy = findViewById(R.id.edittext_yearofpregnancy);
 //        edittext_monthspregnancylast = findViewById(R.id.edittext_monthspregnancylast);
 //        edittext_monthsbeingpregnant = findViewById(R.id.edittext_monthsbeingpregnant);

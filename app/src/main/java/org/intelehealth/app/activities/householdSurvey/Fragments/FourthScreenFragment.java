@@ -44,6 +44,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getCultivableLand;
+import static org.intelehealth.app.utilities.StringUtils.getCultivableLandEdit;
 
 public class FourthScreenFragment extends Fragment {
 
@@ -52,6 +54,7 @@ public class FourthScreenFragment extends Fragment {
     private SessionManager sessionManager;
     private List<View> mandatoryFields = new ArrayList<>();
     PatientsDAO patientsDAO = new PatientsDAO();
+
     public FourthScreenFragment() {
         // Required empty public constructor
     }
@@ -111,7 +114,7 @@ public class FourthScreenFragment extends Fragment {
                 , binding.annualClothingExpenditureRadioGroup, binding.monthlyIntoxicantsExpenditureRadioGroup, binding.bplCardCouponRadioGroup, binding.antodayaCardCouponRadioGroup, binding.rsbyCardRadioGroup, binding.mgnregaCardRadioGroup));
 
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -131,8 +134,7 @@ public class FourthScreenFragment extends Fragment {
                 for (int i = 0; i < patientUUIDs.size(); i++) {
                     setData(patientUUIDs.get(i));
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -154,8 +156,10 @@ public class FourthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdCultivableLand"));
-            patientAttributesDTO.setValue(binding.cultivableLandEditText.getText().toString() + " " +
-                    ((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText());
+            String cultivableLand = binding.cultivableLandEditText.getText().toString() + " " +
+                    getCultivableLand(((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                            requireContext(), sessionManager.getAppLanguage());
+            patientAttributesDTO.setValue(cultivableLand);
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
 
@@ -263,7 +267,7 @@ public class FourthScreenFragment extends Fragment {
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);
-        Log.v("screen", "secondscreen: \n"+ gson.toJson(patientAttributesDTOList));
+        Log.v("screen", "secondscreen: \n" + gson.toJson(patientAttributesDTOList));
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
@@ -288,8 +292,7 @@ public class FourthScreenFragment extends Fragment {
 
     }
 
-    private void setData(String patientUuid)
-    {
+    private void setData(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection1 = "patientuuid = ?";
@@ -307,65 +310,76 @@ public class FourthScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("householdCultivableLand")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     binding.cultivableLandEditText.setText(value1); // set value to the editText
-                    if(value1!=null && value1.contains("Hectare"))
-                        defaultSelectRB(binding.cultivableLandRadioGroup, "Hectare");
-                    else if(value1!=null && value1.contains("Acre"))
-                        defaultSelectRB(binding.cultivableLandRadioGroup, "Acre");
-                    else if(value1!=null && value1.contains("Bigha"))
-                        defaultSelectRB(binding.cultivableLandRadioGroup, "Bigha");
-                    else if(value1!=null && value1.contains("Gunta"))
-                        defaultSelectRB(binding.cultivableLandRadioGroup, "Gunta");
+                    if (value1 != null) {
+                        String[] splitString = value1.split(" ");
+                        splitString[1] = getCultivableLandEdit(splitString[1], requireContext(), sessionManager.getAppLanguage());
+
+                        if (splitString[1].equalsIgnoreCase(getString(R.string.hectare))) {
+                            binding.hectareRadioButton.setChecked(true);
+                        }
+                        if (splitString[1].equalsIgnoreCase(getString(R.string.acre))) {
+                            binding.acreRadioButton.setChecked(true);
+                        }
+                        if (splitString[1].equalsIgnoreCase(getString(R.string.bigha))) {
+                            binding.bighaRadioButton.setChecked(true);
+                        }
+                        if (splitString[1].equalsIgnoreCase(getString(R.string.gunta))) {
+                            binding.guntaRadioButton.setChecked(true);
+                        }
+
+                        binding.cultivableLandEditText.setText(splitString[0]);
+                    }
                 }
 
                 if (name.equalsIgnoreCase("averageAnnualHouseholdIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.averageAnnualHouseholdIncomeRadioGroup, value1);
 
                 }
                 if (name.equalsIgnoreCase("monthlyFoodExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.monthlyFoodExpenditureRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("annualHealthExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.annualHealthExpenditureRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("annualEducationExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.annualEducationExpenditureRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("annualClothingExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.annualClothingExpenditureRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("monthlyIntoxicantsExpenditure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.monthlyIntoxicantsExpenditureRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("householdBPLCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.bplCardCouponRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("householdAntodayaCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.antodayaCardCouponRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("householdRSBYCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.rsbyCardRadioGroup, value1);
                 }
                 if (name.equalsIgnoreCase("householdMGNREGACardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
+                    if (value1 != null)
                         defaultSelectRB(binding.mgnregaCardRadioGroup, value1);
                 }
             } while (idCursor1.moveToNext());
