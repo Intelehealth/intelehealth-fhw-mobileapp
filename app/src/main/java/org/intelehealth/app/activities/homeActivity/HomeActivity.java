@@ -54,6 +54,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
@@ -120,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean hasLicense = false;
     int i = 5;
 
-    TextView lastSyncTextView, locationSetupTextView;
+    TextView lastSyncTextView, locationSetupTextView, appVersionTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
@@ -155,6 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.v(TAG, "onNewIntent");
         catchFCMMessageData();
     }
+
     private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
@@ -238,6 +240,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -276,6 +279,7 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         locationSetupTextView = findViewById(R.id.locationTV);
+        appVersionTextView = findViewById(R.id.app_version_text_view);
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -396,6 +400,8 @@ public class HomeActivity extends AppCompatActivity {
 ////            lastSyncAgo.setText(CalculateAgoTime());
 //        }
 
+        appVersionTextView.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
+
         syncAnimator = ObjectAnimator.ofFloat(ivSync, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
@@ -441,7 +447,6 @@ public class HomeActivity extends AppCompatActivity {
 
         showProgressbar();
     }
-
 
 
     //function for handling the video library feature...
@@ -761,12 +766,10 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.restAppOption:
 
-                if((isNetworkConnected()))
-                {
+                if ((isNetworkConnected())) {
                     mResetSyncDialog.show();
                     boolean isSynced = syncUtils.syncForeground("home");
-                    if(isSynced)
-                    {
+                    if (isSynced) {
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -774,17 +777,13 @@ public class HomeActivity extends AppCompatActivity {
                                 showResetConfirmationDialog();
                             }
                         }, 3000);
-                    }
-                    else
-                    {
+                    } else {
                         mResetSyncDialog.dismiss();
                         DialogUtils dialogUtils = new DialogUtils();
                         dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
                     }
                     return true;
-                }
-                else
-                {
+                } else {
                     DialogUtils dialogUtils = new DialogUtils();
                     dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
                 }
@@ -1245,10 +1244,12 @@ public class HomeActivity extends AppCompatActivity {
         try {
             File dir = context.getCacheDir();
             boolean success = deleteDir(dir);
-            if(success){
+            if (success) {
                 clearAppData();
             }
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean deleteDir(File dir) {
@@ -1261,7 +1262,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
@@ -1272,13 +1273,13 @@ public class HomeActivity extends AppCompatActivity {
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
                 mRefreshProgressDialog.dismiss();
-                ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+                ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
             } else {
                 String packageName = getApplicationContext().getPackageName();
                 Runtime runtime = Runtime.getRuntime();
-                runtime.exec("pm clear "+packageName);
+                runtime.exec("pm clear " + packageName);
             }
 
         } catch (Exception e) {
