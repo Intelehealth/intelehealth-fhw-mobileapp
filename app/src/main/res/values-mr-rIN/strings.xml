@@ -467,6 +467,7 @@
     <string name="accept">स्वीकारा</string>
     <string name="reject">नाकारणे</string>
     <string name="next">पुढे</string>
+    <string name="prev">मागे</string>
     <string name="which_server_would_you_like_to_connect_to">आपण कोणत्या सर्व्हरशी कनेक्ट होऊ इच्छिता?</string>
     <string name="enter_url">URL प्रविष्ट करा</string>
     <string name="choose_a_location_to_login">लॉगिन करण्यासाठी एक स्थान निवडा</string>
@@ -859,7 +860,7 @@
     <string name="does_the_house_have_electricity">घरात वीज आहे का?</string>
     <string name="number_of_hours_of_load_shedding_per_day">दररोज लोड शेडिंग तासांची संख्या</string>
     <string name="number_of_days_with_load_shedding_per_week">दर आठवड्यात लोड शेडिंगसह दिवसांची संख्या</string>
-    <string name="is_there_running_water_available_in_the_house">घरात पाणी उपलब्ध आहे का?</string>
+    <string name="is_there_running_water_available_in_the_house">घरात वाहते पाणी उपलब्ध आहे का? (नळ/ पाईप द्वारे)?</string>
     <string name="what_is_the_primary_source_of_water_for_the_household">घरासाठी पाणी प्राथमिक स्त्रोत काय आहे?</string>
     <string name="village_tank">ग्राम टँक</string>
     <string name="open_well">खुले उघडा</string>
@@ -874,7 +875,7 @@
     <string name="km">किमी</string>
     <string name="available_of_water_supply_hours_per_day">पाणी पुरवठा उपलब्ध (दररोज तास)</string>
     <string name="available_of_water_supply_days_per_week">पाणीपुरवठ्याची उपलब्धता (दर आठवड्याला दिवस)</string>
-    <string name="does_the_house_have_a_bank_account">घरात एक बँक खाते आहे का?</string>
+    <string name="does_the_house_have_a_bank_account">घरात किमान एक बँक खाते आहे का?</string>
     <string name="amount_of_cultivable_land_owned_by_household">एकूण मालकीची असलेली लागवडीयोग्य जमीन?</string>
     <string name="hectare">हेक्टर</string>
     <string name="acre">एकर</string>
@@ -964,7 +965,7 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">पाणी प्यायला देण्यासाठी आपण सहसा पाण्यावर काय करता?</string>
     <string name="boil">उकळणे</string>
     <string name="use_alum">तुरटी वापरा</string>
-    <string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या जोडा / थेंब जोडा</string>
+    <string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स</string>
     <string name="strain_through_a_cloth">कापड माध्यमातून ताण</string>
     <string name="use_water_filter_ceramic_sand_composite_etc">पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)</string>
     <string name="use_electronic_purifier">इलेक्ट्रॉनिक फिल्टरचा वापर</string>
@@ -1254,8 +1255,8 @@
     <string name="household_survey">घरगुती सर्वेक्षण</string>
     <string name="cough_cold">खोकला / सर्दी</string>
     <string name="fever">ताप</string>
-    <string name="diarrhoea"> अतिसार</string>
-    <string name="injury"> दुखापत</string>
+    <string name="diarrhoea">अतिसार</string>
+    <string name="injury">दुखापत</string>
     <string name="skin_issues">त्वचेच्या समस्या</string>
     <string name="eye_vision_issues">डोळा / दृष्टी समस्या</string>
     <string name="joint_bone_pain">सांधे/हाडाचे दुखणे</string>

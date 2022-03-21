@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +29,12 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+
 public class PregnancyRosterDialog extends DialogFragment {
 
     public static final String TAG = "PregnancyRosterDialog";
@@ -35,8 +43,13 @@ public class PregnancyRosterDialog extends DialogFragment {
     private SessionManager sessionManager;
     private PregnancyRosterData data;
     private Bundle bundle;
-
+    private DatePickerDialog mDOBPicker;
     // Adapters
+    private int mDOBYear;
+    private int mDOBMonth;
+    private int mDOBDay;
+
+    Calendar dob = Calendar.getInstance();
     private ArrayAdapter<CharSequence> adapter_pregnantPastTwoYears, adapter_outcomepregnancy, adapter_childalive, adapter_placeofdeliverypregnant, adapter_pregnancyplanned,
             adapter_focalPointBlock, adapter_sexofbaby, adapter_pregnancyhighriskcase, adapter_pregnancycomplications, adapter_singlemultiplebirths;
 
@@ -512,6 +525,37 @@ public class PregnancyRosterDialog extends DialogFragment {
 
         int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), sessionManager.getAppLanguage()));
         binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
+        mDOBPicker = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                     dob.set(year, monthOfYear, dayOfMonth);
+                   mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                        dob.set(year, monthOfYear, dayOfMonth);
+                        String dobString = simpleDateFormat.format(dob.getTime());
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
+                            binding.edittextYearofpregnancy.setText(dob_text);
+                        } else {
+                            binding.edittextYearofpregnancy.setText(dobString);
+                        }
+                        mDOBYear = year;
+                        mDOBMonth = monthOfYear;
+                        mDOBDay = dayOfMonth;
+                    }
+                }, mDOBYear, mDOBMonth, mDOBDay);
+
+        binding.edittextYearofpregnancy.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        todo date dialog
+                        mDOBPicker.show();
+                    }
+                }
+        );
+
 
         if (!checkIfEmpty(data.getPregnancyOutcome())) {
             spinnerPosition = adapter_outcomepregnancy.getPosition(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), sessionManager.getAppLanguage()));

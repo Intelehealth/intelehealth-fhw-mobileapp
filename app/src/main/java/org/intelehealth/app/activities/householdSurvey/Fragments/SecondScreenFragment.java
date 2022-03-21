@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SecondScreenFragment extends Fragment implements View.OnClickListener {
@@ -65,7 +66,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             nregaCheckbox, seasonalLaborCheckbox, pensionCheckbox, remittancesCheckbox, otherCheckbox;
     SessionManager sessionManager = null;
     String patientUuid;
-    ImageButton next_button;
+    ImageButton next_button,prev_button;
     private static final String TAG = SecondScreenFragment.class.getSimpleName();
     TextInputLayout otherTIL;
     TextInputEditText otherEditText;
@@ -142,6 +143,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         noOfFeaturePhoneEditText = rootView.findViewById(R.id.editTextFeaturePhone);
         noOfEarningEditText = rootView.findViewById(R.id.editText_earningmember);
         next_button = rootView.findViewById(R.id.next_button);
+        prev_button = rootView.findViewById(R.id.prev_button);
         otherTIL = rootView.findViewById(R.id.other_sources_of_income_layout);
         otherEditText = rootView.findViewById(R.id.other_sources_of_income_edit_text);
         // TODO: Similarly init other views
@@ -165,6 +167,14 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         // TODO: InitViews for this below views and then uncomment.
         next_button.setOnClickListener(this);
 
+        prev_button.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Objects.requireNonNull(getActivity()).onBackPressed();
+                    }
+                }
+        );
        /* maleHoHRadio.setOnClickListener(this);
         femaleHoHRadio.setOnClickListener(this);
 
