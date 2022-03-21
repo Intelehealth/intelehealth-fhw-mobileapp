@@ -1080,7 +1080,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
 
         binding.addPregnancyOutcomeButton.setOnClickListener(v -> {
-            if (sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+            if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
+                    !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equals("") &&
+                    sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
                 PregnancyRosterDialog dialog = new PregnancyRosterDialog(
                         sessionManager.getNoOfclicks(),
                         edittext_howmanytimmespregnant.getText().toString(),
@@ -1088,8 +1090,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                         binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()); //TODO: support transaltions...
                 dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
             } else {
-                Toast.makeText(context, R.string.no_of_times_pasttwoyrs_limit_toast, Toast.LENGTH_SHORT
-                ).show();
+                if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
+                        !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equals("")) {
+                    Toast.makeText(context, R.string.no_of_times_pasttwoyrs_limit_toast, Toast.LENGTH_SHORT).show();
+                } else {
+                    //
+                }
+
             }
         });
     }
@@ -4229,10 +4236,18 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1)
+                if (position == 1) {
                     binding.linearNoOfPregrnancyOutcome.setVisibility(View.VISIBLE);
-                else
+                   /* if(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equals("") ||
+                            binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty()) {
+                        binding.linearButtonCardBlock.setVisibility(View.GONE);
+                    }
+                    else {
+                        binding.linearButtonCardBlock.setVisibility(View.VISIBLE);
+                    }*/
+                } else {
                     binding.linearNoOfPregrnancyOutcome.setVisibility(View.GONE);
+                }
             }
 
             @Override
