@@ -70,106 +70,106 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
             this.data = data;
             this.position = position;
 
-            binding.textviewHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
-            binding.textviewNoofpregnancyoutcomepasttwoyrs.setText(data.getNumberOfPregnancyOutcomePastTwoYrs());
-            binding.textviewPregnantpasttwoyrs.setText(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), appLanguage));
+//            binding.textviewHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
+//            binding.textviewNoofpregnancyoutcomepasttwoyrs.setText(data.getNumberOfPregnancyOutcomePastTwoYrs());
+//            binding.textviewPregnantpasttwoyrs.setText(StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), appLanguage));
 
-            if (data.getAnyPregnancyOutcomesInThePastTwoYears().equals("No")) { // TODO replace with identification value
-                binding.pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
+//            if (data.getAnyPregnancyOutcomesInThePastTwoYears().equals("No")) { // TODO replace with identification value
+//                binding.pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
+//            } else {
+//                binding.pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
+
+            if (!checkIfEmpty(data.getPregnancyOutcome())) {
+                binding.textviewOutcomepregnancy.setText(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), appLanguage));
+                binding.llPregnancyOutcome.setVisibility(View.VISIBLE);
             } else {
-                binding.pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
-
-                if (!checkIfEmpty(data.getPregnancyOutcome())) {
-                    binding.textviewOutcomepregnancy.setText(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), appLanguage));
-                    binding.llPregnancyOutcome.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llPregnancyOutcome.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getIsChildAlive())) {
-                    binding.textviewChildalive.setText(StringUtils.getChildAlive_edit(data.getIsChildAlive(), appLanguage));
-                    binding.llChildAlive.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llChildAlive.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
-                    binding.textviewYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
-                    binding.llYearOfPregnancy.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llYearOfPregnancy.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getMonthsOfPregnancy())) {
-                    binding.textviewMonthspregnancylast.setText(data.getMonthsOfPregnancy());
-                    binding.llMonthsPregnancyLast.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llMonthsPregnancyLast.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getMonthsBeenPregnant())) {
-                    binding.textviewMonthsbeingpregnant.setText(data.getMonthsBeenPregnant());
-                    binding.llMonthsBeingPregnant.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llMonthsBeingPregnant.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getPlaceOfDelivery())) {
-                    binding.textviewPlaceofdeliverypregnant.setText(StringUtils.getPlaceDelivery_edit(data.getPlaceOfDelivery(), appLanguage));
-                    binding.llDeliveryPlace.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llDeliveryPlace.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
-                    binding.textviewFocalBlock.setText(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), appLanguage));
-                    binding.llFocalPoint.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llFocalPoint.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getSingleMultipleBirths())) {
-                    binding.textviewSinglemultiplebirths.setText(StringUtils.getSinglemultiplebirths_edit(data.getSingleMultipleBirths(), appLanguage));
-                    binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llSingleMultipleBirth.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getBabyAgeDied())) {
-                    binding.textviewBabyagedied.setText(data.getBabyAgeDied());
-                    binding.llBabyAgeDied.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llBabyAgeDied.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getSexOfBaby())) {
-                    binding.textviewSexofbaby.setText(StringUtils.getSexOfBaby_edit(data.getSexOfBaby(), appLanguage));
-                    binding.llBabyGender.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llBabyGender.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getPregnancyPlanned())) {
-                    binding.textviewPregnancyplanned.setText(StringUtils.getPregnancyPlanned_edit(data.getPregnancyPlanned(), appLanguage));
-                    binding.llPregnancyPlanned.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llPregnancyPlanned.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getHighRiskPregnancy())) {
-                    binding.textviewPregnancyhighriskcase.setText(StringUtils.getHighRiskPregnancy_edit(data.getHighRiskPregnancy(), appLanguage));
-                    binding.llPregnancyHighRiskCase.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llPregnancyHighRiskCase.setVisibility(View.GONE);
-                }
-
-                if (!checkIfEmpty(data.getPregnancyComplications())) {
-                    binding.textviewPregnancycomplications.setText(StringUtils.getComplications_edit(data.getPregnancyComplications(), appLanguage));
-                    binding.llChildComplications.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llChildComplications.setVisibility(View.GONE);
-                }
+                binding.llPregnancyOutcome.setVisibility(View.GONE);
             }
+
+            if (!checkIfEmpty(data.getIsChildAlive())) {
+                binding.textviewChildalive.setText(StringUtils.getChildAlive_edit(data.getIsChildAlive(), appLanguage));
+                binding.llChildAlive.setVisibility(View.VISIBLE);
+            } else {
+                binding.llChildAlive.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
+                binding.textviewYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+                binding.llYearOfPregnancy.setVisibility(View.VISIBLE);
+            } else {
+                binding.llYearOfPregnancy.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getMonthsOfPregnancy())) {
+                binding.textviewMonthspregnancylast.setText(data.getMonthsOfPregnancy());
+                binding.llMonthsPregnancyLast.setVisibility(View.VISIBLE);
+            } else {
+                binding.llMonthsPregnancyLast.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getMonthsBeenPregnant())) {
+                binding.textviewMonthsbeingpregnant.setText(data.getMonthsBeenPregnant());
+                binding.llMonthsBeingPregnant.setVisibility(View.VISIBLE);
+            } else {
+                binding.llMonthsBeingPregnant.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getPlaceOfDelivery())) {
+                binding.textviewPlaceofdeliverypregnant.setText(StringUtils.getPlaceDelivery_edit(data.getPlaceOfDelivery(), appLanguage));
+                binding.llDeliveryPlace.setVisibility(View.VISIBLE);
+            } else {
+                binding.llDeliveryPlace.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
+                binding.textviewFocalBlock.setText(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), appLanguage));
+                binding.llFocalPoint.setVisibility(View.VISIBLE);
+            } else {
+                binding.llFocalPoint.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getSingleMultipleBirths())) {
+                binding.textviewSinglemultiplebirths.setText(StringUtils.getSinglemultiplebirths_edit(data.getSingleMultipleBirths(), appLanguage));
+                binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
+            } else {
+                binding.llSingleMultipleBirth.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getBabyAgeDied())) {
+                binding.textviewBabyagedied.setText(data.getBabyAgeDied());
+                binding.llBabyAgeDied.setVisibility(View.VISIBLE);
+            } else {
+                binding.llBabyAgeDied.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getSexOfBaby())) {
+                binding.textviewSexofbaby.setText(StringUtils.getSexOfBaby_edit(data.getSexOfBaby(), appLanguage));
+                binding.llBabyGender.setVisibility(View.VISIBLE);
+            } else {
+                binding.llBabyGender.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getPregnancyPlanned())) {
+                binding.textviewPregnancyplanned.setText(StringUtils.getPregnancyPlanned_edit(data.getPregnancyPlanned(), appLanguage));
+                binding.llPregnancyPlanned.setVisibility(View.VISIBLE);
+            } else {
+                binding.llPregnancyPlanned.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getHighRiskPregnancy())) {
+                binding.textviewPregnancyhighriskcase.setText(StringUtils.getHighRiskPregnancy_edit(data.getHighRiskPregnancy(), appLanguage));
+                binding.llPregnancyHighRiskCase.setVisibility(View.VISIBLE);
+            } else {
+                binding.llPregnancyHighRiskCase.setVisibility(View.GONE);
+            }
+
+            if (!checkIfEmpty(data.getPregnancyComplications())) {
+                binding.textviewPregnancycomplications.setText(StringUtils.getComplications_edit(data.getPregnancyComplications(), appLanguage));
+                binding.llChildComplications.setVisibility(View.VISIBLE);
+            } else {
+                binding.llChildComplications.setVisibility(View.GONE);
+            }
+//            }
         }
 
         private Boolean checkIfEmpty(String text) {

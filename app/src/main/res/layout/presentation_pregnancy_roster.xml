@@ -25,64 +25,64 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_how_many_times_have_you_been_pregnant"
-                android:textSize="@dimen/card_content_sub_text_size" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/txt_how_many_times_have_you_been_pregnant"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
 
-            <TextView
-                android:id="@+id/textview_howmanytimmespregnant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/textview_howmanytimmespregnant"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="15sp" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="?android:attr/listDivider" />-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
-                android:textSize="@dimen/card_content_sub_text_size" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-            <TextView
-                android:id="@+id/textview_pregnantpasttwoyrs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/textview_pregnantpasttwoyrs"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="15sp" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="?android:attr/listDivider" />-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_of_pregnancy_outcomes_in_the_past_2_years"
-                android:textSize="@dimen/card_content_sub_text_size" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/no_of_pregnancy_outcomes_in_the_past_2_years"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-            <TextView
-                android:id="@+id/textview_noofpregnancyoutcomepasttwoyrs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/textview_noofpregnancyoutcomepasttwoyrs"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="15sp" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="?android:attr/listDivider" />-->
 
             <LinearLayout
                 android:id="@+id/pregnancy_questions_linear_layout"

@@ -92,7 +92,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 
         final AlertDialog dialog = builder.create();
         dialog.setOnShowListener(dialog1 -> {
-            Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(v -> {
                 PregnancyRosterData data = fetchData();
                 boolean areDetailsCorrect = validateData(data);
@@ -442,6 +442,12 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.spinnerFocalBlock);
                 areDetailsCorrect = false;
             }
+
+            if (binding.spinnerFocalBlock.getSelectedItemPosition() == 3 &&
+                    (binding.etPregnancyblockOther.getText().toString().equalsIgnoreCase("") || binding.etPregnancyblockOther.getText().toString().isEmpty())) {
+                setEditTextError(binding.etPregnancyblockOther);
+                areDetailsCorrect = false;
+            }
         }
 
         if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
@@ -509,8 +515,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)
             data.setPlaceOfDelivery(StringUtils.getPlaceDelivery(binding.spinnerPlaceofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 ||
-                (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
+        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 || (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
             if (binding.spinnerFocalBlock.getSelectedItemPosition() == 3) {
                 data.setFocalFacilityForPregnancy(binding.etPregnancyblockOther.getText().toString());
                 Log.v(TAG, "focal_other: " + data.getFocalFacilityForPregnancy());
