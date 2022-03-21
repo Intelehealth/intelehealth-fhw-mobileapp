@@ -1075,20 +1075,19 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     private void setupPOCard() {
         //TODO: Validations
-        if(patientID_edit == null)
+        if (patientID_edit == null)
             sessionManager.setNoOfclicks(0);
 
 
         binding.addPregnancyOutcomeButton.setOnClickListener(v -> {
-            if(sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+            if (sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
                 PregnancyRosterDialog dialog = new PregnancyRosterDialog(
                         sessionManager.getNoOfclicks(),
                         edittext_howmanytimmespregnant.getText().toString(),
                         spinner_pregnantpasttwoyrs.getSelectedItem().toString(),
                         binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()); //TODO: support transaltions...
                 dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
-            }
-            else {
+            } else {
                 Toast.makeText(context, R.string.no_of_times_pasttwoyrs_limit_toast, Toast.LENGTH_SHORT
                 ).show();
             }
@@ -2215,7 +2214,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 if (name.equalsIgnoreCase("PregnancyOutcomesReported")) {
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    pregnancyOutcomesList = new Gson().fromJson(value, new TypeToken<List<PregnancyRosterData>>() {}.getType());
+                    pregnancyOutcomesList = new Gson().fromJson(value, new TypeToken<List<PregnancyRosterData>>() {
+                    }.getType());
                     pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
                     binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
                     binding.poViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -2730,49 +2730,49 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            }
 //        }
 
-                // Roster Insert Validations - End
+        // Roster Insert Validations - End
 
-                if (cancel) {
-                    focusView.requestFocus();
-                    Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
-                } else {
+        if (cancel) {
+            focusView.requestFocus();
+            Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
+        } else {
 
-                    patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
-                    patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-                    patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-                    patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-                    patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
+            patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
+            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientdto.setGender(StringUtils.getValue(mGender));
 
-                    String[] dob_array = mDOB.getText().toString().split(" ");
-                    Log.d("dob_array", "0: " + dob_array[0]);
-                    Log.d("dob_array", "0: " + dob_array[1]);
-                    Log.d("dob_array", "0: " + dob_array[2]);
+            String[] dob_array = mDOB.getText().toString().split(" ");
+            Log.d("dob_array", "0: " + dob_array[0]);
+            Log.d("dob_array", "0: " + dob_array[1]);
+            Log.d("dob_array", "0: " + dob_array[2]);
 
-                    //get month index and return English value for month.
-                    if (dob_indexValue == 15) {
-                        String dob = StringUtils.hi_or_bn_en_noEdit
-                                (mDOB.getText().toString(), sessionManager.getAppLanguage());
-                        patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                                (StringUtils.getValue(dob)));
-                    } else {
-                        String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-                        dob_array[1] = dob_array[1].replace(dob_array[1], dob);
-                        String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-                        patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                                (StringUtils.getValue(dob_value)));
-                    }
+            //get month index and return English value for month.
+            if (dob_indexValue == 15) {
+                String dob = StringUtils.hi_or_bn_en_noEdit
+                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
+                        (StringUtils.getValue(dob)));
+            } else {
+                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
+                dob_array[1] = dob_array[1].replace(dob_array[1], dob);
+                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+                patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
+                        (StringUtils.getValue(dob_value)));
+            }
 
-                    patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+            patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
 //            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-                    patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getSelectedItem().toString()));
-                    patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getSelectedItem().toString()));
+            patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 //
-                    patientdto.setCountry(StringUtils.getValue("India"));
-                    patientdto.setPatientPhoto(mCurrentPhotoPath);
+            patientdto.setCountry(StringUtils.getValue("India"));
+            patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-                    patientdto.setStateprovince(StringUtils.getValueForStateCity(mState.getSelectedItem().toString()));
+            patientdto.setStateprovince(StringUtils.getValueForStateCity(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
@@ -2783,12 +2783,12 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
-                    patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2797,16 +2797,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-                    if (til_occupation_other.getVisibility() == View.GONE)
-                        patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-                    else
-                        patientAttributesDTO.setValue(et_occupation_other.getText().toString());
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            if (til_occupation_other.getVisibility() == View.GONE)
+                patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            else
+                patientAttributesDTO.setValue(et_occupation_other.getText().toString());
 
-                    patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2815,62 +2815,62 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-                    patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
-                    patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-                    patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
-                    //House Hold Registration
-                    if (sessionManager.getHouseholdUuid().equals("")) {
+            //House Hold Registration
+            if (sessionManager.getHouseholdUuid().equals("")) {
 
-                        String HouseHold_UUID = UUID.randomUUID().toString();
-                        sessionManager.setHouseholdUuid(HouseHold_UUID);
+                String HouseHold_UUID = UUID.randomUUID().toString();
+                sessionManager.setHouseholdUuid(HouseHold_UUID);
 
-                        patientAttributesDTO = new PatientAttributesDTO();
-                        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                        patientAttributesDTO.setPatientuuid(uuid);
-                        patientAttributesDTO.setPersonAttributeTypeUuid
-                                (patientsDAO.getUuidForAttribute("HouseHold"));
-                        patientAttributesDTO.setValue(HouseHold_UUID);
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("HouseHold"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
 
-                    } else {
+            } else {
 
-                        String HouseHold_UUID = sessionManager.getHouseholdUuid();
-                        patientAttributesDTO = new PatientAttributesDTO();
-                        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                        patientAttributesDTO.setPatientuuid(uuid);
-                        patientAttributesDTO.setPersonAttributeTypeUuid
-                                (patientsDAO.getUuidForAttribute("HouseHold"));
-                        patientAttributesDTO.setValue(HouseHold_UUID);
+                String HouseHold_UUID = sessionManager.getHouseholdUuid();
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("HouseHold"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
 
-                    }
-                    //House Hold Registration - End
+            }
+            //House Hold Registration - End
 
-                    //Roster Values Insert Into DB
-                    insertedit_RosterValuesIntoLocalDB(patientAttributesDTO, patientAttributesDTOList);
-                    //end
-                    patientAttributesDTOList.add(patientAttributesDTO);
-                    Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
-                    patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
-                    patientdto.setSyncd(false);
-                    Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+            //Roster Values Insert Into DB
+            insertedit_RosterValuesIntoLocalDB(patientAttributesDTO, patientAttributesDTOList);
+            //end
+            patientAttributesDTOList.add(patientAttributesDTO);
+            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+            patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+            patientdto.setSyncd(false);
+            Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
 
-                }
+        }
 
-                try {
-                    Logger.logD(TAG, "insertpatinet ");
-                    boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
-                    boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+        try {
+            Logger.logD(TAG, "insertpatinet ");
+            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
+            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
 
-                    if (NetworkConnection.isOnline(getApplication())) {
+            if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
 
@@ -2878,10 +2878,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //                        getString(R.string.uploading) + patientdto.getFirstname() + "" + patientdto.getLastname() +
 //                                "'s data", 2, getApplication());
 
-                        SyncDAO syncDAO = new SyncDAO();
-                        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                        boolean push = syncDAO.pushDataApi();
-                        boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean push = syncDAO.pushDataApi();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
 //                if (push)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
@@ -2895,32 +2895,32 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
 
 //
-                    }
+            }
 //            else {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
 //            }
-                    if (isPatientInserted && isPatientImageInserted) {
-                        Logger.logD(TAG, "inserted");
-                        Intent i = new Intent(getApplication(), PatientDetailActivity.class);
-                        i.putExtra("patientUuid", uuid);
-                        i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
-                        i.putExtra("tag", "newPatient");
-                        i.putExtra("privacy", privacy_value);
-                        i.putExtra("hasPrescription", "false");
-                        Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        getApplication().startActivity(i);
-                    } else {
-                        Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-
+            if (isPatientInserted && isPatientImageInserted) {
+                Logger.logD(TAG, "inserted");
+                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                i.putExtra("patientUuid", uuid);
+                i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                i.putExtra("tag", "newPatient");
+                i.putExtra("privacy", privacy_value);
+                i.putExtra("hasPrescription", "false");
+                Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getApplication().startActivity(i);
+            } else {
+                Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+    }
 
     private void insertedit_RosterValuesIntoLocalDB(PatientAttributesDTO patientAttributesDTO,
-            @NonNull List<PatientAttributesDTO> patientAttributesDTOList) {
+                                                    @NonNull List<PatientAttributesDTO> patientAttributesDTOList) {
 
         // block
         patientAttributesDTO = new PatientAttributesDTO();
@@ -3132,7 +3132,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue(StringUtils.getValue(edittext_howmanytimmespregnant.getText().toString()));
             Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
-        //how many times
+            //how many times
 
 //             past two years
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3155,7 +3155,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
         // past two yrs - end
 
-            // outcome pregnancy
+        // outcome pregnancy
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);
@@ -3173,7 +3173,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            patientAttributesDTO.setValue(StringUtils.getChildAlive(spinner_childalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 //            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
- //       }
+        //       }
 
         //year of pregnancy
 //        patientAttributesDTO = new PatientAttributesDTO();
@@ -3899,7 +3899,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             }
 
             Log.v(TAG, "adapter count: " + pregnancyOutcomeAdapter.getItemCount());
-            if(pregnancyOutcomeAdapter.getItemCount() != Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+            if (pregnancyOutcomeAdapter.getItemCount() != Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
                 binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
                 focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
                 cancel = true;
@@ -4575,6 +4575,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 bundle.putString("anyPregnancyOutcomesInThePastTwoYears", data.getAnyPregnancyOutcomesInThePastTwoYears());
                 bundle.putString("pregnancyOutcome", data.getPregnancyOutcome());
                 bundle.putString("isChildAlive", data.getIsChildAlive());
+                bundle.putString("isPreTerm", data.getIsPreTerm());
                 bundle.putString("yearOfPregnancyOutcome", data.getYearOfPregnancyOutcome());
                 bundle.putString("monthsOfPregnancy", data.getMonthsOfPregnancy());
                 bundle.putString("monthsBeenPregnant", data.getMonthsBeenPregnant());

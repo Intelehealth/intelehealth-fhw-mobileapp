@@ -2259,4 +2259,16 @@
         <item>Bedase</item>
     </string-array>
 
+    <string-array name="child_pre_term_en">
+        <item>@string/select</item>
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+
+    <string-array name="child_pre_term_mr">
+        <item>@string/select</item>
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+
 </resources>

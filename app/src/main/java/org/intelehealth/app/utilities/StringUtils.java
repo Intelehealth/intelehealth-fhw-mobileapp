@@ -5044,6 +5044,39 @@ public final class StringUtils {
         return val;
     }
 
+    public static String getPreTerm(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "होय":
+                    val = "Yes";
+                    break;
+                case "नाही":
+                    val = "No";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        return val;
+    }
+
+    public static String getPreTermEdit(String val, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Yes":
+                    val = "होय";
+                    break;
+                case "No":
+                    val = "नाही";
+                    break;
+                default:
+                    return val;
+            }
+        }
+
+        return val;
+    }
+
 
     public static String getOutcomePregnancy(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {

@@ -6,6 +6,7 @@ public class PregnancyRosterData {
     private String numberOfPregnancyOutcomePastTwoYrs;
     private String pregnancyOutcome;
     private String isChildAlive;
+    private String isPreTerm;
     private String yearOfPregnancyOutcome;
     private String monthsOfPregnancy;
     private String monthsBeenPregnant;
@@ -56,6 +57,14 @@ public class PregnancyRosterData {
 
     public void setIsChildAlive(String isChildAlive) {
         this.isChildAlive = isChildAlive;
+    }
+
+    public String getIsPreTerm() {
+        return isPreTerm;
+    }
+
+    public void setIsPreTerm(String isPreTerm) {
+        this.isPreTerm = isPreTerm;
     }
 
     public String getYearOfPregnancyOutcome() {

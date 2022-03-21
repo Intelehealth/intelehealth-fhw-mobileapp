@@ -828,7 +828,7 @@
     <string name="religion_muslim">मुस्लिम</string>
     <string name="religion_christian">ख्रिश्चन</string>
     <string name="religion_sikh">सिख</string>
-<!--    <string name="religion_buddhist_neo_buddhist">बौद्ध / निओ-बौद्ध</string>-->
+    <!--    <string name="religion_buddhist_neo_buddhist">बौद्ध / निओ-बौद्ध</string>-->
     <string name="religion_buddhist_neo_buddhist">बौद्ध / नव बौद्ध</string>
     <string name="religion_other">इतर</string>
     <string name="religion_no_religion">कोणताही धर्म नाही</string>
@@ -1259,16 +1259,16 @@
     <string name="skin_issues">त्वचेच्या समस्या</string>
     <string name="eye_vision_issues">डोळा / दृष्टी समस्या</string>
     <string name="joint_bone_pain">सांधे/हाडाचे दुखणे</string>
-   <string name="typhoid">विषमज्वर</string>
-   <string name="jaundice">कावीळ</string>
-   <string name="malaria">मलेरिया</string>
-   <string name="dengue">डेंग्यू</string>
-   <string name="diabetes">मधुमेह</string>
-   <string name="hypertensionBP">उच्च रक्तदाब/बीपी</string>
-   <string name="asthama">अस्थमा</string>
-   <string name="cancer">कर्करोग</string>
-    <string name = "tB">टीबी</string>
-    <string name = "skin_diseases">त्वचा रोग</string>
+    <string name="typhoid">विषमज्वर</string>
+    <string name="jaundice">कावीळ</string>
+    <string name="malaria">मलेरिया</string>
+    <string name="dengue">डेंग्यू</string>
+    <string name="diabetes">मधुमेह</string>
+    <string name="hypertensionBP">उच्च रक्तदाब/बीपी</string>
+    <string name="asthama">अस्थमा</string>
+    <string name="cancer">कर्करोग</string>
+    <string name="tB">टीबी</string>
+    <string name="skin_diseases">त्वचा रोग</string>
     <string name="water_related_diseases">पाण्याशी संबंधित रोग</string>
 
     <string name="select_primary_health_care_provider">प्राथमिक आरोग्य सेवा प्रदाता निवडा</string>

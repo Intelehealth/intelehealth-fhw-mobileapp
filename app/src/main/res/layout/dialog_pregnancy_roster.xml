@@ -16,64 +16,64 @@
             android:orientation="vertical"
             android:padding="8dp">
 
-           <!-- <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:text="@string/txt_how_many_times_have_you_been_pregnant"
-                android:textSize="@dimen/card_content_sub_text_size" />
+            <!-- <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:paddingStart="5dp"
+                 android:text="@string/txt_how_many_times_have_you_been_pregnant"
+                 android:textSize="@dimen/card_content_sub_text_size" />
 
-            <EditText
-                android:id="@+id/edittext_howmanytimmespregnant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:textSize="15sp" />
+             <EditText
+                 android:id="@+id/edittext_howmanytimmespregnant"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:inputType="number"
+                 android:textSize="15sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingStart="5dp"
-                android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
-                android:textSize="@dimen/card_content_sub_text_size" />
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="5dp"
+                 android:paddingStart="5dp"
+                 android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
+                 android:textSize="@dimen/card_content_sub_text_size" />
 
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="10dp" />
+             <Space
+                 android:layout_width="10dp"
+                 android:layout_height="10dp" />
 
-            <Spinner
-                android:id="@+id/spinner_pregnantpasttwoyrs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/pasttwoyrs_en" />
+             <Spinner
+                 android:id="@+id/spinner_pregnantpasttwoyrs"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:entries="@array/pasttwoyrs_en" />
 
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="10dp" />
+             <Space
+                 android:layout_width="10dp"
+                 android:layout_height="10dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="1dp"
+                 android:layout_marginTop="5dp"
+                 android:layout_marginBottom="10dp"
+                 android:background="?android:attr/listDivider" />
 
-            &lt;!&ndash;No. of times preganant in past 2yrs&ndash;&gt;
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:text="@string/no_of_pregnancy_outcomes_in_the_past_2_years"
-                android:textSize="@dimen/card_content_sub_text_size" />
+             &lt;!&ndash;No. of times preganant in past 2yrs&ndash;&gt;
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:paddingStart="5dp"
+                 android:text="@string/no_of_pregnancy_outcomes_in_the_past_2_years"
+                 android:textSize="@dimen/card_content_sub_text_size" />
 
-            <EditText
-                android:id="@+id/edittext_noOfPregnancyOutcomePastTwoYrs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:textSize="15sp" />
--->
+             <EditText
+                 android:id="@+id/edittext_noOfPregnancyOutcomePastTwoYrs"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:inputType="number"
+                 android:textSize="15sp" />
+ -->
 
             <LinearLayout
                 android:id="@+id/pregnancy_questions_linear_layout"
@@ -144,6 +144,46 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="?android:attr/listDivider" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPreTerm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/was_this_birth_pre_term_earlier_than_due_date_for_delivery"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_pre_term"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/child_pre_term_en" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+
                 </LinearLayout>
 
                 <EditText
@@ -250,9 +290,9 @@
                         android:hint="@string/enter_block_name_other"
                         android:maxLines="1"
                         android:singleLine="true"
+                        android:textSize="@dimen/card_content_sub_text_size"
                         android:visibility="gone"
-                        tools:visibility="visible"
-                        android:textSize="@dimen/card_content_sub_text_size" />
+                        tools:visibility="visible" />
 
                     <View
                         android:layout_width="match_parent"

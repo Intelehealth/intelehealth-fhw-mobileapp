@@ -1411,5 +1411,6 @@
     <string name="enter_village_name_other">Enter Village Name</string>
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">No. of pregnancy outcomes in the past 2 years</string>
     <string name="no_of_times_pasttwoyrs_limit_toast">Max limit reached</string>
+    <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">Was this birth pre-term? (earlier than the due date for delivery?)</string>
 
 </resources>
