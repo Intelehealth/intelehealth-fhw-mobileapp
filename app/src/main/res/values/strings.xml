@@ -825,4 +825,5 @@
     <string name="whatsapp">Whatsapp</string>
     <string name="email">Email</string>
     <string name="share_prescription">Share Prescription</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>
