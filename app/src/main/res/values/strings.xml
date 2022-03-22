@@ -1420,5 +1420,6 @@
     <string name="what_is_the_type_of_delivery">What was the type of delivery?</string>
     <string name="normal_vaginal_delivery">Normal or Vaginal Delivery</string>
     <string name="cesarean_section_c_section">Cesarean Section (C-Section)</string>
+    <string name="please_add_pregnancy_outcome">Please add Pregnancy Outcome</string>
 
 </resources>

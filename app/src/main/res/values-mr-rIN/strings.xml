@@ -1350,5 +1350,6 @@
     <string name="what_is_the_type_of_delivery">डिलिव्हरी /प्रसूती कशी झाली?</string>
     <string name="normal_vaginal_delivery">नॉर्मल/नैसर्गिक</string>
     <string name="cesarean_section_c_section">सिझेरिअन (सी-सेक्शन)</string>
+    <string name="please_add_pregnancy_outcome">कृपया गर्भधारणा परिणाम जोडा</string>
 
 </resources>

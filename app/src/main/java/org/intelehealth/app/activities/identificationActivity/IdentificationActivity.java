@@ -2633,6 +2633,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     return;
                 }
             }
+
+            if(!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                    !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
+                    Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
+            binding.poViewPager.getAdapter().getItemCount() == 0) {
+                Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
+                focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                cancel = true;
+                return;
+            }
         }
 
 //                if (spinner_outcomepregnancy.getSelectedItemPosition() == 1) {
@@ -3899,6 +3909,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 if (binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
                         binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty()) {
                     binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
+                    focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                    cancel = true;
+                    return;
+                }
+
+                if(!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                        !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
+                        Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
+                        binding.poViewPager.getAdapter().getItemCount() == 0) {
+                    Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
                     focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
                     cancel = true;
                     return;
