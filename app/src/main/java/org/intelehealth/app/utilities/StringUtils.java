@@ -4487,10 +4487,10 @@ public final class StringUtils {
     public static String getSinglemultiplebirths(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
-                case "एकल":
+                case "एकच मुल":
                     val = "Single";
                     break;
-                case "एकाधिक":
+                case "एकाहून अधिक जन्म (जुळे, तिळे, इ.)":
                     val = "Multiple";
                     break;
 
@@ -4507,10 +4507,10 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Single":
-                    val = "एकल";
+                    val = "एकच मुल";
                     break;
                 case "Multiple":
-                    val = "एकाधिक";
+                    val = "एकाहून अधिक जन्म (जुळे, तिळे, इ.)";
                     break;
                 default:
                     return val;

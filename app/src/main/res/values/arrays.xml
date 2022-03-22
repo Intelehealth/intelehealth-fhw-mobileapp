@@ -2173,8 +2173,8 @@
 
     <string-array name="singlemultiplebirths_mr">
         <item>निवडा</item>
-        <item>एकल</item>
-        <item>एकाधिक</item>
+        <item>एकच मुल</item>
+        <item>एकाहून अधिक जन्म (जुळे, तिळे, इ.)</item>
     </string-array>
 
     <string-array name="block_en">

@@ -1226,10 +1226,10 @@
 
 
     <string name="txt_how_many_times_have_you_been_pregnant">तुम्ही किती वेळा गरोदर आहात?*</string>
-    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">गेल्या 2 वर्षांमध्ये तुम्हाला गर्भधारणेचे कोणतेही परिणाम मिळाले आहेत का?*</string>
-    <string name="txt_what_was_the_outcome_of_your_pregnancy">तुमच्या गर्भधारणेचा परिणाम काय होता?</string>
+    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">मागच्या दोन वर्षांमध्ये तुम्ही कितीवेळा गरोदर राहिलात ?*</string>
+    <string name="txt_what_was_the_outcome_of_your_pregnancy">गरोदरपणाचा परिणाम काय झाला/ गरोदरपणात बाळाचे काय झाले?</string>
     <string name="txt_is_the_child_alive">मुल जिवंत आहे का?</string>
-    <string name="txt_what_was_the_year_of_pregnancy_outcome">गर्भधारणेच्या निकालाचे वर्ष काय होते?</string>
+    <string name="txt_what_was_the_year_of_pregnancy_outcome">गरोदरपणाच्या परिणामाचे/गरोदरपण पूर्ण झाल्याचे वर्ष कोणते होते?"</string>
     <string name="txt_how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
     <string name="txt_what_is_the_place_of_delivery"> वितरणाचे ठिकाण काय आहे?</string>
