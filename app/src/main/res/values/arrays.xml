@@ -1628,6 +1628,46 @@
         <item>Not stated</item>
     </string-array>
 
+    <string-array name="relationshipHoH_Self_en">
+        <item>Select</item>
+        <item>Spouse</item>
+        <item>Son/daughter</item>
+        <item>Son/daughter in law</item>
+        <item>Grandchild</item>
+        <item>Father/mother</item>
+        <item>Father/mother-in-law</item>
+        <item>Brother/sister</item>
+        <item>Brother/sister-in-law</item>
+        <item>Niece/nephew</item>
+        <item>Grandparent/grand parent-in-law</item>
+        <item>Other relative</item>
+        <item>Adopted/foster/stepchild</item>
+        <item>Domestic servant</item>
+        <item>Other not related</item>
+        <item>Other (specify)</item>
+        <item>Not stated</item>
+    </string-array>
+
+    <string-array name="relationshipHoH_Self_mr">
+        <item>निवडा</item>
+        <item>पती/पत्नी</item>
+        <item>मुलगा/मुलगी</item>
+        <item>मुलगा/सून</item>
+        <item>नातवंड</item>
+        <item>वडील/आई</item>
+        <item>वडील/सासू-सासरे</item>
+        <item>भाऊ/बहिण</item>
+        <item>भाऊ/बहिण-सासरे</item>
+        <item>भाची/भाचा</item>
+        <item>आजोबा/आजोबा-सासरे</item>
+        <item>इतर नातेवाईक</item>
+        <item>दत्तक/पालक/स्टेपचाइल्ड</item>
+        <item>घरगुती सेवक</item>
+        <item>इतर संबंधित नाही</item>
+        <item>इतर (स्पष्ट करा)</item>
+        <item>सांगित नाही</item>
+    </string-array>
+
 
     <string-array name="bp_en">
         <item>Select</item>

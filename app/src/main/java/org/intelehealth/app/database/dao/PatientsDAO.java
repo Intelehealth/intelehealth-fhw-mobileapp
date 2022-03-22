@@ -585,5 +585,4 @@ public class PatientsDAO {
         return gender;
     }
 
-
 }

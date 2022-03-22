@@ -278,6 +278,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 i.putExtra("postalCode", patient_new.getPostal_code());
                 i.putExtra("blockSurvey", patient_new.getBlockSurvey());
                 i.putExtra("villageSurvey", patient_new.getVillageNameSurvey());
+                i.putExtra("relationshipStatus", patient_new.getRelationshiphoh());
 //                i.putExtra("postalCode",patient_new.getPostal_code());
 //                i.putExtra("postalCode",patient_new.getPostal_code());
 
@@ -556,6 +557,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                }
+                if (name.equalsIgnoreCase("RelationshipStatusHOH")) {
+                     patient_new.setRelationshiphoh(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());

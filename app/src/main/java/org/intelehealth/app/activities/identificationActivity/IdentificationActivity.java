@@ -116,6 +116,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -194,7 +195,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private int retainPickerMonth;
     private int retainPickerDate;
     int dob_indexValue = 15;
-    String mAddress1Value = "", mPostalValue = "", blockValue = "", villageValue = "";
+    String mAddress1Value = "", mPostalValue = "", blockValue = "", villageValue = "", mRelationshipValue = "";
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
@@ -282,6 +283,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 mAddress1Value = getIntent().getStringExtra("address1");
                 blockValue = getIntent().getStringExtra("blockSurvey");
                 villageValue = getIntent().getStringExtra("villageSurvey");
+                mRelationshipValue = getIntent().getStringExtra("relationshipStatus");
             }
         }
 //        if (sessionManager.valueContains("licensekey"))
@@ -1628,21 +1630,31 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
 
     private void roaster_spinnerAdapter() {
-        Resources res = getResources();
-
         //Spinner - Start
         //Relationsship Spinner adapter
+        Resources res = getResources();
         try {
-            String relationshiphohLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
-            int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getApplicationContext().getPackageName());
-            if (relationshiphoh_id != 0) {
-                adapter_whatisyourrelation = ArrayAdapter.createFromResource(this,
-                        relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
+            if(!sessionManager.getHouseholdUuid().equals("") && mRelationshipValue.equalsIgnoreCase("Self")) {
+                String relationshiphohLanguage = "relationshipHoH_Self_" + sessionManager.getAppLanguage();
+                int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getApplicationContext().getPackageName());
+                if (relationshiphoh_id != 0) {
+                    adapter_whatisyourrelation = ArrayAdapter.createFromResource(this,
+                            relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
+                }
+                spinner_whatisyourrelation.setAdapter(adapter_whatisyourrelation);
             }
-            spinner_whatisyourrelation.setAdapter(adapter_whatisyourrelation);
-
+            else { // Here removing Self from the spinner... since HOH is already selected...
+                String relationshiphohLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
+                int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getApplicationContext().getPackageName());
+                if (relationshiphoh_id != 0) {
+                    adapter_whatisyourrelation = ArrayAdapter.createFromResource(this,
+                            relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
+                }
+                spinner_whatisyourrelation.setAdapter(adapter_whatisyourrelation);
+            }
+            
         } catch (Exception e) {
-            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+             Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
         //relationship spinner adapter
@@ -2080,7 +2092,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {str};
         String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
-        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1,
+                null, null, null);
         String name = "";
         if (idCursor1.moveToFirst()) {
             do {
