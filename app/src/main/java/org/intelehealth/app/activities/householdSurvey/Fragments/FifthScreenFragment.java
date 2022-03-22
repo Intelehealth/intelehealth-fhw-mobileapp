@@ -99,6 +99,7 @@ public class FifthScreenFragment extends Fragment {
             }
         });
 
+        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
         binding.otherCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.otherSourcesOfFuelLayout.setVisibility(View.VISIBLE);

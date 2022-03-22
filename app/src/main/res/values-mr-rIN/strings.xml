@@ -86,7 +86,7 @@
     <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
     <string name="admin_password_dialog_heading">प्रशासन संकेतशब्द प्रविष्ट करा</string>
     <string name="identification_screen_prompt_gender">लिंग *</string>
-    <string name="identification_screen_checkbox_male">नर</string>
+    <string name="identification_screen_checkbox_male">पुरुष</string>
     <string name="identification_screen_checkbox_female">स्त्री</string>
     <string name="identification_screen_prompt_birthday">जन्म तारीख*</string>
     <string name="identification_screen_prompt_age">वय: *</string>
@@ -467,6 +467,7 @@
     <string name="accept">स्वीकारा</string>
     <string name="reject">नाकारणे</string>
     <string name="next">पुढे</string>
+    <string name="prev">मागे</string>
     <string name="which_server_would_you_like_to_connect_to">आपण कोणत्या सर्व्हरशी कनेक्ट होऊ इच्छिता?</string>
     <string name="enter_url">URL प्रविष्ट करा</string>
     <string name="choose_a_location_to_login">लॉगिन करण्यासाठी एक स्थान निवडा</string>
@@ -796,7 +797,7 @@
     <string name="type_to_search">शोधण्यासाठी टाइप करा..</string>
 
     <!--NAS - Survey-->
-    <string name="name_of_investigator">अन्वेषकांचे नाव*</string>
+    <string name="name_of_investigator">माहिती घेणार्यांचे नाव*</string>
     <string name="village">गाव*</string>
     <string name="block">ब्लॉक*</string>
     <string name="district">जिल्हा*</string>
@@ -804,7 +805,7 @@
     <string name="state_Maharastra">महाराष्ट्र</string>
 
     <string name="date_of_visit">भेट तारीख</string>
-    <string name="name_of_primary_respondent">मुख्य प्रतिसादकर्ता (उत्तरे देणाऱ्याचे नाव)*</string>
+    <string name="name_of_primary_respondent">माहिती देणाऱ्याचे नाव</string>
     <string name="household_number">घर क्रमांक*</string>
     <string name="household_structure_type">घराच्या रचनेचा प्रकार*</string>
     <string name="kucha">कच्चे</string>
@@ -836,6 +837,8 @@
     <string name="caste_schedule_caste">अनुसूचित जाति (अनुसूचित जाती)</string>
     <string name="caste_schedule_tribe">अनुसूचित जमाती((एस टी))</string>
     <string name="caste_other_backward_caste">इतर मागास जात (ओबीसी)</string>
+
+    <string name="caste_VJNT">विमुक्‍त जाती व भटक्‍या जमाती</string>
     <string name="caste_general">सामान्य</string>
     <string name="caste_dont_know">माहित नाही</string>
     <string name="caste_refused_to_answer">उत्तर देण्यास नकार दिला</string>
@@ -849,7 +852,7 @@
     <string name="salaried_worker_fixed_monthly_salary">पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.</string>
     <string name="self_employed_non_agricultural_petty_business">स्वयंरोजगार (बिगर शेती/ किरकोळ व्यवसाय)</string>
     <string name="daily_labor_unskilled_work_agricultural_non_agricultural">दैनंदिन मजूर (अकुशल काम - कृषी, कृषी सोडून इतर)</string>
-    <string name="nrega">नरेगा</string>
+    <string name="nrega">रोजगार हमी योजना/ नरेगा</string>
     <string name="seasonal_labor">हंगामी श्रम</string>
     <string name="no_paid_work">कोणतेही सशुल्क काम नाही</string>
     <string name="pension">पेंशन</string>
@@ -859,7 +862,7 @@
     <string name="does_the_house_have_electricity">घरात वीज आहे का?</string>
     <string name="number_of_hours_of_load_shedding_per_day">दररोज लोड शेडिंग तासांची संख्या</string>
     <string name="number_of_days_with_load_shedding_per_week">दर आठवड्यात लोड शेडिंगसह दिवसांची संख्या</string>
-    <string name="is_there_running_water_available_in_the_house">घरात पाणी उपलब्ध आहे का?</string>
+    <string name="is_there_running_water_available_in_the_house">घरात वाहते पाणी उपलब्ध आहे का? (नळ/ पाईप द्वारे)?</string>
     <string name="what_is_the_primary_source_of_water_for_the_household">घरासाठी पाणी प्राथमिक स्त्रोत काय आहे?</string>
     <string name="village_tank">ग्राम टँक</string>
     <string name="open_well">खुले उघडा</string>
@@ -874,7 +877,7 @@
     <string name="km">किमी</string>
     <string name="available_of_water_supply_hours_per_day">पाणी पुरवठा उपलब्ध (दररोज तास)</string>
     <string name="available_of_water_supply_days_per_week">पाणीपुरवठ्याची उपलब्धता (दर आठवड्याला दिवस)</string>
-    <string name="does_the_house_have_a_bank_account">घरात एक बँक खाते आहे का?</string>
+    <string name="does_the_house_have_a_bank_account">घरात किमान एक बँक खाते आहे का?</string>
     <string name="amount_of_cultivable_land_owned_by_household">एकूण मालकीची असलेली लागवडीयोग्य जमीन?</string>
     <string name="hectare">हेक्टर</string>
     <string name="acre">एकर</string>
@@ -964,7 +967,7 @@
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">पाणी प्यायला देण्यासाठी आपण सहसा पाण्यावर काय करता?</string>
     <string name="boil">उकळणे</string>
     <string name="use_alum">तुरटी वापरा</string>
-    <string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या जोडा / थेंब जोडा</string>
+    <string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स</string>
     <string name="strain_through_a_cloth">कापड माध्यमातून ताण</string>
     <string name="use_water_filter_ceramic_sand_composite_etc">पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)</string>
     <string name="use_electronic_purifier">इलेक्ट्रॉनिक फिल्टरचा वापर</string>
@@ -1127,7 +1130,7 @@
     <string name="was_this_a_single_or_multiple_births">हे एक सिंगल / एकाधिक जन्म होते?</string>
     <string name="what_is_was_the_sex_of_name">%1$s लिंग काय आहे?</string>
     <string name="how_old_was_name_when_he_or_she_died">जेव्हा तो / ती मरण पावला तेव्हा किती वर्षांचा होता? जर \'1 पेक्षा कमी,\' चौकशी: किती महिने जुने %1$s होते?</string>
-    <string name="was_this_pregnancy_planned">या गर्भधारणा योजना आखली होती का?</string>
+    <string name="was_this_pregnancy_planned">तुम्ही ठरवून गरोदर राहिला होता का? (ही गर्भधारणा नियोजित होती का)</string>
     <string name="were_you_identified_as_a_high_risk_pregnancy_case">तुमची ओळख उच्च-जोखीम गर्भधारणा प्रकरण म्हणून झाली होती का?</string>
     <string name="were_any_complications_identified_at_the_time_of_delivery">प्रसूतीच्या वेळी कोणतीही कॉम्प्लिकेशन ओळखली गेली?</string>
 
@@ -1146,7 +1149,7 @@
     <string name="health_issue_reported_others_specify">इतर(स्पष्ट करा)</string>
 
     <string name="no_of_episodes_in_the_last_year">गेल्या वर्षी एपिसोडची संख्या</string>
-    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">सामान्यतः, या आरोग्य समस्येसाठी आपण प्राथमिक आरोग्य प्रदाता कोणता आहात</string>
+    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">सामान्यतः, या आरोग्य समस्येसाठी आपण प्राथमिक आरोग्य सुविधा म्हणून कुणाशी संपर्क साधला /भेटला ?</string>
     <string name="government_doctor">सरकारी डॉक्टर</string>
     <string name="private_doctor">खाजगी डॉक्टर</string>
     <string name="staff_nurse">कर्मचारी नर्स</string>
@@ -1169,7 +1172,7 @@
     <string name="first_location_of_visit_ayush_center">अयुष सेंटर</string>
     <string name="first_location_of_visit_pharmacy">फार्मसी</string>
 
-    <string name="referred_to">संदर्भित</string>
+    <string name="referred_to">रेफर केले / पुढील उपचारासाठी पाठवले</string>
     <string name="not_referred">संदर्भित नाही</string>
     <string name="private_clinic">खाजगी क्लिनिक</string>
     <string name="phc">पीएचसी</string>
@@ -1179,7 +1182,7 @@
     <string name="ayush_center">अयूश सेंटर</string>
     <string name="others_please_specify">इतर (कृपया स्पष्ट करा)</string>
 
-    <string name="mode_of_transportations_used_to_reach_facility_provider">सुविधा / प्रदात्यापर्यंत पोहोचण्यासाठी वापरल्या जाणार्या वाहतूक पद्धती</string>
+    <string name="mode_of_transportations_used_to_reach_facility_provider">तुम्ही सुविधा केंद्रापर्यंत कसे पोचलात ?</string>
     <string name="mode_of_transportation_walking">चालणे</string>
     <string name="mode_of_transportation_bus">बस</string>
     <string name="mode_of_transportation_private_taxi">खाजगी टॅक्सी</string>
@@ -1189,8 +1192,8 @@
     <string name="mode_of_transportation_friends_neighbours_vehicle">मित्र / शेजारी \'वाहन</string>
     <string name="mode_of_transportation_ambulance">एम्बुलन्स</string>
 
-    <string name="average_cost_incurred_on_travel_and_stay_per_episode">प्रवास वर खर्च आणि प्रति भाग राहण्यासाठी सरासरी खर्च</string>
-    <string name="average_cost_incurred_on_consultation_fees_per_episode">प्रति भेट सल्ला शुल्कावरील सरासरी खर्च</string>
+    <string name="average_cost_incurred_on_travel_and_stay_per_episode">प्रत्येक वेळी अशा आजारपणासाठी सुविधाकेंद्राला गेल्यावर साधारण खर्च किती येतो ? (प्रवास, राहणे, खाणे)</string>
+    <string name="average_cost_incurred_on_consultation_fees_per_episode">पप्रत्येक भेटीवेळी, सल्ला/ तपासणी साठी साधारण किती फीस लागते / खर्च येतो ?</string>
     <string name="average_cost_incurred_on_medicines_per_episode">प्रति एपिसोड औषधांवर होणारा सरासरी खर्च</string>
     <string name="score_for_experience_of_treatment">उपचार अनुभवासाठी स्कोअर</string>
     <string name="score_dissatisfied">असंतुष्ट</string>
@@ -1230,7 +1233,7 @@
     <string name="txt_how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
     <string name="txt_what_is_the_place_of_delivery"> वितरणाचे ठिकाण काय आहे?</string>
-    <string name="txt_focal_facility_for_this_pregnancy">या गर्भधारणेसाठी फोकल सुविधा</string>
+    <string name="txt_focal_facility_for_this_pregnancy">ह्या गरोदरपणात  तुम्ही प्रसूती /डिलेव्हरी कुठे केली ?</string>
     <string name="txt_was_this_a_single_multiple_births">हे एकच/एकाहून अधिक जन्म होते का?</string>
     <string name="txt_how_old_was_the_baby_when_he_she_died">बाळ/ती मरण पावले तेव्हा त्याचे वय किती होते?</string>
 
@@ -1254,8 +1257,8 @@
     <string name="household_survey">घरगुती सर्वेक्षण</string>
     <string name="cough_cold">खोकला / सर्दी</string>
     <string name="fever">ताप</string>
-    <string name="diarrhoea"> अतिसार</string>
-    <string name="injury"> दुखापत</string>
+    <string name="diarrhoea">अतिसार</string>
+    <string name="injury">दुखापत</string>
     <string name="skin_issues">त्वचेच्या समस्या</string>
     <string name="eye_vision_issues">डोळा / दृष्टी समस्या</string>
     <string name="joint_bone_pain">सांधे/हाडाचे दुखणे</string>

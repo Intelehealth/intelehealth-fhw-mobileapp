@@ -468,6 +468,7 @@
     <string name="accept">Accept</string>
     <string name="reject">Reject</string>
     <string name="next">Next</string>
+    <string name="prev">prev</string>
     <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
     <string name="enter_url">Enter URL</string>
     <string name="choose_a_location_to_login">Choose a location to login</string>
@@ -862,6 +863,7 @@
     <string name="caste_schedule_tribe">Schedule Tribe (ST)</string>
     <string name="caste_other_backward_caste">Other Backward Caste (OBC)</string>
     <string name="caste_general">General</string>
+    <string name="caste_VJNT">VJNT</string>
     <string name="caste_dont_know">Don’t know</string>
     <string name="caste_refused_to_answer">Refused to answer</string>
     <string name="number_of_smartphones_in_the_household">Number of smartphones in the household</string>

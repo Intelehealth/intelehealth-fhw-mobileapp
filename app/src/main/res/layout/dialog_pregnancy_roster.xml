@@ -191,12 +191,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/txt_what_was_the_year_of_pregnancy_outcome"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:fontFamily="@font/lato_regular"
+                    android:freezesText="true"
+                    android:imeOptions="actionUnspecified"
+
+                    android:maxLines="1"
+                    android:singleLine="true"
+
+                    />
 
                 <EditText
                     android:id="@+id/edittext_monthspregnancylast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     android:hint="@string/txt_how_many_months_did_this_pregnancy_last"
                     android:textSize="15sp"
                     android:visibility="gone"
@@ -209,6 +219,7 @@
                     android:hint="@string/txt_how_many_months_have_you_been_pregnant"
                     android:textSize="15sp"
                     android:visibility="gone"
+                    android:inputType="numberDecimal"
                     tools:visibility="visible" />
 
                 <LinearLayout

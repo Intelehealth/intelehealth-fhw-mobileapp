@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +29,13 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+
 public class PregnancyRosterDialog extends DialogFragment {
 
     public static final String TAG = "PregnancyRosterDialog";
@@ -37,8 +46,15 @@ public class PregnancyRosterDialog extends DialogFragment {
     int noOfClicks;
     String howmanytimespregnant, pregnancyoutcomeInTwoYrs, noOftimesPregnantTwoYrs;
     private Bundle bundle;
-
+    private DatePickerDialog mDOBPicker;
     // Adapters
+
+    Calendar today = Calendar.getInstance();
+    Calendar dob = Calendar.getInstance();
+    private int mDOBYear;
+    private int mDOBMonth;
+    private int mDOBDay;
+
     private ArrayAdapter<CharSequence> adapter_pregnantPastTwoYears, adapter_outcomepregnancy, adapter_childalive, adapter_placeofdeliverypregnant, adapter_pregnancyplanned,
             adapter_focalPointBlock, adapter_sexofbaby, adapter_pregnancyhighriskcase, adapter_pregnancycomplications, adapter_singlemultiplebirths, adapterChildPreTerm,
             adapterDeliveryType;
@@ -77,8 +93,12 @@ public class PregnancyRosterDialog extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         binding = DialogPregnancyRosterBinding.inflate(inflater);
 
+        mDOBYear = today.get(Calendar.YEAR);
+        mDOBMonth = today.get(Calendar.MONTH);
+        mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         setListeners();
         setAdapters();
+
 
         if (bundle != null) {
             extractBundleData(bundle);
@@ -267,23 +287,41 @@ public class PregnancyRosterDialog extends DialogFragment {
     }
 
     private void setListeners() {
-        // Pregnant Past Two Years Listener
-/*
-        binding.spinnerPregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1)
-                    binding.pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
-                else
-                    binding.pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
-            }
+        binding.edittextYearofpregnancy.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        todo date dialog
+                        mDOBPicker = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                                new DatePickerDialog.OnDateSetListener() {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                        //Set the DOB calendar to the date selected by the user
 
-            }
-        });
-*/
+                                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                                        dob.set(year, monthOfYear, dayOfMonth);
+                                        String dobString = simpleDateFormat.format(dob.getTime());
+
+                                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                                            binding.edittextYearofpregnancy.setText(dob_text);
+                                        } else {
+//                                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+                                            binding.edittextYearofpregnancy.setText(dobString);
+                                        }
+                                        mDOBYear = year;
+                                        mDOBMonth = monthOfYear;
+                                        mDOBDay = dayOfMonth;
+                                    }
+                                }, mDOBYear, mDOBMonth, mDOBDay);
+
+                        mDOBPicker.show();
+                    }
+                }
+        );
+
 
         binding.spinnerOutcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -414,6 +452,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.spinnerChildalive);
                 areDetailsCorrect = false;
             }
+        }
 
             if (data.getIsPreTerm().equals(getString(R.string.select))) {
                 setSpinnerError(binding.spinnerPreTerm);
@@ -454,6 +493,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.spinnerFocalBlock);
                 areDetailsCorrect = false;
             }
+        }
 
             if (binding.spinnerFocalBlock.getSelectedItemPosition() == 3 &&
                     (binding.etPregnancyblockOther.getText().toString().equalsIgnoreCase("") || binding.etPregnancyblockOther.getText().toString().isEmpty())) {
@@ -472,6 +512,7 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.deliveryTypeSpinner);
                 areDetailsCorrect = false;
             }
+        }
 
             if (data.getSingleMultipleBirths().equals(getString(R.string.select))) {
                 setSpinnerError(binding.spinnerSinglemultiplebirths);
@@ -526,7 +567,8 @@ public class PregnancyRosterDialog extends DialogFragment {
             data.setIsPreTerm(StringUtils.getPreTerm(binding.spinnerPreTerm.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         }
 
-        data.setYearOfPregnancyOutcome(binding.edittextYearofpregnancy.getText().toString());
+//            data.setYearOfPregnancyOutcome(binding.edittextYearofpregnancy.getText().toString());
+        data.setYearOfPregnancyOutcome(StringUtils.hi_or_bn_en_noEdit(binding.edittextYearofpregnancy.getText().toString(), sessionManager.getAppLanguage()));
 
         if (pregnancyOutcomePosition != 5)
             data.setMonthsOfPregnancy(binding.edittextMonthspregnancylast.getText().toString());
@@ -584,6 +626,7 @@ public class PregnancyRosterDialog extends DialogFragment {
 //                StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), sessionManager.getAppLanguage()));
 //        binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
 
+
         if (!checkIfEmpty(data.getPregnancyOutcome())) {
             spinnerPosition = adapter_outcomepregnancy.getPosition(StringUtils.getOutcomePregnancy_edit(data.getPregnancyOutcome(), sessionManager.getAppLanguage()));
             binding.spinnerOutcomepregnancy.setSelection(spinnerPosition);
@@ -600,7 +643,14 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
-            binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+
+//            binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String dob_text = en__mr_dob(data.getYearOfPregnancyOutcome()); //to show text of English into Odiya...
+                binding.edittextYearofpregnancy.setText(dob_text);
+            } else {
+                binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+            }
         }
 
         if (!checkIfEmpty(data.getMonthsOfPregnancy())) {
@@ -688,6 +738,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         data.setPregnancyPlanned(bundle.getString("pregnancyPlanned"));
         data.setHighRiskPregnancy(bundle.getString("highRiskPregnancy"));
         data.setPregnancyComplications(bundle.getString("pregnancyComplications"));
+
     }
 
     private Boolean checkIfEmpty(String text) {

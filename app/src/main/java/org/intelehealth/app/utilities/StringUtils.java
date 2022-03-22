@@ -3795,6 +3795,9 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.caste_other_backward_caste);
             }
 
+            if (context.getString(R.string.caste_VJNT).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_VJNT);
+            }
             if (context.getString(R.string.caste_general).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.caste_general);
             }
@@ -3832,6 +3835,9 @@ public final class StringUtils {
                 return context.getString(R.string.caste_other_backward_caste);
             }
 
+            if (updatedContext.getString(R.string.caste_general).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_general);
+            }
             if (updatedContext.getString(R.string.caste_general).equalsIgnoreCase(text)) {
                 return context.getString(R.string.caste_general);
             }
@@ -4092,7 +4098,7 @@ public final class StringUtils {
                 case "लग्न झाले आहे, गौणा केले नाही":
                     val = "Married, gauna not performed";
                     break;
-                case "विधवा झालेली":
+                case "विधवा/ विधुर":
                     val = "Widowed";
                     break;
                 case "घटस्फोटित":
@@ -4101,7 +4107,7 @@ public final class StringUtils {
                 case "विभक्त":
                     val = "Separated";
                     break;
-                case "ओसाड":
+                case "सोडून दिलेले":
                     val = "Deserted";
                     break;
                 case "कधीही लग्न केलेले नाही":
@@ -4126,7 +4132,7 @@ public final class StringUtils {
                     val = "लग्न झाले आहे, गौणा केले नाही";
                     break;
                 case "Widowed":
-                    val = "विधवा झालेली";
+                    val = "विधवा/ विधुर";
                     break;
                 case "Divorced":
                     val = "घटस्फोटित";
@@ -4135,7 +4141,7 @@ public final class StringUtils {
                     val = "विभक्त";
                     break;
                 case "Deserted":
-                    val = "ओसाड";
+                    val = "सोडून दिलेले";
                     break;
                 case "Never married":
                     val = "कधीही लग्न केलेले नाही";
@@ -4421,13 +4427,13 @@ public final class StringUtils {
                 case "काहीही नाही":
                     val = "None";
                     break;
-                case "शेअर केलेले":
+                case "मिळून वापरला जातो":
                     val = "Shared";
                     break;
                 case "स्मार्टफोनचा मालक आहे":
                     val = "Owns smartphone";
                     break;
-                case "मालकीचे वैशिष्ट्य फोन":
+                case "साधा फोन":
                     val = "Owns feature phone";
                     break;
 
@@ -4448,13 +4454,13 @@ public final class StringUtils {
                     val = "काहीही नाही";
                     break;
                 case "Shared":
-                    val = "शेअर केलेले";
+                    val = "मिळून वापरला जातो";
                     break;
                 case "Owns smartphone":
                     val = "स्मार्टफोनचा मालक आहे";
                     break;
                 case "Owns feature phone":
-                    val = "मालकीचे वैशिष्ट्य फोन";
+                    val = "साधा फोन";
                     break;
                 default:
                     return val;
@@ -4667,11 +4673,10 @@ public final class StringUtils {
     public static String getSexOfBaby(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
-
-                case "पुरुष":
+                case "मुलगा":
                     val = "Male";
                     break;
-                case "स्त्री":
+                case "मुलगी":
                     val = "Female";
                     break;
 
@@ -4688,10 +4693,10 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Male":
-                    val = "पुरुष";
+                    val = "मुलगा";
                     break;
                 case "Female":
-                    val = "स्त्री";
+                    val = "मुलगी";
                     break;
 
                 default:
@@ -5117,7 +5122,7 @@ public final class StringUtils {
                 case "अजून जन्म":
                     val = "Still birth";
                     break;
-                case "प्रेरित गर्भपात (mtp)":
+                case "ऐच्छिक गर्भपात/ गर्भधारणेची वैद्यकीय समाप्ती (MTP)":
                     val = "Induced abortion (mtp)";
                     break;
                 case "गर्भपात":
@@ -5145,7 +5150,7 @@ public final class StringUtils {
                     val = "अजून जन्म";
                     break;
                 case "Induced abortion (mtp)":
-                    val = "प्रेरित गर्भपात (mtp)";
+                    val = "ऐच्छिक गर्भपात/ गर्भधारणेची वैद्यकीय समाप्ती (MTP)";
                     break;
                 case "Miscarriage":
                     val = "गर्भपात";

@@ -1850,7 +1850,7 @@
         <item>निवडा</item>
         <item>जिवंत जन्मलेला</item>
         <item>अजून जन्म</item>
-        <item>प्रेरित गर्भपात (mtp)</item>
+        <item>ऐच्छिक गर्भपात/ गर्भधारणेची वैद्यकीय समाप्ती (MTP)</item>
         <item>गर्भपात</item>
         <item>सध्या गरोदर आहे</item>
     </string-array>
@@ -1860,9 +1860,11 @@
         <item>@string/caste_schedule_caste</item>
         <item>@string/caste_schedule_tribe</item>
         <item>@string/caste_other_backward_caste</item>
+        <item>@string/caste_VJNT</item>
         <item>@string/caste_general</item>
         <item>@string/caste_dont_know</item>
         <item>@string/caste_refused_to_answer</item>
+
     </string-array>
 
 
@@ -1871,9 +1873,12 @@
         <item>@string/caste_schedule_caste</item>
         <item>@string/caste_schedule_tribe</item>
         <item>@string/caste_other_backward_caste</item>
+
+        <item>@string/caste_VJNT</item>
         <item>@string/caste_general</item>
         <item>@string/caste_dont_know</item>
         <item>@string/caste_refused_to_answer</item>
+
     </string-array>
 
     <string-array name="nas_district">
@@ -1996,10 +2001,10 @@
     <string-array name="maritual_mr">
         <item>निवडा</item>
         <item>सध्या विवाहित</item>
-        <item>विधवा झालेली</item>
+        <item>विधवा/ विधुर</item>
         <item>घटस्फोटित</item>
         <item>विभक्त</item>
-        <item>ओसाड</item>
+        <item>सोडून दिलेले</item>
         <item>कधीही लग्न केलेले नाही</item>
     </string-array>
 
@@ -2015,9 +2020,9 @@
     <string-array name="phoneownership_mr">
         <item>निवडा</item>
         <item>काहीही नाही</item>
-        <item>शेअर केलेले</item>
+        <item>मिळून वापरला जातो</item>
         <item>स्मार्टफोनचा मालक आहे</item>
-        <item>मालकीचे वैशिष्ट्य फोन</item>
+        <item>साधा फोन</item>
     </string-array>
 
 
@@ -2121,8 +2126,8 @@
 
     <string-array name="sexofbaby_mr">
         <item>निवडा</item>
-        <item>पुरुष</item>
-        <item>स्त्री</item>
+        <item>मुलगा</item>
+        <item>मुलगी</item>
     </string-array>
 
 

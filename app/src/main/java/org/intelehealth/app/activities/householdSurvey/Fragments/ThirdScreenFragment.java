@@ -121,7 +121,7 @@ public class ThirdScreenFragment extends Fragment {
                 }
             }
         });
-
+        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
         binding.otherCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.otherSourcesOfWaterLayout.setVisibility(View.VISIBLE);
