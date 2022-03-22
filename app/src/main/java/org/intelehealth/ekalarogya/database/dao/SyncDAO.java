@@ -1,5 +1,7 @@
 package org.intelehealth.ekalarogya.database.dao;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -458,7 +460,13 @@ public class SyncDAO {
         if(!IntelehealthApplication.isInBackground && !sessionManager.getProviderID().isEmpty()) {
             String userUuid=sessionManager.getProviderID();
             String userName=sessionManager.getChwname();
-            String currentActivity=getClass().getSimpleName();
+            ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+            String []activitname=cn.getClassName().split("\\.");
+            String currentActivity="";
+            if(activitname!=null && activitname.length>0){
+                currentActivity=activitname[activitname.length-1];
+            }
             String appVersionName = BuildConfig.VERSION_NAME;
             String currentDeviceVersion = Build.VERSION.RELEASE;
             String deviceModel = android.os.Build.MODEL;

@@ -110,7 +110,7 @@
                                 android:ems="10"
                                 android:includeFontPadding="false"
                                 android:textSize="16sp"
-                                android:text="Locations"
+                                android:text="@string/choose_a_location_to_login"
                                 android:fontFamily="@font/lato_bold" />
 
                             <Space

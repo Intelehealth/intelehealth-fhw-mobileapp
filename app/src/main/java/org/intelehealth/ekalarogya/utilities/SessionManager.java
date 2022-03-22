@@ -57,6 +57,8 @@ public class SessionManager {
     private static final String VILLAGENAME = "VILLAGENAME";
 
     private static final String USERDETAILS = "USERDETAILS";
+
+    private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -513,5 +515,14 @@ public class SessionManager {
 
     public String getUserProfileDetail() {
         return pref.getString(USERDETAILS, "");
+    }
+
+    public void setFirstTimeLaunch(boolean isFirstTime) {
+        editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isFirstTimeLaunch() {
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 }
