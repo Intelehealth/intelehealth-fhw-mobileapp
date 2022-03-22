@@ -709,4 +709,8 @@
     <string name="start_newvisit_confirmation_msg">क्या आप वाकई विज़िट शुरू करना चाहते हैं?</string>
     <string name="prescription_notprovided_msg">डॉक्टर ने प्रिस्क्रिप्शन नहीं दिया है। कृपया यात्रा समाप्त करने के लिए प्रिस्क्रिप्शन की प्रतीक्षा करें।</string>
 
+    <string name="visit_closed">विजिट बंद हुई</string>
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">महिला</string>
+    <string name="loading_more">और लोड हो रहा है...</string>
 </resources>
