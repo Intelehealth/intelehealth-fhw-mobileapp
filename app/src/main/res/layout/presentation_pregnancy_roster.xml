@@ -291,6 +291,36 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llDeliveryType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/what_is_the_type_of_delivery"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <TextView
+                        android:id="@+id/delivery_type_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llFocalPoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

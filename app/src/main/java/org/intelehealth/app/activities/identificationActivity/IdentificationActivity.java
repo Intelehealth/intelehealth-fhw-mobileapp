@@ -4595,6 +4595,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 bundle.putString("monthsOfPregnancy", data.getMonthsOfPregnancy());
                 bundle.putString("monthsBeenPregnant", data.getMonthsBeenPregnant());
                 bundle.putString("placeOfDelivery", data.getPlaceOfDelivery());
+                bundle.putString("typeOfDelivery", data.getTypeOfDelivery());
                 bundle.putString("focalFacilityForPregnancy", data.getFocalFacilityForPregnancy());
                 bundle.putString("facilityName", data.getFacilityName());
                 bundle.putString("singleMultipleBirths", data.getSingleMultipleBirths());

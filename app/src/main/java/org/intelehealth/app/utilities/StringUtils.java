@@ -4762,6 +4762,36 @@ public final class StringUtils {
         return val;
     }
 
+    public static String getDeliveryType(String value, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (value) {
+                case "नॉर्मल/नैसर्गिक":
+                    value = "Normal or Vaginal Delivery";
+                    break;
+
+                case "सिझेरिअन (सी-सेक्शन)":
+                    value = "Cesarean Section (C-Section)";
+                    break;
+            }
+        }
+        return value;
+    }
+
+    public static String getDeliveryTypeEdit(String value, String locale) {
+        if (locale.equalsIgnoreCase("mr")) {
+            switch (value) {
+                case "Normal or Vaginal Delivery":
+                    value = "नॉर्मल/नैसर्गिक";
+                    break;
+
+                case "Cesarean Section (C-Section)":
+                    value = "सिझेरिअन (सी-सेक्शन)";
+                    break;
+            }
+        }
+        return value;
+    }
+
     // TODO: Add translations...
     // Focal Block
     public static String getFocalFacility_Block_edit(String val, String locale) {

@@ -126,6 +126,13 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
                 binding.llDeliveryPlace.setVisibility(View.GONE);
             }
 
+            if (!checkIfEmpty(data.getTypeOfDelivery())) {
+                binding.deliveryTypeTextView.setText(StringUtils.getDeliveryTypeEdit(data.getTypeOfDelivery(), appLanguage));
+                binding.llDeliveryType.setVisibility(View.VISIBLE);
+            } else {
+                binding.llDeliveryType.setVisibility(View.GONE);
+            }
+
             if (!checkIfEmpty(data.getFocalFacilityForPregnancy())) {
                 binding.textviewFocalBlock.setText(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), appLanguage));
                 binding.llFocalPoint.setVisibility(View.VISIBLE);

@@ -11,6 +11,7 @@ public class PregnancyRosterData {
     private String monthsOfPregnancy;
     private String monthsBeenPregnant;
     private String placeOfDelivery;
+    private String typeOfDelivery;
     private String focalFacilityForPregnancy;
     private String facilityName;
     private String singleMultipleBirths;
@@ -98,6 +99,14 @@ public class PregnancyRosterData {
 
     public void setPlaceOfDelivery(String placeOfDelivery) {
         this.placeOfDelivery = placeOfDelivery;
+    }
+
+    public String getTypeOfDelivery() {
+        return typeOfDelivery;
+    }
+
+    public void setTypeOfDelivery(String typeOfDelivery) {
+        this.typeOfDelivery = typeOfDelivery;
     }
 
     public String getFocalFacilityForPregnancy() {

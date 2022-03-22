@@ -2271,4 +2271,16 @@
         <item>@string/no</item>
     </string-array>
 
+    <string-array name="delivery_type_en">
+        <item>@string/select</item>
+        <item>@string/normal_vaginal_delivery</item>
+        <item>@string/cesarean_section_c_section</item>
+    </string-array>
+
+    <string-array name="delivery_type_mr">
+        <item>@string/select</item>
+        <item>@string/normal_vaginal_delivery</item>
+        <item>@string/cesarean_section_c_section</item>
+    </string-array>
+
 </resources>
