@@ -152,14 +152,11 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/txt_what_was_the_year_of_pregnancy_outcome"
                     android:textSize="15sp"
-
-
-                    android:ems="10"
                     android:focusable="false"
                     android:fontFamily="@font/lato_regular"
                     android:freezesText="true"
                     android:imeOptions="actionUnspecified"
-                    android:inputType=""
+
                     android:maxLines="1"
                     android:singleLine="true"
 

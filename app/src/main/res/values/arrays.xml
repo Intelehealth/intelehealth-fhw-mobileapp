@@ -1860,10 +1860,11 @@
         <item>@string/caste_schedule_caste</item>
         <item>@string/caste_schedule_tribe</item>
         <item>@string/caste_other_backward_caste</item>
+        <item>@string/caste_VJNT</item>
         <item>@string/caste_general</item>
         <item>@string/caste_dont_know</item>
         <item>@string/caste_refused_to_answer</item>
-        <item>VJNT</item>
+
     </string-array>
 
 
@@ -1872,10 +1873,12 @@
         <item>@string/caste_schedule_caste</item>
         <item>@string/caste_schedule_tribe</item>
         <item>@string/caste_other_backward_caste</item>
+
+        <item>@string/caste_VJNT</item>
         <item>@string/caste_general</item>
         <item>@string/caste_dont_know</item>
         <item>@string/caste_refused_to_answer</item>
-        <item>विमुक्‍त जाती व भटक्‍या जमाती</item>
+
     </string-array>
 
     <string-array name="nas_district">

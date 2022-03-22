@@ -3795,6 +3795,9 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.caste_other_backward_caste);
             }
 
+            if (context.getString(R.string.caste_VJNT).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.caste_VJNT);
+            }
             if (context.getString(R.string.caste_general).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.caste_general);
             }
@@ -3832,6 +3835,9 @@ public final class StringUtils {
                 return context.getString(R.string.caste_other_backward_caste);
             }
 
+            if (updatedContext.getString(R.string.caste_general).equalsIgnoreCase(text)) {
+                return context.getString(R.string.caste_general);
+            }
             if (updatedContext.getString(R.string.caste_general).equalsIgnoreCase(text)) {
                 return context.getString(R.string.caste_general);
             }

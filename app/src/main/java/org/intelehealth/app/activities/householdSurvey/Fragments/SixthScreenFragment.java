@@ -92,7 +92,7 @@ public class SixthScreenFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSixthScreenBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
-
+        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
         binding.nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

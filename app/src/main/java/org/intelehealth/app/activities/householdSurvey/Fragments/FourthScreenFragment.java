@@ -97,7 +97,7 @@ public class FourthScreenFragment extends Fragment {
                 }
             }
         });
-
+        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
         binding.cultivableLandRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             binding.cultivableLandLayout.setVisibility(View.VISIBLE);
         });

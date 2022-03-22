@@ -837,6 +837,8 @@
     <string name="caste_schedule_caste">अनुसूचित जाति (अनुसूचित जाती)</string>
     <string name="caste_schedule_tribe">अनुसूचित जमाती((एस टी))</string>
     <string name="caste_other_backward_caste">इतर मागास जात (ओबीसी)</string>
+
+    <string name="caste_VJNT">विमुक्‍त जाती व भटक्‍या जमाती</string>
     <string name="caste_general">सामान्य</string>
     <string name="caste_dont_know">माहित नाही</string>
     <string name="caste_refused_to_answer">उत्तर देण्यास नकार दिला</string>

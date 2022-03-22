@@ -33,7 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 
 public class PregnancyRosterDialog extends DialogFragment {
 
@@ -47,11 +48,13 @@ public class PregnancyRosterDialog extends DialogFragment {
     private Bundle bundle;
     private DatePickerDialog mDOBPicker;
     // Adapters
+
+    Calendar today = Calendar.getInstance();
+    Calendar dob = Calendar.getInstance();
     private int mDOBYear;
     private int mDOBMonth;
     private int mDOBDay;
 
-    Calendar dob = Calendar.getInstance();
     private ArrayAdapter<CharSequence> adapter_pregnantPastTwoYears, adapter_outcomepregnancy, adapter_childalive, adapter_placeofdeliverypregnant, adapter_pregnancyplanned,
             adapter_focalPointBlock, adapter_sexofbaby, adapter_pregnancyhighriskcase, adapter_pregnancycomplications, adapter_singlemultiplebirths;
 
@@ -89,8 +92,12 @@ public class PregnancyRosterDialog extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         binding = DialogPregnancyRosterBinding.inflate(inflater);
 
+        mDOBYear = today.get(Calendar.YEAR);
+        mDOBMonth = today.get(Calendar.MONTH);
+        mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         setListeners();
         setAdapters();
+
 
         if (bundle != null) {
             extractBundleData(bundle);
@@ -256,23 +263,41 @@ public class PregnancyRosterDialog extends DialogFragment {
     }
 
     private void setListeners() {
-        // Pregnant Past Two Years Listener
-/*
-        binding.spinnerPregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1)
-                    binding.pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
-                else
-                    binding.pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
-            }
+        binding.edittextYearofpregnancy.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        todo date dialog
+                        mDOBPicker = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                                new DatePickerDialog.OnDateSetListener() {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                        //Set the DOB calendar to the date selected by the user
 
-            }
-        });
-*/
+                                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                                        dob.set(year, monthOfYear, dayOfMonth);
+                                        String dobString = simpleDateFormat.format(dob.getTime());
+
+                                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                                            binding.edittextYearofpregnancy.setText(dob_text);
+                                        } else {
+//                                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+                                            binding.edittextYearofpregnancy.setText(dobString);
+                                        }
+                                        mDOBYear = year;
+                                        mDOBMonth = monthOfYear;
+                                        mDOBDay = dayOfMonth;
+                                    }
+                                }, mDOBYear, mDOBMonth, mDOBDay);
+
+                        mDOBPicker.show();
+                    }
+                }
+        );
+
 
         binding.spinnerOutcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -360,10 +385,9 @@ public class PregnancyRosterDialog extends DialogFragment {
         binding.spinnerFocalBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if(position == 3) {
+                if (position == 3) {
                     binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     binding.etPregnancyblockOther.setVisibility(View.GONE);
                     binding.etPregnancyblockOther.setText("");
                 }
@@ -391,85 +415,85 @@ public class PregnancyRosterDialog extends DialogFragment {
             areDetailsCorrect = false;
         }*/
 
-     //   if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
-            if (data.getPregnancyOutcome().equals(getString(R.string.select))) {
-                setSpinnerError(binding.spinnerOutcomepregnancy);
+        //   if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+        if (data.getPregnancyOutcome().equals(getString(R.string.select))) {
+            setSpinnerError(binding.spinnerOutcomepregnancy);
+            areDetailsCorrect = false;
+        }
+
+        if (pregnancyOutcomePosition == 1) {
+            if (data.getIsChildAlive().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerChildalive);
                 areDetailsCorrect = false;
             }
+        }
 
-            if (pregnancyOutcomePosition == 1) {
-                if (data.getIsChildAlive().equals(getString(R.string.select))) {
-                    setSpinnerError(binding.spinnerChildalive);
-                    areDetailsCorrect = false;
-                }
-            }
+        if (binding.edittextYearofpregnancy.getText().toString().equalsIgnoreCase("") || binding.edittextYearofpregnancy.getText().toString().isEmpty()) {
+            setEditTextError(binding.edittextYearofpregnancy);
+            areDetailsCorrect = false;
+        }
 
-            if (binding.edittextYearofpregnancy.getText().toString().equalsIgnoreCase("") || binding.edittextYearofpregnancy.getText().toString().isEmpty()) {
-                setEditTextError(binding.edittextYearofpregnancy);
+        if (pregnancyOutcomePosition != 5) {
+            if (binding.edittextMonthspregnancylast.getText().toString().equalsIgnoreCase("") || binding.edittextMonthspregnancylast.getText().toString().isEmpty()) {
+                setEditTextError(binding.edittextMonthspregnancylast);
                 areDetailsCorrect = false;
             }
+        }
 
-            if (pregnancyOutcomePosition != 5) {
-                if (binding.edittextMonthspregnancylast.getText().toString().equalsIgnoreCase("") || binding.edittextMonthspregnancylast.getText().toString().isEmpty()) {
-                    setEditTextError(binding.edittextMonthspregnancylast);
-                    areDetailsCorrect = false;
-                }
-            }
-
-            if (pregnancyOutcomePosition == 5) {
-                if (binding.edittextMonthsbeingpregnant.getText().toString().equalsIgnoreCase("") || binding.edittextMonthsbeingpregnant.getText().toString().isEmpty()) {
-                    setEditTextError(binding.edittextMonthsbeingpregnant);
-                    areDetailsCorrect = false;
-                }
-            }
-
-            if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
-                if (data.getPlaceOfDelivery().equals(getString(R.string.select))) {
-                    setSpinnerError(binding.spinnerPlaceofdeliverypregnant);
-                    areDetailsCorrect = false;
-                }
-            }
-
-            if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 &&
-                    (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 &&
-                            pregnancyOutcomePosition != 5)) {
-                if (data.getFocalFacilityForPregnancy().equals("Select Block")) {
-                    setSpinnerError(binding.spinnerFocalBlock);
-                    areDetailsCorrect = false;
-                }
-            }
-
-            if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
-                if (data.getSingleMultipleBirths().equals(getString(R.string.select))) {
-                    setSpinnerError(binding.spinnerSinglemultiplebirths);
-                    areDetailsCorrect = false;
-                }
-                if (data.getSexOfBaby().equals(getString(R.string.select))) {
-                    setSpinnerError(binding.spinnerSexofbaby);
-                    areDetailsCorrect = false;
-                }
-                if (data.getPregnancyComplications().equals(getString(R.string.select))) {
-                    setSpinnerError(binding.spinnerPregnancycomplications);
-                    areDetailsCorrect = false;
-                }
-            }
-
-            if (pregnancyOutcomePosition == 1 && binding.spinnerChildalive.getSelectedItemPosition() == 2) {
-                if (data.getBabyAgeDied().equals(getString(R.string.select))) {
-                    setEditTextError(binding.edittextBabyagedied);
-                    areDetailsCorrect = false;
-                }
-            }
-
-            if (data.getPregnancyPlanned().equals(getString(R.string.select))) {
-                setSpinnerError(binding.spinnerPregnancyplanned);
+        if (pregnancyOutcomePosition == 5) {
+            if (binding.edittextMonthsbeingpregnant.getText().toString().equalsIgnoreCase("") || binding.edittextMonthsbeingpregnant.getText().toString().isEmpty()) {
+                setEditTextError(binding.edittextMonthsbeingpregnant);
                 areDetailsCorrect = false;
             }
-            if (data.getHighRiskPregnancy().equals(getString(R.string.select))) {
-                setSpinnerError(binding.spinnerPregnancyhighriskcase);
+        }
+
+        if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
+            if (data.getPlaceOfDelivery().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerPlaceofdeliverypregnant);
                 areDetailsCorrect = false;
             }
-       // }
+        }
+
+        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 &&
+                (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 &&
+                        pregnancyOutcomePosition != 5)) {
+            if (data.getFocalFacilityForPregnancy().equals("Select Block")) {
+                setSpinnerError(binding.spinnerFocalBlock);
+                areDetailsCorrect = false;
+            }
+        }
+
+        if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
+            if (data.getSingleMultipleBirths().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerSinglemultiplebirths);
+                areDetailsCorrect = false;
+            }
+            if (data.getSexOfBaby().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerSexofbaby);
+                areDetailsCorrect = false;
+            }
+            if (data.getPregnancyComplications().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerPregnancycomplications);
+                areDetailsCorrect = false;
+            }
+        }
+
+        if (pregnancyOutcomePosition == 1 && binding.spinnerChildalive.getSelectedItemPosition() == 2) {
+            if (data.getBabyAgeDied().equals(getString(R.string.select))) {
+                setEditTextError(binding.edittextBabyagedied);
+                areDetailsCorrect = false;
+            }
+        }
+
+        if (data.getPregnancyPlanned().equals(getString(R.string.select))) {
+            setSpinnerError(binding.spinnerPregnancyplanned);
+            areDetailsCorrect = false;
+        }
+        if (data.getHighRiskPregnancy().equals(getString(R.string.select))) {
+            setSpinnerError(binding.spinnerPregnancyhighriskcase);
+            areDetailsCorrect = false;
+        }
+        // }
 
         return areDetailsCorrect;
     }
@@ -477,57 +501,57 @@ public class PregnancyRosterDialog extends DialogFragment {
     private PregnancyRosterData fetchData() {
         PregnancyRosterData data = new PregnancyRosterData();
 
-      //  data.setNumberOfTimesPregnant(binding.edittextHowmanytimmespregnant.getText().toString());
+        //  data.setNumberOfTimesPregnant(binding.edittextHowmanytimmespregnant.getText().toString());
         data.setNumberOfTimesPregnant(howmanytimespregnant);
         data.setAnyPregnancyOutcomesInThePastTwoYears(pregnancyoutcomeInTwoYrs);
         data.setNumberOfPregnancyOutcomePastTwoYrs(noOftimesPregnantTwoYrs);
         int pregnancyOutcomePosition = binding.spinnerOutcomepregnancy.getSelectedItemPosition();
 
-      //  data.setAnyPregnancyOutcomesInThePastTwoYears(StringUtils.getPasttwoyrs(binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        //  data.setAnyPregnancyOutcomesInThePastTwoYears(StringUtils.getPasttwoyrs(binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-       // if (pregnancyoutcomeSpinnerPosition == 1) {
-            data.setPregnancyOutcome(StringUtils.getOutcomePregnancy(binding.spinnerOutcomepregnancy.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        // if (pregnancyoutcomeSpinnerPosition == 1) {
+        data.setPregnancyOutcome(StringUtils.getOutcomePregnancy(binding.spinnerOutcomepregnancy.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-            if (pregnancyOutcomePosition == 1)
-                data.setIsChildAlive(StringUtils.getChildAlive(binding.spinnerChildalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        if (pregnancyOutcomePosition == 1)
+            data.setIsChildAlive(StringUtils.getChildAlive(binding.spinnerChildalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-            data.setYearOfPregnancyOutcome(binding.edittextYearofpregnancy.getText().toString());
+//            data.setYearOfPregnancyOutcome(binding.edittextYearofpregnancy.getText().toString());
+        data.setYearOfPregnancyOutcome(StringUtils.hi_or_bn_en_noEdit(binding.edittextYearofpregnancy.getText().toString(), sessionManager.getAppLanguage()));
 
-            if (pregnancyOutcomePosition != 5)
-                data.setMonthsOfPregnancy(binding.edittextMonthspregnancylast.getText().toString());
+        if (pregnancyOutcomePosition != 5)
+            data.setMonthsOfPregnancy(binding.edittextMonthspregnancylast.getText().toString());
 
-            if (pregnancyOutcomePosition == 5)
-                data.setMonthsBeenPregnant(binding.edittextMonthsbeingpregnant.getText().toString());
+        if (pregnancyOutcomePosition == 5)
+            data.setMonthsBeenPregnant(binding.edittextMonthsbeingpregnant.getText().toString());
 
-            if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)
-                data.setPlaceOfDelivery(StringUtils.getPlaceDelivery(binding.spinnerPlaceofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        if (pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)
+            data.setPlaceOfDelivery(StringUtils.getPlaceDelivery(binding.spinnerPlaceofdeliverypregnant.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 
-            if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 ||
-                    (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
-                if(binding.spinnerFocalBlock.getSelectedItemPosition() == 3) {
-                    data.setFocalFacilityForPregnancy(binding.etPregnancyblockOther.getText().toString());
-                    Log.v(TAG, "focal_other: "+ data.getFocalFacilityForPregnancy());
-                }
-                else {
-                    data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block
-                            (binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-                }
-
+        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 ||
+                (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
+            if (binding.spinnerFocalBlock.getSelectedItemPosition() == 3) {
+                data.setFocalFacilityForPregnancy(binding.etPregnancyblockOther.getText().toString());
+                Log.v(TAG, "focal_other: " + data.getFocalFacilityForPregnancy());
+            } else {
+                data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block
+                        (binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }
 
-            if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
-                data.setSingleMultipleBirths(StringUtils.getSinglemultiplebirths(binding.spinnerSinglemultiplebirths.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-                data.setSexOfBaby(StringUtils.getSexOfBaby(binding.spinnerSexofbaby.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-                data.setPregnancyComplications(StringUtils.getComplications(binding.spinnerPregnancycomplications.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-            }
+        }
 
-            if (pregnancyOutcomePosition == 1 && binding.spinnerChildalive.getSelectedItemPosition() == 2) {
-                data.setBabyAgeDied(binding.edittextBabyagedied.getText().toString());
-            }
+        if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
+            data.setSingleMultipleBirths(StringUtils.getSinglemultiplebirths(binding.spinnerSinglemultiplebirths.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            data.setSexOfBaby(StringUtils.getSexOfBaby(binding.spinnerSexofbaby.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            data.setPregnancyComplications(StringUtils.getComplications(binding.spinnerPregnancycomplications.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        }
 
-            data.setPregnancyPlanned(StringUtils.getPregnancyPlanned(binding.spinnerPregnancyplanned.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-            data.setHighRiskPregnancy(StringUtils.getHighRiskPregnancy(binding.spinnerPregnancyhighriskcase.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-      //  }
+        if (pregnancyOutcomePosition == 1 && binding.spinnerChildalive.getSelectedItemPosition() == 2) {
+            data.setBabyAgeDied(binding.edittextBabyagedied.getText().toString());
+        }
+
+        data.setPregnancyPlanned(StringUtils.getPregnancyPlanned(binding.spinnerPregnancyplanned.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        data.setHighRiskPregnancy(StringUtils.getHighRiskPregnancy(binding.spinnerPregnancyhighriskcase.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+        //  }
 
         return data;
     }
@@ -543,22 +567,12 @@ public class PregnancyRosterDialog extends DialogFragment {
     }
 
     private void setBundleData() {
-       /// binding.edittextHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
+        /// binding.edittextHowmanytimmespregnant.setText(data.getNumberOfTimesPregnant());
 
         int spinnerPosition = 0;
 //        int spinnerPosition = adapter_pregnantPastTwoYears.getPosition(
 //                StringUtils.getPasttwoyrs_edit(data.getAnyPregnancyOutcomesInThePastTwoYears(), sessionManager.getAppLanguage()));
 //        binding.spinnerPregnantpasttwoyrs.setSelection(spinnerPosition);
-
-        binding.edittextYearofpregnancy.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-//                        todo date dialog
-                        mDOBPicker.show();
-                    }
-                }
-        );
 
 
         if (!checkIfEmpty(data.getPregnancyOutcome())) {
@@ -572,7 +586,14 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
-            binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+
+//            binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String dob_text = en__mr_dob(data.getYearOfPregnancyOutcome()); //to show text of English into Odiya...
+                binding.edittextYearofpregnancy.setText(dob_text);
+            } else {
+                binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+            }
         }
 
         if (!checkIfEmpty(data.getMonthsOfPregnancy())) {
@@ -592,12 +613,11 @@ public class PregnancyRosterDialog extends DialogFragment {
             spinnerPosition = adapter_focalPointBlock.getPosition
                     (StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(),
                             sessionManager.getAppLanguage()));
-            if(spinnerPosition == -1) {
+            if (spinnerPosition == -1) {
                 binding.spinnerFocalBlock.setSelection(3);
                 binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
                 binding.etPregnancyblockOther.setText(data.getFocalFacilityForPregnancy());
-            }
-            else {
+            } else {
                 binding.spinnerFocalBlock.setSelection(spinnerPosition);
                 binding.etPregnancyblockOther.setVisibility(View.GONE);
                 binding.etPregnancyblockOther.setText("");
@@ -645,6 +665,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         data.setPregnancyPlanned(bundle.getString("pregnancyPlanned"));
         data.setHighRiskPregnancy(bundle.getString("highRiskPregnancy"));
         data.setPregnancyComplications(bundle.getString("pregnancyComplications"));
+
     }
 
     private Boolean checkIfEmpty(String text) {

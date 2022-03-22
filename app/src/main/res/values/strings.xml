@@ -863,6 +863,7 @@
     <string name="caste_schedule_tribe">Schedule Tribe (ST)</string>
     <string name="caste_other_backward_caste">Other Backward Caste (OBC)</string>
     <string name="caste_general">General</string>
+    <string name="caste_VJNT">VJNT</string>
     <string name="caste_dont_know">Don’t know</string>
     <string name="caste_refused_to_answer">Refused to answer</string>
     <string name="number_of_smartphones_in_the_household">Number of smartphones in the household</string>
