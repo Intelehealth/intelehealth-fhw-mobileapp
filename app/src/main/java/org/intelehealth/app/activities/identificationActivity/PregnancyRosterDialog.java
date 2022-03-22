@@ -452,11 +452,11 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.spinnerChildalive);
                 areDetailsCorrect = false;
             }
-        }
 
-        if (data.getIsPreTerm().equals(getString(R.string.select))) {
-            setSpinnerError(binding.spinnerPreTerm);
-            areDetailsCorrect = false;
+            if (data.getIsPreTerm().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerPreTerm);
+                areDetailsCorrect = false;
+            }
         }
 
         if (binding.edittextYearofpregnancy.getText().toString().equalsIgnoreCase("") || binding.edittextYearofpregnancy.getText().toString().isEmpty()) {
@@ -485,24 +485,22 @@ public class PregnancyRosterDialog extends DialogFragment {
             }
         }
 
-        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 &&
-                (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 &&
-                        pregnancyOutcomePosition != 5)) {
+        if (binding.spinnerPlaceofdeliverypregnant.getSelectedItemPosition() != 1 && (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5)) {
             if (data.getFocalFacilityForPregnancy().equals("Select Block")) {
                 setSpinnerError(binding.spinnerFocalBlock);
                 areDetailsCorrect = false;
             }
-        }
 
-        if (binding.spinnerFocalBlock.getSelectedItemPosition() == 3 &&
-                (binding.etPregnancyblockOther.getText().toString().equalsIgnoreCase("") || binding.etPregnancyblockOther.getText().toString().isEmpty())) {
-            setEditTextError(binding.etPregnancyblockOther);
-            areDetailsCorrect = false;
-        }
+            if (binding.spinnerFocalBlock.getSelectedItemPosition() == 3 &&
+                    (binding.etPregnancyblockOther.getText().toString().equalsIgnoreCase("") || binding.etPregnancyblockOther.getText().toString().isEmpty())) {
+                setEditTextError(binding.etPregnancyblockOther);
+                areDetailsCorrect = false;
+            }
 
-        if (binding.facilityNameEditText.getText().toString().equalsIgnoreCase("") || binding.facilityNameEditText.getText().toString().isEmpty()) {
-            setEditTextError(binding.facilityNameEditText);
-            areDetailsCorrect = false;
+            if (binding.facilityNameEditText.getText().toString().equalsIgnoreCase("") || binding.facilityNameEditText.getText().toString().isEmpty()) {
+                setEditTextError(binding.facilityNameEditText);
+                areDetailsCorrect = false;
+            }
         }
 
         if (pregnancyOutcomePosition != 3 && pregnancyOutcomePosition != 4 && pregnancyOutcomePosition != 5) {
@@ -510,25 +508,21 @@ public class PregnancyRosterDialog extends DialogFragment {
                 setSpinnerError(binding.deliveryTypeSpinner);
                 areDetailsCorrect = false;
             }
-        }
 
-        if (data.getSingleMultipleBirths().
+            if (data.getSingleMultipleBirths().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerSinglemultiplebirths);
+                areDetailsCorrect = false;
+            }
 
-                equals(getString(R.string.select))) {
-            setSpinnerError(binding.spinnerSinglemultiplebirths);
-            areDetailsCorrect = false;
-        }
-        if (data.getSexOfBaby().
+            if (data.getSexOfBaby().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerSexofbaby);
+                areDetailsCorrect = false;
+            }
 
-                equals(getString(R.string.select))) {
-            setSpinnerError(binding.spinnerSexofbaby);
-            areDetailsCorrect = false;
-        }
-        if (data.getPregnancyComplications().
-
-                equals(getString(R.string.select))) {
-            setSpinnerError(binding.spinnerPregnancycomplications);
-            areDetailsCorrect = false;
+            if (data.getPregnancyComplications().equals(getString(R.string.select))) {
+                setSpinnerError(binding.spinnerPregnancycomplications);
+                areDetailsCorrect = false;
+            }
         }
 
         if (pregnancyOutcomePosition == 1 && binding.spinnerChildalive.getSelectedItemPosition() == 2) {
@@ -538,15 +532,11 @@ public class PregnancyRosterDialog extends DialogFragment {
             }
         }
 
-        if (data.getPregnancyPlanned().
-
-                equals(getString(R.string.select))) {
+        if (data.getPregnancyPlanned().equals(getString(R.string.select))) {
             setSpinnerError(binding.spinnerPregnancyplanned);
             areDetailsCorrect = false;
         }
-        if (data.getHighRiskPregnancy().
-
-                equals(getString(R.string.select))) {
+        if (data.getHighRiskPregnancy().equals(getString(R.string.select))) {
             setSpinnerError(binding.spinnerPregnancyhighriskcase);
             areDetailsCorrect = false;
         }
