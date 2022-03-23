@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.LayoutDiseaseBinding;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,6 +32,7 @@ public class MultipleDiseasesDialog extends DialogFragment {
     public static final String TAG = "MultipleDiseasesDialog";
     private LayoutDiseaseBinding binding;
     private SurveyCallback callback;
+    private String appLanguage;
     private Bundle bundle;
 
     @Override
@@ -43,6 +45,7 @@ public class MultipleDiseasesDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
+        appLanguage = ((IdentificationActivity) Objects.requireNonNull(getActivity())).sessionManager.getAppLanguage();
     }
 
     @NonNull
@@ -93,7 +96,7 @@ public class MultipleDiseasesDialog extends DialogFragment {
     private HealthIssuesValidationState validateData(HealthIssues survey) {
         HealthIssuesValidationState state = new HealthIssuesValidationState();
         state.setCorrect(true);
-        String errorString = "  "+getResources().getString(R.string.error_field_required);
+        String errorString = "  " + getResources().getString(R.string.error_field_required);
 //        String errorString = " field cannot be empty";
 
         if (survey.getHealthIssueReported() == null || survey.getHealthIssueReported().isEmpty()) {
@@ -271,16 +274,16 @@ public class MultipleDiseasesDialog extends DialogFragment {
         HealthIssues survey = new HealthIssues();
 
 //        String householdMemberName = binding.nameOfHouseholdMemberValueTextView.getText().toString();
-        String healthIssueReported = Objects.requireNonNull(binding.healthIssueValueTextView.getText()).toString();
+        String healthIssueReported = StringUtils.getHealthIssueReported(Objects.requireNonNull(binding.healthIssueValueTextView.getText()).toString(), appLanguage, getContext());
         String numberOfEpisodesInTheLastYear = Objects.requireNonNull(binding.numberOfEpisodesValueTextView.getText()).toString();
-        String primaryHealthcareProviderValue = Objects.requireNonNull(binding.primaryHealthCareProviderValueEditText.getText()).toString();
-        String firstLocationOfVisit = Objects.requireNonNull(binding.firstLocationOfVisitValueEditText.getText()).toString();
-        String referredTo = Objects.requireNonNull(binding.referredToEditText.getText()).toString();
-        String modeOfTransportation = Objects.requireNonNull(binding.modeOfTransportationEditText.getText()).toString();
+        String primaryHealthcareProviderValue = StringUtils.getPrimaryHealthcareProvider(Objects.requireNonNull(binding.primaryHealthCareProviderValueEditText.getText()).toString(), appLanguage, getContext());
+        String firstLocationOfVisit = StringUtils.getFirstLocationOfVisit(Objects.requireNonNull(binding.firstLocationOfVisitValueEditText.getText()).toString(), appLanguage, getContext());
+        String referredTo = StringUtils.getReferredTo(Objects.requireNonNull(binding.referredToEditText.getText()).toString(), appLanguage, getContext());
+        String modeOfTransportation = StringUtils.getModeOfTransportation(Objects.requireNonNull(binding.modeOfTransportationEditText.getText()).toString(), appLanguage, getContext());
         String averageCostOfTravelAndStayPerEpisode = Objects.requireNonNull(binding.averageCostIncurredOnTravelAndStayTextView.getText()).toString();
         String averageCostOfConsultation = Objects.requireNonNull(binding.averageCostIncurredOnConsultationFeesTextView.getText()).toString();
         String averageCostOfMedicine = Objects.requireNonNull(binding.averageCostIncurredOnMedicinesTextView.getText()).toString();
-        String scoreForExperienceOfTreatment = Objects.requireNonNull(binding.scoreOfExperienceEditText.getText()).toString();
+        String scoreForExperienceOfTreatment = StringUtils.getScoreOfExperience((Objects.requireNonNull(binding.scoreOfExperienceEditText.getText()).toString()), appLanguage, getContext());
 
         if (healthIssueReported.equals(getString(R.string.other)))
             healthIssueReported = Objects.requireNonNull(binding.otherHealthIssueTextView.getText()).toString();
@@ -321,15 +324,15 @@ public class MultipleDiseasesDialog extends DialogFragment {
 
     private void setBundleData() {
 //        binding.nameOfHouseholdMemberValueTextView.setText(bundle.getString("householdMemberName"));
-        binding.healthIssueValueTextView.setText(bundle.getString("healthIssueReported"));
+        binding.healthIssueValueTextView.setText(StringUtils.getHealthIssueReportedEdit(bundle.getString("healthIssueReported"), appLanguage, getContext()));
         binding.numberOfEpisodesValueTextView.setText(bundle.getString("numberOfEpisodesInTheLastYear"));
-        binding.primaryHealthCareProviderValueEditText.setText(bundle.getString("primaryHealthcareProviderValue"));
-        binding.firstLocationOfVisitValueEditText.setText(bundle.getString("firstLocationOfVisit"));
-        binding.referredToEditText.setText(bundle.getString("referredTo"));
-        binding.modeOfTransportationEditText.setText(bundle.getString("modeOfTransportation"));
+        binding.primaryHealthCareProviderValueEditText.setText(StringUtils.getPrimaryHealthcareProviderEdit(bundle.getString("primaryHealthcareProviderValue"), appLanguage, getContext()));
+        binding.firstLocationOfVisitValueEditText.setText(StringUtils.getFirstLocationOfVisitEdit(bundle.getString("firstLocationOfVisit"), appLanguage, getContext()));
+        binding.referredToEditText.setText(StringUtils.getReferredToEdit(bundle.getString("referredTo"), appLanguage, getContext()));
+        binding.modeOfTransportationEditText.setText(StringUtils.getModeOfTransportationEdit(bundle.getString("modeOfTransportation"), appLanguage, getContext()));
         binding.averageCostIncurredOnTravelAndStayTextView.setText(bundle.getString("averageCostOfTravelAndStayPerEpisode"));
         binding.averageCostIncurredOnConsultationFeesTextView.setText(bundle.getString("averageCostOfConsultation"));
         binding.averageCostIncurredOnMedicinesTextView.setText(bundle.getString("averageCostOfMedicine"));
-        binding.scoreOfExperienceEditText.setText(bundle.getString("scoreForExperienceOfTreatment"));
+        binding.scoreOfExperienceEditText.setText(StringUtils.getScoreOfExperienceEdit(bundle.getString("scoreForExperienceOfTreatment"), appLanguage, getContext()));
     }
 }

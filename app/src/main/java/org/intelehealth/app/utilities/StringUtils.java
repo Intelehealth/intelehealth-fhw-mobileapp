@@ -6133,4 +6133,484 @@ public final class StringUtils {
         return val;
     }
 
+    private static Configuration getEnglishConfiguration() {
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        return configuration;
+    }
+
+    private static Configuration getMarathiConfiguration() {
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        return configuration;
+    }
+
+    public static String getHealthIssueReported(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getEnglishConfiguration());
+
+            if (value.equalsIgnoreCase(context.getString(R.string.fever)))
+                value = updatedContext.getString(R.string.fever);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.cough_cold)))
+                value = updatedContext.getString(R.string.cough_cold);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.diarrhoea)))
+                value = updatedContext.getString(R.string.diarrhoea);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.injury)))
+                value = updatedContext.getString(R.string.injury);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.skin_diseases)))
+                value = updatedContext.getString(R.string.skin_diseases);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.eye_vision_issues)))
+                value = updatedContext.getString(R.string.eye_vision_issues);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.joint_bone_pain)))
+                value = updatedContext.getString(R.string.joint_bone_pain);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.typhoid)))
+                value = updatedContext.getString(R.string.typhoid);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.jaundice)))
+                value = updatedContext.getString(R.string.jaundice);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.malaria)))
+                value = updatedContext.getString(R.string.malaria);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.dengue)))
+                value = updatedContext.getString(R.string.dengue);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.diabetes)))
+                value = updatedContext.getString(R.string.diabetes);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.hypertensionBP)))
+                value = updatedContext.getString(R.string.hypertensionBP);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.asthama)))
+                value = updatedContext.getString(R.string.asthama);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.cancer)))
+                value = updatedContext.getString(R.string.cancer);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.tB)))
+                value = updatedContext.getString(R.string.tB);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.water_related_diseases)))
+                value = updatedContext.getString(R.string.water_related_diseases);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.other)))
+                value = updatedContext.getString(R.string.other);
+        }
+
+        return value;
+    }
+
+    public static String getHealthIssueReportedEdit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.fever)))
+                value = context.getString(R.string.fever);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.cough_cold)))
+                value = context.getString(R.string.cough_cold);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.diarrhoea)))
+                value = context.getString(R.string.diarrhoea);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.injury)))
+                value = context.getString(R.string.injury);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.skin_diseases)))
+                value = context.getString(R.string.skin_diseases);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.eye_vision_issues)))
+                value = context.getString(R.string.eye_vision_issues);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.joint_bone_pain)))
+                value = context.getString(R.string.joint_bone_pain);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.typhoid)))
+                value = context.getString(R.string.typhoid);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.jaundice)))
+                value = context.getString(R.string.jaundice);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.malaria)))
+                value = context.getString(R.string.malaria);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.dengue)))
+                value = context.getString(R.string.dengue);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.diabetes)))
+                value = context.getString(R.string.diabetes);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.hypertensionBP)))
+                value = context.getString(R.string.hypertensionBP);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.asthama)))
+                value = context.getString(R.string.asthama);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.cancer)))
+                value = context.getString(R.string.cancer);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.tB)))
+                value = context.getString(R.string.tB);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.water_related_diseases)))
+                value = context.getString(R.string.water_related_diseases);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.other)))
+                value = context.getString(R.string.other);
+        }
+
+        return value;
+    }
+
+    public static String getPrimaryHealthcareProvider(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(context.getString(R.string.government_doctor)))
+                value = updatedContext.getString(R.string.government_doctor);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.private_doctor)))
+                value = updatedContext.getString(R.string.private_doctor);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.staff_nurse)))
+                value = updatedContext.getString(R.string.staff_nurse);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.anm)))
+                value = updatedContext.getString(R.string.anm);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.asha)))
+                value = updatedContext.getString(R.string.asha);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.aww)))
+                value = updatedContext.getString(R.string.aww);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.rmp)))
+                value = updatedContext.getString(R.string.rmp);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.ayush_doctor)))
+                value = updatedContext.getString(R.string.ayush_doctor);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.homeopath_doctor)))
+                value = updatedContext.getString(R.string.homeopath_doctor);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.traditional_healer_quack)))
+                value = updatedContext.getString(R.string.traditional_healer_quack);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.did_not_consult_any_health_provider_for_this_issue)))
+                value = updatedContext.getString(R.string.did_not_consult_any_health_provider_for_this_issue);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.other_specify)))
+                value = updatedContext.getString(R.string.other_specify);
+        }
+        return value;
+    }
+
+    public static String getPrimaryHealthcareProviderEdit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.government_doctor)))
+                value = context.getString(R.string.government_doctor);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.private_doctor)))
+                value = context.getString(R.string.private_doctor);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.staff_nurse)))
+                value = context.getString(R.string.staff_nurse);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.anm)))
+                value = context.getString(R.string.anm);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.asha)))
+                value = context.getString(R.string.asha);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.aww)))
+                value = context.getString(R.string.aww);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.rmp)))
+                value = context.getString(R.string.rmp);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.ayush_doctor)))
+                value = context.getString(R.string.ayush_doctor);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.homeopath_doctor)))
+                value = context.getString(R.string.homeopath_doctor);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.traditional_healer_quack)))
+                value = context.getString(R.string.traditional_healer_quack);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.did_not_consult_any_health_provider_for_this_issue)))
+                value = context.getString(R.string.did_not_consult_any_health_provider_for_this_issue);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.other_specify)))
+                value = context.getString(R.string.other_specify);
+        }
+
+        return value;
+    }
+
+    public static String getFirstLocationOfVisit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(context.getString(R.string.place_of_delivery_home)))
+                value = updatedContext.getString(R.string.place_of_delivery_home);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.private_clinic)))
+                value = updatedContext.getString(R.string.private_clinic);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.phc)))
+                value = updatedContext.getString(R.string.phc);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.chc)))
+                value = updatedContext.getString(R.string.chc);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.dh)))
+                value = updatedContext.getString(R.string.dh);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.private_hospital)))
+                value = updatedContext.getString(R.string.private_hospital);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.ayush_center)))
+                value = updatedContext.getString(R.string.ayush_center);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.first_location_of_visit_pharmacy)))
+                value = updatedContext.getString(R.string.first_location_of_visit_pharmacy);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.other_specify)))
+                value = updatedContext.getString(R.string.other_specify);
+
+        }
+
+        return value;
+    }
+
+    public static String getFirstLocationOfVisitEdit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.place_of_delivery_home)))
+                value = context.getString(R.string.place_of_delivery_home);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.private_clinic)))
+                value = context.getString(R.string.private_clinic);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.phc)))
+                value = context.getString(R.string.phc);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.chc)))
+                value = context.getString(R.string.chc);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.dh)))
+                value = context.getString(R.string.dh);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.private_hospital)))
+                value = context.getString(R.string.private_hospital);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.ayush_center)))
+                value = context.getString(R.string.ayush_center);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.first_location_of_visit_pharmacy)))
+                value = context.getString(R.string.first_location_of_visit_pharmacy);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.other_specify)))
+                value = context.getString(R.string.other_specify);
+        }
+        return value;
+    }
+
+    public static String getReferredTo(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(context.getString(R.string.not_referred)))
+                value = updatedContext.getString(R.string.not_referred);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.private_clinic)))
+                value = updatedContext.getString(R.string.private_clinic);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.phc)))
+                value = updatedContext.getString(R.string.phc);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.chc)))
+                value = updatedContext.getString(R.string.chc);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.dh)))
+                value = updatedContext.getString(R.string.dh);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.private_hospital)))
+                value = updatedContext.getString(R.string.private_hospital);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.ayush_center)))
+                value = updatedContext.getString(R.string.ayush_center);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.other_specify)))
+                value = updatedContext.getString(R.string.other_specify);
+
+        }
+
+        return value;
+    }
+
+    public static String getReferredToEdit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.not_referred)))
+                value = context.getString(R.string.not_referred);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.private_clinic)))
+                value = context.getString(R.string.private_clinic);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.phc)))
+                value = context.getString(R.string.phc);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.chc)))
+                value = context.getString(R.string.chc);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.dh)))
+                value = context.getString(R.string.dh);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.private_hospital)))
+                value = context.getString(R.string.private_hospital);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.ayush_center)))
+                value = context.getString(R.string.ayush_center);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.other_specify)))
+                value = context.getString(R.string.other_specify);
+        }
+        return value;
+    }
+
+    public static String getModeOfTransportation(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_walking)))
+                value = updatedContext.getString(R.string.mode_of_transportation_walking);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_bus)))
+                value = updatedContext.getString(R.string.mode_of_transportation_bus);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_private_taxi)))
+                value = updatedContext.getString(R.string.mode_of_transportation_private_taxi);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_shuttle_taxi)))
+                value = updatedContext.getString(R.string.mode_of_transportation_shuttle_taxi);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_auto)))
+                value = updatedContext.getString(R.string.mode_of_transportation_auto);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_own_vehicle)))
+                value = updatedContext.getString(R.string.mode_of_transportation_own_vehicle);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_friends_neighbours_vehicle)))
+                value = updatedContext.getString(R.string.mode_of_transportation_friends_neighbours_vehicle);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.mode_of_transportation_ambulance)))
+                value = updatedContext.getString(R.string.mode_of_transportation_ambulance);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.other_specify)))
+                value = updatedContext.getString(R.string.other_specify);
+        }
+        return value;
+    }
+
+    public static String getModeOfTransportationEdit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_walking)))
+                value = context.getString(R.string.mode_of_transportation_walking);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_bus)))
+                value = context.getString(R.string.mode_of_transportation_bus);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_private_taxi)))
+                value = context.getString(R.string.mode_of_transportation_private_taxi);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_shuttle_taxi)))
+                value = context.getString(R.string.mode_of_transportation_shuttle_taxi);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_auto)))
+                value = context.getString(R.string.mode_of_transportation_auto);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_own_vehicle)))
+                value = context.getString(R.string.mode_of_transportation_own_vehicle);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_friends_neighbours_vehicle)))
+                value = context.getString(R.string.mode_of_transportation_friends_neighbours_vehicle);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.mode_of_transportation_ambulance)))
+                value = context.getString(R.string.mode_of_transportation_ambulance);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.other_specify)))
+                value = context.getString(R.string.other_specify);
+        }
+        return value;
+    }
+
+    public static String getScoreOfExperience(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(context.getString(R.string.score_dissatisfied)))
+                value = updatedContext.getString(R.string.score_dissatisfied);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.score_below_average)))
+                value = updatedContext.getString(R.string.score_below_average);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.score_average)))
+                value = updatedContext.getString(R.string.score_average);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.score_good)))
+                value = updatedContext.getString(R.string.score_good);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.score_very_good)))
+                value = updatedContext.getString(R.string.score_very_good);
+        }
+        return value;
+    }
+
+    public static String getScoreOfExperienceEdit(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Context updatedContext;
+            updatedContext = context.createConfigurationContext(getMarathiConfiguration());
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.score_dissatisfied)))
+                value = context.getString(R.string.score_dissatisfied);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.score_below_average)))
+                value = context.getString(R.string.score_below_average);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.score_average)))
+                value = context.getString(R.string.score_average);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.score_good)))
+                value = context.getString(R.string.score_good);
+
+            if (value.equalsIgnoreCase(updatedContext.getString(R.string.score_very_good)))
+                value = context.getString(R.string.score_very_good);
+        }
+        return value;
+    }
 }

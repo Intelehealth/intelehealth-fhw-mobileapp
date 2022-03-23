@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -7,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.databinding.LayoutDiseasePresentationBinding;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.List;
 
@@ -14,10 +16,19 @@ public class HouseholdSurveyAdapter extends RecyclerView.Adapter<HouseholdSurvey
 
     private final List<HealthIssues> healthIssuesList;
     private final ViewPagerCallback callback;
+    private final String locale;
+    private final Context context;
 
-    public HouseholdSurveyAdapter(List<HealthIssues> healthIssuesList, ViewPagerCallback callback) {
+    public HouseholdSurveyAdapter(
+            List<HealthIssues> healthIssuesList,
+            ViewPagerCallback callback,
+            String locale,
+            Context context
+    ) {
         this.healthIssuesList = healthIssuesList;
         this.callback = callback;
+        this.locale = locale;
+        this.context = context;
     }
 
     @NonNull
@@ -29,7 +40,7 @@ public class HouseholdSurveyAdapter extends RecyclerView.Adapter<HouseholdSurvey
                 false
         );
 
-        return new SurveyViewHolder(binding, callback);
+        return new SurveyViewHolder(binding, callback, context, locale);
     }
 
     @Override
@@ -57,28 +68,37 @@ public class HouseholdSurveyAdapter extends RecyclerView.Adapter<HouseholdSurvey
         public LayoutDiseasePresentationBinding binding;
         public HealthIssues healthIssues;
         public ViewPagerCallback callback;
+        public Context context;
+        public String locale;
         public int position;
 
-        public SurveyViewHolder(@NonNull LayoutDiseasePresentationBinding binding, ViewPagerCallback callback) {
+        public SurveyViewHolder(
+                @NonNull LayoutDiseasePresentationBinding binding,
+                ViewPagerCallback callback,
+                Context context,
+                String locale
+        ) {
             super(binding.getRoot());
             this.binding = binding;
             this.callback = callback;
+            this.locale = locale;
+            this.context = context;
             binding.linearLayout.setOnClickListener(v -> this.callback.getIssueClicked(healthIssues, position));
         }
 
         public void initData(HealthIssues issues, int position) {
             this.healthIssues = issues;
             this.position = position;
-            binding.healthIssueReportedValueTextView.setText(issues.getHealthIssueReported());
+            binding.healthIssueReportedValueTextView.setText(StringUtils.getHealthIssueReportedEdit(issues.getHealthIssueReported(), locale, context));
             binding.numberOfIssuesEpisodesInTheLastYearValueTextView.setText(issues.getNumberOfEpisodesInTheLastYear());
-            binding.primaryHealthCareProviderValueTextView.setText(issues.getPrimaryHealthcareProviderValue());
-            binding.firstLocationOfVisitValueTextView.setText(issues.getFirstLocationOfVisit());
-            binding.referredToValueTextView.setText(issues.getReferredTo());
-            binding.modeOfTransportationValueTextView.setText(issues.getModeOfTransportation());
+            binding.primaryHealthCareProviderValueTextView.setText(StringUtils.getPrimaryHealthcareProviderEdit(issues.getPrimaryHealthcareProviderValue(), locale, context));
+            binding.firstLocationOfVisitValueTextView.setText(StringUtils.getFirstLocationOfVisitEdit(issues.getFirstLocationOfVisit(), locale, context));
+            binding.referredToValueTextView.setText(StringUtils.getReferredToEdit(issues.getReferredTo(), locale, context));
+            binding.modeOfTransportationValueTextView.setText(StringUtils.getModeOfTransportationEdit(issues.getModeOfTransportation(), locale, context));
             binding.averageCostIncurredOnTravelAndStayValueTextView.setText(issues.getAverageCostOfTravelAndStayPerEpisode());
             binding.averageCostIncurredOnConsultationFeesValueTextView.setText(issues.getAverageCostOfConsultation());
             binding.averageCostIncurredOnMedicinesValueTextView.setText(issues.getAverageCostOfMedicine());
-            binding.scoreOfExperienceValueTextView.setText(issues.getScoreForExperienceOfTreatment());
+            binding.scoreOfExperienceValueTextView.setText(StringUtils.getScoreOfExperienceEdit(issues.getScoreForExperienceOfTreatment(), locale, context));
         }
     }
 }

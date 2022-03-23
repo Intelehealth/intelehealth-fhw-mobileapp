@@ -1634,7 +1634,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //Relationsship Spinner adapter
         Resources res = getResources();
         try {
-            if(!sessionManager.getHouseholdUuid().equals("") && mRelationshipValue.equalsIgnoreCase("Self")) {
+            if (!sessionManager.getHouseholdUuid().equals("") && mRelationshipValue.equalsIgnoreCase("Self")) {
                 String relationshiphohLanguage = "relationshipHoH_Self_" + sessionManager.getAppLanguage();
                 int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getApplicationContext().getPackageName());
                 if (relationshiphoh_id != 0) {
@@ -1642,8 +1642,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                             relationshiphoh_id, android.R.layout.simple_spinner_dropdown_item);
                 }
                 spinner_whatisyourrelation.setAdapter(adapter_whatisyourrelation);
-            }
-            else { // Here removing Self from the spinner... since HOH is already selected...
+            } else { // Here removing Self from the spinner... since HOH is already selected...
                 String relationshiphohLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
                 int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getApplicationContext().getPackageName());
                 if (relationshiphoh_id != 0) {
@@ -1652,9 +1651,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
                 spinner_whatisyourrelation.setAdapter(adapter_whatisyourrelation);
             }
-            
+
         } catch (Exception e) {
-             Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
         //relationship spinner adapter
@@ -2227,7 +2226,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     healthIssuesList = new Gson().fromJson(value, new TypeToken<List<HealthIssues>>() {
                     }.getType());
-                    adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+                    adapter = new HouseholdSurveyAdapter(healthIssuesList, this, sessionManager.getAppLanguage(), this);
                     binding.mainViewPager.setAdapter(adapter);
                     binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                     setViewPagerOffset(binding.mainViewPager);
@@ -2647,10 +2646,10 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
             }
 
-            if(!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+            if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
                     !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
                     Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
-            binding.poViewPager.getAdapter().getItemCount() == 0) {
+                    binding.poViewPager.getAdapter().getItemCount() == 0) {
                 Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
                 focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
                 cancel = true;
@@ -3927,7 +3926,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     return;
                 }
 
-                if(!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
                         !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
                         Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
                         binding.poViewPager.getAdapter().getItemCount() == 0) {
@@ -4537,7 +4536,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
         healthIssuesList.add(survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this, sessionManager.getAppLanguage(), this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -4551,7 +4550,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
         healthIssuesList.set(position, survey);
-        adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList, this, sessionManager.getAppLanguage(), this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(position);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -4561,7 +4560,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     public void deleteSurveyData(int position, Object object) {
         if (object instanceof HealthIssues) {
             healthIssuesList.remove(position);
-            adapter = new HouseholdSurveyAdapter(healthIssuesList, this);
+            adapter = new HouseholdSurveyAdapter(healthIssuesList, this, sessionManager.getAppLanguage(), this);
             binding.mainViewPager.setAdapter(adapter);
             if (!healthIssuesList.isEmpty()) {
                 binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
