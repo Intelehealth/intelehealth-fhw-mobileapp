@@ -738,5 +738,15 @@
     <string name="not_valid_number">मान्य फ़ोन नंबर नहीं है</string>
     <string name="select_call_output">कॉल आउटपुट चुनें</string>
     <string name="data_stored_successfully">डेटा सफलतापूर्वक संग्रहीत!</string>
+    <string name="text_new_visit">नए डॉक्टर का दौरा</string>
+    <string name="text_new_advice">नई चिकित्सा सलाह</string>
+    <string name="my_cases">मेरे मामले</string>
+    <string name="helpline_info">आपको हमारी हेल्पलाइन के बारे में कैसे पता चला?</string>
+    <string name="incoming">आवक</string>
+    <string name="outgoing">निवर्तमान</string>
+    <string name="type_of_call">यह किस प्रकार की कॉल है?</string>
+    <string name="no_values">कोई मान मौजूद नहीं है</string>
+    <string name="select_call_type">कृपया कॉल का प्रकार चुनें</string>
+
 
 </resources>

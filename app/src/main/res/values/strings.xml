@@ -761,5 +761,11 @@
     <string name="not_valid_number">Not a valid phone number</string>
     <string name="select_call_output">Select Call Output</string>
     <string name="data_stored_successfully">Data Stored Successfully!</string>
+    <string name="helpline_info">How do you came to know about our helpline?</string>
+    <string name="incoming">Incoming</string>
+    <string name="outgoing">Outgoing</string>
+    <string name="type_of_call">What type of call it is?</string>
+    <string name="no_values">No Values Present</string>
+    <string name="select_call_type">Please select type of call.</string>
 
 </resources>
