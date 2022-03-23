@@ -195,22 +195,22 @@ public final class StringUtils {
                 val = "Patient Registered- Tele Caller";
                 break;
             case "पंजीकृत होने की आवश्यकता नहीं है":
-                val = "Need not to be registered";
+                val = "Need not be registered";
                 break;
             case "मान्य फ़ोन नंबर नहीं है":
-                val = "Not a valid phone number";
+                val = "Not a valid number";
                 break;
             case "COVID होने से इनकार किया":
-                val = "Denied having COVID";
+                val = "Denied having covid";
                 break;
             case "रोगी मर गया":
-                val = "Patient Died";
+                val = "Died";
                 break;
             case "मरीज का नंबर नहीं मिल रहा था":
-                val = "Patient\'s number was not reachable.";
+                val = "Not reachable";
                 break;
             case "मरीज ने नहीं उठाया":
-                val = "Patient did not picked up";
+                val = "Patient Did Not Pick Up";
                 break;
             default:
                 return val;
