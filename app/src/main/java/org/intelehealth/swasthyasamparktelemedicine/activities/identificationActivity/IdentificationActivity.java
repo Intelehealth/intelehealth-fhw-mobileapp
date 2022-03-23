@@ -976,19 +976,19 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if(patient1.getCallType()!=null) {
-                if (patient1.getGender().equals("M")) {
-                    mGenderM.setChecked(true);
-                    if (mGenderF.isChecked())
-                        mGenderF.setChecked(false);
-                    Log.v(TAG, "yes");
-                } else {
-                    mGenderF.setChecked(true);
-                    if (mGenderM.isChecked())
-                        mGenderM.setChecked(false);
-                    Log.v(TAG, "yes");
-                }
+            if (patient1.getGender().equals("M")) {
+                mGenderM.setChecked(true);
+                if (mGenderF.isChecked())
+                    mGenderF.setChecked(false);
+                Log.v(TAG, "yes");
+            } else {
+                mGenderF.setChecked(true);
+                if (mGenderM.isChecked())
+                    mGenderM.setChecked(false);
+                Log.v(TAG, "yes");
+            }
 
+            if(patient1.getCallType()!=null) {
                 if (patient1.getCallType().equals("Outgoing")) {
                     mOutgoing.setChecked(true);
                     if (mIncoming.isChecked())
