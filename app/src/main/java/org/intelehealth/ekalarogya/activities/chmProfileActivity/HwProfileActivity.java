@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -186,18 +187,18 @@ public class HwProfileActivity extends AppCompatActivity {
 
             case R.id.hw_profile_image_edit:
 
-                hw_designation_value.setClickable(true);
-                hw_designation_value.setFocusable(true);
-                hw_designation_value.setCursorVisible(true);
-                hw_designation_value.setFocusableInTouchMode(true);
-                hw_designation_value.requestFocus();
-                hw_designation_value.setSelection(hw_designation_value.getText().length());
-
-                hw_aboutme_value.setClickable(true);
-                hw_aboutme_value.setFocusable(true);
-                hw_aboutme_value.setCursorVisible(true);
-                hw_aboutme_value.setFocusableInTouchMode(true);
-                hw_aboutme_value.setVisibility(View.VISIBLE);
+//                hw_designation_value.setClickable(true);
+//                hw_designation_value.setFocusable(true);
+//                hw_designation_value.setCursorVisible(true);
+//                hw_designation_value.setFocusableInTouchMode(true);
+//                hw_designation_value.requestFocus();
+//                hw_designation_value.setSelection(hw_designation_value.getText().length());
+//
+//                hw_aboutme_value.setClickable(true);
+//                hw_aboutme_value.setFocusable(true);
+//                hw_aboutme_value.setCursorVisible(true);
+//                hw_aboutme_value.setFocusableInTouchMode(true);
+//                hw_aboutme_value.setVisibility(View.VISIBLE);
 
                 hw_gender_value.setClickable(true);
                 hw_gender_value.setFocusable(true);
@@ -474,9 +475,8 @@ public class HwProfileActivity extends AppCompatActivity {
 
     public void updateOnSever(JSONObject obj){
         //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
-        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getProviderID();
+        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID() ;
         String encoded = sessionManager.getEncoded();
-
         Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
