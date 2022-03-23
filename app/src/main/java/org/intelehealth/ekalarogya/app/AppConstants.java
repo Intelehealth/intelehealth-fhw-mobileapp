@@ -71,7 +71,7 @@ public class AppConstants {
     public static int IMAGE_JPG_QUALITY = 70;
 
 
-    public static int REPEAT_INTERVAL = 15;
+    public static int REPEAT_INTERVAL = 5;
     public static Constraints MY_CONSTRAINTS = new Constraints.Builder()
             .setRequiresCharging(false)
             .setRequiredNetworkType(NetworkType.CONNECTED)
