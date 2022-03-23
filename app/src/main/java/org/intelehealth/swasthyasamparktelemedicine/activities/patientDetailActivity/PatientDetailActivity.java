@@ -1423,7 +1423,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     //This function will ask the user that whether the call was success or not, based on the answer, the other dialog will show up.
     private void storeCallResponse() {
-        final int[] checkedItems = {-1};
+        final int[] checkedItems = {0};
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
         alertDialogBuilder.setMessage(getString(R.string.able_to_connect));
         alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
