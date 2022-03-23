@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.LayoutDiseaseBinding;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.StringUtils;
 
 import java.util.Objects;
@@ -274,6 +275,7 @@ public class MultipleDiseasesDialog extends DialogFragment {
         HealthIssues survey = new HealthIssues();
 
 //        String householdMemberName = binding.nameOfHouseholdMemberValueTextView.getText().toString();
+
         String healthIssueReported = StringUtils.getHealthIssueReported(Objects.requireNonNull(binding.healthIssueValueTextView.getText()).toString(), appLanguage, getContext());
         String numberOfEpisodesInTheLastYear = Objects.requireNonNull(binding.numberOfEpisodesValueTextView.getText()).toString();
         String primaryHealthcareProviderValue = StringUtils.getPrimaryHealthcareProvider(Objects.requireNonNull(binding.primaryHealthCareProviderValueEditText.getText()).toString(), appLanguage, getContext());
@@ -286,7 +288,7 @@ public class MultipleDiseasesDialog extends DialogFragment {
         String scoreForExperienceOfTreatment = StringUtils.getScoreOfExperience((Objects.requireNonNull(binding.scoreOfExperienceEditText.getText()).toString()), appLanguage, getContext());
 
         if (healthIssueReported.equals(getString(R.string.other)))
-            healthIssueReported = Objects.requireNonNull(binding.otherHealthIssueTextView.getText()).toString();
+            healthIssueReported = StringUtils.getOtherString(getString(R.string.other), Objects.requireNonNull(binding.otherHealthIssueTextView.getText()).toString());
         if (primaryHealthcareProviderValue.equals(getString(R.string.other_specify)))
             primaryHealthcareProviderValue = Objects.requireNonNull(binding.otherPrimaryHealthCareProviderTextView.getText()).toString();
         if (firstLocationOfVisit.equals(getString(R.string.other_specify)))
@@ -324,7 +326,23 @@ public class MultipleDiseasesDialog extends DialogFragment {
 
     private void setBundleData() {
 //        binding.nameOfHouseholdMemberValueTextView.setText(bundle.getString("householdMemberName"));
-        binding.healthIssueValueTextView.setText(StringUtils.getHealthIssueReportedEdit(bundle.getString("healthIssueReported"), appLanguage, getContext()));
+
+        Context updatedContext = requireContext();
+        if (appLanguage.equalsIgnoreCase("mr")) {
+            updatedContext = updatedContext.createConfigurationContext(StringUtils.getEnglishConfiguration());
+        }
+
+        if (bundle.getString("healthIssueReported").contains(updatedContext.getString(R.string.other))) {
+            String[] otherArray = StringUtils.getOtherStringEdit(bundle.getString("healthIssueReported"));
+            String other = otherArray[0];
+            String otherValue = otherArray[1];
+            binding.healthIssueValueTextView.setText(StringUtils.getHealthIssueReportedEdit(other, appLanguage, getContext()));
+            binding.otherHealthIssueTextView.setText(otherValue);
+            binding.otherHealthIssueLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.healthIssueValueTextView.setText(StringUtils.getHealthIssueReportedEdit(bundle.getString("healthIssueReported"), appLanguage, getContext()));
+        }
+
         binding.numberOfEpisodesValueTextView.setText(bundle.getString("numberOfEpisodesInTheLastYear"));
         binding.primaryHealthCareProviderValueEditText.setText(StringUtils.getPrimaryHealthcareProviderEdit(bundle.getString("primaryHealthcareProviderValue"), appLanguage, getContext()));
         binding.firstLocationOfVisitValueEditText.setText(StringUtils.getFirstLocationOfVisitEdit(bundle.getString("firstLocationOfVisit"), appLanguage, getContext()));

@@ -1,12 +1,14 @@
 package org.intelehealth.app.activities.identificationActivity;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.LayoutDiseasePresentationBinding;
 import org.intelehealth.app.utilities.StringUtils;
 
@@ -89,7 +91,19 @@ public class HouseholdSurveyAdapter extends RecyclerView.Adapter<HouseholdSurvey
         public void initData(HealthIssues issues, int position) {
             this.healthIssues = issues;
             this.position = position;
-            binding.healthIssueReportedValueTextView.setText(StringUtils.getHealthIssueReportedEdit(issues.getHealthIssueReported(), locale, context));
+
+            Context updatedContext = context;
+            if (locale.equalsIgnoreCase("mr")) {
+                updatedContext = context.createConfigurationContext(StringUtils.getMarathiConfiguration());
+            }
+
+            if (issues.getHealthIssueReported().contains(updatedContext.getString(R.string.other))) {
+                String value = StringUtils.getOtherStringEdit(issues.getHealthIssueReported())[1];
+                binding.healthIssueReportedValueTextView.setText(value);
+            } else {
+                binding.healthIssueReportedValueTextView.setText(StringUtils.getHealthIssueReportedEdit(issues.getHealthIssueReported(), locale, context));
+            }
+
             binding.numberOfIssuesEpisodesInTheLastYearValueTextView.setText(issues.getNumberOfEpisodesInTheLastYear());
             binding.primaryHealthCareProviderValueTextView.setText(StringUtils.getPrimaryHealthcareProviderEdit(issues.getPrimaryHealthcareProviderValue(), locale, context));
             binding.firstLocationOfVisitValueTextView.setText(StringUtils.getFirstLocationOfVisitEdit(issues.getFirstLocationOfVisit(), locale, context));

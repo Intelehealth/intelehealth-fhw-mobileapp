@@ -6133,13 +6133,13 @@ public final class StringUtils {
         return val;
     }
 
-    private static Configuration getEnglishConfiguration() {
+    public static Configuration getEnglishConfiguration() {
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
         return configuration;
     }
 
-    private static Configuration getMarathiConfiguration() {
+    public static Configuration getMarathiConfiguration() {
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
         return configuration;
@@ -6612,5 +6612,19 @@ public final class StringUtils {
                 value = context.getString(R.string.score_very_good);
         }
         return value;
+    }
+
+    public static String getOtherString(String other, String value) {
+        return other.concat(":").concat(value);
+    }
+
+    public static String[] getOtherStringEdit(String value) {
+        String[] outputArray = new String[2];
+        int colonIndex = value.indexOf(":");
+        String otherString = value.substring(0, colonIndex);
+        String valueString = value.substring(colonIndex + 1);
+        outputArray[0] = otherString;
+        outputArray[1] = valueString;
+        return outputArray;
     }
 }
