@@ -976,38 +976,48 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if (patient1.getGender().equals("M")) {
-                mGenderM.setChecked(true);
-                if (mGenderF.isChecked())
-                    mGenderF.setChecked(false);
-                Log.v(TAG, "yes");
-            } else {
-                mGenderF.setChecked(true);
-                if (mGenderM.isChecked())
-                    mGenderM.setChecked(false);
-                Log.v(TAG, "yes");
-            }
-
-            if (patient1.getCallType().equals("Outgoing")) {
-                mOutgoing.setChecked(true);
-                if (mIncoming.isChecked())
-                    mIncoming.setChecked(false);
-            } else {
-                mIncoming.setChecked(true);
-                if (mOutgoing.isChecked())
-                    mOutgoing.setChecked(false);
-            }
-
-            if (patient1.getHelplineInfo().equals(getResources().getString(R.string.not_provided)))
-                mHelplineInfo.setSelection(0);
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String helplineInfo = switch_hi_helplineInfo_edit(patient1.getHelplineInfo());
-                    mHelplineInfo.setSelection(helplineAdapter.getPosition(helplineInfo));
+            if(patient1.getCallType()!=null) {
+                if (patient1.getGender().equals("M")) {
+                    mGenderM.setChecked(true);
+                    if (mGenderF.isChecked())
+                        mGenderF.setChecked(false);
+                    Log.v(TAG, "yes");
                 } else {
-                    mHelplineInfo.setSelection(helplineAdapter.getPosition(patient1.getHelplineInfo()));
+                    mGenderF.setChecked(true);
+                    if (mGenderM.isChecked())
+                        mGenderM.setChecked(false);
+                    Log.v(TAG, "yes");
+                }
+
+                if (patient1.getCallType().equals("Outgoing")) {
+                    mOutgoing.setChecked(true);
+                    if (mIncoming.isChecked())
+                        mIncoming.setChecked(false);
+                } else {
+                    mIncoming.setChecked(true);
+                    if (mOutgoing.isChecked())
+                        mOutgoing.setChecked(false);
                 }
             }
+            else {
+                mIncoming.setChecked(false);
+                mOutgoing.setChecked(false);
+            }
+
+            if(patient1.getHelplineInfo()!=null) {
+                if (patient1.getHelplineInfo().equals(getResources().getString(R.string.not_provided)))
+                    mHelplineInfo.setSelection(0);
+                else {
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        String helplineInfo = switch_hi_helplineInfo_edit(patient1.getHelplineInfo());
+                        mHelplineInfo.setSelection(helplineAdapter.getPosition(helplineInfo));
+                    } else {
+                        mHelplineInfo.setSelection(helplineAdapter.getPosition(patient1.getHelplineInfo()));
+                    }
+                }
+            }
+            else
+                mHelplineInfo.setSelection(0);
 
         }
         if (mGenderM.isChecked()) {
