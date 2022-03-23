@@ -767,5 +767,6 @@
     <string name="type_of_call">What type of call it is?</string>
     <string name="no_values">No Values Present</string>
     <string name="select_call_type">Please select type of call.</string>
+    <string name="patient_has_active_visit">Patient already has an active record. Please end previous visits to continue.</string>
 
 </resources>
