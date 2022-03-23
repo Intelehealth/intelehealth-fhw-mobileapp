@@ -317,8 +317,7 @@ public class ObsDAO {
         } finally {
             obsCursoursor.close();
         }
-        assert obsuuid != null;
-        if (obsuuid.contains("<b>") && obsuuid.contains("</b>")) {
+        if (obsuuid != null && obsuuid.contains("<b>") && obsuuid.contains("</b>")) {
             obsuuid = obsuuid.substring(obsuuid.indexOf("<b>") + 3, obsuuid.indexOf("</b>"));
         }
 

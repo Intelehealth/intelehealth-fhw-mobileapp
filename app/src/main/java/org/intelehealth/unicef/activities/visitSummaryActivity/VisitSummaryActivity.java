@@ -1844,41 +1844,46 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
     private void doQuery() {
+        try {
 
-        if (visitUUID != null && !visitUUID.isEmpty()) {
+            if (visitUUID != null && !visitUUID.isEmpty()) {
 
-            String query = "SELECT   a.uuid, a.sync " +
-                    "FROM tbl_visit a " +
-                    "WHERE a.uuid = '" + visitUUID + "'";
+                String query = "SELECT   a.uuid, a.sync " +
+                        "FROM tbl_visit a " +
+                        "WHERE a.uuid = '" + visitUUID + "'";
 
-            final Cursor cursor = db.rawQuery(query, null);
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        isSynedFlag = cursor.getString(cursor.getColumnIndexOrThrow("sync"));
-                    } while (cursor.moveToNext());
+                final Cursor cursor = db.rawQuery(query, null);
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            isSynedFlag = cursor.getString(cursor.getColumnIndexOrThrow("sync"));
+                        } while (cursor.moveToNext());
+                    }
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+
+                Log.e("ISSYNCED==", isSynedFlag);
+
+                if (!isSynedFlag.equalsIgnoreCase("0")) {
+                    String hideVisitUUID = visitUUID;
+                    hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
+                    visitView.setText("XXXX" + hideVisitUUID);
+                } else {
+                    visitView.setText(getResources().getString(R.string.visit_not_uploaded));
+                }
+            } else {
+                if (visitUuid != null && !visitUuid.isEmpty()) {
+                    String hideVisitUUID = visitUuid;
+                    hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
+                    visitView.setText("XXXX" + hideVisitUUID);
+//              visitView.setText("----");
                 }
             }
-            if (cursor != null) {
-                cursor.close();
-            }
-
-            Log.e("ISSYNCED==", isSynedFlag);
-
-            if (!isSynedFlag.equalsIgnoreCase("0")) {
-                String hideVisitUUID = visitUUID;
-                hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-                visitView.setText("XXXX" + hideVisitUUID);
-            } else {
-                visitView.setText(getResources().getString(R.string.visit_not_uploaded));
-            }
-        } else {
-            if (visitUuid != null && !visitUuid.isEmpty()) {
-                String hideVisitUUID = visitUuid;
-                hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-                visitView.setText("XXXX" + hideVisitUUID);
-//              visitView.setText("----");
-            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            finish();
         }
     }
 
@@ -2766,12 +2771,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email)+ objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
 
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
@@ -3826,8 +3831,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         (!TextUtils.isEmpty(doctorSpecialization) ?
                                 doctorSpecialization : "") + "</span><br>" +
                         "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
-                        (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
-                        "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
+                        (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") +
+                        "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no)  +
                         objClsDoctorDetails.getRegistrationNumber() : "") +
                         "</div>" + "<br>" +
 
@@ -3838,8 +3843,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         (!TextUtils.isEmpty(doctorSpecializationRemote) ?
                                 doctorSpecializationRemote : "") + "</span><br>" +
                         "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
-                        (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
-                        "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
+                        (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? getString(R.string.dr_email)+ objClsDoctorDetailsRemote.getEmailId() : "") +
+                        "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                         objClsDoctorDetailsRemote.getRegistrationNumber() : "") +
                         "</div>";
             } else {
@@ -3849,8 +3854,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         (!TextUtils.isEmpty(doctorSpecialization) ?
                                 doctorSpecialization : "") + "</span><br>" +
                         "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
-                        (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
-                        "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
+                        (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") +
+                        "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                         objClsDoctorDetails.getRegistrationNumber() : "") +
                         "</div>";
             }
@@ -3865,8 +3870,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     (!TextUtils.isEmpty(doctorSpecializationRemote) ?
                             doctorSpecializationRemote : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
-                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
-                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetailsRemote.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                     objClsDoctorDetailsRemote.getRegistrationNumber() : "") +
                     "</div>";
 

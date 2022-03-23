@@ -171,11 +171,13 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             ObsDAO obsDAO = new ObsDAO();
             try {
                 mSelectedComplainName = obsDAO.getObsValue(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT);
-                Log.v(TAG, "mSelectedComplainName - " + mSelectedComplainName);
-                if (mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
-                        mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича")) {
-                    mFileName = "physExam1.json";
+                if (mSelectedComplainName != null) {
+                    Log.v(TAG, "mSelectedComplainName - " + mSelectedComplainName);
+                    if (mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
+                            mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича")) {
+                        mFileName = "physExam1.json";
 
+                    }
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -191,12 +193,12 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
         } else {
             Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
-            Log.d(TAG, selectedExamsList.toString());
+            //Log.d(TAG, selectedExamsList.toString());
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
-            Log.d(TAG, selectedExamsList.toString());
+            /*Log.d(TAG, selectedExamsList.toString());
             for (String string : selectedExamsList)
-                Log.d(TAG, string);
+                Log.d(TAG, string);*/
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -277,6 +279,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
 
         mgender = fetch_gender(patientUuid);
+        if (physicalExamMap == null) {
+            finish();
+        }
 
         if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");

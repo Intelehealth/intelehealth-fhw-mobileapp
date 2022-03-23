@@ -659,8 +659,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             alertDialogBuilder.setMessage(Html.fromHtml(
                     currentNode.formQuestionAnswer(0)
                             .replace("Question not answered", getString(R.string.question_not_answered))
-                            .replace("Patient reports -", getString(R.string.patient_reports) + "-")
-                            .replace("Patient denies -", getString(R.string.patient_denies) + "-")
+                            .replace("Patient reports", getString(R.string.patient_reports))
+                            .replace("Patient denies", getString(R.string.patient_denies) )
                             .replace("Hours", getString(R.string.hour)).replace("Days", getString(R.string.days))
                             .replace("Weeks", "Недели").replace("Months", getString(R.string.months))
                             .replace("Years", getString(R.string.years))
