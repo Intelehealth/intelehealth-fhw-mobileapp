@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/hw_profile_image_edit"
+        android:icon="@drawable/ic_hw_profile_image_edit"
+        android:title="Profile"
+        app:showAsAction="always" />
+
+</menu>

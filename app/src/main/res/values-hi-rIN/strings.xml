@@ -709,6 +709,12 @@
     <string name="start_newvisit_confirmation_msg">क्या आप वाकई विज़िट शुरू करना चाहते हैं?</string>
     <string name="prescription_notprovided_msg">डॉक्टर ने प्रिस्क्रिप्शन नहीं दिया है। कृपया यात्रा समाप्त करने के लिए प्रिस्क्रिप्शन की प्रतीक्षा करें।</string>
 
+    <string name="take_photo">फोटो लो</string>
+    <string name="choose_from_gallery">गैलरी से चयन करो</string>
+    <string name="hw_profile_image_picker_title">स्वास्थ्य कार्यकर्ता प्रोफ़ाइल छवि!</string>
+
+    <string name="hw_qualification_hint">योग्यता</string>
+    <string name="hw_aboutme_hint">मेरे बारे में</string>
     //-------setup Location string-----
     <string name="setup_select_state_str">राज्य चुनें</string>
     <string name="setup_select_dropdown_state_msg">ड्रॉपडाउन से राज्य का चयन करें</string>

@@ -7,7 +7,6 @@ import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.ekalarogya.models.Results;
-import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
 import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
@@ -19,6 +18,8 @@ import org.intelehealth.ekalarogya.models.pushResponseApiCall.PushResponseApiCal
 import org.intelehealth.ekalarogya.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.models.statewise_location.State;
+import org.json.JSONObject;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -109,6 +110,10 @@ public interface ApiInterface {
     Single<CheckAppUpdateRes> checkAppUpdate();
 
     @GET
+    Observable<ResponseBody> PERSON_PROFILE_INFO1(@Url String url,
+                                                     @Header("Authorization") String authHeader);
+
+    @GET
     Observable<MainProfileModel> PERSON_PROFILE_INFO(@Url String url,
                                                      @Header("Authorization") String authHeader);
 
@@ -118,4 +123,9 @@ public interface ApiInterface {
                                                                   @Header("Authorization") String authHeader,
                                                                   @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
 
+    @Headers({"Accept: application/json"})
+    @POST
+    Single<ResponseBody> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
+                                                        @Header("Authorization") String authHeader,
+                                                        @Body JSONObject obj);
 }

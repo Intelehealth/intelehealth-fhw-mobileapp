@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_margin="16dp"
+                    android:paddingBottom="20dp"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/include">
 
@@ -49,10 +50,35 @@
                         android:layout_gravity="center_horizontal"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
                         android:textSize="@dimen/card_content_sub_text_size"
+                        android:background="@drawable/button_bg_rounded_corners"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/hw_designation_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:imeOptions="actionUnspecified"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/button_bg_rounded_corners"
+                        android:paddingRight="10dp"
+                        android:backgroundTint="@color/white"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:textColor="@color/font_black_0"
+                        android:singleLine="true"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:hint="@string/hw_qualification_hint"
+                        android:textColorHint="@color/hint_light_gray"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <!--<TextView
                         android:id="@+id/hw_designation_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -60,9 +86,32 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_horizontal"
-                        android:textSize="@dimen/card_content_normal_text_size" />
+                        android:textSize="@dimen/card_content_normal_text_size" />-->
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/hw_aboutme_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:imeOptions="actionUnspecified"
+                        android:background="@drawable/button_bg_rounded_corners"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:backgroundTint="@color/white"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/font_black_0"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:hint="@string/hw_aboutme_hint"
+                        android:textColorHint="@color/hint_light_gray"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <!--<TextView
                         android:id="@+id/hw_aboutme_value"
                         android:layout_width="match_parent"
                         android:layout_height="26dp"
@@ -70,7 +119,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/lato_regular"
                         android:gravity="center_horizontal"
-                        android:textSize="@dimen/card_content_normal_text_size" />
+                        android:textSize="@dimen/card_content_normal_text_size" />-->
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -82,7 +131,6 @@
                 android:layout_gravity="center_horizontal"
                 android:elevation="65dp"
                 android:layout_marginTop="50dp"
-                android:src="@drawable/ic_person_camera_intele"
                 app:civ_border_color="#fff"
                 app:civ_border_width="2dp"
                 app:civ_shadow="true"
@@ -265,7 +313,24 @@
                         android:textColor="@color/gray"
                         android:textSize="@dimen/card_content_normal_text_size" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/hw_gender_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:imeOptions="actionUnspecified"
+                        android:background="@drawable/button_bg_rounded_corners"
+                        android:backgroundTint="@color/white"
+                        android:layout_weight="1"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:textStyle="bold"
+                        android:textColor="@color/font_black_0"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <!--<TextView
                         android:id="@+id/hw_gender_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -273,7 +338,7 @@
                         android:fontFamily="@font/lato_regular"
                         android:gravity="fill"
                         android:textStyle="bold"
-                        android:textSize="@dimen/card_content_normal_text_size" />
+                        android:textSize="@dimen/card_content_normal_text_size" />-->
 
                 </TableRow>
 
@@ -322,7 +387,24 @@
                         android:text="@string/hw_mobile_str"
                         android:textSize="@dimen/card_content_normal_text_size" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/hw_mobile_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:imeOptions="actionUnspecified"
+                        android:background="@drawable/button_bg_rounded_corners"
+                        android:backgroundTint="@color/white"
+                        android:layout_weight="1"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:textColor="@color/font_black_0"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <!--<TextView
                         android:id="@+id/hw_mobile_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -331,7 +413,7 @@
                         android:gravity="fill"
                         android:textStyle="bold"
                         android:textSize="@dimen/card_content_normal_text_size" />
-
+-->
                 </TableRow>
 
                 <TableRow
@@ -351,7 +433,23 @@
                         android:text="@string/hw_whatsapp_str"
                         android:textSize="@dimen/card_content_normal_text_size" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/hw_whatsapp_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:imeOptions="actionUnspecified"
+                        android:background="@drawable/button_bg_rounded_corners"
+                        android:backgroundTint="@color/white"
+                        android:layout_weight="1"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:textColor="@color/font_black_0"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+                    <!--<TextView
                         android:id="@+id/hw_whatsapp_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -360,7 +458,7 @@
                         android:gravity="fill"
                         android:textStyle="bold"
                         android:textSize="@dimen/card_content_normal_text_size" />
-
+-->
                 </TableRow>
 
                 <TableRow
@@ -380,7 +478,23 @@
                         android:drawableLeft="@drawable/ic_profile_email"
                         android:textSize="@dimen/card_content_normal_text_size" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/hw_email_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:imeOptions="actionUnspecified"
+                        android:background="@drawable/button_bg_rounded_corners"
+                        android:backgroundTint="@color/white"
+                        android:layout_weight="1"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:textColor="@color/font_black_0"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+                    <!--<TextView
                         android:id="@+id/hw_email_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -388,11 +502,35 @@
                         android:fontFamily="@font/lato_regular"
                         android:gravity="fill"
                         android:textStyle="bold"
-                        android:textSize="@dimen/card_content_normal_text_size" />
+                        android:textSize="@dimen/card_content_normal_text_size" />-->
 
                 </TableRow>
             </TableLayout>
+
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/save_hw_detail"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/button_save"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/lato_bold"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/hw_profileinfo_bg"
+            app:layout_constraintTop_toBottomOf="@+id/hw_detail_cardview"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
