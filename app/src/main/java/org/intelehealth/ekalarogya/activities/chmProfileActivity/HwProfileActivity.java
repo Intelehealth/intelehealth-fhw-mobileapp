@@ -186,18 +186,18 @@ public class HwProfileActivity extends AppCompatActivity {
 
             case R.id.hw_profile_image_edit:
 
-                hw_designation_value.setClickable(true);
-                hw_designation_value.setFocusable(true);
-                hw_designation_value.setCursorVisible(true);
-                hw_designation_value.setFocusableInTouchMode(true);
-                hw_designation_value.requestFocus();
-                hw_designation_value.setSelection(hw_designation_value.getText().length());
-
-                hw_aboutme_value.setClickable(true);
-                hw_aboutme_value.setFocusable(true);
-                hw_aboutme_value.setCursorVisible(true);
-                hw_aboutme_value.setFocusableInTouchMode(true);
-                hw_aboutme_value.setVisibility(View.VISIBLE);
+//                hw_designation_value.setClickable(true);
+//                hw_designation_value.setFocusable(true);
+//                hw_designation_value.setCursorVisible(true);
+//                hw_designation_value.setFocusableInTouchMode(true);
+//                hw_designation_value.requestFocus();
+//                hw_designation_value.setSelection(hw_designation_value.getText().length());
+//
+//                hw_aboutme_value.setClickable(true);
+//                hw_aboutme_value.setFocusable(true);
+//                hw_aboutme_value.setCursorVisible(true);
+//                hw_aboutme_value.setFocusableInTouchMode(true);
+//                hw_aboutme_value.setVisibility(View.VISIBLE);
 
                 hw_gender_value.setClickable(true);
                 hw_gender_value.setFocusable(true);
