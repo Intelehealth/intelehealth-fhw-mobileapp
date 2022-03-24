@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -991,6 +992,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if(patient1.getCallType()!=null) {
                 if (patient1.getCallType().equals("Outgoing")) {
                     mOutgoing.setChecked(true);
+                    callInfoLayout.setVisibility(View.GONE);
                     if (mIncoming.isChecked())
                         mIncoming.setChecked(false);
                 } else {
@@ -1031,7 +1033,7 @@ public class IdentificationActivity extends AppCompatActivity {
             callInfoLayout.setVisibility(View.VISIBLE);
         } else {
             mCallType = "Outgoing";
-            callInfoLayout.setVisibility(View.VISIBLE);
+            callInfoLayout.setVisibility(View.GONE);
         }
 
         if (patientID_edit != null) {
@@ -2854,8 +2856,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(callInfoLayout.getVisibility()== View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
+        {
+            TextView errorText = (TextView)mHelplineInfo.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mHelplineInfo;
+            cancel = true;
             return;
         }
 
@@ -3573,6 +3585,35 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (!mIncoming.isChecked() && !mOutgoing.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.select_call_type);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+        }
+
+        if(callInfoLayout.getVisibility()== View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
+        {
+            TextView errorText = (TextView)mHelplineInfo.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            mHelplineInfo.requestFocus();
+            return;
+        }
+
         if (mPhoneNum.getText().toString().equals("")) {
             mPhoneNum.setError(getString(R.string.error_field_required));
             return;
@@ -3918,7 +3959,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
                 !state_spinner.getSelectedItem().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
             //passes number of days to this function to calculate the actual date...
             if(!mAge.getText().toString().isEmpty() || !mAge.getText().toString().equals("")) {
@@ -3932,7 +3973,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             Log.v(TAG, "Result");
 
-        } else {
+        }
+        else {
             if (mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
@@ -3985,8 +4027,37 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
+            if (!mIncoming.isChecked() && !mOutgoing.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_call_type);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+            }
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(callInfoLayout.getVisibility() == View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
+        {
+            TextView errorText = (TextView)mHelplineInfo.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mHelplineInfo;
+            cancel = true;
             return;
         }
 
