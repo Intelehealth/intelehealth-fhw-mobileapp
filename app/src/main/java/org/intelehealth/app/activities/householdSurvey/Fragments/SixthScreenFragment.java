@@ -92,7 +92,9 @@ public class SixthScreenFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSixthScreenBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
-        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
+        binding.prevButton.setOnClickListener(view -> {
+            getActivity().onBackPressed();
+        });
         binding.nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +150,10 @@ public class SixthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdOpenDefecationStatus"));
-            patientAttributesDTO.setValue(((RadioButton) binding.defecationInOpenRadioGroup.findViewById(binding.defecationInOpenRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getPreTerm(
+                    ((RadioButton) binding.defecationInOpenRadioGroup.findViewById(binding.defecationInOpenRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -213,9 +218,12 @@ public class SixthScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdOpenDefecationStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.defecationInOpenRadioGroup, value1);
-
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes)))
+                            binding.defecationYesRadioButton.setChecked(true);
+                        else if (value1.equalsIgnoreCase(updatedContext.getString(R.string.no)))
+                            binding.defecationNoRadioButton.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHrs")) {
                     if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null) {

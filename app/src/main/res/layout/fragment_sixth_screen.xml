@@ -39,6 +39,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/defecation_yes_radio_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -47,6 +48,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/defecation_no_radio_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -191,6 +193,7 @@
                     android:background="@drawable/rounded_image_button_background"
                     app:srcCompat="@drawable/ic_arrow_right" />
             </androidx.appcompat.widget.LinearLayoutCompat>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
