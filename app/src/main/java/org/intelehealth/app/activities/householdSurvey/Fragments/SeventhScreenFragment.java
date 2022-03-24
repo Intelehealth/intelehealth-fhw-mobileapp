@@ -6,6 +6,7 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -110,7 +111,7 @@ public class SeventhScreenFragment extends Fragment {
         mandatoryFields.addAll(Arrays.asList(binding.distanceToSubCentreRadioGroup, binding.distanceToNearestPrimaryHealthCentresRadioGroup, binding.distanceToNearestCommunityHealthCentresRadioGroup, binding.distanceToNearestDistrictHospitalRadioGroup, binding.distanceToNearestPathologicalLabRadioGroup, binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup, binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup, binding.distanceToNearestTertiaryCareFacilityRadioGroup));
 
         getPatientUuidsForHouseholdValue(patientUuid);
-       // setData(patientUuid);
+        // setData(patientUuid);
         return rootView;
     }
 
@@ -133,8 +134,7 @@ public class SeventhScreenFragment extends Fragment {
                     setData(patientUUIDs.get(i));
                 }
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -150,7 +150,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("subCentreDistance"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToSubCentreRadioGroup.findViewById(binding.distanceToSubCentreRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToSubCentreRadioGroup.findViewById(binding.distanceToSubCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -160,7 +164,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrimaryHealthCenterDistance"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestPrimaryHealthCentresRadioGroup.findViewById(binding.distanceToNearestPrimaryHealthCentresRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestPrimaryHealthCentresRadioGroup.findViewById(binding.distanceToNearestPrimaryHealthCentresRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -170,7 +178,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestCommunityHealthCenterDistance"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestCommunityHealthCentresRadioGroup.findViewById(binding.distanceToNearestCommunityHealthCentresRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestCommunityHealthCentresRadioGroup.findViewById(binding.distanceToNearestCommunityHealthCentresRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -180,7 +192,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestDistrictHospitalDistance"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestDistrictHospitalRadioGroup.findViewById(binding.distanceToNearestDistrictHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestDistrictHospitalRadioGroup.findViewById(binding.distanceToNearestDistrictHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -190,7 +206,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPathologicalLabDistance"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestPathologicalLabRadioGroup.findViewById(binding.distanceToNearestPathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestPathologicalLabRadioGroup.findViewById(binding.distanceToNearestPathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -200,7 +220,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrivateClinicMBBSDoctor"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.findViewById(binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.findViewById(binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -210,7 +234,11 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrivateClinicAlternateMedicine"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.findViewById(binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.findViewById(binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -220,13 +248,17 @@ public class SeventhScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestTertiaryCareFacility"));
-            patientAttributesDTO.setValue(((RadioButton) binding.distanceToNearestTertiaryCareFacilityRadioGroup.findViewById(binding.distanceToNearestTertiaryCareFacilityRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+                    ((RadioButton) binding.distanceToNearestTertiaryCareFacilityRadioGroup.findViewById(binding.distanceToNearestTertiaryCareFacilityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);
-        Log.v("screen", "secondscreen: \n"+ gson.toJson(patientAttributesDTOList));
+        Log.v("screen", "secondscreen: \n" + gson.toJson(patientAttributesDTOList));
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
@@ -259,9 +291,17 @@ public class SeventhScreenFragment extends Fragment {
         }
     }
 
-    private void setData(String patientUuid)
-    {
+    private void setData(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Context updatedContext;
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+            configuration.setLocale(new Locale("en"));
+            updatedContext = requireContext().createConfigurationContext(configuration);
+        } else {
+            updatedContext = requireContext();
+        }
 
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {patientUuid};
@@ -277,44 +317,150 @@ public class SeventhScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("subCentreDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToSubCentreRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_5_minutes).equalsIgnoreCase(value1))
+                            binding.subCenter5Minutes.setChecked(true);
 
+                        if (updatedContext.getString(R.string.five_fifteen_minutes).equalsIgnoreCase(value1))
+                            binding.subCenter515Minutes.setChecked(true);
+
+                        if (updatedContext.getString(R.string.fifteen_thirty_minutes).equalsIgnoreCase(value1))
+                            binding.subCenter1530Minutes.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_thirty_minutes).equalsIgnoreCase(value1))
+                            binding.subCenterMoreThan30Minutes.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestPrimaryHealthCenterDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestPrimaryHealthCentresRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_1_km).equalsIgnoreCase(value1))
+                            binding.phc1Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.one_to_three_kms).equalsIgnoreCase(value1))
+                            binding.phc13Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.three_to_five_kms).equalsIgnoreCase(value1))
+                            binding.phc35Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.five_to_ten_kms).equalsIgnoreCase(value1))
+                            binding.phc510Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_ten_kms).equalsIgnoreCase(value1))
+                            binding.phcMoreThan10Km.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestCommunityHealthCenterDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestCommunityHealthCentresRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_5_kms).equalsIgnoreCase(value1))
+                            binding.chcWithin5Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.five_to_ten_kms).equalsIgnoreCase(value1))
+                            binding.chc510Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value1))
+                            binding.chc1020Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_twenty_km).equalsIgnoreCase(value1))
+                            binding.chcMoreThan20Kms.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestDistrictHospitalDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestDistrictHospitalRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_ten_km).equalsIgnoreCase(value1))
+                            binding.dhWithin10Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value1))
+                            binding.dh1020Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.twenty_to_forty_km).equalsIgnoreCase(value1))
+                            binding.dh2040Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.fifty_to_seventy_km).equalsIgnoreCase(value1))
+                            binding.dh5070Kms.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_seventy_km).equalsIgnoreCase(value1))
+                            binding.dhMoreThan70Kms.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestPathologicalLabDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestPathologicalLabRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_ten_km).equalsIgnoreCase(value1))
+                            binding.plWithin10Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value1))
+                            binding.pl1020Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.twenty_to_forty_km).equalsIgnoreCase(value1))
+                            binding.pl2040Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.fifty_to_seventy_km).equalsIgnoreCase(value1))
+                            binding.pl5070Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_seventy_km).equalsIgnoreCase(value1))
+                            binding.plMoreThan70Km.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestPrivateClinicMBBSDoctor")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_5_kms).equalsIgnoreCase(value1))
+                            binding.pcWithin5Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.five_to_ten_kms).equalsIgnoreCase(value1))
+                            binding.pc510Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value1))
+                            binding.pc1020Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_twenty_km).equalsIgnoreCase(value1))
+                            binding.pcMoreThan20Km.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestPrivateClinicAlternateMedicine")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_5_kms).equalsIgnoreCase(value1))
+                            binding.alternateWithin5Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.five_to_ten_kms).equalsIgnoreCase(value1))
+                            binding.alternate510Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value1))
+                            binding.alternate1020Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_twenty_km).equalsIgnoreCase(value1))
+                            binding.alternateMoreThan20Km.setChecked(true);
+                    }
                 }
+
                 if (name.equalsIgnoreCase("nearestTertiaryCareFacility")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if(value1!=null)
-                        defaultSelectRB(binding.distanceToNearestTertiaryCareFacilityRadioGroup, value1);
+                    if (value1 != null) {
+                        if (updatedContext.getString(R.string.within_5_kms).equalsIgnoreCase(value1))
+                            binding.tertiaryWithin5Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.five_to_ten_kms).equalsIgnoreCase(value1))
+                            binding.tertiary510Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value1))
+                            binding.tertiary1020Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.twenty_to_thirty_kms).equalsIgnoreCase(value1))
+                            binding.tertiary2030Km.setChecked(true);
+
+                        if (updatedContext.getString(R.string.more_than_thirty_kms).equalsIgnoreCase(value1))
+                            binding.tertiaryMoreThan30Km.setChecked(true);
+                    }
                 }
             } while (idCursor1.moveToNext());
         }

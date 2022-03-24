@@ -6640,7 +6640,7 @@ public final class StringUtils {
     }
 
     public static String getCardStatus(String value, String locale, Context context) {
-        Context updatedContext = null;
+        Context updatedContext;
         if (locale.equalsIgnoreCase("mr")) {
             Configuration configuration = StringUtils.getEnglishConfiguration();
             updatedContext = context.createConfigurationContext(configuration);
@@ -6656,6 +6656,77 @@ public final class StringUtils {
 
             if (value.equalsIgnoreCase(context.getString(R.string.DO_NOT_KNOW)))
                 return updatedContext.getString(R.string.DO_NOT_KNOW);
+        }
+        return value;
+    }
+
+    public static String getDistanceTranslations(String value, String locale, Context context) {
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = StringUtils.getEnglishConfiguration();
+            Context updatedContext = context.createConfigurationContext(configuration);
+
+            if (context.getString(R.string.within_5_minutes).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.within_5_minutes);
+
+            if (context.getString(R.string.five_fifteen_minutes).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.five_fifteen_minutes);
+
+            if (context.getString(R.string.fifteen_thirty_minutes).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.fifteen_thirty_minutes);
+
+            if (context.getString(R.string.more_than_thirty_minutes).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.more_than_thirty_minutes);
+
+            if (context.getString(R.string.within_1_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.within_1_km);
+
+            if (context.getString(R.string.one_to_three_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.one_to_three_kms);
+
+            if (context.getString(R.string.three_to_five_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.three_to_five_kms);
+
+            if (context.getString(R.string.more_than_five_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.more_than_five_kms);
+
+            if (context.getString(R.string.within_3_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.within_3_km);
+
+            if (context.getString(R.string.three_to_six_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.three_to_six_kms);
+
+            if (context.getString(R.string.six_to_ten_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.six_to_ten_kms);
+
+            if (context.getString(R.string.more_than_ten_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.more_than_ten_kms);
+
+            if (context.getString(R.string.within_5_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.within_5_kms);
+
+            if (context.getString(R.string.five_to_ten_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.five_to_ten_kms);
+
+            if (context.getString(R.string.ten_to_twenty_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.ten_to_twenty_kms);
+
+            if (context.getString(R.string.twenty_to_thirty_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.twenty_to_thirty_kms);
+
+            if (context.getString(R.string.more_than_thirty_kms).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.more_than_thirty_kms);
+
+            if (context.getString(R.string.within_ten_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.within_ten_km);
+
+            if (context.getString(R.string.twenty_to_forty_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.twenty_to_forty_km);
+
+            if (context.getString(R.string.fifty_to_seventy_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.fifty_to_seventy_km);
+
+            if (context.getString(R.string.more_than_seventy_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.more_than_seventy_km);
         }
         return value;
     }
