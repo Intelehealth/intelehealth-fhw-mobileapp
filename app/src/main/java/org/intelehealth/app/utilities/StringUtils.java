@@ -5131,7 +5131,7 @@ public final class StringUtils {
                 case "जिवंत जन्मलेला":
                     val = "Born alive";
                     break;
-                case "अजून जन्म":
+                case "बाळ मृतावस्थेत जन्मले":
                     val = "Still birth";
                     break;
                 case "ऐच्छिक गर्भपात/ गर्भधारणेची वैद्यकीय समाप्ती (MTP)":
@@ -5159,7 +5159,7 @@ public final class StringUtils {
                     val = "जिवंत जन्मलेला";
                     break;
                 case "Still birth":
-                    val = "अजून जन्म";
+                    val = "बाळ मृतावस्थेत जन्मले";
                     break;
                 case "Induced abortion (mtp)":
                     val = "ऐच्छिक गर्भपात/ गर्भधारणेची वैद्यकीय समाप्ती (MTP)";
