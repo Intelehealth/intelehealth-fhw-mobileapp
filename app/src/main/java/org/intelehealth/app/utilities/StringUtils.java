@@ -3691,6 +3691,18 @@ public final class StringUtils {
 
             if (context.getString(R.string.other).equalsIgnoreCase(text))
                 return context.createConfigurationContext(configuration).getResources().getString(R.string.other);
+
+            if (context.getString(R.string.others).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.others);
+
+            if (context.getString(R.string.other_please_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other_please_specify);
+
+            if (context.getString(R.string.others_please_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other_please_specify);
+
+            if (context.getString(R.string.other_specify).equalsIgnoreCase(text))
+                return context.createConfigurationContext(configuration).getResources().getString(R.string.other_specify);
         }
         return text;
     }

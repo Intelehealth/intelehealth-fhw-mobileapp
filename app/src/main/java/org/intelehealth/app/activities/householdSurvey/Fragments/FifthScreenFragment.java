@@ -99,7 +99,9 @@ public class FifthScreenFragment extends Fragment {
             }
         });
 
-        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
+        binding.prevButton.setOnClickListener(view -> {
+            getActivity().onBackPressed();
+        });
         binding.otherCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.otherSourcesOfFuelLayout.setVisibility(View.VISIBLE);
@@ -177,10 +179,12 @@ public class FifthScreenFragment extends Fragment {
         }
 
         patientAttributesDTO.setValue(StringUtils
-                .getSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout,
+                .getSelectedCheckboxes(
+                        binding.householdCookingFuelCheckboxLinearLayout,
                         sessionManager.getAppLanguage(),
                         getContext(),
-                        otherCookingFuel));
+                        otherCookingFuel)
+        );
         patientAttributesDTOList.add(patientAttributesDTO);
 
 
