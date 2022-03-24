@@ -761,12 +761,15 @@
     <string name="not_valid_number">Not a valid number</string>
     <string name="select_call_output">Select Call Output</string>
     <string name="data_stored_successfully">Data Stored Successfully!</string>
-    <string name="helpline_info">How do you came to know about our helpline?</string>
+    <string name="helpline_info">How do you came to know about our helpline?*</string>
     <string name="incoming">Incoming</string>
     <string name="outgoing">Outgoing</string>
-    <string name="type_of_call">What type of call it is?</string>
+    <string name="type_of_call">What type of call it is?*</string>
     <string name="no_values">No Values Present</string>
     <string name="select_call_type">Please select type of call.</string>
     <string name="patient_has_active_visit">Patient already has an active record. Please end previous visits to continue.</string>
+    <string name="fill_all_details">Please fill all the details in the "Others" section first.</string>
+    <string name="missed_calls">Missed Calls</string>
+    <string name="saved">Saved!</string>
 
 </resources>

@@ -741,12 +741,17 @@
     <string name="text_new_visit">नए डॉक्टर का दौरा</string>
     <string name="text_new_advice">नई चिकित्सा सलाह</string>
     <string name="my_cases">मेरे मामले</string>
-    <string name="helpline_info">आपको हमारी हेल्पलाइन के बारे में कैसे पता चला?</string>
+    <string name="helpline_info">आपको हमारी हेल्पलाइन के बारे में कैसे पता चला?*</string>
     <string name="incoming">आवक</string>
     <string name="outgoing">निवर्तमान</string>
-    <string name="type_of_call">यह किस प्रकार की कॉल है?</string>
+    <string name="type_of_call">यह किस प्रकार की कॉल है?*</string>
     <string name="no_values">कोई मान मौजूद नहीं है</string>
     <string name="select_call_type">कृपया कॉल का प्रकार चुनें</string>
+    <string name="patient_has_active_visit">रोगी के पास पहले से ही एक सक्रिय रिकॉर्ड है। कृपया जारी रखने के लिए पिछली यात्राओं को समाप्त करें।</string>
+    <string name="fill_all_details">कृपया पहले "अन्य" अनुभाग में सभी विवरण भरें।</string>
+    <string name="missed_calls">मिस्ड कॉल</string>
+    <string name="saved">सहेजा गया!</string>
+
 
 
 </resources>
