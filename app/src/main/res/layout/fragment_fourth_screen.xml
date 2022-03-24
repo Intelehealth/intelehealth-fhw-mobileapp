@@ -532,6 +532,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bpl_yes_card_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -540,6 +541,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bpl_yes_card_not_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -548,6 +550,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bpl_no_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -556,6 +559,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bpl_do_not_know"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -586,6 +590,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/antodaya_yes_card_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -594,6 +599,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/antodaya_yes_card_not_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -602,6 +608,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/antodaya_no_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -610,6 +617,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/antodaya_do_not_know"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -640,6 +648,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rsby_yes_card_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -648,6 +657,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rsby_yes_card_not_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -656,6 +666,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rsby_no_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -664,6 +675,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rsby_do_not_know"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -694,6 +706,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/mgnrega_yes_card_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -702,6 +715,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/mgnrega_yes_card_not_seen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -710,6 +724,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/mgnrega_no_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -718,6 +733,7 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/mgnrega_do_not_know"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -753,6 +769,7 @@
                     android:background="@drawable/rounded_image_button_background"
                     app:srcCompat="@drawable/ic_arrow_right" />
             </androidx.appcompat.widget.LinearLayoutCompat>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

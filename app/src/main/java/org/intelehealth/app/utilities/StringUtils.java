@@ -6626,4 +6626,25 @@ public final class StringUtils {
         outputArray[1] = valueString;
         return outputArray;
     }
+
+    public static String getCardStatus(String value, String locale, Context context) {
+        Context updatedContext = null;
+        if (locale.equalsIgnoreCase("mr")) {
+            Configuration configuration = StringUtils.getEnglishConfiguration();
+            updatedContext = context.createConfigurationContext(configuration);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.yes_card_seen)))
+                return updatedContext.getString(R.string.yes_card_seen);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.yes_card_not_seen)))
+                return updatedContext.getString(R.string.yes_card_not_seen);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.no_card)))
+                return updatedContext.getString(R.string.no_card);
+
+            if (value.equalsIgnoreCase(context.getString(R.string.DO_NOT_KNOW)))
+                return updatedContext.getString(R.string.DO_NOT_KNOW);
+        }
+        return value;
+    }
 }

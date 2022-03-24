@@ -6,6 +6,7 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -46,6 +47,8 @@ import java.util.UUID;
 import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.app.utilities.StringUtils.getCultivableLand;
 import static org.intelehealth.app.utilities.StringUtils.getCultivableLandEdit;
+import static org.intelehealth.app.utilities.StringUtils.getEnglishConfiguration;
+import static org.intelehealth.app.utilities.StringUtils.getMarathiConfiguration;
 
 public class FourthScreenFragment extends Fragment {
 
@@ -97,7 +100,9 @@ public class FourthScreenFragment extends Fragment {
                 }
             }
         });
-        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
+        binding.prevButton.setOnClickListener(view -> {
+            getActivity().onBackPressed();
+        });
         binding.cultivableLandRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             binding.cultivableLandLayout.setVisibility(View.VISIBLE);
         });
@@ -231,7 +236,11 @@ public class FourthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdBPLCardStatus"));
-            patientAttributesDTO.setValue(((RadioButton) binding.bplCardCouponRadioGroup.findViewById(binding.bplCardCouponRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+                    ((RadioButton) binding.bplCardCouponRadioGroup.findViewById(binding.bplCardCouponRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
 
@@ -241,7 +250,11 @@ public class FourthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdAntodayaCardStatus"));
-            patientAttributesDTO.setValue(((RadioButton) binding.antodayaCardCouponRadioGroup.findViewById(binding.antodayaCardCouponRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+                    ((RadioButton) binding.antodayaCardCouponRadioGroup.findViewById(binding.antodayaCardCouponRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
 
@@ -251,7 +264,11 @@ public class FourthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdRSBYCardStatus"));
-            patientAttributesDTO.setValue(((RadioButton) binding.rsbyCardRadioGroup.findViewById(binding.rsbyCardRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+                    ((RadioButton) binding.rsbyCardRadioGroup.findViewById(binding.rsbyCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
 
@@ -261,7 +278,11 @@ public class FourthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdMGNREGACardStatus"));
-            patientAttributesDTO.setValue(((RadioButton) binding.mgnregaCardRadioGroup.findViewById(binding.mgnregaCardRadioGroup.getCheckedRadioButtonId())).getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+                    ((RadioButton) binding.mgnregaCardRadioGroup.findViewById(binding.mgnregaCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    sessionManager.getAppLanguage(),
+                    requireContext()
+            ));
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
 
@@ -294,6 +315,14 @@ public class FourthScreenFragment extends Fragment {
 
     private void setData(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Context updatedContext;
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            Configuration configuration = getEnglishConfiguration();
+            updatedContext = requireContext().createConfigurationContext(configuration);
+        } else {
+            updatedContext = requireContext();
+        }
 
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {patientUuid};
@@ -364,23 +393,67 @@ public class FourthScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdBPLCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.bplCardCouponRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_seen)))
+                            binding.bplYesCardSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_not_seen)))
+                            binding.bplYesCardNotSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.no_card)))
+                            binding.bplNoCard.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.DO_NOT_KNOW)))
+                            binding.bplDoNotKnow.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("householdAntodayaCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.antodayaCardCouponRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_seen)))
+                            binding.antodayaYesCardSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_not_seen)))
+                            binding.antodayaYesCardNotSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.no_card)))
+                            binding.antodayaNoCard.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.DO_NOT_KNOW)))
+                            binding.antodayaDoNotKnow.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("householdRSBYCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.rsbyCardRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_seen)))
+                            binding.rsbyYesCardSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_not_seen)))
+                            binding.rsbyYesCardNotSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.no_card)))
+                            binding.rsbyNoCard.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.DO_NOT_KNOW)))
+                            binding.rsbyDoNotKnow.setChecked(true);
+                    }
                 }
                 if (name.equalsIgnoreCase("householdMGNREGACardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
-                        defaultSelectRB(binding.mgnregaCardRadioGroup, value1);
+                    if (value1 != null) {
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_seen)))
+                            binding.mgnregaYesCardSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.yes_card_not_seen)))
+                            binding.mgnregaYesCardNotSeen.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.no_card)))
+                            binding.mgnregaNoCard.setChecked(true);
+
+                        if (value1.equalsIgnoreCase(updatedContext.getString(R.string.DO_NOT_KNOW)))
+                            binding.mgnregaDoNotKnow.setChecked(true);
+                    }
                 }
             } while (idCursor1.moveToNext());
         }
@@ -396,7 +469,6 @@ public class FourthScreenFragment extends Fragment {
                 rButton.setChecked(true);
                 return;
             }
-
         }
     }
 }
