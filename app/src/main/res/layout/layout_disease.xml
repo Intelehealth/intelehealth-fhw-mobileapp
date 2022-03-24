@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,21 +19,21 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-<!--            <TextView-->
-<!--                android:id="@+id/name_of_household_member_text_view"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="@string/name_of_household_member"-->
-<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/name_of_household_member_text_view"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/poppins_medium"-->
+            <!--                android:text="@string/name_of_household_member"-->
+            <!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/name_of_household_member_value_text_view"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="@string/sample_text"-->
-<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/name_of_household_member_value_text_view"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/poppins_medium"-->
+            <!--                android:text="@string/sample_text"-->
+            <!--                android:textSize="@dimen/card_content_sub_text_size" />-->
 
             <TextView
                 android:id="@+id/health_issue_text_view"
@@ -136,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15sp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/other_primary_health_care_provider_text_view"
@@ -175,7 +177,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15sp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/other_first_location_of_visit_text_view"
@@ -214,7 +217,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/other_referred_to_edit_text"
@@ -253,7 +257,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/other_mode_of_transportation_text_view"

@@ -274,6 +274,11 @@ public class MultipleDiseasesDialog extends DialogFragment {
     private HealthIssues fetchSurveyData() {
         HealthIssues survey = new HealthIssues();
 
+        Context updatedContext = requireContext();
+        if (appLanguage.equalsIgnoreCase("mr")) {
+            updatedContext = updatedContext.createConfigurationContext(StringUtils.getEnglishConfiguration());
+        }
+
 //        String householdMemberName = binding.nameOfHouseholdMemberValueTextView.getText().toString();
 
         String healthIssueReported = StringUtils.getHealthIssueReported(Objects.requireNonNull(binding.healthIssueValueTextView.getText()).toString(), appLanguage, getContext());
@@ -287,16 +292,20 @@ public class MultipleDiseasesDialog extends DialogFragment {
         String averageCostOfMedicine = Objects.requireNonNull(binding.averageCostIncurredOnMedicinesTextView.getText()).toString();
         String scoreForExperienceOfTreatment = StringUtils.getScoreOfExperience((Objects.requireNonNull(binding.scoreOfExperienceEditText.getText()).toString()), appLanguage, getContext());
 
-        if (healthIssueReported.equals(getString(R.string.other)))
-            healthIssueReported = StringUtils.getOtherString(getString(R.string.other), Objects.requireNonNull(binding.otherHealthIssueTextView.getText()).toString());
-        if (primaryHealthcareProviderValue.equals(getString(R.string.other_specify)))
-            primaryHealthcareProviderValue = Objects.requireNonNull(binding.otherPrimaryHealthCareProviderTextView.getText()).toString();
-        if (firstLocationOfVisit.equals(getString(R.string.other_specify)))
-            firstLocationOfVisit = Objects.requireNonNull(binding.otherFirstLocationOfVisitTextView.getText()).toString();
-        if (referredTo.equals(getString(R.string.other_specify)))
-            referredTo = Objects.requireNonNull(binding.otherReferredToEditText.getText()).toString();
-        if (modeOfTransportation.equals(getString(R.string.other_specify)))
-            modeOfTransportation = Objects.requireNonNull(binding.otherModeOfTransportationTextView.getText()).toString();
+        if (healthIssueReported.equals(updatedContext.getString(R.string.other)))
+            healthIssueReported = StringUtils.getOtherString(updatedContext.getString(R.string.other), Objects.requireNonNull(binding.otherHealthIssueTextView.getText()).toString());
+
+        if (primaryHealthcareProviderValue.equals(updatedContext.getString(R.string.other_specify)))
+            primaryHealthcareProviderValue = StringUtils.getOtherString(updatedContext.getString(R.string.other_specify), Objects.requireNonNull(binding.otherPrimaryHealthCareProviderTextView.getText()).toString());
+
+        if (firstLocationOfVisit.equals(updatedContext.getString(R.string.other_specify)))
+            firstLocationOfVisit = StringUtils.getOtherString(updatedContext.getString(R.string.other_specify), Objects.requireNonNull(binding.otherFirstLocationOfVisitTextView.getText()).toString());
+
+        if (referredTo.equals(updatedContext.getString(R.string.other_specify)))
+            referredTo = StringUtils.getOtherString(updatedContext.getString(R.string.other_specify), Objects.requireNonNull(binding.otherReferredToEditText.getText()).toString());
+
+        if (modeOfTransportation.equals(updatedContext.getString(R.string.other_specify)))
+            modeOfTransportation = StringUtils.getOtherString(updatedContext.getString(R.string.other_specify), Objects.requireNonNull(binding.otherModeOfTransportationTextView.getText()).toString());
 
 //        survey.setHouseholdMemberName(householdMemberName);
         survey.setHealthIssueReported(healthIssueReported);
@@ -344,10 +353,48 @@ public class MultipleDiseasesDialog extends DialogFragment {
         }
 
         binding.numberOfEpisodesValueTextView.setText(bundle.getString("numberOfEpisodesInTheLastYear"));
-        binding.primaryHealthCareProviderValueEditText.setText(StringUtils.getPrimaryHealthcareProviderEdit(bundle.getString("primaryHealthcareProviderValue"), appLanguage, getContext()));
-        binding.firstLocationOfVisitValueEditText.setText(StringUtils.getFirstLocationOfVisitEdit(bundle.getString("firstLocationOfVisit"), appLanguage, getContext()));
-        binding.referredToEditText.setText(StringUtils.getReferredToEdit(bundle.getString("referredTo"), appLanguage, getContext()));
-        binding.modeOfTransportationEditText.setText(StringUtils.getModeOfTransportationEdit(bundle.getString("modeOfTransportation"), appLanguage, getContext()));
+
+        if (bundle.getString("primaryHealthcareProviderValue").contains(updatedContext.getString(R.string.other_specify))) {
+            String[] otherArray = StringUtils.getOtherStringEdit(bundle.getString("primaryHealthcareProviderValue"));
+            String other = otherArray[0];
+            String otherValue = otherArray[1];
+            binding.primaryHealthCareProviderValueEditText.setText(StringUtils.getPrimaryHealthcareProviderEdit(other, appLanguage, getContext()));
+            binding.otherPrimaryHealthCareProviderTextView.setText(otherValue);
+            binding.otherPrimaryHealthCareProviderLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.primaryHealthCareProviderValueEditText.setText(StringUtils.getPrimaryHealthcareProviderEdit(bundle.getString("primaryHealthcareProviderValue"), appLanguage, getContext()));
+        }
+
+        if (bundle.getString("firstLocationOfVisit").contains(updatedContext.getString(R.string.other_specify))) {
+            String[] otherArray = StringUtils.getOtherStringEdit(bundle.getString("firstLocationOfVisit"));
+            String other = otherArray[0];
+            String otherValue = otherArray[1];
+            binding.firstLocationOfVisitValueEditText.setText(StringUtils.getFirstLocationOfVisitEdit(other, appLanguage, getContext()));
+            binding.otherFirstLocationOfVisitTextView.setText(otherValue);
+            binding.otherFirstLocationOfVisitLayout.setVisibility(View.VISIBLE);
+        } else
+            binding.firstLocationOfVisitValueEditText.setText(StringUtils.getFirstLocationOfVisitEdit(bundle.getString("firstLocationOfVisit"), appLanguage, getContext()));
+
+        if (bundle.getString("referredTo").contains(updatedContext.getString(R.string.other_specify))) {
+            String[] otherArray = StringUtils.getOtherStringEdit(bundle.getString("referredTo"));
+            String other = otherArray[0];
+            String otherValue = otherArray[1];
+            binding.referredToEditText.setText(StringUtils.getReferredToEdit(other, appLanguage, getContext()));
+            binding.otherReferredToEditText.setText(otherValue);
+            binding.otherReferredToLayout.setVisibility(View.VISIBLE);
+        } else
+            binding.referredToEditText.setText(StringUtils.getReferredToEdit(bundle.getString("referredTo"), appLanguage, getContext()));
+
+        if (bundle.getString("modeOfTransportation").contains(updatedContext.getString(R.string.other_specify))) {
+            String[] otherArray = StringUtils.getOtherStringEdit(bundle.getString("modeOfTransportation"));
+            String other = otherArray[0];
+            String otherValue = otherArray[1];
+            binding.modeOfTransportationEditText.setText(StringUtils.getModeOfTransportationEdit(other, appLanguage, getContext()));
+            binding.otherModeOfTransportationTextView.setText(otherValue);
+            binding.otherModeOfTransportationLayout.setVisibility(View.VISIBLE);
+        } else
+            binding.modeOfTransportationEditText.setText(StringUtils.getModeOfTransportationEdit(bundle.getString("modeOfTransportation"), appLanguage, getContext()));
+
         binding.averageCostIncurredOnTravelAndStayTextView.setText(bundle.getString("averageCostOfTravelAndStayPerEpisode"));
         binding.averageCostIncurredOnConsultationFeesTextView.setText(bundle.getString("averageCostOfConsultation"));
         binding.averageCostIncurredOnMedicinesTextView.setText(bundle.getString("averageCostOfMedicine"));

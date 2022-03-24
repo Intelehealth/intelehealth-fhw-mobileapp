@@ -105,10 +105,32 @@ public class HouseholdSurveyAdapter extends RecyclerView.Adapter<HouseholdSurvey
             }
 
             binding.numberOfIssuesEpisodesInTheLastYearValueTextView.setText(issues.getNumberOfEpisodesInTheLastYear());
-            binding.primaryHealthCareProviderValueTextView.setText(StringUtils.getPrimaryHealthcareProviderEdit(issues.getPrimaryHealthcareProviderValue(), locale, context));
-            binding.firstLocationOfVisitValueTextView.setText(StringUtils.getFirstLocationOfVisitEdit(issues.getFirstLocationOfVisit(), locale, context));
-            binding.referredToValueTextView.setText(StringUtils.getReferredToEdit(issues.getReferredTo(), locale, context));
-            binding.modeOfTransportationValueTextView.setText(StringUtils.getModeOfTransportationEdit(issues.getModeOfTransportation(), locale, context));
+
+            if (issues.getPrimaryHealthcareProviderValue().contains(updatedContext.getString(R.string.other_specify))) {
+                String value = StringUtils.getOtherStringEdit(issues.getPrimaryHealthcareProviderValue())[1];
+                binding.primaryHealthCareProviderValueTextView.setText(value);
+            } else {
+                binding.primaryHealthCareProviderValueTextView.setText(StringUtils.getPrimaryHealthcareProviderEdit(issues.getPrimaryHealthcareProviderValue(), locale, context));
+            }
+
+            if (issues.getFirstLocationOfVisit().contains(updatedContext.getString(R.string.other_specify))) {
+                String value = StringUtils.getOtherStringEdit(issues.getFirstLocationOfVisit())[1];
+                binding.firstLocationOfVisitValueTextView.setText(value);
+            } else
+                binding.firstLocationOfVisitValueTextView.setText(StringUtils.getFirstLocationOfVisitEdit(issues.getFirstLocationOfVisit(), locale, context));
+
+            if (issues.getReferredTo().contains(updatedContext.getString(R.string.other_specify))) {
+                String value = StringUtils.getOtherStringEdit(issues.getReferredTo())[1];
+                binding.referredToValueTextView.setText(value);
+            } else
+                binding.referredToValueTextView.setText(StringUtils.getReferredToEdit(issues.getReferredTo(), locale, context));
+
+            if (issues.getModeOfTransportation().contains(updatedContext.getString(R.string.other_specify))) {
+                String value = StringUtils.getOtherStringEdit(issues.getModeOfTransportation())[1];
+                binding.modeOfTransportationValueTextView.setText(value);
+            } else
+                binding.modeOfTransportationValueTextView.setText(StringUtils.getModeOfTransportationEdit(issues.getModeOfTransportation(), locale, context));
+
             binding.averageCostIncurredOnTravelAndStayValueTextView.setText(issues.getAverageCostOfTravelAndStayPerEpisode());
             binding.averageCostIncurredOnConsultationFeesValueTextView.setText(issues.getAverageCostOfConsultation());
             binding.averageCostIncurredOnMedicinesValueTextView.setText(issues.getAverageCostOfMedicine());
