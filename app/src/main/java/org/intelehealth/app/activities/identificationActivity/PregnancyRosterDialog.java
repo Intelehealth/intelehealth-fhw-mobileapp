@@ -66,6 +66,7 @@ public class PregnancyRosterDialog extends DialogFragment {
         this.noOfClicks = noOfClicks;
         this.howmanytimespregnant = howmanytimespregnant;
         this.pregnancyoutcomeInTwoYrs = pregnancyoutcomeInTwoYrs;
+        Logger.logD("Outcome", pregnancyoutcomeInTwoYrs);
         this.noOftimesPregnantTwoYrs = noOftimesPregnantTwoYrs;
     }
 

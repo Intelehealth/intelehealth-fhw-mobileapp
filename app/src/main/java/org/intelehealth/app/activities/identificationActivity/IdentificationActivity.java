@@ -18,8 +18,6 @@ import static org.intelehealth.app.utilities.StringUtils.getFocalFacility_Villag
 import static org.intelehealth.app.utilities.StringUtils.getHB_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getPasttwoyrs_edit;
-import static org.intelehealth.app.utilities.StringUtils.getPethBlock;
-import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlockVillage_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPethBlock_edit;
 import static org.intelehealth.app.utilities.StringUtils.getPhoneOwnerShip_edit;
@@ -116,7 +114,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -1085,11 +1082,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
                     !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equals("") &&
                     sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+
                 PregnancyRosterDialog dialog = new PregnancyRosterDialog(
                         sessionManager.getNoOfclicks(),
                         edittext_howmanytimmespregnant.getText().toString(),
-                        spinner_pregnantpasttwoyrs.getSelectedItem().toString(),
+                        StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()),
                         binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()); //TODO: support transaltions...
+
                 dialog.show(getSupportFragmentManager(), PregnancyRosterDialog.TAG);
             } else {
                 if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
