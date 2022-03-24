@@ -6,22 +6,22 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistance;
+import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistanceEdit;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -31,11 +31,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
-import org.intelehealth.app.databinding.FragmentSecondScreenBinding;
 import org.intelehealth.app.databinding.FragmentThirdScreenBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
-import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -47,10 +44,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
-import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistance;
-import static org.intelehealth.app.utilities.StringUtils.getWaterSourceDistanceEdit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,7 +114,9 @@ public class ThirdScreenFragment extends Fragment {
                 }
             }
         });
-        binding.prevButton.setOnClickListener(view -> {getActivity().onBackPressed();});
+        binding.prevButton.setOnClickListener(view -> {
+            getActivity().onBackPressed();
+        });
         binding.otherCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.otherSourcesOfWaterLayout.setVisibility(View.VISIBLE);
@@ -220,7 +215,11 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdElectricityStatus"));
-            patientAttributesDTO.setValue(binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId() ? binding.electricityYesCheckbox.getText().toString() : binding.electricityNoCheckbox.getText().toString());
+            patientAttributesDTO.setValue(binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId() ?
+                    StringUtils.getPreTerm(binding.electricityYesCheckbox.getText().toString(), sessionManager.getAppLanguage()) :
+                    StringUtils.getPreTerm(binding.electricityNoCheckbox.getText().toString(), sessionManager.getAppLanguage())
+
+            );
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
 
@@ -247,7 +246,11 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterStatus"));
-            patientAttributesDTO.setValue(binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId() ? binding.runningWaterYesCheckbox.getText().toString() : binding.runningWaterNoCheckbox.getText().toString());
+            patientAttributesDTO.setValue(
+                    binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId() ?
+                            StringUtils.getPreTerm(binding.runningWaterYesCheckbox.getText().toString(), sessionManager.getAppLanguage()) :
+                            StringUtils.getPreTerm(binding.runningWaterNoCheckbox.getText().toString(), sessionManager.getAppLanguage())
+            );
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -310,7 +313,10 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdBankAccountStatus"));
-            patientAttributesDTO.setValue(binding.bankAccountRadioGroup.getCheckedRadioButtonId() == binding.bankAccountYes.getId() ? binding.bankAccountYes.getText().toString() : binding.bankAccountNo.getText().toString());
+            patientAttributesDTO.setValue(binding.bankAccountRadioGroup.getCheckedRadioButtonId() == binding.bankAccountYes.getId() ?
+                    StringUtils.getPreTerm(binding.bankAccountYes.getText().toString(), sessionManager.getAppLanguage()) :
+                    StringUtils.getPreTerm(binding.bankAccountNo.getText().toString(), sessionManager.getAppLanguage())
+            );
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
@@ -368,10 +374,9 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdElectricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(updatedContext.getString(R.string.yes)))
                         binding.electricityYesCheckbox.setChecked(true);
-
-                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(updatedContext.getString(R.string.no)))
                         binding.electricityNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay")) {
@@ -386,9 +391,9 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("runningWaterStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(updatedContext.getString(R.string.yes)))
                         binding.runningWaterYesCheckbox.setChecked(true);
-                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(updatedContext.getString(R.string.no)))
                         binding.runningWaterNoCheckbox.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("primarySourceOfRunningWater")) {
@@ -484,9 +489,9 @@ public class ThirdScreenFragment extends Fragment {
 
                 if (name.equalsIgnoreCase("householdBankAccountStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.yes)))
+                    if (value1 != null && value1.equalsIgnoreCase(updatedContext.getString(R.string.yes)))
                         binding.bankAccountYes.setChecked(true);
-                    else if (value1 != null && value1.equalsIgnoreCase(getResources().getString(R.string.no)))
+                    else if (value1 != null && value1.equalsIgnoreCase(updatedContext.getString(R.string.no)))
                         binding.bankAccountNo.setChecked(true);
                 }
             } while (idCursor1.moveToNext());

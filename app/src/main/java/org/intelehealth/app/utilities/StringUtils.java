@@ -5202,7 +5202,6 @@ public final class StringUtils {
                 default:
                     return val;
             }
-
         }
 
         return val;
