@@ -6,6 +6,7 @@
         android:id="@+id/hw_profile_image_edit"
         android:icon="@drawable/ic_hw_profile_image_edit"
         android:title="Profile"
+        android:visible="false"
         app:showAsAction="always" />
 
 </menu>
