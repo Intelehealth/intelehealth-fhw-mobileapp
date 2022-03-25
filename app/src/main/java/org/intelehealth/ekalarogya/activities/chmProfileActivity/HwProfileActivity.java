@@ -462,8 +462,10 @@ public class HwProfileActivity extends AppCompatActivity {
                         if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
                             obj.put("emailId",hw_email_value.getText().toString().trim());
                         }
+
                     }
                     if(obj!=null) {
+                        Log.d("Nishita Data", obj.toString());
                         updateOnSever(obj);
                     }
                 }
@@ -475,15 +477,17 @@ public class HwProfileActivity extends AppCompatActivity {
 
     public void updateOnSever(JSONObject obj){
         //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
-        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID() ;
+        String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
         String encoded = sessionManager.getEncoded();
-        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
+        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Bearer " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<ResponseBody>() {
                     @Override
                     public void onSuccess(ResponseBody responseBody) {
-                        Logger.logD(TAG, "success" + responseBody);
+                        Logger.logD(TAG, "success" + responseBody.toString());
+                        save_hw_detail.setText("Saved!");
+                        save_hw_detail.setEnabled(false);
                     }
 
                     @Override

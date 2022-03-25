@@ -32,7 +32,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -125,7 +124,7 @@ public interface ApiInterface {
                                                                   @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
 
     @Headers({"Accept: application/json"})
-    @PUT
+    @POST
     Single<ResponseBody> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
                                                         @Header("Authorization") String authHeader,
                                                         @Body JSONObject obj);
