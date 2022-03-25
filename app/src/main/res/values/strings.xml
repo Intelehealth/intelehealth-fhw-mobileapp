@@ -771,5 +771,6 @@
     <string name="fill_all_details">Please fill all the details in the "Others" section first.</string>
     <string name="missed_calls">Missed Calls</string>
     <string name="saved">Saved!</string>
+    <string name="no_calls">No outgoing missed calls present.</string>
 
 </resources>

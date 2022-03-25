@@ -108,4 +108,11 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl() + "/";
         return BASE_URL + urlModifier;
     }
+
+    public String getMissedCallsUrl() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String urlModifier = "noanswer";
+        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/";
+        return BASE_URL + urlModifier;
+    }
 }
