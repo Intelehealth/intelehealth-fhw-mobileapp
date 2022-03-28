@@ -533,14 +533,16 @@ public class SearchPatientActivity extends AppCompatActivity {
     private String getComment(String patientUid) {
         String comment = null;
         boolean isVisitActive = false;
-        final Cursor visitCursor = db.rawQuery("select v.enddate from tbl_visit as v where patientuuid = ?", new String[] { patientUid });
+            final Cursor visitCursor = db.rawQuery("select v.enddate from tbl_visit as v where patientuuid = ? order by v.startdate", new String[] { patientUid });
         if (visitCursor.moveToFirst()) {
             try {
                 do {
                     String endDate = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     if (TextUtils.isEmpty(endDate)) {
                         isVisitActive = true;
-                        break;
+//                        break;
+                    } else {
+                        isVisitActive = false;
                     }
                 } while (visitCursor.moveToNext());
                 visitCursor.close();

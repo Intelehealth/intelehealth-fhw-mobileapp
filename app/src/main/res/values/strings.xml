@@ -724,4 +724,5 @@
 
     <string name="due_on">Due Date:</string>
     <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>
