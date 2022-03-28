@@ -321,6 +321,8 @@ TextView txtViewFacility;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText editText_landmark;
     MultiSelectionSpinner mFacilitySelection;
+//    public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
+    public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -597,11 +599,11 @@ TextView txtViewFacility;
         autocompleteDistrict.setEnabled(false);
         districtList = new ArrayList<>();
         mFacilityList = new ArrayList<>();
-        mFacilityList.add(new Item(getString(R.string.select),false));
+//        mFacilityList.add(new Item(getString(R.string.select),false));
 
         mFacilitySelection.setVisibility(View.GONE);
         txtViewFacility.setVisibility(View.VISIBLE);
-
+        txtViewFacility.setHint(R.string.textViewHintFacility);
         complaintList_adapter = new ArrayList<>();
         physexamList_adapter = new ArrayList<>();
 
@@ -613,7 +615,8 @@ TextView txtViewFacility;
 
                     // redirect to web browser for prescription
                 Intent intent1 = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://training.vikalpindia.org/intelehealth/index.html#/"));
+                        Uri.parse(prescriptionUrl + patientUuid));
+                Log.v("main", "prescurl: " +prescriptionUrl + patientUuid);
                 startActivity(intent1);
 
 /*                } catch (ParseException e) {
@@ -963,6 +966,8 @@ TextView txtViewFacility;
         if (autocompleteState.getText().toString().equals("")) {
             autocompleteDistrict.setText("");
             autocompleteDistrict.setEnabled(false);
+            txtViewFacility.setVisibility(View.VISIBLE);
+            mFacilitySelection.setVisibility(View.GONE);
         }
 
         autocompleteState.addTextChangedListener(new TextWatcher() {
@@ -970,12 +975,17 @@ TextView txtViewFacility;
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 autocompleteDistrict.setEnabled(false);
                 autocompleteDistrict.setText("");
+
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 autocompleteDistrict.setEnabled(false);
                 autocompleteDistrict.setText("");
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
             }
 
             @Override
@@ -983,7 +993,7 @@ TextView txtViewFacility;
 
             }
         });
-        JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+        JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
 
 
         mFacilitySelection.setItems(mFacilityList);
@@ -993,12 +1003,11 @@ TextView txtViewFacility;
 
                 String selectedState = parent.getItemAtPosition(position).toString();
                 mState=parent.getItemAtPosition(position).toString();
-                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
+                if (selectedState.equalsIgnoreCase("") && autocompleteState.getText().equals("") && selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
-                    mFacilitySelection.setEnabled(false);
-                    mFacilitySelection.setClickable(false);
                     mFacilityList.clear();
+                    txtViewFacility.setText("");
                     txtViewFacility.setVisibility(View.VISIBLE);
                     mFacilitySelection.setVisibility(View.GONE);
                 } else
@@ -1039,7 +1048,7 @@ TextView txtViewFacility;
 
                 String selectedDistrict = parent.getItemAtPosition(position).toString();
                mDistrict= parent.getItemAtPosition(position).toString();
-                if (selectedDistrict.equalsIgnoreCase("") || autocompleteState.getText().equals("")) {
+                if (selectedDistrict.equalsIgnoreCase("") && autocompleteState.getText().equals("") && mDistrict.isEmpty()) {
 
                     mFacilityList.clear();
 //                    editText_landmark.setEnabled(false);
@@ -1047,6 +1056,7 @@ TextView txtViewFacility;
                     mFacilitySelection.setEnabled(false);
                     mFacilitySelection.setVisibility(View.GONE);
                     txtViewFacility.setVisibility(View.VISIBLE);
+                    txtViewFacility.setText("");
 
                 } else
                     txtViewFacility.setVisibility(View.GONE);
@@ -1069,7 +1079,7 @@ TextView txtViewFacility;
                                 if (district.equalsIgnoreCase(selectedDistrict)) {
                                     Log.d("jgkfdjg", "selectedDistrict" + mFacilityArray);
 
-                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("tahasil");
+                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("facility");
 
                                     for (int k = 0; k < mFacilityArray.length(); k++) {
 
@@ -1311,7 +1321,7 @@ TextView txtViewFacility;
             @Override
             public void onClick(View view) {
 
-                isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+//                isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
              //   if (speciality_spinner.getSelectedItemPosition() != 0) {
                 uploadFacility();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -2167,9 +2177,10 @@ TextView txtViewFacility;
     }
 
     private void shareEmail() {
-        String to = "prajwalwaingankar@gmail.com";
-        String subject= "Share Presc";
-        String body="https://training.vikalpindia.org/intelehealth/index.html#/";
+        String to = "prajwal@intelehealth.org";
+        String subject = "Prescription";
+        String body = prescriptionUrl + patientUuid; //www.training.vikalpindia.org/#/prescription/patientId
+        Log.v("main", "prescurl: " +body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
@@ -2179,7 +2190,8 @@ TextView txtViewFacility;
     }
 
     private void shareWhatsapp(String phoneNumberWithCountryCode) {
-        String message = "https://training.vikalpindia.org/intelehealth/index.html#/";
+        String message = prescriptionUrl + patientUuid;
+        Log.v("main", "prescurl: " +message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
