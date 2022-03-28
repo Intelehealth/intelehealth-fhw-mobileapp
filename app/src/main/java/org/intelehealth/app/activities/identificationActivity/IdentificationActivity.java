@@ -2643,16 +2643,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     cancel = true;
                     return;
                 }
-            }
 
-            if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
-                    !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
-                    Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
-                    binding.poViewPager.getAdapter().getItemCount() == 0) {
-                Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
-                focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
-                cancel = true;
-                return;
+                if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                        !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
+                        Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
+                        binding.poViewPager.getAdapter().getItemCount() == 0) {
+                    Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
+                    focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                    cancel = true;
+                    return;
+                }
             }
         }
 
@@ -3916,7 +3916,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 return;
             }
 
-            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+            if (binding.spinnerPregnantpasttwoyrs.getSelectedItemPosition() == 1) {
+                Logger.logD("Spinner", binding.spinnerPregnantpasttwoyrs.getSelectedItem().toString());
                 if (binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
                         binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty()) {
                     binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
@@ -3925,25 +3926,27 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     return;
                 }
 
-                if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
-                        !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
-                        Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
-                        binding.poViewPager.getAdapter().getItemCount() == 0) {
-                    Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
+                if (binding.poViewPager.getAdapter() != null) {
+                    if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
+                            !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
+                            Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
+                            binding.poViewPager.getAdapter().getItemCount() == 0) {
+                        Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
+                        focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                        cancel = true;
+                        return;
+                    }
+                }
+
+                Log.v(TAG, "adapter count: " + pregnancyOutcomeAdapter.getItemCount());
+                if (pregnancyOutcomeAdapter.getItemCount() != Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
                     focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
                     cancel = true;
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.setFocusable(true);
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.requestFocus();
                     return;
                 }
-            }
-
-            Log.v(TAG, "adapter count: " + pregnancyOutcomeAdapter.getItemCount());
-            if (pregnancyOutcomeAdapter.getItemCount() != Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
-                binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
-                focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
-                cancel = true;
-                binding.edittextNoOfPregnancyOutcomePastTwoYrs.setFocusable(true);
-                binding.edittextNoOfPregnancyOutcomePastTwoYrs.requestFocus();
-                return;
             }
         }
 

@@ -862,7 +862,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
 
-        phoneView.setText(patient_new.getPhone_number());
+        if (patient_new.getPhone_number() != null)
+            phoneView.setText(patient_new.getPhone_number());
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
@@ -1122,12 +1123,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 //
 
-        if (patient_new.getOccupation().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            education_statusView.setText("नहीं दिया गया");
-        } else {
-            String occupation = getOccupationsIdentification_Edit(patient_new.getOccupation(), sessionManager.getAppLanguage());
-            occuView.setText(occupation);
+        if (patient_new.getOccupation() != null) {
+            if (patient_new.getOccupation().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                education_statusView.setText("नहीं दिया गया");
+            } else {
+                String occupation = getOccupationsIdentification_Edit(patient_new.getOccupation(), sessionManager.getAppLanguage());
+                occuView.setText(occupation);
+            }
         }
 //        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
 //            occuView.setText(patient_new.getOccupation());
@@ -1150,9 +1153,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     visitUuidList.add(visitUuid);
                 } while (visitIDCursor.moveToNext());
             }
+
             if (visitIDCursor != null) {
                 visitIDCursor.close();
             }
+
             for (String visituuid : visitUuidList) {
                 Logger.logD(TAG, visituuid);
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -1172,6 +1177,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 encounterCursor.close();
             }
+
             familyHistory(famHistView, patientUuid, encounterAdultIntials);
             pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
             pastVisits(patientUuid);
