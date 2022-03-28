@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/searchlinear"
     android:layout_width="match_parent"
@@ -17,13 +18,25 @@
         app:cardCornerRadius="10dp"
         app:cardPreventCornerOverlap="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1.5pt"
             android:orientation="vertical"
             android:padding="10dp">
 
+            <TextView
+                android:id="@+id/indicator"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/blue_radius"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/list_item_head"
@@ -31,6 +44,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
+                tools:text="Test Patient, 10TPF-8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -38,13 +54,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                tools:text="Age: 6 years 20 days"
+                app:layout_constraintTop_toBottomOf="@id/list_item_head"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:fontFamily="@font/lato_regular" />
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1.5pt"></View>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>
