@@ -82,11 +82,15 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
+      //  private TextView indicator;
+
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
+           // indicator = itemView.findViewById(R.id.indicator);
+
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }
