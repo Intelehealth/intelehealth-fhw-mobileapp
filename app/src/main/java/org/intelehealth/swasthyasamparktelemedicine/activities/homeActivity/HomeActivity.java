@@ -41,6 +41,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.swasthyasamparktelemedicine.activities.missedCallActivity.MissedCallActivity;
 import org.intelehealth.swasthyasamparktelemedicine.appointment.AppointmentListingActivity;
 import org.intelehealth.swasthyasamparktelemedicine.activities.myCases.MyCasesActivity;
 import org.json.JSONException;
@@ -104,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6, c7, c8, cvMedicalAdvice;
+    CardView c1, c2, c3, c4, c5, c6, c7, c8, cvMedicalAdvice, cvMissedCall;
     private String key = null;
     private String licenseUrl = null;
 
@@ -117,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, myCases_textView;
+            activeVisits_textview, videoLibrary_textview, help_textview, myCases_textView, missedCallRecordingTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +170,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         c8 = findViewById(R.id.cardview_my_cases);
         cvMedicalAdvice = findViewById(R.id.cardView_medical_advice);
+        cvMissedCall = findViewById(R.id.cardview_missedCallRecordings);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -176,6 +178,9 @@ public class HomeActivity extends AppCompatActivity {
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
+
+        missedCallRecordingTV = findViewById(R.id.textView_missedCall_recording);
+        missedCallRecordingTV.setText(R.string.missed_calls);
 
         //new my cases card added: By Nishita
         myCases_textView = findViewById(R.id.myCases_textview);
@@ -251,6 +256,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 IdentificationActivity.start(HomeActivity.this, true);
+            }
+        });
+
+        cvMissedCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MissedCallActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -726,4 +726,33 @@
     <string name="yes">हां</string>
     <string name="no">नहीं</string>
 
+    //Call Patient Strings
+    <string name="denied_covid">COVID होने से इनकार किया</string>
+    <string name="died">रोगी मर गया</string>
+    <string name="not_reachable">मरीज का नंबर नहीं मिल रहा था।</string>
+    <string name="not_picked_up">मरीज ने नहीं उठाया</string>
+    <string name="able_to_connect">क्या आप रोगी से जुड़ने में सक्षम थे?</string>
+    <string name="need_not_registered">पंजीकृत होने की आवश्यकता नहीं है</string>
+    <string name="patient_reg_specialist">रोगी पंजीकृत - विशेषज्ञ</string>
+    <string name="patient_reg_caller">रोगी पंजीकृत- टेली कॉलर</string>
+    <string name="not_valid_number">मान्य फ़ोन नंबर नहीं है</string>
+    <string name="select_call_output">कॉल आउटपुट चुनें</string>
+    <string name="data_stored_successfully">डेटा सफलतापूर्वक संग्रहीत!</string>
+    <string name="text_new_visit">नए डॉक्टर का दौरा</string>
+    <string name="text_new_advice">नई चिकित्सा सलाह</string>
+    <string name="my_cases">मेरे मामले</string>
+    <string name="helpline_info">आपको हमारी हेल्पलाइन के बारे में कैसे पता चला?*</string>
+    <string name="incoming">आवक</string>
+    <string name="outgoing">निवर्तमान</string>
+    <string name="type_of_call">यह किस प्रकार की कॉल है?*</string>
+    <string name="no_values">कोई मान मौजूद नहीं है</string>
+    <string name="select_call_type">कृपया कॉल का प्रकार चुनें</string>
+    <string name="patient_has_active_visit">रोगी के पास पहले से ही एक सक्रिय रिकॉर्ड है। कृपया जारी रखने के लिए पिछली यात्राओं को समाप्त करें।</string>
+    <string name="fill_all_details">कृपया पहले "अन्य" अनुभाग में सभी विवरण भरें।</string>
+    <string name="missed_calls">मिस्ड कॉल</string>
+    <string name="saved">सहेजा गया!</string>
+    <string name="no_calls">कोई आउटगोइंग मिस्ड कॉल मौजूद नहीं है।</string>
+
+
+
 </resources>

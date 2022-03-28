@@ -703,10 +703,6 @@
     <string name="dealing_problems">Dealing problems of attention, memory and clarity</string>
     <string name="managing_mental_health">Managing Mental Health</string>
     <string name="exercises">Exercises</string>
-    <string name="denied_covid">Denied having COVID</string>
-    <string name="died">Patient Died</string>
-    <string name="not_reachable">Patient\'s number was not reachable.</string>
-    <string name="not_picked_up">Patient did not picked up.</string>
     <string name="error_medical_visit_data">Please select or enter medical advice</string>
     <string name="txt_additional_info">Additional information</string>
     <string name="text_patient_and_advice_created">Patient &amp; Medical Advice is Registered Successfully</string>
@@ -752,5 +748,29 @@
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    //Call Patient Strings
+    <string name="denied_covid">Denied having covid</string>
+    <string name="died">Died</string>
+    <string name="not_reachable">Not reachable</string>
+    <string name="not_picked_up">Patient Did Not Pick Up</string>
+    <string name="able_to_connect">Were you able to connect with patient?</string>
+    <string name="need_not_registered">Need not be registered</string>
+    <string name="patient_reg_specialist">Patient Registered - Specialist</string>
+    <string name="patient_reg_caller">Patient Registered- Tele Caller</string>
+    <string name="not_valid_number">Not a valid number</string>
+    <string name="select_call_output">Select Call Output</string>
+    <string name="data_stored_successfully">Data Stored Successfully!</string>
+    <string name="helpline_info">How do you came to know about our helpline?*</string>
+    <string name="incoming">Incoming</string>
+    <string name="outgoing">Outgoing</string>
+    <string name="type_of_call">What type of call it is?*</string>
+    <string name="no_values">No Values Present</string>
+    <string name="select_call_type">Please select type of call.</string>
+    <string name="patient_has_active_visit">Patient already has an active record. Please end previous visits to continue.</string>
+    <string name="fill_all_details">Please fill all the details in the "Others" section first.</string>
+    <string name="missed_calls">Missed Calls</string>
+    <string name="saved">Saved!</string>
+    <string name="no_calls">No outgoing missed calls present.</string>
 
 </resources>

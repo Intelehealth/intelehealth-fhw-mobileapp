@@ -186,6 +186,37 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_hi_en_call_reason(String val) {
+        switch (val) {
+            case "रोगी पंजीकृत - विशेषज्ञ":
+                val = "Patient Registered - Specialist";
+                break;
+            case "रोगी पंजीकृत- टेली कॉलर":
+                val = "Patient Registered- Tele Caller";
+                break;
+            case "पंजीकृत होने की आवश्यकता नहीं है":
+                val = "Need not be registered";
+                break;
+            case "मान्य फ़ोन नंबर नहीं है":
+                val = "Not a valid number";
+                break;
+            case "COVID होने से इनकार किया":
+                val = "Denied having covid";
+                break;
+            case "रोगी मर गया":
+                val = "Died";
+                break;
+            case "मरीज का नंबर नहीं मिल रहा था":
+                val = "Not reachable";
+                break;
+            case "मरीज ने नहीं उठाया":
+                val = "Patient Did Not Pick Up";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_hi_housestructure_edit(String val) {
         switch (val) {
@@ -768,6 +799,58 @@ public final class StringUtils {
                 val = "अनुसूचित जनजाति";
                 break;
             case "others":
+                val = "अन्य";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_helplineInfo(String val) {
+        switch (val) {
+            case "रोबो/वॉयस कॉल्स":
+                val = "Robo/ Voice calls";
+                break;
+            case "एसएमएस":
+                val = "SMS";
+                break;
+            case "फेसबुक":
+                val = "Facebook";
+                break;
+            case "ट्विटर":
+                val = "Twitter";
+                break;
+            case "दोस्त/रिश्तेदार":
+                val = "Friends/Relatives";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_helplineInfo_edit(String val) {
+        switch (val) {
+            case "Robo/ Voice calls":
+                val = "रोबो/वॉयस कॉल्स";
+                break;
+            case "SMS":
+                val = "एसएमएस";
+                break;
+            case "Facebook":
+                val = "फेसबुक";
+                break;
+            case "Twitter":
+                val = "ट्विटर";
+                break;
+            case "Friends/Relatives":
+                val = "दोस्त/रिश्तेदार";
+                break;
+            case "Other":
                 val = "अन्य";
                 break;
             default:

@@ -688,6 +688,132 @@
 -->
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_call_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/padding_card"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/titleBar_cardview">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:padding="10dp"
+                            android:paddingStart="20dp"
+                            android:paddingTop="@dimen/padding_card_title_text"
+                            android:text="@string/others"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="@string/type_of_call"
+                        android:textSize="16sp" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGrp_callType"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp">
+
+                        <RadioButton
+                            android:id="@+id/identification_incoming"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_baseline_call_received_24"
+                            android:drawableLeft="@drawable/ic_baseline_call_received_24"
+                            android:drawablePadding="10dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:text="@string/incoming"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <RadioButton
+                            android:id="@+id/identification_outgoing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_baseline_call_made_24"
+                            android:drawableLeft="@drawable/ic_baseline_call_made_24"
+                            android:drawablePadding="10dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:text="@string/outgoing"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </RadioGroup>
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearL_callInfo"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/helpline_info"
+                            android:textSize="16sp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_helpline_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:background="@color/white"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end"
+                        android:text="@string/button_save"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,5 +1,8 @@
 package org.intelehealth.swasthyasamparktelemedicine.activities.patientDetailActivity;
 
+import static org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_helplineInfo_edit;
+
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,10 +28,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.PathInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,13 +66,19 @@ import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
 import org.intelehealth.swasthyasamparktelemedicine.database.InteleHealthDatabaseHelper;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.EncounterDAO;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesPushDAO;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.PatientsDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.SyncDAO;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.VisitsDAO;
 import org.intelehealth.swasthyasamparktelemedicine.knowledgeEngine.Node;
 import org.intelehealth.swasthyasamparktelemedicine.models.FamilyMemberRes;
 import org.intelehealth.swasthyasamparktelemedicine.models.Patient;
+import org.intelehealth.swasthyasamparktelemedicine.models.SendCallData;
 import org.intelehealth.swasthyasamparktelemedicine.models.dto.EncounterDTO;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.PatientAttributesDTO;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.PatientDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.dto.VisitDTO;
+import org.intelehealth.swasthyasamparktelemedicine.networkApiCalls.ApiInterface;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.DateAndTimeUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.DownloadFilesUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.FileUtils;
@@ -94,6 +109,9 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
@@ -143,6 +161,16 @@ public class PatientDetailActivity extends AppCompatActivity {
     private TextView phoneView;
     private boolean isMedicalAdvice;
 
+    RadioButton mIncoming;
+    RadioButton mOutgoing;
+    Spinner mHelplineInfo;
+    LinearLayout callInfoLayout;
+    RadioGroup callRadioGrp;
+    private ArrayAdapter<CharSequence> helplineAdapter;
+    String mCallType = "";
+    Button saveButton;
+    PatientDTO patientdto = new PatientDTO();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
@@ -181,12 +209,14 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("patientName");
             hasPrescription = intent.getStringExtra("hasPrescription");
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
-
             intentTag = intent.getStringExtra("tag");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
             Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
+            if(intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false))
+                newAdvice.setVisibility(View.VISIBLE);
+
         }
 
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -236,124 +266,152 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
 
-        newVisit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // before starting, we determine if it is new visit for a returning patient
-                // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-                Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
-
-
-                String uuid = UUID.randomUUID().toString();
-                EncounterDAO encounterDAO = new EncounterDAO();
-                encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(UUID.randomUUID().toString());
-                encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-                encounterDTO.setEncounterTime(thisDate);
-                encounterDTO.setVisituuid(uuid);
-                encounterDTO.setSyncd(false);
-                encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
-                encounterDTO.setVoided(0);
-                encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
-
-                try {
-                    encounterDAO.createEncountersToDB(encounterDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-
-                InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
-                SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-
-                String CREATOR_ID = sessionManager.getCreatorID();
-                returning = false;
-                sessionManager.setReturning(returning);
-
-                String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
-                        new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                        null, null, null);
-
-                if (cursor.moveToFirst()) {
-                    // rows present
-                    do {
-                        // so that null data is not appended
-                        phistory = phistory + cursor.getString(0);
-
-                    }
-                    while (cursor.moveToNext());
-                    returning = true;
-                    sessionManager.setReturning(returning);
-                }
-                cursor.close();
-
-                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
-                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
-                        null, null, null);
-                if (cursor1.moveToFirst()) {
-                    // rows present
-                    do {
-                        fhistory = fhistory + cursor1.getString(0);
-                    }
-                    while (cursor1.moveToNext());
-                    returning = true;
-                    sessionManager.setReturning(returning);
-                }
-                cursor1.close();
-
-                // Will display data for patient as it is present in database
-                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
-                // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
-
-                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
-                String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
-                intent2.putExtra("patientUuid", patientUuid);
-
-                VisitDTO visitDTO = new VisitDTO();
-
-                visitDTO.setUuid(uuid);
-                visitDTO.setPatientuuid(patient_new.getUuid());
-                visitDTO.setStartdate(thisDate);
-                visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
-                visitDTO.setLocationuuid(sessionManager.getLocationUuid());
-                visitDTO.setSyncd(false);
-                visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
-                VisitsDAO visitsDAO = new VisitsDAO();
-
-                try {
-                    visitsDAO.insertPatientToDB(visitDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-
-                // visitUuid = String.valueOf(visitLong);
-//                localdb.close();
-                intent2.putExtra("patientUuid", patientUuid);
-                intent2.putExtra("visitUuid", uuid);
-                intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
-                intent2.putExtra("encounterUuidAdultIntial", "");
-                intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
-                intent2.putExtra("name", fullName);
-                intent2.putExtra("tag", "new");
-                intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-                startActivity(intent2);
-            }
-        });
-
         //  LoadFamilyMembers();
 
-        if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
-            newAdvice.setVisibility(View.VISIBLE);
-            newAdvice.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+    }
+
+    private void storeData() {
+        String helplineInfoValue = "";
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
+        else
+            helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : mHelplineInfo.getSelectedItem().toString();
+
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid("a45ae0da-9924-450f-b972-b9ecb9099329");
+        patientAttributesDTO.setValue(mCallType);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid("3a556a0d-1d65-45a9-b105-568e0b8c0c55");
+        patientAttributesDTO.setValue(helplineInfoValue);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        try {
+            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patient_new, patientUuid, patientAttributesDTOList);
+            if (NetworkConnection.isOnline(getApplication())) {
+                SyncDAO syncDAO = new SyncDAO();
+                boolean ispush = syncDAO.pushDataApi();
+                if(ispush)
+                {
+                    saveButton.setText(getResources().getString(R.string.saved));
+                    saveButton.setTextColor(getResources().getColor(R.color.scale_5));
                 }
-            });
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void startNewVisit()
+    {
+        // before starting, we determine if it is new visit for a returning patient
+        // extract both FH and PMH
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        String[] cols = {"value"};
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+                phistory = phistory + cursor.getString(0);
+
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+
+        Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
+                null, null, null);
+        if (cursor1.moveToFirst()) {
+            // rows present
+            do {
+                fhistory = fhistory + cursor1.getString(0);
+            }
+            while (cursor1.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor1.close();
+
+        // Will display data for patient as it is present in database
+        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+        Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        intent2.putExtra("patientUuid", patientUuid);
+
+        VisitDTO visitDTO = new VisitDTO();
+
+        visitDTO.setUuid(uuid);
+        visitDTO.setPatientuuid(patient_new.getUuid());
+        visitDTO.setStartdate(thisDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // visitUuid = String.valueOf(visitLong);
+//                localdb.close();
+        intent2.putExtra("patientUuid", patientUuid);
+        intent2.putExtra("visitUuid", uuid);
+        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+        intent2.putExtra("name", fullName);
+        intent2.putExtra("tag", "new");
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
     }
 
     private void LoadFamilyMembers() {
@@ -470,6 +528,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Helpline_Info")) {
+                    patient_new.setHelplineInfo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Call_Type")) {
+                    patient_new.setCallType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -490,8 +555,31 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         idCursor1.close();
 
-        photoView = findViewById(R.id.imageView_patient);
+        saveButton = findViewById(R.id.saveButton);
+        saveButton.setEnabled(false);
+        saveButton.setClickable(false);
+        saveButton.setTextColor(getResources().getColor(R.color.divider));
+        callInfoLayout = findViewById(R.id.linearL_callInfo);
+        mIncoming = findViewById(R.id.identification_incoming);
+        mOutgoing = findViewById(R.id.identification_outgoing);
+        mHelplineInfo = findViewById(R.id.spinner_helpline_info);
+        callRadioGrp = findViewById(R.id.radioGrp_callType);
 
+        try { //Helpline Info adapter setting...
+            String helplineLanguage = "helpline_" + sessionManager.getAppLanguage();
+            int helplineValues = getResources().getIdentifier(helplineLanguage, "array", getApplicationContext().getPackageName());
+            if (helplineValues != 0) {
+                helplineAdapter = ArrayAdapter.createFromResource(this,
+                        helplineValues, R.layout.custom_spinner);
+
+            }
+            mHelplineInfo.setAdapter(helplineAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.no_values, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        photoView = findViewById(R.id.imageView_patient);
         idView = findViewById(R.id.textView_ID);
         TextView patinetName = findViewById(R.id.textView_name);
         TextView dobView = findViewById(R.id.textView_DOB);
@@ -690,6 +778,132 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+
+        if(patient_new.getCallType()!=null) {
+            mCallType = patient_new.getCallType();
+            if (patient_new.getCallType().equals("Outgoing")) {
+                mOutgoing.setChecked(true);
+                mHelplineInfo.setSelection(0);
+                callInfoLayout.setVisibility(View.GONE);
+                if (mIncoming.isChecked())
+                    mIncoming.setChecked(false);
+            } else {
+                mIncoming.setChecked(true);
+                if (mOutgoing.isChecked())
+                    mOutgoing.setChecked(false);
+            }
+        }
+        else {
+            mIncoming.setChecked(false);
+            mOutgoing.setChecked(false);
+        }
+
+        if(patient_new.getHelplineInfo()!=null) {
+            if (patient_new.getHelplineInfo().equals(getResources().getString(R.string.not_provided)))
+                mHelplineInfo.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String helplineInfo = switch_hi_helplineInfo_edit(patient_new.getHelplineInfo());
+                    mHelplineInfo.setSelection(helplineAdapter.getPosition(helplineInfo));
+                } else {
+                    mHelplineInfo.setSelection(helplineAdapter.getPosition(patient_new.getHelplineInfo()));
+                }
+            }
+        }
+        else
+            mHelplineInfo.setSelection(0);
+
+        callRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                saveButton.setText(getResources().getString(R.string.button_save));
+                if(i==R.id.identification_incoming) {
+                    mCallType = "Incoming";
+                    callInfoLayout.setVisibility(View.VISIBLE);
+                }
+                else if(i==R.id.identification_outgoing){
+                    mCallType = "Outgoing";
+                    mHelplineInfo.setSelection(0);
+                    callInfoLayout.setVisibility(View.GONE);
+                }
+                if (callInfoLayout.getVisibility() == View.GONE && mCallType.equalsIgnoreCase("Outgoing"))
+                {
+                    saveButton.setEnabled(true);
+                    saveButton.setClickable(true);
+                    saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                }
+                else if (callInfoLayout.getVisibility() == View.VISIBLE && !mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.select)) && !mCallType.equalsIgnoreCase(""))
+                {
+                    saveButton.setEnabled(true);
+                    saveButton.setClickable(true);
+                    saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                }
+                else
+                {
+                    saveButton.setEnabled(false);
+                    saveButton.setClickable(false);
+                    saveButton.setTextColor(getResources().getColor(R.color.divider));
+                }
+            }
+        });
+
+        mHelplineInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                saveButton.setText(getResources().getString(R.string.button_save));
+                if (!adapterView.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.select)) && !mCallType.equalsIgnoreCase(""))
+                {
+                    saveButton.setEnabled(true);
+                    saveButton.setClickable(true);
+                    saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                }
+                else if(mHelplineInfo.getVisibility() == View.VISIBLE && adapterView.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.select)))
+                {
+                    saveButton.setEnabled(false);
+                    saveButton.setClickable(false);
+                    saveButton.setTextColor(getResources().getColor(R.color.divider));
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ((patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select))) || mCallType.equalsIgnoreCase(""))
+                    Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
+                else {
+                    storeData();
+                }
+            }
+        });
+
+        newVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select)) || mCallType.equalsIgnoreCase(""))
+                    Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
+                else {
+                    startNewVisit();
+                }
+            }
+        });
+
+        newAdvice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select)) || mCallType.equalsIgnoreCase(""))
+                    Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
+                else {
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                }
+            }
+        });
 
         //By clicking on this whatsapp icon, the HW will be able to connect with the patient through his whatsapp no.
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
@@ -1336,11 +1550,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     // Called when we close app on vitals screen and Didn't select any complaints
                     //Here, we don't get any complaints so we will use this block...
                     /*This block is called in two cases :
-                    * 1. When user closes the app after filling vitals screen.
-                    * 2. Patient app creates Self-Assessment.
-                    * TODO: Need to add code logic for distinguishing visit created by Patient app to be shown as Self-Assessment
-                    *  and app forcely closed by user at Vitals screen...
-                    *  */
+                     * 1. When user closes the app after filling vitals screen.
+                     * 2. Patient app creates Self-Assessment.
+                     * TODO: Need to add code logic for distinguishing visit created by Patient app to be shown as Self-Assessment
+                     *  and app forcely closed by user at Vitals screen...
+                     *  */
                     else {
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         try {
@@ -1395,7 +1609,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(receiver))
             return;
         UrlModifiers urlModifiers = new UrlModifiers();
-      //  String caller = "1246825811"; //dummy
+        //  String caller = "1246825811"; //dummy
         String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
         String url = urlModifiers.getIvrCallUrl(caller, receiver);
         Logger.logD(TAG, "ivr call url" + url);
@@ -1415,13 +1629,112 @@ public class PatientDetailActivity extends AppCompatActivity {
                 });
     }
 
+    //This function will ask the user that whether the call was success or not, based on the answer, the other dialog will show up.
+    private void storeCallResponse() {
+        final int[] checkedItems = {0};
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+        alertDialogBuilder.setMessage(getString(R.string.able_to_connect));
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String[] items = {getString(R.string.denied_covid), getString(R.string.died), getString(R.string.need_not_registered), getString(R.string.patient_reg_specialist), getString(R.string.patient_reg_caller)};
+                showOptionDialog(items,checkedItems, true);
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String[] items = {getString(R.string.not_valid_number), getString(R.string.not_reachable), getString(R.string.not_picked_up)};
+                showOptionDialog(items,checkedItems, false);
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void showOptionDialog(String[] items, int[] checkedItems, boolean success) {
+        final String[] selectedItem = {""};
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+        alertDialog.setTitle(getString(R.string.select_call_output));
+        alertDialog.setSingleChoiceItems(items, checkedItems[0], new DialogInterface.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem[0] = items[which];
+            }
+        });
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedItem[0] = org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_en_call_reason(selectedItem[0]);
+
+                dialogInterface.dismiss();
+                if(!success) {
+                    storeCallData("Unable to reach patient", selectedItem[0]); //these strings has to be sent in same format and in english only
+                    onBackPressed();
+                }
+                else
+                {
+                    storeCallData("Able to reach patient", selectedItem[0]); //these strings has to be sent in same format and in english only
+                    if(selectedItem[0].equalsIgnoreCase("Patient Registered - Specialist") && newVisit.isEnabled() && newVisit.isClickable())
+                        startNewVisit();
+                    else if(selectedItem[0].equalsIgnoreCase("Patient Registered- Tele Caller") && newAdvice.isEnabled() && newAdvice.isClickable())
+                        MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                    else
+                        Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.patient_has_active_visit), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
+    }
+
+    private void storeCallData(String callStatus, String callAction) {
+
+        //get system date; Format need to be same as per Satyadeep's request.
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String callDate = currentDate.format(todayDate) + " 00:00";
+
+        //populate the body for
+        SendCallData sendCallData = new SendCallData();
+        sendCallData.state = patient_new.getState_province();
+        sendCallData.district = patient_new.getCity_village();
+        sendCallData.callStatus = callStatus;
+        sendCallData.callAction = callAction;
+        sendCallData.callDate = callDate;
+        sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+        String sendDataUrl = urlModifiers.sendCallData();
+        apiInterface.callPatientData(sendDataUrl,sendCallData).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(PatientDetailActivity.this, getString(R.string.data_stored_successfully), Toast.LENGTH_LONG).show();
+                System.out.println(call);
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+            }
+        });
+    }
+
     void showAlert(int messageRes) {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
         alertDialogBuilder.setMessage(messageRes);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                storeCallResponse();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();

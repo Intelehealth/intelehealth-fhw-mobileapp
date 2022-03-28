@@ -7,10 +7,12 @@ import org.intelehealth.swasthyasamparktelemedicine.models.DownloadMindMapRes;
 import org.intelehealth.swasthyasamparktelemedicine.models.GetPassword;
 import org.intelehealth.swasthyasamparktelemedicine.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.swasthyasamparktelemedicine.models.Location;
+import org.intelehealth.swasthyasamparktelemedicine.models.MissedCallModel;
 import org.intelehealth.swasthyasamparktelemedicine.models.NewUserCreationCall.UserCreationData;
 import org.intelehealth.swasthyasamparktelemedicine.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.swasthyasamparktelemedicine.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.Results;
+import org.intelehealth.swasthyasamparktelemedicine.models.SendCallData;
 import org.intelehealth.swasthyasamparktelemedicine.models.dto.ResponseDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.loginModel.LoginModel;
 import org.intelehealth.swasthyasamparktelemedicine.models.loginProviderModel.LoginProviderModel;
@@ -118,4 +120,11 @@ public interface ApiInterface {
 
     @POST
     Observable<GetPassword> getUserMapping(@Url String url, @Header("Authorization") String authHeader, @Body GetPassword getPassword);
+
+
+    @POST
+    Call<ResponseBody> callPatientData(@Url String url, @Body SendCallData sendCallData);
+
+    @GET
+    Single<MissedCallModel> MISSED_CALL(@Url String url, @Header("Authorization") String authHeader);
 }
