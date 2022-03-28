@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white">
 
     <LinearLayout
@@ -12,28 +12,29 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/ic_welcome_intro_svg" />
+            app:srcCompat="@drawable/ic_welcome_intro_svg" />
 
         <TextView
+            android:id="@+id/tv_intro_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
-            android:id="@+id/tv_intro_one"
-            app:fontFamily="@fonts/Lato-Regular"
-            tools:text="Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients."
+            android:gravity="center_horizontal|top"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="2sp"
+            android:paddingBottom="20dp"
             android:textColor="@color/font_black_welcome"
             android:textSize="17sp"
-            android:lineSpacingExtra="2sp"
-            android:gravity="center_horizontal|top"
-            android:letterSpacing="0.01" />
+            app:fontFamily="@fonts/Lato-Regular"
+            tools:text="Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients." />
 
     </LinearLayout>
+
 </RelativeLayout>
