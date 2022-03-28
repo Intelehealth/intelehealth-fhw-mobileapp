@@ -104,6 +104,7 @@ public class ThirdScreenFragment extends Fragment {
         river = rootView.findViewById(R.id.river_checkbox);
         pond = rootView.findViewById(R.id.pond_checkbox);
         other = rootView.findViewById(R.id.other_checkbox);
+
         binding.nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

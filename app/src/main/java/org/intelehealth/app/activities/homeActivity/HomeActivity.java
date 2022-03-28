@@ -552,6 +552,10 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
+            case R.id.draftSurvey:
+
+                return true;
+
             case R.id.settingsOption:
                 settings();
                 return true;
