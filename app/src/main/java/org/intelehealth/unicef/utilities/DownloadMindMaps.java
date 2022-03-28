@@ -131,6 +131,44 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         mProgressDialog.setProgress(values[0]);
     }
 
+//    private boolean unpackZip(String filePath) {
+//        InputStream is;
+//        ZipInputStream zis;
+//        try {
+//            File zipfile = new File(filePath);
+//            String parentFolder = zipfile.getParentFile().getPath();
+//            String filename;
+//
+//            is = new FileInputStream(filePath);
+//            zis = new ZipInputStream(new BufferedInputStream(is));
+//            ZipEntry ze;
+//            byte[] buffer = new byte[1024];
+//            int count;
+//
+//            while ((ze = zis.getNextEntry()) != null) {
+//                filename = ze.getName();
+//
+//                if (ze.isDirectory()) {
+//                    File fmd = new File(parentFolder + "/" + filename);
+//                    fmd.mkdirs();
+//                    continue;
+//                }
+//                FileOutputStream fout = new FileOutputStream(parentFolder + "/" + filename);
+//
+//                while ((count = zis.read(buffer)) != -1) {
+//                    fout.write(buffer, 0, count);
+//                }
+//                fout.close();
+//                zis.closeEntry();
+//            }
+//            zis.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        return true;
+//    }
+
     private boolean unpackZip(String filePath) {
         InputStream is;
         ZipInputStream zis;
@@ -146,13 +184,20 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
             int count;
 
             while ((ze = zis.getNextEntry()) != null) {
+
                 filename = ze.getName();
+//                File f = new File(parentFolder, ze.getName());
 
                 if (ze.isDirectory()) {
                     File fmd = new File(parentFolder + "/" + filename);
                     fmd.mkdirs();
+                    String canonicalPath = fmd.getCanonicalPath();
+                    if(!canonicalPath.startsWith(parentFolder)) {
+                        // SecurityException
+                    }
                     continue;
                 }
+
                 FileOutputStream fout = new FileOutputStream(parentFolder + "/" + filename);
 
                 while ((count = zis.read(buffer)) != -1) {
@@ -161,6 +206,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
                 fout.close();
                 zis.closeEntry();
             }
+
             zis.close();
         } catch (IOException e) {
             e.printStackTrace();
