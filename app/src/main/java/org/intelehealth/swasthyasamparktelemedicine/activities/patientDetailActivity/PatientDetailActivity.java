@@ -816,6 +816,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         callRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                saveButton.setText(getResources().getString(R.string.button_save));
                 if(i==R.id.identification_incoming) {
                     mCallType = "Incoming";
                     callInfoLayout.setVisibility(View.VISIBLE);
@@ -849,6 +850,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         mHelplineInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                saveButton.setText(getResources().getString(R.string.button_save));
                 if (!adapterView.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.select)) && !mCallType.equalsIgnoreCase(""))
                 {
                     saveButton.setEnabled(true);

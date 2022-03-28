@@ -751,6 +751,7 @@
     <string name="fill_all_details">कृपया पहले "अन्य" अनुभाग में सभी विवरण भरें।</string>
     <string name="missed_calls">मिस्ड कॉल</string>
     <string name="saved">सहेजा गया!</string>
+    <string name="no_calls">कोई आउटगोइंग मिस्ड कॉल मौजूद नहीं है।</string>
 
 
 
