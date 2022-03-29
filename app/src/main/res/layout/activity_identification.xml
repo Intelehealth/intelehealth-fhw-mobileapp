@@ -804,6 +804,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"/>
 
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Please Enter Text"
+                                android:id="@+id/otherET"
+                                android:visibility="gone"
+                                tools:visibility="visible"/>
+
                         </LinearLayout>
 
 

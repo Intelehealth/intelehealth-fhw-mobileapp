@@ -17,9 +17,11 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -32,6 +34,7 @@ import android.view.animation.PathInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -170,6 +173,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String mCallType = "";
     Button saveButton;
     PatientDTO patientdto = new PatientDTO();
+    EditText otherET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,10 +276,25 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     private void storeData() {
         String helplineInfoValue = "";
+
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-            helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
+        {
+            if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select"))
+                helplineInfoValue = "Not provided";
+            else if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                helplineInfoValue = "Other: "+ otherET.getText();
+            else
+                helplineInfoValue = org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
+        }
         else
-            helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : mHelplineInfo.getSelectedItem().toString();
+        {
+            if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select"))
+                helplineInfoValue = "Not provided";
+            else if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                helplineInfoValue = "Other: "+ otherET.getText();
+            else
+                helplineInfoValue = mHelplineInfo.getSelectedItem().toString();
+        }
 
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -564,6 +583,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         mOutgoing = findViewById(R.id.identification_outgoing);
         mHelplineInfo = findViewById(R.id.spinner_helpline_info);
         callRadioGrp = findViewById(R.id.radioGrp_callType);
+        otherET = findViewById(R.id.otherET);
 
         try { //Helpline Info adapter setting...
             String helplineLanguage = "helpline_" + sessionManager.getAppLanguage();
@@ -799,9 +819,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(patient_new.getHelplineInfo()!=null) {
-            if (patient_new.getHelplineInfo().equals(getResources().getString(R.string.not_provided)))
+            if (patient_new.getHelplineInfo().equals(getResources().getString(R.string.not_provided))) {
                 mHelplineInfo.setSelection(0);
-            else {
+                otherET.setVisibility(View.GONE);
+            }
+            else if(!patient_new.getHelplineInfo().contains("Other: ")) {
+                otherET.setVisibility(View.GONE);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String helplineInfo = switch_hi_helplineInfo_edit(patient_new.getHelplineInfo());
                     mHelplineInfo.setSelection(helplineAdapter.getPosition(helplineInfo));
@@ -809,9 +832,24 @@ public class PatientDetailActivity extends AppCompatActivity {
                     mHelplineInfo.setSelection(helplineAdapter.getPosition(patient_new.getHelplineInfo()));
                 }
             }
+            else
+            {
+                String otherText = patient_new.getHelplineInfo().substring(7);
+                otherET.setVisibility(View.VISIBLE);
+                otherET.setText(otherText);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    mHelplineInfo.setSelection(helplineAdapter.getPosition("अन्य"));
+                } else {
+                    mHelplineInfo.setSelection(helplineAdapter.getPosition("Other"));
+                }
+
+            }
         }
-        else
+        else {
             mHelplineInfo.setSelection(0);
+            otherET.setVisibility(View.GONE);
+        }
+
 
         callRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -838,6 +876,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                     saveButton.setClickable(true);
                     saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
+                else if (otherET.getVisibility() == View.VISIBLE && !otherET.getText().toString().isEmpty() && !otherET.getText().toString().equalsIgnoreCase("") && !mCallType.equalsIgnoreCase(""))
+                {
+                    saveButton.setEnabled(true);
+                    saveButton.setClickable(true);
+                    saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                }
                 else
                 {
                     saveButton.setEnabled(false);
@@ -850,7 +894,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         mHelplineInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String value = adapterView.getItemAtPosition(i).toString();
+                if(value.matches("Other") || value.matches("अन्य")) {
+                    otherET.setVisibility(View.VISIBLE);
+                }
+                else {
+                    otherET.setText("");
+                    otherET.setVisibility(View.GONE);
+                }
                 saveButton.setText(getResources().getString(R.string.button_save));
+
                 if (!adapterView.getSelectedItem().toString().equalsIgnoreCase(getResources().getString(R.string.select)) && !mCallType.equalsIgnoreCase(""))
                 {
                     saveButton.setEnabled(true);
@@ -863,6 +916,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     saveButton.setClickable(false);
                     saveButton.setTextColor(getResources().getColor(R.color.divider));
                 }
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -875,7 +929,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ((patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select))) || mCallType.equalsIgnoreCase(""))
+                if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
+                    otherET.setError(getString(R.string.error_field_required));
+                    return;
+                }
+                if ((patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select))) || mCallType.equalsIgnoreCase("") || (patient_new.getHelplineInfo()!= null && otherET.getVisibility() == View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")))
                     Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
                 else {
                     storeData();
@@ -886,7 +944,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select)) || mCallType.equalsIgnoreCase(""))
+                if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
+                    otherET.setError(getString(R.string.error_field_required));
+                    return;
+                }
+                if ((patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select))) || mCallType.equalsIgnoreCase("") || (patient_new.getHelplineInfo()!= null && otherET.getVisibility() == View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")))
                     Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
                 else {
                     startNewVisit();
@@ -897,7 +959,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         newAdvice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select)) || mCallType.equalsIgnoreCase(""))
+                if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
+                    otherET.setError(getString(R.string.error_field_required));
+                    return;
+                }
+                if ((patient_new.getHelplineInfo()!= null && mHelplineInfo.getVisibility() == View.VISIBLE && patient_new.getHelplineInfo().equalsIgnoreCase(getResources().getString(R.string.select))) || mCallType.equalsIgnoreCase("") || (patient_new.getHelplineInfo()!= null && otherET.getVisibility() == View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")))
                     Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
                 else {
                     MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
@@ -923,6 +989,23 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
+        otherET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                saveButton.setText(getString(R.string.button_save));
+                saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         //mobile calling is supported...
         calling.setOnClickListener(new View.OnClickListener() {
             @Override
