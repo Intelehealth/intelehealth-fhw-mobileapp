@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.swasthyasamparktelemedicine.BuildConfig;
 import org.intelehealth.swasthyasamparktelemedicine.R;
 import org.intelehealth.swasthyasamparktelemedicine.database.InteleHealthDatabaseHelper;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
@@ -99,7 +101,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
 
     }
 
