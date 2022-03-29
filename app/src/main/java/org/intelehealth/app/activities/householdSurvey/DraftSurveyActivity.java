@@ -1,14 +1,20 @@
 package org.intelehealth.app.activities.householdSurvey;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientAdapter;
@@ -17,28 +23,40 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 public class DraftSurveyActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SearchPatientAdapter draftSurveyAdapter;
     private Context context = DraftSurveyActivity.this;
-    private List<PatientAttributesDTO> patientAttributesDTOList;
     private List<String> patientUUIDList;
     private List<PatientDTO> patientDTOList = new ArrayList<>();
     private PatientsDAO patientsDAO;
-    private List<Attribute> attributeList;
-    private String attributeNameFromUuid;
-
+    private SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draft_survey);
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         patientsDAO = new PatientsDAO();
         try {
@@ -178,11 +196,9 @@ public class DraftSurveyActivity extends AppCompatActivity {
                                 patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
                                 patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
                                 patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
-
                             } while (idCursor.moveToNext());
                             idCursor.close();
                         }
-
                         patientDTOList.add(patientDTO);
                         cursor.close();
                     }
@@ -199,22 +215,9 @@ public class DraftSurveyActivity extends AppCompatActivity {
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
-
         }
         return patientDTOList;
     }
-
-/*
-    private boolean compareAttributeNames(Attribute attribute, String name) {
-        boolean draft = false;
-
-        if(name.equalsIgnoreCase("householdHeadReligion") &&
-                (attribute.getValue().equalsIgnoreCase("") || attribute.getValue().equalsIgnoreCase("[]"))) {
-            draft = true;
-        }
-        return draft;
-    }
-*/
 
     private List<String> fetchUniquePatientUuidFromAttributes() throws DAOException {
         List<String> patientUUIDs = new ArrayList<>();
@@ -239,5 +242,15 @@ public class DraftSurveyActivity extends AppCompatActivity {
         }
         patientUUIDs.addAll(patientUUIDs_hashset);
         return patientUUIDs;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
