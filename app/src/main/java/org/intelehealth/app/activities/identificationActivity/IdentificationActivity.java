@@ -3008,23 +3008,25 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        // bp checked
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BPchecked"));
-        patientAttributesDTO.setValue(StringUtils.getBP(spinner_bpchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        Log.d("HOH", "2602: " + spinner_bpchecked.getSelectedItem());
-        patientAttributesDTOList.add(patientAttributesDTO);
+        if (ll18.getVisibility() == View.VISIBLE) {
+            // bp checked
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BPchecked"));
+            patientAttributesDTO.setValue(StringUtils.getBP(spinner_bpchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            Log.d("HOH", "2602: " + spinner_bpchecked.getSelectedItem());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        // sugar checked
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Sugarchecked"));
-        patientAttributesDTO.setValue(StringUtils.getSuger(spinner_sugarchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+            // sugar checked
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Sugarchecked"));
+            patientAttributesDTO.setValue(StringUtils.getSuger(spinner_sugarchecked.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
 
         // hb test
         patientAttributesDTO = new PatientAttributesDTO();
