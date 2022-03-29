@@ -42,6 +42,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
         <activity
             android:name=".activities.householdSurvey.DraftSurveyActivity"
+            android:label="@string/draft_survey_title"
             android:exported="false" />
         <activity
             android:name=".activities.householdSurvey.HouseholdSurveyActivity"
