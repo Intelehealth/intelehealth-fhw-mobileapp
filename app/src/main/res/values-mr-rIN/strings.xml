@@ -805,7 +805,7 @@
     <string name="state_Maharastra">महाराष्ट्र</string>
 
     <string name="date_of_visit">भेट तारीख</string>
-    <string name="name_of_primary_respondent">माहिती देणाऱ्याचे नाव</string>
+    <string name="name_of_primary_respondent">माहिती देणाऱ्याचे नाव*</string>
     <string name="household_number">घर क्रमांक*</string>
     <string name="household_structure_type">घराच्या रचनेचा प्रकार*</string>
     <string name="kucha">कच्चे</string>
