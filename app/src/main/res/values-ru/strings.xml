@@ -795,4 +795,5 @@
     <string name="save_amp_proceed">Сохранить и продолжить</string>
     <string name="please_enter_reason_txt">Пожалуйста, укажите причину!</string>
 
+    <string name="patientdetail_seen_on_str">Видел на</string>
 </resources>
