@@ -338,11 +338,11 @@ public class PregnancyRosterDialog extends DialogFragment {
                 }
 
                 if (position == 5) {
-                    binding.edittextMonthspregnancylast.setVisibility(View.GONE);
-                    binding.edittextMonthsbeingpregnant.setVisibility(View.VISIBLE);
+                    binding.llMonthsPregnancyLast.setVisibility(View.GONE);
+                    binding.llMonthsBeingPregnant.setVisibility(View.VISIBLE);
                 } else {
-                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
-                    binding.edittextMonthsbeingpregnant.setVisibility(View.GONE);
+                    binding.llMonthsPregnancyLast.setVisibility(View.VISIBLE);
+                    binding.llMonthsBeingPregnant.setVisibility(View.GONE);
                 }
 
                 if (position == 4 || position == 5) {
@@ -413,9 +413,9 @@ public class PregnancyRosterDialog extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position == 3) {
-                    binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
+                    binding.llPregnancyBlockOther.setVisibility(View.VISIBLE);
                 } else {
-                    binding.etPregnancyblockOther.setVisibility(View.GONE);
+                    binding.llPregnancyBlockOther.setVisibility(View.GONE);
                     binding.etPregnancyblockOther.setText("");
                 }
             }
@@ -668,11 +668,11 @@ public class PregnancyRosterDialog extends DialogFragment {
             spinnerPosition = adapter_focalPointBlock.getPosition(StringUtils.getFocalFacility_Block_edit(data.getFocalFacilityForPregnancy(), sessionManager.getAppLanguage()));
             if (spinnerPosition == -1) {
                 binding.spinnerFocalBlock.setSelection(3);
-                binding.etPregnancyblockOther.setVisibility(View.VISIBLE);
+                binding.llPregnancyBlockOther.setVisibility(View.VISIBLE);
                 binding.etPregnancyblockOther.setText(data.getFocalFacilityForPregnancy());
             } else {
                 binding.spinnerFocalBlock.setSelection(spinnerPosition);
-                binding.etPregnancyblockOther.setVisibility(View.GONE);
+                binding.llPregnancyBlockOther.setVisibility(View.GONE);
                 binding.etPregnancyblockOther.setText("");
             }
         }

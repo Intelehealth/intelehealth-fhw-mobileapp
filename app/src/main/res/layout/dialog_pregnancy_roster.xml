@@ -73,7 +73,7 @@
                  android:layout_height="wrap_content"
                  android:inputType="number"
                  android:textSize="15sp" />
- -->
+    -->
 
             <LinearLayout
                 android:id="@+id/pregnancy_questions_linear_layout"
@@ -186,61 +186,85 @@
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <LinearLayout
+                    android:id="@+id/ll_year_of_pregnancy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:text="@string/txt_what_was_the_year_of_pregnancy_outcome"
-                    android:textSize="@dimen/card_content_sub_text_size" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edittext_yearofpregnancy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:fontFamily="@font/lato_regular"
-                    android:freezesText="true"
-                    android:imeOptions="actionUnspecified"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/txt_what_was_the_year_of_pregnancy_outcome"
+                        android:textSize="@dimen/card_content_sub_text_size" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:text="@string/txt_how_many_months_did_this_pregnancy_last"
-                    android:textSize="@dimen/card_content_sub_text_size" />
+                    <EditText
+                        android:id="@+id/edittext_yearofpregnancy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:fontFamily="@font/lato_regular"
+                        android:freezesText="true"
+                        android:imeOptions="actionUnspecified"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/edittext_monthspregnancylast"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_months_pregnancy_last"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textSize="15sp"
+                    android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="visible">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/txt_how_many_months_did_this_pregnancy_last"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <EditText
+                        android:id="@+id/edittext_monthspregnancylast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_months_being_pregnant"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:text="@string/txt_how_many_months_have_you_been_pregnant"
-                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                <EditText
-                    android:id="@+id/edittext_monthsbeingpregnant"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textSize="15sp"
+                    android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/txt_how_many_months_have_you_been_pregnant"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <EditText
+                        android:id="@+id/edittext_monthsbeingpregnant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llDeliveryPlace"
@@ -351,45 +375,62 @@
                     <!--                                        android:visibility="gone" />-->
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <LinearLayout
+                        android:id="@+id/ll_pregnancy_block_other"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:text="@string/enter_block_name_other"
-                        android:textSize="@dimen/card_content_sub_text_size" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_pregnancyblock_other"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:fontFamily="@font/lato_regular"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textSize="@dimen/card_content_sub_text_size"
+                        android:orientation="vertical"
                         android:visibility="gone"
-                        tools:visibility="visible" />
+                        tools:visibility="visible">
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="@string/enter_block_name_other"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_pregnancyblock_other"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:fontFamily="@font/lato_regular"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_facility_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:text="@string/what_was_the_name_of_the_facility"
-                        android:textSize="@dimen/card_content_sub_text_size" />
+                        android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/facility_name_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:fontFamily="@font/lato_regular"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textSize="@dimen/card_content_sub_text_size"
-                        tools:visibility="visible" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="@string/what_was_the_name_of_the_facility"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/facility_name_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:fontFamily="@font/lato_regular"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            tools:visibility="visible" />
+
+                    </LinearLayout>
+
 
                     <View
                         android:layout_width="match_parent"
@@ -447,22 +488,29 @@
                     <!--                        single/multiple-->
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:text="@string/txt_how_old_was_the_baby_when_he_she_died"
-                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                <EditText
-                    android:id="@+id/edittext_babyagedied"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/txt_how_old_was_the_baby_when_he_she_died"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <EditText
+                        android:id="@+id/edittext_babyagedied"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llBabyGender"
