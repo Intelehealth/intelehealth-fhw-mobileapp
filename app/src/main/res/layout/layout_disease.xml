@@ -103,7 +103,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/primary_health_care_provider_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -232,11 +232,18 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/mode_of_transportation_used_to_reach_facility"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mode_of_transportation_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mode_of_transportation_edit_text"
@@ -247,7 +254,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/mode_of_transportation_used_to_reach_facility"
+                    android:hint="@string/select"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -272,36 +279,48 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/average_cost_incurred_on_travel_and_stay_per_episode"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/average_cost_incurred_on_travel_and_stay_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/average_cost_incurred_on_travel_and_stay_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/average_cost_incurred_on_travel_and_stay_per_episode"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/average_cost_incurred_on_consultation_fees_per_episode"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/average_cost_incurred_on_consultation_fees_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/average_cost_incurred_on_consultation_fees_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/average_cost_incurred_on_consultation_fees_per_episode"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:textSize="14sp" />
