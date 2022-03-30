@@ -57,6 +57,7 @@ public class DraftSurveyActivity extends AppCompatActivity {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.draft_survey_title));
 
         patientsDAO = new PatientsDAO();
         try {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:id="@+id/main_menu_group">
 
         <!--<item-->
@@ -11,7 +10,7 @@
         <item
             android:id="@+id/draftSurvey"
             android:orderInCategory="100"
-            android:title="Draft Survey" />
+            android:title="@string/draft_survey_title" />
 
         <item
             android:id="@+id/settingsOption"
@@ -32,6 +31,7 @@
         <!--android:id="@+id/restoreOption"-->
         <!--android:orderInCategory="125"-->
         <!--android:title="Restore" />-->
+
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"
