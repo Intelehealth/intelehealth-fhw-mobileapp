@@ -117,7 +117,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-public class PatientDetailActivity extends AppCompatActivity implements FamilyMemberClickListener {
+public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String mGender;
@@ -413,11 +413,11 @@ public class PatientDetailActivity extends AppCompatActivity implements FamilyMe
                     }
                 }
 
-                Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
+              //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
                 if (listPatientNames.size() > 0) {
                     tvNoFamilyMember.setVisibility(View.GONE);
                     rvFamilyMember.setVisibility(View.VISIBLE);
-                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this, this);
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     rvFamilyMember.setLayoutManager(linearLayoutManager);
                     rvFamilyMember.setAdapter(familyMemberAdapter);
@@ -1396,18 +1396,6 @@ public class PatientDetailActivity extends AppCompatActivity implements FamilyMe
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-    }
-
-    @Override
-    public void onMemberClicked(FamilyMemberRes memberRes) {
-        String patientStatus = "returning";
-        Intent intent = new Intent(PatientDetailActivity.this, PatientDetailActivity.class);
-        intent.putExtra("patientUuid", memberRes.getPatientUUID());
-        intent.putExtra("patientName", memberRes.getName());
-        intent.putExtra("status", patientStatus);
-        intent.putExtra("tag", "patient detail");
-        intent.putExtra("hasPrescription", "false");
-        startActivity(intent);
     }
 
     public class Myreceiver extends BroadcastReceiver {
