@@ -1148,7 +1148,7 @@
     <string name="health_issue_reported_joint_bone_pain">संयुक्त / हाडांच्या वेदना</string>
     <string name="health_issue_reported_others_specify">इतर(स्पष्ट करा)</string>
 
-    <string name="no_of_episodes_in_the_last_year">गेल्या वर्षी एपिसोडची संख्या</string>
+    <string name="no_of_episodes_in_the_last_year">ही आरोग्य समस्या/तक्रार मागच्या वर्षात कितीवेळा उद्भवली ?</string>
     <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">सामान्यतः, या आरोग्य समस्येसाठी आपण प्राथमिक आरोग्य सुविधा म्हणून कुणाशी संपर्क साधला /भेटला ?</string>
     <string name="government_doctor">सरकारी डॉक्टर</string>
     <string name="private_doctor">खाजगी डॉक्टर</string>
