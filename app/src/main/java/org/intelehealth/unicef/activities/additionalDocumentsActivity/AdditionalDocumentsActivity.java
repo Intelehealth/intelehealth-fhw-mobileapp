@@ -11,6 +11,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -69,7 +70,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_documents);
         Toolbar topToolBar = findViewById(R.id.toolbar);

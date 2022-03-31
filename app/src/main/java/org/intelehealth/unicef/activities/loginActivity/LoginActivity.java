@@ -14,6 +14,8 @@ import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -95,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);

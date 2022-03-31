@@ -42,6 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.multidex.MultiDex;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -136,6 +137,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();

@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -240,7 +241,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         setTitle(getString(R.string.title_activity_patient_history));
         setTitle(getTitle() + ": " + patientName);
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_medical_history);
         Toolbar toolbar = findViewById(R.id.toolbar);

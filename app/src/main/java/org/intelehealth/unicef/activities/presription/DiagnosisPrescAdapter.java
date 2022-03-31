@@ -108,15 +108,19 @@ public class DiagnosisPrescAdapter extends RecyclerView.Adapter<DiagnosisPrescAd
                             @Override
                             public void onNext(@NonNull Response<Void> avoid) {
                                 // Delete is successful from backend. Now, Delete from Recyclerview.
-                                Log.v("index", "index2: " + clickedPosition);
-                                prescDataModels.remove(clickedPosition);
-                                notifyItemRemoved(clickedPosition);
-                                notifyItemRangeChanged(clickedPosition, prescDataModels.size());
+                                try {
+                                    Log.v("index", "index2: " + clickedPosition);
+                                    prescDataModels.remove(clickedPosition);
+                                    notifyItemRemoved(clickedPosition);
+                                    notifyItemRangeChanged(clickedPosition, prescDataModels.size());
 
-                                //Delete from local db as well.
-                                String encounterVisitNoteUuid = prescDataModels.get(getAdapterPosition()).encounterVisitNoteUuid();
-                                String conceptuuid = prescDataModels.get(getAdapterPosition()).getConceptUuid();
-                                deleteObsDBItem(uuid, encounterVisitNoteUuid, conceptuuid);
+                                    //Delete from local db as well.
+                                    String encounterVisitNoteUuid = prescDataModels.get(getAdapterPosition()).encounterVisitNoteUuid();
+                                    String conceptuuid = prescDataModels.get(getAdapterPosition()).getConceptUuid();
+                                    deleteObsDBItem(uuid, encounterVisitNoteUuid, conceptuuid);
+                                } catch (IndexOutOfBoundsException e){
+                                    e.printStackTrace();
+                                }
                             }
 
                             @Override

@@ -93,7 +93,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //Uncomment below line to enable multidex support for Kitkat
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     //camera view
     implementation 'com.github.google:cameraview:9bbe07ba44'
     //Google Guava

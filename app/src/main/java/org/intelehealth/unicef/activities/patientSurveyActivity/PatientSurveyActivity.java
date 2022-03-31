@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -79,6 +81,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
         }
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);

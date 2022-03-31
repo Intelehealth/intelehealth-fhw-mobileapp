@@ -79,6 +79,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -551,7 +552,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = findViewById(R.id.toolbar);

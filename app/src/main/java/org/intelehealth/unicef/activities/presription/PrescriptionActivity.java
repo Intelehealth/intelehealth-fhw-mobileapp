@@ -43,6 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -166,7 +167,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         setTitle(R.string.prescription);
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
         Toolbar toolbar = findViewById(R.id.toolbar);

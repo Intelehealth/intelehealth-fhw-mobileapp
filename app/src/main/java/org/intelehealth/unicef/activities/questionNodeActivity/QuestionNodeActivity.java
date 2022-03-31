@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -173,7 +174,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
         }
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
 

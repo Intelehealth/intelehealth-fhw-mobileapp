@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
     FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_library);
         setTitle(R.string.title_activity_video_library);
