@@ -305,7 +305,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 //        }
 
         //householdHeadReligion
-        if (binding.religionDropDown.getSelectedItemPosition() != 0) {
+       // if (binding.religionDropDown.getSelectedItemPosition() != 0) {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
@@ -315,17 +315,17 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             else
                 patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
-        }
+      //  }
 
         //householdHeadCaste
-        if (binding.casteDropDown.getSelectedItemPosition() != 0) {
+       // if (binding.casteDropDown.getSelectedItemPosition() != 0) {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
             patientAttributesDTO.setValue(getHouseholdCaste(binding.casteDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
-        }
+      //  }
 
         //noOfSmartphones
         patientAttributesDTO = new PatientAttributesDTO();

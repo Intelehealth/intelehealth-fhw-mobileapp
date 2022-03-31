@@ -41,9 +41,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
         <activity
-            android:name=".activities.householdSurvey.HouseholdSurveyActivity"
-            android:label="@string/household_survey"
+            android:name=".activities.householdSurvey.DraftSurveyActivity"
+            android:label="@string/draft_survey_title"
             android:exported="false" />
+        <activity
+            android:name=".activities.householdSurvey.HouseholdSurveyActivity"
+            android:exported="false"
+            android:label="@string/household_survey" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"

@@ -190,7 +190,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                 if (recycler.patients != null && recycler.patients.size() < limit) {
                     return;
                 }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() ==
+                        recycler.getItemCount() -1) {
                     Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);

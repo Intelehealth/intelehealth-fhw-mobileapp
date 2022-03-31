@@ -58,6 +58,7 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
+import org.intelehealth.app.activities.householdSurvey.DraftSurveyActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
@@ -552,6 +553,10 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
+            case R.id.draftSurvey:
+                draftSurvey();
+                return true;
+
             case R.id.settingsOption:
                 settings();
                 return true;
@@ -800,6 +805,11 @@ public class HomeActivity extends AppCompatActivity {
      */
     public void settings() {
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void draftSurvey() {
+        Intent intent = new Intent(this, DraftSurveyActivity.class);
         startActivity(intent);
     }
 
