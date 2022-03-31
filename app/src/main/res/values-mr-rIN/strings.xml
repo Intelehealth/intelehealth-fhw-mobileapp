@@ -1229,7 +1229,7 @@
     <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">मागच्या २ वर्षात तुम्ही गरोदर होता का ?*</string>
     <string name="txt_what_was_the_outcome_of_your_pregnancy">गरोदरपणाचा परिणाम काय झाला/ गरोदरपणात बाळाचे काय झाले?</string>
     <string name="txt_is_the_child_alive">मुल जिवंत आहे का?</string>
-    <string name="txt_what_was_the_year_of_pregnancy_outcome">गरोदरपणाच्या परिणामाचे/गरोदरपण पूर्ण झाल्याचे वर्ष कोणते होते?"</string>
+    <string name="txt_what_was_the_year_of_pregnancy_outcome">गरोदरपणाच्या परिणामाचे वर्ष काय होते ?(अ) गर्भवती महिलांसाठी, गर्भधारणेची तारीख नमूद करा ब) इतर पर्यायांच्या बाबतीत प्रसूती/ डिलिव्हरी/ गर्भपाताची तारीख नमूद करा)</string>
     <string name="txt_how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
     <string name="txt_what_is_the_place_of_delivery"> वितरणाचे ठिकाण काय आहे?</string>

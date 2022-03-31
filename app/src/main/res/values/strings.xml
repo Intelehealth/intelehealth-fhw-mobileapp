@@ -1338,7 +1338,7 @@
     <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had any pregnancy outcomes in the past 2 years?*</string>
     <string name="txt_what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?</string>
     <string name="txt_is_the_child_alive">Is the child alive?</string>
-    <string name="txt_what_was_the_year_of_pregnancy_outcome">What was the year of pregnancy outcome?</string>
+    <string name="txt_what_was_the_year_of_pregnancy_outcome">What was the year of pregnancy outcome ? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/ miscarriage)</string>
     <string name="txt_how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>
     <string name="txt_how_many_months_have_you_been_pregnant">How many months have you been pregnant</string>
     <string name="txt_what_is_the_place_of_delivery">What is the Place of Delivery?</string>
