@@ -16,12 +16,14 @@ import org.intelehealth.app.models.FamilyMemberRes;
 
 public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapter.FamilyMemberViewHolder> {
 
+    private final FamilyMemberClickListener memberClickListener;
     List<FamilyMemberRes> listPatientNames;
     Context context;
 
-    public FamilyMemberAdapter(List<FamilyMemberRes> listPatientNames, Context context) {
+    public FamilyMemberAdapter(List<FamilyMemberRes> listPatientNames, Context context, FamilyMemberClickListener memberClickListener) {
         this.listPatientNames = listPatientNames;
         this.context = context;
+        this.memberClickListener = memberClickListener;
     }
 
     @NonNull
@@ -34,10 +36,9 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FamilyMemberAdapter.FamilyMemberViewHolder holder, int position) {
-
         holder.tvFamilyName.setText(listPatientNames.get(position).getName());
         holder.tvOpenMRSID.setText(listPatientNames.get(position).getOpenMRSID());
-
+        holder.itemView.setOnClickListener(v -> memberClickListener.onMemberClicked(listPatientNames.get(position)));
     }
 
     @Override

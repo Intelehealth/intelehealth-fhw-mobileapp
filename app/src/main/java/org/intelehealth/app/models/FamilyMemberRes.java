@@ -12,6 +12,8 @@ public class FamilyMemberRes {
     @Expose
     private String name;
 
+    private String patientUUID;
+
     public String getOpenMRSID() {
         return openMRSID;
     }
@@ -26,5 +28,13 @@ public class FamilyMemberRes {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPatientUUID() {
+        return patientUUID;
+    }
+
+    public void setPatientUUID(String patientUUID) {
+        this.patientUUID = patientUUID;
     }
 }

@@ -2,7 +2,6 @@ package org.intelehealth.app.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -15,8 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -45,13 +41,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
-import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,10 +86,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -108,47 +100,24 @@ import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
-import static org.intelehealth.app.utilities.StringUtils.getOccupation_edit;
 import static org.intelehealth.app.utilities.StringUtils.getOccupationsIdentification_Edit;
 import static org.intelehealth.app.utilities.StringUtils.getValueForStateCity_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-public class PatientDetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends AppCompatActivity implements FamilyMemberClickListener {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String mGender;
@@ -444,10 +413,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                 }
 
+                Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
                 if (listPatientNames.size() > 0) {
                     tvNoFamilyMember.setVisibility(View.GONE);
                     rvFamilyMember.setVisibility(View.VISIBLE);
-                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this, this);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     rvFamilyMember.setLayoutManager(linearLayoutManager);
                     rvFamilyMember.setAdapter(familyMemberAdapter);
@@ -1426,6 +1396,18 @@ public class PatientDetailActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+
+    @Override
+    public void onMemberClicked(FamilyMemberRes memberRes) {
+        String patientStatus = "returning";
+        Intent intent = new Intent(PatientDetailActivity.this, PatientDetailActivity.class);
+        intent.putExtra("patientUuid", memberRes.getPatientUUID());
+        intent.putExtra("patientName", memberRes.getName());
+        intent.putExtra("status", patientStatus);
+        intent.putExtra("tag", "patient detail");
+        intent.putExtra("hasPrescription", "false");
+        startActivity(intent);
     }
 
     public class Myreceiver extends BroadcastReceiver {
