@@ -338,9 +338,11 @@ public class PregnancyRosterDialog extends DialogFragment {
                 }
 
                 if (position == 5) {
+                    binding.llYearOfPregnancy.setVisibility(View.GONE);
                     binding.llMonthsPregnancyLast.setVisibility(View.GONE);
                     binding.llMonthsBeingPregnant.setVisibility(View.VISIBLE);
                 } else {
+                    binding.llYearOfPregnancy.setVisibility(View.VISIBLE);
                     binding.llMonthsPregnancyLast.setVisibility(View.VISIBLE);
                     binding.llMonthsBeingPregnant.setVisibility(View.GONE);
                 }
@@ -460,13 +462,17 @@ public class PregnancyRosterDialog extends DialogFragment {
             }
         }
 
-        if (binding.edittextYearofpregnancy.getText().toString().equalsIgnoreCase("") || binding.edittextYearofpregnancy.getText().toString().isEmpty()) {
-            setEditTextError(binding.edittextYearofpregnancy);
-            areDetailsCorrect = false;
+        if (pregnancyOutcomePosition != 5) {
+            if (binding.edittextYearofpregnancy.getText().toString().equalsIgnoreCase("") ||
+                    binding.edittextYearofpregnancy.getText().toString().isEmpty()) {
+                setEditTextError(binding.edittextYearofpregnancy);
+                areDetailsCorrect = false;
+            }
         }
 
         if (pregnancyOutcomePosition != 5) {
-            if (binding.edittextMonthspregnancylast.getText().toString().equalsIgnoreCase("") || binding.edittextMonthspregnancylast.getText().toString().isEmpty()) {
+            if (binding.edittextMonthspregnancylast.getText().toString().equalsIgnoreCase("") ||
+                    binding.edittextMonthspregnancylast.getText().toString().isEmpty()) {
                 setEditTextError(binding.edittextMonthspregnancylast);
                 areDetailsCorrect = false;
             }
@@ -565,8 +571,9 @@ public class PregnancyRosterDialog extends DialogFragment {
             data.setIsPreTerm(StringUtils.getPreTerm(binding.spinnerPreTerm.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         }
 
-//            data.setYearOfPregnancyOutcome(binding.edittextYearofpregnancy.getText().toString());
-        data.setYearOfPregnancyOutcome(StringUtils.hi_or_bn_en_noEdit(binding.edittextYearofpregnancy.getText().toString(), sessionManager.getAppLanguage()));
+        if (pregnancyOutcomePosition != 5)
+            data.setYearOfPregnancyOutcome(StringUtils.hi_or_bn_en_noEdit(binding.edittextYearofpregnancy.getText().toString(),
+                    sessionManager.getAppLanguage()));
 
         if (pregnancyOutcomePosition != 5)
             data.setMonthsOfPregnancy(binding.edittextMonthspregnancylast.getText().toString());
@@ -641,8 +648,6 @@ public class PregnancyRosterDialog extends DialogFragment {
         }
 
         if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
-
-//            binding.edittextYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String dob_text = en__mr_dob(data.getYearOfPregnancyOutcome()); //to show text of English into Odiya...
                 binding.edittextYearofpregnancy.setText(dob_text);
