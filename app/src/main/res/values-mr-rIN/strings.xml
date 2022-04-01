@@ -17,7 +17,7 @@
     <string name="action_sms">एसएमएस</string>
     <string name="action_home">मुख्यपृष्ठ</string>
     <string name="action_settings">सेटिंग्ज</string>
-    <string name="generic_warning">चेतावणी!</string>
+    <string name="generic_warning">महत्वाची सूचना</string>
     <string name="generic_update">अद्यतनित करा</string>
     <string name="generic_deleted">हटविले</string>
 
@@ -41,8 +41,8 @@
 
     //Login Screen
     <string name="title_activity_login">आरोग्य संपदा</string>
-    <string name="prompt_email">वापरकर्तानाव</string>
-    <string name="prompt_password">संकेतशब्द</string>
+    <string name="prompt_email">युजर आयडी</string>
+    <string name="prompt_password">पासवर्ड</string>
     <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
     <string name="action_sign_in">लॉगिन</string>
     <string name="action_sign_in_short">साइन इन करा</string>
@@ -472,7 +472,7 @@
     <string name="enter_url">URL प्रविष्ट करा</string>
     <string name="choose_a_location_to_login">लॉगिन करण्यासाठी एक स्थान निवडा</string>
     <string name="choose_an_option_for_protocols">प्रोटोकॉलसाठी एक पर्याय निवडा</string>
-    <string name="please_enter_your_username_and_password">कृपया आपले वापरकर्तानाव आणि संकेतशब्द प्रविष्ट करा</string>
+    <string name="please_enter_your_username_and_password">कृपया आपले युजर आयडी आणि पासवर्ड प्रविष्ट करा</string>
     <string name="android_id">Android Id:</string>
     <string name="respiratory_rate">श्वसन दर</string>
     <string name="click_to_download_the_images">प्रतिमा डाउनलोड करण्यासाठी क्लिक करा</string>
@@ -481,7 +481,7 @@
     <string name="priority">प्राधान्य</string>
     <string name="server_url">सर्व्हर url</string>
     <string name="sync">रीफ्रेश</string>
-    <string name="update_protocols">प्रोटोकॉल अद्यतनित करा</string>
+    <string name="update_protocols">प्रोटोकॉल अपडेट करा</string>
     <string name="end_all_visit">सर्व भेट समाप्त करा</string>
     <string name="filter_by_creator">निर्मात्याद्वारे फिल्टर करा</string>
     <string name="planet_name">ग्रह नाव</string>
@@ -492,7 +492,7 @@
     <string name="active">सक्रिय</string>
     <string name="closed">बंद</string>
 
-    <string name="syncInProgress">रीफ्रेश प्रगतीपथावर</string>
+    <string name="syncInProgress">रिफ्रेश होत आहे</string>
     <string name="please_wait">कृपया थांबा...</string>
     <string name="sync_notif_title">रीफ्रेश</string>
     <string name="sync_background_completed">रीफ्रेशबॅकग्राउंड पूर्ण</string>
@@ -593,7 +593,7 @@
     <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
     <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
     <string name="intelehealth_a_telemedicine_platform">आरोग्य संपदा हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">आरोग्य संपदा हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">आरोग्य संपदा हा एक टेलीमेडिसिन कार्यक्रम आहे, जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचाऱ्यांना डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
     <string name="intelehealth_name">आरोग्य संपदा</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
@@ -692,7 +692,7 @@
     <string name="location">स्थान</string>
 
     //----------reset app strings-------------
-    <string name="reset_app">अॅप रीसेट करा</string>
+    <string name="reset_app">ॲप रीसेट करा</string>
     <string name="app_reset_toast">अॅप रीसेट पूर्ण झाले!</string>
     <string name="resetting_app_dialog">अॅप रीसेट करत आहे</string>
     <string name="sure_to_reset_app">तुम्हाला खात्री आहे की तुम्ही अॅप रीसेट करू इच्छिता?</string>
@@ -1204,7 +1204,7 @@
 
 
     <string name="txt_hedingRosters">रोस्टर्स</string>
-    <string name="txt_heading_pregnancy_outcome_roster">गर्भधारणा परिणाम रोस्टर</string>
+    <string name="txt_heading_pregnancy_outcome_roster">गर्भधारणा परिणाम रोस्टर (गर्भधारणेसंबंधित माहिती )</string>
     <string name="txt_what_is_your_relationship_with_head_of_household"> घराच्या प्रमुखाशी तुमचे नाते काय आहे*</string>
     <string name="txt_what_is_your_maritual_status">तुमची वैवाहिक स्थिती काय आहे</string>
     <string name="txt_phone_ownership">फोन मालकी*</string>
@@ -1254,7 +1254,7 @@
 
 
     <string name="first_location_of_visit">भेट / संवादाचे पहिले स्थान</string>
-    <string name="household_survey">घरगुती सर्वेक्षण</string>
+    <string name="household_survey">घर/ कुटुंब सर्वेक्षण</string>
     <string name="cough_cold">खोकला / सर्दी</string>
     <string name="fever">ताप</string>
     <string name="diarrhoea">अतिसार</string>
@@ -1353,6 +1353,6 @@
     <string name="please_add_pregnancy_outcome">कृपया गर्भधारणा परिणाम जोडा</string>
 
     <string name="within_ten_km">10 किमी च्या आत</string>
-    <string name="draft_survey_title">मसुदा सर्वेक्षण</string>
+    <string name="draft_survey_title">सर्वे पूर्ण करा</string>
 
 </resources>
