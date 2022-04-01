@@ -1138,7 +1138,7 @@
     <string name="name_of_member_of_household">घरगुती सदस्याचे नाव</string>
     <string name="health_issue_reported">आरोग्य समस्या नोंदवली</string>
 
-    <string name="number_of_episodes_in_the_last_year">मागील वर्षातील भागांची संख्या</string>
+    <string name="number_of_episodes_in_the_last_year">ही आरोग्य समस्या/तक्रार मागच्या वर्षात कितीवेळा उद्भवली ?</string>
     <string name="health_issue_reported_fever">ताप</string>
     <string name="health_issue_reported_cough_cold">खोकला / थंडी</string>
     <string name="health_issue_reported_diarrhoea">अतिसार</string>
@@ -1232,7 +1232,7 @@
     <string name="txt_what_was_the_year_of_pregnancy_outcome">गरोदरपणाच्या परिणामाचे वर्ष काय होते ?(अ) गर्भवती महिलांसाठी, गर्भधारणेची तारीख नमूद करा ब) इतर पर्यायांच्या बाबतीत प्रसूती/ डिलिव्हरी/ गर्भपाताची तारीख नमूद करा)</string>
     <string name="txt_how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
-    <string name="txt_what_is_the_place_of_delivery"> वितरणाचे ठिकाण काय आहे?</string>
+    <string name="txt_what_is_the_place_of_delivery">डिलिव्हरी/ प्रसुतीचे ठिकाण कुठे आहे ?</string>
     <string name="txt_focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती/ डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण?</string>
     <string name="txt_was_this_a_single_multiple_births">हे एकच/एकाहून अधिक जन्म होते का?</string>
     <string name="txt_how_old_was_the_baby_when_he_she_died">बाळ/ती मरण पावले तेव्हा त्याचे वय किती होते?</string>

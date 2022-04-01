@@ -341,10 +341,12 @@ public class PregnancyRosterDialog extends DialogFragment {
                     binding.llYearOfPregnancy.setVisibility(View.GONE);
                     binding.llMonthsPregnancyLast.setVisibility(View.GONE);
                     binding.llMonthsBeingPregnant.setVisibility(View.VISIBLE);
+                    binding.llDeliveryType.setVisibility(View.GONE);
                 } else {
                     binding.llYearOfPregnancy.setVisibility(View.VISIBLE);
                     binding.llMonthsPregnancyLast.setVisibility(View.VISIBLE);
                     binding.llMonthsBeingPregnant.setVisibility(View.GONE);
+                    binding.llDeliveryType.setVisibility(View.VISIBLE);
                 }
 
                 if (position == 4 || position == 5) {
