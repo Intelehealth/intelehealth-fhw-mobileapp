@@ -25,9 +25,11 @@ import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.DialogPregnancyRosterBinding;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.joda.time.Years;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -288,41 +290,7 @@ public class PregnancyRosterDialog extends DialogFragment {
     }
 
     private void setListeners() {
-        binding.edittextYearofpregnancy.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-//                        todo date dialog
-                        mDOBPicker = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                                new DatePickerDialog.OnDateSetListener() {
-
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                        //Set the DOB calendar to the date selected by the user
-
-                                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                                        dob.set(year, monthOfYear, dayOfMonth);
-                                        String dobString = simpleDateFormat.format(dob.getTime());
-
-                                        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                                            binding.edittextYearofpregnancy.setText(dob_text);
-                                        } else {
-//                                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                                            binding.edittextYearofpregnancy.setText(dobString);
-                                        }
-                                        mDOBYear = year;
-                                        mDOBMonth = monthOfYear;
-                                        mDOBDay = dayOfMonth;
-                                    }
-                                }, mDOBYear, mDOBMonth, mDOBDay);
-
-                        mDOBPicker.show();
-                    }
-                }
-        );
-
+        DateAndTimeUtils.assignDatePickerMin2yrsMaxToday(getActivity(), binding.edittextYearofpregnancy, sessionManager);
 
         binding.spinnerOutcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

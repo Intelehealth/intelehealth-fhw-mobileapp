@@ -1,7 +1,11 @@
 package org.intelehealth.app.utilities;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -13,6 +17,7 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -348,5 +353,45 @@ public class DateAndTimeUtils {
         }
         return result;
     }
+
+    public static void assignDatePickerMin2yrsMaxToday(Context context, EditText etFollowUpDate, SessionManager sessionManager) {
+        Calendar today = Calendar.getInstance();
+        int mDOBYear = today.get(Calendar.YEAR);
+        int mDOBMonth = today.get(Calendar.MONTH);
+        int mDOBDay = today.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog mDOBPicker = new DatePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        SimpleDateFormat simpleDateFormat = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag(sessionManager.getAppLanguage()));
+                        } else {
+                            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                        }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, monthOfYear, dayOfMonth);
+                        String format = simpleDateFormat.format(calendar.getTime());
+                        etFollowUpDate.setText(format);
+                    }
+                }, mDOBYear, mDOBMonth, mDOBDay);
+
+        //DOB Picker is shown when clicked
+        Calendar prevYear = Calendar.getInstance();
+        prevYear.add(Calendar.YEAR, -2);
+        prevYear.add(Calendar.MONTH, 0);
+
+        mDOBPicker.getDatePicker().setMinDate(prevYear.getTimeInMillis());
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 10000);
+        etFollowUpDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etFollowUpDate.setError(null);
+                mDOBPicker.show();
+            }
+        });
+    }
+
 
 }
