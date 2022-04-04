@@ -29,5 +29,12 @@ public class SendCallData {
     @Expose
     public String callAction;
 
+    @SerializedName("callerNumber")
+    @Expose
+    public String callNumber;
+
+    @SerializedName("remarks")
+    @Expose
+    public String remarks;
 
 }

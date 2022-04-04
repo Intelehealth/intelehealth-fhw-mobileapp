@@ -1791,6 +1791,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         sendCallData.callStatus = callStatus;
         sendCallData.callAction = callAction;
         sendCallData.callDate = callDate;
+        sendCallData.remarks = "Not Applicable";
+        sendCallData.callNumber = sessionManager.getProviderPhoneno();
         sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
