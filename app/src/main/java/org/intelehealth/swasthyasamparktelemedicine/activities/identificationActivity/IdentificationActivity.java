@@ -162,8 +162,8 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
-    RadioButton mIncoming;
-    RadioButton mOutgoing;
+//    RadioButton mIncoming;
+//    RadioButton mOutgoing;
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
@@ -178,11 +178,11 @@ public class IdentificationActivity extends AppCompatActivity {
     TextInputLayout economicLayout;
     TextInputLayout educationLayout;
     LinearLayout countryStateLayout;
-    LinearLayout callInfoLayout;
+//    LinearLayout callInfoLayout;
     Spinner mCaste;
     Spinner mEducation;
     Spinner mEconomicStatus;
-    Spinner mHelplineInfo;
+//    Spinner mHelplineInfo;
 
     ImageView mImageView;
     String uuid = "";
@@ -226,7 +226,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional;
-    EditText otherET;
+//    EditText otherET;
 
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
@@ -310,8 +310,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
-        mIncoming = findViewById(R.id.identification_incoming);
-        mOutgoing = findViewById(R.id.identification_outgoing);
+//        mIncoming = findViewById(R.id.identification_incoming);
+//        mOutgoing = findViewById(R.id.identification_outgoing);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -324,13 +324,13 @@ public class IdentificationActivity extends AppCompatActivity {
         casteText = findViewById(R.id.identification_caste);
         educationText = findViewById(R.id.identification_education);
         economicText = findViewById(R.id.identification_econiomic_status);
-        mHelplineInfo = findViewById(R.id.spinner_helpline_info);
+//        mHelplineInfo = findViewById(R.id.spinner_helpline_info);
         casteLayout = findViewById(R.id.identification_txtlcaste);
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-        callInfoLayout = findViewById(R.id.linearL_callInfo);
-        otherET= findViewById(R.id.otherET);
+//        callInfoLayout = findViewById(R.id.linearL_callInfo);
+//        otherET= findViewById(R.id.otherET);
         //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
@@ -543,7 +543,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
 
-        try { //Helpline Info adapter setting...
+        /*try { //Helpline Info adapter setting...
             String helplineLanguage = "helpline_" + sessionManager.getAppLanguage();
             int helplineValues = res.getIdentifier(helplineLanguage, "array", getApplicationContext().getPackageName());
             if (helplineValues != 0) {
@@ -555,7 +555,7 @@ public class IdentificationActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, R.string.no_values, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
-        }
+        }*/
 
         try { //Caste adapter setting...
             String casteLanguage = "caste_" + sessionManager.getAppLanguage();
@@ -1430,7 +1430,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mHelplineInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*mHelplineInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String value = adapterView.getItemAtPosition(i).toString();
@@ -1445,7 +1445,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1461,7 +1461,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        mIncoming.setOnClickListener(new View.OnClickListener() {
+        /*mIncoming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
@@ -1477,7 +1477,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mHelplineInfo.setSelection(0);
                 otherET.setVisibility(View.GONE);
             }
-        });
+        });*/
 
 /*
         mImageView.setOnClickListener(new View.OnClickListener() {
@@ -2896,7 +2896,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(callInfoLayout.getVisibility()== View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
+        /*if(callInfoLayout.getVisibility()== View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
         {
             TextView errorText = (TextView)mHelplineInfo.getSelectedView();
             errorText.setError("");
@@ -2910,7 +2910,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if(otherET.getVisibility()== View.VISIBLE && (otherET.getText().toString().isEmpty() || otherET.getText().toString().equalsIgnoreCase("") || otherET.getText().toString().equalsIgnoreCase(" "))) {
             otherET.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
@@ -4110,7 +4110,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(callInfoLayout.getVisibility() == View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
+        /*if(callInfoLayout.getVisibility() == View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
         {
             TextView errorText = (TextView)mHelplineInfo.getSelectedView();
             errorText.setError("");
@@ -4124,7 +4124,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if(otherET.getVisibility()== View.VISIBLE && (otherET.getText().toString().isEmpty() || otherET.getText().toString().equalsIgnoreCase("") || otherET.getText().toString().equalsIgnoreCase(" "))) {
             otherET.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
