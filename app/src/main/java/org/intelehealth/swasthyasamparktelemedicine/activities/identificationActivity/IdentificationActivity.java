@@ -226,6 +226,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional;
+    EditText otherET;
 
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
@@ -291,6 +292,7 @@ public class IdentificationActivity extends AppCompatActivity {
         });*/
 
         mAge = findViewById(R.id.identification_age);
+
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
@@ -328,6 +330,7 @@ public class IdentificationActivity extends AppCompatActivity {
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         callInfoLayout = findViewById(R.id.linearL_callInfo);
+        otherET= findViewById(R.id.otherET);
         //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
@@ -1007,9 +1010,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             if(patient1.getHelplineInfo()!=null) {
-                if (patient1.getHelplineInfo().equals(getResources().getString(R.string.not_provided)))
+                if (patient1.getHelplineInfo().equals(getResources().getString(R.string.not_provided))) {
                     mHelplineInfo.setSelection(0);
-                else {
+                    otherET.setVisibility(View.GONE);
+                }
+                else if(!patient1.getHelplineInfo().contains("Other: ")) {
+                    otherET.setVisibility(View.GONE);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String helplineInfo = switch_hi_helplineInfo_edit(patient1.getHelplineInfo());
                         mHelplineInfo.setSelection(helplineAdapter.getPosition(helplineInfo));
@@ -1017,9 +1023,23 @@ public class IdentificationActivity extends AppCompatActivity {
                         mHelplineInfo.setSelection(helplineAdapter.getPosition(patient1.getHelplineInfo()));
                     }
                 }
+                else
+                {
+                    String otherText = patient1.getHelplineInfo().substring(7);
+                    otherET.setVisibility(View.VISIBLE);
+                    otherET.setText(otherText);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        mHelplineInfo.setSelection(helplineAdapter.getPosition("अन्य"));
+                    } else {
+                        mHelplineInfo.setSelection(helplineAdapter.getPosition("Other"));
+                    }
+
+                }
             }
-            else
+            else {
                 mHelplineInfo.setSelection(0);
+                otherET.setVisibility(View.GONE);
+            }
 
         }
         if (mGenderM.isChecked()) {
@@ -1411,6 +1431,22 @@ public class IdentificationActivity extends AppCompatActivity {
 //            }
 //        });
 
+        mHelplineInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String value = adapterView.getItemAtPosition(i).toString();
+                if(value.matches("Other") || value.matches("अन्य"))
+                    otherET.setVisibility(View.VISIBLE);
+                else {
+                    otherET.setText("");
+                    otherET.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1440,6 +1476,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 onRadioButtonClicked(v);
                 callInfoLayout.setVisibility(View.GONE);
                 mHelplineInfo.setSelection(0);
+                otherET.setVisibility(View.GONE);
             }
         });
 
@@ -2871,6 +2908,11 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if(otherET.getVisibility()== View.VISIBLE && (otherET.getText().toString().isEmpty() || otherET.getText().toString().equalsIgnoreCase("") || otherET.getText().toString().equalsIgnoreCase(" "))) {
+            otherET.setError(getString(R.string.error_field_required));
+            return;
+        }
+
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
@@ -3112,11 +3154,25 @@ public class IdentificationActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             String helplineInfoValue = "";
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
-            else
-                helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : mHelplineInfo.getSelectedItem().toString();
 
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            {
+                if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select"))
+                    helplineInfoValue = "Not provided";
+                else if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    helplineInfoValue = "Other: "+ otherET.getText();
+                else
+                    helplineInfoValue = StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
+            }
+            else
+            {
+                if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select"))
+                    helplineInfoValue = "Not provided";
+                else if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    helplineInfoValue = "Other: "+ otherET.getText();
+                else
+                    helplineInfoValue = mHelplineInfo.getSelectedItem().toString();
+            }
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
@@ -3601,7 +3657,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+            return;
         }
 
         if(callInfoLayout.getVisibility()== View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
@@ -3611,6 +3667,11 @@ public class IdentificationActivity extends AppCompatActivity {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
             mHelplineInfo.requestFocus();
+            return;
+        }
+
+        if(otherET.getVisibility()== View.VISIBLE && (otherET.getText().toString().isEmpty() || otherET.getText().toString().equalsIgnoreCase("") || otherET.getText().toString().equalsIgnoreCase(" "))) {
+            otherET.setError(getString(R.string.error_field_required));
             return;
         }
 
@@ -4061,6 +4122,11 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if(otherET.getVisibility()== View.VISIBLE && (otherET.getText().toString().isEmpty() || otherET.getText().toString().equalsIgnoreCase("") || otherET.getText().toString().equalsIgnoreCase(" "))) {
+            otherET.setError(getString(R.string.error_field_required));
+            return;
+        }
+
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
@@ -4300,11 +4366,25 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCurrentPhotoPath = patientdto.getPatient_photo();
 
             String helplineInfoValue = "";
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
-            else
-                helplineInfoValue = mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select") ? getString(R.string.not_provided) : mHelplineInfo.getSelectedItem().toString();
 
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            {
+                if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select"))
+                    helplineInfoValue = "Not provided";
+                else if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    helplineInfoValue = "Other: "+ otherET.getText();
+                else
+                    helplineInfoValue = StringUtils.switch_hi_helplineInfo(mHelplineInfo.getSelectedItem().toString());
+            }
+            else
+            {
+                if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Select"))
+                    helplineInfoValue = "Not provided";
+                else if(mHelplineInfo.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    helplineInfoValue = "Other: "+ otherET.getText();
+                else
+                    helplineInfoValue = mHelplineInfo.getSelectedItem().toString();
+            }
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));

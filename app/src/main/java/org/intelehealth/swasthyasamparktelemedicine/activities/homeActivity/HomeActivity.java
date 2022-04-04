@@ -41,6 +41,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.swasthyasamparktelemedicine.activities.dailyPerformance.DailyPerformanceActivity;
 import org.intelehealth.swasthyasamparktelemedicine.activities.missedCallActivity.MissedCallActivity;
 import org.intelehealth.swasthyasamparktelemedicine.appointment.AppointmentListingActivity;
 import org.intelehealth.swasthyasamparktelemedicine.activities.myCases.MyCasesActivity;
@@ -450,6 +451,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.settingsOption:
                 settings();
                 return true;
+            case R.id.dailyReportOption:
+                dailyPerformance();
+                return true;
             case R.id.updateProtocolsOption: {
 
 
@@ -673,6 +677,11 @@ public class HomeActivity extends AppCompatActivity {
      */
     public void settings() {
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void dailyPerformance() {
+        Intent intent = new Intent(this, DailyPerformanceActivity.class);
         startActivity(intent);
     }
 

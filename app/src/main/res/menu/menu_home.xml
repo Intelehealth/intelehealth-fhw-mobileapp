@@ -27,6 +27,12 @@
         <!--android:id="@+id/restoreOption"-->
         <!--android:orderInCategory="125"-->
         <!--android:title="Restore" />-->
+
+        <item
+            android:id="@+id/dailyReportOption"
+            android:orderInCategory="150"
+            android:title="@string/daily_performance" />
+
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"

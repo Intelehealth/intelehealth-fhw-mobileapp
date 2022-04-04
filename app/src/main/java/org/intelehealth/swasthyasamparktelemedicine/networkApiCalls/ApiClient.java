@@ -24,12 +24,16 @@ public class ApiClient {
 
 
     public static void changeApiBaseUrl(String newApiBaseUrl) {
-        apiBaseUrl = newApiBaseUrl;
-        builder = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(apiBaseUrl);
+        try {
+            apiBaseUrl = newApiBaseUrl;
+            builder = new Retrofit.Builder()
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .baseUrl(apiBaseUrl);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
 
     }
 
