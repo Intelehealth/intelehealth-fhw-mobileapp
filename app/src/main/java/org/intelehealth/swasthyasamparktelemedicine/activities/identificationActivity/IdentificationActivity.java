@@ -3657,7 +3657,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+            return;
         }
 
         if(callInfoLayout.getVisibility()== View.VISIBLE && mHelplineInfo.getSelectedItemPosition()==0)
