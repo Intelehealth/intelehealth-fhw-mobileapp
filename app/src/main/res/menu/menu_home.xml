@@ -31,6 +31,7 @@
         <item
             android:id="@+id/dailyReportOption"
             android:orderInCategory="150"
+            android:visible="false"
             android:title="@string/daily_performance" />
 
         <item
