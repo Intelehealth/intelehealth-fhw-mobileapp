@@ -164,7 +164,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private TextView phoneView;
     private boolean isMedicalAdvice;
 
-    RadioButton mIncoming;
+    /*RadioButton mIncoming;
     RadioButton mOutgoing;
     Spinner mHelplineInfo;
     LinearLayout callInfoLayout;
@@ -173,7 +173,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String mCallType = "";
     Button saveButton;
     PatientDTO patientdto = new PatientDTO();
-    EditText otherET;
+    EditText otherET;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,7 +274,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    private void storeData() {
+    /*private void storeData() {
         String helplineInfoValue = "";
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -326,7 +326,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private void startNewVisit()
     {
@@ -547,12 +547,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("Helpline_Info")) {
+                /*if (name.equalsIgnoreCase("Helpline_Info")) {
                     patient_new.setHelplineInfo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Call_Type")) {
                     patient_new.setCallType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
 
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -574,7 +574,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         idCursor1.close();
 
-        saveButton = findViewById(R.id.saveButton);
+        /*saveButton = findViewById(R.id.saveButton);
         saveButton.setEnabled(false);
         saveButton.setClickable(false);
         saveButton.setTextColor(getResources().getColor(R.color.divider));
@@ -597,7 +597,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, R.string.no_values, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
-        }
+        }*/
 
         photoView = findViewById(R.id.imageView_patient);
         idView = findViewById(R.id.textView_ID);
@@ -799,7 +799,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         phoneView.setText(patient_new.getPhone_number());
 
-        if(patient_new.getCallType()!=null) {
+       /* if(patient_new.getCallType()!=null) {
             mCallType = patient_new.getCallType();
             if (patient_new.getCallType().equals("Outgoing")) {
                 mOutgoing.setChecked(true);
@@ -848,10 +848,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         else {
             mHelplineInfo.setSelection(0);
             otherET.setVisibility(View.GONE);
-        }
+        }*/
 
-
-        callRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        /*callRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 saveButton.setText(getResources().getString(R.string.button_save));
@@ -939,12 +938,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                     storeData();
                 }
             }
-        });
+        });*/
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
+                /*if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
                     otherET.setError(getString(R.string.error_field_required));
                     return;
                 }
@@ -952,14 +951,15 @@ public class PatientDetailActivity extends AppCompatActivity {
                     Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
                 else {
                     startNewVisit();
-                }
+                }*/
+                startNewVisit();
             }
         });
 
         newAdvice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
+                /*if(otherET.getVisibility()== View.VISIBLE && otherET.getText().toString().isEmpty() && otherET.getText().toString().equalsIgnoreCase("")) {
                     otherET.setError(getString(R.string.error_field_required));
                     return;
                 }
@@ -967,7 +967,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     Toast.makeText(PatientDetailActivity.this, getResources().getString(R.string.fill_all_details), Toast.LENGTH_LONG).show();
                 else {
                     MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
-                }
+                }*/
+                MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+
             }
         });
 
@@ -989,7 +991,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
-        otherET.addTextChangedListener(new TextWatcher() {
+        /*otherET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -1005,7 +1007,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        });*/
+
         //mobile calling is supported...
         calling.setOnClickListener(new View.OnClickListener() {
             @Override
