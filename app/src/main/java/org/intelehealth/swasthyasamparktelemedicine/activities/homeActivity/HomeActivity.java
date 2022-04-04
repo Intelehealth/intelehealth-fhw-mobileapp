@@ -172,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
         c8 = findViewById(R.id.cardview_my_cases);
         cvMedicalAdvice = findViewById(R.id.cardView_medical_advice);
         cvMissedCall = findViewById(R.id.cardview_missedCallRecordings);
-
+        cvMissedCall.setVisibility(View.GONE);
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);*/
