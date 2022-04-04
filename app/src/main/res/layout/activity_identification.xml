@@ -213,7 +213,8 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:baselineAligned="false">
 
                                     <EditText
                                         android:id="@+id/identification_age"
@@ -224,11 +225,12 @@
                                         android:drawableLeft="@drawable/event_icon"
                                         android:drawablePadding="10dp"
                                         android:ems="10"
+                                        android:digits="0123456789"
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_age"
                                         android:imeOptions="actionUnspecified"
-                                        android:inputType="number"
+                                        android:inputType="phone"
                                         android:maxLines="1"
                                         android:singleLine="true"
                                         android:textSize="@dimen/card_content_sub_text_size" />

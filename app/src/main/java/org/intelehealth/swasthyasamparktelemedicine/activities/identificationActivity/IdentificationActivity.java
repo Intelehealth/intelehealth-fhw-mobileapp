@@ -292,6 +292,7 @@ public class IdentificationActivity extends AppCompatActivity {
         });*/
 
         mAge = findViewById(R.id.identification_age);
+
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
