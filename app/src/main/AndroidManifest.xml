@@ -39,11 +39,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity,UnusedAttribute">
         <activity
+            android:name=".activities.dailyPerformance.DailyPerformanceActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.missedCallActivity.MissedCallActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"

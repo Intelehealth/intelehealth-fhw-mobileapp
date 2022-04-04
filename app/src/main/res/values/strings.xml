@@ -772,5 +772,6 @@
     <string name="missed_calls">Missed Calls</string>
     <string name="saved">Saved!</string>
     <string name="no_calls">No outgoing missed calls present.</string>
+    <string name="daily_performance">Daily Performance Report</string>
 
 </resources>
