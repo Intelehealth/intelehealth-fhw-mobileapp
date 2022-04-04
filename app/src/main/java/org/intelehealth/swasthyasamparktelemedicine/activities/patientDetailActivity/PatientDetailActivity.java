@@ -1822,7 +1822,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                storeCallResponse();
+//                storeCallResponse();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
