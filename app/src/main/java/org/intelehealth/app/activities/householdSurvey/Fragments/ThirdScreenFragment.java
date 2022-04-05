@@ -159,6 +159,7 @@ public class ThirdScreenFragment extends Fragment {
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.GONE);
                 binding.waterSourceDistanceRadioGroup.setVisibility(View.GONE);
                 binding.waterSourceDistanceTextView.setVisibility(View.GONE);
+                binding.otherSourcesOfWaterLayout.setVisibility(View.GONE);
 
                 binding.waterSupplyAvailabilityTextView.setVisibility(View.VISIBLE);
                 binding.waterSupplyAvailabilityEditText.setVisibility(View.VISIBLE);
