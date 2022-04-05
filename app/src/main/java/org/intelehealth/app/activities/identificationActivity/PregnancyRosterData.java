@@ -1,25 +1,25 @@
 package org.intelehealth.app.activities.identificationActivity;
 
 public class PregnancyRosterData {
-    private String numberOfTimesPregnant;
-    private String anyPregnancyOutcomesInThePastTwoYears;
-    private String numberOfPregnancyOutcomePastTwoYrs;
-    private String pregnancyOutcome;
-    private String isChildAlive;
-    private String isPreTerm;
-    private String yearOfPregnancyOutcome;
-    private String monthsOfPregnancy;
-    private String monthsBeenPregnant;
-    private String placeOfDelivery;
-    private String typeOfDelivery;
-    private String focalFacilityForPregnancy;
-    private String facilityName;
-    private String singleMultipleBirths;
-    private String babyAgeDied;
-    private String sexOfBaby;
-    private String pregnancyPlanned;
-    private String highRiskPregnancy;
-    private String pregnancyComplications;
+    private String numberOfTimesPregnant = "";
+    private String anyPregnancyOutcomesInThePastTwoYears = "";
+    private String numberOfPregnancyOutcomePastTwoYrs = "";
+    private String pregnancyOutcome = "";
+    private String isChildAlive = "";
+    private String isPreTerm = "";
+    private String yearOfPregnancyOutcome = "";
+    private String monthsOfPregnancy = "";
+    private String monthsBeenPregnant = "";
+    private String placeOfDelivery = "";
+    private String typeOfDelivery = "";
+    private String focalFacilityForPregnancy = "";
+    private String facilityName = "";
+    private String singleMultipleBirths = "";
+    private String babyAgeDied = "";
+    private String sexOfBaby = "";
+    private String pregnancyPlanned = "";
+    private String highRiskPregnancy = "";
+    private String pregnancyComplications = "";
 
     public String getNumberOfTimesPregnant() {
         return numberOfTimesPregnant;
