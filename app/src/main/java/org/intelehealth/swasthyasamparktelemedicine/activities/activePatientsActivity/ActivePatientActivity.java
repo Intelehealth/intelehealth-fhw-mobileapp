@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.swasthyasamparktelemedicine.R;
 import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
@@ -52,6 +53,7 @@ import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
 import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
+import org.intelehealth.swasthyasamparktelemedicine.widget.materialprogressbar.CustomProgressDialog;
 
 public class ActivePatientActivity extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
@@ -65,8 +67,10 @@ public class ActivePatientActivity extends AppCompatActivity {
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private ActivePatientAdapter mActivePatientAdapter;
-
+    List<ActivePatientModel> allPatientsFromDB = new ArrayList<>();
+    List<ActivePatientModel> activePatientModels =  new ArrayList<>();
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
+    CustomProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +91,8 @@ public class ActivePatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_active_patient);
         setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
-
+        customProgressDialog = new CustomProgressDialog(ActivePatientActivity.this);
+        customProgressDialog.show();
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.ic_sort_white_24dp);
@@ -102,6 +107,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         textView = findViewById(R.id.textviewmessage);
+        textView.setVisibility(View.GONE);
         recyclerView = findViewById(R.id.today_patient_recycler_view);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
@@ -125,14 +131,27 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
-            textView.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            List<ActivePatientModel> activePatientModels = doQuery(offset);
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID);
-            recyclerView.setAdapter(mActivePatientAdapter);
+            Executors.newSingleThreadExecutor().execute(() -> {
+                // todo: background tasks
+                activePatientModels = doQuery(offset);
+                runOnUiThread(() -> {
+                    // todo: update your ui / view in activity
+                    if (activePatientModels.size()>0) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID);
+                        recyclerView.setAdapter(mActivePatientAdapter);
+                    }
+                    else
+                    {
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    getVisits();
+                    customProgressDialog.dismiss();
+
+                });
+            });
         }
 
-        getVisits();
     }
 
     @Override
