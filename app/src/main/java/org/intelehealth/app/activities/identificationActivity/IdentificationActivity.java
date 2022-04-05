@@ -4540,13 +4540,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
 //        }
         healthIssuesList.add(survey);
-        Logger.logD("Log", new Gson().toJson(healthIssuesList));
         adapter = new HouseholdSurveyAdapter(healthIssuesList, this, sessionManager.getAppLanguage(), this);
         binding.mainViewPager.setAdapter(adapter);
         binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.mainViewPager);
-        Log.d("1066", "hg" + healthIssuesList.size());
     }
 
     @Override

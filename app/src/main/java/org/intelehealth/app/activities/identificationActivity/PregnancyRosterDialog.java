@@ -559,7 +559,10 @@ public class PregnancyRosterDialog extends DialogFragment {
                 data.setFocalFacilityForPregnancy(binding.etPregnancyblockOther.getText().toString());
                 Log.v(TAG, "focal_other: " + data.getFocalFacilityForPregnancy());
             } else {
-                data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block(binding.spinnerFocalBlock.getSelectedItem().toString(), sessionManager.getAppLanguage()));
+                String focalBlock = binding.spinnerFocalBlock.getSelectedItem().toString();
+                if (!focalBlock.equalsIgnoreCase("Select Block")) {
+                    data.setFocalFacilityForPregnancy(StringUtils.getFocalFacility_Block(focalBlock, sessionManager.getAppLanguage()));
+                }
             }
 
             data.setFacilityName(binding.facilityNameEditText.getText().toString());

@@ -297,7 +297,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -339,7 +339,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
                     android:hint="@string/average_cost_incurred_on_medicines_per_episode"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
