@@ -826,9 +826,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().
-
-                setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

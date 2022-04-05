@@ -54,11 +54,11 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if(period.getYears() > 0)
+        if (period.getYears() > 0)
             xyears = period.getYears();
         else
             xyears = 0;
-        if(period.getMonths() > 0)
+        if (period.getMonths() > 0)
             xmonths = period.getMonths();
         else
             xmonths = 0;
@@ -117,6 +117,7 @@ public class DateAndTimeUtils {
         }
 
     }
+
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
@@ -147,22 +148,21 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
-        if(period.getMonths() > 0) {
+        if (period.getMonths() > 0) {
             tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
             //xmonths = String.valueOf(period.getMonths());
         }
-        if(period.getDays() > 0)
+        if (period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
         age = tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
-
 
 
     public static String getAgeInYearMonth(String s) {
@@ -190,14 +190,14 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if(period.getYears() > 0)
-            tyears = ""+period.getYears();
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears();
 
-        if(period.getMonths() > 0)
-            tmonth = ""+period.getMonths();
+        if (period.getMonths() > 0)
+            tmonth = "" + period.getMonths();
 
-        if(period.getDays() > 0)
-            tdays = ""+period.getDays();
+        if (period.getDays() > 0)
+            tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -233,7 +233,7 @@ public class DateAndTimeUtils {
         String tyears = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
@@ -361,20 +361,19 @@ public class DateAndTimeUtils {
         int mDOBDay = today.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog mDOBPicker = new DatePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        SimpleDateFormat simpleDateFormat = null;
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag(sessionManager.getAppLanguage()));
-                        } else {
-                            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                        }
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        String format = simpleDateFormat.format(calendar.getTime());
-                        etFollowUpDate.setText(format);
-                    }
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    SimpleDateFormat simpleDateFormat = null;
+                    simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+//
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+//                        simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag(sessionManager.getAppLanguage()));
+//                    } else {
+//                        simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+//                    }
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, monthOfYear, dayOfMonth);
+                    String format = simpleDateFormat.format(calendar.getTime());
+                    etFollowUpDate.setText(StringUtils.en__mr_dob(format));
                 }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
