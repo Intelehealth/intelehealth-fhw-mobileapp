@@ -82,7 +82,7 @@ public class DraftSurveyActivity extends AppCompatActivity {
         boolean draft = false;
         db.beginTransaction();
         try {
-            String query = "SELECT DISTINCT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "'";
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "' GROUP BY person_attribute_type_uuid";
             Cursor cursor = db.rawQuery(query, null, null);
             Attribute attribute = new Attribute();
             if (cursor.moveToFirst() && !cursor.isClosed()) {
@@ -119,19 +119,6 @@ public class DraftSurveyActivity extends AppCompatActivity {
                         draft = true;
                     } else if (name.equalsIgnoreCase("runningWaterStatus") && condition) {
                         draft = true;
-//                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("Yes")) {
-//                        if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay") && condition) {
-//                                draft = true;
-//                        } else if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek") && condition) {
-//                            draft = true;
-//                        }
-//                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("No")) {
-////                        draft = true;
-//                        if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
-//                            draft = true;
-//                        } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
-//                            draft = true;
-//                        }
                     } else if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
                         draft = true;
                     } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
@@ -195,14 +182,13 @@ public class DraftSurveyActivity extends AppCompatActivity {
                     } else if (name.equalsIgnoreCase("nearestTertiaryCareFacility") && condition) {
                         draft = true;
                     }
-//                        } else if (name.equalsIgnoreCase("No_Pregnancy_Outcome_2years") && condition) {
-//                            draft = true;
 
                     if (draft) {
                         PatientDTO patientDTO = new PatientDTO();
                         String patientSelection = "uuid=?";
                         String[] patientArgs = {patientuuid};
-                        Cursor idCursor = db.query("tbl_patient", null, patientSelection, patientArgs, null, null, null);
+                        Cursor idCursor = db.query("tbl_patient", null, patientSelection, patientArgs,
+                                null, null, null);
                         if (idCursor.moveToFirst()) {
                             do {
                                 patientDTO.setUuid(patientuuid);
