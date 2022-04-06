@@ -144,6 +144,11 @@ public class ThirdScreenFragment extends Fragment {
             if (checkedId == R.id.running_water_no_checkbox) {
                 binding.primarySourceOfWaterTextView.setVisibility(View.VISIBLE);
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.VISIBLE);
+
+                if (binding.otherCheckbox.isChecked()) {
+                    binding.otherSourcesOfWaterLayout.setVisibility(View.VISIBLE);
+                }
+
                 binding.waterSourceDistanceRadioGroup.setVisibility(View.VISIBLE);
                 binding.waterSourceDistanceTextView.setVisibility(View.VISIBLE);
 
@@ -159,6 +164,7 @@ public class ThirdScreenFragment extends Fragment {
                 binding.primarySourceOfWaterCheckboxLinearLayout.setVisibility(View.GONE);
                 binding.waterSourceDistanceRadioGroup.setVisibility(View.GONE);
                 binding.waterSourceDistanceTextView.setVisibility(View.GONE);
+                binding.otherSourcesOfWaterLayout.setVisibility(View.GONE);
 
                 binding.waterSupplyAvailabilityTextView.setVisibility(View.VISIBLE);
                 binding.waterSupplyAvailabilityEditText.setVisibility(View.VISIBLE);
@@ -255,24 +261,42 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
-        //primarySourceOfRunningWater
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
+        if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId()) {
+            //waterSupplyAvailabilityHrsPerDay
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
+            patientAttributesDTO.setValue(binding.waterSupplyAvailabilityEditText.getText().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        String otherSourceOfRunningWater;
-        if (binding.otherCheckbox.isChecked()) {
-            otherSourceOfRunningWater = binding.otherSourcesOfWaterEditText.getText().toString();
+            //waterSupplyAvailabilityDaysPerWeek
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
+            patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
         } else {
-            otherSourceOfRunningWater = "";
-        }
+            //primarySourceOfRunningWater
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
 
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
-                sessionManager.getAppLanguage(),
-                getContext(),
-                otherSourceOfRunningWater));
-        patientAttributesDTOList.add(patientAttributesDTO);
+            String otherSourceOfRunningWater;
+            if (binding.otherCheckbox.isChecked()) {
+                otherSourceOfRunningWater = binding.otherSourcesOfWaterEditText.getText().toString();
+            } else {
+                otherSourceOfRunningWater = "";
+            }
+
+            patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
+                    sessionManager.getAppLanguage(),
+                    getContext(),
+                    otherSourceOfRunningWater));
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
 
         //waterSourceDistance
         if (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() != -1) {
@@ -291,22 +315,6 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setValue(distance);
             patientAttributesDTOList.add(patientAttributesDTO);
         }
-
-        //waterSupplyAvailabilityHrsPerDay
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
-        patientAttributesDTO.setValue(binding.waterSupplyAvailabilityEditText.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        //waterSupplyAvailabilityDaysPerWeek
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
-        patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
 
         //householdBankAccountStatus
         if (binding.bankAccountRadioGroup.getCheckedRadioButtonId() != -1) {

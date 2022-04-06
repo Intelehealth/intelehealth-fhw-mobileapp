@@ -5,37 +5,37 @@ import com.google.gson.annotations.SerializedName;
 
 public class HealthIssues {
 
-//    private String householdMemberName;
+    //    private String householdMemberName;
     @SerializedName("healthIssueReported")
     @Expose
-    private String healthIssueReported;
+    private String healthIssueReported = "";
     @SerializedName("numberOfEpisodesInTheLastYear")
     @Expose
-    private String numberOfEpisodesInTheLastYear;
+    private String numberOfEpisodesInTheLastYear = "";
     @SerializedName("primaryHealthcareProviderValue")
     @Expose
-    private String primaryHealthcareProviderValue;
+    private String primaryHealthcareProviderValue = "";
     @SerializedName("firstLocationOfVisit")
     @Expose
-    private String firstLocationOfVisit;
+    private String firstLocationOfVisit = "";
     @SerializedName("referredTo")
     @Expose
-    private String referredTo;
+    private String referredTo = "";
     @SerializedName("modeOfTransportation")
     @Expose
-    private String modeOfTransportation;
+    private String modeOfTransportation = "";
     @SerializedName("averageCostOfTravelAndStayPerEpisode")
     @Expose
-    private String averageCostOfTravelAndStayPerEpisode;
+    private String averageCostOfTravelAndStayPerEpisode = "";
     @SerializedName("averageCostOfConsultation")
     @Expose
-    private String averageCostOfConsultation;
+    private String averageCostOfConsultation = "";
     @SerializedName("averageCostOfMedicine")
     @Expose
-    private String averageCostOfMedicine;
+    private String averageCostOfMedicine = "";
     @SerializedName("scoreForExperienceOfTreatment")
     @Expose
-    private String scoreForExperienceOfTreatment;
+    private String scoreForExperienceOfTreatment = "";
 
     public String getHealthIssueReported() {
         return healthIssueReported;

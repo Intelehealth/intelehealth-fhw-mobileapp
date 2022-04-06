@@ -186,7 +186,7 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
         }
 
         private Boolean checkIfEmpty(String text) {
-            return text == null || text.equals(SELECT) || text.equals(SELECT_BLOCK);
+            return text == null || text.equals(SELECT) || text.equals(SELECT_BLOCK) || text.equals("");
         }
     }
 }

@@ -826,9 +826,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().
-
-                setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4545,7 +4543,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.mainViewPager);
-        Log.d("1066", "hg" + healthIssuesList.size());
     }
 
     @Override

@@ -68,7 +68,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             nregaCheckbox, seasonalLaborCheckbox, pensionCheckbox, remittancesCheckbox, otherCheckbox;
     SessionManager sessionManager = null;
     String patientUuid;
-    ImageButton next_button,prev_button;
+    ImageButton next_button, prev_button;
     private static final String TAG = SecondScreenFragment.class.getSimpleName();
     TextInputLayout otherTIL;
     TextInputEditText otherEditText;
@@ -305,27 +305,35 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 //        }
 
         //householdHeadReligion
-       // if (binding.religionDropDown.getSelectedItemPosition() != 0) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
-            if (binding.otherReligionLayout.getVisibility() == View.GONE)
-                patientAttributesDTO.setValue(getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
-            else
-                patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-      //  }
+        // if (binding.religionDropDown.getSelectedItemPosition() != 0) {
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
+        if (binding.otherReligionLayout.getVisibility() == View.GONE) {
+            String religion = getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage());
+            if (checkIfEmpty(religion))
+                religion = "";
+            patientAttributesDTO.setValue(religion);
+        } else
+            patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //  }
 
         //householdHeadCaste
-       // if (binding.casteDropDown.getSelectedItemPosition() != 0) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
-            patientAttributesDTO.setValue(getHouseholdCaste(binding.casteDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-      //  }
+        // if (binding.casteDropDown.getSelectedItemPosition() != 0) {
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
+        String caste = getHouseholdCaste(binding.casteDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage());
+        if (checkIfEmpty(caste)) {
+            caste = "";
+        }
+
+        patientAttributesDTO.setValue(caste);
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //  }
 
         //noOfSmartphones
         patientAttributesDTO = new PatientAttributesDTO();
@@ -584,5 +592,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
             }
 
         }
+    }
+
+    private Boolean checkIfEmpty(String text) {
+        return text.equals(getString(R.string.select));
     }
 }
