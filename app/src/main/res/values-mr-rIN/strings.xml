@@ -843,7 +843,7 @@
     <string name="caste_dont_know">माहित नाही</string>
     <string name="caste_refused_to_answer">उत्तर देण्यास नकार दिला</string>
     <string name="number_of_smartphones_in_the_household">घरामध्ये स्मार्टफोनची संख्या</string>
-    <string name="number_of_feature_phones_in_the_household">घरामध्ये वैशिष्ट्य फोनची संख्या</string>
+    <string name="number_of_feature_phones_in_the_household">घरामध्ये साध्या/ फीचर फोनची संख्या</string>
     <string name="how_many_earning_members_are_there_in_the_household">घरात किती सदस्य कमावतात?</string>
     <string name="what_is_the_primary_source_of_income_in_the_household">घरात / कुटुंबात उत्पन्नाचे प्राथमिक स्त्रोत काय आहेत?</string>
     <string name="sale_of_cereal_production">अन्नधान्य उत्पादन (गहू, मका, बार्ली), नगदी  पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री</string>
@@ -919,11 +919,11 @@
     <string name="more_than_twenty_five_hundred">2,500 पेक्षा जास्त</string>
     <string name="yes_card_seen">होय, कार्ड पाहिले</string>
     <string name="yes_card_not_seen">होय, कार्ड पाहिले नाही</string>
-    <string name="no_card">कोणताही कार्ड नाही</string>
+    <string name="no_card">कोणतेही कार्ड नाही</string>
     <string name="DO_NOT_KNOW">माहित नाही</string>
     <string name="does_this_household_have_a_bpl_card_coupon">या घरात बीपीएल कार्ड / कूपन आहे का?</string>
     <string name="does_this_household_have_a_antodaya_card">या घरात अन्त्योदय कार्ड / कूपन आहे का?</string>
-    <string name="does_this_household_have_a_rsby_card">या घरात राष्ट्रीय स्वस्थ बीमा योजने (आरएसबीबी) कार्ड आहे का?</string>
+    <string name="does_this_household_have_a_rsby_card">या घरात राष्ट्रीय स्वास्थ्य बीमा योजना (आरएसबीवाय ) कार्ड आहे का?</string>
     <string name="does_this_household_have_a_mgnrega_card">या घरात एक मनरेगा कार्ड आहे का?</string>
 
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">मुख्यतः स्वयंपाक करण्यासाठी वापरले जाणारे इंधन</string>
@@ -964,7 +964,7 @@
     <string name="surface_water">पृष्ठभागाचे पाणी</string>
     <string name="common_hand_pump">सामान्य हात पंप/ हापसा</string>
     <string name="hand_pump_at_home"> हँड पंप (घरी)</string>
-    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">पाणी प्यायला देण्यासाठी आपण सहसा पाण्यावर काय करता?</string>
+    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">पिण्याचे पाणी सुरक्षित/शुद्ध करण्यासाठी आपण काय करता?</string>
     <string name="boil">उकळणे</string>
     <string name="use_alum">तुरटी वापरा</string>
     <string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स</string>
@@ -1131,8 +1131,8 @@
     <string name="what_is_was_the_sex_of_name">%1$s लिंग काय आहे?</string>
     <string name="how_old_was_name_when_he_or_she_died">जेव्हा तो / ती मरण पावला तेव्हा किती वर्षांचा होता? जर \'1 पेक्षा कमी,\' चौकशी: किती महिने जुने %1$s होते?</string>
     <string name="was_this_pregnancy_planned">तुम्ही ठरवून गरोदर राहिला होता का? (ही गर्भधारणा नियोजित होती का)</string>
-    <string name="were_you_identified_as_a_high_risk_pregnancy_case">तुमची ओळख उच्च-जोखीम गर्भधारणा प्रकरण म्हणून झाली होती का?</string>
-    <string name="were_any_complications_identified_at_the_time_of_delivery">प्रसूतीच्या वेळी कोणतीही कॉम्प्लिकेशन ओळखली गेली?</string>
+    <string name="were_you_identified_as_a_high_risk_pregnancy_case">तुमचे गरोदरपण उच्च-जोखीम / (हाय-रिस्क प्रेग्नन्सी) प्रकरण होते/ आहे का?</string>
+    <string name="were_any_complications_identified_at_the_time_of_delivery">प्रसूतीच्या वेळी काही गुंतागुंती/ कॉम्प्लिकेशन्स झाल्या होत्या का?</string>
 
     <!--    HealthServUtilizationRoster -->
     <string name="name_of_member_of_household">घरगुती सदस्याचे नाव</string>
@@ -1155,7 +1155,7 @@
     <string name="staff_nurse">कर्मचारी नर्स</string>
     <string name="anm">एएनएम</string>
     <string name="asha">आशा</string>
-    <string name="aww">aww</string>
+    <string name="aww">अंगणवाडी कार्यकर्ता</string>
     <string name="rmp">आरएमपी</string>
     <string name="ayush_doctor">अयूश डॉक्टर</string>
     <string name="homeopath_doctor">होमिओपॅथ डॉक्टर</string>
@@ -1194,7 +1194,7 @@
 
     <string name="average_cost_incurred_on_travel_and_stay_per_episode">प्रत्येक वेळी अशा आजारपणासाठी सुविधाकेंद्राला गेल्यावर साधारण खर्च किती येतो ? (प्रवास, राहणे, खाणे)</string>
     <string name="average_cost_incurred_on_consultation_fees_per_episode">पप्रत्येक भेटीवेळी, सल्ला/ तपासणी साठी साधारण किती फीस लागते / खर्च येतो ?</string>
-    <string name="average_cost_incurred_on_medicines_per_episode">प्रति एपिसोड औषधांवर होणारा सरासरी खर्च</string>
+    <string name="average_cost_incurred_on_medicines_per_episode">प्रत्येक वेळी अशा तक्रारींवर/ आजारपणावर होणार सरासरी खर्च</string>
     <string name="score_for_experience_of_treatment">उपचार अनुभवासाठी स्कोअर</string>
     <string name="score_dissatisfied">असंतुष्ट</string>
     <string name="score_below_average">सरासरी खाली</string>
@@ -1294,8 +1294,8 @@
     <string name="delete_dialog_button">हटवा</string>
 
     <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
-    <string name="surveyDialogTitle">जतन यशस्वी</string>
-    <string name="surveyDialogMessage">सर्वेक्षण यशस्वीरित्या जोडले</string>
+    <string name="surveyDialogTitle">यशस्वीरित्या सेव्ह झाले</string>
+    <string name="surveyDialogMessage">सर्वे यशस्वीरित्या जोडला गेला</string>
 
     <string name="surgane">सुरगाने</string>
     <string name="sadadapada">सादडपाडा</string>
