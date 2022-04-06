@@ -23,6 +23,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -81,7 +82,7 @@ public class DraftSurveyActivity extends AppCompatActivity {
         boolean draft = false;
         db.beginTransaction();
         try {
-            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "'";
+            String query = "SELECT DISTINCT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "'";
             Cursor cursor = db.rawQuery(query, null, null);
             Attribute attribute = new Attribute();
             if (cursor.moveToFirst() && !cursor.isClosed()) {
@@ -118,20 +119,27 @@ public class DraftSurveyActivity extends AppCompatActivity {
                         draft = true;
                     } else if (name.equalsIgnoreCase("runningWaterStatus") && condition) {
                         draft = true;
-                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("Yes")) {
-//                        draft = true;
-                        if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek") && condition) {
-                            draft = true;
-                        }
-                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("No")) {
-//                        draft = true;
-                        if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
-                            draft = true;
-                        }
+//                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("Yes")) {
+//                        if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay") && condition) {
+//                                draft = true;
+//                        } else if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek") && condition) {
+//                            draft = true;
+//                        }
+//                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("No")) {
+////                        draft = true;
+//                        if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
+//                            draft = true;
+//                        } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
+//                            draft = true;
+//                        }
+                    } else if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek") && condition) {
+                        draft = true;
                     } else if (name.equalsIgnoreCase("householdBankAccountStatus") && condition) {
                         draft = true;
                     } else if (name.equalsIgnoreCase("householdCultivableLand") && condition) {
@@ -189,37 +197,36 @@ public class DraftSurveyActivity extends AppCompatActivity {
                     }
 //                        } else if (name.equalsIgnoreCase("No_Pregnancy_Outcome_2years") && condition) {
 //                            draft = true;
-                }
 
-                if (draft) {
-                    PatientDTO patientDTO = new PatientDTO();
-                    String patientSelection = "uuid=?";
-                    String[] patientArgs = {patientuuid};
-                    Cursor idCursor = db.query("tbl_patient", null, patientSelection, patientArgs, null, null, null);
-                    if (idCursor.moveToFirst()) {
-                        do {
-                            patientDTO.setUuid(patientuuid);
-                            patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
-                            patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
-                            patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
-                            patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
-                            patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
-                        } while (idCursor.moveToNext());
-                        idCursor.close();
+                    if (draft) {
+                        PatientDTO patientDTO = new PatientDTO();
+                        String patientSelection = "uuid=?";
+                        String[] patientArgs = {patientuuid};
+                        Cursor idCursor = db.query("tbl_patient", null, patientSelection, patientArgs, null, null, null);
+                        if (idCursor.moveToFirst()) {
+                            do {
+                                patientDTO.setUuid(patientuuid);
+                                patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                                patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                                patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                                patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                                patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                            } while (idCursor.moveToNext());
+                            idCursor.close();
+                        }
+                        patientDTOList.add(patientDTO);
+                        cursor.close();
+                    } else {
+                        if (!cursor.isClosed())
+                            cursor.moveToNext();
                     }
-                    patientDTOList.add(patientDTO);
-                    cursor.close();
-                } else {
-                    if (!cursor.isClosed())
-                        cursor.moveToNext();
                 }
             }
 
             if (!cursor.isClosed())
                 cursor.close();
             db.setTransactionSuccessful();
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();

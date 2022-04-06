@@ -277,7 +277,34 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
             patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
-        } else {
+
+            // For No, we're adding default values
+            //primarySourceOfRunningWater
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
+
+            String otherSourceOfRunningWater = "";
+            patientAttributesDTO.setValue("No primary source of running water");
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //waterSourceDistance
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+
+//                String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
+//                        (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
+//                                binding.waterSourceDistanceMeter.getId() ?
+//                                getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
+//                                getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
+//                        );
+
+            patientAttributesDTO.setValue("No water source distance");
+            patientAttributesDTOList.add(patientAttributesDTO);
+        } else if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterNoCheckbox.getId()) {
             //primarySourceOfRunningWater
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -296,23 +323,40 @@ public class ThirdScreenFragment extends Fragment {
                     getContext(),
                     otherSourceOfRunningWater));
             patientAttributesDTOList.add(patientAttributesDTO);
-        }
 
-        //waterSourceDistance
-        if (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() != -1) {
+            //waterSourceDistance
+            if (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() != -1) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+
+                String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
+                        (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
+                                binding.waterSourceDistanceMeter.getId() ?
+                                getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
+                                getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
+                        );
+
+                patientAttributesDTO.setValue(distance);
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            // For Yes, we're adding default values to avoid data discrepancy in local db
+            //waterSupplyAvailabilityHrsPerDay
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
+            patientAttributesDTO.setValue("No water supply for days");
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-            String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
-                    (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
-                            binding.waterSourceDistanceMeter.getId() ?
-                            getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
-                            getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
-                    );
-
-            patientAttributesDTO.setValue(distance);
+            //waterSupplyAvailabilityDaysPerWeek
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
+            patientAttributesDTO.setValue("No water supply for week");
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 
