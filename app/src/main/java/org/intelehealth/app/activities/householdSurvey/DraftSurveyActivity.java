@@ -70,7 +70,7 @@ public class DraftSurveyActivity extends AppCompatActivity {
         }
 
         recyclerView = findViewById(R.id.recycler_draftSurvey);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         draftSurveyAdapter = new SearchPatientAdapter(patientDTOList, context);
         recyclerView.setAdapter(draftSurveyAdapter);
     }
@@ -94,125 +94,132 @@ public class DraftSurveyActivity extends AppCompatActivity {
                             attribute.getValue().equalsIgnoreCase("[]") ||
                             attribute.getValue().equalsIgnoreCase("Select"));
 
-                        if (name.equalsIgnoreCase("householdHeadName") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdHeadGender") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdHeadReligion") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdHeadCaste") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("noOfSmartphones") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("noOfFeaturePhones") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("noOfEarningMembers") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("primarySourceOfIncome") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdElectricityStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerWeek") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("runningWaterStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdBankAccountStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdCultivableLand") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("averageAnnualHouseholdIncome") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("monthlyFoodExpenditure") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("annualHealthExpenditure") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("annualEducationExpenditure") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("annualClothingExpenditure") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("monthlyIntoxicantsExpenditure") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdBPLCardStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdAntodayaCardStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdRSBYCardStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdMGNREGACardStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("cookingFuelType") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("mainLightingSource") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("mainDrinkingWaterSource") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("saferWaterProcess") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdToiletFacility") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("householdOpenDefecationStatus") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHrs") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("subCentreDistance") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestPrimaryHealthCenterDistance") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestCommunityHealthCenterDistance") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestDistrictHospitalDistance") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestPathologicalLabDistance") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestPrivateClinicMBBSDoctor") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestPrivateClinicAlternateMedicine") && condition) {
-                            draft = true;
-                        } else if (name.equalsIgnoreCase("nearestTertiaryCareFacility") && condition) {
+                    if (name.equalsIgnoreCase("householdHeadName") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdHeadGender") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdHeadReligion") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdHeadCaste") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("noOfSmartphones") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("noOfFeaturePhones") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("noOfEarningMembers") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("primarySourceOfIncome") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdElectricityStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerWeek") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("runningWaterStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("Yes")) {
+//                        draft = true;
+                        if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay") && condition) {
                             draft = true;
                         } else if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek") && condition) {
                             draft = true;
-                        } else if (name.equalsIgnoreCase("No_Pregnancy_Outcome_2years") && condition) {
+                        }
+                    } else if (name.equalsIgnoreCase("runningWaterStatus") && !condition && attribute.getValue().equalsIgnoreCase("No")) {
+//                        draft = true;
+                        if (name.equalsIgnoreCase("primarySourceOfRunningWater") && condition) {
+                            draft = true;
+                        } else if (name.equalsIgnoreCase("waterSourceDistance") && condition) {
                             draft = true;
                         }
+                    } else if (name.equalsIgnoreCase("householdBankAccountStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdCultivableLand") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("averageAnnualHouseholdIncome") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("monthlyFoodExpenditure") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("annualHealthExpenditure") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("annualEducationExpenditure") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("annualClothingExpenditure") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("monthlyIntoxicantsExpenditure") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdBPLCardStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdAntodayaCardStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdRSBYCardStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdMGNREGACardStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("cookingFuelType") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("mainLightingSource") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("mainDrinkingWaterSource") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("saferWaterProcess") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdToiletFacility") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdOpenDefecationStatus") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHrs") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("subCentreDistance") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestPrimaryHealthCenterDistance") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestCommunityHealthCenterDistance") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestDistrictHospitalDistance") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestPathologicalLabDistance") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestPrivateClinicMBBSDoctor") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestPrivateClinicAlternateMedicine") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("nearestTertiaryCareFacility") && condition) {
+                        draft = true;
+                    }
+//                        } else if (name.equalsIgnoreCase("No_Pregnancy_Outcome_2years") && condition) {
+//                            draft = true;
+                }
 
-                    if(draft) {
-                        PatientDTO patientDTO = new PatientDTO();
-                        String patientSelection = "uuid=?";
-                        String[] patientArgs = {patientuuid};
-                        Cursor idCursor = db.query("tbl_patient", null, patientSelection, patientArgs, null, null, null);
-                        if (idCursor.moveToFirst()) {
-                            do {
-                                patientDTO.setUuid(patientuuid);
-                                patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
-                                patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
-                                patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
-                                patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
-                                patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
-                            } while (idCursor.moveToNext());
-                            idCursor.close();
-                        }
-                        patientDTOList.add(patientDTO);
-                        cursor.close();
+                if (draft) {
+                    PatientDTO patientDTO = new PatientDTO();
+                    String patientSelection = "uuid=?";
+                    String[] patientArgs = {patientuuid};
+                    Cursor idCursor = db.query("tbl_patient", null, patientSelection, patientArgs, null, null, null);
+                    if (idCursor.moveToFirst()) {
+                        do {
+                            patientDTO.setUuid(patientuuid);
+                            patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                            patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                            patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                            patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                            patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                        } while (idCursor.moveToNext());
+                        idCursor.close();
                     }
-                    else {
-                        if(!cursor.isClosed())
-                            cursor.moveToNext();
-                    }
+                    patientDTOList.add(patientDTO);
+                    cursor.close();
+                } else {
+                    if (!cursor.isClosed())
+                        cursor.moveToNext();
                 }
             }
-            if(!cursor.isClosed())
+
+            if (!cursor.isClosed())
                 cursor.close();
             db.setTransactionSuccessful();
-        } catch (SQLException e) {
+        } catch (
+                SQLException e) {
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
