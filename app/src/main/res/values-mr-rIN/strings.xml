@@ -1019,6 +1019,9 @@
     <string name="ten_to_twenty_kms">10–20 किलोमीटर</string>
     <string name="twenty_to_thirty_kms">20–30 किलोमीटर</string>
     <string name="more_than_thirty_kms">30 किलोमीटर पेक्षा जास्त</string>
+    <string name="more_than_twenty_km">20 किलोमीटर पेक्षा जास्त</string>
+    <string name="more_than_seventy_km">70 किलोमीटर पेक्षा जास्त</string>
+
 
     <string name="distance_to_nearest_medical_store">जवळच्या मेडिकल स्टोअर/औषध दुकानापर्यंतचे अंतर</string>
     <string name="distance_to_nearest_pathological_lab">जवळच्या पॅथॉलॉजिकल लॅबपर्यंतचे अंतर</string>
