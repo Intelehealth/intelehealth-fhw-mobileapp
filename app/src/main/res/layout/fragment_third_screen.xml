@@ -280,9 +280,9 @@
                 android:fontFamily="@font/poppins"
                 android:text="@string/how_far_is_the_water_source_from_the_house"
                 android:textColor="@color/text_color"
+                android:textSize="14sp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:textSize="14sp" />
+                tools:visibility="visible" />
 
             <RadioGroup
                 android:id="@+id/water_source_distance_radio_group"
