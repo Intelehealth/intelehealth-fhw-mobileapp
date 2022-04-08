@@ -84,6 +84,8 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     private static final String TAG = FirstScreenFragment.class.getSimpleName();
     private List<View> mandatoryFields = new ArrayList<>();
     PatientsDAO patientsDAO = new PatientsDAO();
+    RadioGroup household_structure_radio_group;
+    RadioGroup result_of_visit_radio_group;
 
 
     public FirstScreenFragment() {
@@ -119,9 +121,43 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         View rootView = inflater.inflate(R.layout.fragment_first_screen, container, false);
         initUI(rootView);
         radioButtonClickListener();
+        getResult_HouseStructure_RadioButtonCheckedValue();
         getPatientUuidsForHouseholdValue(patientUuid);
 //        setData(patientUuid);
         return rootView;
+    }
+
+    private void getResult_HouseStructure_RadioButtonCheckedValue() {
+        // House Structure -> Start
+        if (kuchaRadioButton.isChecked()) {
+            mhouseStructure = "Kucha";
+        }
+        else if (puccaRadioButton.isChecked()) {
+            mhouseStructure = "Pucca";
+        }
+        // House Structure -> End
+
+        // Result of Visit -> Start
+        if (availableAccepted.isChecked()) {
+            mresultVisit = "available and accepted";
+        }
+        else if (availableDeferred.isChecked()) {
+            mresultVisit = "available and deferred";
+        }
+        else if (notavailableSurvey.isChecked()) {
+            mresultVisit = "Not available on Survey";
+        }
+        else if (notavailableSecondVisit.isChecked()) {
+            mresultVisit = "Not available on second visit";
+        }
+        else if (notavailableThirdVisit.isChecked()) {
+            mresultVisit = "Not available on third visit";
+        }
+        else if (refusedParticipate.isChecked()) {
+            mresultVisit = "Refused to Participate";
+        }
+        // Result of Visit -> End...
+
     }
 
     public void getPatientUuidsForHouseholdValue(String patientUuid) {
@@ -421,8 +457,8 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         refusedParticipate = rootView.findViewById(R.id.RefusedParticipate);
         next_button = rootView.findViewById(R.id.next_button);
 
-        RadioGroup household_structure_radio_group = rootView.findViewById(R.id.household_structure_radio_group);
-        RadioGroup result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
+        household_structure_radio_group = rootView.findViewById(R.id.household_structure_radio_group);
+        result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
         mandatoryFields.addAll(Arrays.asList( namePerson, householdNumber
                 , household_structure_radio_group, result_of_visit_radio_group));
 

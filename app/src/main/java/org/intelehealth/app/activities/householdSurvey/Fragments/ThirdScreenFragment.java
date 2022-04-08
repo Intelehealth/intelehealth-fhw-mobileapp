@@ -295,7 +295,8 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
+            //TODO add here new value
             patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -307,7 +308,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
 
             String otherSourceOfRunningWater = "";
-            patientAttributesDTO.setValue("No primary source of running water");
+            patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //waterSourceDistance
@@ -323,7 +324,7 @@ public class ThirdScreenFragment extends Fragment {
 //                                getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
 //                        );
 
-            patientAttributesDTO.setValue("No water source distance");
+            patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
         } else if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterNoCheckbox.getId()) {
             //primarySourceOfRunningWater
@@ -369,7 +370,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
-            patientAttributesDTO.setValue("No water supply for days");
+            patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //waterSupplyAvailabilityDaysPerWeek
@@ -377,7 +378,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
-            patientAttributesDTO.setValue("No water supply for week");
+            patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
         }
 

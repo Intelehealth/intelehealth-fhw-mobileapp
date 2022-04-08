@@ -3150,37 +3150,52 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTOList.add(patientAttributesDTO);*/
 
 
-        if (llPORoaster.getVisibility() == View.VISIBLE) {
+        // if (llPORoaster.getVisibility() == View.VISIBLE) {
 
-            //how many times pregnant
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoOfTimesPregnant"));
+        //how many times pregnant
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoOfTimesPregnant"));
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
             patientAttributesDTO.setValue(StringUtils.getValue(edittext_howmanytimmespregnant.getText().toString()));
-            Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-            //how many times
+        } else {
+            patientAttributesDTO.setValue("-");
+        }
+        Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //how many times
 
 //             past two years
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
-            patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(), sessionManager.getAppLanguage()));
-            Log.d("HOH", "pregtwoyrs: " + spinner_pregnantpasttwoyrs.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //no of times pregnant past 2yrs
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No_Pregnancy_Outcome_2years"));
-            patientAttributesDTO.setValue(StringUtils.getValue(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()));
-            Log.d("HOH", "total family meme: " + binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-            //no of times pregnant past 2yrs
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnanyPastTwoYears"));
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
+            patientAttributesDTO.setValue(StringUtils.getPasttwoyrs(spinner_pregnantpasttwoyrs.getSelectedItem().toString(),
+                    sessionManager.getAppLanguage()));
+        } else {
+            patientAttributesDTO.setValue("-");
         }
+        Log.d("HOH", "pregtwoyrs: " + spinner_pregnantpasttwoyrs.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //no of times pregnant past 2yrs
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No_Pregnancy_Outcome_2years"));
+
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()));
+        } else {
+            patientAttributesDTO.setValue("-");
+        }
+
+        Log.d("HOH", "total family meme: " + binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //no of times pregnant past 2yrs
+        //  }
         // past two yrs - end
 
         // outcome pregnancy
