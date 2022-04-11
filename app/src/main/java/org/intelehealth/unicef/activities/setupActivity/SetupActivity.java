@@ -1,6 +1,7 @@
 package org.intelehealth.unicef.activities.setupActivity;
 
 import android.accounts.Account;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -67,7 +68,7 @@ import org.intelehealth.unicef.utilities.Base64Utils;
 import org.intelehealth.unicef.utilities.DialogUtils;
 import org.intelehealth.unicef.utilities.DownloadMindMaps;
 import org.intelehealth.unicef.utilities.Logger;
-import org.intelehealth.unicef.utilities.NetworkChangeListener;
+//import org.intelehealth.unicef.utilities.NetworkChangeListener;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringEncryption;
@@ -131,13 +132,42 @@ public class SetupActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
 
-    private BroadcastReceiver MyReceiver = null;
+   // private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
     //    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
 //    boolean value = false;
     String base_url;
 //    Map.Entry<String, String> village_name;
 //    int state_count = 0, district_count = 0, sanch_count = 0, village_count = 0;
+
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                switch (intent.getAction()) {
+                    case "android.net.conn.CONNECTIVITY_CHANGE":
+                    case "android.net.wifi.WIFI_STATE_CHANGED":
+                        onNetworkChange(NetworkConnection.getConnectivityStatusString(context));
+                        break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private void onNetworkChange(String[] status){
+        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(myProcess);
+        boolean isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+
+        if(!isInBackground) {
+            Snackbar.make(coordinatorLayout, status[0], Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) :
+                            getResources().getColor(R.color.green3))
+                    .setTextColor(getResources().getColor(R.color.white)).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,19 +228,21 @@ public class SetupActivity extends AppCompatActivity {
 
         isOnline();
 
-        MyReceiver = new NetworkChangeListener() {
-            @Override
-            protected void onNetworkChange(String[] status) {
-                try {
+        /*try{
+            MyReceiver = new NetworkChangeListener() {
+                @Override
+                protected void onNetworkChange(String[] status) {
+                    Log.d("error1","7777");
                     Snackbar.make(coordinatorLayout, status[0], Snackbar.LENGTH_SHORT)
                             .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) :
                                     getResources().getColor(R.color.green3))
                             .setTextColor(getResources().getColor(R.color.white)).show();
-                }catch (Exception e){
-                    e.printStackTrace();
+                    Log.d("error1","8888");
                 }
-            }
-        };
+            };
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
 
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -238,8 +270,8 @@ public class SetupActivity extends AppCompatActivity {
 
             }
         });
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
+       // DialogUtils dialogUtils = new DialogUtils();
+       // dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
         if (!mUrlField.getText().toString().trim().isEmpty() ||
                 !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
@@ -751,17 +783,19 @@ public class SetupActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        broadcastIntent();
+        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+       // broadcastIntent();
     }
 
     @Override
     protected void onPause() {
+        unregisterReceiver(networkStateReceiver);
         super.onPause();
-        unregisterReceiver(MyReceiver);
+        //unregisterReceiver(MyReceiver);
     }
 
     public void broadcastIntent() {
-        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+       // registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void showProgressbar() {

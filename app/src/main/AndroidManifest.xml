@@ -290,7 +290,7 @@
             </intent-filter>
         </service>
 
-        <receiver
+        <!--<receiver
             android:name=".utilities.NetworkChangeListener"
             android:exported="false"
             android:label="NetworkChangeReceiver">
@@ -300,7 +300,7 @@
                     tools:ignore="BatteryLife" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
         <!--
 <service android:name="unicefcef.services.firebase_services.MyFirebaseInstanceIdService">
             <intent-filter>
