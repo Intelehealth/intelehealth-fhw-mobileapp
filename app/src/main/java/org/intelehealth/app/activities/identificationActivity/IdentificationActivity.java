@@ -3061,7 +3061,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PregnancyOutcomesReported"));
         String pregnancyValue = new Gson().toJson(pregnancyOutcomesList);
         patientAttributesDTO.setValue(pregnancyValue);
-        Log.d(TAG, "insertedit_RosterValuesIntoLocalDB: " + pregnancyValue);
+//        Log.d(TAG, "insertedit_RosterValuesIntoLocalDB: " + pregnancyValue);
         patientAttributesDTOList.add(patientAttributesDTO);
 
 //        //no episodes
@@ -3162,7 +3162,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         } else {
             patientAttributesDTO.setValue("-");
         }
-        Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
+//        Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
         //how many times
 
@@ -3177,7 +3177,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         } else {
             patientAttributesDTO.setValue("-");
         }
-        Log.d("HOH", "pregtwoyrs: " + spinner_pregnantpasttwoyrs.getSelectedItem().toString());
+//        Log.d("HOH", "pregtwoyrs: " + spinner_pregnantpasttwoyrs.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //no of times pregnant past 2yrs
@@ -3192,7 +3192,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue("-");
         }
 
-        Log.d("HOH", "total family meme: " + binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString());
+//        Log.d("HOH", "total family meme: " + binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
         //no of times pregnant past 2yrs
         //  }
