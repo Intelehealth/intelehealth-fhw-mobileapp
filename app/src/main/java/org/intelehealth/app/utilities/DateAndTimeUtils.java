@@ -373,7 +373,12 @@ public class DateAndTimeUtils {
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(year, monthOfYear, dayOfMonth);
                     String format = simpleDateFormat.format(calendar.getTime());
-                    etFollowUpDate.setText(StringUtils.en__mr_dob(format));
+
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                        etFollowUpDate.setText(StringUtils.en__mr_dob(format));
+                    } else {
+                        etFollowUpDate.setText(format);
+                    }
                 }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
