@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -91,6 +92,7 @@ public class VitalsActivity extends AppCompatActivity {
             Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vitals);
         Toolbar toolbar = findViewById(R.id.toolbar);

@@ -43,6 +43,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.multidex.MultiDex;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -140,6 +141,7 @@ public class SetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         getSupportActionBar();
@@ -199,10 +201,14 @@ public class SetupActivity extends AppCompatActivity {
         MyReceiver = new NetworkChangeListener() {
             @Override
             protected void onNetworkChange(String[] status) {
-                Snackbar.make(coordinatorLayout, status[0], Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) :
-                                getResources().getColor(R.color.green3))
-                        .setTextColor(getResources().getColor(R.color.white)).show();
+                try {
+                    Snackbar.make(coordinatorLayout, status[0], Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) :
+                                    getResources().getColor(R.color.green3))
+                            .setTextColor(getResources().getColor(R.color.white)).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         };
 

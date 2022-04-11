@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -227,7 +228,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
-           
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);

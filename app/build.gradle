@@ -93,7 +93,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //Uncomment below line to enable multidex support for Kitkat
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     //camera view
     implementation 'com.github.google:cameraview:9bbe07ba44'
     //Google Guava
@@ -116,10 +116,11 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 
 //    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation "com.google.firebase:firebase-core:17.4.3"
-    implementation "com.google.firebase:firebase-messaging:20.2.1"
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    implementation 'com.google.firebase:firebase-analytics:20.1.2'
+    implementation "com.google.firebase:firebase-core:20.1.2"
+    implementation "com.google.firebase:firebase-messaging:23.0.2"
+    implementation "com.google.firebase:firebase-iid:21.1.0"
 //    implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-crashlytics'

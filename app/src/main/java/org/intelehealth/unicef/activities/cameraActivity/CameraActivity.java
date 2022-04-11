@@ -24,6 +24,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -298,6 +299,7 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();

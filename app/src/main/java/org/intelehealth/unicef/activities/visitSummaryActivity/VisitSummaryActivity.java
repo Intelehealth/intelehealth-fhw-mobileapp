@@ -79,6 +79,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -551,7 +552,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -1204,7 +1205,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+            complaintView.setText(Html.fromHtml(complaint.getValue().replaceAll("Patient reports",getResources().getString(R.string.patient_reports))
+                    .replaceAll("Patient denies",getResources().getString(R.string.patient_denies))));
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)

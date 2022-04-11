@@ -26,6 +26,7 @@ import androidx.core.app.NavUtils;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.multidex.MultiDex;
 
 import android.text.InputType;
 import android.text.TextUtils;
@@ -227,6 +228,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         setTitle(R.string.menu_option_settings);
         sessionManager = new SessionManager(this);

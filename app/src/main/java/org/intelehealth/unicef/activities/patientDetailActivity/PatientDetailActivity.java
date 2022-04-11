@@ -42,6 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.multidex.MultiDex;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -136,6 +137,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MultiDex.install(this);
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
@@ -853,17 +855,20 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        String seenon_str=getResources().getString(R.string.patientdetail_seen_on_str);
+        final String visitString = String.format(seenon_str+" (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
             for (int i = 1; i <= 2; i++) {
                 if (i == 1) {
-                    SpannableString spannableString = new SpannableString(visitString + getString(R.string.active_tag_patientDetail));
+                    String active_str=getString(R.string.active_tag_patientDetail);
+                    SpannableString spannableString = new SpannableString(visitString + active_str);
                     Object greenSpan = new BackgroundColorSpan(Color.GREEN);
                     Object underlineSpan = new UnderlineSpan();
-                    spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
-                    spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
+                    spannableString.setSpan(greenSpan, spannableString.length() - active_str.length(), spannableString.length(), 0);
+                    spannableString.setSpan(underlineSpan, 0, spannableString.length() - seenon_str.length(), 0);
                     textView.setText(spannableString);
                     layoutParams.setMargins(5, 10, 5, 0);
                     //  textView.setLayoutParams(layoutParams);
