@@ -1079,7 +1079,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         binding.addPregnancyOutcomeButton.setOnClickListener(v -> {
             if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
                     !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equals("") &&
-                    sessionManager.getNoOfclicks() < Integer.valueOf(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                    pregnancyOutcomesList.size() < Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
 
                 PregnancyRosterDialog dialog = new PregnancyRosterDialog(
                         sessionManager.getNoOfclicks(),
