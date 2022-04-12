@@ -145,17 +145,21 @@ public class SixthScreenFragment extends Fragment {
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         //householdOpenDefecationStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdOpenDefecationStatus"));
+        String householdOpenDefecationStatus = "-";
+
         if (binding.defecationInOpenRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdOpenDefecationStatus"));
-            patientAttributesDTO.setValue(StringUtils.getPreTerm(
+            householdOpenDefecationStatus = StringUtils.getPreTerm(
                     ((RadioButton) binding.defecationInOpenRadioGroup.findViewById(binding.defecationInOpenRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
+
+        patientAttributesDTO.setValue(householdOpenDefecationStatus);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
         //foodItemsPreparedInTwentyFourHrs
         patientAttributesDTO = new PatientAttributesDTO();

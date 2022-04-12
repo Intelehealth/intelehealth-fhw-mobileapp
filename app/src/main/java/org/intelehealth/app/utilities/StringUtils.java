@@ -3422,13 +3422,14 @@ public final class StringUtils {
 
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
+        String text = "-";
 
         JSONArray result = new JSONArray();
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View childAt = viewGroup.getChildAt(i);
             if (childAt instanceof CheckBox) {
                 if (((CheckBox) childAt).isChecked()) {
-                    String text = ((CheckBox) childAt).getText().toString();
+                    text = ((CheckBox) childAt).getText().toString();
 
                     if (text.equalsIgnoreCase(context.getString(R.string.other_please_specify)) ||
                             text.equalsIgnoreCase(context.getString(R.string.others)) ||

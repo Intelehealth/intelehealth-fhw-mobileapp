@@ -219,18 +219,20 @@ public class ThirdScreenFragment extends Fragment {
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         //householdElectricityStatus
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdElectricityStatus"));
         if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdElectricityStatus"));
             patientAttributesDTO.setValue(binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId() ?
                     StringUtils.getPreTerm(binding.electricityYesCheckbox.getText().toString(), sessionManager.getAppLanguage()) :
-                    StringUtils.getPreTerm(binding.electricityNoCheckbox.getText().toString(), sessionManager.getAppLanguage())
-
-            );
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+                    StringUtils.getPreTerm(binding.electricityNoCheckbox.getText().toString(), sessionManager.getAppLanguage()));
+        } else {
+            patientAttributesDTO.setValue("-");
         }
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
 
         if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId()) {
             //noOfLoadSheddingHrsPerDay
@@ -265,22 +267,40 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
             patientAttributesDTO.setValue("No load shedding hours per week");
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-        }
-
-
-        //runningWaterStatus
-        if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() != -1) {
+        } else {
+            //noOfLoadSheddingHrsPerDay
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterStatus"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
+            patientAttributesDTO.setValue("-");
+            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
+            //noOfLoadSheddingHrsPerWeek
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
+            patientAttributesDTO.setValue("-");
+            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+        }
+
+        //runningWaterStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterStatus"));
+        if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() != -1) {
             patientAttributesDTO.setValue(
                     binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId() ?
                             StringUtils.getPreTerm(binding.runningWaterYesCheckbox.getText().toString(), sessionManager.getAppLanguage()) :
                             StringUtils.getPreTerm(binding.runningWaterNoCheckbox.getText().toString(), sessionManager.getAppLanguage())
             );
-            patientAttributesDTOList.add(patientAttributesDTO);
+        } else {
+            patientAttributesDTO.setValue("-");
         }
+
+        patientAttributesDTOList.add(patientAttributesDTO);
 
         if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId()) {
             //waterSupplyAvailabilityHrsPerDay
@@ -380,21 +400,56 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
             patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
-        }
-
-        //householdBankAccountStatus
-        if (binding.bankAccountRadioGroup.getCheckedRadioButtonId() != -1) {
+        } else {
+            //waterSupplyAvailabilityHrsPerDay
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdBankAccountStatus"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
+            patientAttributesDTO.setValue(StringUtils.getValue("-"));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //waterSupplyAvailabilityDaysPerWeek
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
+            patientAttributesDTO.setValue(StringUtils.getValue("-"));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //primarySourceOfRunningWater
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
+            patientAttributesDTO.setValue("-");
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //waterSourceDistance
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+            patientAttributesDTO.setValue("-");
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
+
+        //householdBankAccountStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdBankAccountStatus"));
+
+        if (binding.bankAccountRadioGroup.getCheckedRadioButtonId() != -1) {
             patientAttributesDTO.setValue(binding.bankAccountRadioGroup.getCheckedRadioButtonId() == binding.bankAccountYes.getId() ?
                     StringUtils.getPreTerm(binding.bankAccountYes.getText().toString(), sessionManager.getAppLanguage()) :
                     StringUtils.getPreTerm(binding.bankAccountNo.getText().toString(), sessionManager.getAppLanguage())
             );
-            patientAttributesDTOList.add(patientAttributesDTO);
+        } else {
+            patientAttributesDTO.setValue("-");
         }
 
+        patientAttributesDTOList.add(patientAttributesDTO);
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);

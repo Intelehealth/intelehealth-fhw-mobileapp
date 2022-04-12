@@ -156,135 +156,180 @@ public class FourthScreenFragment extends Fragment {
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         //householdCultivableLand
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdCultivableLand"));
+        String cultivableLand = "-";
+
         if (binding.cultivableLandRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdCultivableLand"));
-            String cultivableLand = StringUtils.getValue(binding.cultivableLandEditText.getText().toString()) + " " +
+            cultivableLand = StringUtils.getValue(binding.cultivableLandEditText.getText().toString()) + " " +
                     getCultivableLand(((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                             requireContext(), sessionManager.getAppLanguage());
-            patientAttributesDTO.setValue(cultivableLand);
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
+
+        patientAttributesDTO.setValue(cultivableLand);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
         //averageAnnualHouseholdIncome
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
+        String averageAnnualHouseholdIncome = "-";
+
         if (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
-            patientAttributesDTO.setValue(((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            averageAnnualHouseholdIncome = ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString();
         }
+
+        patientAttributesDTO.setValue(averageAnnualHouseholdIncome);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
 
         //monthlyFoodExpenditure
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("monthlyFoodExpenditure"));
+        String monthlyFoodExpenditure = "-";
+
         if (binding.monthlyFoodExpenditureRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("monthlyFoodExpenditure"));
-            patientAttributesDTO.setValue(((RadioButton) binding.monthlyFoodExpenditureRadioGroup.findViewById(binding.monthlyFoodExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            monthlyFoodExpenditure = ((RadioButton) binding.monthlyFoodExpenditureRadioGroup.findViewById(binding.monthlyFoodExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString();
         }
 
+        patientAttributesDTO.setValue(monthlyFoodExpenditure);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
         //annualHealthExpenditure
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("annualHealthExpenditure"));
+        String annualHealthExpenditure = "-";
+
         if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("annualHealthExpenditure"));
-            patientAttributesDTO.setValue(((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            annualHealthExpenditure = ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString();
         }
+
+        patientAttributesDTO.setValue(annualHealthExpenditure);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
         //annualEducationExpenditure
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("annualEducationExpenditure"));
+        String annualEducationExpenditure = "-";
+
         if (binding.annualEducationExpenditureRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("annualEducationExpenditure"));
-            patientAttributesDTO.setValue(((RadioButton) binding.annualEducationExpenditureRadioGroup.findViewById(binding.annualEducationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            annualEducationExpenditure = ((RadioButton) binding.annualEducationExpenditureRadioGroup.findViewById(binding.annualEducationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString();
         }
+
+        patientAttributesDTO.setValue(annualEducationExpenditure);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
         //annualClothingExpenditure
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("annualClothingExpenditure"));
+        String annualClothingExpenditure = "-";
+
         if (binding.annualClothingExpenditureRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("annualClothingExpenditure"));
-            patientAttributesDTO.setValue(((RadioButton) binding.annualClothingExpenditureRadioGroup.findViewById(binding.annualClothingExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            annualClothingExpenditure = ((RadioButton) binding.annualClothingExpenditureRadioGroup.findViewById(binding.annualClothingExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString();
         }
 
+        patientAttributesDTO.setValue(annualClothingExpenditure);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
+
         //monthlyIntoxicantsExpenditure
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("monthlyIntoxicantsExpenditure"));
+        String monthlyIntoxicantExpenditure = "-";
+
         if (binding.monthlyIntoxicantsExpenditureRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("monthlyIntoxicantsExpenditure"));
-            patientAttributesDTO.setValue(((RadioButton) binding.monthlyIntoxicantsExpenditureRadioGroup.findViewById(binding.monthlyIntoxicantsExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            monthlyIntoxicantExpenditure = ((RadioButton) binding.monthlyIntoxicantsExpenditureRadioGroup.findViewById(binding.monthlyIntoxicantsExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString();
         }
+
+        patientAttributesDTO.setValue(monthlyIntoxicantExpenditure);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
 
         //householdBPLCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdBPLCardStatus"));
+        String householdBPLCardStatus = "-";
+
         if (binding.bplCardCouponRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdBPLCardStatus"));
-            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+            householdBPLCardStatus = StringUtils.getCardStatus(
                     ((RadioButton) binding.bplCardCouponRadioGroup.findViewById(binding.bplCardCouponRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            );
         }
 
+        patientAttributesDTO.setValue(householdBPLCardStatus);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
         //householdAntodayaCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdAntodayaCardStatus"));
+        String householdAntodayaCardStatus = "-";
+
         if (binding.antodayaCardCouponRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdAntodayaCardStatus"));
-            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+            householdAntodayaCardStatus = StringUtils.getCardStatus(
                     ((RadioButton) binding.antodayaCardCouponRadioGroup.findViewById(binding.antodayaCardCouponRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            );
         }
 
+
+        patientAttributesDTO.setValue(householdAntodayaCardStatus);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
         //householdRSBYCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdRSBYCardStatus"));
+        String householdRSBYCardStatus = "-";
+
         if (binding.rsbyCardRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdRSBYCardStatus"));
-            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+            householdRSBYCardStatus = StringUtils.getCardStatus(
                     ((RadioButton) binding.rsbyCardRadioGroup.findViewById(binding.rsbyCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            );
         }
 
+        patientAttributesDTO.setValue(householdRSBYCardStatus);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
         //householdMGNREGACardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdMGNREGACardStatus"));
+        String householdMGNREGACardStatus = "-";
+
         if (binding.mgnregaCardRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdMGNREGACardStatus"));
-            patientAttributesDTO.setValue(StringUtils.getCardStatus(
+            householdMGNREGACardStatus = StringUtils.getCardStatus(
                     ((RadioButton) binding.mgnregaCardRadioGroup.findViewById(binding.mgnregaCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            );
         }
+
+        patientAttributesDTO.setValue(householdMGNREGACardStatus);
+        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);

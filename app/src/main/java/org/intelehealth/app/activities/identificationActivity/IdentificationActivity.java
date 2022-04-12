@@ -2651,6 +2651,15 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     cancel = true;
                     return;
                 }
+
+                if (pregnancyOutcomesList.size() != Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
+                    focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
+                    cancel = true;
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.setFocusable(true);
+                    binding.edittextNoOfPregnancyOutcomePastTwoYrs.requestFocus();
+                    return;
+                }
             }
         }
 
@@ -3954,7 +3963,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 }
 
                 Log.v(TAG, "adapter count: " + pregnancyOutcomeAdapter.getItemCount());
-                if (pregnancyOutcomeAdapter.getItemCount() != Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
+                if (pregnancyOutcomesList.size() != Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString())) {
                     binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(getString(R.string.select));
                     focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
                     cancel = true;

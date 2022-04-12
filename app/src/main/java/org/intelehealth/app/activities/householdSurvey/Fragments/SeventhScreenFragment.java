@@ -145,116 +145,148 @@ public class SeventhScreenFragment extends Fragment {
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
 
         //subCentreDistance
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("subCentreDistance"));
+        String subCentreDistance = "-";
+
         if (binding.distanceToSubCentreRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("subCentreDistance"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            subCentreDistance = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToSubCentreRadioGroup.findViewById(binding.distanceToSubCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(subCentreDistance);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestPrimaryHealthCenterDistance
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrimaryHealthCenterDistance"));
+        String nearestPrimaryHealthCenterDistance = "-";
+
         if (binding.distanceToNearestPrimaryHealthCentresRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrimaryHealthCenterDistance"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestPrimaryHealthCenterDistance = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestPrimaryHealthCentresRadioGroup.findViewById(binding.distanceToNearestPrimaryHealthCentresRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(nearestPrimaryHealthCenterDistance);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestCommunityHealthCenterDistance
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestCommunityHealthCenterDistance"));
+        String nearestCommunityHealthCenterDistance = "-";
+
         if (binding.distanceToNearestCommunityHealthCentresRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestCommunityHealthCenterDistance"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestCommunityHealthCenterDistance = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestCommunityHealthCentresRadioGroup.findViewById(binding.distanceToNearestCommunityHealthCentresRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(nearestCommunityHealthCenterDistance);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestDistrictHospitalDistance
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestDistrictHospitalDistance"));
+        String nearestDistrictHospitalDistance = "-";
+
         if (binding.distanceToNearestDistrictHospitalRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestDistrictHospitalDistance"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestDistrictHospitalDistance = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestDistrictHospitalRadioGroup.findViewById(binding.distanceToNearestDistrictHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(nearestDistrictHospitalDistance);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestPathologicalLabDistance
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPathologicalLabDistance"));
+        String nearestPathologicalLabDistance = "-";
+
         if (binding.distanceToNearestPathologicalLabRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPathologicalLabDistance"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestPathologicalLabDistance = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestPathologicalLabRadioGroup.findViewById(binding.distanceToNearestPathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(nearestPathologicalLabDistance);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestPrivateClinicMBBSDoctor
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrivateClinicMBBSDoctor"));
+        String nearestPrivateClinicMBBSDoctor = "-";
+
         if (binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrivateClinicMBBSDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestPrivateClinicMBBSDoctor = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.findViewById(binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(nearestPrivateClinicMBBSDoctor);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestPrivateClinicAlternateMedicine
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrivateClinicAlternateMedicine"));
+        String nearestPrivateClinicAlternateMedicine = "-";
+
         if (binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestPrivateClinicAlternateMedicine"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestPrivateClinicAlternateMedicine = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.findViewById(binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
 
+        patientAttributesDTO.setValue(nearestPrivateClinicAlternateMedicine);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //nearestTertiaryCareFacility
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestTertiaryCareFacility"));
+        String nearestTertiaryCareFacility = "-";
+
         if (binding.distanceToNearestTertiaryCareFacilityRadioGroup.getCheckedRadioButtonId() != -1) {
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nearestTertiaryCareFacility"));
-            patientAttributesDTO.setValue(StringUtils.getDistanceTranslations(
+            nearestTertiaryCareFacility = StringUtils.getDistanceTranslations(
                     ((RadioButton) binding.distanceToNearestTertiaryCareFacilityRadioGroup.findViewById(binding.distanceToNearestTertiaryCareFacilityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     sessionManager.getAppLanguage(),
                     requireContext()
-            ));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            );
         }
+
+        patientAttributesDTO.setValue(nearestTertiaryCareFacility);
+        patientAttributesDTOList.add(patientAttributesDTO);
 
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);

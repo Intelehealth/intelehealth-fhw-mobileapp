@@ -91,7 +91,7 @@ public class DraftSurveyActivity extends AppCompatActivity {
                     attribute.setAttributeType(cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid")));
                     attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
                     name = patientsDAO.getAttributesName(attribute.getAttributeType());
-                    boolean condition = (attribute.getValue().equalsIgnoreCase("") ||
+                    boolean condition = (attribute.getValue().equalsIgnoreCase("-") ||
                             attribute.getValue().equalsIgnoreCase("[]") ||
                             attribute.getValue().equalsIgnoreCase("Select"));
 

@@ -413,7 +413,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                 }
 
-              //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
+                //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
                 if (listPatientNames.size() > 0) {
                     tvNoFamilyMember.setVisibility(View.GONE);
                     rvFamilyMember.setVisibility(View.VISIBLE);
@@ -605,7 +605,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
 //changing patient to patient_new object
-        if (patient_new.getMiddle_name() == null) {
+        if (patient_new.getMiddle_name() == null || patient_new.getMiddle_name().equalsIgnoreCase("-")) {
             patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
             patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
