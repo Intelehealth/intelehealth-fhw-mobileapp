@@ -4,7 +4,7 @@
     <string-array name="language_names">
         <item>Hindi</item>
         <item>English</item>
-<!--        <item>Odiya</item>-->
+        <item>Odiya</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -23,7 +23,7 @@
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
-<!--        <item>or</item>-->
+        <item>or</item>
 <!--        <item>cb</item>-->
     </string-array>
 
@@ -31,7 +31,6 @@
         <item>Select Specialization</item>
         <item>General Physician</item>
     </string-array>
-
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
@@ -393,6 +392,27 @@
 <!--        <item>वर्णन करे</item>-->
     </string-array>
 
+    <string-array name="occupation_spinner_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>ସରକାରୀ ଚାକିରି</item>
+        <item>ମଧ୍ୟମ ଧରଣର ଶିଳ୍ପ ପାଇଁ ବଡ଼ ଆକାର</item>
+        <item>ବେସରକାରୀ କ୍ଷେତ୍ରରେ ବୃତ୍ତିଗତ କାର୍ଯ୍ୟ</item>
+        <item>କ୍ଷୁଦ୍ର ଶିଳ୍ପ</item>
+        <item>ବଡ ଦୋକାନ ମାଲିକ</item>
+        <item>ଟେକ୍ନିସିଆନ୍ / କାରିଗର</item>
+        <item>ଛୋଟ ଦୋକାନ ମାଲିକ</item>
+        <item>ବଡ଼ ଧରଣର କୃଷକ</item>
+        <item>ଦ Daily ନିକ ମଜୁରୀ</item>
+        <item>କ୍ଷୁଦ୍ର କୃଷକ / ଚାଷ ଶ୍ରମିକ</item>
+        <item>ବେକାର</item>
+        <item>ଗୃହିଣୀ</item>
+        <item>ଛାତ୍ର</item>
+        <item>5 ବର୍ଷରୁ କମ୍ ପିଲା</item>
+        <item>ଅନ୍ୟାନ୍ୟ କ skills ଶଳ (ଡ୍ରାଇଭର, ମସନ୍ ଇତ୍ୟାଦି)</item>
+        <!--        <item>[Describe]</item>-->
+    </string-array>
+
     <string-array name="bank_account_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
@@ -405,6 +425,13 @@
         <item>जवाब देने के लिए मना कर दिया</item>
         <item>हाँ</item>
         <item>नहीं</item>
+    </string-array>
+
+    <string-array name="bank_account_spinner_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>ହଁ</item>
+        <item>ନା</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_en">
@@ -421,6 +448,13 @@
         <item>मोबाइल फोन नहीं है</item>
     </string-array>
 
+    <string-array name="mobilephone_spinner_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ମ Basic ଳିକ ଫୋନ୍</item>
+        <item>ସ୍ମାର୍ଟଫୋନ୍</item>
+        <item>ମୋବାଇଲ୍ ଫୋନ୍ ର ମାଲିକାନା ନାହିଁ</item>
+    </string-array>
+
     <string-array name="familymember_whatsapp_en">
         <item>Select</item>
         <item>Yes</item>
@@ -433,6 +467,11 @@
         <item>नहीं</item>
     </string-array>
 
+    <string-array name="familymember_whatsapp_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ହଁ</item>
+        <item>ନା</item>
+    </string-array>
 
     <string-array name="sourcewater_spinner_en">
         <item>Select</item>
@@ -454,6 +493,17 @@
         <item>नदी/तालाब</item>
         <item>टैंकर का पानी</item>
         <item>कोई और</item>
+    </string-array>
+
+    <string-array name="sourcewater_spinner_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>ଚାପକାଲ / ହ୍ୟାଣ୍ଡ ପମ୍ପ |</item>
+        <item>କୂଅ</item>
+        <item>ବିରକ୍ତିକର</item>
+        <item>ନଦୀ / ପୋଖରୀ</item>
+        <item>ଟ୍ୟାଙ୍କର୍ ପାଣି</item>
+        <item>ଅନ୍ୟ କ .ଣସି</item>
     </string-array>
 
     <string-array name="howtomake_water_safe_en">
@@ -482,6 +532,19 @@
         <item>अन्य [दर्ज करें]</item>
     </string-array>
 
+    <string-array name="howtomake_water_safe_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>କିଛି ନାହିଁ</item>
+        <item>ଫୁଟାନ୍ତୁ</item>
+        <item>ଆଲୁମ୍</item>
+        <item>ବ୍ଲିଚ୍ / କ୍ଲୋରାଇନ୍ ଟାବଲେଟ୍ ମିଶାନ୍ତୁ</item>
+        <item>କପଡା ମାଧ୍ୟମରେ ଛାଣନ୍ତୁ</item>
+        <item>ପାଣି ଫିଲ୍ଟର (ସିରାମିକ୍ / ବାଲି / କମ୍ପୋଜିଟ୍) ଇତ୍ୟାଦି ବ୍ୟବହାର କରନ୍ତୁ</item>
+        <item>ଇଲେକ୍ଟ୍ରୋନିକ୍ ଫିଲ୍ଟର୍ ବ୍ୟବହାର କରନ୍ତୁ</item>
+        <item>ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]</item>
+    </string-array>
+
     <string-array name="water_availability_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
@@ -496,6 +559,14 @@
         <item>हाँ</item>
         <item>नहीं</item>
         <item>पता नहीं</item>
+    </string-array>
+
+    <string-array name="water_availability_spinner_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>ହଁ</item>
+        <item>ନା</item>
+        <item>ଜାଣ ନାହିଁ</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_en">
@@ -518,6 +589,16 @@
         <item>अन्य [दर्ज करें]</item>
     </string-array>
 
+    <string-array name="toiletFacility_spinner_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
+        <item>କ facility ଣସି ସୁବିଧା / ଖୋଲା ସ୍ଥାନ କିମ୍ବା କ୍ଷେତ୍ର ବ୍ୟବହାର କରେ ନାହିଁ</item>
+        <item>ନିଜର ଶ et ଚାଳୟ</item>
+        <item>ସମ୍ପ୍ରଦାୟ ଶ et ଚାଳୟ</item>
+        <item>ଅନ୍ୟ ଘର ସହିତ ଶ toil ଚାଳୟ ଅଂଶୀଦାର</item>
+        <item>ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]</item>
+    </string-array>
+
     <string-array name="structure_house_en">
         <item>Select</item>
         <item>Kutcha House</item>
@@ -530,6 +611,13 @@
         <item>कच्चा घर</item>
         <item>पक्का घर</item>
         <item>घर नहीं है</item>
+    </string-array>
+
+    <string-array name="structure_house_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>କୁଚା ହାଉସ୍</item>
+        <item>ପାକ୍କା ହାଉସ୍</item>
+        <item>ଗୃହହୀନ</item>
     </string-array>
 
     <string-array name="location_district">
@@ -556,7 +644,7 @@
         <item>O-</item>
     </string-array>
 
-     <string-array name="blood_group_hi">
+    <string-array name="blood_group_hi">
          <item>कृपया चुनें</item>
          <item>A+</item>
          <item>A-</item>
@@ -567,5 +655,17 @@
          <item>O+</item>
          <item>O-</item>
      </string-array>
+
+    <string-array name="blood_group_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
 
 </resources>
