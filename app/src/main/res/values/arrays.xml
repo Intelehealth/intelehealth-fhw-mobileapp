@@ -20,6 +20,12 @@
         <item>दूसरा टिका</item>
     </string-array>
 
+    <string-array name="vaccination_spinner_or">
+        <item>ଚୟନ</item>
+        <item>ପ୍ରଥମ ଡୋଜ୍</item>
+        <item>ଦ୍ୱିତୀୟ ମାତ୍ରା</item>
+    </string-array>
+
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
