@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -38,67 +38,67 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:id="@+id/head_of_household_gender_text_view"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/head_of_household_name_layout"-->
-<!--                android:layout_marginStart="5sp"-->
-<!--                android:layout_marginTop="20sp"-->
-<!--                android:fontFamily="@font/poppins"-->
-<!--                android:text="@string/gender_of_head_of_household"-->
-<!--                android:textColor="@color/text_color"-->
-<!--                android:textSize="14sp" />-->
+            <!--            <com.google.android.material.textview.MaterialTextView-->
+            <!--                android:id="@+id/head_of_household_gender_text_view"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@id/head_of_household_name_layout"-->
+            <!--                android:layout_marginStart="5sp"-->
+            <!--                android:layout_marginTop="20sp"-->
+            <!--                android:fontFamily="@font/poppins"-->
+            <!--                android:text="@string/gender_of_head_of_household"-->
+            <!--                android:textColor="@color/text_color"-->
+            <!--                android:textSize="14sp" />-->
 
-<!--            <RadioGroup-->
-<!--                android:id="@+id/head_of_household_gender_radio_group"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/head_of_household_gender_text_view"-->
-<!--                android:layout_marginTop="13dp"-->
-<!--                android:orientation="horizontal">-->
+            <!--            <RadioGroup-->
+            <!--                android:id="@+id/head_of_household_gender_radio_group"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@id/head_of_household_gender_text_view"-->
+            <!--                android:layout_marginTop="13dp"-->
+            <!--                android:orientation="horizontal">-->
 
-<!--                <com.google.android.material.radiobutton.MaterialRadioButton-->
-<!--                    android:id="@+id/head_of_household_gender_male"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/poppins"-->
-<!--                    android:text="@string/gender_male"-->
-<!--                    android:textSize="14sp" />-->
+            <!--                <com.google.android.material.radiobutton.MaterialRadioButton-->
+            <!--                    android:id="@+id/head_of_household_gender_male"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:fontFamily="@font/poppins"-->
+            <!--                    android:text="@string/gender_male"-->
+            <!--                    android:textSize="14sp" />-->
 
-<!--                <com.google.android.material.radiobutton.MaterialRadioButton-->
-<!--                    android:id="@+id/head_of_household_gender_female"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/poppins"-->
-<!--                    android:text="@string/gender_female"-->
-<!--                    android:textSize="14sp" />-->
+            <!--                <com.google.android.material.radiobutton.MaterialRadioButton-->
+            <!--                    android:id="@+id/head_of_household_gender_female"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:fontFamily="@font/poppins"-->
+            <!--                    android:text="@string/gender_female"-->
+            <!--                    android:textSize="14sp" />-->
 
-<!--            </RadioGroup>-->
+            <!--            </RadioGroup>-->
 
             <LinearLayout
                 android:id="@+id/religion_drop_down_layout"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/head_of_household_name_layout"
                 android:layout_marginTop="7dp"
+                android:orientation="vertical"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
 
                 <TextView
-                    android:text="@string/religion"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/religion" />
 
                 <Spinner
                     android:id="@+id/religion_drop_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/householdHeadReligion_en"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                    android:entries="@array/householdHeadReligion_en"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/poppins"
@@ -130,18 +130,19 @@
 
             <LinearLayout
                 android:id="@+id/caste_drop_down_layout"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/other_religion_layout"
                 android:layout_marginTop="10dp"
+                android:orientation="vertical"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
 
                 <TextView
-                    android:text="@string/caste"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/caste" />
+
                 <Spinner
                     android:id="@+id/caste_drop_down"
                     android:layout_width="match_parent"
@@ -379,7 +380,8 @@
                     android:layout_below="@id/number_of_feature_phones_layout"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/other_sources_of_income_edit_text"
@@ -423,6 +425,7 @@
                     app:srcCompat="@drawable/ic_back_arrow" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

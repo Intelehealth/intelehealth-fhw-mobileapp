@@ -549,12 +549,12 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 //                }
                 if (name.equalsIgnoreCase("NamePrimaryRespondent")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
+                    if (value1 != null && !value1.equalsIgnoreCase("-"))
                         namePerson.setText(value1);
                 }
                 if (name.equalsIgnoreCase("HouseholdNumber")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
+                    if (value1 != null && !value1.equalsIgnoreCase("-"))
                         householdNumber.setText(value1);
                 }
                 if (name.equalsIgnoreCase("HouseStructure")) {

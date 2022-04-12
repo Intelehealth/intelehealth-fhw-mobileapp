@@ -377,7 +377,10 @@ public class FifthScreenFragment extends Fragment {
                                     otherSourceOfFuel = otherSourceOfFuel.substring(otherSourceOfFuel.indexOf(":") + 2);
                                 }
                             }
-                            binding.otherSourcesOfFuelLayout.getEditText().setText(otherSourceOfFuel);
+
+                            if (!otherSourceOfFuel.equalsIgnoreCase("-"))
+                                binding.otherSourcesOfFuelLayout.getEditText().setText(otherSourceOfFuel);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -439,12 +442,15 @@ public class FifthScreenFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 String element = jsonArray.getString(i);
-                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                if (element.contains(tempContext.getString(R.string.other_specify)) && !element.equalsIgnoreCase("-")) {
                                     mainSourceOfLighting = jsonArray.getString(i);
                                     mainSourceOfLighting = mainSourceOfLighting.substring(mainSourceOfLighting.indexOf(":") + 2);
                                 }
                             }
-                            binding.otherSourcesOfLightingLayout.getEditText().setText(mainSourceOfLighting);
+
+                            if (!mainSourceOfLighting.equalsIgnoreCase("-"))
+                                binding.otherSourcesOfLightingLayout.getEditText().setText(mainSourceOfLighting);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -541,12 +547,15 @@ public class FifthScreenFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 String element = jsonArray.getString(i);
-                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                if (element.contains(tempContext.getString(R.string.other_specify)) && !element.equalsIgnoreCase("-")) {
                                     otherSourceOfWater = jsonArray.getString(i);
                                     otherSourceOfWater = otherSourceOfWater.substring(otherSourceOfWater.indexOf(":") + 2);
                                 }
                             }
-                            binding.otherSourcesOfDrinkingWaterLayout.getEditText().setText(otherSourceOfWater);
+
+                            if (!otherSourceOfWater.equalsIgnoreCase("-"))
+                                binding.otherSourcesOfDrinkingWaterLayout.getEditText().setText(otherSourceOfWater);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -618,12 +627,15 @@ public class FifthScreenFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 String element = jsonArray.getString(i);
-                                if (element.contains(tempContext.getString(R.string.other_specify))) {
+                                if (element.contains(tempContext.getString(R.string.other_specify)) && !element.equalsIgnoreCase("-")) {
                                     otherSourceOfPurifyingWater = jsonArray.getString(i);
                                     otherSourceOfPurifyingWater = otherSourceOfPurifyingWater.substring(otherSourceOfPurifyingWater.indexOf(":") + 2);
                                 }
                             }
-                            binding.otherWaysOfPurifyingWaterEditText.getEditText().setText(otherSourceOfPurifyingWater);
+
+                            if (!otherSourceOfPurifyingWater.equalsIgnoreCase("-"))
+                                binding.otherWaysOfPurifyingWaterEditText.getEditText().setText(otherSourceOfPurifyingWater);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

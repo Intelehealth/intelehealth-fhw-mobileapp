@@ -383,7 +383,7 @@ public class FourthScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("householdCultivableLand")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    binding.cultivableLandEditText.setText(value1); // set value to the editText
+//                    binding.cultivableLandEditText.setText(value1); // set value to the editText
                     if (value1 != null) {
                         String[] splitString = value1.split(" ");
                         splitString[1] = getCultivableLandEdit(splitString[1], requireContext(), sessionManager.getAppLanguage());
@@ -401,7 +401,8 @@ public class FourthScreenFragment extends Fragment {
                             binding.guntaRadioButton.setChecked(true);
                         }
 
-                        binding.cultivableLandEditText.setText(splitString[0]);
+                        if (!splitString[0].equalsIgnoreCase("-"))
+                            binding.cultivableLandEditText.setText(splitString[0]);
                     }
                 }
 

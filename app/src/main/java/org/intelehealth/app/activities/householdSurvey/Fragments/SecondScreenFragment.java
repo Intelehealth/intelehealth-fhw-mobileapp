@@ -433,7 +433,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                 }
                 if (name.equalsIgnoreCase("householdHeadName")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
+                    if (value1 != null && !value1.equalsIgnoreCase("-"))
                         nameHOHEditText.setText(value1);
                 }
 //                if (name.equalsIgnoreCase("householdHeadGender")) {
@@ -443,7 +443,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 //                }
                 if (name.equalsIgnoreCase("householdHeadReligion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null) {
+                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         String translatedValue = getHouseholdHeadReligionEdit(value1, requireContext(), sessionManager.getAppLanguage());
 
                         int position = getIndex(binding.religionDropDown, translatedValue);
@@ -467,17 +467,17 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                 }
                 if (name.equalsIgnoreCase("noOfSmartphones")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
+                    if (value1 != null && !value1.equalsIgnoreCase("-"))
                         noOfSmartPhoneEditText.setText(value1);
                 }
                 if (name.equalsIgnoreCase("noOfEarningMembers")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
+                    if (value1 != null && !value1.equalsIgnoreCase("-"))
                         noOfEarningEditText.setText(value1);
                 }
                 if (name.equalsIgnoreCase("noOfFeaturePhones")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null)
+                    if (value1 != null && !value1.equalsIgnoreCase("-"))
                         noOfFeaturePhoneEditText.setText(value1);
                 }
 
@@ -559,7 +559,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
                                     otherIncome = otherIncome.substring(otherIncome.indexOf(":") + 2);
                                 }
                             }
-                            binding.otherSourcesOfIncomeEditText.setText(otherIncome);
+
+                            if (!otherIncome.equalsIgnoreCase("-"))
+                                binding.otherSourcesOfIncomeEditText.setText(otherIncome);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

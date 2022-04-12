@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -169,7 +169,8 @@
                 android:layout_below="@id/household_cooking_fuel_checkbox_linear_layout"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -300,7 +301,8 @@
                 android:layout_below="@id/main_source_of_lighting_checkbox_linear_layout"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -509,7 +511,8 @@
                 android:layout_below="@id/main_source_of_drinking_water_checkbox_linear_layout"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -663,7 +666,8 @@
                 android:layout_below="@id/household_make_safe_water_checkbox_linear_layout"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
@@ -868,6 +872,7 @@
                     android:background="@drawable/rounded_image_button_background"
                     app:srcCompat="@drawable/ic_arrow_right" />
             </androidx.appcompat.widget.LinearLayoutCompat>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

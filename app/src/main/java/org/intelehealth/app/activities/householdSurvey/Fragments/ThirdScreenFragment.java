@@ -511,12 +511,12 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("No load shedding hours per day"))
+                    if (value1 != null && !value1.equalsIgnoreCase("No load shedding hours per day") && !value1.equalsIgnoreCase("-"))
                         binding.loadSheddingHoursTextView.setText(value1);
                 }
                 if (name.equalsIgnoreCase("noOfLoadSheddingHrsPerWeek")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("No load shedding hours per week"))
+                    if (value1 != null && !value1.equalsIgnoreCase("No load shedding hours per week") && !value1.equalsIgnoreCase("-"))
                         binding.loadSheddingDaysPerWeekTextView.setText(value1);
                 }
                 if (name.equalsIgnoreCase("runningWaterStatus")) {
@@ -592,7 +592,7 @@ public class ThirdScreenFragment extends Fragment {
                 }
                 if (name.equalsIgnoreCase("waterSourceDistance")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("No water source distance")) {
+                    if (value1 != null && !value1.equalsIgnoreCase("No water source distance") && !value1.equalsIgnoreCase("-")) {
                         String[] splitString = value1.split(" ");
                         splitString[1] = getWaterSourceDistanceEdit(splitString[1], requireContext(), sessionManager.getAppLanguage());
 
@@ -607,13 +607,13 @@ public class ThirdScreenFragment extends Fragment {
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityHrsPerDay")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("No water supply for days"))
+                    if (value1 != null && !value1.equalsIgnoreCase("No water supply for days") && !value1.equalsIgnoreCase("-"))
                         binding.waterSupplyAvailabilityEditText.setText(value1);
                 }
 
                 if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysperWeek")) { //TODO: Add new uuid here
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("No water supply for week"))
+                    if (value1 != null && !value1.equalsIgnoreCase("No water supply for week") && !value1.equalsIgnoreCase("-"))
                         binding.waterSupplyAvailabilityDaysPerWeekEditText.setText(value1);
                 }
 
