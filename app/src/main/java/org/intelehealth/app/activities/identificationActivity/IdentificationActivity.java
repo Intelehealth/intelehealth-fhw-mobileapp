@@ -411,11 +411,25 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
 
         //setting the fields when user clicks edit details
-        mFirstName.setText(patient1.getFirst_name());
-        mMiddleName.setText(patient1.getMiddle_name());
-        mLastName.setText(patient1.getLast_name());
-        mDOB.setText(patient1.getDate_of_birth());
-        mPhoneNum.setText(patient1.getPhone_number());
+
+        /* We enter a '-' into the db if the field is empty when saving.
+         * The following statements are used to handle those situations
+         * And ensure that we don't display a '-' to user in the EditTexts when they're editing the patient*/
+
+        if (!patient1.getFirst_name().equalsIgnoreCase("-"))
+            mFirstName.setText(patient1.getFirst_name());
+
+        if (!patient1.getMiddle_name().equalsIgnoreCase("-"))
+            mMiddleName.setText(patient1.getMiddle_name());
+
+        if (!patient1.getLast_name().equalsIgnoreCase("-"))
+            mLastName.setText(patient1.getLast_name());
+
+        if (!patient1.getDate_of_birth().equalsIgnoreCase("-"))
+            mDOB.setText(patient1.getDate_of_birth());
+
+        if (!patient1.getPhone_number().equalsIgnoreCase("-"))
+            mPhoneNum.setText(patient1.getPhone_number());
 
         if (patientID_edit == null) {
             mAddress1.setText(mAddress1Value);
