@@ -125,16 +125,16 @@ public final class StringUtils {
     }
 
     public static String getValue(String value) {
-        String val = "";
-        if (value != null)
+        String val = "-";
+        if (value != null && !value.equalsIgnoreCase(""))
             val = value;
         return val;
 
     }
 
     public static String getValueForStateCity(String value) {
-        String val = "";
-        if (value != null)
+        String val = "-";
+        if (value != null && !value.equalsIgnoreCase(""))
             val = value;
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -150,8 +150,8 @@ public final class StringUtils {
     }
 
     public static String getValueForStateCity_edit(String value) {
-        String val = "";
-        if (value != null)
+        String val = "-";
+        if (value != null && !value.equalsIgnoreCase(""))
             val = value;
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -168,15 +168,15 @@ public final class StringUtils {
 
 
     public static String getValue1(String value) {
-        String val = " ";
-        if (value != null)
+        String val = "-";
+        if (value != null && !value.equalsIgnoreCase(""))
             val = value;
         return val;
 
     }
 
     public static String getProvided(Spinner spinner) {
-        String val = "";
+        String val = "-";
         if (spinner.getSelectedItemPosition() == 0)
             val = "Not provided";
 
@@ -1920,7 +1920,7 @@ public final class StringUtils {
     }
 
     public static String hi_or_bn_en_month(int month_index) {
-        String dob_string = "";
+        String dob_string = "-";
 
         switch (month_index) {
             case 0:

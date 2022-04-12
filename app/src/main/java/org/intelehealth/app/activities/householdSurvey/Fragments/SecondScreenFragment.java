@@ -290,7 +290,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadName"));
-        patientAttributesDTO.setValue(nameHOHEditText.getText().toString());
+        patientAttributesDTO.setValue(StringUtils.getValue(nameHOHEditText.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
 
@@ -313,10 +313,10 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         if (binding.otherReligionLayout.getVisibility() == View.GONE) {
             String religion = getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage());
             if (checkIfEmpty(religion))
-                religion = "";
+                religion = "-";
             patientAttributesDTO.setValue(religion);
         } else
-            patientAttributesDTO.setValue(binding.otherReligionTextView.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.otherReligionTextView.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
         //  }
 
@@ -328,7 +328,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
         String caste = getHouseholdCaste(binding.casteDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage());
         if (checkIfEmpty(caste)) {
-            caste = "";
+            caste = "-";
         }
 
         patientAttributesDTO.setValue(caste);
@@ -340,7 +340,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfSmartphones"));
-        patientAttributesDTO.setValue(binding.editTextSmartphones.getText().toString());
+        patientAttributesDTO.setValue(StringUtils.getValue(binding.editTextSmartphones.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //noOfEarningMembers
@@ -348,7 +348,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfEarningMembers"));
-        patientAttributesDTO.setValue(binding.editTextEarningmember.getText().toString());
+        patientAttributesDTO.setValue(StringUtils.getValue(binding.editTextEarningmember.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //noOfFeaturePhones
@@ -356,7 +356,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfFeaturePhones"));
-        patientAttributesDTO.setValue(binding.editTextFeaturePhone.getText().toString());
+        patientAttributesDTO.setValue(StringUtils.getValue(binding.editTextFeaturePhone.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //primarySourceOfIncome
@@ -367,9 +367,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
         String otherIncome;
         if (binding.otherIncomeCheckbox.isChecked()) {
-            otherIncome = binding.otherSourcesOfIncomeEditText.getText().toString();
+            otherIncome = StringUtils.getValue(binding.otherSourcesOfIncomeEditText.getText().toString());
         } else {
-            otherIncome = "";
+            otherIncome = "-";
         }
 
         patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout,

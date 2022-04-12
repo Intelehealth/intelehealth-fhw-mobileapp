@@ -161,7 +161,7 @@ public class FourthScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdCultivableLand"));
-            String cultivableLand = binding.cultivableLandEditText.getText().toString() + " " +
+            String cultivableLand = StringUtils.getValue(binding.cultivableLandEditText.getText().toString()) + " " +
                     getCultivableLand(((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                             requireContext(), sessionManager.getAppLanguage());
             patientAttributesDTO.setValue(cultivableLand);

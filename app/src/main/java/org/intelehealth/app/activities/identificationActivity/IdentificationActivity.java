@@ -2830,7 +2830,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             if (til_occupation_other.getVisibility() == View.GONE)
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             else
-                patientAttributesDTO.setValue(et_occupation_other.getText().toString());
+                patientAttributesDTO.setValue(StringUtils.getValue(et_occupation_other.getText().toString()));
 
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2954,7 +2954,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
         if (spinner_block.getSelectedItemPosition() == 3) {
-            patientAttributesDTO.setValue(et_block_other.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(et_block_other.getText().toString()));
         } else {
             patientAttributesDTO.setValue(StringUtils.getPethBlock(spinner_block.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         }
@@ -2966,7 +2966,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
         if (spinner_block.getSelectedItemPosition() == 3) {
-            patientAttributesDTO.setValue(et_village_other.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(et_village_other.getText().toString()));
         } else {
             patientAttributesDTO.setValue(StringUtils.getPethBlockVillage(spinner_village.getSelectedItem().toString(), sessionManager.getAppLanguage()));
         }
@@ -4042,7 +4042,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             if (til_occupation_other.getVisibility() == View.GONE) {
                 patientAttributesDTO.setValue(StringUtils.getOccupationsIdentification(mOccupation.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             } else
-                patientAttributesDTO.setValue(et_occupation_other.getText().toString());
+                patientAttributesDTO.setValue(StringUtils.getValue(et_occupation_other.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             Log.d("3695", "3697rrr " + patientAttributesDTO.getValue());
@@ -4072,7 +4072,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
             if (spinner_block.getSelectedItemPosition() == 3) {
-                patientAttributesDTO.setValue(et_block_other.getText().toString());
+                patientAttributesDTO.setValue(StringUtils.getValue(et_block_other.getText().toString()));
             } else {
                 patientAttributesDTO.setValue(StringUtils.getPethBlock(spinner_block.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }
@@ -4084,7 +4084,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
             if (spinner_block.getSelectedItemPosition() == 3) {
-                patientAttributesDTO.setValue(et_village_other.getText().toString());
+                patientAttributesDTO.setValue(StringUtils.getValue(et_village_other.getText().toString()));
             } else {
                 patientAttributesDTO.setValue(StringUtils.getPethBlockVillage(spinner_village.getSelectedItem().toString(), sessionManager.getAppLanguage()));
             }

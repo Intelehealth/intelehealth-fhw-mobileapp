@@ -131,8 +131,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         // House Structure -> Start
         if (kuchaRadioButton.isChecked()) {
             mhouseStructure = "Kucha";
-        }
-        else if (puccaRadioButton.isChecked()) {
+        } else if (puccaRadioButton.isChecked()) {
             mhouseStructure = "Pucca";
         }
         // House Structure -> End
@@ -140,20 +139,15 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         // Result of Visit -> Start
         if (availableAccepted.isChecked()) {
             mresultVisit = "available and accepted";
-        }
-        else if (availableDeferred.isChecked()) {
+        } else if (availableDeferred.isChecked()) {
             mresultVisit = "available and deferred";
-        }
-        else if (notavailableSurvey.isChecked()) {
+        } else if (notavailableSurvey.isChecked()) {
             mresultVisit = "Not available on Survey";
-        }
-        else if (notavailableSecondVisit.isChecked()) {
+        } else if (notavailableSecondVisit.isChecked()) {
             mresultVisit = "Not available on second visit";
-        }
-        else if (notavailableThirdVisit.isChecked()) {
+        } else if (notavailableThirdVisit.isChecked()) {
             mresultVisit = "Not available on third visit";
-        }
-        else if (refusedParticipate.isChecked()) {
+        } else if (refusedParticipate.isChecked()) {
             mresultVisit = "Refused to Participate";
         }
         // Result of Visit -> End...
@@ -179,8 +173,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                     setData(patientUUIDs.get(i));
                 }
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -383,7 +376,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NamePrimaryRespondent"));
-        patientAttributesDTO.setValue(namePerson.getText().toString());
+        patientAttributesDTO.setValue(StringUtils.getValue(namePerson.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //House no.
@@ -391,7 +384,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("HouseholdNumber"));
-        patientAttributesDTO.setValue(householdNumber.getText().toString());
+        patientAttributesDTO.setValue(StringUtils.getValue(householdNumber.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //House Structure
@@ -459,7 +452,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 
         household_structure_radio_group = rootView.findViewById(R.id.household_structure_radio_group);
         result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
-        mandatoryFields.addAll(Arrays.asList( namePerson, householdNumber
+        mandatoryFields.addAll(Arrays.asList(namePerson, householdNumber
                 , household_structure_radio_group, result_of_visit_radio_group));
 
         setMenus();

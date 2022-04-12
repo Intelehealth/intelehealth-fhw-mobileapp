@@ -238,7 +238,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
-            patientAttributesDTO.setValue(binding.loadSheddingHoursTextView.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.loadSheddingHoursTextView.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
             //noOfLoadSheddingHrsPerWeek
@@ -246,7 +246,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
-            patientAttributesDTO.setValue(binding.loadSheddingDaysPerWeekTextView.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.loadSheddingDaysPerWeekTextView.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         } else if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityNoCheckbox.getId()) {
             // For Yes, we're adding default values to avoid data discrepancy in local db
@@ -288,7 +288,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
-            patientAttributesDTO.setValue(binding.waterSupplyAvailabilityEditText.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.waterSupplyAvailabilityEditText.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //waterSupplyAvailabilityDaysPerWeek
@@ -297,7 +297,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
             //TODO add here new value
-            patientAttributesDTO.setValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString());
+            patientAttributesDTO.setValue(StringUtils.getValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // For No, we're adding default values
@@ -307,7 +307,7 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
 
-            String otherSourceOfRunningWater = "";
+            String otherSourceOfRunningWater = "-";
             patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -335,9 +335,9 @@ public class ThirdScreenFragment extends Fragment {
 
             String otherSourceOfRunningWater;
             if (binding.otherCheckbox.isChecked()) {
-                otherSourceOfRunningWater = binding.otherSourcesOfWaterEditText.getText().toString();
+                otherSourceOfRunningWater = StringUtils.getValue(binding.otherSourcesOfWaterEditText.getText().toString());
             } else {
-                otherSourceOfRunningWater = "";
+                otherSourceOfRunningWater = "-";
             }
 
             patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
@@ -353,7 +353,7 @@ public class ThirdScreenFragment extends Fragment {
                 patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
 
-                String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
+                String distance = StringUtils.getValue(binding.waterSourceDistanceEditText.getText().toString()) + " " +
                         (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
                                 binding.waterSourceDistanceMeter.getId() ?
                                 getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :

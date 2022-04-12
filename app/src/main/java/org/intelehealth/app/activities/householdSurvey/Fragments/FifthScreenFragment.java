@@ -173,9 +173,9 @@ public class FifthScreenFragment extends Fragment {
 
         String otherCookingFuel;
         if (binding.otherCheckbox.isChecked()) {
-            otherCookingFuel = binding.otherSourcesOfFuelLayout.getEditText().getText().toString();
+            otherCookingFuel = StringUtils.getValue(binding.otherSourcesOfFuelLayout.getEditText().getText().toString());
         } else {
-            otherCookingFuel = "";
+            otherCookingFuel = "-";
         }
 
         patientAttributesDTO.setValue(StringUtils
@@ -196,9 +196,9 @@ public class FifthScreenFragment extends Fragment {
 
         String otherLightingSource;
         if (binding.otherSourceOfLightingCheckbox.isChecked()) {
-            otherLightingSource = binding.otherSourcesOfLightingLayout.getEditText().getText().toString();
+            otherLightingSource = StringUtils.getValue(binding.otherSourcesOfLightingLayout.getEditText().getText().toString());
         } else {
-            otherLightingSource = "";
+            otherLightingSource = "-";
         }
 
         patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout,
@@ -215,9 +215,9 @@ public class FifthScreenFragment extends Fragment {
 
         String otherDrinkingWaterSource;
         if (binding.otherSourceOfWaterCheckbox.isChecked()) {
-            otherDrinkingWaterSource = binding.otherSourcesOfDrinkingWaterLayout.getEditText().getText().toString();
+            otherDrinkingWaterSource = StringUtils.getValue(binding.otherSourcesOfDrinkingWaterLayout.getEditText().getText().toString());
         } else {
-            otherDrinkingWaterSource = "";
+            otherDrinkingWaterSource = "-";
         }
 
         patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
@@ -234,9 +234,9 @@ public class FifthScreenFragment extends Fragment {
 
         String otherSaferWaterProcess;
         if (binding.otherWaysOfPurifyingWaterCheckbox.isChecked()) {
-            otherSaferWaterProcess = binding.otherWaysOfPurifyingWaterEditText.getEditText().getText().toString();
+            otherSaferWaterProcess = StringUtils.getValue(binding.otherWaysOfPurifyingWaterEditText.getEditText().getText().toString());
         } else {
-            otherSaferWaterProcess = "";
+            otherSaferWaterProcess = "-";
         }
 
         patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,
