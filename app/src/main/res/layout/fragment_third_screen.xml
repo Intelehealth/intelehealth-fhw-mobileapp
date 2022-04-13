@@ -393,7 +393,9 @@
                 android:inputType="number"
                 android:textAlignment="center"
                 android:textColor="@color/text_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bank_account_text_view"

@@ -82,9 +82,11 @@ public class DraftSurveyActivity extends AppCompatActivity {
         boolean draft = false;
         db.beginTransaction();
         try {
-            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "' GROUP BY person_attribute_type_uuid";
+//            String query = "SELECT * from tbl_patient_attribute as c WHERE c.patientuuid = '" + patientuuid + "' and c.modified_date = (SELECT max(d.modified_date) from tbl_patient_attribute as d where d.person_attribute_type_uuid = c.person_attribute_type_uuid) group by person_attribute_type_uuid";
+            String query = "SELECT * from tbl_patient_attribute as c WHERE c.patientuuid = ? and c.modified_date = (SELECT max(d.modified_date) from tbl_patient_attribute as d where d.person_attribute_type_uuid = c.person_attribute_type_uuid) group by person_attribute_type_uuid";
 
-            Cursor cursor = db.rawQuery(query, null, null);
+            String[] args = new String[]{patientuuid};
+            Cursor cursor = db.rawQuery(query, args, null);
             Attribute attribute = new Attribute();
             if (cursor.moveToFirst() && !cursor.isClosed()) {
                 while (!cursor.isAfterLast() && !cursor.isClosed()) {
