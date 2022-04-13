@@ -82,8 +82,7 @@ public class DraftSurveyActivity extends AppCompatActivity {
         boolean draft = false;
         db.beginTransaction();
         try {
-            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid +
-                    "' GROUP BY person_attribute_type_uuid ORDER BY modified_date";
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "' GROUP BY person_attribute_type_uuid";
 
             Cursor cursor = db.rawQuery(query, null, null);
             Attribute attribute = new Attribute();
@@ -96,7 +95,6 @@ public class DraftSurveyActivity extends AppCompatActivity {
                     boolean condition = (attribute.getValue().equalsIgnoreCase("-") ||
                             attribute.getValue().equalsIgnoreCase("[]") ||
                             attribute.getValue().equalsIgnoreCase("Select"));
-
 
                     if (name.equalsIgnoreCase("NamePrimaryRespondent") && condition) {
                         draft = true;
