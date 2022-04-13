@@ -288,6 +288,15 @@ public class SeventhScreenFragment extends Fragment {
         patientAttributesDTO.setValue(nearestTertiaryCareFacility);
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        //ReportDate of survey started	e9b991df-6791-4787-9664-ef348d523f64
+        //ReportDate of survey ended	adc6351a-3d19-40b7-b765-fae50dc49a7a
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of survey ended"));
+        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         Gson gson = new Gson();
         gson.toJson(patientAttributesDTOList);
         Log.v("screen", "secondscreen: \n" + gson.toJson(patientAttributesDTOList));

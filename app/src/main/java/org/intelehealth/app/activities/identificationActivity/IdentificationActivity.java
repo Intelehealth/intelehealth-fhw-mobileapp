@@ -1059,6 +1059,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 onPatientUpdateClicked(patient1);
             } else {
                 onPatientCreateClicked();
+
             }
         });
 
@@ -2877,6 +2878,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
+
+
+
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {
 
@@ -2907,6 +2911,18 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             insertedit_RosterValuesIntoLocalDB(patientAttributesDTO, patientAttributesDTOList);
             //end
             patientAttributesDTOList.add(patientAttributesDTO);
+            //timestamp for create patient
+            //ReportDate of patient created	8d036a27-6c40-4846-abdb-29f99358adab
+            //ReportDate of survey started	e9b991df-6791-4787-9664-ef348d523f64
+            //ReportDate of survey ended	adc6351a-3d19-40b7-b765-fae50dc49a7a
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of patient created"));
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
             patientdto.setSyncd(false);
