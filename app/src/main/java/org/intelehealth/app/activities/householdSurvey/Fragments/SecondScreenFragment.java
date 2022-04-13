@@ -311,7 +311,8 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
         if (binding.otherReligionLayout.getVisibility() == View.GONE) {
-            String religion = getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(), sessionManager.getAppLanguage());
+            String religion = getHouseholdHeadReligion(binding.religionDropDown.getSelectedItem().toString(), requireContext(),
+                    sessionManager.getAppLanguage());
             if (checkIfEmpty(religion))
                 religion = "-";
             patientAttributesDTO.setValue(religion);

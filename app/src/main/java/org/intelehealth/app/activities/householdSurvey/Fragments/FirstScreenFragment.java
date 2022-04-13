@@ -123,7 +123,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         radioButtonClickListener();
         getResult_HouseStructure_RadioButtonCheckedValue();
         getPatientUuidsForHouseholdValue(patientUuid);
-//        setData(patientUuid);
+        setData(patientUuid);
         return rootView;
     }
 
@@ -569,23 +569,26 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
                 }
                 if (name.equalsIgnoreCase("HouseStructure")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    mhouseStructure = value1;
                     if (value1 != null && value1.equalsIgnoreCase("Pucca"))
                         puccaRadioButton.setChecked(true);
                     else if (value1 != null && value1.equalsIgnoreCase("Kucha"))
                         kuchaRadioButton.setChecked(true);
                 }
                 if (name.equalsIgnoreCase("ResultOfVisit")) {
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and accepted"))
+                    String result = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    mresultVisit = result;
+                    if (result != null && result.equalsIgnoreCase("available and accepted"))
                         availableAccepted.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("available and deferred"))
+                    if (result != null && result.equalsIgnoreCase("available and deferred"))
                         availableDeferred.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on Survey"))
+                    if (result != null && result.equalsIgnoreCase("Not available on Survey"))
                         notavailableSurvey.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on second visit"))
+                    if (result != null && result.equalsIgnoreCase("Not available on second visit"))
                         notavailableSecondVisit.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Not available on third visit"))
+                    if (result != null && result.equalsIgnoreCase("Not available on third visit"))
                         notavailableThirdVisit.setChecked(true);
-                    if (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")) != null && (idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))).equalsIgnoreCase("Refused to Participate"))
+                    if (result != null && result.equalsIgnoreCase("Refused to Participate"))
                         refusedParticipate.setChecked(true);
                 }
             } while (idCursor1.moveToNext());

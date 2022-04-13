@@ -82,7 +82,9 @@ public class DraftSurveyActivity extends AppCompatActivity {
         boolean draft = false;
         db.beginTransaction();
         try {
-            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid + "' GROUP BY person_attribute_type_uuid";
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid = '" + patientuuid +
+                    "' GROUP BY person_attribute_type_uuid ORDER BY modified_date";
+
             Cursor cursor = db.rawQuery(query, null, null);
             Attribute attribute = new Attribute();
             if (cursor.moveToFirst() && !cursor.isClosed()) {
@@ -95,7 +97,16 @@ public class DraftSurveyActivity extends AppCompatActivity {
                             attribute.getValue().equalsIgnoreCase("[]") ||
                             attribute.getValue().equalsIgnoreCase("Select"));
 
-                    if (name.equalsIgnoreCase("householdHeadName") && condition) {
+
+                    if (name.equalsIgnoreCase("NamePrimaryRespondent") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("HouseholdNumber") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("HouseStructure") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("ResultOfVisit") && condition) {
+                        draft = true;
+                    } else if (name.equalsIgnoreCase("householdHeadName") && condition) {
                         draft = true;
                     } else if (name.equalsIgnoreCase("householdHeadGender") && condition) {
                         draft = true;
