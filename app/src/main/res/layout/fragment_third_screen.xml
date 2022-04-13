@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -290,9 +290,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/water_source_distance_text_view"
                 android:layout_marginTop="13dp"
+                android:orientation="horizontal"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:orientation="horizontal">
+                tools:visibility="visible">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/water_source_distance_meter"
@@ -377,7 +377,9 @@
                 android:fontFamily="@font/poppins"
                 android:text="@string/available_of_water_supply_days_per_week"
                 android:textColor="@color/text_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/water_supply_availability_DaysPerWeek_EditText"

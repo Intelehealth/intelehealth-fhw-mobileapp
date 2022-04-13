@@ -218,72 +218,77 @@ public class ThirdScreenFragment extends Fragment {
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
-        //householdElectricityStatus
-
+        //householdElectricityStatus - start
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdElectricityStatus"));
+
         if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() != -1) {
             patientAttributesDTO.setValue(binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId() ?
                     StringUtils.getPreTerm(binding.electricityYesCheckbox.getText().toString(), sessionManager.getAppLanguage()) :
                     StringUtils.getPreTerm(binding.electricityNoCheckbox.getText().toString(), sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //yes/no start
+            if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId()) {
+                //noOfLoadSheddingHrsPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getValue(binding.loadSheddingHoursTextView.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
+                //noOfLoadSheddingHrsPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
+                patientAttributesDTO.setValue(StringUtils.getValue(binding.loadSheddingDaysPerWeekTextView.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            }
+          /*  else if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityNoCheckbox.getId()) {
+                // For Yes, we're adding default values to avoid data discrepancy in local db
+                //noOfLoadSheddingHrsPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
+                patientAttributesDTO.setValue("No load shedding hours per day");
+                patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
+                //noOfLoadSheddingHrsPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
+                patientAttributesDTO.setValue("No load shedding hours per week");
+                patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            } else {
+                //noOfLoadSheddingHrsPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+
+                //noOfLoadSheddingHrsPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
+            }*/
+            // yes/no - end
         } else {
             patientAttributesDTO.setValue("-");
-        }
-        patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-
-
-        if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityYesCheckbox.getId()) {
-            //noOfLoadSheddingHrsPerDay
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
-            patientAttributesDTO.setValue(StringUtils.getValue(binding.loadSheddingHoursTextView.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-
-            //noOfLoadSheddingHrsPerWeek
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
-            patientAttributesDTO.setValue(StringUtils.getValue(binding.loadSheddingDaysPerWeekTextView.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-        } else if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == binding.electricityNoCheckbox.getId()) {
-            // For Yes, we're adding default values to avoid data discrepancy in local db
-            //noOfLoadSheddingHrsPerDay
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
-            patientAttributesDTO.setValue("No load shedding hours per day");
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-
-            //noOfLoadSheddingHrsPerWeek
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
-            patientAttributesDTO.setValue("No load shedding hours per week");
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-        } else {
-            //noOfLoadSheddingHrsPerDay
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerDay"));
-            patientAttributesDTO.setValue("-");
-            patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
-
-            //noOfLoadSheddingHrsPerWeek
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfLoadSheddingHrsPerWeek"));
-            patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
         }
+
+        //houseelectristatus - end
 
         //runningWaterStatus
         patientAttributesDTO = new PatientAttributesDTO();
@@ -294,145 +299,144 @@ public class ThirdScreenFragment extends Fragment {
             patientAttributesDTO.setValue(
                     binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId() ?
                             StringUtils.getPreTerm(binding.runningWaterYesCheckbox.getText().toString(), sessionManager.getAppLanguage()) :
-                            StringUtils.getPreTerm(binding.runningWaterNoCheckbox.getText().toString(), sessionManager.getAppLanguage())
-            );
-        } else {
-            patientAttributesDTO.setValue("-");
-        }
-
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId()) {
-            //waterSupplyAvailabilityHrsPerDay
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
-            patientAttributesDTO.setValue(StringUtils.getValue(binding.waterSupplyAvailabilityEditText.getText().toString()));
+                            StringUtils.getPreTerm(binding.runningWaterNoCheckbox.getText().toString(), sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            //waterSupplyAvailabilityDaysPerWeek
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
-            //TODO add here new value
-            patientAttributesDTO.setValue(StringUtils.getValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            // yes and no checking - start
+            if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterYesCheckbox.getId()) {
+                //waterSupplyAvailabilityHrsPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getValue(binding.waterSupplyAvailabilityEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
 
-            // For No, we're adding default values
-            //primarySourceOfRunningWater
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
+                //waterSupplyAvailabilityDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
+                patientAttributesDTO.setValue(StringUtils.getValue(binding.waterSupplyAvailabilityDaysPerWeekEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
 
-            String otherSourceOfRunningWater = "-";
-            patientAttributesDTO.setValue("-");
-            patientAttributesDTOList.add(patientAttributesDTO);
+                // For No, we're adding default values
+                //primarySourceOfRunningWater
+               /* patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
 
-            //waterSourceDistance
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+                String otherSourceOfRunningWater = "-";
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO);
 
-//                String distance = binding.waterSourceDistanceEditText.getText().toString() + " " +
-//                        (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
-//                                binding.waterSourceDistanceMeter.getId() ?
-//                                getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
-//                                getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
-//                        );
-
-            patientAttributesDTO.setValue("-");
-            patientAttributesDTOList.add(patientAttributesDTO);
-        } else if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterNoCheckbox.getId()) {
-            //primarySourceOfRunningWater
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
-
-            String otherSourceOfRunningWater;
-            if (binding.otherCheckbox.isChecked()) {
-                otherSourceOfRunningWater = StringUtils.getValue(binding.otherSourcesOfWaterEditText.getText().toString());
-            } else {
-                otherSourceOfRunningWater = "-";
-            }
-
-            patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
-                    sessionManager.getAppLanguage(),
-                    getContext(),
-                    otherSourceOfRunningWater));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //waterSourceDistance
-            if (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() != -1) {
+                //waterSourceDistance
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO);*/
+            }
+            else if (binding.runningWaterRadioGroup.getCheckedRadioButtonId() == binding.runningWaterNoCheckbox.getId()) {
+                //primarySourceOfRunningWater
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
 
-                String distance = StringUtils.getValue(binding.waterSourceDistanceEditText.getText().toString()) + " " +
-                        (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
-                                binding.waterSourceDistanceMeter.getId() ?
-                                getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
-                                getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
-                        );
+                String otherSourceOfRunningWater;
+                if (binding.otherCheckbox.isChecked()) {
+                    otherSourceOfRunningWater = StringUtils.getValue(binding.otherSourcesOfWaterEditText.getText().toString());
+                } else {
+                    otherSourceOfRunningWater = "-";
+                }
 
-                patientAttributesDTO.setValue(distance);
+                patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfWaterCheckboxLinearLayout,
+                        sessionManager.getAppLanguage(),
+                        getContext(),
+                        otherSourceOfRunningWater));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //waterSourceDistance
+                if (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() != -1) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+
+                    String distance = StringUtils.getValue(binding.waterSourceDistanceEditText.getText().toString()) + " " +
+                            (binding.waterSourceDistanceRadioGroup.getCheckedRadioButtonId() ==
+                                    binding.waterSourceDistanceMeter.getId() ?
+                                    getWaterSourceDistance(binding.waterSourceDistanceMeter.getText().toString(), requireContext(), sessionManager.getAppLanguage()) :
+                                    getWaterSourceDistance(binding.waterSourceDistanceKilometer.getText().toString(), requireContext(), sessionManager.getAppLanguage())
+                            );
+
+                    patientAttributesDTO.setValue(distance);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+
+                // For Yes, we're adding default values to avoid data discrepancy in local db
+                //waterSupplyAvailabilityHrsPerDay
+             /*   patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //waterSupplyAvailabilityDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO);*/
+            }
+/*
+            else {
+                //waterSupplyAvailabilityHrsPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getValue("-"));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //waterSupplyAvailabilityDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
+                patientAttributesDTO.setValue(StringUtils.getValue("-"));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //primarySourceOfRunningWater
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
+                patientAttributesDTO.setValue("-");
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //waterSourceDistance
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
+                patientAttributesDTO.setValue("-");
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
+*/
+            // yes and no checking - end
 
-            // For Yes, we're adding default values to avoid data discrepancy in local db
-            //waterSupplyAvailabilityHrsPerDay
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
-            patientAttributesDTO.setValue("-");
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //waterSupplyAvailabilityDaysPerWeek
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek")); //TODO add here new value
-            patientAttributesDTO.setValue("-");
-            patientAttributesDTOList.add(patientAttributesDTO);
         } else {
-            //waterSupplyAvailabilityHrsPerDay
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHrsPerDay"));
-            patientAttributesDTO.setValue(StringUtils.getValue("-"));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //waterSupplyAvailabilityDaysPerWeek
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysperWeek"));
-            patientAttributesDTO.setValue(StringUtils.getValue("-"));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //primarySourceOfRunningWater
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfRunningWater"));
-            patientAttributesDTO.setValue("-");
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //waterSourceDistance
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSourceDistance"));
             patientAttributesDTO.setValue("-");
             patientAttributesDTOList.add(patientAttributesDTO);
         }
+
+        // running water -- end
 
         //householdBankAccountStatus
         patientAttributesDTO = new PatientAttributesDTO();
