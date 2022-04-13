@@ -2879,8 +2879,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
 
-
-
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {
 
@@ -4706,6 +4704,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     @Override
     public void savePregnancyData(PregnancyRosterData data) {
+        binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(null);
         pregnancyOutcomesList.add(data);
         pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
         binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
@@ -4716,6 +4715,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
     @Override
     public void savePregnancyDataAtPosition(PregnancyRosterData data, int position) {
+        binding.edittextNoOfPregnancyOutcomePastTwoYrs.setError(null);
         pregnancyOutcomesList.set(position, data);
         pregnancyOutcomeAdapter = new PregnancyOutcomeAdapter(pregnancyOutcomesList, this, sessionManager.getAppLanguage());
         binding.poViewPager.setAdapter(pregnancyOutcomeAdapter);
