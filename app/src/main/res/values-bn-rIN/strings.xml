@@ -532,5 +532,5 @@
     <string name="visit_summary_complaint">কল করার কারণ</string>
     <string name="protocol_download_failed_alertdialog">প্রোটোকল ডাউনলোড করতে অক্ষম। প্রোটোকল ডাউনলোড পুনরায় চেষ্টা করতে \'হ্যাঁ\' টিপুন। ডেমো প্রোটোকলের সাথে চালিয়ে যেতে \'না\'।</string>
 
-
+    <string name="warning_app_update">অনুগ্রহ করে অ্যাপটিকে সর্বশেষ সংস্করণে আপডেট করুন।</string>
 </resources>

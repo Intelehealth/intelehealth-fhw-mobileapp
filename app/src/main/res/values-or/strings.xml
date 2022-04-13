@@ -571,5 +571,5 @@
     <string name="visit_summary_complaint">କଲ୍ ର କାରଣ |</string>
     <string name="protocol_download_failed_alertdialog">ପ୍ରୋଟୋକଲ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଅସମର୍ଥ | ପ୍ରୋଟୋକଲ୍ ଡାଉନଲୋଡ୍ ପୁନ  ଚେଷ୍ଟା କରିବାକୁ \'ହଁ\' ଦବାନ୍ତୁ | ଡେମୋ ପ୍ରୋଟୋକଲ ସହିତ ଜାରି ରଖିବାକୁ \'ନା\' |</string>
 
-
+    <string name="warning_app_update">ଦୟାକରି ଆପକୁ ସର୍ବଶେଷ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ |</string>
 </resources>

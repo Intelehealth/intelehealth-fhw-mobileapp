@@ -695,4 +695,5 @@
     <string name="medical_advice">Medical Advice</string>
     <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
 
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>

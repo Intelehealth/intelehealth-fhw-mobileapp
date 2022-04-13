@@ -565,6 +565,7 @@
     <string name="visit_summary_complaint">വിളിക്കാനുള്ള കാരണം</string>
     <string name="protocol_download_failed_alertdialog">പ്രോട്ടോക്കോൾ ഡൗൺലോഡ് ചെയ്യാനായില്ല. പ്രോട്ടോക്കോൾ ഡൗൺലോഡ് ചെയ്യാൻ വീണ്ടും ശ്രമിക്കാൻ \'അതെ\' അമർത്തുക. ഡെമോ പ്രോട്ടോക്കോളുകളിൽ തുടരാൻ \'ഇല്ല\'</string>
 
+    <string name="warning_app_update">ഏറ്റവും പുതിയ പതിപ്പിലേക്ക് ആപ്പ് അപ്ഡേറ്റ് ചെയ്യുക.</string>
 </resources>
 
 

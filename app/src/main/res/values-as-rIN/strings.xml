@@ -537,6 +537,6 @@
     <string name="visit_summary_complaint">কলকৰাৰ কাৰণ</string>
     <string name="protocol_download_failed_alertdialog">প্রোটোকলটি ডাউনলোড করতে অক্ষম। প্রোটোকল ডাউনলোড পুনরায় চেষ্টা করতে \'Yes\' টিপুন। ডেমো প্রোটোকলগুলি অবিরত রাখতে \'না\'</string>
 
-
+    <string name="warning_app_update">অনুগ্রহ করে অ্যাপটিকে সর্বশেষ সংস্করণে আপডেট করুন।</string>
 
 </resources>

@@ -683,4 +683,5 @@
         <string name="visit_summary_complaint">કોલનું કારણ</string>
         <string name="protocol_download_failed_alertdialog">પ્રોટોકોલ ડાઉનલોડ કરવામાં અસમર્થ. પ્રોટોકોલ ડાઉનલોડનો ફરી પ્રયાસ કરવા માટે \'હા\' દબાવો. ડેમો પ્રોટોકોલ સાથે ચાલુ રાખવા માટે \'ના\'.</string>
 
+        <string name="warning_app_update">કૃપા કરીને એપ્લિકેશનને નવીનતમ સંસ્કરણ પર અપડેટ કરો.</string>
 </resources>

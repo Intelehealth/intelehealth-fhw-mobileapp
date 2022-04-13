@@ -700,5 +700,5 @@
         <string name="visit_summary_complaint">कॉलचे कारण</string>
         <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करण्यात अक्षम. प्रोटोकॉल डाउनलोड करण्याचा पुन्हा प्रयत्न करण्यासाठी \'होय\' दाबा. डेमो प्रोटोकॉल सुरू ठेवण्यासाठी \'नाही\'.</string>
 
-
+        <string name="warning_app_update">कृपया नवीनतम एप आवृत्तीवर अपडेट करा|</string>
 </resources>
