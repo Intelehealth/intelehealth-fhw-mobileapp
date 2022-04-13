@@ -293,7 +293,7 @@ public class SeventhScreenFragment extends Fragment {
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of survey ended"));
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of survey submitted"));
         patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
         patientAttributesDTOList.add(patientAttributesDTO);
 
