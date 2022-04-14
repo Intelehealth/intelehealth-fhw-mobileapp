@@ -632,7 +632,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            mCountry.setSelection(countryAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_Country_edit(patient1.getCountry(),sessionManager.getAppLanguage()))));
 
 
-            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+            if (patient1 != null && patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
 //            else
 //                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -1429,8 +1429,11 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         //scoreofexperience
 
         // how many times & no of pregnancy outcome in 2yrs
-        edittext_howmanytimmespregnant.setText(patient1.getTimespregnant());
-        binding.edittextNoOfPregnancyOutcomePastTwoYrs.setText(patient1.getNoOfPregnancyOutcomeTwoYrs());
+        if (patient1.getTimespregnant() != null && !patient1.getTimespregnant().equalsIgnoreCase("-"))
+            edittext_howmanytimmespregnant.setText(patient1.getTimespregnant());
+
+        if (patient1.getNoOfPregnancyOutcomeTwoYrs() != null && !patient1.getNoOfPregnancyOutcomeTwoYrs().equalsIgnoreCase("-"))
+            binding.edittextNoOfPregnancyOutcomePastTwoYrs.setText(patient1.getNoOfPregnancyOutcomeTwoYrs());
         // how many times & no of pregnancy outcome in 2yrs
 
         //pasttwoyrs
@@ -2660,7 +2663,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 if (!binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().equalsIgnoreCase("") &&
                         !binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString().isEmpty() &&
                         Integer.parseInt(binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString()) > 0 &&
-                        binding.poViewPager.getAdapter().getItemCount() == 0) {
+                        pregnancyOutcomesList.size() == 0) {
                     Toast.makeText(this, R.string.please_add_pregnancy_outcome, Toast.LENGTH_SHORT).show();
                     focusView = binding.edittextNoOfPregnancyOutcomePastTwoYrs;
                     cancel = true;
