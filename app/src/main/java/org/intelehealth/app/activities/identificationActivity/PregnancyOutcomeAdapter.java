@@ -99,7 +99,8 @@ public class PregnancyOutcomeAdapter extends RecyclerView.Adapter<PregnancyOutco
             }
 
             if (!checkIfEmpty(data.getYearOfPregnancyOutcome())) {
-                binding.textviewYearofpregnancy.setText(data.getYearOfPregnancyOutcome());
+                String yearOfPregnancyOutcome = appLanguage.equalsIgnoreCase("mr") ? StringUtils.en__mr_dob(data.getYearOfPregnancyOutcome()) : data.getYearOfPregnancyOutcome();
+                binding.textviewYearofpregnancy.setText(yearOfPregnancyOutcome);
                 binding.llYearOfPregnancy.setVisibility(View.VISIBLE);
             } else {
                 binding.llYearOfPregnancy.setVisibility(View.GONE);
