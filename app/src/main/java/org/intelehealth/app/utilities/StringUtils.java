@@ -6728,6 +6728,9 @@ public final class StringUtils {
 
             if (context.getString(R.string.more_than_seventy_km).equalsIgnoreCase(value))
                 value = updatedContext.getString(R.string.more_than_seventy_km);
+
+            if (context.getString(R.string.more_than_twenty_km).equalsIgnoreCase(value))
+                value = updatedContext.getString(R.string.more_than_twenty_km);
         }
         return value;
     }
