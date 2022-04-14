@@ -552,31 +552,31 @@
                             android:visibility="gone"
                             tools:visibility="visible">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_block_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:fontFamily="@font/lato_regular"
-                            android:hint="@string/enter_block_name_other"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:visibility="gone"
-                            tools:visibility="visible"
-                            android:textSize="@dimen/card_content_sub_text_size" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_block_other"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/enter_block_name_other"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:visibility="gone"
+                                tools:visibility="visible" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_village_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:fontFamily="@font/lato_regular"
-                            android:hint="@string/enter_village_name_other"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:visibility="gone"
-                            tools:visibility="visible"
-                            android:textSize="@dimen/card_content_sub_text_size" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_village_other"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/enter_village_name_other"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:visibility="gone"
+                                tools:visibility="visible" />
 
                         </LinearLayout>
 
@@ -1238,112 +1238,112 @@
                         app:cardPreventCornerOverlap="false">
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/txt_how_many_times_have_you_been_pregnant"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <EditText
-                            android:id="@+id/edittext_howmanytimmespregnant"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:paddingStart="5dp"
-                            android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <Spinner
-                            android:id="@+id/spinner_pregnantpasttwoyrs"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/pasttwoyrs_en" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <!--No. of times preganant in past 2yrs-->
                         <LinearLayout
-                            android:id="@+id/linear_noOfPregrnancyOutcome"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="gone"
-                            tools:visibility="visible">
+                            android:padding="8dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/no_of_pregnancy_outcomes_in_the_past_2_years"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <EditText
-                            android:id="@+id/edittext_noOfPregnancyOutcomePastTwoYrs"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:textSize="15sp" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <Button
-                            android:id="@+id/add_pregnancy_outcome_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_centerVertical="true"
-                            android:text="Add Pregnancy Outcome"
-                            style="@style/SelectableItemBackground"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginHorizontal="10dp"
-                            android:elevation="5dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            android:background="@color/orange3" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                            <androidx.viewpager2.widget.ViewPager2
-                                android:id="@+id/po_view_pager"
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/add_pregnancy_outcome_button"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                tools:background="#50BDBDBD"
-                                android:minHeight="64dp" />
+                                android:paddingStart="5dp"
+                                android:text="@string/txt_how_many_times_have_you_been_pregnant"
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
+                            <EditText
+                                android:id="@+id/edittext_howmanytimmespregnant"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:paddingStart="5dp"
+                                android:text="@string/txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_pregnantpasttwoyrs"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/pasttwoyrs_en" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <!--No. of times preganant in past 2yrs-->
+                            <LinearLayout
+                                android:id="@+id/linear_noOfPregrnancyOutcome"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone"
+                                tools:visibility="visible">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/no_of_pregnancy_outcomes_in_the_past_2_years"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <EditText
+                                    android:id="@+id/edittext_noOfPregnancyOutcomePastTwoYrs"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:textSize="15sp" />
+
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
+
+                                <Button
+                                    android:id="@+id/add_pregnancy_outcome_button"
+                                    style="@style/SelectableItemBackground"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:background="@color/orange3"
+                                    android:elevation="5dp"
+                                    android:foreground="?android:attr/selectableItemBackground"
+                                    android:text="@string/add_pregnancy_outcome" />
+
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
+
+                                <androidx.viewpager2.widget.ViewPager2
+                                    android:id="@+id/po_view_pager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/add_pregnancy_outcome_button"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:minHeight="64dp"
+                                    tools:background="#50BDBDBD" />
+
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
                 <!--End - Pregnancy Roster Card-->
