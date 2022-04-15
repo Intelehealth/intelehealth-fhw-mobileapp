@@ -139,7 +139,6 @@ drawable ic_baseline_photo_camera_24_blue
 drawable ic_baseline_send_24_white
 drawable ic_baseline_videocam_24
 drawable ic_baseline_videocam_off_24
-drawable message_icon
 drawable round_corner_16_blue_light
 drawable round_corner_16_gray_light
 drawable rounded_bg

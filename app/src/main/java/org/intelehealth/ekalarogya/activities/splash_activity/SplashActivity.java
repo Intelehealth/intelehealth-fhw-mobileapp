@@ -37,6 +37,7 @@ import org.intelehealth.ekalarogya.activities.chooseLanguageActivity.ChooseLangu
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.dataMigration.SmoothUpgrade;
+import org.intelehealth.ekalarogya.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
@@ -66,6 +67,8 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+
+        TokenRefreshUtils.refreshToken(this);
 
         initFirebaseRemoteConfig();
     }

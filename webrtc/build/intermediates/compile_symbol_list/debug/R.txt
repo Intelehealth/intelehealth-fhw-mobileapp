@@ -1804,7 +1804,6 @@ int drawable material_ic_keyboard_arrow_previous_black_24dp 0x0
 int drawable material_ic_keyboard_arrow_right_black_24dp 0x0
 int drawable material_ic_menu_arrow_down_black_24dp 0x0
 int drawable material_ic_menu_arrow_up_black_24dp 0x0
-int drawable message_icon 0x0
 int drawable mtrl_dialog_background 0x0
 int drawable mtrl_dropdown_arrow 0x0
 int drawable mtrl_ic_arrow_drop_down 0x0
