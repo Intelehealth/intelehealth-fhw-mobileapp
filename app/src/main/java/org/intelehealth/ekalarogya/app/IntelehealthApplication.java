@@ -49,6 +49,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         return androidId;
     }
 
+    private static IntelehealthApplication sIntelehealthApplication;
+    public String refreshedFCMTokenID = "";
+    public static IntelehealthApplication getInstance() {
+        return sIntelehealthApplication;
+    }
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -59,6 +65,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     @Override
     public void onCreate() {
         super.onCreate();
+        sIntelehealthApplication = this;
         //For Vector Drawables Backward Compatibility(<API 21)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();

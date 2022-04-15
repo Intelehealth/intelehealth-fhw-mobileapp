@@ -733,4 +733,7 @@
 
     <string name="hw_qualification_hint">Qualification</string>
     <string name="hw_aboutme_hint">About Me</string>
+
+    <string name="chat_fab">chat fab</string>
+    <string name="notification_title">Realtime sync is ON!</string>
 </resources>

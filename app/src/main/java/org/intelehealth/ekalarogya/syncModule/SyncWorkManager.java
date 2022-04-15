@@ -43,8 +43,8 @@ public class SyncWorkManager extends Worker {
         syncUtils.syncBackground();
 
         //---------Health Worker Status-----------
-        SyncDAO syncDAO = new SyncDAO();
-        syncDAO.syncUserStatus(context);
+        //SyncDAO syncDAO = new SyncDAO();
+        //syncDAO.syncUserStatus(context);
 
         return Result.success();
     }
