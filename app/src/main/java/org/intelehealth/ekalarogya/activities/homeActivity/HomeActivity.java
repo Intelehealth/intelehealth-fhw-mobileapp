@@ -51,6 +51,7 @@ import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivi
 import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.models.dto.PatientDTO;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
+import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -145,6 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
+        DeviceInfoUtils.saveDeviceInfo(this);
 
         catchFCMMessageData();
 
