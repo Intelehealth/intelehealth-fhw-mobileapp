@@ -109,6 +109,7 @@ public class AppConstants {
 
     public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-ekalarogya.firebaseio.com/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;

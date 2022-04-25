@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
-    public static void saveToken(Context context, String userUUID, String fcmToken) {
+    public static void saveToken(Context context, String userUUID, String fcmToken, String lang) {
         Log.v(TAG, userUUID);
         Log.v(TAG, fcmToken);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -32,6 +32,7 @@ public class FirebaseUtils {
             JSONObject inputJsonObject = new JSONObject();
             inputJsonObject.put("user_uuid", userUUID);
             inputJsonObject.put("data", new JSONObject().put("device_reg_token", fcmToken));
+            inputJsonObject.put("locale", lang);
 
             String url = Constants.SAVE_FCM_TOKEN_URL;
             Log.v(TAG, url);

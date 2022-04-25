@@ -21,12 +21,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -47,10 +51,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
 import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.models.dto.PatientDTO;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
+import org.intelehealth.ekalarogya.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
@@ -136,6 +143,12 @@ public class HomeActivity extends AppCompatActivity {
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
     Toolbar toolbar;
+
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,11 +316,33 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            saveToken();
+            requestPermission();
         }
 
         showProgressbar();
 
         HeartBitApi();
+    }
+
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+
+    private void requestPermission() {
+        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            //CallListenerBackgroundService.getInstance().stopForegroundService();
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+            } else {
+                //Permission Granted-System will work
+            }
+        }
+
     }
 
     public void HeartBitApi() {
@@ -359,8 +394,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showProgressbar() {
-
-
 // instantiate it within the onCreate method
         mProgressDialog = new ProgressDialog(HomeActivity.this);
         mProgressDialog.setMessage(getString(R.string.download_protocols));
@@ -738,11 +771,13 @@ public class HomeActivity extends AppCompatActivity {
     };
 
     private void hideSyncProgressBar(boolean isSuccess) {
+        saveToken();
+        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
             if (isSuccess) {
-
+                saveToken();
                 sessionManager.setFirstTimeLaunched(false);
                 sessionManager.setMigration(true);
                 // initial setup/sync done and now we can set the periodic background sync job
@@ -909,6 +944,13 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.v(TAG, "onNewIntent");
+        catchFCMMessageData();
+    }
+
     private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
@@ -957,6 +999,28 @@ public class HomeActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    @Override
+    public void onAttachedToWindow() {
+        Window window = getWindow();
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+        );
+
+        super.onAttachedToWindow();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            ContextCompat.startForegroundService(this, serviceIntent);
         }
     }
 

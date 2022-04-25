@@ -4,6 +4,9 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "org.intelehealth.ekalarogya"
         minSdkVersion 21

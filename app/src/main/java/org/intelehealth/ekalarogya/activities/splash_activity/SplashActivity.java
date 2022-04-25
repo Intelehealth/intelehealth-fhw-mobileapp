@@ -59,7 +59,6 @@ public class SplashActivity extends AppCompatActivity {
       //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
 
-
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
             Locale.setDefault(locale);

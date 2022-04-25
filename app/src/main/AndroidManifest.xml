@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -203,6 +204,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="FCM_PLUGIN_HOME_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.splash_activity.SplashActivity"
