@@ -54,6 +54,7 @@ import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
+import org.intelehealth.ekalarogya.appointment.AppointmentListingActivity;
 import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.models.dto.PatientDTO;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
@@ -193,7 +194,13 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
-
+        findViewById(R.id.cardview_appointment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AppointmentListingActivity.class);
+                startActivity(intent);
+            }
+        });
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);

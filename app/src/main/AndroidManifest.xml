@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -40,7 +40,16 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
 
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"/>
+        <activity
+            android:name=".appointment.AppointmentListingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".appointment.ScheduleListingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
         <activity android:name=".activities.chmProfileActivity.HwProfileActivity" />
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
