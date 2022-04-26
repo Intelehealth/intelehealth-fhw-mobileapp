@@ -371,7 +371,6 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
 //        patientAttributesDTO.setValue(dateofVisit.getText().toString());
 //        patientAttributesDTOList.add(patientAttributesDTO);
 
-        //Name primary respondent
         //ReportDate of survey started	e9b991df-6791-4787-9664-ef348d523f64
         //ReportDate of survey ended	adc6351a-3d19-40b7-b765-fae50dc49a7a
         patientAttributesDTO = new PatientAttributesDTO();
@@ -381,7 +380,15 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTimeFormat());
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        // Name of investigator
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nameOfInvestigator"));
+        patientAttributesDTO.setValue(sessionManager.getChwname());
+        patientAttributesDTOList.add(patientAttributesDTO);
 
+        //Name primary respondent
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
