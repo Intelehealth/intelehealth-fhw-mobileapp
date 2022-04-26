@@ -378,7 +378,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of survey started"));
-        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTimeFormat());
         patientAttributesDTOList.add(patientAttributesDTO);
 
 

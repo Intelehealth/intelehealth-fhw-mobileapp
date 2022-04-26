@@ -48,8 +48,10 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -294,7 +296,9 @@ public class SeventhScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of survey submitted"));
-        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+
+        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTimeFormat());
+//        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         Gson gson = new Gson();

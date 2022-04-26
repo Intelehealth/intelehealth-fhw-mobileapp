@@ -2920,7 +2920,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReportDate of patient created"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTimeFormat());
             patientAttributesDTOList.add(patientAttributesDTO);
 
 
