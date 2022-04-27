@@ -52,6 +52,8 @@ public class SessionManager {
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
     private static final String PROVIDER_PHONENO = "PROVIDER_PHONENO";
+    private static final String COMPLAINT = "complaint_";
+
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -446,6 +448,15 @@ public class SessionManager {
 
     public void setLogout(Boolean isLogout) {
         editor.putBoolean(IS_LOGOUT, isLogout);
+        editor.commit();
+    }
+
+    public Set<String> getSelectedComplaint(String patientUUid) {
+        return pref.getStringSet(COMPLAINT + patientUUid, null);
+    }
+
+    public void setSelectedComplaint(String patientUuid, Set<String> selectedExams) {
+        editor.putStringSet(COMPLAINT + patientUuid, selectedExams);
         editor.commit();
     }
 
