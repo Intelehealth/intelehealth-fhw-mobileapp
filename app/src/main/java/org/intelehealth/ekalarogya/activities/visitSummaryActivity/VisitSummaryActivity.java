@@ -1729,6 +1729,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
         });
+        getAppointmentDetails(visitUuid);
     }
 
     /**
