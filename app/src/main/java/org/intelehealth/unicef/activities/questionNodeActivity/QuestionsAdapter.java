@@ -314,26 +314,35 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             Node groupNode = mGroupNode.getOption(mGroupPos);
             if (groupNode == null) return;
 
+            /*below line is to handle the following crash in firebase crashlytics: Fatal Exception: java.lang.NullPointerException
+            Attempt to invoke virtual method 'boolean java.lang.String.equalsIgnoreCase(java.lang.String)' on a null object reference
+            Version No. 1.8.13(23)
 
-            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-                if (thisNode.getInputType().equalsIgnoreCase("camera")) {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_white, 0, 0, 0);
+            - By Nishita Goyal on 26th April 2022
+            */
+
+            if (groupNode.getText()==null) return;
+            else {
+                if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
+                    itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                    if (thisNode.getInputType().equalsIgnoreCase("camera")) {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_white, 0, 0, 0);
+                    } else {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                    }
                 } else {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                    //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
+                    //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+                    if (thisNode.getInputType().equalsIgnoreCase("camera")) {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_blue, 0, 0, 0);
+                    } else {
+                        itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
-                }
-            } else {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
-                //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
-                if (thisNode.getInputType().equalsIgnoreCase("camera")) {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_blue, 0, 0, 0);
-                } else {
-                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-
+                    }
                 }
             }
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
