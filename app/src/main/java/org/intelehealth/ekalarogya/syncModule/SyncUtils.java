@@ -72,8 +72,7 @@ public class SyncUtils {
         isSynced = syncDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
 
-
-//        need to add delay for pulling the obs correctly
+//      need to add delay for pulling the obs correctly
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

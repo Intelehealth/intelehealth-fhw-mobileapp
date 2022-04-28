@@ -410,6 +410,7 @@ public class SyncDAO {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
                             Logger.logD(TAG, "success" + pushResponseApiCall);
+                            String response= gson.toJson(pushResponseApiCall);
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());

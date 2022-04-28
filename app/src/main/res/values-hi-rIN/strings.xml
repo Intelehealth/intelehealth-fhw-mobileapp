@@ -158,6 +158,19 @@
     <string name="table_bpdia">बीपी डायास्टोलिक </string>
     <string name="table_temp">तापमान (सेल्सियस)</string>
     <string name="table_spo2">SpO2 (%) ऑक्सीजन </string>
+    <string name="weight_loss_alert_msg">आपका वजन आपकी ऊंचाई के अनुसार कम है|</string>
+    <string name="weight_gain_alert_msg">आपका वजन आपकी ऊंचाई के अनुसार ज्यादा है|</string>
+    <string name="doctor_advice_alert_msg">क्या आप डॉक्टर से टेलीकंसल्टेशन लेना चाहते है ?</string>
+
+    <string name="vital_alert_save_button">रक्षित करें</string>
+    <string name="vital_alert_continue_button">हाँ, आगे बड़े</string>
+
+    <string name="vital_alert_bp_dia_button">आपका डायस्टोलिक ब्लडप्रेशर सामान्य नहीं है|</string>
+    <string name="vital_alert_bp_sys_button">आपका सिस्टोलिक ब्लडप्रेशर सामान्य नहीं है|</string>
+    <string name="vital_alert_spo2_button">आपका ऑक्सीजन सिचुरेशन सामान्य नहीं है|</string>
+    <string name="vital_alert_pulse_button">आपकी नाड़ी सामान्य नहीं है|</string>
+    <string name="vital_alert_hgb_button">आपका हीमोग्लोबिन सामान्य नहीं है|</string>
+    <string name="vital_alert_sugar_button">आपका शुगर का स्तर सामान्य नहीं है|</string>
 
     //Patient Search Screen
     <string name="search_hint">नाम द्वारा मरीज की खोज</string>
@@ -214,7 +227,8 @@
     <string name="button_history">मरीज का इतिहास</string>
     <string name="title_activity_patient_detail">मरीज का विस्तार</string>
     <string name="header_medical_history">इतिहास</string>
-    <string name="button_new_visit">नया यात्रा शुरु करो</string>
+    <string name="button_new_visit">डॉक्टर की नई सलाह शुरू करें</string>
+    <string name="button_sevika_advice" translatable="false">सेविका की नई सलाह शुरू करें</string>
     <string name="header_previous_visits">पिछली यात्रा</string>
     <string name="header_patient_history">चिकित्सक इतिहास</string>
     <string name="header_family_history">परिवार इतिहास</string>
@@ -708,6 +722,7 @@
     //-----------start new visit confirmation dialog string-----------
     <string name="start_newvisit_confirmation_msg">क्या आप वाकई विज़िट शुरू करना चाहते हैं?</string>
     <string name="prescription_notprovided_msg">डॉक्टर ने प्रिस्क्रिप्शन नहीं दिया है। कृपया यात्रा समाप्त करने के लिए प्रिस्क्रिप्शन की प्रतीक्षा करें।</string>
+    <string name="start_newadvice_confirmation_msg">क्या आप वाकई सलाह शुरू करना चाहते हैं?</string>
 
     <string name="take_photo">फोटो लो</string>
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
@@ -763,4 +778,5 @@
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <!--END APPOINTMENT-->
+
 </resources>

@@ -67,7 +67,7 @@ public class AppConstants {
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils = new NotificationUtils();
-
+    public static final String DOCTOR_NOT_NEEDED="Specialist doctor not needed";
 
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;

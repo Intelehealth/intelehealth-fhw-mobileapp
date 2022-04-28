@@ -84,6 +84,8 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -104,6 +106,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -190,6 +194,8 @@
                                         android:includeFontPadding="false"
                                         android:inputType="numberDecimal"
                                         android:maxLines="1"
+                                        android:maxLength="3"
+                                        android:digits="1234567890"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
                                         android:textSize="@dimen/card_content_sub_text_size" />
@@ -221,6 +227,8 @@
                                         android:includeFontPadding="false"
                                         android:inputType="numberDecimal"
                                         android:maxLines="1"
+                                        android:maxLength="3"
+                                        android:digits="1234567890"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
                                         android:textSize="@dimen/card_content_sub_text_size" />
@@ -243,6 +251,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -263,6 +273,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -283,6 +295,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -303,6 +317,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -324,6 +340,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
+                                android:maxLength="3"
+                                android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -370,7 +388,7 @@
                                 android:includeFontPadding="false"
                                 android:inputType="number"
                                 android:maxLines="1"
-                                android:maxLength="2"
+                                android:maxLength="4"
                                 android:digits="1234567890"
                                 android:singleLine="true"
                                 android:clickable="false"
@@ -468,16 +486,13 @@
                                 </com.google.android.material.textfield.TextInputLayout>
                             </TableRow>
                         </TableLayout>
-
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
         </ScrollView>
 
-
     </RelativeLayout>
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

@@ -24,7 +24,8 @@
     <string name="button_find_pt">ରୋଗୀକୁ ଦେଖିବା</string>
     <string name="button_new_pt">ନୂତନ ରୋଗୀ</string>
     <string name="button_history">ରୋଗୀ ଇତିିହାସ</string>
-    <string name="button_new_visit">ନୂତନ ଯାତ୍ରା ଅାରମ୍ଭ କରିବା</string>
+    <string name="button_new_visit">ଡାକ୍ତରଙ୍କ ନୂତନ ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name="button_sevika_advice">ସେବାିକା ନୂତନ ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
     <string name="button_save">ସେଭ୍</string>
     <string name="camera_dialog_default">ଦୟାକରି ଭଲ ଦିଶୁଥିବା ଫଟୋକୁ ଦସ୍ତାବଦ କର ଯଦି ଦସ୍ତାବିଦ ଫଟୋ ଭଲ ନାହିଁ ବା ସ୍ପଷ୍ଟ ନାହିଁ ତେବେ ପୁନର୍ବାର ସ୍ପଷ୍ଟ ଫଟୋ ଉଠାଆ</string>
     <string name="complaint_category_selected">ରୟନିତ ଅଭିଯୋଗକାରୀ :</string>
@@ -536,6 +537,11 @@
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
     <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?</string>
     <string name="select_option_vaccination_dialog">Select Option for Vaccination</string>
+
+    //-----------start new visit confirmation dialog string-----------
+    <string name="start_newvisit_confirmation_msg">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏକ ଭ୍ରମଣ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="prescription_notprovided_msg">ଡାକ୍ତର ପ୍ରେସକ୍ରିପସନ୍ ଦେଇନାହାଁନ୍ତି | ପରିଦର୍ଶନ ଶେଷ କରିବାକୁ ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ |</string>
+    <string name="start_newadvice_confirmation_msg">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏକ ପରାମର୍ଶ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
 
     <!--APPOINTMENT Module strings START -->
     <string name="book_appointment">Book Appointment</string>

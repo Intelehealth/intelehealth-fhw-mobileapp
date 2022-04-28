@@ -47,6 +47,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -125,7 +126,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, button_sevika_advice;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -166,6 +167,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        button_sevika_advice= findViewById(R.id.button_sevika_advice);
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -223,6 +225,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         setDisplay(patientUuid);
 
+        button_sevika_advice.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        button_sevika_advice.setTextColor(getResources().getColor(R.color.white));
+
         if (newVisit.isEnabled()) {
             newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             newVisit.setTextColor(getResources().getColor(R.color.white));
@@ -235,9 +240,28 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+                startVisitConfirmation("Doctor");
+            }
+        });
+
+        button_sevika_advice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startVisitConfirmation("Sevika");
+            }
+        });
+        LoadFamilyMembers();
+
+    }
+
+    private void startVisitConfirmation(String startNewAdviceBy){
+         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                alertDialogBuilder.setMessage(getResources().getString(R.string.start_newvisit_confirmation_msg));
+        if(startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+            alertDialogBuilder.setMessage(getResources().getString(R.string.start_newadvice_confirmation_msg));
+        }else {
+            alertDialogBuilder.setMessage(getResources().getString(R.string.start_newvisit_confirmation_msg));
+        }
                 alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -248,24 +272,20 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        startNewVisit();
+                        startNewVisit(startNewAdviceBy);
                     }
                 });
                 AlertDialog alertDialog = alertDialogBuilder.show();
                 //alertDialog.show();
                 IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
-            }
-        });
-
-        LoadFamilyMembers();
-
     }
 
-    private void startNewVisit(){
+    private void startNewVisit(String startNewAdviceBy){
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         Date todayDate = new Date();
+        todayDate = DateUtils.addMinutes(todayDate, -5);
         String thisDate = currentDate.format(todayDate);
 
         String uuid = UUID.randomUUID().toString();
@@ -360,6 +380,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
         intent2.putExtra("name", fullName);
         intent2.putExtra("tag", "new");
+        if(startNewAdviceBy.equalsIgnoreCase("Sevika")){
+            intent2.putExtra("advicefrom", "Sevika");
+        }else{
+            intent2.putExtra("advicefrom", "Doctor");
+        }
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
     }
