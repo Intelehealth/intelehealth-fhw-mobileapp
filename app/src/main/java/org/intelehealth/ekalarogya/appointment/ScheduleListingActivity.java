@@ -157,7 +157,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         res.updateConfiguration(conf, dm);
         return context;
     }
-
+    private String mEngReason = "";
 
     private void askReason(final SlotInfo slotInfo) {
         final Dialog dialog = new Dialog(this);
@@ -176,9 +176,11 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 if (checkedId == R.id.rbR1) {
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    mEngReason = "Doctor is not available";
                 } else if (checkedId == R.id.rbR2) {
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    mEngReason = "Patient is not available";
                 } else if (checkedId == R.id.rbR3) {
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);
@@ -196,7 +198,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     Toast.makeText(ScheduleListingActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                bookAppointment(slotInfo, reason);
+                bookAppointment(slotInfo, mEngReason.isEmpty() ? reason : mEngReason);
             }
         });
 

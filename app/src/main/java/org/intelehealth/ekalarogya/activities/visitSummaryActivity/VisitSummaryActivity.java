@@ -24,23 +24,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.print.PdfPrint;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputFilter;
@@ -49,7 +37,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,6 +59,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -79,15 +78,48 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.ekalarogya.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
+import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.ekalarogya.activities.patientSurveyActivity.PatientSurveyActivity;
+import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.ScheduleListingActivity;
 import org.intelehealth.ekalarogya.appointment.api.ApiClientAppointment;
 import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.ekalarogya.appointment.model.CancelRequest;
 import org.intelehealth.ekalarogya.appointment.model.CancelResponse;
+import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
+import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
+import org.intelehealth.ekalarogya.database.dao.ObsDAO;
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
+import org.intelehealth.ekalarogya.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.ekalarogya.database.dao.RTCConnectionDAO;
+import org.intelehealth.ekalarogya.database.dao.SyncDAO;
+import org.intelehealth.ekalarogya.database.dao.VisitAttributeListDAO;
+import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
+import org.intelehealth.ekalarogya.knowledgeEngine.Node;
+import org.intelehealth.ekalarogya.models.ClsDoctorDetails;
+import org.intelehealth.ekalarogya.models.Patient;
 import org.intelehealth.ekalarogya.models.dto.EncounterDTO;
+import org.intelehealth.ekalarogya.models.dto.ObsDTO;
 import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
+import org.intelehealth.ekalarogya.services.DownloadService;
+import org.intelehealth.ekalarogya.syncModule.SyncUtils;
+import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalarogya.utilities.FileUtils;
+import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NetworkConnection;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.UrlModifiers;
+import org.intelehealth.ekalarogya.utilities.UuidDictionary;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -102,44 +134,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-
-import org.intelehealth.ekalarogya.R;
-import org.intelehealth.ekalarogya.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
-import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.ekalarogya.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.ekalarogya.activities.patientSurveyActivity.PatientSurveyActivity;
-import org.intelehealth.ekalarogya.app.AppConstants;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
-import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
-import org.intelehealth.ekalarogya.database.dao.ObsDAO;
-import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
-import org.intelehealth.ekalarogya.database.dao.ProviderAttributeLIstDAO;
-import org.intelehealth.ekalarogya.database.dao.SyncDAO;
-import org.intelehealth.ekalarogya.database.dao.VisitAttributeListDAO;
-import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
-import org.intelehealth.ekalarogya.knowledgeEngine.Node;
-import org.intelehealth.ekalarogya.models.ClsDoctorDetails;
-import org.intelehealth.ekalarogya.models.Patient;
-import org.intelehealth.ekalarogya.models.dto.ObsDTO;
-import org.intelehealth.ekalarogya.services.DownloadService;
-import org.intelehealth.ekalarogya.syncModule.SyncUtils;
-import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
-import org.intelehealth.ekalarogya.utilities.FileUtils;
-import org.intelehealth.ekalarogya.utilities.Logger;
-
-import android.print.PdfPrint;
-
-import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.UrlModifiers;
-import org.intelehealth.ekalarogya.utilities.UuidDictionary;
-
-import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.ekalarogya.utilities.NetworkConnection;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -433,7 +427,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         //alertDialog.show();
                         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
                     }
-                }else{
+                } else {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(R.string.prescription_notprovided_msg);
@@ -1158,15 +1152,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         sugarRandomView.setText(sugarrandom.getValue());
-        if(sugarfasting.getValue()!=null || sugaraftermeal.getValue()!=null
+        if (sugarfasting.getValue() != null || sugaraftermeal.getValue() != null
                 && !sugarfasting.getValue().equalsIgnoreCase("null") && !sugaraftermeal.getValue().equalsIgnoreCase("null")) {
-            if(sugarfasting.getValue().trim().length()!=0 && sugaraftermeal.getValue().trim().length()!=0) {
+            if (sugarfasting.getValue().trim().length() != 0 && sugaraftermeal.getValue().trim().length() != 0) {
                 sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
-            }else{
+            } else {
                 sugarFastAndMealView.setText("");
             }
-        }else{
-            System.out.println("error====="+"");
+        } else {
+            System.out.println("error=====" + "");
             sugarFastAndMealView.setText("");
         }
 
@@ -1298,7 +1292,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         final Cursor visitCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
         if (visitCursor != null && visitCursor.moveToFirst()) {
             String val = visitCursor.getString(visitCursor.getColumnIndexOrThrow("sync"));
-            if (val.equalsIgnoreCase("1")){
+            if (val.equalsIgnoreCase("1")) {
                 editComplaint.setVisibility(View.GONE);
             }
         }
@@ -2207,8 +2201,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2247,8 +2241,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -2541,8 +2535,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2581,8 +2575,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
-                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "", (!TextUtils.isEmpty(mBlood)) ? mBlood : "", (!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "", (!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -3444,6 +3438,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
+        getAppointmentDetails(visitUuid);
     }
 
     @Override
@@ -3875,6 +3870,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private TextView mDoctorAppointmentBookingTextView;
     private TextView mCancelAppointmentBookingTextView;
     private TextView mInfoAppointmentBookingTextView;
+    private String mEngReason = "";
 
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
     private int mAppointmentId = 0;
@@ -4023,9 +4019,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (checkedId == R.id.rbR1) {
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    mEngReason = "Doctor is not available";
                 } else if (checkedId == R.id.rbR2) {
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    mEngReason = "Patient is not available";
                 } else if (checkedId == R.id.rbR3) {
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);
@@ -4043,7 +4041,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                cancelAppointmentRequest(reason);
+                cancelAppointmentRequest(mEngReason.isEmpty() ? reason : mEngReason);
             }
         });
 
