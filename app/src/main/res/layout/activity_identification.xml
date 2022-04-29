@@ -486,7 +486,7 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
                                 <EditText
@@ -515,7 +515,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1" />
                             </LinearLayout>
-                            <AutoCompleteTextView
+                            <!--<AutoCompleteTextView
                                 android:id="@+id/identification_city"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
@@ -531,7 +531,7 @@
                                 android:maxLength="25"
                                 android:maxLines="1"
                                 android:textSize="@dimen/card_content_sub_text_size" />
-
+-->
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout

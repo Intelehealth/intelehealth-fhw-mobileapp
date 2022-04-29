@@ -133,7 +133,7 @@ public class IdentificationActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder mTimePicker;
     EditText mAddress1;
     EditText mAddress2;
-    AutoCompleteTextView mCity;
+    //AutoCompleteTextView mCity;
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
@@ -249,8 +249,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mAddress2 = findViewById(R.id.identification_address2);
         mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-        mCity = findViewById(R.id.identification_city);
-        mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+       // mCity = findViewById(R.id.identification_city);
+      //  mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -1324,15 +1324,15 @@ public class IdentificationActivity extends AppCompatActivity {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.odisha_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                   // mCity.setThreshold(1);//will start working from first character
+                   // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else if (state.matches("Bukidnon")) {
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.bukidnon_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                   // mCity.setThreshold(1);//will start working from first character
+                   // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
-                    mCity.setAdapter(null);
+                   // mCity.setAdapter(null);
                 }
             }
 
