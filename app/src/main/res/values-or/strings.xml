@@ -72,7 +72,7 @@
     <string name="identification_screen_error_data_fields">ସେବକକୁ ଅପଲୋର୍ଡ଼ କରିବା</string>
     <string name="identification_screen_prompt_address">ଠିକଣା</string>
     <string name="identification_screen_prompt_age">ବୟସ*</string>
-    <string name="identification_screen_prompt_time">Time:</string>
+    <string name="identification_screen_prompt_time">ସମୟ:</string>
     <string name="identification_screen_prompt_birthday">ଜନ୍ମ ତିଥି*</string>
     <string name="identification_screen_prompt_country">ଦେଶ *</string>
     <string name="identification_screen_prompt_city">ଗ୍ରାମ/ସହର/ନଗର *</string>
@@ -96,7 +96,7 @@
     <string name="menu_option_logout">"ଲଗ ଅାଉଟ୍ କରିବା "</string>
     <string name="menu_option_settings">"ସେଟିଙ୍ଗ "</string>
     <string name="menu_option_sync">ସମନ୍ବତି ପନ୍ଥା</string>
-    <string name="menu_option_hw_profile" translatable="false">User Profile</string>
+    <string name="menu_option_hw_profile" translatable="false">ଉପଯୋଗକର୍ତ୍ତା ପ୍ରୋଫାଇଲ୍</string>
 
     <string name="new_patient">ନୂତନ ରୋଗୀ</string>
     <string name="offline_authentication_not_possible">ଫଲାଇନ୍ ପ୍ରମାଣକରିବାରେ ଅସମର୍ଥ</string>
@@ -292,7 +292,7 @@
     <string name="update_protocols">"ପ୍ରୋଟୋକଲ୍ ଅପଡେଟ୍ କରନ୍ତୁ "</string>
     <string name="end_all_visit">ସମସ୍ତ ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରନ୍ତୁ</string>
     <string name="filter_by_creator">"ସ୍ରଷ୍ଟାଙ୍କ ଅନୁସାରେ ଫିଲଟର୍ କରନ୍ତୁ "</string>
-    <string name="planet_name">Planet Name</string>
+    <string name="planet_name">ଗ୍ରହ ନାମ</string>
     <string name="ok">"ଠିକ୍ ଅଛି "</string>
     <string name="cancel">"ରଦ୍ଦ କରନ୍ତୁ "</string>
     <string name="unable_to_end">"ପରିଦର୍ଶନ ସମାପ୍ତ  "</string>
@@ -319,7 +319,7 @@
     <string name="privacy_notice_title">ଗୋପନୀୟତା ନୋଟିସ୍</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
 
-    <string name="not_provided" translatable="false">Not provided</string>
+    <string name="not_provided" translatable="false">ଉପଲବ୍ଧ ନାହିଁ</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"</string>
@@ -369,18 +369,18 @@
     <string name="who_is_this_napplication_for">ଏହିଆପିଲସକଶନ୍ କାହା ପାଇଁ?</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">ନମସ୍କାର\n\n ମୁଁ ଆୟୁ, ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକକାରୀ | ଚାଲ ଆରମ୍ଭ କରିବା!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">ନମସ୍କାର\n\n ମୁଁ ଆୟୁ, ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକକାରୀ | ଚାଲ ଆରମ୍ଭ କରିବା!</string>
     <string name="Ayu_name">ଆୟୁ</string>
     <string name="active_tag_patientDetail">" ସକ୍ରିୟ"</string>
     <string name="associated_symptoms_patientDetail">ସମ୍ମିଳତି ଲେଣ</string>
-    <string name="device_ID">\"Device Id: \"</string>
-    <string name="enter_valid_license_url">Enter valid License Url</string>
-    <string name="please_enter_url_and_key">Please enter URL and Key</string>
-    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
-    <string name="permission_denied">Permission Denied\n</string>
-    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
-    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="device_ID">ଉପକରଣ ମୁଁଡି:</string>
+    <string name="enter_valid_license_url">ବ valid ଧ ଲାଇସେନ୍ସ Url ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="please_enter_url_and_key">ଦୟାକରି URL ଏବଂ କି ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="please_enter_valid_license_key">ଦୟାକରି ଏକ ବ valid ଧ ଲାଇସେନ୍ସ କୀ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="permission_denied">ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ\n</string>
+    <string name="reject_permission_results"><![CDATA[ଯଦି ଆପଣ ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତି, ଆପଣ ଏହି ସେବା ବ୍ୟବହାର କରିପାରିବେ ନାହିଁ\n\nଦୟାକରି ରେ ଅନୁମତି ଟର୍ନ୍ ଅନ୍ କରନ୍ତୁ [ସେଟିଂ] > [ଅନୁମତି]]]></string>
+    <string name="current_time"><![CDATA[\"ସାମ୍ପ୍ରତିକ ସମୟ => \"]]></string>
     <string name="dr_email">ଇସମଲ୍</string>
     <string name="_visit_summary">ପରିଦଶଡନ ସାରାାଂଶ</string>
     <string name="patient_id_">"ସରାଗୀଙ୍କ ଆଇର୍:ି "</string>
@@ -394,9 +394,9 @@
     <string name="identification_screen_text_years" translatable="false">ବର୍ଡ</string>
     <string name="identification_screen_text_months" translatable="false">ମାସ</string>
     <string name="identification_screen_picker_years" translatable="false">"ବର୍ଡ "</string>
-    <string name="identification_screen_picker_hours" translatable="false">hours</string>
+    <string name="identification_screen_picker_hours" translatable="false">ଘଣ୍ଟା</string>
     <string name="identification_screen_picker_months" translatable="false">ମାସ</string>
-    <string name="identification_screen_picker_minute" translatable="false">minute</string>
+    <string name="identification_screen_picker_minute" translatable="false">ମିନିଟ୍</string>
     <string name="title_activity_question_node" translatable="false">ପ୍ରଶନସନାର୍ଗତବିଧ</string>
     <string name="title_activity_setup" translatable="false">ବନିୟାସ</string>
     <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
@@ -487,46 +487,46 @@
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
-    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
-    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
-    <string name="enter_10_digits">Enter 10 digits</string>
-    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
-    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="share">Share</string>
-    <string name="view_print">View/Print</string>
-    <string name="refresh">Refresh</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
-    <string name="family_member">Family Member</string>
-    <string name="no_family_member_registered">No Family Member Registered</string>
-    <string name="document_">"Document - "</string>
-    <string name="gender">Gender</string>
-    <string name="are_you_head_of_the_family">Are you Head of the Family?</string>
-    <string name="what_is_your_occupation">What is your occupation?*</string>
-    <string name="do_you_have_a_bank_account">Do you have a bank account?*</string>
-    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?*</string>
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?*</string>
-    <string name="total_number_of_members_in_the_household">Total number of members in the household*</string>
-    <string name="enter_number">Enter Number</string>
-    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now*</string>
-    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?*</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">What do you do to make drinking water safer?*</string>
-    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?*</string>
-    <string name="declined">Declined to answer</string>
-    <string name="enter_time">Enter Time</string>
-    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks, was the water from this source not available for at least one full day?*</string>
-    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?*</string>
-    <string name="select_the_structure_of_house">Select the structure of house*</string>
-    <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?*</string>
-    <string name="enter_answer">Enter Answer</string>
-    <string name="enter_occupation">Enter Occupation</string>
-    <string name="select">Select</string>
-    <string name="Hours">Hours</string>
-    <string name="Days">Days</string>
-    <string name="Weeks">Weeks</string>
-    <string name="Months">Months</string>
-    <string name="Years">Years</string>
+    <string name="whatsapp_presc_toast">ଫାଇଲ୍ ଏକ୍ସପ୍ଲୋରରରୁ ପ୍ରେସକ୍ରିପସନ୍ PDF ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ / ଆନ୍ତରିକତା_PDF|</string>
+    <string name="enter_mobile_number_to_share_prescription">ଯେଉଁ ମୋବାଇଲ୍ ନମ୍ବରକୁ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ବାଣ୍ଟିବାକୁ ଚାହୁଁଛନ୍ତି ତାହା ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସେଭିକା) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ନୋଟିସ୍ ପ the ିଛି ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
+    <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପ read ନ୍ତୁ |</string>
+    <string name="download_prescription_first_before_sharing">ଅଂଶୀଦାର କରିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
+    <string name="share">ଅଂଶୀଦାର କରନ୍ତୁ</string>
+    <string name="view_print">ଦର୍ଶନ / ମୁଦ୍ରଣ</string>
+    <string name="refresh">ସତେଜ</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଇଣ୍ଟେଲିହେଲଥ ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ | "</string>
+    <string name="and_enter_your_patient_id">" ଏବଂ ଆପଣଙ୍କର ରୋଗୀ ID ପ୍ରବେଶ କରନ୍ତୁ - "</string>
+    <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
+    <string name="no_family_member_registered">କ ପରିବାର ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି |</string>
+    <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ - "</string>
+    <string name="gender">ଲିଙ୍ଗ</string>
+    <string name="are_you_head_of_the_family">ଆପଣ ପରିବାରର ମୁଖ୍ୟ କି?</string>
+    <string name="what_is_your_occupation">ତୁମର ଜୀବିକା କଣ?*</string>
+    <string name="do_you_have_a_bank_account">ଆପଣଙ୍କର ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟ ଅଛି କି?*</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">ଆପଣ ବ୍ୟକ୍ତିଗତ ଭାବରେ କେଉଁ ପ୍ରକାରର ମୋବାଇଲ୍ ଫୋନ୍ କରନ୍ତି?*</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାର ସଦସ୍ୟ ହ୍ ats ାଟସ୍ ଆପ୍ ବ୍ୟବହାର କରନ୍ତି କି?*</string>
+    <string name="total_number_of_members_in_the_household">ଘରର ମୋଟ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା*</string>
+    <string name="enter_number">ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">ସାଧାରଣତ your କେତେଜଣ ସଦସ୍ୟ ଆପଣଙ୍କ ଘରେ ରୁହନ୍ତି କିମ୍ବା ବର୍ତ୍ତମାନ ଆପଣଙ୍କ ସହିତ ରୁହନ୍ତି*</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନଙ୍କ ପାଇଁ ପାନୀୟ ଜଳର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">ପାନୀୟ ଜଳକୁ ସୁରକ୍ଷିତ କରିବା ପାଇଁ ଆପଣ କ’ଣ କରନ୍ତି?*</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">ସେଠାକୁ ଯିବା, ପାଣି ପାଇବା ଏବଂ ଗୋଟିଏ ଯାତ୍ରାରେ ଫେରିବା ପାଇଁ କେତେ ସମୟ ଲାଗେ?*</string>
+    <string name="declined">ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</string>
+    <string name="enter_time">ସମୟ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">ଗତ ଦୁଇ ସପ୍ତାହ ମଧ୍ୟରେ, ଏହି ଉତ୍ସରୁ ଜଳ ଅତି କମରେ ଗୋଟିଏ ଦିନ ପାଇଁ ଉପଲବ୍ଧ ନଥିଲା କି?*</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନେ ସାଧାରଣତ What କେଉଁ ପ୍ରକାରର ଶ et ଚାଳୟ ସୁବିଧା ବ୍ୟବହାର କରନ୍ତି?*</string>
+    <string name="select_the_structure_of_house">ଘରର ଗଠନ ଚୟନ କରନ୍ତୁ*</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">ଆପଣଙ୍କ ପରିବାରର କେତେ ହେକ୍ଟର ଚାଷ ଜମି ଅଛି?*</string>
+    <string name="enter_answer">ଉତ୍ତର ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="enter_occupation">ବୃତ୍ତି ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="select">ଚୟନ କରନ୍ତୁ</string>
+    <string name="Hours">ଘଣ୍ଟା</string>
+    <string name="Days">ଦିନଗୁଡିକ</string>
+    <string name="Weeks">ସପ୍ତାହଗୁଡିକ</string>
+    <string name="Months">ମାସଗୁଡିକ</string>
+    <string name="Years">ବର୍ଷଗୁଡିକ</string>
     <string name="image_saved">ପ୍ରତିଛବି ସଫଳତାର ସହିତ ସଞ୍ଚୟ ହୋଇଛି |</string>
     <string name="emergency_confirmation">ଆପଣ ଏହି ପରିଦର୍ଶନକୁ ଜରୁରୀକାଳୀନ ପରିସ୍ଥିତି ଭାବରେ ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="per_Hour">ପ୍ରତି ଘଣ୍ଟା</string>
@@ -535,13 +535,69 @@
     <string name="per_Month">ପ୍ରତି ମାସରେ |</string>
     <string name="per_Year">ପ୍ରତିବର୍ଷ</string>
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
-    <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?</string>
-    <string name="select_option_vaccination_dialog">Select Option for Vaccination</string>
+    <string name="have_you_taken_a_covid_vaccine">ଆପଣ ଏକ କୋଭିଡ୍ ଟିକା ନେଇଛନ୍ତି କି?</string>
+    <string name="select_option_vaccination_dialog">ଟୀକାକରଣ ପାଇଁ ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ</string>
+
+    //-------setup Location string-----
+    <string name="setup_select_state_str">ରାଜ୍ୟ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_state_msg">ଡ୍ରପଡାଉନ୍ ରୁ ରାଜ୍ୟ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_district_str">ଜିଲ୍ଲା ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_district_msg">ଡ୍ରପଡାଉନ୍ ରୁ ଜିଲ୍ଲା ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_sanch_str">ସଞ୍ଚ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_sanch_msg">ଡ୍ରପଡାଉନ୍ ରୁ ସାନଚ୍ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_village_str">ଗାଁ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_village_msg">ଡ୍ରପଡାଉନ୍ ରୁ ଗାଁ ଚୟନ କରନ୍ତୁ</string>
+
+    <string name="visit_closed">ବନ୍ଦ ପରିଦର୍ଶନ କରନ୍ତୁ</string>
+    <string name="gender_male">ପୁରୁଷ</string>
+    <string name="gender_female">ମହିଳା</string>
+    <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି ...</string>
+    <string name="take_photo">ଫଟୋ ନିଅନ୍ତୁ</string>
+    <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
+    <string name="hw_profile_image_picker_title">ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ପ୍ରୋଫାଇଲ୍ ପ୍ରତିଛବି!</string>
+
+    <string name="hw_qualification_hint">ଯୋଗ୍ୟତା</string>
+    <string name="hw_aboutme_hint">ମୋ ବିସୟରେ</string>
+
+    <string name="choose_lang_title">ଆପଣଙ୍କର ଭାଷା ବାଛନ୍ତୁ</string>
+    <string name="save_button">ସଞ୍ଚୟ କରନ୍ତୁ</string>
 
     //-----------start new visit confirmation dialog string-----------
     <string name="start_newvisit_confirmation_msg">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏକ ଭ୍ରମଣ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="prescription_notprovided_msg">ଡାକ୍ତର ପ୍ରେସକ୍ରିପସନ୍ ଦେଇନାହାଁନ୍ତି | ପରିଦର୍ଶନ ଶେଷ କରିବାକୁ ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ |</string>
     <string name="start_newadvice_confirmation_msg">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏକ ପରାମର୍ଶ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+
+    //----------hw profile strings--------------------
+    <string name="hw_totalpatient_str" translatable="false">ସୃଷ୍ଟି ହୋଇଥିବା ପରିଦର୍ଶନ କରନ୍ତୁ</string>
+    <string name="hw_completeconsultation_str" translatable="false">ସଂପୂର୍ଣ୍ଣ ପରାମର୍ଶ</string>
+    <string name="hw_visitprogress_str" translatable="false">ପ୍ରୋଗ୍ରାମରେ ପରିଦର୍ଶନ କରନ୍ତୁ</string>
+    <string name="hw_personal_info_str" translatable="false">ବ୍ୟକ୍ତିଗତ ସୁଚ଼ନା</string>
+    <string name="hw_state_str" translatable="false">ରାଜ୍ୟ</string>
+    <string name="hw_mobile_str" translatable="false">ମୋବାଇଲ୍</string>
+    <string name="hw_whatsapp_str" translatable="false">ହ୍ ats ାଟସ୍ ଆପ୍</string>
+    <string name="hw_email_str" translatable="false">ଇମେଲ୍ କରନ୍ତୁ</string>
+
+    //-------vital updated fields-------------
+    <string name="blood_grp">ରକ୍ତ ଗୋଷ୍ଠୀ: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
+    <string name="visit_summary_sugar" translatable="false">ଚିନି ସ୍ତର (ରାଣ୍ଡମ)</string>
+    <string name="visit_summary_sugarfast" translatable="false">ଚିନି ସ୍ତର (ଉପବାସ / ଭୋଜନ ପରେ)</string>
+    <string name="visit_summary_blood" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
+    <string name="hemoglobin_error" translatable="false">ହେମୋଗ୍ଲୋବିନ %1$s ରୁ%2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ</string>
+    <string name="sugar_error" translatable="false">ଚିନି ସ୍ତର %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ</string>
+    <string name="blood_error" translatable="false">ଦୟାକରି ରକ୍ତ ଗୋଷ୍ଠୀ ଚୟନ କରନ୍ତୁ</string>
+    <string name="table_sugar_fasting" translatable="false">ଚିନି (ଉପବାସ)</string>
+    <string name="table_sugar_aftermeal" translatable="false">ଚିନି (ଭୋଜନପରେ)</string>
+
+    <string name="table_hemoglobin" translatable="false">ହେମୋଗ୍ଲୋବିନ୍</string>
+    <string name="table_bld_grp" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
+    <string name="table_sugar_level" translatable="false">ଚିନି ସ୍ତର -mg / dL (ରାଣ୍ଡମ)</string>
+
+    <string name="warning_app_update">ଦୟାକରି ଆପକୁ ନୂତନତମ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ</string>
+
+    <string name="identification_screen_prompt_village">ଗାଁ *</string>
+    <string name="failed_initial_synced">ସତେଜ ବିଫଳ, ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ | ଦୟାକରି ଆପ୍ ପୁନ rest ଆରମ୍ଭ କରନ୍ତୁ |</string>
+
 
     <!--APPOINTMENT Module strings START -->
     <string name="book_appointment">Book Appointment</string>
