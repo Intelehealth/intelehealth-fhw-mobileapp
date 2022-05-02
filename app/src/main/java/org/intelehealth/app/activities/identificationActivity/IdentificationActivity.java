@@ -419,16 +419,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         if (patient1.getFirst_name() != null && !patient1.getFirst_name().equalsIgnoreCase("-"))
             mFirstName.setText(patient1.getFirst_name());
 
-        if (patient1.getFirst_name() != null && !patient1.getMiddle_name().equalsIgnoreCase("-"))
+        if (patient1.getMiddle_name() != null && !patient1.getMiddle_name().equalsIgnoreCase("-"))
             mMiddleName.setText(patient1.getMiddle_name());
 
-        if (patient1.getFirst_name() != null && !patient1.getLast_name().equalsIgnoreCase("-"))
+        if (patient1.getLast_name() != null && !patient1.getLast_name().equalsIgnoreCase("-"))
             mLastName.setText(patient1.getLast_name());
 
-        if (patient1.getFirst_name() != null && !patient1.getDate_of_birth().equalsIgnoreCase("-"))
+        if (patient1.getDate_of_birth() != null && !patient1.getDate_of_birth().equalsIgnoreCase("-"))
             mDOB.setText(patient1.getDate_of_birth());
 
-        if (patient1.getFirst_name() != null && !patient1.getPhone_number().equalsIgnoreCase("-"))
+        if (patient1.getPhone_number() != null && !patient1.getPhone_number().equalsIgnoreCase("-"))
             mPhoneNum.setText(patient1.getPhone_number());
 
         if (patientID_edit == null) {
