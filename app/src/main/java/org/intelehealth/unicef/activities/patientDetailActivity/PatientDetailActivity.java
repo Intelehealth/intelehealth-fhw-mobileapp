@@ -1216,8 +1216,18 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
+                                        //changes done below are to resolve the crashlytics encountered in firebase on 30 April 2022: By Nishita
+                                        if(comp.contains(colon)) {
+                                        try {
+                                            Log.d("colon", "colon: " + comp);
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                            Log.d("colon", "colon_visitvalue: " + visitValue);
+                                        } catch (StringIndexOutOfBoundsException e) {
+                                            System.out.println("String Index is out of bounds");
+                                        }
+                                    }
+                                    else
+                                        visitValue = visitValue + Node.bullet_arrow + comp;
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
