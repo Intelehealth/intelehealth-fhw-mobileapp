@@ -1427,17 +1427,47 @@ public class VitalsActivity extends AppCompatActivity {
                     alertMsg=alertMsg+getResources().getString(R.string.vital_alert_spo2_button)+"\n";
                 }
 
-                if(mPulse.getText() != null && mPulse.getText().toString().trim().length()!=0 && (Integer.parseInt(mPulse.getText().toString().trim())<40 || Integer.parseInt(mPulse.getText().toString().trim())>140)){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_pulse_button)+"\n";
+                if(float_ageYear_Month<35) {
+                    if (mPulse.getText() != null && mPulse.getText().toString().trim().length() != 0 && (Integer.parseInt(mPulse.getText().toString().trim()) < 60 || Integer.parseInt(mPulse.getText().toString().trim()) > 200)) {
+                        alertMsg = alertMsg + getResources().getString(R.string.vital_alert_pulse_button) + "\n";
+                    }
+                }else if(float_ageYear_Month>=35 && float_ageYear_Month<50){
+                    if (mPulse.getText() != null && mPulse.getText().toString().trim().length() != 0 && (Integer.parseInt(mPulse.getText().toString().trim()) < 58 || Integer.parseInt(mPulse.getText().toString().trim()) > 150)) {
+                        alertMsg = alertMsg + getResources().getString(R.string.vital_alert_pulse_button) + "\n";
+                    }
+                }else{
+                    if (mPulse.getText() != null && mPulse.getText().toString().trim().length() != 0 && (Integer.parseInt(mPulse.getText().toString().trim()) < 40 || Integer.parseInt(mPulse.getText().toString().trim()) > 140)) {
+                        alertMsg = alertMsg + getResources().getString(R.string.vital_alert_pulse_button) + "\n";
+                    }
+                }
+
+                if(mResp.getText() != null && mResp.getText().toString().trim().length()!=0 && (Integer.parseInt(mResp.getText().toString().trim())<12 || Integer.parseInt(mResp.getText().toString().trim())>25)){
+                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_resp_button)+"\n";
+                }
+
+                if(float_ageYear_Month<1){
+                    if(mTemperature.getText() != null && mTemperature.getText().toString().trim().length()!=0 && (Double.parseDouble(mTemperature.getText().toString().trim())<95 || Double.parseDouble(mTemperature.getText().toString().trim())>100.4)){
+                        alertMsg=alertMsg+getResources().getString(R.string.vital_alert_temperature_button)+"\n";
+                    }
+                }else{
+                    if(mTemperature.getText() != null && mTemperature.getText().toString().trim().length()!=0 && (Double.parseDouble(mTemperature.getText().toString().trim())<95 || Double.parseDouble(mTemperature.getText().toString().trim())>103)){
+                        alertMsg=alertMsg+getResources().getString(R.string.vital_alert_temperature_button)+"\n";
+                    }
                 }
 
                 if(mHemoglobin.getText() != null && mHemoglobin.getText().toString().trim().length()!=0 && (Double.parseDouble(mHemoglobin.getText().toString().trim())<7.0 || Double.parseDouble(mHemoglobin.getText().toString().trim())>20.0)){
                     alertMsg=alertMsg+getResources().getString(R.string.vital_alert_hgb_button)+"\n";
                 }
 
-                if((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarRandom.getText().toString().trim())<54 || Integer.parseInt(mSugarRandom.getText().toString().trim())>450))
-                || (mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarFasting.getText().toString().trim())<54 || Integer.parseInt(mSugarFasting.getText().toString().trim())>450))
-                || (mSugarAfterMeal.getText() != null && mSugarAfterMeal.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarAfterMeal.getText().toString().trim())<54 || Integer.parseInt(mSugarAfterMeal.getText().toString().trim())>450))){
+                if((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarRandom.getText().toString().trim())<80 || Integer.parseInt(mSugarRandom.getText().toString().trim())>130))){
+                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_sugar_button)+"\n";
+                }
+
+                if((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarFasting.getText().toString().trim())<70 || Integer.parseInt(mSugarFasting.getText().toString().trim())>100))){
+                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_sugar_button)+"\n";
+                }
+
+                if((mSugarAfterMeal.getText() != null && mSugarAfterMeal.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarAfterMeal.getText().toString().trim())<54 || Integer.parseInt(mSugarAfterMeal.getText().toString().trim())>140))){
                     alertMsg=alertMsg+getResources().getString(R.string.vital_alert_sugar_button)+"\n";
                 }
 

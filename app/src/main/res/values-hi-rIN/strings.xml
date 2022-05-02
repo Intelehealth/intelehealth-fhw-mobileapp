@@ -169,8 +169,12 @@
     <string name="vital_alert_bp_sys_button">आपका सिस्टोलिक ब्लडप्रेशर सामान्य नहीं है|</string>
     <string name="vital_alert_spo2_button">आपका ऑक्सीजन सिचुरेशन सामान्य नहीं है|</string>
     <string name="vital_alert_pulse_button">आपकी नाड़ी सामान्य नहीं है|</string>
+    <string name="vital_alert_resp_button">आपकी श्वसन दर सामान्य नहीं है।</string>
+    <string name="vital_alert_temperature_button">आपका तापमान सामान्य नहीं है।</string>
     <string name="vital_alert_hgb_button">आपका हीमोग्लोबिन सामान्य नहीं है|</string>
-    <string name="vital_alert_sugar_button">आपका शुगर का स्तर सामान्य नहीं है|</string>
+    <string name="vital_alert_sugar_random_button">आपका शुगर रैंडम का स्तर सामान्य नहीं है|</string>
+    <string name="vital_alert_sugar_fasting_button">आपका शुगर फास्टिंग का स्तर सामान्य नहीं है|</string>
+    <string name="vital_alert_sugar_aftermeal_button">आपका शुगर स्तर खाने के बाद सामान्य नहीं है|</string>
 
     //Patient Search Screen
     <string name="search_hint">नाम द्वारा मरीज की खोज</string>
@@ -720,9 +724,9 @@
     <string name="hw_email_str" translatable="false">ईमेल</string>
 
     //-----------start new visit confirmation dialog string-----------
-    <string name="start_newvisit_confirmation_msg">क्या आप वाकई विज़िट शुरू करना चाहते हैं?</string>
+    <string name="start_newvisit_confirmation_msg">क्या आप वाकई चिकित्सक से सलाह शुरू करना चाहते हैं?</string>
     <string name="prescription_notprovided_msg">डॉक्टर ने प्रिस्क्रिप्शन नहीं दिया है। कृपया यात्रा समाप्त करने के लिए प्रिस्क्रिप्शन की प्रतीक्षा करें।</string>
-    <string name="start_newadvice_confirmation_msg">क्या आप वाकई सलाह शुरू करना चाहते हैं?</string>
+    <string name="start_newadvice_confirmation_msg">क्या आप वाकई सेविका से सलाह शुरू करना चाहते हैं?</string>
 
     <string name="take_photo">फोटो लो</string>
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
