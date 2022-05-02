@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,6 +52,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.intelehealth.ekalarogya.R;
@@ -150,6 +152,18 @@ public class SetupActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
+
+        String language = sessionManager.getAppLanguage();
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+        setTitle(R.string.title_activity_setup);
+
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
 
@@ -198,7 +212,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
+        String deviceID = getResources().getString(R.string.device_ID) + IntelehealthApplication.getAndroidId();
         mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
