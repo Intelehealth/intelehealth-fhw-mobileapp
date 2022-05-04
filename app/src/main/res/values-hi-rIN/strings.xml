@@ -175,6 +175,7 @@
     <string name="vital_alert_sugar_random_button">आपका शुगर रैंडम का स्तर सामान्य नहीं है|</string>
     <string name="vital_alert_sugar_fasting_button">आपका शुगर फास्टिंग का स्तर सामान्य नहीं है|</string>
     <string name="vital_alert_sugar_aftermeal_button">आपका शुगर स्तर खाने के बाद सामान्य नहीं है|</string>
+    <string name="vital_alert_required_field_button">सबमिट करने के लिए कम से कम एक रिकॉर्ड की आवश्यकता है|</string>
 
     //Patient Search Screen
     <string name="search_hint">नाम द्वारा मरीज की खोज</string>

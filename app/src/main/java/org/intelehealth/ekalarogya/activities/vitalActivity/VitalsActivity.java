@@ -76,7 +76,7 @@ public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";
-    private String intentTag,intentAdviceFrom;
+    private String intentTag, intentAdviceFrom;
     private String state;
     private String patientUuid;
     private String visitUuid;
@@ -90,7 +90,7 @@ public class VitalsActivity extends AppCompatActivity {
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
-            mHemoglobin,mSugarRandom, mSugarFasting, mSugarAfterMeal;
+            mHemoglobin, mSugarRandom, mSugarFasting, mSugarAfterMeal;
     Spinner mBlood_Spinner;
     ArrayAdapter<CharSequence> bloodAdapter;
 
@@ -143,19 +143,19 @@ public class VitalsActivity extends AppCompatActivity {
 
         mBMI.setEnabled(false);
 
-        mHemoglobin= findViewById(R.id.table_hemoglobin);
-        mSugarRandom= findViewById(R.id.table_sugar_level);
-        mSugarFasting= findViewById(R.id.table_sugar_fasting);
-        mSugarAfterMeal= findViewById(R.id.table_sugar_aftermeal);
-        mBlood_Spinner= findViewById(R.id.spinner_blood_grp);
-        String bloodStr="blood_group_"+ sessionManager.getAppLanguage();
-        int bloodGrpArray=getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
+        mHemoglobin = findViewById(R.id.table_hemoglobin);
+        mSugarRandom = findViewById(R.id.table_sugar_level);
+        mSugarFasting = findViewById(R.id.table_sugar_fasting);
+        mSugarAfterMeal = findViewById(R.id.table_sugar_aftermeal);
+        mBlood_Spinner = findViewById(R.id.spinner_blood_grp);
+        String bloodStr = "blood_group_" + sessionManager.getAppLanguage();
+        int bloodGrpArray = getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
         bloodAdapter = ArrayAdapter.createFromResource(this, bloodGrpArray/*R.array.blood_group*/, R.layout.blood_group_spinner);
         mBlood_Spinner.setAdapter(bloodAdapter);
         mBlood_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
+                if (position == 0) {
                     ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.medium_gray));
                 }
             }
@@ -515,10 +515,10 @@ public class VitalsActivity extends AppCompatActivity {
         mHemoglobin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] data=new String[] {"1.0", "1.5", "2.0","2.5","3.0","3.5","4.0","4.5","5.0",
-                "5.5","6.0","6.5","7.0","7.5","8.0","8.5","9.0","9.5","10.0","10.5","11.0","11.5","12.0",
-                "12.5","13.0","13.5","14.0","14.5","15.0","15.5","16.0","16.5","17.0","17.5","18.0",
-                "18.5","19.0","19.5","20.0"};
+                String[] data = new String[]{"1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0",
+                        "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0",
+                        "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0", "16.5", "17.0", "17.5", "18.0",
+                        "18.5", "19.0", "19.5", "20.0"};
 
                 setVitalInfoForHemoAndSugar(data, mHemoglobin, mHemoglobin.getText().toString().trim());
             }
@@ -665,9 +665,7 @@ public class VitalsActivity extends AppCompatActivity {
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
-        }
-        else
-        {
+        } else {
             mBMI.getText().clear();
         }
     }
@@ -682,14 +680,13 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else  {
+        } else {
             // do nothing
             mBMI.getText().clear();
         }
     }
-
 
 
     public void loadPrevious() {
@@ -762,9 +759,9 @@ public class VitalsActivity extends AppCompatActivity {
                 break;
 
             case UuidDictionary.BLOODGROUP: //blood
-                if(value.isEmpty() || value.length()==0){
+                if (value.isEmpty() || value.length() == 0) {
                     mBlood_Spinner.setSelection(0);
-                }else {
+                } else {
                     String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
                     int pos = Arrays.asList(blood_Array).indexOf(value);
                     mBlood_Spinner.setSelection(pos);
@@ -776,7 +773,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
@@ -785,15 +782,37 @@ public class VitalsActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+        boolean val = mBMI.getText().toString().trim().isEmpty();
+        val = mBpSys.getText().toString().trim().isEmpty();
+        val = mBpDia.getText().toString().trim().isEmpty();
+        val = mSpo2.getText().toString().trim().isEmpty();
+        val = mPulse.getText().toString().trim().isEmpty();
+        val = mResp.getText().toString().trim().isEmpty();
+        val = mTemperature.getText().toString().trim().isEmpty();
+        val = mBlood_Spinner.getSelectedItemPosition() != 0;
+        val = mHemoglobin.getText().toString().trim().isEmpty();
+        val = mSugarRandom.getText().toString().trim().isEmpty();
+        val = mSugarFasting.getText().toString().trim().isEmpty();
+        val = mSugarAfterMeal.getText().toString().trim().isEmpty();
+
+        if (mBMI.getText().toString().trim().isEmpty() && mBpSys.getText().toString().trim().isEmpty() &&
+                mBpDia.getText().toString().isEmpty() && mSpo2.getText().toString().trim().isEmpty() &&
+                mPulse.getText().toString().trim().isEmpty() && mResp.getText().toString().trim().isEmpty() &&
+                mTemperature.getText().toString().trim().isEmpty() && mBlood_Spinner.getSelectedItemPosition() == 0 &&
+                mHemoglobin.getText().toString().trim().isEmpty() && mSugarRandom.getText().toString().trim().isEmpty() &&
+                mSugarFasting.getText().toString().trim().isEmpty() && mSugarAfterMeal.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.vital_alert_required_field_button), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         //BP vaidations added by Prajwal.
-        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if(mBpSys.getText().toString().isEmpty()) {
+            if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
                 return;
-            }
-            else if(mBpDia.getText().toString().isEmpty()) {
+            } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
                 mBpDia.setError("Enter field");
                 return;
@@ -801,14 +820,13 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         //Sugar Level vaidations
-        if(mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
+        if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
-            if(mSugarFasting.getText().toString().isEmpty()) {
+            if (mSugarFasting.getText().toString().isEmpty()) {
                 mSugarFasting.requestFocus();
                 mSugarFasting.setError("Enter field");
                 return;
-            }
-            else if(mSugarAfterMeal.getText().toString().isEmpty()) {
+            } else if (mSugarAfterMeal.getText().toString().isEmpty()) {
                 mSugarAfterMeal.requestFocus();
                 mSugarAfterMeal.setError("Enter field");
                 return;
@@ -831,7 +849,7 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mSugarAfterMeal);
 
         // Check to see if values were inputted.
-        if(!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+        if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
             for (int i = 0; i < values.size(); i++) {
                 if (i == 0) {
                     EditText et = values.get(i);
@@ -1082,7 +1100,7 @@ public class VitalsActivity extends AppCompatActivity {
                     String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
                     results.setBlood((blood_Array[mBlood_Spinner.getSelectedItemPosition()]));
                     //results.setBlood((mBlood_Spinner.getSelectedItem().toString()));
-                }else{
+                } else {
                     results.setBlood("");
                 }
             } catch (NumberFormatException e) {
@@ -1405,113 +1423,121 @@ public class VitalsActivity extends AppCompatActivity {
 
 
             //--------------------Doctor Advice Alert-------------------------
-            if(!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
-               startDoctorAdvice();
-            }else{
-               String alertMsg="";
-               if(mBMI.getText() != null && mBMI.getText().toString().trim().length()!=0 && Double.parseDouble(mBMI.getText().toString().trim())<18.5){
-                   alertMsg=alertMsg+getResources().getString(R.string.weight_loss_alert_msg)+"\n";
-               }else if(mBMI.getText() != null && mBMI.getText().toString().trim().length()!=0 && Double.parseDouble(mBMI.getText().toString().trim())>25.0){
-                   alertMsg=alertMsg+getResources().getString(R.string.weight_gain_alert_msg)+"\n";
-               }
-
-                if(mBpSys.getText() != null && mBpSys.getText().toString().trim().length()!=0 && (Integer.parseInt(mBpSys.getText().toString().trim())<60 || Integer.parseInt(mBpSys.getText().toString().trim())>180)){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_bp_sys_button)+"\n";
+            if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+                startDoctorAdvice();
+            } else {
+                String alertMsg = "";
+                if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(mBMI.getText().toString().trim()) < 18.5) {
+                    alertMsg = alertMsg + getResources().getString(R.string.weight_loss_alert_msg) + "\n";
+                } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(mBMI.getText().toString().trim()) > 25.0) {
+                    alertMsg = alertMsg + getResources().getString(R.string.weight_gain_alert_msg) + "\n";
                 }
 
-                if(mBpDia.getText() != null && mBpDia.getText().toString().trim().length()!=0 && (Integer.parseInt(mBpDia.getText().toString().trim())<50 || Integer.parseInt(mBpDia.getText().toString().trim())>120)){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_bp_dia_button)+"\n";
+                if (mBpSys.getText() != null && mBpSys.getText().toString().trim().length() != 0 && (Integer.parseInt(mBpSys.getText().toString().trim()) < 60 || Integer.parseInt(mBpSys.getText().toString().trim()) > 180)) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_bp_sys_button) + "\n";
                 }
 
-                if(mSpo2.getText() != null && mSpo2.getText().toString().trim().length()!=0 && (Integer.parseInt(mSpo2.getText().toString().trim())<95)){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_spo2_button)+"\n";
+                if (mBpDia.getText() != null && mBpDia.getText().toString().trim().length() != 0 && (Integer.parseInt(mBpDia.getText().toString().trim()) < 50 || Integer.parseInt(mBpDia.getText().toString().trim()) > 120)) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_bp_dia_button) + "\n";
                 }
 
-                if(float_ageYear_Month<35) {
+                if (mSpo2.getText() != null && mSpo2.getText().toString().trim().length() != 0 && (Integer.parseInt(mSpo2.getText().toString().trim()) < 95)) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_spo2_button) + "\n";
+                }
+
+                if (float_ageYear_Month < 35) {
                     if (mPulse.getText() != null && mPulse.getText().toString().trim().length() != 0 && (Integer.parseInt(mPulse.getText().toString().trim()) < 60 || Integer.parseInt(mPulse.getText().toString().trim()) > 200)) {
                         alertMsg = alertMsg + getResources().getString(R.string.vital_alert_pulse_button) + "\n";
                     }
-                }else if(float_ageYear_Month>=35 && float_ageYear_Month<50){
+                } else if (float_ageYear_Month >= 35 && float_ageYear_Month < 50) {
                     if (mPulse.getText() != null && mPulse.getText().toString().trim().length() != 0 && (Integer.parseInt(mPulse.getText().toString().trim()) < 58 || Integer.parseInt(mPulse.getText().toString().trim()) > 150)) {
                         alertMsg = alertMsg + getResources().getString(R.string.vital_alert_pulse_button) + "\n";
                     }
-                }else{
+                } else {
                     if (mPulse.getText() != null && mPulse.getText().toString().trim().length() != 0 && (Integer.parseInt(mPulse.getText().toString().trim()) < 40 || Integer.parseInt(mPulse.getText().toString().trim()) > 140)) {
                         alertMsg = alertMsg + getResources().getString(R.string.vital_alert_pulse_button) + "\n";
                     }
                 }
 
-                if(mResp.getText() != null && mResp.getText().toString().trim().length()!=0 && (Integer.parseInt(mResp.getText().toString().trim())<12 || Integer.parseInt(mResp.getText().toString().trim())>25)){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_resp_button)+"\n";
+                if (mResp.getText() != null && mResp.getText().toString().trim().length() != 0 && (Integer.parseInt(mResp.getText().toString().trim()) < 12 || Integer.parseInt(mResp.getText().toString().trim()) > 25)) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_resp_button) + "\n";
                 }
 
-                if(float_ageYear_Month<1){
-                    if(mTemperature.getText() != null && mTemperature.getText().toString().trim().length()!=0 && (Double.parseDouble(mTemperature.getText().toString().trim())<95 || Double.parseDouble(mTemperature.getText().toString().trim())>100.4)){
-                        alertMsg=alertMsg+getResources().getString(R.string.vital_alert_temperature_button)+"\n";
+                if (float_ageYear_Month < 1) {
+                    if (mTemperature.getText() != null && mTemperature.getText().toString().trim().length() != 0 && (Double.parseDouble(mTemperature.getText().toString().trim()) < 95 || Double.parseDouble(mTemperature.getText().toString().trim()) > 100.4)) {
+                        alertMsg = alertMsg + getResources().getString(R.string.vital_alert_temperature_button) + "\n";
                     }
-                }else{
-                    if(mTemperature.getText() != null && mTemperature.getText().toString().trim().length()!=0 && (Double.parseDouble(mTemperature.getText().toString().trim())<95 || Double.parseDouble(mTemperature.getText().toString().trim())>103)){
-                        alertMsg=alertMsg+getResources().getString(R.string.vital_alert_temperature_button)+"\n";
+                } else {
+                    if (mTemperature.getText() != null && mTemperature.getText().toString().trim().length() != 0 && (Double.parseDouble(mTemperature.getText().toString().trim()) < 95 || Double.parseDouble(mTemperature.getText().toString().trim()) > 103)) {
+                        alertMsg = alertMsg + getResources().getString(R.string.vital_alert_temperature_button) + "\n";
                     }
                 }
 
-                if(mHemoglobin.getText() != null && mHemoglobin.getText().toString().trim().length()!=0 && (Double.parseDouble(mHemoglobin.getText().toString().trim())<7.0 || Double.parseDouble(mHemoglobin.getText().toString().trim())>20.0)){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_hgb_button)+"\n";
+                if (mHemoglobin.getText() != null && mHemoglobin.getText().toString().trim().length() != 0 && (Double.parseDouble(mHemoglobin.getText().toString().trim()) < 7.0 || Double.parseDouble(mHemoglobin.getText().toString().trim()) > 20.0)) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_hgb_button) + "\n";
                 }
 
-                if((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarRandom.getText().toString().trim())<80 || Integer.parseInt(mSugarRandom.getText().toString().trim())>130))){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_sugar_button)+"\n";
+                if ((mSugarRandom.getText() != null && mSugarRandom.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarRandom.getText().toString().trim()) < 80 || Integer.parseInt(mSugarRandom.getText().toString().trim()) > 130))) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_random_button) + "\n";
                 }
 
-                if((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarFasting.getText().toString().trim())<70 || Integer.parseInt(mSugarFasting.getText().toString().trim())>100))){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_sugar_button)+"\n";
+                if ((mSugarFasting.getText() != null && mSugarFasting.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarFasting.getText().toString().trim()) < 70 || Integer.parseInt(mSugarFasting.getText().toString().trim()) > 100))) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_fasting_button) + "\n";
                 }
 
-                if((mSugarAfterMeal.getText() != null && mSugarAfterMeal.getText().toString().trim().length()!=0 && (Integer.parseInt(mSugarAfterMeal.getText().toString().trim())<54 || Integer.parseInt(mSugarAfterMeal.getText().toString().trim())>140))){
-                    alertMsg=alertMsg+getResources().getString(R.string.vital_alert_sugar_button)+"\n";
+                if ((mSugarAfterMeal.getText() != null && mSugarAfterMeal.getText().toString().trim().length() != 0 && (Integer.parseInt(mSugarAfterMeal.getText().toString().trim()) < 54 || Integer.parseInt(mSugarAfterMeal.getText().toString().trim()) > 140))) {
+                    alertMsg = alertMsg + getResources().getString(R.string.vital_alert_sugar_aftermeal_button) + "\n";
                 }
 
-                if(alertMsg.length()>0){
-                        alertMsg=alertMsg+"\n"+getResources().getString(R.string.doctor_advice_alert_msg);
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
+                if (alertMsg.length() > 0) {
+                    alertMsg = alertMsg + "\n" + getResources().getString(R.string.doctor_advice_alert_msg);
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
 //
-                        alertDialogBuilder.setMessage(alertMsg);
-                        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.vital_alert_save_button), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                    alertDialogBuilder.setMessage(alertMsg);
+                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.vital_alert_save_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
 
-                                VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
-                                try {
-                                    speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
-                                    // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
+                            VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                            try {
+                                speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
+                                // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
 
-                                //-------End Visit----------
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-                                Date todayDate = new Date();
-                                String endDate = currentDate.format(todayDate);
-                                endVisit(visitUuid,patientUuid,endDate);
-                            }
-                        });
-                        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.vital_alert_continue_button), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                startDoctorAdvice();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(VitalsActivity.this, alertDialog);
-                }else{
+                            //-------End Visit----------
+                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                            Date todayDate = new Date();
+                            String endDate = currentDate.format(todayDate);
+                            endVisit(visitUuid, patientUuid, endDate);
+                        }
+                    });
+                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.vital_alert_continue_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            startDoctorAdvice();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    //alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(VitalsActivity.this, alertDialog);
+                } else {
                     //-------End Visit----------
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    try {
+                        speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
+                        // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+
                     SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                     Date todayDate = new Date();
                     String endDate = currentDate.format(todayDate);
-                    endVisit(visitUuid,patientUuid,endDate);
+                    endVisit(visitUuid, patientUuid, endDate);
                 }
             }
         }
@@ -1535,7 +1561,7 @@ public class VitalsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void startDoctorAdvice(){
+    private void startDoctorAdvice() {
         Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
@@ -1551,7 +1577,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        if(temperature != null && temperature.length() > 0) {
+        if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
@@ -1583,7 +1609,7 @@ public class VitalsActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
-    public void setVitalInfoForHemoAndSugar(String[] data, TextView textView, String selectedValue){
+    public void setVitalInfoForHemoAndSugar(String[] data, TextView textView, String selectedValue) {
         final Dialog dialog = new Dialog(VitalsActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -1591,9 +1617,9 @@ public class VitalsActivity extends AppCompatActivity {
 
         NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(data.length-1);
+        numberPicker.setMaxValue(data.length - 1);
         numberPicker.setDisplayedValues(data);
-        if(selectedValue!=null && !selectedValue.isEmpty() && selectedValue.length()>0){
+        if (selectedValue != null && !selectedValue.isEmpty() && selectedValue.length() > 0) {
             /*int val=Integer.parseInt(selectedValue);
             if(data.length>20){
                 numberPicker.setValue(val-10);
