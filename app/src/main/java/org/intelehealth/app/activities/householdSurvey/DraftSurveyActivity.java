@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 public class DraftSurveyActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -61,7 +62,24 @@ public class DraftSurveyActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.draft_survey_title));
 
         patientsDAO = new PatientsDAO();
-        try {
+//        try {
+//            patientUUIDList = fetchUniquePatientUuidFromAttributes(); // Eg: 53
+//            for (int i = 0; i < patientUUIDList.size(); i++) {
+//                fetchValueAttrFromPatAttrTbl(patientUUIDList.get(i)); // Eg. 40 this patientuuids should be less here
+//            }
+//        } catch (DAOException e) {
+//            e.printStackTrace();
+//        }
+//
+        recyclerView = findViewById(R.id.recycler_draftSurvey);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+//        draftSurveyAdapter = new SearchPatientAdapter(patientDTOList, context);
+//        recyclerView.setAdapter(draftSurveyAdapter);
+
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // todo: background tasks
+            try {
             patientUUIDList = fetchUniquePatientUuidFromAttributes(); // Eg: 53
             for (int i = 0; i < patientUUIDList.size(); i++) {
                 fetchValueAttrFromPatAttrTbl(patientUUIDList.get(i)); // Eg. 40 this patientuuids should be less here
@@ -69,11 +87,15 @@ public class DraftSurveyActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-
-        recyclerView = findViewById(R.id.recycler_draftSurvey);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        draftSurveyAdapter = new SearchPatientAdapter(patientDTOList, context);
+            runOnUiThread(() -> {
+                // todo: update your ui / view in activity
+                draftSurveyAdapter = new SearchPatientAdapter(patientDTOList, context);
         recyclerView.setAdapter(draftSurveyAdapter);
+
+
+            });
+        });
+
     }
 
     private List<PatientDTO> fetchValueAttrFromPatAttrTbl(String patientuuid) throws DAOException {

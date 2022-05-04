@@ -870,7 +870,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String visitIDorderBy = "startdate";
             String visitIDSelection = "uuid = ?";
             String[] visitIDArgs = {visitUuid};
-            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
             if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
                 visitIDCursor.moveToFirst();
