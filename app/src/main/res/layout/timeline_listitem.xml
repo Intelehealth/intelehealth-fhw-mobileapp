@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- 06:00 AM -->
+
+    <TextView
+        android:id="@+id/am"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="148dp"
+        android:gravity="top"
+        android:lineSpacingExtra="4sp"
+        android:text="@string/am"
+        android:textAppearance="@style/am"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/circle_indicator"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/circle_indicator_timeline"
+        app:layout_constraintStart_toEndOf="@+id/am"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="3dp"
+        android:layout_height="700dp"
+        android:layout_marginStart="216dp"
+        android:background="#33000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--Child Views-->
+<!--    Child - A-->
+
+    <View
+        android:id="@+id/hori_line"
+        android:layout_width="138dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="164dp"
+        android:background="#33000000"
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_parent"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="60dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:contentPadding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/hori_line"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Summary: This looks a summary \n\n Alert: This is an Alert!!!" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!--Child - B-->
+
+    <TextView
+        android:id="@+id/am_childA"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="140dp"
+        android:gravity="top"
+        android:lineSpacingExtra="4sp"
+        android:text="@string/am15"
+        android:textAppearance="@style/am"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/am" />
+
+    <ImageView
+        android:id="@+id/circle_indicator_childA"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="300dp"
+        android:src="@drawable/circle_indicator_timeline"
+        app:layout_constraintStart_toEndOf="@+id/am_childA"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/hori_line_childA"
+        android:layout_width="138dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="180dp"
+        android:background="#33000000"
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childA"
+        app:layout_constraintTop_toBottomOf="@+id/hori_line" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_childA"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:contentPadding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/hori_line_childA"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Child A \n\n\nSummary: This looks a summary \n\n Alert: This is an Alert!!!" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/am_childB"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="80dp"
+        android:gravity="top"
+        android:lineSpacingExtra="4sp"
+        android:text="@string/am30"
+        android:textAppearance="@style/am"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/am_childA" />
+
+    <ImageView
+        android:id="@+id/circle_indicator_childB"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/circle_indicator_timeline"
+        app:layout_constraintStart_toEndOf="@+id/am_childB"
+        app:layout_constraintTop_toBottomOf="@+id/circle_indicator_childA" />
+
+    <View
+        android:id="@+id/hori_line_childB"
+        android:layout_width="138dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="116dp"
+        android:background="#33000000"
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childB"
+        app:layout_constraintTop_toBottomOf="@+id/hori_line_childA" />
+
+    <!--Child C-->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_childB"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:contentPadding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/hori_line_childB"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_childA">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Child B \n\n\nSummary: This looks a summary \n\n Alert: This is an Alert!!!" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/am_childC"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="104dp"
+        android:gravity="top"
+        android:lineSpacingExtra="4sp"
+        android:text="@string/am45"
+        android:textAppearance="@style/am"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/am_childB" />
+
+    <ImageView
+        android:id="@+id/circle_indicator_childC"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/circle_indicator_timeline"
+        app:layout_constraintStart_toEndOf="@+id/am_childC"
+        app:layout_constraintTop_toBottomOf="@+id/circle_indicator_childB" />
+
+    <View
+        android:id="@+id/hori_line_childC"
+        android:layout_width="138dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="140dp"
+        android:background="#33000000"
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childC"
+        app:layout_constraintTop_toBottomOf="@+id/hori_line_childB" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:contentPadding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/hori_line_childC"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_childB">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Child C \n\n\nSummary: This looks a summary \n\n Alert: This is an Alert!!!" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

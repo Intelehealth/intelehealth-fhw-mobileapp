@@ -652,5 +652,6 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">ପ୍ରୋଟୋକଲ୍ ଉପଲବ୍ଧ ତାପରେ ଡାଉନଲୋଡ୍ ହୋଇଛି। ପ୍ରୋଟୋକଲ ଡାଉନଲୋଡ୍ ପୁନଃସତ୍ୟ କରିବାକୁ \'ହଁ\' ଦବାନ୍ତୁ। ଡେମୋ ପ୍ରୋଟୋକଲ ସହିତ ନିରନ୍ତରତାକୁ \'ନା\' ଦବାନ୍ତୁ ।</string>
+    <string name="am">time</string>
 
 </resources>
