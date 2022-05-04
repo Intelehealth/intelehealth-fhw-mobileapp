@@ -708,6 +708,7 @@
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
     <string name="loading_more">Loading more…</string>
+
     //Others details
     <string name="who_is_calling">Who is calling?*</string>
     <string name="how_do_you_know_about_helpline">How do you know about our helpline?*</string>
@@ -720,9 +721,25 @@
     <string name="title_follow_up">Follow Up Visits</string>
     <string name="title_follow_reminder">Follow up visit reminder</string>
     <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
-
-
     <string name="due_on">Due Date:</string>
     <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
+    
+    //New Dialogs (MHM-102,103)
+    <string name="attention">Attention!</string>
+    <string name="bmi_dialog">•Reduce weight to control diabetes; Excess weight complicates Diabetes; Stay Lean &amp; Stay Active
+\n•Watch your diet while taking Insulin as it causes weight gain
+\n•Regularly monitor your weight
+\n•Abdominal fat (around the waist) will worsen diabetes
+\n•Sedentary lifestyle (mostly sitting - inactive lifestyle) will worsen diabetes
+\n•Take 6 small meals a day/Diet for diabetics should include:
+    \n\t- whole grains
+    \n\t- High fiber vegetables
+    \n\t- nuts, pulses &amp; legumes
+    \n\t- lean meat
+    \n\t- fresh fruits
+\n•Avoid- processed, preserved, canned foods. soft drinks, packed juices, table (added)
+sugar, potato, tapioca, mango, banana, refined cereals like maida, suji, biscuits, white
+bread
+\n•Salt intake should be low</string>
 </resources>
