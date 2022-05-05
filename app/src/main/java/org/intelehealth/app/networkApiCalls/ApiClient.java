@@ -34,11 +34,11 @@ public class ApiClient {
     public static <S> S createService(Class<S> serviceClass) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
-        client.connectTimeout(70, TimeUnit.SECONDS);
-        client.readTimeout(70, TimeUnit.SECONDS);
-        client.writeTimeout(70, TimeUnit.SECONDS);
+        client.connectTimeout(600, TimeUnit.SECONDS);
+        client.readTimeout(600, TimeUnit.SECONDS);
+        client.writeTimeout(600, TimeUnit.SECONDS);
         retrofit = builder.client(client.build()).build();
         return retrofit.create(serviceClass);
     }
