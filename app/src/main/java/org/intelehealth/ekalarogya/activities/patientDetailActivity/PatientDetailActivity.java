@@ -99,6 +99,11 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_educat
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_occupation_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_occupation_edit;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -735,7 +740,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String education = switch_hi_education_edit(patient_new.getEducation_level());
                     education_statusView.setText(education);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    education_statusView.setText(patient_new.getEducation_level());
+                    String education = switch_or_education_edit(patient_new.getEducation_level());
+                    education_statusView.setText(education);
                 } else {
                     education_statusView.setText(patient_new.getEducation_level());
                 }
@@ -756,7 +762,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String economic = switch_hi_economic_edit(patient_new.getEconomic_status());
                     economic_statusView.setText(economic);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    economic_statusView.setText(patient_new.getEconomic_status());
+                    String economic = switch_or_economic_edit(patient_new.getEconomic_status());
+                    economic_statusView.setText(economic);
                 } else {
                     economic_statusView.setText(patient_new.getEconomic_status());
                 }
@@ -777,7 +784,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String caste = switch_hi_caste_edit(patient_new.getCaste());
                     casteView.setText(caste);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    casteView.setText(patient_new.getCaste());
+                    String caste = switch_or_caste_edit(patient_new.getCaste());
+                    casteView.setText(caste);
                 } else {
                     casteView.setText(patient_new.getCaste());
                 }
@@ -795,6 +803,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
+                occuView.setText(occupation);
+            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String occupation = switch_or_occupation_edit(patient_new.getOccupation());
                 occuView.setText(occupation);
             } else {
                 occuView.setText(patient_new.getOccupation());

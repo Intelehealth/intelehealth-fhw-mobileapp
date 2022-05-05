@@ -97,6 +97,9 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -567,7 +570,8 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getSelectedItem().toString().equalsIgnoreCase("[Describe]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("वर्णन करे")) {
+                        parent.getSelectedItem().toString().equalsIgnoreCase("वर्णन करे") ||
+                        parent.getSelectedItem().toString().equalsIgnoreCase("[ବର୍ଣ୍ଣନା କର]")) {
                     occupation_edittext.setVisibility(View.VISIBLE);
                     occupation_edittext.requestFocus();
                     occupation_edittext.setFocusable(true);
@@ -694,7 +698,8 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getSelectedItem().toString().equalsIgnoreCase("Other[Enter]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]")) {
+                        parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]") ||
+                        parent.getSelectedItem().toString().equalsIgnoreCase("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]")) {
                     watersafe_edittext.setVisibility(View.VISIBLE);
                     watersafe_edittext.requestFocus();
                     watersafe_edittext.setFocusable(true);
@@ -751,7 +756,8 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getSelectedItem().toString().equalsIgnoreCase("Other [Enter]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]")) {
+                        parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]") ||
+                        parent.getSelectedItem().toString().equalsIgnoreCase("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]")) {
                     toiletfacility_edittext.setVisibility(View.VISIBLE);
                     toiletfacility_edittext.requestFocus();
                     toiletfacility_edittext.setFocusable(true);
@@ -795,7 +801,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 time_water_checkbox.setChecked(true);
             } else {
                 time_water_editText.setVisibility(View.VISIBLE);
-                time_water_editText.setText(patient1.getTime_travel_water());
+                time_water_editText.setText(patient1.getTime_travel_water().replaceAll("hours",
+                        getResources().getString(R.string.identification_screen_picker_hours)).replaceAll("minute",
+                                        getResources().getString(R.string.identification_screen_picker_minute)));
             }
             if (patient1.getHectars_land().equalsIgnoreCase("Declined to answer")) {
                 hectars_land_editText.setVisibility(View.GONE);
@@ -972,14 +980,15 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEducation_level().equals("Not provided"/*getResources().getString(R.string.not_provided)*/))
                 mEducation.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String education = switch_hi_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                    String education = switch_or_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 }
@@ -990,28 +999,30 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEconomic_status().equals("Not provided"/*getResources().getString(R.string.not_provided)*/))
                 mEconomicStatus.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String economic = switch_hi_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCaste().equals("Not provided"/*getResources().getString(R.string.not_provided)*/)) {
                 mCaste.setSelection(0);
-            else {
+            }else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String caste = switch_hi_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                    String caste = switch_or_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
                 }
@@ -1033,6 +1044,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String occupation_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     occupation_Transl = StringUtils.switch_hi_occupation_edit(patient1.getOccupation());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    occupation_Transl = StringUtils.switch_or_occupation_edit(patient1.getOccupation());
                 } else {
                     occupation_Transl = patient1.getOccupation();
                 }
@@ -1045,6 +1058,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("वर्णन करे"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
                     } else {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
                     }
@@ -1058,6 +1073,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String bankacc_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     bankacc_Transl = StringUtils.switch_hi_bankaccount_edit(patient1.getBank_account());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 } else {
                     bankacc_Transl = patient1.getBank_account();
                 }
@@ -1069,6 +1086,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String mobile_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    mobile_Transl = StringUtils.switch_or_mobiletype_edit(patient1.getMobile_type());
                 } else {
                     mobile_Transl = patient1.getMobile_type();
                 }
@@ -1081,6 +1100,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String whatsapp_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    whatsapp_Transl = StringUtils.switch_or_whatsapp_edit(patient1.getWhatsapp_mobile());
                 } else {
                     whatsapp_Transl = patient1.getWhatsapp_mobile();
                 }
@@ -1136,6 +1157,28 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
                     }
                 }
+                else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        }
+                        else {
+                            vaccination_Transl = StringUtils.switch_or_vaccination_edit(patient1.getVaccination());
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
+                    }
+                }
             }
             //vaccinatio - end
 
@@ -1145,6 +1188,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String watersource_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     watersource_Transl = StringUtils.switch_hi_watersource_edit(patient1.getSource_of_water());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    watersource_Transl = StringUtils.switch_or_watersource_edit(patient1.getSource_of_water());
                 } else {
                     watersource_Transl = patient1.getSource_of_water();
                 }
@@ -1157,6 +1202,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String watersafe_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     watersafe_Transl = StringUtils.switch_hi_watersafe_edit(patient1.getWater_safe());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    watersafe_Transl = StringUtils.switch_or_watersafe_edit(patient1.getWater_safe());
                 } else {
                     watersafe_Transl = patient1.getWater_safe();
                 }
@@ -1171,6 +1218,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("अन्य [दर्ज करें]"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     } else {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
                     }
@@ -1186,6 +1235,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String wateravail_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     wateravail_Transl = StringUtils.switch_hi_wateravail_edit(patient1.getWater_availability());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    wateravail_Transl = StringUtils.switch_or_wateravail_edit(patient1.getWater_availability());
                 } else {
                     wateravail_Transl = patient1.getWater_availability();
                 }
@@ -1199,6 +1250,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String toiletfacility_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     toiletfacility_Transl = StringUtils.switch_hi_toiletfacil_edit(patient1.getToilet_facility());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                 } else {
                     toiletfacility_Transl = patient1.getToilet_facility();
                 }
@@ -1214,6 +1267,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     //on edit the spinner value will be selected based on the current app lang...
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("अन्य [दर्ज करें]"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     } else {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                     }
@@ -1229,6 +1284,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String housestruct_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     housestruct_Transl = StringUtils.switch_hi_housestructure_edit(patient1.getStructure_house());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
                 } else {
                     housestruct_Transl = patient1.getStructure_house();
                 }
@@ -1534,7 +1591,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 dayTv.setText(getString(R.string.days));
                 middleText.setText(getString(R.string.identification_screen_picker_years));
                 endText.setText(getString(R.string.identification_screen_picker_months));
-
 
                 yearPicker.setMinValue(0);
                 yearPicker.setMaxValue(100);
@@ -2609,12 +2665,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
+                    String water_time=time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours),"hours")
+                            .replaceAll(getString(R.string.identification_screen_picker_minute),"minute");
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_editText.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getValue(water_time));
                     Log.d("HOH", "time to bring water value entered: " + time_water_editText.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
@@ -2715,7 +2773,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
 
-            patientAttributesDTOList.add(patientAttributesDTO);
+            //patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
             patientdto.setSyncd(false);
@@ -3419,12 +3477,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
+                    String water_time=time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours),"hours")
+                            .replaceAll(getString(R.string.identification_screen_picker_minute),"minute");
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_editText.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getValue(water_time));
                     Log.d("HOH", "time to bring water value entered: " + time_water_editText.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
@@ -3516,7 +3576,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             //end of checking if the family head checkbox is checked or not...
 
-            patientAttributesDTOList.add(patientAttributesDTO);
+            //patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             //patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
 
