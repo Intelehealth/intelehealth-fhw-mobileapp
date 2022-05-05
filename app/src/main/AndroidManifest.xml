@@ -44,7 +44,9 @@
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:label="@string/title_activity_visit_summary"
+            android:parentActivityName=".activities.patientDetailActivity.PatientDetailActivity"
             android:exported="false" />
+
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"

@@ -314,4 +314,11 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="165dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="762dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

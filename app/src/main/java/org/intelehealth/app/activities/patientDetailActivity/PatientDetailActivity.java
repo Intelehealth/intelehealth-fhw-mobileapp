@@ -1232,7 +1232,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             past_visit = false;
 
-            if (newVisit.isEnabled()) {
+            // TODO: remove this comment later.
+
+           /* if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
             }
             if (newVisit.isClickable()) {
@@ -1246,7 +1248,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
                     newVisit.setTextColor(getResources().getColor(R.color.white));
                 }
-            }
+            }*/
 
         } else {
             // when visit has ended
