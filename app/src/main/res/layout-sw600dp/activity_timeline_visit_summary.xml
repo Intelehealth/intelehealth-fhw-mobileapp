@@ -20,13 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
         android:layout_marginBottom="40dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center"
         android:text="End First Stage"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="23sp" />
 
 </RelativeLayout>

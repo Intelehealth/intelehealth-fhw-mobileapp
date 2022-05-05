@@ -99,14 +99,25 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="am">
+    <style name="am_phone">
         <item name="android:textSize">
-            23sp
+            14sp
         </item>
 
         <item name="android:textColor">
-            #2F1E91
+            @color/colorPrimary
         </item>
     </style>
+
+    <style name="am_tablet">
+        <item name="android:textSize">
+            20sp
+        </item>
+
+        <item name="android:textColor">
+            @color/colorPrimary
+        </item>
+    </style>
+
 
 </resources>

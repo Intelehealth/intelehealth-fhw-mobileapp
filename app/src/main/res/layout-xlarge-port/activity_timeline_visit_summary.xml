@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".activities.visitSummaryActivity.TimelineVisitSummaryActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_timeline"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/rectangle_1"
-        tools:listitem="@layout/timeline_listitem" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_timeline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rectangle_1"
+            tools:listitem="@layout/timeline_listitem" />
 
     <TextView
         android:id="@+id/rectangle_1"
@@ -27,6 +27,6 @@
         android:text="End First Stage"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="23sp" />
 
 </RelativeLayout>
