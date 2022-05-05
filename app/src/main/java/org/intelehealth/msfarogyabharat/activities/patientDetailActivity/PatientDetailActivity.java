@@ -580,9 +580,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                /*if (name.equalsIgnoreCase("occupation")) {
+                if (name.equalsIgnoreCase("occupation")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
+                }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -866,18 +866,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             sdwRow.setVisibility(View.GONE);
         }*/
 //
-      /*  if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
-                occuView.setText(occupation);
-            } else {
+      if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
+//                occuView.setText(occupation);
+//            } else {
                 occuView.setText(patient_new.getOccupation());
-            }
-
+//            }
         } else {
 //            occuRow.setVisibility(View.GONE);
-            occuView.setText("");
-        }*/
+            occuView.setText(getResources().getString(R.string.not_provided));
+        }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);

@@ -726,7 +726,7 @@
     <string name="warning_app_update">Please update the app to the latest version.</string>
     
     //New Dialogs (MHM-102,103)
-    <string name="attention">Attention!</string>
+    <string name="bmi_dialog_heading">Kindly read this to caller!</string>
     <string name="bmi_dialog">•Reduce weight to control diabetes; Excess weight complicates Diabetes; Stay Lean &amp; Stay Active
 \n•Watch your diet while taking Insulin as it causes weight gain
 \n•Regularly monitor your weight

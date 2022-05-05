@@ -154,7 +154,7 @@ public class IdentificationActivity extends AppCompatActivity {
     RadioButton mGenderM;
     RadioButton mGenderF;
     EditText mRelationship;
-    //  EditText mOccupation;
+      EditText mOccupation;
     EditText countryText;
 //    EditText stateText;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
@@ -301,8 +301,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        // mOccupation = findViewById(R.id.identification_occupation);
-        // mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+         mOccupation = findViewById(R.id.identification_occupation);
+         mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste1);
         mCallerRelation = findViewById(R.id.relationship_spinner);
@@ -453,11 +453,11 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mRelationship.setVisibility(View.GONE);
             }
-//            if (obj.getBoolean("mOccupation")) {
-//                mOccupation.setVisibility(View.VISIBLE);
-//            } else {
-//                mOccupation.setVisibility(View.GONE);
-//            }
+            if (obj.getBoolean("mOccupation")) {
+                mOccupation.setVisibility(View.VISIBLE);
+            } else {
+                mOccupation.setVisibility(View.GONE);
+            }
             if (obj.getBoolean("casteLayout")) {
                 casteLayout.setVisibility(View.VISIBLE);
             } else {
@@ -494,6 +494,11 @@ public class IdentificationActivity extends AppCompatActivity {
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
         mLastName.setText(patient1.getLast_name());
+
+        if(patient1.getOccupation()!= null && !patient1.getOccupation().equalsIgnoreCase("Not Provided"))
+            mOccupation.setText(patient1.getOccupation().toString());
+        else
+            mOccupation.setText("");
 
   /*      if(patient1.getDate_of_birth() != null) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1869,7 +1874,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -1914,10 +1919,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-              /*  if (name.equalsIgnoreCase("occupation")) {
+              if (name.equalsIgnoreCase("occupation")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("Bank Account")) {
+                /*if (name.equalsIgnoreCase("Bank Account")) {
                     patient1.setBank_account(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Mobile Phone Type")) {
@@ -2139,7 +2144,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") &&
+                 && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2164,6 +2169,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
+            }
+
+            if (mOccupation.getText().toString().equals("")) {
+                mOccupation.setError(getString(R.string.error_field_required));
             }
 
             if (autocompleteState.getText().toString().equals("")) {
@@ -2534,12 +2543,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(!mOccupation.getText().toString().trim().equalsIgnoreCase("")? StringUtils.getValue(mOccupation.getText().toString()): "Not Provided");
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2998,7 +3007,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") &&
+               && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -3023,6 +3032,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
+            }
+
+            if (mOccupation.getText().toString().equals("")) {
+                mOccupation.setError(getString(R.string.error_field_required));
             }
 
             if (autocompleteState.getText().toString().equals("")) {
@@ -3366,6 +3379,7 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
+
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -3397,12 +3411,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(!mOccupation.getText().toString().trim().equalsIgnoreCase("")? StringUtils.getValue(mOccupation.getText().toString()): "Not Provided");
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

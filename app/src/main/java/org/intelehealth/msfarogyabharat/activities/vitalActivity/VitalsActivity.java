@@ -484,7 +484,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mBMI.getText().toString() != null && !mBMI.getText().toString().trim().equals("")) {
                     if(Double.valueOf(mBMI.getText().toString())>25){
                         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
-                        alertDialogBuilder.setTitle(getResources().getString(R.string.attention));
+                        alertDialogBuilder.setTitle(getResources().getString(R.string.bmi_dialog_heading));
                         alertDialogBuilder.setMessage(getResources().getString(R.string.bmi_dialog));
                         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override

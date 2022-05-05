@@ -596,7 +596,6 @@
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:visibility="gone"
                             android:paddingBottom="5dp">
 
                             <TextView
