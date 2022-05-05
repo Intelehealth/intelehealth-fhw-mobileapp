@@ -199,65 +199,61 @@
                     <!--Height-->
                     <TableRow
                         android:layout_width="wrap_content"
-                        android:visibility="gone"
                         android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/textView_height"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_height_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Weight-->
-                    <TableRow android:layout_width="match_parent"
-                        android:visibility="gone">
+                    <TableRow
+                        android:layout_width="match_parent">
 
                         <TextView
                             android:id="@+id/textView_weight"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="gone"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_weight"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_weight_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
-                    <TableRow
-                        android:visibility="gone">
+                    <TableRow >
 
                         <TextView
                             android:id="@+id/textView_bmi"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="gone"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bmi"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_bmi_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"

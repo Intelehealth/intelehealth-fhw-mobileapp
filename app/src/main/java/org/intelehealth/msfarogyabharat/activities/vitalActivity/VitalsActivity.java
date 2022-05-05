@@ -1,16 +1,19 @@
 package org.intelehealth.msfarogyabharat.activities.vitalActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.utilities.DialogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -292,7 +297,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
-                        mSpo2.setError(getResources().getString(R.string.spo_error,AppConstants.MINIMUM_SPO2,AppConstants.MAXIMUM_SPO2));
+                        mSpo2.setError(getResources().getString(R.string.spo_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                     } else {
                         mSpo2.setError(null);
                     }
@@ -476,7 +481,27 @@ public class VitalsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateTable();
+                if (mBMI.getText().toString() != null && !mBMI.getText().toString().trim().equals("")) {
+                    if(Double.valueOf(mBMI.getText().toString())>25){
+                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
+                        alertDialogBuilder.setTitle(getResources().getString(R.string.bmi_dialog_heading));
+                        alertDialogBuilder.setMessage(getResources().getString(R.string.bmi_dialog));
+                        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                validateTable();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.show();
+                        alertDialog.setCancelable(false);
+                        IntelehealthApplication.setAlertDialogCustomTheme(VitalsActivity.this, alertDialog);
+                    }
+                    else
+                        validateTable();
+                }
+                else
+                    validateTable();
             }
         });
     }
@@ -496,9 +521,7 @@ public class VitalsActivity extends AppCompatActivity {
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
-        }
-        else
-        {
+        } else {
             mBMI.getText().clear();
         }
     }
@@ -513,14 +536,13 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else  {
+        } else {
             // do nothing
             mBMI.getText().clear();
         }
     }
-
 
 
     public void loadPrevious() {
@@ -580,7 +602,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
@@ -590,14 +612,13 @@ public class VitalsActivity extends AppCompatActivity {
         View focusView = null;
 
         //BP vaidations added by Prajwal.
-        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if(mBpSys.getText().toString().isEmpty()) {
+            if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
                 return;
-            }
-            else if(mBpDia.getText().toString().isEmpty()) {
+            } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
                 mBpDia.setError("Enter field");
                 return;
@@ -1040,7 +1061,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        if(temperature != null && temperature.length() > 0) {
+        if (temperature != null && temperature.length() > 0) {
 //            String result = "";
 //            double fTemp = Double.parseDouble(temperature);
 //            double cTemp = ((fTemp - 32) * 5 / 9);
