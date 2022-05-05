@@ -74,7 +74,8 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-<!--    Child - A-->
+    <!--    Child - A-->
+
     <TextView
         android:id="@+id/am_childA"
         android:layout_width="wrap_content"
@@ -83,7 +84,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="140dp"
         android:gravity="top"
         android:lineSpacingExtra="4sp"
         android:text="@string/am15"
@@ -96,7 +97,7 @@
         android:layout_width="0dp"
         android:layout_height="93dp"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="302dp"
         android:src="@drawable/circle_indicator_timeline"
         app:layout_constraintStart_toEndOf="@+id/am_childA"
         app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +106,7 @@
         android:id="@+id/hori_line_childA"
         android:layout_width="138dp"
         android:layout_height="3dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="178dp"
         android:background="#33000000"
         app:layout_constraintStart_toEndOf="@+id/circle_indicator_childA"
         app:layout_constraintTop_toBottomOf="@+id/hori_line" />
@@ -145,7 +146,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="102dp"
         android:gravity="top"
         android:lineSpacingExtra="4sp"
         android:text="@string/am30"
@@ -206,7 +207,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="102dp"
         android:gravity="top"
         android:lineSpacingExtra="4sp"
         android:text="@string/am45"
@@ -305,5 +306,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="165dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
