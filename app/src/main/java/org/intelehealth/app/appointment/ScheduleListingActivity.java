@@ -1,6 +1,7 @@
 package org.intelehealth.app.appointment;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -11,6 +12,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,17 +79,14 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         TextView specialityTextView = findViewById(R.id.tvSpeciality);
         specialityTextView.setText(speciality);
 
-        if (sessionManager.getAppLanguage().equals("ru")) {
-            if (speciality.equalsIgnoreCase("Infectionist")) {
-                specialityTextView.setText("Инфекционист");
-            } else if (speciality.equalsIgnoreCase("Neurologist")) {
-                specialityTextView.setText("Невролог");
-            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
-                specialityTextView.setText("Семейный врач");
-            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
-                specialityTextView.setText("Педиатр");
-            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
-                specialityTextView.setText("Неонатолог");
+        if (sessionManager.getAppLanguage().equals("or")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("ସାଧାରଣ ଚିକିତ୍ସକ");
+            }
+        }
+        if (sessionManager.getAppLanguage().equals("hi")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("सामान्य चिकित्सक");
             }
         }
 
@@ -156,11 +157,61 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         res.updateConfiguration(conf, dm);
         return context;
     }
+    private String mEngReason = "";
 
-    private void bookAppointment(SlotInfo slotInfo) {
+    private void askReason(final SlotInfo slotInfo) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.appointment_cancel_reason_view);
+
+        final TextView titleTextView = (TextView) dialog.findViewById(R.id.titleTv);
+        titleTextView.setText(getString(R.string.please_select_your_reschedule_reason));
+        final EditText reasonEtv = dialog.findViewById(R.id.reasonEtv);
+        reasonEtv.setVisibility(View.GONE);
+        final RadioGroup optionsRadioGroup = dialog.findViewById(R.id.reasonRG);
+        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbR1) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    mEngReason = "Doctor is not available";
+                } else if (checkedId == R.id.rbR2) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    mEngReason = "Patient is not available";
+                } else if (checkedId == R.id.rbR3) {
+                    reasonEtv.setText("");
+                    reasonEtv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final TextView textView = dialog.findViewById(R.id.submitTV);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                String reason = reasonEtv.getText().toString().trim();
+                if (reason.isEmpty()) {
+                    Toast.makeText(ScheduleListingActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                bookAppointment(slotInfo, mEngReason.isEmpty() ? reason : mEngReason);
+            }
+        });
+
+        dialog.show();
+
+    }
+
+
+    private void bookAppointment(SlotInfo slotInfo, String reason) {
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
+            request.setReason(reason);
         }
         request.setSlotDay(slotInfo.getSlotDay());
         request.setSlotDate(slotInfo.getSlotDate());
@@ -218,10 +269,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
-                        if(slotInfoResponse ==null){
-                            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        }else{
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
+
                         SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
                                 ScheduleListingActivity.this,
                                 slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
@@ -230,17 +278,19 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                                 //------before reschedule need to cancel appointment----
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                                 appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                bookAppointment(slotInfo);
+                                if (appointmentId != 0) {
+                                    askReason(slotInfo);
+                                } else {
+                                    bookAppointment(slotInfo, null);
+                                }
 
                             }
                         });
                         rvSlots.setAdapter(slotListingAdapter);
-
                         if (slotListingAdapter.getItemCount() == 0) {
                             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
                         } else {
                             findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }
                         }
                     }
 

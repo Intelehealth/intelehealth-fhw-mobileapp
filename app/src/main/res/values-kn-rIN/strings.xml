@@ -702,6 +702,14 @@
     <string name="appointment_for">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌</string>
     <string name="please_select_appointment_slot">ದಯವಿಟ್ಟು ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಸ್ಲಾಟ್ ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="please_select_speciality">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
+    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
+    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
+    <string name="doctor_is_not_available">Doctor is not available</string>
+    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="others">Others</string>
+    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="please_enter_reason_txt">Please enter the reason!</string>
 
     <string name="doctor_appointments">ವೈದ್ಯರ ನೇಮಕಾತಿಗಳು</string>
     <string name="slot_info">ಸ್ಲಾಟ್ ಮಾಹಿತಿ</string>

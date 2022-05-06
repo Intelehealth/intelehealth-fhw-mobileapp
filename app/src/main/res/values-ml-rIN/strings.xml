@@ -659,6 +659,15 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">പ്രോട്ടോക്കോൾ തുടർന്ന് ഡൗൺലോഡ് ചെയ്യുന്നു। പ്രോട്ടോക്കോൾ ഡൗൺലോഡ് റീട്രൂചെയ്യുന്നതിന് \'ഉവ്വ്\' അമർത്തുക। ഡെമോ പ്രോട്ടോക്കോൾ ഉപയോഗിച്ച് തുടർച്ചയിലേക്ക് \'ഇല്ല\' അമർത്തുക।</string>
 
+    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
+    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
+    <string name="doctor_is_not_available">Doctor is not available</string>
+    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="others">Others</string>
+    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="please_enter_reason_txt">Please enter the reason!</string>
+
 </resources>
 
 
