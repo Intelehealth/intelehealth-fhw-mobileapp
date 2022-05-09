@@ -12,21 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rectangle_1"
+        android:scrollbarThumbVertical="@color/colorAccent"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="5dp"
+        android:scrollbars="vertical"
         tools:listitem="@layout/timeline_listitem" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray"
+        android:layout_above="@+id/rectangle_1"
+        android:layout_marginHorizontal="20dp"/>
 
     <TextView
         android:id="@+id/rectangle_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center"
         android:text="End First Stage"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 </RelativeLayout>

@@ -12,8 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAlignment="center"
         android:text="@string/am"
+        android:textAlignment="center"
         android:textAppearance="@style/am_phone"
         app:layout_constraintBottom_toTopOf="@id/guideline4"
         app:layout_constraintEnd_toStartOf="@id/guideline9"
@@ -21,9 +21,10 @@
 
     <View
         android:layout_width="2dp"
-        android:layout_height="510dp"
-        android:background="#33000000"
+        android:layout_height="0dp"
         android:layout_marginStart="25dp"
+        android:background="#33000000"
+        app:layout_constraintBottom_toBottomOf="@id/guideline10"
         app:layout_constraintStart_toStartOf="@id/guideline9"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,25 +38,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:src="@drawable/circle_indicator_timeline"
-        app:layout_constraintStart_toEndOf="@+id/am"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintStart_toEndOf="@+id/am" />
 
     <View
         android:id="@+id/hori_line"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:background="#33000000"
         android:layout_marginBottom="5dp"
+        android:background="#33000000"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/circle_indicator"
-        app:layout_constraintBottom_toTopOf="@id/guideline4" />
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_parent"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="true"
@@ -83,9 +84,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAlignment="center"
         android:lineSpacingExtra="4sp"
         android:text="@string/am15"
+        android:textAlignment="center"
         android:textAppearance="@style/am_phone"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@id/guideline9"
@@ -99,18 +100,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:src="@drawable/circle_indicator_timeline"
-        app:layout_constraintStart_toEndOf="@+id/am_childA"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintStart_toEndOf="@+id/am_childA" />
 
     <View
         android:id="@+id/hori_line_childA"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:background="#33000000"
         android:layout_marginBottom="5dp"
-        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childA"
+        android:background="#33000000"
+        app:layout_constraintBottom_toTopOf="@id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintBottom_toTopOf="@id/guideline6"/>
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childA" />
 
     <!--    Child - C-->
 
@@ -118,7 +119,7 @@
         android:id="@+id/cardview_childA"
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="true"
@@ -146,13 +147,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAlignment="center"
         android:lineSpacingExtra="4sp"
         android:text="@string/am30"
+        android:textAlignment="center"
         android:textAppearance="@style/am_phone"
+        app:layout_constraintBottom_toTopOf="@id/guideline7"
         app:layout_constraintEnd_toStartOf="@id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintBottom_toTopOf="@id/guideline7" />
+        app:layout_constraintStart_toStartOf="@+id/guideline11" />
 
     <ImageView
         android:id="@+id/circle_indicator_childB"
@@ -160,30 +161,30 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:src="@drawable/circle_indicator_timeline"
-        app:layout_constraintStart_toEndOf="@+id/am_childB"
-        app:layout_constraintBottom_toTopOf="@id/guideline7" />
+        app:layout_constraintBottom_toTopOf="@id/guideline7"
+        app:layout_constraintStart_toEndOf="@+id/am_childB" />
 
     <View
         android:id="@+id/hori_line_childB"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:background="#33000000"
         android:layout_marginBottom="5dp"
-        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childB"
+        android:background="#33000000"
+        app:layout_constraintBottom_toTopOf="@id/guideline7"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintBottom_toTopOf="@id/guideline7" />
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childB" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_childB"
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:contentPadding="10dp"
         app:cardPreventCornerOverlap="true"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:contentPadding="10dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/cardview_childA">
 
@@ -205,13 +206,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAlignment="center"
         android:lineSpacingExtra="4sp"
         android:text="@string/am45"
+        android:textAlignment="center"
         android:textAppearance="@style/am_phone"
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
         app:layout_constraintEnd_toStartOf="@id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintBottom_toTopOf="@id/guideline5" />
+        app:layout_constraintStart_toStartOf="@+id/guideline11" />
 
     <ImageView
         android:id="@+id/circle_indicator_childC"
@@ -219,23 +220,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:src="@drawable/circle_indicator_timeline"
-        app:layout_constraintStart_toEndOf="@+id/am_childC"
-        app:layout_constraintBottom_toTopOf="@id/guideline5" />
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
+        app:layout_constraintStart_toEndOf="@+id/am_childC" />
 
     <View
         android:id="@+id/hori_line_childC"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:background="#33000000"
         android:layout_marginBottom="5dp"
-        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childC"
+        android:background="#33000000"
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintBottom_toTopOf="@id/guideline5" />
+        app:layout_constraintStart_toEndOf="@+id/circle_indicator_childC" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="true"
@@ -270,28 +271,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="101dp" />
+        app:layout_constraintGuide_begin="75dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="457dp" />
+        app:layout_constraintGuide_begin="399dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="231dp" />
+        app:layout_constraintGuide_begin="199dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="344dp" />
+        app:layout_constraintGuide_begin="299dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
@@ -313,5 +314,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="142dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="465dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
