@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rectangle_1"
-        android:scrollbarThumbVertical="@color/colorAccent"
         android:fadeScrollbars="false"
         android:scrollbarSize="5dp"
+        android:scrollbarThumbVertical="@color/colorAccent"
         android:scrollbars="vertical"
         tools:listitem="@layout/timeline_listitem" />
 
@@ -36,9 +36,9 @@
         android:layout_marginBottom="40dp"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center"
-        android:text="End First Stage"
+        android:text="End Second Stage"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>
