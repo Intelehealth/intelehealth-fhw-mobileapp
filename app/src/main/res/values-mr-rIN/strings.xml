@@ -109,10 +109,10 @@
         <string name="identification_screen_error_dob">वैध डीओबी प्रविष्ट करा</string>
         <string name="identification_screen_error_age" >वैध वय प्रविष्ट करा</string>
         <string name="identification_screen_text_years">वर्ष</string>
-        <string name="identification_screen_text_months"> महीने</string>
+        <string name="identification_screen_text_months"> महिने</string>
         <string name="identification_screen_picker_years">वर्ष</string>
         <string name="identification_screen_picker_hours">तास</string>
-        <string name="identification_screen_picker_months">महीने</string>
+        <string name="identification_screen_picker_months">महिने</string>
         <string name="identification_screen_picker_minute">मिनिट</string>
 
         //Active Patients Screen

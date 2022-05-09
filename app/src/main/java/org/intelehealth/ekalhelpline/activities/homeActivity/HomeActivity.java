@@ -114,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
-    TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
+    TextView newPatient_textview, medicalAdviceTV, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
 
     @Override
@@ -160,8 +160,12 @@ public class HomeActivity extends AppCompatActivity {
         c6 = findViewById(R.id.cardview_help_whatsapp);
 
         //card textview referrenced to fix bug of localization not working in some cases...
-     /*   newPatient_textview = findViewById(R.id.newPatient_textview);
-        newPatient_textview.setText(R.string.new_patient);*/
+
+        newPatient_textview = findViewById(R.id.newPatient_textview);
+        newPatient_textview.setText(R.string.new_patient);
+
+        medicalAdviceTV = findViewById(R.id.newPatient_textview_1);
+        medicalAdviceTV.setText(R.string.text_medical_advice);
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);

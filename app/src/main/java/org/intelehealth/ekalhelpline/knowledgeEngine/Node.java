@@ -1429,7 +1429,7 @@ public class Node implements Serializable {
                 unit = "Weeks";
                 break;
 
-            case "महीने":
+            case "महिने":
                 unit = "Months";
                 break;
 
