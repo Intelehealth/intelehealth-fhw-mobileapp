@@ -26,10 +26,10 @@
         android:layout_above="@+id/rectangle_1"
         android:layout_marginHorizontal="20dp"/>
 
-    <TextView
+    <Button
         android:id="@+id/rectangle_1"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
@@ -39,6 +39,6 @@
         android:text="End First Stage"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
 </RelativeLayout>
