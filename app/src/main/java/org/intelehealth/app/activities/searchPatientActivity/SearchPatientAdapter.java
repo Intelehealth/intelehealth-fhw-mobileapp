@@ -51,7 +51,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
 
             if (patinet.getOpenmrsId() != null)
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + ", " + patinet.getOpenmrsId());
+                        + "\n" + patinet.getOpenmrsId());
             else
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 

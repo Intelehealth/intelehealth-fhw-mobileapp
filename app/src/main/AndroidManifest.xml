@@ -218,13 +218,13 @@
         <activity
             android:name=".activities.loginActivity.LoginActivity"
             android:configChanges="uiMode"
-            android:label="@string/title_activity_login"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
-            android:label="@string/title_activity_home"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
