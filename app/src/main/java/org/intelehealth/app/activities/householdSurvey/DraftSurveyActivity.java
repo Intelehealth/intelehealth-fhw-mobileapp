@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DraftSurveyActivity extends AppCompatActivity {
@@ -41,13 +42,14 @@ public class DraftSurveyActivity extends AppCompatActivity {
     private List<PatientDTO> patientDTOList = new ArrayList<>();
     private PatientsDAO patientsDAO;
     private SessionManager sessionManager = null;
-
+    SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draft_survey);
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
+        db=AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -79,14 +81,20 @@ public class DraftSurveyActivity extends AppCompatActivity {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             // todo: background tasks
+            db.beginTransaction();
             try {
             patientUUIDList = fetchUniquePatientUuidFromAttributes(); // Eg: 53
             for (int i = 0; i < patientUUIDList.size(); i++) {
                 fetchValueAttrFromPatAttrTbl(patientUUIDList.get(i)); // Eg. 40 this patientuuids should be less here
             }
-        } catch (DAOException e) {
+            db.setTransactionSuccessful();
+        }
+            catch (DAOException e) {
             e.printStackTrace();
         }
+            finally {
+                db.endTransaction();
+            }
             runOnUiThread(() -> {
                 // todo: update your ui / view in activity
                 draftSurveyAdapter = new SearchPatientAdapter(patientDTOList, context);
@@ -99,10 +107,10 @@ public class DraftSurveyActivity extends AppCompatActivity {
     }
 
     private List<PatientDTO> fetchValueAttrFromPatAttrTbl(String patientuuid) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String name = "";
         boolean draft = false;
-        db.beginTransaction();
+//        db.beginTransaction();
         try {
 //            String query = "SELECT * from tbl_patient_attribute as c WHERE c.patientuuid = '" + patientuuid + "' and c.modified_date = (SELECT max(d.modified_date) from tbl_patient_attribute as d where d.person_attribute_type_uuid = c.person_attribute_type_uuid) group by person_attribute_type_uuid";
             String query = "SELECT * from tbl_patient_attribute as c WHERE c.patientuuid = ? and c.modified_date = (SELECT max(d.modified_date) from tbl_patient_attribute as d where d.person_attribute_type_uuid = c.person_attribute_type_uuid) group by person_attribute_type_uuid";
@@ -244,11 +252,11 @@ public class DraftSurveyActivity extends AppCompatActivity {
 
             if (!cursor.isClosed())
                 cursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
         return patientDTOList;
     }
@@ -257,8 +265,8 @@ public class DraftSurveyActivity extends AppCompatActivity {
         List<String> patientUUIDs = new ArrayList<>();
         LinkedHashSet<String> patientUUIDs_hashset = new LinkedHashSet<>();
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+//        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        db.beginTransaction();
         try {
             String query = "SELECT DISTINCT(patientuuid) from tbl_patient_attribute";
             Cursor cursor = db.rawQuery(query, null, null);
@@ -268,11 +276,11 @@ public class DraftSurveyActivity extends AppCompatActivity {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
         patientUUIDs.addAll(patientUUIDs_hashset);
         return patientUUIDs;
@@ -287,4 +295,6 @@ public class DraftSurveyActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
