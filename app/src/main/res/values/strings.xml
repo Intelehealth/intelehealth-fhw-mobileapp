@@ -829,5 +829,7 @@
     <string name="am30">06:30 AM</string>
     <string name="am45">06:45 AM</string>
     <string name="search_visits_hint">Search visits...</string>
+    <string name="setupUrl">ezazi.intelehealth.org</string>
+    <string name="endStageButton">End First Stage</string>
 
 </resources>

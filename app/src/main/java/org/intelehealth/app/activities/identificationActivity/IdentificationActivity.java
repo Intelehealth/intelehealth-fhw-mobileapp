@@ -1639,7 +1639,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-            patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+          //  patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
 
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -1674,7 +1674,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
-            patientAttributesDTO = new PatientAttributesDTO();
+          /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
@@ -1715,7 +1715,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
             patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);

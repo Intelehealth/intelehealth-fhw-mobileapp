@@ -85,7 +85,9 @@
         android:id="@+id/frame2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame1">
+        android:layout_below="@+id/frame1"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -240,7 +242,9 @@
         android:id="@+id/frame4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame3">
+        android:layout_below="@+id/frame3"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"

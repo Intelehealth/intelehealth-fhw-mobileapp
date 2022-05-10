@@ -800,5 +800,6 @@
     <string name="protocol_download_failed_alertdialog">Протокол доступен, после чего загружается। Нажмите \'Да\', чтобы подтвердить загрузку протокола। Нажмите \'Нет\' для продолжения работы с демонстрационным протоколом।</string>
     <string name="am">time</string>
     <string name="search_visits_hint">Search visits...</string>
+    <string name="endStageButton">End Second Stage</string>
 
 </resources>
