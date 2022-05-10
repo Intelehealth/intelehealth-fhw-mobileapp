@@ -886,6 +886,16 @@
     <string name="distance_to_the_nearest_pathological_lab">Distance to the nearest pathological lab</string>
     <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">Distance to a nearest private clinic (With an MBBS Doctor)</string>
     <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">Distance to a nearest private clinic (With alternate medical practitioners – BAMS, BHMS, Ayurveda etc)</string>
+    <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">Does any member of this household have a bank account or post-office account?</string>
+    <string name="do_not_know">Do Not Know</string>
+    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card/coupon?</string>
+    <string name="yes_card_seen">Yes, Card Seen</string>
+    <string name="yes_card_not_seen">Yes, Card Not Seen</string>
+    <string name="no_card">No Card</string>
+    <string name="does_this_household_have_an_antodaya_card_coupon">Does this household have an Antodaya card/coupon?</string>
+    <string name="does_this_household_have_a_rsby_card_coupon">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">Does this household have an MGNREGA card?</string>
+    <string name="submit">Submit</string>
 
 
     <!--    SURVEY STRINGS - END-->
