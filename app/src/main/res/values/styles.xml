@@ -98,4 +98,26 @@
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
+    <style name="am_phone">
+        <item name="android:textSize">
+            14sp
+        </item>
+
+        <item name="android:textColor">
+            @color/colorPrimary
+        </item>
+    </style>
+
+    <style name="am_tablet">
+        <item name="android:textSize">
+            20sp
+        </item>
+
+        <item name="android:textColor">
+            @color/colorPrimary
+        </item>
+    </style>
+
+
 </resources>

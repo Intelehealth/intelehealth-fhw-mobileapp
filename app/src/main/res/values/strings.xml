@@ -688,7 +688,6 @@
     <string name="due_on">Due Date:</string>
 
 
-
     //----------reset app strings-------------
     <string name="reset_app">Reset App</string>
     <string name="app_reset_toast">App Reset is done!</string>
@@ -825,6 +824,10 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
+    <string name="am">06:00 AM</string>
+    <string name="am15">06:15 AM</string>
+    <string name="am30">06:30 AM</string>
+    <string name="am45">06:45 AM</string>
     <string name="search_visits_hint">Search visits...</string>
 
 </resources>
