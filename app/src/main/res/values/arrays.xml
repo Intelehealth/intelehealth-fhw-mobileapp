@@ -5,7 +5,7 @@
         <item>Hindi</item>
         <item>English</item>
         <item>Odiya</item>
-<!--        <item>Cebuano</item>-->
+        <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="vaccination_spinner_en">
@@ -30,7 +30,7 @@
         <item>hi</item>
         <item>en</item>
         <item>or</item>
-<!--        <item>cb</item>-->
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -373,10 +373,10 @@
         <item>Student</item>
         <item>Under 5 child</item>
         <item>Other skills (driver,mason etc)</item>
-<!--        <item>[Describe]</item>-->
+        <!--        <item>[Describe]</item>-->
     </string-array>
 
-<!--    Hindi Occupation-->
+    <!--    Hindi Occupation-->
     <string-array name="occupation_spinner_hi">
         <item>चुनते हैं</item>
         <item>जवाब देने के लिए मना कर दिया</item>
@@ -395,7 +395,7 @@
         <item>विद्यार्थी</item>
         <item>5 साल से कम उम्र के बच्चे</item>
         <item>अन्य कुशलता (ड्राईवर,राज मिस्त्री)</item>
-<!--        <item>वर्णन करे</item>-->
+        <!--        <item>वर्णन करे</item>-->
     </string-array>
 
     <string-array name="occupation_spinner_or">
@@ -651,16 +651,16 @@
     </string-array>
 
     <string-array name="blood_group_hi">
-         <item>कृपया चुनें</item>
-         <item>A+</item>
-         <item>A-</item>
-         <item>B+</item>
-         <item>B-</item>
-         <item>AB+</item>
-         <item>AB-</item>
-         <item>O+</item>
-         <item>O-</item>
-     </string-array>
+        <item>कृपया चुनें</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
 
     <string-array name="blood_group_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
@@ -672,6 +672,26 @@
         <item>AB-</item>
         <item>O+</item>
         <item>O-</item>
+    </string-array>
+
+    <string-array name="religion_en">
+        <item>@string/select</item>
+        <item>@string/hindu</item>
+        <item>@string/muslim</item>
+        <item>@string/christian</item>
+        <item>@string/sikh</item>
+        <item>@string/buddhist_neo_buddhist</item>
+        <item>@string/jain</item>
+        <item>@string/jewish</item>
+        <item>@string/parsi_zoroastrian</item>
+        <item>@string/no_religion</item>
+    </string-array>
+
+    <string-array name="survey_caste_en">
+        <item>@string/schedule_caste</item>
+        <item>@string/schedule_tribe</item>
+        <item>@string/survey_other_backward_caste</item>
+        <item>@string/survey_general</item>
     </string-array>
 
 </resources>

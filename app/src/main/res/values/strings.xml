@@ -790,4 +790,79 @@
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <!--END APPOINTMENT-->
+
+    <!--    SURVEY STRINGS - START-->
+
+    <string name="name_of_district">Name of District</string>
+    <string name="name_of_village">Name of Village</string>
+    <string name="household_structure_type">Household Structure Type</string>
+    <string name="kucha">Kucha</string>
+    <string name="pucca">Pucca</string>
+    <string name="name_of_head_of_household">Name of head of household</string>
+    <string name="religion">Religion</string>
+    <string name="hindu">Hindu</string>
+    <string name="muslim">Muslim</string>
+    <string name="christian">Christian</string>
+    <string name="sikh">Sikh</string>
+    <string name="buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
+    <string name="jain">Jain</string>
+    <string name="jewish">Jewish</string>
+    <string name="parsi_zoroastrian">Parsi or Zoroastrian</string>
+    <string name="no_religion">No Religion</string>
+
+    <string name="schedule_caste">Schedule Caste</string>
+    <string name="schedule_tribe">Schedule Tribe</string>
+    <string name="survey_other_backward_caste">Other Backward Caste (OBC)</string>
+    <string name="survey_general">General</string>
+    <string name="number_of_smartphones_in_the_house">No. of smartphones in the house</string>
+    <string name="no_of_earning_members_in_the_household">No. of earning members in the household</string>
+    <string name="primary_source_of_income">The primary source of income</string>
+    <string name="sale_of_cereal_production">Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</string>
+    <string name="sale_of_animals_or_animal_products">Sale of animals or animal products</string>
+    <string name="agricultural_wage_labor_employed_for_farm_work">Agricultural wage labor (employed for farm work)</string>
+    <string name="salaried_worker_fixed_monthly_salary">Salaried worker (fixed monthly salary) - Government, private, etc.</string>
+    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture/petty business)</string>
+    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labour (unskilled work- Agricultural/non-Agricultural)</string>
+    <string name="nrega">NREGA</string>
+    <string name="seasonal_labor">Seasonal Labour</string>
+    <string name="no_paid_work">No paid work</string>
+    <string name="pension">Pension</string>
+    <string name="remittances_checkbox">Remittances</string>
+    <string name="other_source_of_income_please_specify">Other Source of income (please specify)</string>
+    <string name="does_the_house_have_electricity">Does the house have electricity?</string>
+    <string name="no_of_hours_per_day">No. of hours per day</string>
+    <string name="no_of_days_per_week">No. of days per week</string>
+    <string name="load_shedding">Load shedding</string>
+    <string name="is_there_a_toilet_in_the_house">Is there a toilet in the house?</string>
+    <string name="is_there_running_water_available_in_the_house">Is there running water available in the house?</string>
+    <string name="availability_of_water_supply">Availability of water supply</string>
+    <string name="does_the_household_have_a_bank_account">Does the household have a bank account?</string>
+    <string name="amount_of_cultivable_land_owned_by_the_household">Amount of cultivable land owned by the household</string>
+    <string name="zero_one">0 – 1</string>
+    <string name="one_two">1 – 2</string>
+    <string name="two_five">2 – 5</string>
+    <string name="five_ten">5 – 10</string>
+    <string name="more_than_10">More than 10</string>
+    <string name="units">Units</string>
+    <string name="bigha">Bigha</string>
+    <string name="acre">Acre</string>
+    <string name="gunta">Gunta</string>
+    <string name="hectare">Hectare</string>
+    <string name="average_annual_household_income">Average Annual Household Income (INR)</string>
+    <string name="zero_thirty_thousand">0 – 30,000</string>
+    <string name="thirty_fifty_thousand">30,000 – 50,000</string>
+    <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+    <string name="more_than_two_lakh_fifty_thousand">More than 2,50,000</string>
+    <string name="average_expenditure_on_health">Average expenditure on health</string>
+    <string name="zero_three_thousand">0 – 3,000</string>
+    <string name="three_five_thousand">3,000 – 5,000</string>
+    <string name="five_ten_thousand">5,000 – 10,000</string>
+    <string name="ten_twenty_five_thousand">10,000 – 25,000</string>
+    <string name="more_than_twenty_five_thousand">More than 25,000</string>
+    <string name="average_expenditure_on_education">Annual expenditure on education</string>
+    <string name="prev">Prev</string>
+
+    <!--    SURVEY STRINGS - END-->
+
 </resources>
