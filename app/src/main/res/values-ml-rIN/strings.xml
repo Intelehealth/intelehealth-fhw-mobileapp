@@ -659,6 +659,7 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">പ്രോട്ടോക്കോൾ തുടർന്ന് ഡൗൺലോഡ് ചെയ്യുന്നു। പ്രോട്ടോക്കോൾ ഡൗൺലോഡ് റീട്രൂചെയ്യുന്നതിന് \'ഉവ്വ്\' അമർത്തുക। ഡെമോ പ്രോട്ടോക്കോൾ ഉപയോഗിച്ച് തുടർച്ചയിലേക്ക് \'ഇല്ല\' അമർത്തുക।</string>
     <string name="am">time</string>
+    <string name="search_visits_hint">Search visits...</string>
 
 </resources>
 

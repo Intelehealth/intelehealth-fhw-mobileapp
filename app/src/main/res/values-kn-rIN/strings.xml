@@ -785,5 +785,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">ಪ್ರೊಟೋಕಾಲ್ ಲಭ್ಯವಿದೆ ನಂತರ ಡೌನ್ ಲೋಡ್ ಮಾಡಲಾಗಿದೆ। ಪ್ರೊಟೋಕಾಲ್ ಡೌನ್ ಲೋಡ್ ಅನ್ನು ಮರುಸತ್ಯಗೊಳಿಸಲು \'ಹೌದು\' ಒತ್ತಿ। ಡೆಮೋ ಪ್ರೊಟೋಕಾಲ್ ನೊಂದಿಗೆ ನಿರಂತರತೆಗಾಗಿ \'ಇಲ್ಲ\' ಒತ್ತಿ।</string>
     <string name="am">time</string>
+    <string name="search_visits_hint">Search visits...</string>
 
 </resources>

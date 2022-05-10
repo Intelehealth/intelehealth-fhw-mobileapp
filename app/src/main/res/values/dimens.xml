@@ -42,4 +42,27 @@
 
     <dimen name="text_18sp">18sp</dimen>
 
+    <!--New Design-->
+
+    <dimen name="static_margin">156dip</dimen>
+
+    <dimen name="content_horizontal_padding_1">16dip</dimen>
+    <dimen name="content_horizontal_padding">20dip</dimen>
+    <dimen name="content_vertical_padding">20dip</dimen>
+    <dimen name="body_element_vertical_margin">16dip</dimen>
+    <dimen name="body_element_horizontal_margin">16dip</dimen>
+    <dimen name="footer_action_bar_height">52dip</dimen>
+
+    <dimen name="edit_box_min_height">40dip</dimen>
+    <dimen name="edit_box_content_padding">8sp</dimen>
+
+    <dimen name="drawable_padding">16dip</dimen>
+    <dimen name="common_padding">8dip</dimen>
+
+    <dimen name="button_min_height">40dip</dimen>
+    <dimen name="button_min_width">100dip</dimen>
+
+    <dimen name="header_text_size">15sp</dimen>
+    <dimen name="header_text_size_1">14sp</dimen>
+    <dimen name="content_text_size">13sp</dimen>
 </resources>

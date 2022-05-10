@@ -39,12 +39,12 @@ import org.intelehealth.app.utilities.StringUtils;
 
 public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
 
-    interface OnActionListener {
+    public interface OnActionListener {
         void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription);
     }
 
     private OnActionListener actionListener;
-    List<ActivePatientModel> activePatientModels;
+    public List<ActivePatientModel> activePatientModels;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -230,11 +230,13 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.btnVisitDetails.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary)));
         } else {
-            holder.btnEndVisit.setBackgroundResource(R.drawable.bg_visit_details);
-        }
+            holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_yellow);
+        }*/
+        holder.btnVisitDetails.setBackgroundResource(R.drawable.round_corner_yellow);
+        holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
 
         holder.btnEndVisit.setEnabled(enableEndVisit);
         if (enableEndVisit) {
@@ -285,7 +287,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
-        Button btnEndVisit, btnVisitDetails;
+        TextView btnEndVisit, btnVisitDetails;
         TextView tvAgeGender;
 
         public ActivePatientViewHolder(View itemView) {
