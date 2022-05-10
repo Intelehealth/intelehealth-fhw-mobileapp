@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,19 +16,19 @@ import android.widget.LinearLayout;
 import org.intelehealth.app.R;
 
 public class TimelineVisitSummaryActivity extends AppCompatActivity {
-RecyclerView recyclerView;
-TimelineAdapter adapter;
+    RecyclerView recyclerView;
+    TimelineAdapter adapter;
+    Context context;
+    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "", patientUuid = "";
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_visit_summary);
 
-        recyclerView = findViewById(R.id.recyclerview_timeline);
-        LinearLayoutManager linearLayout = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayout);
-        recyclerView.setLayoutManager(linearLayout);
-        adapter = new TimelineAdapter();
+        initUI();
+        adapter = new TimelineAdapter(context, intent);
         recyclerView.setAdapter(adapter);
 
     }
@@ -41,5 +43,13 @@ TimelineAdapter adapter;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initUI() {
+        recyclerView = findViewById(R.id.recyclerview_timeline);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayout);
+        context = TimelineVisitSummaryActivity.this;
+        intent = this.getIntent(); // The intent was passed to the activity
     }
 }
