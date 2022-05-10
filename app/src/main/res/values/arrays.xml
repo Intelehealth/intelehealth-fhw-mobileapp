@@ -5,6 +5,7 @@
         <item>Hindi</item>
         <item>English</item>
         <item>Odiya</item>
+        <item>Gujrati</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -31,6 +32,12 @@
         <item>en</item>
         <item>or</item>
 <!--        <item>cb</item>-->
+    </string-array>
+
+    <string-array name="vaccination_spinner_gu">
+        <item>Select</item>
+        <item>First dose</item>
+        <item>Second dose</item>
     </string-array>
 
     <string-array name="speciality_values">
@@ -76,6 +83,7 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -92,6 +100,15 @@
         <item>माध्यमिक</item>
         <item>उच्च माध्यमिक</item>
         <item>स्नातक और उच्चतर</item>
+    </string-array>
+
+    <string-array name="education_gu">
+        <item>Select</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -136,6 +153,12 @@
         <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
+    <string-array name="economic_gu">
+        <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
     <string-array name="states_india">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
@@ -173,6 +196,7 @@
         <item>Select State</item>
         <item>Bukidnon</item>
     </string-array>
+
     <string-array name="bukidnon_villages">
         <item>Adtuyon-Pangantucan</item>
         <item>Bacusanon-Pangantucan</item>
@@ -419,6 +443,27 @@
         <!--        <item>[Describe]</item>-->
     </string-array>
 
+    <string-array name="occupation_spinner_gu">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Government job</item>
+        <item>Large scale to medium scale industry</item>
+        <item>Professional job in private sector</item>
+        <item>Small scale industry</item>
+        <item>Big shop owner</item>
+        <item>Technician/craftsman</item>
+        <item>Small shop owner</item>
+        <item>Large scale farmer</item>
+        <item>Daily wage earner</item>
+        <item>Small scale farmer/farm worker</item>
+        <item>Unemployed</item>
+        <item>Housewife</item>
+        <item>Student</item>
+        <item>Under 5 child</item>
+        <item>Other skills (driver,mason etc)</item>
+        <!--        <item>[Describe]</item>-->
+    </string-array>
+
     <string-array name="bank_account_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
@@ -438,6 +483,13 @@
         <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
         <item>ହଁ</item>
         <item>ନା</item>
+    </string-array>
+
+    <string-array name="bank_account_spinner_gu">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Yes</item>
+        <item>No</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_en">
@@ -461,6 +513,13 @@
         <item>ମୋବାଇଲ୍ ଫୋନ୍ ର ମାଲିକାନା ନାହିଁ</item>
     </string-array>
 
+    <string-array name="mobilephone_spinner_gu">
+        <item>Select</item>
+        <item>Basic Phone</item>
+        <item>Smartphone</item>
+        <item>Does not own mobile phone</item>
+    </string-array>
+
     <string-array name="familymember_whatsapp_en">
         <item>Select</item>
         <item>Yes</item>
@@ -477,6 +536,12 @@
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>ହଁ</item>
         <item>ନା</item>
+    </string-array>
+
+    <string-array name="familymember_whatsapp_gu">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
     </string-array>
 
     <string-array name="sourcewater_spinner_en">
@@ -510,6 +575,17 @@
         <item>ନଦୀ / ପୋଖରୀ</item>
         <item>ଟ୍ୟାଙ୍କର୍ ପାଣି</item>
         <item>ଅନ୍ୟ କ .ଣସି</item>
+    </string-array>
+
+    <string-array name="sourcewater_spinner_gu">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Chapakal/Hand Pump</item>
+        <item>Wells</item>
+        <item>Boring</item>
+        <item>Rivers/ponds</item>
+        <item>Tanker water</item>
+        <item>Any other</item>
     </string-array>
 
     <string-array name="howtomake_water_safe_en">
@@ -551,6 +627,19 @@
         <item>ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]</item>
     </string-array>
 
+    <string-array name="howtomake_water_safe_gu">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Nothing</item>
+        <item>Boil</item>
+        <item>Alum</item>
+        <item>Add Bleach/Chlorine tablets</item>
+        <item>Strain through cloth</item>
+        <item>Use water filter(ceramic/sand/composite)etc</item>
+        <item>Use electronic filter</item>
+        <item>Other[Enter]</item>
+    </string-array>
+
     <string-array name="water_availability_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
@@ -573,6 +662,14 @@
         <item>ହଁ</item>
         <item>ନା</item>
         <item>ଜାଣ ନାହିଁ</item>
+    </string-array>
+
+    <string-array name="water_availability_spinner_gu">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Yes</item>
+        <item>No</item>
+        <item>Don\'t know</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_en">
@@ -605,6 +702,16 @@
         <item>ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]</item>
     </string-array>
 
+    <string-array name="toiletFacility_spinner_gu">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>No facility /uses open space or field</item>
+        <item>Own toilet</item>
+        <item>Community toilet</item>
+        <item>Shared toilet with other household</item>
+        <item>Other [Enter]</item>
+    </string-array>
+
     <string-array name="structure_house_en">
         <item>Select</item>
         <item>Kutcha House</item>
@@ -624,6 +731,13 @@
         <item>କୁଚା ହାଉସ୍</item>
         <item>ପାକ୍କା ହାଉସ୍</item>
         <item>ଗୃହହୀନ</item>
+    </string-array>
+
+    <string-array name="structure_house_gu">
+        <item>Select</item>
+        <item>Kutcha House</item>
+        <item>Pakka House</item>
+        <item>Homeless</item>
     </string-array>
 
     <string-array name="location_district">
@@ -664,6 +778,18 @@
 
     <string-array name="blood_group_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
+
+    <string-array name="blood_group_gu">
+        <item>Please Select</item>
         <item>A+</item>
         <item>A-</item>
         <item>B+</item>
