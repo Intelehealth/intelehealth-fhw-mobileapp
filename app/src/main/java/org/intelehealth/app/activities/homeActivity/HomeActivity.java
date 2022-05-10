@@ -1191,7 +1191,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             //CallListenerBackgroundService.getInstance().stopForegroundService();
-            ContextCompat.startForegroundService(this, serviceIntent);
+            context.startService(serviceIntent);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -1211,7 +1211,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(this, serviceIntent);
+            context.startService(serviceIntent);
         }
     }
 

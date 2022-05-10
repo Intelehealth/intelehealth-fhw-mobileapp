@@ -126,25 +126,25 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
-            jsonObject.put("name", "Marathi");
+            jsonObject.put("name", "मराठी");
             jsonObject.put("code", "mr");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("mr"));
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
-            jsonObject.put("name", "Kannada");
+            jsonObject.put("name", "ಕನ್ನಡ");
             jsonObject.put("code", "kn");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("kn"));
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
-            jsonObject.put("name", "Assamese");
+            jsonObject.put("name", "অসমীয়া");
             jsonObject.put("code", "as");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("as"));
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
-            jsonObject.put("name", "Malyalam");
+            jsonObject.put("name", "മലയാളം");
             jsonObject.put("code", "ml");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ml"));
             itemList.add(jsonObject);

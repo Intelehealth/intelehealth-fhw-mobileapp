@@ -721,6 +721,14 @@
     <string name = "postal_code_invalid_txt">कृपया मान्य पोस्टल कोड दर्ज करें</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करने में विफल!</string>
     <string name = "appointment_cancelled_success_txt">नियुक्ति सफलतापूर्वक रद्द कर दी गई थी!</string>
+    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
+    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
+    <string name="doctor_is_not_available">Doctor is not available</string>
+    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="others">Others</string>
+    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="please_enter_reason_txt">Please enter the reason!</string>
 
 
     <string name="diagnosis">निदान</string>

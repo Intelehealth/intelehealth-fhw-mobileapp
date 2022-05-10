@@ -595,6 +595,16 @@
     <string name="failed_to_cancel_appointment">அப்பயிண்ட்மெண்ட்டை ரத்து செய்ய முடியவில்லை!</string>
     <string name="appointment_cancelled_success_txt">அப்பயிண்ட்மெண்ட் வெற்றிகரமாக ரத்து செய்யப்பட்டது!</string>
 
+    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
+    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
+    <string name="doctor_is_not_available">Doctor is not available</string>
+    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="others">Others</string>
+    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="please_enter_reason_txt">Please enter the reason!</string>
+
+
     <string name="diagnosis">நோயறிதல்</string>
     <string name="primary">முதன்மை</string>
     <string name="secondary">இரண்டாம் நிலை</string>

@@ -16,7 +16,7 @@ public class RestartServiceReceiver extends BroadcastReceiver {
         Log.v(TAG, "onReceive");
         if (!CallListenerBackgroundService.isInstanceCreated()) {
             Intent serviceIntent = new Intent(context, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(context, serviceIntent);
+            context.startService(serviceIntent);
         }
     }
 }

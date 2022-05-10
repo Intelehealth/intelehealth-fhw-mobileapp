@@ -1510,6 +1510,7 @@ app:layout_constraintStart_toEndOf="@+id/gd"
             android:onClick="signAndSubmit"
             android:textAlignment="center"
             android:textColor="@android:color/white"
+            android:visibility="gone"
             android:textSize="20sp" />
 
 

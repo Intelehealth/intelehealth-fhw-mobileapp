@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,20 +34,6 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputFilter;
@@ -62,6 +49,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -75,48 +63,31 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.appointment.ScheduleListingActivity;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.appointment.dao.AppointmentDAO;
-import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
-import org.intelehealth.app.appointment.model.CancelRequest;
-import org.intelehealth.app.appointment.model.CancelResponse;
-import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
-import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
-import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.utilities.Base64Utils;
-import org.intelehealth.apprtc.ChatActivity;
-
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.app.utilities.VisitUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -124,9 +95,16 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.prescription.PrescriptionActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.ScheduleListingActivity;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.app.appointment.model.CancelRequest;
+import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -142,8 +120,14 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -151,16 +135,31 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.ChatActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.io.File;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -600,7 +599,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         .putExtra("patientName", patientName)
                         .putExtra("appointmentId", mAppointmentId)
                         .putExtra("openMrsId", patient.getOpenmrs_id())
-                        .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
+                        .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
                 );
 
 
@@ -1090,19 +1089,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
-        {
-            if(gender_tv.equalsIgnoreCase("M"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            }
-            else if(gender_tv.equalsIgnoreCase("F"))
-            {
+            } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            }
-            else
-            {
+            } else {
                 genderView.setText(gender_tv);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1113,39 +1105,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
-        {
-            if(gender_tv.equalsIgnoreCase("M"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            }
-            else if(gender_tv.equalsIgnoreCase("F"))
-            {
+            } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            }
-            else
-            {
+            } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
-        {
-            if(gender_tv.equalsIgnoreCase("M"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            }
-            else if(gender_tv.equalsIgnoreCase("F"))
-            {
+            } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            }
-            else
-            {
+            } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else
-        {
+        } else {
             genderView.setText(gender_tv);
         }
 
@@ -1823,6 +1799,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return resultVal;
 
     }
+
     private String showVisitID() {
 
         if (visitUUID != null && !visitUUID.isEmpty()) {
@@ -2261,7 +2238,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
 //                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
 //                    "</div>";
-
 
 
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -3655,7 +3631,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //
 
 
-
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
 
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
@@ -4379,10 +4354,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
-    private  int mAppointmentId = 0;
+    private int mAppointmentId = 0;
     private TextView mDoctorAppointmentBookingTextView;
     private TextView mCancelAppointmentBookingTextView;
     private TextView mInfoAppointmentBookingTextView;
+    private String mEngReason = "";
 
     private static final int SCHEDULE_LISTING_INTENT = 2001;
 
@@ -4396,9 +4372,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
-                        if(response==null || response.body() == null) return;
+                        if (response == null || response.body() == null) return;
                         mAppointmentDetailsResponse = response.body();
-                        if(!mAppointmentDetailsResponse.isStatus()){
+                        if (!mAppointmentDetailsResponse.isStatus()) {
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
                         if (mAppointmentDetailsResponse.getData() == null) {
@@ -4462,37 +4438,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        CancelRequest request = new CancelRequest();
-                        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
-                        request.setId(mAppointmentDetailsResponse.getData().getId());
-                        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
-                        ApiClientAppointment.getInstance(baseurl).getApi()
-                                .cancelAppointment(request)
-                                .enqueue(new Callback<CancelResponse>() {
-                                    @Override
-                                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
-                                        if(response.body() == null) return;
-                                        CancelResponse cancelResponse = response.body();
-                                        if(cancelResponse.isStatus()) {
-                                            AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
-                                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                            //}
-
-                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
-                                        }else{
-                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<CancelResponse> call, Throwable t) {
-                                        Log.v("onFailure", t.getMessage());
-                                    }
-                                });
+                        askReason();
                     }
                 })
                 //set negative button
@@ -4507,11 +4453,93 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    private void cancelAppointmentRequest(String reason) {
+        CancelRequest request = new CancelRequest();
+        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
+        request.setId(mAppointmentDetailsResponse.getData().getId());
+        request.setReason(reason);
+        request.setHwUUID(new SessionManager(VisitSummaryActivity.this).getProviderID()); // user id / healthworker id
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .cancelAppointment(request)
+                .enqueue(new Callback<CancelResponse>() {
+                    @Override
+                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                        if (response.body() == null) return;
+                        CancelResponse cancelResponse = response.body();
+                        if (cancelResponse.isStatus()) {
+                            AppointmentDAO appointmentDAO = new AppointmentDAO();
+                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                            //}
+
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                        } else {
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+    }
+
+    private void askReason() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.appointment_cancel_reason_view);
+
+        final TextView titleTextView = (TextView) dialog.findViewById(R.id.titleTv);
+        titleTextView.setText(getString(R.string.please_select_your_cancel_reason));
+        final EditText reasonEtv = dialog.findViewById(R.id.reasonEtv);
+        reasonEtv.setVisibility(View.GONE);
+        final RadioGroup optionsRadioGroup = dialog.findViewById(R.id.reasonRG);
+        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbR1) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                    mEngReason = "Doctor is not available";
+                } else if (checkedId == R.id.rbR2) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                    mEngReason = "Patient is not available";
+                } else if (checkedId == R.id.rbR3) {
+                    reasonEtv.setText("");
+                    reasonEtv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final TextView textView = dialog.findViewById(R.id.submitTV);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                String reason = reasonEtv.getText().toString().trim();
+                if (reason.isEmpty()) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                cancelAppointmentRequest(mEngReason.isEmpty() ? reason : mEngReason);
+            }
+        });
+
+        dialog.show();
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SCHEDULE_LISTING_INTENT){
+        if (requestCode == SCHEDULE_LISTING_INTENT) {
             getAppointmentDetails(visitUuid);
         }
     }
