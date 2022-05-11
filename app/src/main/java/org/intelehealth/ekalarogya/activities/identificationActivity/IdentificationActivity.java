@@ -92,8 +92,12 @@ import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
+import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_caste_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
@@ -467,6 +471,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setText(StringUtils.en__hi_dob(patient1.getDate_of_birth()));
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 mDOB.setText(StringUtils.en__or_dob(patient1.getDate_of_birth()));
+            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                mDOB.setText(StringUtils.en__gu_dob(patient1.getDate_of_birth()));
             } else {
                 mDOB.setText(patient1.getDate_of_birth());
             }
@@ -989,6 +995,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String education = switch_or_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    String education = switch_gu_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 }
@@ -1008,6 +1017,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String economic = switch_or_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    String economic = switch_gu_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
@@ -1022,6 +1034,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String caste = switch_or_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    String caste = switch_gu_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
@@ -1046,6 +1061,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     occupation_Transl = StringUtils.switch_hi_occupation_edit(patient1.getOccupation());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     occupation_Transl = StringUtils.switch_or_occupation_edit(patient1.getOccupation());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    occupation_Transl = StringUtils.switch_gu_occupation_edit(patient1.getOccupation());
                 } else {
                     occupation_Transl = patient1.getOccupation();
                 }
@@ -1060,6 +1077,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("वर्णन करे"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                        //-------------change gujrati language---------------
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
                     } else {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
                     }
@@ -1075,6 +1095,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     bankacc_Transl = StringUtils.switch_hi_bankaccount_edit(patient1.getBank_account());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    bankacc_Transl = StringUtils.switch_gu_bankaccount_edit(patient1.getBank_account());
                 } else {
                     bankacc_Transl = patient1.getBank_account();
                 }
@@ -1088,6 +1110,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     mobile_Transl = StringUtils.switch_or_mobiletype_edit(patient1.getMobile_type());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    mobile_Transl = StringUtils.switch_gu_mobiletype_edit(patient1.getMobile_type());
                 } else {
                     mobile_Transl = patient1.getMobile_type();
                 }
@@ -1102,6 +1126,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     whatsapp_Transl = StringUtils.switch_or_whatsapp_edit(patient1.getWhatsapp_mobile());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    whatsapp_Transl = StringUtils.switch_gu_whatsapp_edit(patient1.getWhatsapp_mobile());
                 } else {
                     whatsapp_Transl = patient1.getWhatsapp_mobile();
                 }
@@ -1179,6 +1205,28 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
                     }
                 }
+                else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        }
+                        else {
+                            vaccination_Transl = StringUtils.switch_gu_vaccination_edit(patient1.getVaccination());
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
+                    }
+                }
             }
             //vaccinatio - end
 
@@ -1190,6 +1238,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     watersource_Transl = StringUtils.switch_hi_watersource_edit(patient1.getSource_of_water());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     watersource_Transl = StringUtils.switch_or_watersource_edit(patient1.getSource_of_water());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    watersource_Transl = StringUtils.switch_gu_watersource_edit(patient1.getSource_of_water());
                 } else {
                     watersource_Transl = patient1.getSource_of_water();
                 }
@@ -1204,6 +1254,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     watersafe_Transl = StringUtils.switch_hi_watersafe_edit(patient1.getWater_safe());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     watersafe_Transl = StringUtils.switch_or_watersafe_edit(patient1.getWater_safe());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    watersafe_Transl = StringUtils.switch_gu_watersafe_edit(patient1.getWater_safe());
                 } else {
                     watersafe_Transl = patient1.getWater_safe();
                 }
@@ -1220,6 +1272,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("अन्य [दर्ज करें]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                        //-------replace with gujrati
+                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
                     } else {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
                     }
@@ -1237,6 +1292,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     wateravail_Transl = StringUtils.switch_hi_wateravail_edit(patient1.getWater_availability());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     wateravail_Transl = StringUtils.switch_or_wateravail_edit(patient1.getWater_availability());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    wateravail_Transl = StringUtils.switch_gu_wateravail_edit(patient1.getWater_availability());
                 } else {
                     wateravail_Transl = patient1.getWater_availability();
                 }
@@ -1252,6 +1309,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     toiletfacility_Transl = StringUtils.switch_hi_toiletfacil_edit(patient1.getToilet_facility());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    toiletfacility_Transl = StringUtils.switch_gu_toiletfacil_edit(patient1.getToilet_facility());
                 } else {
                     toiletfacility_Transl = patient1.getToilet_facility();
                 }
@@ -1269,6 +1328,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("अन्य [दर्ज करें]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                        //-------replace with gujrati
+                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                     } else {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                     }
@@ -1286,6 +1348,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     housestruct_Transl = StringUtils.switch_hi_housestructure_edit(patient1.getStructure_house());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    housestruct_Transl = StringUtils.switch_gu_housestructure_edit(patient1.getStructure_house());
                 } else {
                     housestruct_Transl = patient1.getStructure_house();
                 }
@@ -1537,6 +1601,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                mDOB.setText(dob_text);
+            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String dob_text = en__gu_dob(dob); //to show text of English into Gujrati...
                 mDOB.setText(dob_text);
             } else {
                 mDOB.setText(dob);
@@ -2416,13 +2483,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) { //no value has been edited...ie. DOB/Age is not selected...
-                String dob = StringUtils.hi_or__en_noEdit
+                String dob = StringUtils.hi_or_gu_en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob))); 
             }
             else {
-                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_gu_en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
 
@@ -2660,7 +2727,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
                     // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(time_water_checkbox.getText().toString())); //hi to en and vice-versa...
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(time_water_checkbox.getText().toString())); //hi to en and vice-versa...
                     Log.d("HOH", "time to bring water:create " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -2740,7 +2807,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Family Cultivable Land"));
                     //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(hectars_land_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(hectars_land_checkbox.getText().toString()));
                     Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -3230,12 +3297,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or__en_noEdit
+                String dob = StringUtils.hi_or_gu_en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_gu_en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
                 dob_array[1] = dob_month_split.replace(dob_month_split, dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
@@ -3472,7 +3539,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
                     // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(time_water_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(time_water_checkbox.getText().toString()));
                     Log.d("HOH", "time to bring water_edit: " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -3552,7 +3619,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Family Cultivable Land"));
                     //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(hectars_land_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(hectars_land_checkbox.getText().toString()));
                     Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {

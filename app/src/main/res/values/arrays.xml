@@ -2,11 +2,19 @@
 
 
     <string-array name="language_names">
-        <item>Hindi</item>
+        <item>हिंदी</item>
         <item>English</item>
-        <item>Odiya</item>
-        <item>Gujrati</item>
-<!--        <item>Cebuano</item>-->
+        <item>ଓଡିଆ</item>
+        <item>ગુજરાતી</item>
+        <!--<item>Cebuano</item>-->
+    </string-array>
+
+    <string-array name="language_values">
+        <item>hi</item>
+        <item>en</item>
+        <item>or</item>
+        <item>gu</item>
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="vaccination_spinner_en">
@@ -27,13 +35,7 @@
         <item>ଦ୍ୱିତୀୟ ମାତ୍ରା</item>
     </string-array>
 
-    <string-array name="language_values">
-        <item>hi</item>
-        <item>en</item>
-        <item>or</item>
-<!--        <item>cb</item>-->
-    </string-array>
-
+    //-----replace with gujrati
     <string-array name="vaccination_spinner_gu">
         <item>Select</item>
         <item>First dose</item>
@@ -50,6 +52,7 @@
         <item>When possible</item>
         <item>Never</item>
     </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
@@ -59,6 +62,7 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
+
     <string-array name="countries">
         <item>Select Country</item>
         <item>India</item>
@@ -127,6 +131,24 @@
         <item>अनुसूचित जाति</item>
         <item>अनुसूचित जनजाति</item>
         <item>अन्य</item>
+    </string-array>
+
+    <string-array name="caste_gu">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
+    <string-array name="caste_or">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
     </string-array>
 
     <string-array name="economic_en">

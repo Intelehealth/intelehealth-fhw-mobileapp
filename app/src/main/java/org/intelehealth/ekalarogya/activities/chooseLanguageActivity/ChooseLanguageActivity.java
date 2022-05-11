@@ -116,16 +116,16 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("or"));
             itemList.add(jsonObject);
 
-           /* jsonObject = new JSONObject();
-            jsonObject.put("name", "తెలుగు");
-            jsonObject.put("code", "te");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("te"));
-            itemList.add(jsonObject);
-
             jsonObject = new JSONObject();
             jsonObject.put("name", "ગુજરાતી");
             jsonObject.put("code", "gu");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("gu"));
+            itemList.add(jsonObject);
+
+           /* jsonObject = new JSONObject();
+            jsonObject.put("name", "తెలుగు");
+            jsonObject.put("code", "te");
+            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("te"));
             itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
