@@ -439,7 +439,7 @@
 
                         </TableRow>
 
-                        <TableRow
+                        <TableRow android:visibility="gone"
                             android:id="@+id/tableRow_SDW"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -473,7 +473,7 @@
 
                         </TableRow>
 
-                        <TableRow
+                        <TableRow android:visibility="gone"
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -506,7 +506,7 @@
 
                         </TableRow>
 
-                        <TableRow
+                        <TableRow android:visibility="gone"
                             android:id="@+id/tableRow_Economic_Status"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -537,7 +537,7 @@
 
                         </TableRow>
 
-                        <TableRow
+                        <TableRow android:visibility="gone"
                             android:id="@+id/tableRow_Education_Status"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -570,7 +570,7 @@
 
                         </TableRow>
 
-                        <TableRow
+                        <TableRow android:visibility="gone"
                             android:id="@+id/tableRow_Caste"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">

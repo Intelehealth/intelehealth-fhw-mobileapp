@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/taskNotificationsBtn"
+        android:id="@+id/updateTimeItem"
         android:title="Last updated on 12pm"
         app:showAsAction="always" />
     <group android:id="@+id/main_menu_group">

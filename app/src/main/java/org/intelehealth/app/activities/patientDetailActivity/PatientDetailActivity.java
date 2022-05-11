@@ -568,7 +568,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("casteLayout")) {
+           /* if (obj.getBoolean("casteLayout")) {
                 casteRow.setVisibility(View.VISIBLE);
             } else {
                 casteRow.setVisibility(View.GONE);
@@ -582,7 +582,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 economicRow.setVisibility(View.VISIBLE);
             } else {
                 economicRow.setVisibility(View.GONE);
-            }
+            }*/
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);

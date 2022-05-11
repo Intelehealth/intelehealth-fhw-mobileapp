@@ -38,9 +38,6 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/lato_regular" />
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1.5pt"></View>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
