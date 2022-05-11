@@ -10,12 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.databinding.FragmentFifthScreenBinding;
 
 public class FifthScreenFragment extends Fragment {
+
+    private FragmentFifthScreenBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_fifth_screen, container, false);
-        return rootView;
+        binding = FragmentFifthScreenBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 }

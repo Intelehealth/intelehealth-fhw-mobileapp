@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
-        archivesBaseName = "Ekal-Arogya-"+versionName
+        archivesBaseName = "Ekal-Arogya-" + versionName
         //vectorDrawables.useSupportLibrary = true
 
     }
@@ -25,6 +25,11 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         release {
             lintOptions {

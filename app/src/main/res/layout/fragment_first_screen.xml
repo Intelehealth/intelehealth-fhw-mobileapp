@@ -21,51 +21,9 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/name_of_district_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/name_of_district"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_of_district_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_district_text_view"
-                android:fontFamily="@font/lato_regular"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textSize="14sp" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/name_of_village_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_district_edit_text"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/name_of_village"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_of_village_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_village_text_view"
-                android:fontFamily="@font/lato_regular"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textSize="14sp" />
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/household_structure_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_village_edit_text"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/household_structure_type"
@@ -242,7 +200,7 @@
                 android:textSize="15sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/checkbox_linear_layout"
+                android:id="@+id/primary_source_of_income_checkbox_linear_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@id/primary_source_of_income_text_view"
@@ -410,7 +368,7 @@
                 android:id="@+id/household_electricity_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/checkbox_linear_layout"
+                android:layout_below="@id/primary_source_of_income_checkbox_linear_layout"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
@@ -634,47 +592,10 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank_account_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/running_water_availability_linear_layout"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/does_the_household_have_a_bank_account"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/household_bank_account_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bank_account_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_medium"
-                    android:text="@string/survey_yes"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_no"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/cultivable_land_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/household_bank_account_radio_group"
+                android:layout_below="@id/running_water_availability_linear_layout"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/amount_of_cultivable_land_owned_by_the_household"
@@ -971,6 +892,7 @@
             </RadioGroup>
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/next_button_linear_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/education_expenditure_radio_group"
