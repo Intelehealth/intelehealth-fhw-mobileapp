@@ -14,7 +14,6 @@ import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -49,7 +48,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,7 +60,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -72,16 +69,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientAdapter;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
-import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.ActivePatientModel;
@@ -321,7 +314,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(HomeActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
@@ -335,107 +328,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        if (sessionManager.isPullSyncFinished()) {
-            findViewById(R.id.tvEmpty).setVisibility(View.GONE);
-            mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
-            List<ActivePatientModel> activePatientModels = doQuery(offset);
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID);
-            mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
-            mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
-                @Override
-                public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
-                    String encounterAdultIntialslocal = "";
-                    String encounterVitalslocal = null;
-                    String encounterIDSelection = "visituuid = ?";
-
-                    String visitUuid = activePatientModel.getUuid();
-                    String visitnote = "", followupdate = "";
-                    String[] encounterIDArgs = {visitUuid};
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                        } while (encounterCursor.moveToNext());
-                    }
-                    encounterCursor.close();
-
-                    String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
-                    String[] columns = {"value", " conceptuuid"};
-                    String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
-                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-                    if (visitCursor.moveToFirst()) {
-                        do {
-//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                            followupdate = dbValue;
-                        } while (visitCursor.moveToNext());
-                    }
-                    visitCursor.close();
-
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
-                    if (hasPrescription) {
-                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
-                        alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        String finalFollowupdate = followupdate;
-                        String finalEncounterVitalslocal = encounterVitalslocal;
-                        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-                        alertDialogBuilder.setPositiveButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                VisitUtils.endVisit(HomeActivity.this,
-                                        visitUuid,
-                                        activePatientModel.getPatientuuid(),
-                                        finalFollowupdate,
-                                        finalEncounterVitalslocal,
-                                        finalEncounterAdultIntialslocal,
-                                        null,
-                                        String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
-                                        ""
-                                );
-
-
-//                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-//                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
-
-                    } else {
-                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.error_no_data));
-                        alertDialogBuilder.setNeutralButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
-                    }
-                }
-            });
-        }
-
-        getVisits();
+        loadVisits();
 
         findViewById(R.id.tvPatientsMenu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -451,7 +344,7 @@ public class HomeActivity extends AppCompatActivity {
                 String phoneNumberWithCountryCode = "+917005308163";
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                 getString(R.string.i_need_assistance);
+                                getString(R.string.i_need_assistance);
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(
@@ -464,14 +357,30 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isNetworkConnected()) {
                     Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-                    ivSync.clearAnimation();
-                    syncAnimator.start();
+                    //ivSync.clearAnimation();
+                    //syncAnimator.start();
                     syncUtils.syncForeground("home");
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        if (sessionManager.isFirstTimeLaunched()) {
+            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setProgress(i);
+            mSyncProgressDialog.show();
+
+            syncUtils.initialSync("home");
+        } else {
+            // if initial setup done then we can directly set the periodic background sync job
+            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            saveToken();
+            requestPermission();
+        }
+        showProgressbar();
         /*END*/
         /*lastSyncTextView = findViewById(R.id.lastsynctextview);
         locationSetupTextView = findViewById(R.id.locationTV);
@@ -649,6 +558,112 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void loadVisits() {
+
+        if (sessionManager.isPullSyncFinished()) {
+            getVisits();
+            findViewById(R.id.tvEmpty).setVisibility(View.GONE);
+            mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
+            List<ActivePatientModel> activePatientModels = doQuery(offset);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID);
+            mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
+            mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
+                @Override
+                public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
+                    String encounterAdultIntialslocal = "";
+                    String encounterVitalslocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String visitUuid = activePatientModel.getUuid();
+                    String visitnote = "", followupdate = "";
+                    String[] encounterIDArgs = {visitUuid};
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    encounterCursor.close();
+
+                    String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
+                    String[] columns = {"value", " conceptuuid"};
+                    String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
+                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                    if (visitCursor.moveToFirst()) {
+                        do {
+//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                            followupdate = dbValue;
+                        } while (visitCursor.moveToNext());
+                    }
+                    visitCursor.close();
+
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
+                    if (hasPrescription) {
+                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
+                        alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        String finalFollowupdate = followupdate;
+                        String finalEncounterVitalslocal = encounterVitalslocal;
+                        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+                        alertDialogBuilder.setPositiveButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                VisitUtils.endVisit(HomeActivity.this,
+                                        visitUuid,
+                                        activePatientModel.getPatientuuid(),
+                                        finalFollowupdate,
+                                        finalEncounterVitalslocal,
+                                        finalEncounterAdultIntialslocal,
+                                        null,
+                                        String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
+                                        ""
+                                );
+
+
+//                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+//                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.show();
+                        //alertDialog.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
+
+                    } else {
+                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.error_no_data));
+                        alertDialogBuilder.setNeutralButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.show();
+                        //alertDialog.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
+                    }
+                }
+            });
+        }
+
+
+    }
+
 
     //function for handling the video library feature...
     private void videoLibrary() {
@@ -739,10 +754,12 @@ public class HomeActivity extends AppCompatActivity {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
+    private MenuItem mLastUpdateMenuItem;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+        mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem);
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -1163,7 +1180,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog,"home");
+                                mTask = new DownloadMindMaps(context, mProgressDialog, "home");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -1472,45 +1489,47 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void setLastSyncTime(String dob) {
-        String convertedString = getFullMonthName(dob);
+    private void setLastSyncTime(String lastSyncTime) {
+        String convertedString = getFullMonthName(lastSyncTime);
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             String sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             String sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             String sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
             String sync_text = en__te_dob(convertedString); //to show text of English into telugu...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             String sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             String sync_text = en__as_dob(convertedString); //to show text of English into telugu...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
             String sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
             String sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             String sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
             String sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
-            lastSyncTextView.setText(sync_text);
+            mLastUpdateMenuItem.setTitle(sync_text);
         } else {
-           // lastSyncTextView.setText(dob);
+            mLastUpdateMenuItem.setTitle(lastSyncTime);
         }
+
+        loadVisits();
     }
 
     private void clearAppData() {
@@ -1678,6 +1697,7 @@ public class HomeActivity extends AppCompatActivity {
 //            });
 //        }
     }
+
     /*EZAZI*/
     private void getVisits() {
 

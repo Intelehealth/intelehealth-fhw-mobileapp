@@ -58,18 +58,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_person_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_person_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/personal_information"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -91,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="@dimen/common_padding">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -101,15 +100,16 @@
 
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
                                 android:layout_weight="2"
                                 android:orientation="vertical">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/round_corner_gray_stroke_light"
+                                    android:padding="@dimen/common_padding">
                                     <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
                                     <!--On the Left or Right of textview or Editext-->
 
@@ -117,6 +117,7 @@
                                         android:id="@+id/identification_first_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:background="@null"
                                         android:drawableStart="@drawable/person_icon"
                                         android:drawableLeft="@drawable/person_icon"
                                         android:drawablePadding="10dp"
@@ -128,6 +129,7 @@
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
+                                        android:minHeight="@dimen/edit_box_min_height"
                                         android:singleLine="true"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -135,12 +137,16 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/common_padding"
+                                    android:background="@drawable/round_corner_gray_stroke_light"
+                                    android:padding="@dimen/common_padding">
 
                                     <EditText
                                         android:id="@+id/identification_middle_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:background="@null"
                                         android:drawableStart="@drawable/person_icon"
                                         android:drawableLeft="@drawable/person_icon"
                                         android:drawablePadding="10dp"
@@ -152,6 +158,7 @@
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
+                                        android:minHeight="@dimen/edit_box_min_height"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
                                         android:textSize="@dimen/card_content_sub_text_size" />
@@ -160,13 +167,17 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/common_padding"
+                                    android:background="@drawable/round_corner_gray_stroke_light"
+                                    android:padding="@dimen/common_padding">
 
                                     <EditText
                                         android:id="@+id/identification_last_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:autofillHints="@string/action_settings"
+                                        android:background="@null"
                                         android:drawableStart="@drawable/person_icon"
                                         android:drawableLeft="@drawable/person_icon"
                                         android:drawablePadding="10dp"
@@ -178,6 +189,7 @@
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
+                                        android:minHeight="@dimen/edit_box_min_height"
                                         android:singleLine="true"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -193,12 +205,10 @@
                                 android:layout_weight="1"
                                 android:contentDescription="TODO"
                                 android:scaleType="centerCrop"
+                                android:visibility="gone"
                                 app:srcCompat="@drawable/ic_person_camera_intele" />
                         </LinearLayout>
 
-                        <Space
-                            android:layout_width="15dp"
-                            android:layout_height="10dp" />
 
                         <RadioGroup
                             android:id="@+id/radioGrp"
@@ -206,7 +216,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingLeft="8dp"
-                            android:paddingRight="8dp">
+                            android:paddingRight="8dp"
+                            android:visibility="gone">
 
                             <RadioButton
                                 android:id="@+id/identification_gender_male"
@@ -225,6 +236,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:checked="true"
                                 android:drawableStart="@drawable/female_icon"
                                 android:drawableLeft="@drawable/female_icon"
                                 android:drawablePadding="10dp"
@@ -234,18 +246,19 @@
 
                         </RadioGroup>
 
-                        <Space
-                            android:layout_width="20dp"
-                            android:layout_height="5dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_birth_date_text_view"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/event_icon"
                                 android:drawableLeft="@drawable/event_icon"
                                 android:drawablePadding="10dp"
@@ -257,6 +270,7 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:singleLine="true"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -266,13 +280,17 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_age"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:background="@null"
                                 android:drawableStart="@drawable/event_icon"
                                 android:drawableLeft="@drawable/event_icon"
                                 android:drawablePadding="10dp"
@@ -284,6 +302,7 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:singleLine="true"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -292,17 +311,23 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_phone_number"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:digits="0123456789"
                                 android:drawableStart="@drawable/phone_icon"
                                 android:drawableLeft="@drawable/phone_icon"
                                 android:drawablePadding="10dp"
                                 android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
@@ -310,11 +335,10 @@
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"/>
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -336,18 +360,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_location">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_location"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/address_details"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -446,8 +469,8 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:paddingBottom="2dp"
-                                        android:orientation="vertical">
+                                        android:orientation="vertical"
+                                        android:paddingBottom="2dp">
 
                                         <EditText
                                             android:id="@+id/identification_state"
@@ -485,12 +508,15 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <AutoCompleteTextView
                                 android:id="@+id/identification_city"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/home_icon"
                                 android:drawableLeft="@drawable/home_icon"
                                 android:drawablePadding="10dp"
@@ -501,18 +527,23 @@
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_address1"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/home_icon"
                                 android:drawableLeft="@drawable/home_icon"
                                 android:drawablePadding="10dp"
@@ -524,6 +555,7 @@
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:singleLine="false"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -532,12 +564,16 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_address2"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/home_icon"
                                 android:drawableLeft="@drawable/home_icon"
                                 android:drawablePadding="10dp"
@@ -549,6 +585,7 @@
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -556,12 +593,16 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_postal_code"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/home_icon"
                                 android:drawableLeft="@drawable/home_icon"
                                 android:drawablePadding="10dp"
@@ -573,6 +614,7 @@
                                 android:inputType="number"
                                 android:maxLength="9"
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -583,7 +625,7 @@
                 </androidx.cardview.widget.CardView>
 
 
-                <LinearLayout
+                <LinearLayout android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -594,25 +636,24 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_other_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_other_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/txt_others"
                         android:textSize="@dimen/card_content_text_size" />
 
                 </LinearLayout>
 
 
-                <androidx.cardview.widget.CardView
+                <androidx.cardview.widget.CardView android:visibility="gone"
                     android:id="@+id/cardview3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -631,23 +672,28 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content" android:visibility="gone"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
 
                             <EditText
                                 android:id="@+id/identification_relationship"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/ic_family_24dp_black"
                                 android:drawableLeft="@drawable/ic_family_24dp_black"
                                 android:drawablePadding="10dp"
                                 android:ems="10"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="@string/identification_screen_prompt_relationship"
+                                android:hint="Mother's Name"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -655,13 +701,18 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding"
+                            android:visibility="gone">
 
 
                             <EditText
                                 android:id="@+id/identification_occupation"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
                                 android:drawableStart="@drawable/occupation_icon"
                                 android:drawableLeft="@drawable/occupation_icon"
                                 android:drawablePadding="10dp"
@@ -671,23 +722,21 @@
                                 android:hint="@string/identification_screen_prompt_occupation"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
-
                                 android:maxLength="25"
+
                                 android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-                        <Space
-                            android:layout_width="20dp"
-                            android:layout_height="10dp" />
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/identification_txtlcaste"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -726,7 +775,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/identification_txtleconomic"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -763,7 +813,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/identification_txtleducation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"

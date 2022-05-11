@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_visits_hint">Search visits...</string>
+
     <string name="am">time</string>
     <string name="endStageButton">End First Stage</string>
 </resources>

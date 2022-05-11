@@ -385,16 +385,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPostal.setVisibility(View.GONE);
             }
 
-            if (obj.getBoolean("mGenderM")) {
+           /* if (obj.getBoolean("mGenderM")) {
                 mGenderM.setVisibility(View.VISIBLE);
             } else {
                 mGenderM.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mGenderF")) {
+            }*/
+            /*if (obj.getBoolean("mGenderF")) {
                 mGenderF.setVisibility(View.VISIBLE);
             } else {
                 mGenderF.setVisibility(View.GONE);
-            }
+            }*/
             if (obj.getBoolean("mRelationship")) {
                 mRelationship.setVisibility(View.VISIBLE);
             } else {
@@ -553,7 +553,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            mCountry.setSelection(countryAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_Country_edit(patient1.getCountry(),sessionManager.getAppLanguage()))));
 
 
-            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+            /*if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
 //            else
 //                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -602,10 +602,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (educationAdapter == null) {
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
-            }
+            }*/
 
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            /*if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
@@ -698,7 +698,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
                 }
 
-            }
+            }*/
 
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
@@ -1674,12 +1674,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 //            patientdto.setStateprovince(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
 
-          /*  patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1688,21 +1688,21 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mother's Name"));
             patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
             patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
@@ -1720,7 +1720,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());*/
 
             //House Hold Registration
 //            if (sessionManager.getHouseholdUuid().equals("")){
