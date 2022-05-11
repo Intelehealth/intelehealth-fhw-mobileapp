@@ -15,12 +15,15 @@ import android.widget.LinearLayout;
 
 import org.intelehealth.app.R;
 
+import java.util.ArrayList;
+
 public class TimelineVisitSummaryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TimelineAdapter adapter;
     Context context;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "", patientUuid = "";
     Intent intent;
+    ArrayList<String> timeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline_visit_summary);
 
         initUI();
-        adapter = new TimelineAdapter(context, intent);
+        adapter = new TimelineAdapter(context, intent, timeList);
         recyclerView.setAdapter(adapter);
 
     }
@@ -46,10 +49,15 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;
         intent = this.getIntent(); // The intent was passed to the activity
+
+        if(intent != null) {
+            timeList.add(intent.getStringExtra("startdate"));
+        }
     }
 }

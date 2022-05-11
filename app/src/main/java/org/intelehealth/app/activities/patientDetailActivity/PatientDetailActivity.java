@@ -283,8 +283,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
                 SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+                Log.v(TAG, "timelne_time: " + timeLineTime);
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
+                String timeLineTimeValue = timeLineTime.format(todayDate);
 
 
                 String uuid = UUID.randomUUID().toString();
@@ -381,6 +384,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("gender", mGender);
                 intent2.putExtra("tag", "new");
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+                intent2.putExtra("startdate", timeLineTimeValue);
                 startActivity(intent2);
             }
         });

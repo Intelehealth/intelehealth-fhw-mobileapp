@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -115,7 +116,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             @Override
             public void onClick(View v) {
 
-                Intent visitSummary = new Intent(context, VisitSummaryActivity.class);
+                Intent visitSummary = new Intent(context, TimelineVisitSummaryActivity.class);
                 String patientUuid = activePatientModel.getPatientuuid();
 
                 String patientSelection = "uuid = ?";

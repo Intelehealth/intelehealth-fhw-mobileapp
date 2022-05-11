@@ -15,8 +15,7 @@
         android:fadeScrollbars="false"
         android:scrollbarSize="5dp"
         android:scrollbarThumbVertical="@color/colorAccent"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/timeline_listitem" />
+        android:scrollbars="vertical" />
 
     <View
         android:layout_width="match_parent"

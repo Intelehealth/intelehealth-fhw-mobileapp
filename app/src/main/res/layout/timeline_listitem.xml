@@ -10,7 +10,9 @@
     <FrameLayout
         android:id="@+id/frame1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:text="6:00 AM" />
+                android:text="06:00 AM" />
 
             <View
                 android:id="@+id/vl_1"
@@ -55,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/hl_1"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
@@ -99,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:text="6:15 AM" />
+                android:text="06:15 AM" />
 
             <View
                 android:id="@+id/vl_2"
@@ -165,7 +167,9 @@
         android:id="@+id/frame3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame2">
+        android:layout_below="@+id/frame2"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -177,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:text="6:30 AM" />
+                android:text="06:30 AM" />
 
             <View
                 android:id="@+id/vl_3"
@@ -256,7 +260,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:text="6:45 AM" />
+                android:text="06:45 AM" />
 
             <View
                 android:id="@+id/vl_4"
