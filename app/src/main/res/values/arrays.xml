@@ -688,6 +688,7 @@
     </string-array>
 
     <string-array name="survey_caste_en">
+        <item>@string/select</item>
         <item>@string/schedule_caste</item>
         <item>@string/schedule_tribe</item>
         <item>@string/survey_other_backward_caste</item>

@@ -40,7 +40,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
         <activity
-            android:name=".SurveyActivity"
+            android:name=".activities.surveyActivity.SurveyActivity"
             android:exported="false" />
         <activity
             android:name=".appointment.AppointmentListingActivity"
