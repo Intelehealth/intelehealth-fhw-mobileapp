@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/yes"
+                    android:text="@string/survey_yes"
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/no"
+                    android:text="@string/survey_no"
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton

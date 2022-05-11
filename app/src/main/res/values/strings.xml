@@ -815,6 +815,7 @@
     <string name="survey_other_backward_caste">Other Backward Caste (OBC)</string>
     <string name="survey_general">General</string>
     <string name="number_of_smartphones_in_the_house">No. of smartphones in the house</string>
+    <string name="number_of_feature_phones_in_the_house">No. of feature phones in the house</string>
     <string name="no_of_earning_members_in_the_household">No. of earning members in the household</string>
     <string name="primary_source_of_income">The primary source of income</string>
     <string name="sale_of_cereal_production">Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</string>
@@ -829,6 +830,8 @@
     <string name="pension">Pension</string>
     <string name="remittances_checkbox">Remittances</string>
     <string name="other_source_of_income_please_specify">Other Source of income (please specify)</string>
+    <string name="survey_yes">Yes</string>
+    <string name="survey_no">No</string>
     <string name="does_the_house_have_electricity">Does the house have electricity?</string>
     <string name="no_of_hours_per_day">No. of hours per day</string>
     <string name="no_of_days_per_week">No. of days per week</string>
@@ -862,6 +865,7 @@
     <string name="more_than_twenty_five_thousand">More than 25,000</string>
     <string name="average_expenditure_on_education">Annual expenditure on education</string>
     <string name="prev">Prev</string>
+
     <string name="distance_to_sub_centre_in_walking_time">Distance to Sub-Centre (In walking time)</string>
     <string name="within_5_minutes">Within 5 minutes</string>
     <string name="five_fifteen_minutes">5 – 15 minutes</string>
@@ -871,6 +875,7 @@
     <string name="one_three_km">1 – 3 km</string>
     <string name="three_five_km">3 – 5km</string>
     <string name="more_than_five_km">More than 5km</string>
+    <string name="distance_to_nearest_primary_health_centers">Distance to nearest Primary health centres (IN KMS)</string>
     <string name="distance_to_nearest_community_health_centre_in_walking_time">Distance to nearest Community Health Centres</string>
     <string name="within_3_km">Within 3 km</string>
     <string name="three_six_km">3 – 6km</string>

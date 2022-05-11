@@ -195,7 +195,7 @@
                 android:layout_below="@id/number_of_smartphones_edit_text"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
-                android:text="@string/number_of_smartphones_in_the_house"
+                android:text="@string/number_of_feature_phones_in_the_house"
                 android:textColor="@color/primary_text"
                 android:textSize="15sp" />
 
@@ -431,7 +431,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_medium"
-                    android:text="@string/yes"
+                    android:text="@string/survey_yes"
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -439,7 +439,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/no"
+                    android:text="@string/survey_no"
                     android:textSize="14sp" />
 
             </RadioGroup>
@@ -525,7 +525,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_medium"
-                    android:text="@string/yes"
+                    android:text="@string/survey_yes"
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -533,7 +533,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/no"
+                    android:text="@string/survey_no"
                     android:textSize="14sp" />
 
             </RadioGroup>
@@ -562,7 +562,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_medium"
-                    android:text="@string/yes"
+                    android:text="@string/survey_yes"
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -570,7 +570,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/no"
+                    android:text="@string/survey_no"
                     android:textSize="14sp" />
 
             </RadioGroup>
@@ -657,7 +657,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_medium"
-                    android:text="@string/yes"
+                    android:text="@string/survey_yes"
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -665,7 +665,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/no"
+                    android:text="@string/survey_no"
                     android:textSize="14sp" />
 
             </RadioGroup>

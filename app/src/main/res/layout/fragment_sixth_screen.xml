@@ -79,7 +79,7 @@
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_medium"
-                android:text="@string/distance_to_sub_centre_in_walking_time"
+                android:text="@string/distance_to_nearest_primary_health_centers"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
 
