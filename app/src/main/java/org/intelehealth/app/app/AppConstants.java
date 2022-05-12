@@ -62,7 +62,7 @@ public class AppConstants {
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils = new NotificationUtils();
-
+    public static final long INTERVAL_TWENTY_FIVE_MINUTES = 1500000L;
 
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;

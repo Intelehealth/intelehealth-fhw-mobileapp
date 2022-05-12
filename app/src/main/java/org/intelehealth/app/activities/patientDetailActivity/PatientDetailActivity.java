@@ -354,6 +354,16 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, TimelineVisitSummaryActivity.class);
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                // For Timeline Notification...
+                String patientfullName = "";
+                if(patient_new.getMiddle_name() != null && !patient_new.getMiddle_name().equalsIgnoreCase("")
+                        && !patient_new.getMiddle_name().isEmpty()) {
+                    patientfullName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
+                }
+                else {
+                    patientfullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                }
+                // end...
                 intent2.putExtra("patientUuid", patientUuid);
 
                 VisitDTO visitDTO = new VisitDTO();
@@ -381,6 +391,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("encounterUuidAdultIntial", "");
                 intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 intent2.putExtra("name", fullName);
+                intent2.putExtra("patientNameTimeline", patientfullName);
                 intent2.putExtra("gender", mGender);
                 intent2.putExtra("tag", "new");
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);

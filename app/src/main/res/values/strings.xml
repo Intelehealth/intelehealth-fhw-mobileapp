@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">eZazi</string>
     <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notificationTitle_Timeline">Patient: %1s</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
     <string name="hint_required">Required</string>
@@ -831,5 +832,6 @@
     <string name="search_visits_hint">Search visits...</string>
     <string name="setupUrl">ezazi.intelehealth.org</string>
     <string name="endStageButton">End First Stage</string>
+    <string name="notificationTimeline_Description">You can start entering the data now</string>
 
 </resources>

@@ -1492,41 +1492,43 @@ public class HomeActivity extends AppCompatActivity {
     private void setLastSyncTime(String lastSyncTime) {
         String convertedString = getFullMonthName(lastSyncTime);
 
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String sync_text = en__te_dob(convertedString); //to show text of English into telugu...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String sync_text = en__as_dob(convertedString); //to show text of English into telugu...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
-            mLastUpdateMenuItem.setTitle(sync_text);
-        } else {
-            mLastUpdateMenuItem.setTitle(lastSyncTime);
+        if(mLastUpdateMenuItem != null) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                String sync_text = en__te_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String sync_text = en__as_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                String sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                String sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                String sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                String sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
+                mLastUpdateMenuItem.setTitle(sync_text);
+            } else {
+                mLastUpdateMenuItem.setTitle(lastSyncTime);
+            }
         }
 
         loadVisits();

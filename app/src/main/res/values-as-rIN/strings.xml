@@ -643,5 +643,6 @@
     <string name="search_visits_hint">Search visits...</string>
     <string name="am">time</string>
     <string name="endStageButton">End Second Stage</string>
+    <string name="notificationTimeline_Description">You can start entering the data now</string>
 
 </resources>
