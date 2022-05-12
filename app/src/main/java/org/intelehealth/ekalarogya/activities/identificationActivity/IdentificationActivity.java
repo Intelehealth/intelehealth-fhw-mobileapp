@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
@@ -108,6 +109,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
+    private ArrayAdapter<CharSequence> hohRelationshipAdapter, maritalAdapter, testStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -168,6 +170,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     FrameLayout framelayout_vaccination, framelayout_vaccine_question;
     Spinner spinner_vaccination;
+    private LinearLayoutCompat ll18;
 
     Intent i_privacy;
     String privacy_value;
@@ -176,11 +179,12 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerDate;
     Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner,
             source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
-            toilet_facility_spinner, structure_of_house_spinner;
+            toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner,
+            bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner;
     MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
     EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
-            occupation_edittext, watersafe_edittext, toiletfacility_edittext;
-    CardView cardview_household;
+            occupation_edittext, watersafe_edittext, toiletfacility_edittext, otherHohRelationshipEditText;
+    CardView cardview_household, hohRelationshipCardView;
     ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt,
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
@@ -252,8 +256,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mAddress2 = findViewById(R.id.identification_address2);
         mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-       // mCity = findViewById(R.id.identification_city);
-      //  mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        // mCity = findViewById(R.id.identification_city);
+        //  mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -303,20 +307,31 @@ public class IdentificationActivity extends AppCompatActivity {
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
+        hohRelationshipSpinner = findViewById(R.id.hoh_relationship_spinner);
+        maritalStatusSpinner = findViewById(R.id.marital_status_spinner);
+        bpSpinner = findViewById(R.id.bp_spinner);
+        sugarLevelSpinner = findViewById(R.id.sugar_level_spinner);
+        hbLevelSpinner = findViewById(R.id.hb_level_spinner);
+        bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
 
         //HOH - Checkbox
         familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
         time_water_checkbox = findViewById(R.id.time_water_checkbox);
         hectars_land_checkbox = findViewById(R.id.hectars_land_checkbox);
 
+        // LinearLayout
+        ll18 = findViewById(R.id.ll_18);
+
         //EditText
         time_water_editText = findViewById(R.id.time_water_editText);
         hectars_land_editText = findViewById(R.id.hectars_land_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
+        otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
 
         //Cardview
         cardview_household = findViewById(R.id.cardview_household);
+        hohRelationshipCardView = findViewById(R.id.cardview_hoh_relationship);
 
 //Initialize the local database to store patient information
 
@@ -475,7 +490,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mDOB.setText(patient1.getDate_of_birth());
         }*/
         mDOB.setText(patient1.getDate_of_birth());
-        Log.v("main", "dob: "+patient1.getDate_of_birth());
+        Log.v("main", "dob: " + patient1.getDate_of_birth());
 
 
         mPhoneNum.setText(patient1.getPhone_number());
@@ -543,6 +558,47 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
+        // Hoh Relationship Adapter
+        try {
+            String hohRelationshipLanguage = "hoh_relationship_" + sessionManager.getAppLanguage();
+            int hoh_relationship_id = res.getIdentifier(hohRelationshipLanguage, "array", getApplicationContext().getPackageName());
+            if (hoh_relationship_id != 0) {
+                hohRelationshipAdapter = ArrayAdapter.createFromResource(this, hoh_relationship_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            hohRelationshipSpinner.setAdapter(hohRelationshipAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, "Head of Household Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        try {
+            String maritalStatusLanguage = "marital_status_" + sessionManager.getAppLanguage();
+            int marital_id = res.getIdentifier(maritalStatusLanguage, "array", getApplicationContext().getPackageName());
+            if (marital_id != 0) {
+                maritalAdapter = ArrayAdapter.createFromResource(this, marital_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            maritalStatusSpinner.setAdapter(maritalAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, "Marital Status Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        hohRelationshipSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().toString().equals(getString(R.string.other_specify))) {
+                    otherHohRelationshipEditText.setVisibility(View.VISIBLE);
+                } else {
+                    otherHohRelationshipEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         //Occupation Adapter ...
         try {
             String occupationLanguage = "occupation_spinner_" + sessionManager.getAppLanguage();
@@ -569,9 +625,7 @@ public class IdentificationActivity extends AppCompatActivity {
         occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getSelectedItem().toString().equalsIgnoreCase("[Describe]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("वर्णन करे") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("[ବର୍ଣ୍ଣନା କର]")) {
+                if (position == 13) {
                     occupation_edittext.setVisibility(View.VISIBLE);
                     occupation_edittext.requestFocus();
                     occupation_edittext.setFocusable(true);
@@ -791,6 +845,22 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
+        // Test Status Adapter
+        try {
+            String testStatusLanguage = "test_status_" + sessionManager.getAppLanguage();
+            int test_status_id = res.getIdentifier(testStatusLanguage, "array", getApplicationContext().getPackageName());
+            if (test_status_id != 0)
+                testStatusAdapter = ArrayAdapter.createFromResource(this, test_status_id, android.R.layout.simple_spinner_dropdown_item);
+        } catch (Exception e) {
+            Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        bpSpinner.setAdapter(testStatusAdapter);
+        sugarLevelSpinner.setAdapter(testStatusAdapter);
+        hbLevelSpinner.setAdapter(testStatusAdapter);
+        bmiLevelSpinner.setAdapter(testStatusAdapter);
+
         //editText values values are set for the household fields ...
         no_of_member_edittext.setText(patient1.getNo_of_family_members());
         no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
@@ -803,7 +873,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 time_water_editText.setVisibility(View.VISIBLE);
                 time_water_editText.setText(patient1.getTime_travel_water().replaceAll("hours",
                         getResources().getString(R.string.identification_screen_picker_hours)).replaceAll("minute",
-                                        getResources().getString(R.string.identification_screen_picker_minute)));
+                        getResources().getString(R.string.identification_screen_picker_minute)));
             }
             if (patient1.getHectars_land().equalsIgnoreCase("Declined to answer")) {
                 hectars_land_editText.setVisibility(View.GONE);
@@ -932,7 +1002,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //vacciantion...
-            if(patient1.getVaccination() != null) {
+            if (patient1.getVaccination() != null) {
                 if (!patient1.getVaccination().equalsIgnoreCase("No")) {
                     if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                         framelayout_vaccine_question.setVisibility(View.GONE);
@@ -956,8 +1026,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (radioYes.isChecked())
                         radioYes.setChecked(false);
                 }
-            }
-            else {
+            } else {
                 //on edit if no data was present that means that age was less than 18 when registring a patient. So, if null then hide then question and not show that question...
                 framelayout_vaccine_question.setVisibility(View.GONE);
                 framelayout_vaccination.setVisibility(View.GONE);
@@ -1016,7 +1085,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (patient1.getCaste().equals("Not provided"/*getResources().getString(R.string.not_provided)*/)) {
                 mCaste.setSelection(0);
-            }else {
+            } else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String caste = switch_hi_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
@@ -1044,7 +1113,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String occupation_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     occupation_Transl = StringUtils.switch_hi_occupation_edit(patient1.getOccupation());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     occupation_Transl = StringUtils.switch_or_occupation_edit(patient1.getOccupation());
                 } else {
                     occupation_Transl = patient1.getOccupation();
@@ -1058,7 +1127,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("वर्णन करे"));
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
                     } else {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
@@ -1073,7 +1142,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String bankacc_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     bankacc_Transl = StringUtils.switch_hi_bankaccount_edit(patient1.getBank_account());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 } else {
                     bankacc_Transl = patient1.getBank_account();
@@ -1086,7 +1155,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String mobile_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     mobile_Transl = StringUtils.switch_or_mobiletype_edit(patient1.getMobile_type());
                 } else {
                     mobile_Transl = patient1.getMobile_type();
@@ -1100,7 +1169,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String whatsapp_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     whatsapp_Transl = StringUtils.switch_or_whatsapp_edit(patient1.getWhatsapp_mobile());
                 } else {
                     whatsapp_Transl = patient1.getWhatsapp_mobile();
@@ -1120,58 +1189,53 @@ public class IdentificationActivity extends AppCompatActivity {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                             framelayout_vaccine_question.setVisibility(View.GONE);
                             framelayout_vaccination.setVisibility(View.GONE);
                             int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
                             spinner_vaccination.setSelection(spinner_position);
                             radioYes.setChecked(false);
                             radioNo.setChecked(false);
-                        }
-                        else {
+                        } else {
                             vaccination_Transl = StringUtils.switch_hi_vaccination_edit(patient1.getVaccination());
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                             framelayout_vaccine_question.setVisibility(View.GONE);
                             framelayout_vaccination.setVisibility(View.GONE);
                             int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
                             spinner_vaccination.setSelection(spinner_position);
                             radioYes.setChecked(false);
                             radioNo.setChecked(false);
-                        }
-                        else {
+                        } else {
                             vaccination_Transl = patient1.getVaccination();
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
-                }
-                else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
 
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                             framelayout_vaccine_question.setVisibility(View.GONE);
                             framelayout_vaccination.setVisibility(View.GONE);
                             int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
                             spinner_vaccination.setSelection(spinner_position);
                             radioYes.setChecked(false);
                             radioNo.setChecked(false);
-                        }
-                        else {
+                        } else {
                             vaccination_Transl = StringUtils.switch_or_vaccination_edit(patient1.getVaccination());
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
@@ -1188,7 +1252,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String watersource_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     watersource_Transl = StringUtils.switch_hi_watersource_edit(patient1.getSource_of_water());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     watersource_Transl = StringUtils.switch_or_watersource_edit(patient1.getSource_of_water());
                 } else {
                     watersource_Transl = patient1.getSource_of_water();
@@ -1202,7 +1266,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String watersafe_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     watersafe_Transl = StringUtils.switch_hi_watersafe_edit(patient1.getWater_safe());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     watersafe_Transl = StringUtils.switch_or_watersafe_edit(patient1.getWater_safe());
                 } else {
                     watersafe_Transl = patient1.getWater_safe();
@@ -1218,7 +1282,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("अन्य [दर्ज करें]"));
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     } else {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
@@ -1235,7 +1299,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String wateravail_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     wateravail_Transl = StringUtils.switch_hi_wateravail_edit(patient1.getWater_availability());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     wateravail_Transl = StringUtils.switch_or_wateravail_edit(patient1.getWater_availability());
                 } else {
                     wateravail_Transl = patient1.getWater_availability();
@@ -1250,7 +1314,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String toiletfacility_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     toiletfacility_Transl = StringUtils.switch_hi_toiletfacil_edit(patient1.getToilet_facility());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                 } else {
                     toiletfacility_Transl = patient1.getToilet_facility();
@@ -1267,7 +1331,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //on edit the spinner value will be selected based on the current app lang...
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("अन्य [दर्ज करें]"));
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     } else {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
@@ -1284,7 +1348,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String housestruct_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     housestruct_Transl = StringUtils.switch_hi_housestructure_edit(patient1.getStructure_house());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
                 } else {
                     housestruct_Transl = patient1.getStructure_house();
@@ -1299,16 +1363,16 @@ public class IdentificationActivity extends AppCompatActivity {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
-        NewLocationDao newLocationDao=new NewLocationDao();
-        List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(),sessionManager.getDistrictName()
-                ,sessionManager.getSanchName(),context);
-        if(villageList.size()>1) {
+        NewLocationDao newLocationDao = new NewLocationDao();
+        List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName()
+                , sessionManager.getSanchName(), context);
+        if (villageList.size() > 1) {
             LocationArrayAdapter locationArrayAdapter =
                     new LocationArrayAdapter(IdentificationActivity.this, villageList);
             mVillage.setAdapter(locationArrayAdapter);
-            if(patientID_edit!=null){
+            if (patientID_edit != null) {
                 mVillage.setSelection(locationArrayAdapter.getPosition(patient1.getCity_village()));
-            }else {
+            } else {
                 mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
             }
         }
@@ -1381,15 +1445,15 @@ public class IdentificationActivity extends AppCompatActivity {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.odisha_villages, R.layout.custom_spinner);
-                   // mCity.setThreshold(1);//will start working from first character
-                   // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    // mCity.setThreshold(1);//will start working from first character
+                    // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else if (state.matches("Bukidnon")) {
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.bukidnon_villages, R.layout.custom_spinner);
-                   // mCity.setThreshold(1);//will start working from first character
-                   // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    // mCity.setThreshold(1);//will start working from first character
+                    // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
-                   // mCity.setAdapter(null);
+                    // mCity.setAdapter(null);
                 }
             }
 
@@ -1498,15 +1562,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setText(ageString);
 
                 //vaccination if above or equal to 18 than show visibility....
-                if(mAgeYears >= 18) {
+                if (mAgeYears >= 18) {
                     framelayout_vaccine_question.setVisibility(View.VISIBLE);
-                   // framelayout_vaccination.setVisibility(View.GONE);
-                }
-                else {
+                    ll18.setVisibility(View.VISIBLE);
+                    // framelayout_vaccination.setVisibility(View.GONE);
+                } else {
                     framelayout_vaccine_question.setVisibility(View.GONE);
-                    if(radioYes.isChecked()) //so that no previous data be gone to the db
+                    ll18.setVisibility(View.GONE);
+                    if (radioYes.isChecked()) //so that no previous data be gone to the db
                         radioYes.setChecked(false);
-                    if(radioNo.isChecked())
+                    if (radioNo.isChecked())
                         radioNo.setChecked(false);
 
                     spinner_vaccination.setSelection(0);
@@ -1530,7 +1595,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             //dob to be displayed based on translation...
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
-            Log.v("main", "dob: "+patient1.getDate_of_birth() + "\n" + dob);
+            Log.v("main", "dob: " + patient1.getDate_of_birth() + "\n" + dob);
 
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
@@ -1542,7 +1607,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setText(dob);
             }
 
-          //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+            //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
@@ -1553,15 +1618,14 @@ public class IdentificationActivity extends AppCompatActivity {
             mAge.setText(yrMoDays);
 
             //vaccination if above or equal to 18 than show visibility....
-            if(mAgeYears >= 18) {
+            if (mAgeYears >= 18) {
                 framelayout_vaccine_question.setVisibility(View.VISIBLE);
-               // framelayout_vaccination.setVisibility(View.GONE);
-            }
-            else {
+                // framelayout_vaccination.setVisibility(View.GONE);
+            } else {
                 framelayout_vaccine_question.setVisibility(View.GONE);
-                if(radioYes.isChecked())
+                if (radioYes.isChecked())
                     radioYes.setChecked(false);
-                if(radioNo.isChecked())
+                if (radioNo.isChecked())
                     radioNo.setChecked(false);
 
                 spinner_vaccination.setSelection(0);
@@ -1640,15 +1704,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAge.setText(ageString);
 
                     //vaccination if above or equal to 18 than show visibility....
-                    if(mAgeYears >= 18) {
+                    if (mAgeYears >= 18) {
                         framelayout_vaccine_question.setVisibility(View.VISIBLE);
-                       // framelayout_vaccination.setVisibility(View.GONE);
-                    }
-                    else {
+                        // framelayout_vaccination.setVisibility(View.GONE);
+                    } else {
                         framelayout_vaccine_question.setVisibility(View.GONE);
-                        if(radioYes.isChecked())
+                        if (radioYes.isChecked())
                             radioYes.setChecked(false);
-                        if(radioNo.isChecked())
+                        if (radioNo.isChecked())
                             radioNo.setChecked(false);
 
                         spinner_vaccination.setSelection(0);
@@ -1681,7 +1744,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dob_indexValue = mDOBPicker.getDatePicker().getMonth(); //if user manually selects Age then...
-                    Log.d("dd", "dd: "+dob_indexValue);
+                    Log.d("dd", "dd: " + dob_indexValue);
                     dialog.dismiss();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -1709,11 +1772,13 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (familyhead_checkbox.isChecked()) {
                     cardview_household.setVisibility(View.VISIBLE);
+                    hohRelationshipCardView.setVisibility(View.GONE);
                     no_of_member_edittext.requestFocus();
                     no_of_member_edittext.setFocusable(true);
                     no_of_member_edittext.setFocusableInTouchMode(true);
                 } else {
                     cardview_household.setVisibility(View.GONE);
+                    hohRelationshipCardView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -2232,7 +2297,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //vaccination
-        if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+        if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
             if (!radioYes.isChecked() && !radioNo.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new
                         MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2419,9 +2484,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String dob = StringUtils.hi_or__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob))); 
-            }
-            else {
+                        (StringUtils.getValue(dob)));
+            } else {
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
@@ -2431,7 +2495,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-           // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+            // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -2567,7 +2631,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+            if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
                     //Vaccination ...
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -2586,8 +2650,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     Log.d("HOH", "Vaccination: " + "No");
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
-            }
-            else {
+            } else {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -2665,8 +2728,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
-                    String water_time=time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours),"hours")
-                            .replaceAll(getString(R.string.identification_screen_picker_minute),"minute");
+                    String water_time = time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours), "hours")
+                            .replaceAll(getString(R.string.identification_screen_picker_minute), "minute");
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
@@ -3046,7 +3109,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //vaccination
-        if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+        if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
             if (!radioYes.isChecked() && !radioNo.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new
                         MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -3379,7 +3442,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+            if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
                     //Vaccination ...
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -3398,8 +3461,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     Log.d("HOH", "Vaccination: " + "No");
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
-            }
-            else {
+            } else {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -3477,8 +3539,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
-                    String water_time=time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours),"hours")
-                            .replaceAll(getString(R.string.identification_screen_picker_minute),"minute");
+                    String water_time = time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours), "hours")
+                            .replaceAll(getString(R.string.identification_screen_picker_minute), "minute");
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);

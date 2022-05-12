@@ -68,14 +68,27 @@
         <item>ସ୍ନାତକୋତର ଶିକ୍ଷା</item>
     </string-array>
 
+    <!--    <string-array name="education_en">-->
+    <!--        <item>Select</item>-->
+    <!--        <item>Illiterate</item>-->
+    <!--        <item>Primary</item>-->
+    <!--        <item>Secondary</item>-->
+    <!--        <item>Higher Secondary</item>-->
+    <!--        <item>Graduation &amp; Higher</item>-->
+    <!--    </string-array>-->
+
     <string-array name="education_en">
-        <item>Select</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
+        <item>@string/select</item>
+        <item>@string/cannot_read_and_write</item>
+        <item>@string/can_read_and_write</item>
+        <item>@string/primary_education_till_class_five</item>
+        <item>@string/middle_school_sixth_eighth</item>
+        <item>@string/passed_secondary_school</item>
+        <item>@string/passed_senior_secondary_school</item>
+        <item>@string/graduate</item>
+        <item>@string/postgraduate</item>
     </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -355,25 +368,42 @@
         <item>@string/setup_select_state_str</item>
     </string-array>
 
+    <!--    <string-array name="occupation_spinner_en">-->
+    <!--        <item>Select</item>-->
+    <!--        <item>Declined to answer</item>-->
+    <!--        <item>Government job</item>-->
+    <!--        <item>Large scale to medium scale industry</item>-->
+    <!--        <item>Professional job in private sector</item>-->
+    <!--        <item>Small scale industry</item>-->
+    <!--        <item>Big shop owner</item>-->
+    <!--        <item>Technician/craftsman</item>-->
+    <!--        <item>Small shop owner</item>-->
+    <!--        <item>Large scale farmer</item>-->
+    <!--        <item>Daily wage earner</item>-->
+    <!--        <item>Small scale farmer/farm worker</item>-->
+    <!--        <item>Unemployed</item>-->
+    <!--        <item>Housewife</item>-->
+    <!--        <item>Student</item>-->
+    <!--        <item>Under 5 child</item>-->
+    <!--        <item>Other skills (driver,mason etc)</item>-->
+    <!--        &lt;!&ndash;        <item>[Describe]</item>&ndash;&gt;-->
+    <!--    </string-array>-->
+
     <string-array name="occupation_spinner_en">
-        <item>Select</item>
-        <item>Declined to answer</item>
-        <item>Government job</item>
-        <item>Large scale to medium scale industry</item>
-        <item>Professional job in private sector</item>
-        <item>Small scale industry</item>
-        <item>Big shop owner</item>
-        <item>Technician/craftsman</item>
-        <item>Small shop owner</item>
-        <item>Large scale farmer</item>
-        <item>Daily wage earner</item>
-        <item>Small scale farmer/farm worker</item>
-        <item>Unemployed</item>
-        <item>Housewife</item>
-        <item>Student</item>
-        <item>Under 5 child</item>
-        <item>Other skills (driver,mason etc)</item>
-        <!--        <item>[Describe]</item>-->
+        <item>@string/select</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/other_specify</item>
     </string-array>
 
     <!--    Hindi Occupation-->
@@ -440,11 +470,19 @@
         <item>ନା</item>
     </string-array>
 
+    <!--    <string-array name="mobilephone_spinner_en">-->
+    <!--        <item>Select</item>-->
+    <!--        <item>Basic Phone</item>-->
+    <!--        <item>Smartphone</item>-->
+    <!--        <item>Does not own mobile phone</item>-->
+    <!--    </string-array>-->
+
     <string-array name="mobilephone_spinner_en">
-        <item>Select</item>
-        <item>Basic Phone</item>
-        <item>Smartphone</item>
-        <item>Does not own mobile phone</item>
+        <item>@string/select</item>
+        <item>@string/none</item>
+        <item>@string/shared</item>
+        <item>@string/owns_smartphone</item>
+        <item>@string/owns_feature_phone</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_hi">
@@ -693,6 +731,46 @@
         <item>@string/schedule_tribe</item>
         <item>@string/survey_other_backward_caste</item>
         <item>@string/survey_general</item>
+    </string-array>
+
+    <string-array name="hoh_relationship_en">
+        <item>@string/select</item>
+        <item>@string/spouse</item>
+        <item>@string/son_daughter</item>
+        <item>@string/grandchild</item>
+        <item>@string/father_mother</item>
+        <item>@string/father_mother_in_law</item>
+        <item>@string/brother_sister</item>
+        <item>@string/brother_sister_in_law</item>
+        <item>@string/niece_nephew</item>
+        <item>@string/grandparent_grandparent_in_law</item>
+        <item>@string/other_relative</item>
+        <item>@string/adopted_foster_stepchild</item>
+        <item>@string/domestic_servant</item>
+        <item>@string/other_not_related</item>
+        <item>@string/other_specify</item>
+        <item>@string/not_stated</item>
+    </string-array>
+
+    <string-array name="marital_status_en">
+        <item>@string/select</item>
+        <item>@string/currently_married</item>
+        <item>@string/married_gauna_not_performed</item>
+        <item>@string/widowed</item>
+        <item>@string/divorced</item>
+        <item>@string/separated</item>
+        <item>@string/deserted</item>
+        <item>@string/never_married</item>
+    </string-array>
+
+    <string-array name="test_status_en">
+        <item>@string/select</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
+        <item>@string/between_one_month_to_three_months_ago</item>
+        <item>@string/between_three_months_to_six_months_ago</item>
+        <item>@string/more_than_six_months</item>
     </string-array>
 
 </resources>

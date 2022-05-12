@@ -35,7 +35,6 @@ import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.IntroActivity.IntroActivity;
 import org.intelehealth.ekalarogya.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.dataMigration.SmoothUpgrade;
 import org.intelehealth.ekalarogya.services.firebase_services.TokenRefreshUtils;
@@ -47,7 +46,7 @@ import org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
-    //    ProgressDialog TempDialog;
+//    ProgressDialog TempDialog;
     int i = 5;
 
     @Override
@@ -57,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
 
-        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+      //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
 
         if (!appLanguage.equalsIgnoreCase("")) {
@@ -106,7 +105,8 @@ public class SplashActivity extends AppCompatActivity {
                     } else {
                         checkPerm();
                     }
-                } else {
+                }
+                else {
                     checkPerm();
                 }
             }
@@ -136,7 +136,7 @@ public class SplashActivity extends AppCompatActivity {
                             //Do something after 100ms
                             SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
                             boolean smoothupgrade = smoothUpgrade.checkingDatabase();
-                            nextActivity();
+                                nextActivity();
                         }
                     }, 2000);
                 } else {
@@ -206,7 +206,7 @@ public class SplashActivity extends AppCompatActivity {
 
             } else {
                 Logger.logD(LOG_TAG, "Starting setup");
-                Intent intent = new Intent(this, SurveyActivity.class);
+                Intent intent = new Intent(this, IntroActivity.class);
                 startActivity(intent);
                 finish();
             }

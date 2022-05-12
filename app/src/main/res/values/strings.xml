@@ -980,6 +980,73 @@
     <string name="eggs">Eggs</string>
     <string name="flesh_food">Flesh Food (Meat, chicken, fish etc.)</string>
     <string name="any_vegetables">Any Vegetables</string>
+    <string name="surveyDialogTitle">Saved Successful</string>
+    <string name="surveyDialogMessage">Survey added successfully</string>
+    <string name="start_household_survey">Start Household Survey</string>
+    <string name="what_is_your_relationship_with_the_head_of_household">What is your relationship with the head of household?</string>
+
+    <string name="spouse">Spouse</string>
+    <string name="son_daughter">Son or Daughter</string>
+    <string name="son_daughter_in_law">Son or Daughter-In-Law</string>
+    <string name="grandchild">Grandchild</string>
+    <string name="father_mother">Father or mother</string>
+    <string name="father_mother_in_law">Father or Mother-In-Law</string>
+    <string name="brother_sister">Brother or Sister</string>
+    <string name="brother_sister_in_law">Brother or Sister-In-Law</string>
+    <string name="niece_nephew">Niece or Nephew</string>
+    <string name="grandparent_grandparent_in_law">Grandparent or Grandparent-In-Law</string>
+    <string name="other_relative">Other Relative</string>
+    <string name="adopted_foster_stepchild">Adopted or Foster or Stepchild</string>
+    <string name="domestic_servant">Domestic Servant</string>
+    <string name="other_not_related">Other Not Related</string>
+    <string name="not_stated">Not Stated</string>
+
+    <string name="what_is_your_marital_status">What is your marital status?</string>
+    <string name="currently_married">Currently Married</string>
+    <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
+    <string name="widowed">Widowed</string>
+    <string name="divorced">Divorced</string>
+    <string name="separated">Separated</string>
+    <string name="deserted">Deserted</string>
+    <string name="never_married">Never Married</string>
+
+    <string name="cannot_read_and_write">Cannot read or write</string>
+    <string name="can_read_and_write">Can read and write</string>
+    <string name="primary_education_till_class_five">Primary education (Till Class 5)</string>
+    <string name="middle_school_sixth_eighth">Middle school (6th - 8th)</string>
+    <string name="passed_secondary_school">Passed secondary school (Class 10th boards)</string>
+    <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
+    <string name="graduate">Graduate</string>
+    <string name="postgraduate">Postgraduate</string>
+
+    <string name="salaried_government_job">Salaried Government Job</string>
+    <string name="salaried_private_job">Salaried Private Job</string>
+    <string name="petty_business_shop_owner">Petty Business or Shop Owner</string>
+    <string name="technician_craftsman_other_skilled_work">Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</string>
+    <string name="agricultural_farmer">Agricultural Farmer</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">Tenant Farmer or Agricultural Daily Wage Worker</string>
+    <string name="daily_wage_worker_unskilled_workers">Daily Wage Worker (Unskilled Worker)</string>
+    <string name="household_work">Household Work</string>
+    <string name="student">Student</string>
+    <string name="unemployed">Unemployed</string>
+    <string name="retired_with_pension">Retired (With Pension)</string>
+    <string name="retired_without_pension">Retired (Without Pension)</string>
+
+    <string name="shared">Shared</string>
+    <string name="owns_smartphone">Owns Smartphone</string>
+    <string name="owns_feature_phone">Owns Feature Phone</string>
+    <string name="when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?</string>
+    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?</string>
+    <string name="when_was_the_last_time_you_got_your_hb_level_checked">When was the last time you got your HB level checked?</string>
+    <string name="when_was_the_last_time_your_bmi_was_checked">When was the last time your BMI (Height and weight) was checked?</string>
+
+    <string name="never_checked">Never Checked</string>
+    <string name="in_past_one_week">In past one week</string>
+    <string name="within_last_month">Within last month</string>
+    <string name="between_one_month_to_three_months_ago">Between one month to 3 months ago</string>
+    <string name="between_three_months_to_six_months_ago">between 3 months-6months ago</string>
+    <string name="more_than_six_months">More than 6 months</string>
+    <string name="identification_screen_checkbox_other">Other</string>
 
     <!--    SURVEY STRINGS - END-->
 
