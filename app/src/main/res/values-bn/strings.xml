@@ -396,7 +396,7 @@
     <string name="new_update_available">নতুন আপডেট উপলব্ধ</string>
     <string name="update_app_note">নতুন বিশিষ্ট সহ উপলদ্ভ আছেএপ্লিকেশন আপডেট করুন</string>
     <string name="update">আপডেট</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">হ্যালো ইন্টেলিহেলথ ব্যবহারের জন্য আপনাকে ধন্যবাদ !আপনার প্রেসক্রিপশন ডাউনলোড করতে দয়া করে এখানে ক্লিক করুন</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"হ্যালো ইন্টেলিহেলথ ব্যবহারের জন্য আপনাকে ধন্যবাদ !আপনার প্রেসক্রিপশন ডাউনলোড করতে দয়া করে এখানে ক্লিক করুন "</string>
     <string name="and_enter_your_patient_id">এবং আপনার রোগীর আই ডি লিখুন</string>
     <string name="what_is_the_reason_for_your_visit">আপনার দেখার কারণ কি?</string>
     <string name="swipe_down_to_return">পরবর্তীর জন্য নিচে সোয়াইপ করুন</string>

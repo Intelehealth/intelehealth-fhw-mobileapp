@@ -467,7 +467,7 @@ public class IntroActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(IntroActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
+                dialogUtils.showerrorDialog(IntroActivity.this,  getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password),  getResources().getString(R.string.ok));
             }
 
             @Override

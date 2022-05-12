@@ -65,6 +65,7 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GenericViewHolder) {
+            holder.setIsRecyclable(true);
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.appointmentInfo = mItemList.get(position);
             genericViewHolder.patientInfoTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getPatientName(), genericViewHolder.appointmentInfo.getOpenMrsId()));

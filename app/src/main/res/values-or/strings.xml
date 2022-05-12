@@ -322,7 +322,7 @@
     <string name="pulse_error">ସ୍ଫନ୍ଦନ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="bpsys_error">ସିଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="bpdia_error">ଡାୟାଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
-    <string name="resp_error">शଶ୍ୱାସକ୍ରିୟା ହାର %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="resp_error">ଶ୍ୱାସକ୍ରିୟା ହାର %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="temp_error">ତାପମାତ୍ରା %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="not_provided">ଦିଅ ଯାଇ ନାହିଁ</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
@@ -493,14 +493,14 @@
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
     <string name="whatsapp_presc_toast">ଫାଇଲ୍ ଏକ୍ସପ୍ଲୋରରରୁ ପ୍ରେସକ୍ରିପସନ୍ ପିଡିଏଫ୍ ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ / ଇଣ୍ଟେଲିହେଲଥ୍lth_ପିଡିଏଫ୍</string>
     <string name="enter_mobile_number_to_share_prescription">ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କର ଯେଉଁଥିରେ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ଅଂଶୀଦାର କରିବାକୁ ଚାହୁଁଛନ୍ତି |</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସେଭିକା) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ନୋଟିସ୍ ପ the ିଛି ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ବିଜ୍ଞପ୍ତି ପଠନ ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
     <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
     <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପଢ଼ିନିଅନ୍ତୁ .</string>
     <string name="download_prescription_first_before_sharing">ବାଣ୍ଟିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
     <string name="share">ଶେୟାର୍</string>
     <string name="view_print">ଦେଖନ୍ତୁ/ପ୍ରିଣ୍ଟ କରନ୍ତୁ</string>
     <string name="refresh">ରିଫ୍ରେଶ୍</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଆନ୍ତରିକତା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ |"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଆନ୍ତରିକତା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ | "</string>
     <string name="and_enter_your_patient_id">" ଏବଂ ଆପଣଙ୍କ ରୋଗୀ ଆଇଡି ପ୍ରବେଶ କରନ୍ତୁ - "</string>
     <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
     <string name="no_family_member_registered">କ Family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
@@ -537,7 +537,7 @@
 
     <string name="app_reset_toast">ଆପ୍ ପୁନ et ସେଟ୍ ହୋଇଛି !</string>
     <string name="sure_to_reset_app">ଆପଣ ଆପ୍ପୁନଃସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
-    <string name="resetting_app_dialog">ଆପ୍ ପୁନ et ସେଟ୍ କରୁଛି</string>
+    <string name="resetting_app_dialog">ଆପ୍ ପୁନ ସେଟ୍ କରୁଛି</string>
     <string name="reset_app">ଆପ୍ ପୁନ ସେଟ୍ କରନ୍ତୁ</string>
 
     <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି…</string>
@@ -563,7 +563,7 @@
     <string name="please_upload_visit">ନିଯୁକ୍ତିକୁ ବୁକିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ଭ୍ରମଣକୁ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
     <string name="appointment_booked_successfully">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବୁକ୍ ହୋଇଛି!</string>
     <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକ୍ ହୋଇଥିବା ବିଫଳ!</string>
-    <string name="postal_code_invalid_txt">ଦୟାକରି ବ valid ଧ ଡାକ କୋଡ୍</string>
+    <string name="postal_code_invalid_txt">ଦୟାକରି ଏକ ସଠିକ୍ ଡାକ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="failed_to_cancel_appointment">ନିଯୁକ୍ତିକୁ ବାତିଲ କରିବାରେ ବିଫଳ!</string>
     <string name="appointment_cancelled_success_txt">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବାତିଲ ହେଲା!</string>
 
@@ -580,7 +580,7 @@
 
 
     <string name="prescription_wt">ଓଜନ (କିଗ୍ରା)</string>
-    <string name="prescription_ht">ଉଚ୍ଚତା (cm)</string>
+    <string name="prescription_ht">ଉଚ୍ଚତା (ସେମି)</string>
     <string name="prescription_pre_comp">ଅଭିଯୋଗ (ଗୁଡିକ)</string>
     <string name="prescription_diagnosis">ନିଦାନ</string>
     <string name="prescription_med_plan">ଷଧ (ଗୁଡିକ) ଯୋଜନା</string>
@@ -598,7 +598,7 @@
     <string name="recommended_medication">ସୁପାରିଶ କରାଯାଇଥିବା ଷଧ</string>
     <string name="medication">ଷଧ</string>
     <string name="strength">ଶକ୍ତ</string>
-    <string name="units">ଏକକ (ଯଥା: mg)</string>
+    <string name="units">ୟୁନିଟ୍ (ଯଥା: ମିଗ୍ରା)</string>
     <string name="units_tab">ୟୁନିଟ୍ (ଯଥା: ଟ୍ୟାବ୍ / ସିରପ୍)</string>
     <string name="for_duration">ଅବଧି ପାଇଁ</string>
     <string name="units_eg_days_weeks_etc">ୟୁନିଟ୍ (ଯଥା: ଦିନ / ସପ୍ତାହ / ଇତ୍ୟାଦି)</string>
@@ -622,15 +622,15 @@
     <string name="morethanonefollowupnotallowed">ଦୟାକରି ଏକ ସମୟରେ କେବଳ ଗୋଟିଏ ଅନୁସରଣ ପ୍ରଦାନ କରନ୍ତୁ</string>
     <string name="amount">ପରିମାଣ</string>
     <string name="frequency">ଫ୍ରିକ୍ୱେନ୍ସି</string>
-    <string name="route_optional">ମାର୍ଗ (ବ tion କଳ୍ପିକ)</string>
-    <string name="reason_optional">କାରଣ (ବ tion କଳ୍ପିକ)</string>
+    <string name="route_optional">ମାର୍ଗ (ବାଧ୍ୟତାମୂଳକ ନୁହେଁ )</string>
+    <string name="reason_optional">କାରଣ (ବାଧ୍ୟତାମୂଳକ ନୁହେଁ )</string>
     <string name="choose_a_date">ଏକ ତାରିଖ ବାଛନ୍ତୁ</string>
     <string name="follow_up_remark">ଟିପ୍ପଣୀ</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">ପ୍ରେସକ୍ରିପସନ୍ ଦେବାକୁ ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
     <string name="visit_summary_prescription_already_given">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ପ୍ରଦାନ କରାଯାଇଛି | ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
 
     <string name="book_appointment"> ବୁକ୍ ନିଯୁକ୍ତି </string>
-    <string name="reschedule_appointment"> ପୁନ ched ନିର୍ଦ୍ଧାରଣ ନିଯୁକ୍ତି </string>
+    <string name="reschedule_appointment"> ପୁନର୍ବାର ନିଯୁକ୍ତିକୁ ନିର୍ଦ୍ଧାରଣ କରନ୍ତୁ </string>
     <string name="appointment_booking_confirmation_txt"> ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
     <string name="appointment_booking_cancel_confirmation_txt"> ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
     <string name="cancel_appointment" tools:ignore="DuplicateDefinition">ନିଯୁକ୍ତି ବାତିଲ୍</string>
@@ -643,22 +643,25 @@
     <string name="please_select_appointment_slot"> ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ </string>
     ଚୟନ କରନ୍ତୁ |
     <string name="please_select_speciality"> ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ! </string>
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
+    <string name="please_select_your_reschedule_reason">ଦୟାକରି ଆପଣଙ୍କର ପୁନର୍ବାର ନିଯୁକ୍ତିକୁ ନିର୍ଦ୍ଧାରଣ କାରଣ ଚୟନ କରନ୍ତୁ</string>
+    <string name="please_select_your_cancel_reason">ଦୟାକରି ଆପଣଙ୍କର ବାତିଲ୍ କାରଣ ଚୟନ କରନ୍ତୁ</string>
+    <string name="doctor_is_not_available">ଡାକ୍ତର ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="patient_is_not_available">ରୋଗୀ ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="others">ଅନ୍ୟମାନେ</string>
+    <string name="please_enter_the_reason_details">ଦୟାକରି କାରଣ ବିବରଣୀ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="save_amp_proceed">ସଞ୍ଚୟ ଏବଂ ଅଗ୍ରଗତି କର</string>
+    <string name="please_enter_reason_txt">ଦୟାକରି ଏହାର କାରଣ ପ୍ରବେଶ କରନ୍ତୁ!</string>
 
     <string name="yes">ହଁ</string>
-    <string name="no">ନା லை</string>
+    <string name="no">ନା </string>
     <string name="type_to_search">ସନ୍ଧାନ ପାଇଁ ଟାଇପ୍ କରନ୍ତୁ ..</string>
 
     <!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">ପ୍ରୋଟୋକଲ୍ ଉପଲବ୍ଧ ତାପରେ ଡାଉନଲୋଡ୍ ହୋଇଛି। ପ୍ରୋଟୋକଲ ଡାଉନଲୋଡ୍ ପୁନଃସତ୍ୟ କରିବାକୁ \'ହଁ\' ଦବାନ୍ତୁ। ଡେମୋ ପ୍ରୋଟୋକଲ ସହିତ ନିରନ୍ତରତାକୁ \'ନା\' ଦବାନ୍ତୁ ।</string>
+    <string name="error_login_title">ଲଗଇନ୍ କରିବା ସମୟରେ ତ୍ରୁଟି</string>
+    <string name="answer_following_questions">ବାଧ୍ୟତାମୂଳକ ପ୍ରଶ୍ନଗୁଡ଼ିକ ନିମ୍ନରେ ଦିଆଯାଇଛି, ଦୟାକରି ସେମାନଙ୍କୁ ଉତ୍ତର ଦିଅ |</string>
+
 
 </resources>
