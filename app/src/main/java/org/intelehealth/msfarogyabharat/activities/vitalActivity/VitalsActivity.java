@@ -216,7 +216,8 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height = 1;
                     heightvalue = mHeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEIGHT)) {
                         mHeight.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
                     } else {
                         mHeight.setError(null);
@@ -250,9 +251,11 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight = 1;
                     weightvalue = mWeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_WEIGHT)) {
                         mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
-                    } else {
+                    }
+                    else {
                         mWeight.setError(null);
                     }
                 } else {
@@ -642,7 +645,8 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc = et.getText().toString().trim();
                 if (abc != null && !abc.isEmpty()) {
-                    if (Double.parseDouble(abc) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) {
+                    if (Double.parseDouble(abc) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT) ||
+                            (Double.parseDouble(abc) < Double.parseDouble(AppConstants.MINIMUM_HEIGHT))) {
                         et.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
                         focusView = et;
                         cancel = true;
@@ -658,7 +662,8 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
-                    if (Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT)) {
+                    if (Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_WEIGHT))) {
                         et.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
                         focusView = et;
                         cancel = true;

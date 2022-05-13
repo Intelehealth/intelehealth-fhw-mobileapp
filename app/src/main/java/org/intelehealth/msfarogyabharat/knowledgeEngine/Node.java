@@ -34,6 +34,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.msfarogyabharat.utilities.InputFilterDecimal;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1026,6 +1027,9 @@ public class Node implements Serializable {
             case "camera":
                 openCamera(context, imagePath, imageName);
                 break;
+            case "decimal":
+                askDecimal(questionNode, context, adapter);
+                break;
         }
     }
 
@@ -1086,6 +1090,51 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
+
+    public static void askDecimal(final Node node, Activity context, final QuestionsAdapter adapter) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setTitle(R.string.question_number_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+        numberDialog.setView(convertView);
+       /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(1000);*/
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setFilters(new InputFilter[]{new InputFilterDecimal(5,2)});
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+                String value = et_enter_value.getText().toString();
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                node.setSelected(true);
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+    }
+
 
     public static void askArea(final Node node, Activity context, final QuestionsAdapter adapter) {
 
@@ -1726,6 +1775,47 @@ private static String ml_en(String unit) {
 
     }
 
+    public static void subAskDecimal(final Node node, Activity context, final CustomArrayAdapter adapter) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setTitle(R.string.question_number_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+        numberDialog.setView(convertView);
+      /*  final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(1000);*/
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setFilters(new InputFilter[]{new InputFilterDecimal(5,2)});
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //numberPicker.setValue(numberPicker.getValue());
+                // String value = String.valueOf(numberPicker.getValue());
+                String value = et_enter_value.getText().toString();
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                node.setSelected(true);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+    }
 
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter, final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
@@ -1757,6 +1847,9 @@ private static String ml_en(String unit) {
                 break;
             case "camera":
                 openCamera(context, imagePath, imageName);
+                break;
+            case "decimal":
+                subAskDecimal(questionNode, context, adapter);
                 break;
         }
     }
