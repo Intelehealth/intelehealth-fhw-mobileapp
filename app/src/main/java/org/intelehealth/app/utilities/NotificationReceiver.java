@@ -24,13 +24,21 @@ public class NotificationReceiver extends BroadcastReceiver {
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.createTimelineNotification(context, intent);
 
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = Build.VERSION.SDK_INT >= 20 ? pm.isInteractive() : pm.isScreenOn(); // check if screen is on
-        if (!isScreenOn) {
-            wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "myApp:notificationLock");
-            wl.acquire(5000);
+        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = pm.isScreenOn();
+
+        if(isScreenOn==false)
+        {
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                    PowerManager.ON_AFTER_RELEASE,"myApp:notificationLock");
+            wl.acquire(1000);
+
+            PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"myApp:mycpu_notificationLock");
+            wl_cpu.acquire(1000);
+
             // Official Doc: acquire() -> Ensures that the device is on at the level requested when the wake lock was created.
             // The lock will be released after the given timeout expires.
         }
+
     }
 }
