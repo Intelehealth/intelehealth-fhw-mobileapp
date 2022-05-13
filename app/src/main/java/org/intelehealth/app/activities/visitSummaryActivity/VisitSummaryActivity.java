@@ -4372,7 +4372,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+              //  parseDoctorDetails(dbValue); //TODO: ## uncomment later
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();

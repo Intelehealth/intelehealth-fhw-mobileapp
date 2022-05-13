@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Prajwal Maruti Waingankar on 04-05-2022, 19:14
@@ -27,17 +36,40 @@ import java.util.ArrayList;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewHolder> {
     Context context;
-    private String encounterAdultIntials, EncounterAdultInitial_LatestVisit, patientUuid, patientName;
+    private String encounterAdultIntials, EncounterAdultInitial_LatestVisit, patientUuid, patientName, visitUuid;
     ArrayList<String> timeList;
+    EncounterDTO encounterDTO;
 
-    public TimelineAdapter(Context context, Intent intent, ArrayList<String> timeList) {
+    public TimelineAdapter(Context context, Intent intent, ArrayList<String> timeList, SessionManager sessionManager) {
         this.context = context;
         this.timeList = timeList;
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             patientName = intent.getStringExtra("name");
+        }
+
+        if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
+            encounterAdultIntials = UUID.randomUUID().toString();
+
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(encounterAdultIntials);
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -87,8 +119,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 public void onClick(View view) {
                     Intent i1 = new Intent(context, PastMedicalHistoryActivity.class);
                     i1.putExtra("patientUuid", patientUuid);
-                    i1.putExtra("encounterUuidAdultIntial", "");
-                    i1.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+                    i1.putExtra("name", patientName);
+                    i1.putExtra("visitUuid", visitUuid);
+                    i1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    i1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     context.startActivity(i1);
                 }
             });

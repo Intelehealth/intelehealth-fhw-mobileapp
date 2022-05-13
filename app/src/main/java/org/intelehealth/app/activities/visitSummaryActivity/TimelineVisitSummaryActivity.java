@@ -9,6 +9,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.NotificationReceiver;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +37,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     Intent intent;
     ArrayList<String> timeList;
     String startVisitTime;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +45,13 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline_visit_summary);
 
         initUI();
-        adapter = new TimelineAdapter(context, intent, timeList);
+        adapter = new TimelineAdapter(context, intent, timeList, sessionManager);
         recyclerView.setAdapter(adapter);
         triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
         triggerAlarm15MinsBefore(); // Notification to show every 15min.
     }
 
-    @Override
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_viewepartogram, menu);
@@ -59,7 +62,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
-
+*/
     private void initUI() {
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
@@ -67,6 +70,18 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;
         intent = this.getIntent(); // The intent was passed to the activity
+
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the org should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         if(intent != null) {
             startVisitTime = intent.getStringExtra("startdate");
