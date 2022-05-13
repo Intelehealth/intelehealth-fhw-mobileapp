@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -171,6 +172,7 @@ public class IdentificationActivity extends AppCompatActivity {
     FrameLayout framelayout_vaccination, framelayout_vaccine_question;
     Spinner spinner_vaccination;
     private LinearLayoutCompat ll18;
+    private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addAlcoholConsumptionButton;
 
     Intent i_privacy;
     String privacy_value;
@@ -332,6 +334,11 @@ public class IdentificationActivity extends AppCompatActivity {
         //Cardview
         cardview_household = findViewById(R.id.cardview_household);
         hohRelationshipCardView = findViewById(R.id.cardview_hoh_relationship);
+
+        // Button
+        addMedicalHistoryButton = findViewById(R.id.add_medical_history_button);
+        addSmokingStatusButton = findViewById(R.id.add_smoking_status_button);
+        addAlcoholConsumptionButton = findViewById(R.id.add_alcohol_consumption_button);
 
 //Initialize the local database to store patient information
 
@@ -889,6 +896,21 @@ public class IdentificationActivity extends AppCompatActivity {
             generateUuid();
 
         }
+
+        addMedicalHistoryButton.setOnClickListener(v -> {
+            MedicalHistoryDialog dialog = new MedicalHistoryDialog();
+            dialog.show(getSupportFragmentManager(), MedicalHistoryDialog.TAG);
+        });
+
+        addSmokingStatusButton.setOnClickListener(v -> {
+            SmokingHistoryDialog dialog = new SmokingHistoryDialog();
+            dialog.show(getSupportFragmentManager(), SmokingHistoryDialog.TAG);
+        });
+
+        addAlcoholConsumptionButton.setOnClickListener(v -> {
+            AlcoholConsumptionHistoryDialog dialog = new AlcoholConsumptionHistoryDialog();
+            dialog.show(getSupportFragmentManager(), AlcoholConsumptionHistoryDialog.TAG);
+        });
 
         time_water_editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1782,6 +1804,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {

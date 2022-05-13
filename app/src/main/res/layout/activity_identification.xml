@@ -1548,6 +1548,186 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_medical_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/medical_history_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/medical_history_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_medical_history_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/medical_history"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_medical_history_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/medical_history_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/medical_history_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_smoking_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/main_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/heading_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_smoking_status_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/smoking_status_in_the_household"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_smoking_status_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/main_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/main_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_alcohol_consumption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/alcohol_consumption_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/alcohol_consumption_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_alcohol_consumption_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/history_of_alcohol_consumption_in_the_household"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_alcohol_consumption_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/alcohol_consumption_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/alcohol_consumption_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
                 <!-- End of HOH -->
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
