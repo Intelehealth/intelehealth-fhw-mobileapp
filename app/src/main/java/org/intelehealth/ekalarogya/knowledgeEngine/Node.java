@@ -1162,15 +1162,27 @@ public class Node implements Serializable {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
 
-
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                        if (!dateString.equalsIgnoreCase("")) {
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", dateString));
+                            } else {
+                                node.addLanguage(dateString);
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                            node.setSelected(true);
                         } else {
-                            node.addLanguage(" " + dateString);
-                            node.setText(node.getLanguage());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            if (node.isRequired()) {
+                                node.setSelected(false);
+                            } else {
+                                node.setSelected(true);
+                                if (node.getLanguage().contains("_")) {
+                                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                                } else {
+                                    node.addLanguage("Question not answered");
+                                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                                }
+                            }
                         }
-                        node.setSelected(true);
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
@@ -1562,19 +1574,19 @@ public class Node implements Serializable {
                 unit = "Hours";
                 break;
 
-            case "ଦିନ":
+            case "ଦିନଗୁଡିକ":
                 unit = "Days";
                 break;
 
-            case "ସପ୍ତାହ":
+            case "ସପ୍ତାହଗୁଡିକ":
                 unit = "Weeks";
                 break;
 
-            case "ମାସ":
+            case "ମାସଗୁଡିକ":
                 unit = "Months";
                 break;
 
-            case "ବର୍ଷ":
+            case "ବର୍ଷଗୁଡିକ":
                 unit = "Years";
                 break;
 

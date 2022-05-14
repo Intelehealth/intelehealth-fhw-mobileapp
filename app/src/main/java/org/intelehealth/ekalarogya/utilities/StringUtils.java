@@ -1577,8 +1577,8 @@ public final class StringUtils {
                 .replace("January", "ଜାନୁଆରୀ")
                 .replace("February", "ଫେବୃଆରୀ")
                 .replace("March", "ମାର୍ଚ୍ଚ")
-                .replace("April", "ଏପ୍ରିଲ୍")
-                .replace("May", "ମେ")
+                .replace("April", "ଏପ୍ରିଲ୍")//ଅପ୍ରେଲ
+                .replace("May", "ମେ")//ମଇ
                 .replace("June", "ଜୁନ୍")
                 .replace("July", "ଜୁଲାଇ")
                 .replace("August", "ଅଗଷ୍ଟ")
@@ -1614,8 +1614,8 @@ public final class StringUtils {
                     .replace("ଜାନୁଆରୀ", "January")
                     .replace("ଫେବୃଆରୀ", "February")
                     .replace("ମାର୍ଚ୍ଚ", "March")
-                    .replace("ଏପ୍ରିଲ୍", "April")
-                    .replace("ମେ", "May")
+                    .replace("ଏପ୍ରିଲ୍", "April")//ଅପ୍ରେଲ
+                    .replace("ମେ", "May")//ମଇ
                     .replace("ଜୁନ୍", "June")
                     .replace("ଜୁଲାଇ", "July")
                     .replace("ଅଗଷ୍ଟ", "August")
