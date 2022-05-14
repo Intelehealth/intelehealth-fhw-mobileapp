@@ -656,7 +656,6 @@ public class SetupActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
         String admin_password = mAdminPasswordView.getText().toString();
 
-
         boolean cancel = false;
         View focusView = null;
 

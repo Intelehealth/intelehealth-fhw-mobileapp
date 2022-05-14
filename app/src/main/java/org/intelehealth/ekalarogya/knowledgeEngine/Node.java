@@ -725,10 +725,13 @@ public class Node implements Serializable {
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
                                 raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage(language)) + next_line;
                             } else {
-                                if (language.equalsIgnoreCase("hi"))
+                                if (language.equalsIgnoreCase("hi")) {
                                     raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
-                                else
+                                }if (language.equalsIgnoreCase("or")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else {
                                     raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
+                                }
                             }
                             Log.e("FinalText= ", raw);
 
@@ -778,8 +781,11 @@ public class Node implements Serializable {
                 if (mOptions.get(i).isSelected()) {
                     String test = mOptions.get(i).getLanguage();
 
-                    if (language.equalsIgnoreCase("hi"))
+                    if (language.equalsIgnoreCase("hi")) {
                         test = mOptions.get(i).getDisplay_hindi();
+                    }else if (language.equalsIgnoreCase("or")){
+                        test = mOptions.get(i).getDisplay_oriya();
+                    }
 
                     if (!test.isEmpty()) {
                         if (test.equals("%")) {
@@ -792,20 +798,28 @@ public class Node implements Serializable {
 
                                 if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
-                                    if (language.equalsIgnoreCase("hi"))
+                                    if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
-                                    else
+                                    } if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    }
+                                    else {
                                         stringsList.add(mOptions.get(i).findDisplay());
+                                    }
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
                                 }
                             } else {
                                 if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
-                                    if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("["))
+                                    if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("[")) {
                                         stringsList.add(mOptions.get(i).getDisplay_hindi());
-                                    else
+                                    }else if (language.equalsIgnoreCase("or") && !mOptions.get(i).getDisplay_hindi().startsWith("[")) {
+                                        stringsList.add(mOptions.get(i).getDisplay_oriya());
+                                    }
+                                    else {
                                         stringsList.add(mOptions.get(i).getLanguage());
+                                    }
                                 } else {
                                     stringsList.add(mOptions.get(i).findDisplay(language));
                                 }
@@ -852,9 +866,13 @@ public class Node implements Serializable {
                 }
             }
         }
+
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        }
         return mLanguage;
     }
 
@@ -877,10 +895,14 @@ public class Node implements Serializable {
                                 if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
-                                    if (language.equalsIgnoreCase("hi"))
+                                    if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
-                                    else
+                                    }else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    }
+                                    else {
                                         stringsList.add(mOptions.get(i).findDisplay());
+                                    }
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                     //input's other than Text as for text input: text and language both are same.
@@ -890,10 +912,13 @@ public class Node implements Serializable {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
-                                    if (language.equalsIgnoreCase("hi"))
+                                    if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
-                                    else
+                                    }else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    }else {
                                         stringsList.add(mOptions.get(i).findDisplay());
+                                    }
                                 }
 
                             }
@@ -939,8 +964,11 @@ public class Node implements Serializable {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        }
         return mLanguage;
     }
 
@@ -1076,8 +1104,11 @@ public class Node implements Serializable {
             }
         }
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        }
         return mLanguage;
     }
 
@@ -1095,7 +1126,6 @@ public class Node implements Serializable {
         }
         return selectedAssociations;
     }
-
 
     public ArrayList<String> getPhysicalExamList() {
         ArrayList<String> selectedExams = new ArrayList<>();
@@ -1132,15 +1162,27 @@ public class Node implements Serializable {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
 
-
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                        if (!dateString.equalsIgnoreCase("")) {
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", dateString));
+                            } else {
+                                node.addLanguage(dateString);
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                            node.setSelected(true);
                         } else {
-                            node.addLanguage(" " + dateString);
-                            node.setText(node.getLanguage());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            if (node.isRequired()) {
+                                node.setSelected(false);
+                            } else {
+                                node.setSelected(true);
+                                if (node.getLanguage().contains("_")) {
+                                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                                } else {
+                                    node.addLanguage("Question not answered");
+                                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                                }
+                            }
                         }
-                        node.setSelected(true);
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
@@ -1469,7 +1511,8 @@ public class Node implements Serializable {
 
                 //translate back to English from Hindi if present...
                 String unit_text = "";
-                unit_text = hi_en(units[unitPicker.getValue()]);
+                unit_text = hi_en(units[unitPicker.getValue()]);//for Hindi
+                unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1515,6 +1558,35 @@ public class Node implements Serializable {
                 break;
 
             case "वर्ष":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String or_en(String unit) {
+        switch (unit) {
+            case "ଘଣ୍ଟା":
+                unit = "Hours";
+                break;
+
+            case "ଦିନଗୁଡିକ":
+                unit = "Days";
+                break;
+
+            case "ସପ୍ତାହଗୁଡିକ":
+                unit = "Weeks";
+                break;
+
+            case "ମାସଗୁଡିକ":
+                unit = "Months";
+                break;
+
+            case "ବର୍ଷଗୁଡିକ":
                 unit = "Years";
                 break;
 
@@ -1853,6 +1925,7 @@ public class Node implements Serializable {
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+                unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -2328,7 +2401,6 @@ public class Node implements Serializable {
 
     }
 
-
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -2433,7 +2505,6 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
-
 
     @Override
     public String toString() {
@@ -2709,12 +2780,10 @@ public class Node implements Serializable {
 
     }
 
-
     // removes options specific to index from the json
     public void remove(List<Node> no, int index) {
         no.remove(index);
     }
-
 
 }
 

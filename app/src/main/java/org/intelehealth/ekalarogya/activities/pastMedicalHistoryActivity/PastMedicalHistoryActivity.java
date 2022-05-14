@@ -102,7 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory, patientHistoryHindi;
+    String patientHistory, patientHistoryHindi, patientHistoryOdiya;
     String phistory = "";
 
     boolean flag = false;
@@ -360,6 +360,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         //If nothing is selected, there is nothing to put into the database.
         patientHistory="";
         patientHistoryHindi="";
+        patientHistoryOdiya="";
         List<String> imagePathList = patientHistoryMap.getImagePathList();
 
         if (imagePathList != null) {
@@ -375,6 +376,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                         patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                         ConfirmationDialog(patientHistory, patientHistoryHindi);
+                    }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                        patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
+                        ConfirmationDialog(patientHistory, patientHistoryOdiya);
                     } else {
                         ConfirmationDialog(patientHistory, patientHistory);
                     }
@@ -404,6 +408,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                     patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                     ConfirmationDialog(patientHistory, patientHistoryHindi);
+                }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                    patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
+                    ConfirmationDialog(patientHistory, patientHistoryOdiya);
                 } else {
                     ConfirmationDialog(patientHistory, patientHistory);
                 }

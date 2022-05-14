@@ -231,7 +231,9 @@
     <string name="sync_stopped">"ବନ୍ଦ ହେଇ ଗଲା  "</string>
     <string name="sync_in_progress">କାମ ଚାଲୁ ଅଛି</string>
     <string name="question_update_details">"ଆପଣ ଡିଟେଲସ ଅପଡେଟ କରିବା ପାଇଁ ଚାହୁଁଛନ୍ତି କି "</string>
-    <string name="backup_completed">"SD card ମାଧ୍ୟାନ ରେ ଏହା ମୋବିଲେ ରେ ଚାଲି ପାରିବ "</string>
+
+    <string name="backup_completed" translatable="false">ବ୍ୟାକଅପ୍ ସମାପ୍ତ!</string>
+
     <string name="error_no_camera">କ୍ୟାମେରା ଲଗା ଯାଇ ନାହିଁ</string>
     <string name="error_delete">"ଲିଭାଇ ବାରେ ଭୂଲ ହଉଚି "</string>
     <string name="error_no_file">ଏହି ଡିରେକ୍ତରୀ ରେ କୋଣସି ଫାଇଲି ନାହିଁ</string>
@@ -593,6 +595,25 @@
     <string name="table_bld_grp" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
     <string name="table_sugar_level" translatable="false">ଚିନି ସ୍ତର -mg / dL (ରାଣ୍ଡମ)</string>
 
+    <string name="weight_loss_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ କମ୍ |</string>
+    <string name="weight_gain_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ ଅଧିକ |</string>
+    <string name="doctor_advice_alert_msg">ଆପଣ ଡାକ୍ତରଙ୍କ ଠାରୁ ଟେଲି ପରାମର୍ଶ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="vital_alert_save_button">ସଞ୍ଚୟ କରନ୍ତୁ</string>
+    <string name="vital_alert_continue_button">ହଁ, ଜାରି ରଖ</string>
+
+    <string name="vital_alert_bp_dia_button">ତୁମର ଡାଇଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_bp_sys_button">ତୁମର ସିଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_spo2_button">ତୁମର SpO2 ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_pulse_button">ତୁମର ପଲ୍ସ ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_resp_button">ତୁମର ଶ୍ୱାସକ୍ରିୟା ହାର ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_temperature_button">ତୁମର ତାପମାତ୍ରା ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_hgb_button">ତୁମର HGB ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_sugar_random_button">ତୁମର ଚିନି ରାଣ୍ଡମ ସ୍ତର ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_sugar_fasting_button">ତୁମର ଚିନି ଉପବାସ ସ୍ତର ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_sugar_aftermeal_button">ଭୋଜନ ପରେ ତୁମର ଚିନି ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_required_field_button">ଦାଖଲ ପାଇଁ Atleast One ଏଣ୍ଟ୍ରି ଆବଶ୍ୟକ |</string>
+
+
     <string name="warning_app_update">ଦୟାକରି ଆପକୁ ନୂତନତମ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ</string>
 
     <string name="identification_screen_prompt_village">ଗାଁ *</string>
@@ -600,37 +621,37 @@
 
 
     <!--APPOINTMENT Module strings START -->
-    <string name="book_appointment">Book Appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
-    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
+    <string name="book_appointment">ବୁକ୍ ନିଯୁକ୍ତି |</string>
+    <string name="reschedule_appointment">ପୁନକାର୍ଯ୍ୟସୂଚୀ ନିଯୁକ୍ତି</string>
+    <string name="appointment_booking_confirmation_txt">ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
+    <string name="cancel_appointment">ନିଯୁକ୍ତି ବାତିଲ୍ କରନ୍ତୁ |</string>
+    <string name="slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନାହିଁ!</string>
+    <string name="appointment_empty_message">ଆପଣଙ୍କର କ appointment ଣସି ନିଯୁକ୍ତି ନାହିଁ!</string>
+    <string name="appointment_listing_title">ନିଯୁକ୍ତି ତାଲିକା |</string>
+    <string name="appointment_booking_title">ନିଯୁକ୍ତି ବୁକିଂ |</string>
+    <string name="appointment_for">ପାଇଁ ନିଯୁକ୍ତି</string>
+    <string name="please_select_appointment_slot">ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଚୟନ କରନ୍ତୁ |</string>
+    <string name="please_select_speciality">ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ!</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
-    <string name="slot_info">Slot info</string>
-    <string name="appointment_booked">Appointment Booked</string>
-    <string name="minutes_txt">minutes</string>
-    <string name="booked_txt">booked</string>
-    <string name="cancelled_txt">cancelled</string>
-    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
-    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
-    <string name="appointment_booked_failed">Appointment booked failed!</string>
-    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
-    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
+    <string name="doctor_appointments">ଡାକ୍ତର ନିଯୁକ୍ତି</string>
+    <string name="slot_info">ସ୍ଲଟ୍ ସୂଚନା</string>
+    <string name="appointment_booked">ନିଯୁକ୍ତି ବୁକ୍ ହୋଇଛି |</string>
+    <string name="minutes_txt">ମିନିଟ୍ |</string>
+    <string name="booked_txt">ବୁକ୍ ହୋଇଛି |</string>
+    <string name="cancelled_txt">ବାତିଲ</string>
+    <string name="please_upload_visit">ନିଯୁକ୍ତି ବୁକିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଭ୍ରମଣ ଅପଲୋଡ୍ କରନ୍ତୁ |</string>
+    <string name="appointment_booked_successfully">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବୁକ୍ ହୋଇଛି!</string>
+    <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକିଂ ବିଫଳ ହେଲା!</string>
+    <string name="failed_to_cancel_appointment">ନିଯୁକ୍ତି ବାତିଲ କରିବାରେ ବିଫଳ!</string>
+    <string name="appointment_cancelled_success_txt">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବାତିଲ ହେଲା!</string>
+    <string name="please_select_your_reschedule_reason">ଦୟାକରି ଆପଣଙ୍କର ପୁନ ched ନିର୍ମାଣ କାରଣ ଚୟନ କରନ୍ତୁ |</string>
+    <string name="please_select_your_cancel_reason">ଦୟାକରି ଆପଣଙ୍କର ବାତିଲ୍ କାରଣ ଚୟନ କରନ୍ତୁ |</string>
+    <string name="doctor_is_not_available">ଡାକ୍ତର ଉପଲବ୍ଧ ନାହିଁ |</string>
+    <string name="patient_is_not_available">ରୋଗୀ ଉପଲବ୍ଧ ନାହିଁ |</string>
+    <string name="others">ଅନ୍ୟମାନେ |</string>
+    <string name="please_enter_the_reason_details">ଦୟାକରି କାରଣ ବିବରଣୀ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="save_amp_proceed"><![CDATA[ସଞ୍ଚୟ ଏବଂ ଅଗ୍ରଗତି କର |]]></string>
+    <string name="please_enter_reason_txt">ଦୟାକରି ଏହାର କାରଣ ପ୍ରବେଶ କରନ୍ତୁ!</string>
     <!--END APPOINTMENT-->
 </resources>
