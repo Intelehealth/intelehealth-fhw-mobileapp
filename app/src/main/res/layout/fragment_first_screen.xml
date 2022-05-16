@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_of_head_of_household_text_view"
                 android:fontFamily="@font/lato_regular"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:maxLines="1"
                 android:textSize="14sp" />
 
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/number_of_smartphones_text_view"
                 android:fontFamily="@font/lato_regular"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textSize="14sp" />
 
@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/number_of_feature_phones_text_view"
                 android:fontFamily="@font/lato_regular"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textSize="14sp" />
 
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/no_of_earning_members_text_view"
                 android:fontFamily="@font/lato_regular"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textSize="14sp" />
 
@@ -385,6 +385,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/household_electricity_yes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -393,6 +394,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/household_electricity_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -407,7 +409,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/household_electricity_radio_group"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/load_shedding_text_view"
@@ -434,7 +438,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -453,7 +457,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -516,6 +520,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/water_supply_yes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -524,6 +529,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/water_supply_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -539,7 +545,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/household_running_water_radio_group"
                 android:layout_marginTop="15sp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/availability_of_running_water_text_view"

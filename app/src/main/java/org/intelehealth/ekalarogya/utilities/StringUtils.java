@@ -15,6 +15,9 @@
 package org.intelehealth.ekalarogya.utilities;
 
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -145,7 +148,7 @@ public final class StringUtils {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_caste(val);
             val = switch_or_economic(val);
             val = switch_or_education(val);
@@ -166,7 +169,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             switch (checkbox_text) {
                 case "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ":
                     val = "Declined to answer";
@@ -188,7 +191,7 @@ public final class StringUtils {
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_en_vaccination(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_en_vaccination(val);
         }
         return val;
@@ -209,7 +212,7 @@ public final class StringUtils {
             val = switch_hi_en_wateravail(val);
             val = switch_hi_en_toiletfacil(val);
             val = switch_hi_en_housestructure(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_en_occupation(val);
             val = switch_or_en_bankaccount(val);
             val = switch_or_en_mobile(val);
@@ -1572,6 +1575,7 @@ public final class StringUtils {
 
         return mdob_text;
     }
+
     public static String en__or_dob(String dob) { //English dob is replaced to Odiya text.
         String mdob_text = dob
                 .replace("January", "ଜାନୁଆରୀ")
@@ -1589,9 +1593,10 @@ public final class StringUtils {
 
         return mdob_text;
     }
+
     public static String hi_or__en_noEdit(String dobString, String locale) {
 
-        if(locale.equalsIgnoreCase("hi")) {
+        if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
                     //Hindi
                     .replace("जनवरी", "January")
@@ -1607,8 +1612,7 @@ public final class StringUtils {
                     .replace("नवंबर", "November")
                     .replace("दिसंबर", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("or")) {
+        } else if (locale.equalsIgnoreCase("or")) {
             //Odiya
             String dob = dobString
                     .replace("ଜାନୁଆରୀ", "January")
@@ -1624,12 +1628,12 @@ public final class StringUtils {
                     .replace("ନଭେମ୍ବର", "November")
                     .replace("ଡିସେମ୍ବର", "December");
             return dob;
-        }
-        else {
+        } else {
             return dobString;
         }
 
     }
+
     public static String getLocaleGender(Context context, String gender) {
         switch (gender) {
             case "M":
@@ -1640,6 +1644,7 @@ public final class StringUtils {
                 return gender;
         }
     }
+
     public static String getTranslatedDays(String val, String locale) {
 
         if (locale.equalsIgnoreCase("hi")) {
@@ -1704,6 +1709,7 @@ public final class StringUtils {
         }
         return val;
     }
+
     public static String getAppointmentBookStatus(String val, String locale) {
 
         if (locale.equalsIgnoreCase("hi")) {
@@ -1719,7 +1725,8 @@ public final class StringUtils {
                     return val;
             }
 
-        } if (locale.equalsIgnoreCase("or")) {
+        }
+        if (locale.equalsIgnoreCase("or")) {
 
             switch (val.toLowerCase()) {
                 case "booked":
@@ -1734,5 +1741,19 @@ public final class StringUtils {
 
         }
         return val;
+    }
+
+    public static boolean checkIfEmpty(Context context, String text) {
+        return text.equals(context.getString(R.string.select)) || text.equals("");
+    }
+
+    public static boolean checkIfCheckboxesEmpty(ViewGroup viewGroup) {
+        int selectedCheckboxes = 0;
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if (childAt instanceof CheckBox && ((CheckBox) childAt).isChecked())
+                selectedCheckboxes++;
+        }
+        return selectedCheckboxes == 0;
     }
 }
