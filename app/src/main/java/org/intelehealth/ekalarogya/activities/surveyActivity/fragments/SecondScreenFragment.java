@@ -1,33 +1,62 @@
 package org.intelehealth.ekalarogya.activities.surveyActivity.fragments;
 
+import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.databinding.FragmentSecondScreenBinding;
+import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
+import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
-public class SecondScreenFragment extends Fragment implements View.OnClickListener {
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class SecondScreenFragment extends Fragment {
 
     private FragmentSecondScreenBinding binding;
+    private String patientUuid;
+    private final PatientsDAO patientsDAO = new PatientsDAO();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = requireActivity().getIntent();
+        if (intent != null)
+            patientUuid = intent.getStringExtra("patientUuid");
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSecondScreenBinding.inflate(inflater, container, false);
+        setData(patientUuid);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setOnClickListener();
+        setListeners();
     }
 
     @Override
@@ -36,30 +65,171 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         binding = null;
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == binding.nextButton.getId()) {
+    private void setListeners() {
+        binding.prevButton.setOnClickListener(v -> requireActivity().onBackPressed());
+
+        binding.nextButton.setOnClickListener(v -> {
+            if (!areFieldsValid()) {
+                Toast.makeText(requireContext(), "Please fill up all the required fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             try {
                 insertData();
             } catch (DAOException exception) {
                 exception.printStackTrace();
             }
-        }
-
-        if (v.getId() == binding.prevButton.getId()) {
-            requireActivity().onBackPressed();
-        }
-    }
-
-    private void setOnClickListener() {
-        binding.prevButton.setOnClickListener(this);
-        binding.nextButton.setOnClickListener(this);
+        });
     }
 
     private void insertData() throws DAOException {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PatientAttributesDTO patientAttributesDTO;
+
+        // bankorPostOfficeAccountStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bankorPostOfficeAccountStatus"));
+        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
+                ((RadioButton) binding.bankOrPostOfficeAccountRadioGroup.findViewById(binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        ));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        // bplCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bplCardStatus"));
+        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
+                ((RadioButton) binding.bplRadioGroup.findViewById(binding.bplRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        ));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        // antodayaCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("antodayaCardStatus"));
+        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
+                ((RadioButton) binding.antodayaRadioGroup.findViewById(binding.antodayaRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        ));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        // rsbyCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rsbyCardStatus"));
+        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
+                ((RadioButton) binding.rsbyRadioGroup.findViewById(binding.rsbyRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        ));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        // mgnregaCardStatus
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
+        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
+                ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        ));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        boolean isPatientUpdated = patientsDAO.surveyUpdatePatientToDB(patientUuid, patientAttributesDTOList);
+        Logger.logD("TAG", String.valueOf(isPatientUpdated));
+
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout_container, new ThirdScreenFragment())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private boolean areFieldsValid() {
+        AtomicBoolean validations = new AtomicBoolean(true);
+
+        // Validation for Bank or Post Office Radio Group
+        if (binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId() == -1)
+            validations.set(false);
+
+        // Validation for BPL Radio Group
+        if (binding.bplRadioGroup.getCheckedRadioButtonId() == -1)
+            validations.set(false);
+
+        // Validation for Antodaya Radio Group
+        if (binding.antodayaRadioGroup.getCheckedRadioButtonId() == -1)
+            validations.set(false);
+
+        // Validation for RSBY Radio Group
+        if (binding.rsbyRadioGroup.getCheckedRadioButtonId() == -1)
+            validations.set(false);
+
+        // Validation for MGNREGA Radio Group
+        if (binding.mgnregaRadioGroup.getCheckedRadioButtonId() == -1)
+            validations.set(false);
+
+        return validations.get();
+    }
+
+    private void setData(String patientUuid) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                // bankorPostOfficeAccountStatus
+                if (name.equalsIgnoreCase("bankorPostOfficeAccountStatus")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        setSelectedCheckboxes(binding.bankOrPostOfficeAccountRadioGroup, value1);
+                    }
+                }
+
+                // bplCardStatus
+                if (name.equalsIgnoreCase("bplCardStatus")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        setSelectedCheckboxes(binding.bplRadioGroup, value1);
+                    }
+                }
+
+                // antodayaCardStatus
+                if (name.equalsIgnoreCase("antodayaCardStatus")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        setSelectedCheckboxes(binding.antodayaRadioGroup, value1);
+                    }
+                }
+
+                // rsbyCardStatus
+                if (name.equalsIgnoreCase("rsbyCardStatus")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        setSelectedCheckboxes(binding.rsbyRadioGroup, value1);
+                    }
+                }
+
+                // mgnregaCardStatus
+                if (name.equalsIgnoreCase("mgnregaCardStatus")) {
+                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        setSelectedCheckboxes(binding.mgnregaRadioGroup, value1);
+                    }
+                }
+            } while (idCursor1.moveToNext());
+        }
+
+        idCursor1.close();
     }
 }

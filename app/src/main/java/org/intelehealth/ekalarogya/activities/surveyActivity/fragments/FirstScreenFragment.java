@@ -98,7 +98,6 @@ public class FirstScreenFragment extends Fragment {
         });
 
         binding.nextButtonLinearLayout.setOnClickListener(v -> {
-            Logger.logD("TAG", ((RadioButton) binding.householdStructureRadioGroup.findViewById(binding.householdStructureRadioGroup.getCheckedRadioButtonId())).getText().toString());
             if (!areFieldsValid()) {
                 Toast.makeText(requireContext(), "Please fill up all the required fields", Toast.LENGTH_SHORT).show();
                 return;
@@ -379,8 +378,6 @@ public class FirstScreenFragment extends Fragment {
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        Gson gson = new Gson();
-        gson.toJson(patientAttributesDTOList);
         boolean isPatientUpdated = patientsDAO.surveyUpdatePatientToDB(patientUuid, patientAttributesDTOList);
         Logger.logD("TAG", String.valueOf(isPatientUpdated));
 
