@@ -263,7 +263,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
 
         householdSurvey.setOnClickListener(v -> {
-            startActivity(new Intent(PatientDetailActivity.this, SurveyActivity.class));
+            Intent surveyIntent = new Intent(PatientDetailActivity.this, SurveyActivity.class);
+            surveyIntent.putExtra("patientUuid", patientUuid);
+            startActivity(surveyIntent);
         });
 
         LoadFamilyMembers();

@@ -18,6 +18,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.json.JSONArray;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -129,7 +131,13 @@ public final class StringUtils {
         if (value != null)
             val = value;
         return val;
+    }
 
+    public static String getSurveyValue(String value) {
+        String val = "-";
+        if (value != null && !value.equals(""))
+            val = value;
+        return val;
     }
 
     public static String getProvided(Spinner spinner) {
@@ -1755,5 +1763,56 @@ public final class StringUtils {
                 selectedCheckboxes++;
         }
         return selectedCheckboxes == 0;
+    }
+
+    public static String getSelectedCheckboxes(ViewGroup viewGroup) {
+        if (viewGroup == null)
+            return null;
+
+        String text = "-";
+
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if (childAt instanceof CheckBox) {
+                if (((CheckBox) childAt).isChecked()) {
+                    text = ((CheckBox) childAt).getText().toString();
+                    result.put(text);
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static void setSelectedCheckboxes(ViewGroup viewGroup, String text) {
+        if (viewGroup == null)
+            return;
+
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if (childAt instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) childAt;
+                if (text.contains(checkBox.getText().toString())) {
+                    checkBox.setChecked(true);
+                }
+            }
+
+            if (childAt instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) childAt;
+                if (text.contains(radioButton.getText().toString())) {
+                    radioButton.setChecked(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static int getIndex(Spinner spinner, String s) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(s))
+                return i;
+        }
+        return -1;
     }
 }

@@ -39,6 +39,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/kucha_radio_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -47,6 +48,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/pucca_radio_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

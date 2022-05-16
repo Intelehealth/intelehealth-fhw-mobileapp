@@ -6,8 +6,15 @@ import android.os.Bundle;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.surveyActivity.fragments.FirstScreenFragment;
+import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SurveyActivity extends AppCompatActivity {
+
+    public static List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
