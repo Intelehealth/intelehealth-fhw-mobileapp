@@ -149,24 +149,34 @@ public class SecondScreenFragment extends Fragment {
         AtomicBoolean validations = new AtomicBoolean(true);
 
         // Validation for Bank or Post Office Radio Group
-        if (binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for BPL Radio Group
-        if (binding.bplRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.bplRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for Antodaya Radio Group
-        if (binding.antodayaRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.antodayaRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for RSBY Radio Group
-        if (binding.rsbyRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.rsbyRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for MGNREGA Radio Group
-        if (binding.mgnregaRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.mgnregaRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         return validations.get();
     }

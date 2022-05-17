@@ -13,12 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
@@ -114,84 +108,124 @@ public class FirstScreenFragment extends Fragment {
         AtomicBoolean validations = new AtomicBoolean(true);
 
         // Validation for household structure RadioGroup
-        if (binding.householdStructureRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.householdStructureRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for head of household EditText
-        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.nameOfHeadOfHouseholdEditText.getText()).toString()))
+        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.nameOfHeadOfHouseholdEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for religion spinner
-        if (checkIfEmpty(requireContext(), binding.religionDropDown.getSelectedItem().toString()))
+        if (checkIfEmpty(requireContext(), binding.religionDropDown.getSelectedItem().toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for caste spinner
-        if (checkIfEmpty(requireContext(), binding.casteDropDown.getSelectedItem().toString()))
+        if (checkIfEmpty(requireContext(), binding.casteDropDown.getSelectedItem().toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for number of smartphones field
-        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString()))
+        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for number of feature phones field
-        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString()))
+        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validation for number of earning members field
-        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString()))
+        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
-        // Validation for number of smartphones field
-        if (checkIfCheckboxesEmpty(binding.primarySourceOfIncomeCheckboxLinearLayout))
+        // Validation for Primary Source of Income Checkbox Layout
+        if (checkIfCheckboxesEmpty(binding.primarySourceOfIncomeCheckboxLinearLayout)) {
             validations.set(false);
+            return validations.get();
+        }
 
-        // Validation for Other field
-        if (binding.otherIncomeCheckbox.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.otherSourcesOfIncomeEditText.getText()).toString()))
+        // Validation for Other Income field
+        if (binding.otherIncomeCheckbox.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.otherSourcesOfIncomeEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Household Electricity Group
-        if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Load Shedding Hours EditText
-        if (binding.householdElectricityYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString()))
+        if (binding.householdElectricityYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Load Shedding Days EditText
-        if (binding.householdElectricityYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString()))
+        if (binding.householdElectricityYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Household Toilet Radio Group
-        if (binding.householdToiletRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.householdToiletRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Running Water Hours Edit Text
-        if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Running Water Days Edit Text
-        if (binding.waterSupplyYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString()))
+        if (binding.waterSupplyYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Cultivable Radio Group
-        if (binding.cultivableLandRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.cultivableLandRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Units Radio Group
-        if (binding.unitsRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.unitsRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Income Radio Group
-        if (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Annual Health Expenditure Radio Group
-        if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         // Validations for Education Expenditure Radio Group
-        if (binding.educationExpenditureRadioGroup.getCheckedRadioButtonId() == -1)
+        if (binding.educationExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
+            return validations.get();
+        }
 
         return validations.get();
     }

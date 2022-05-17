@@ -172,6 +172,7 @@
                 tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/other_sources_of_fuel_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
@@ -303,6 +304,7 @@
                 tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/other_sources_of_lighting_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
@@ -512,6 +514,7 @@
                 tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/other_sources_of_drinking_water_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
@@ -536,13 +539,13 @@
                 android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_of_village_edit_text"
+                android:id="@+id/time_to_walk_till_water_source_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/time_to_walk_till_water_source_text_view"
                 android:fontFamily="@font/lato_regular"
                 android:hint="@string/number_of_minutes"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textSize="14sp" />
 
@@ -550,7 +553,7 @@
                 android:id="@+id/treat_water_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_village_edit_text"
+                android:layout_below="@id/time_to_walk_till_water_source_edit_text"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/lato_bold"
@@ -706,7 +709,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/other_ways_of_purifying_water_edit_text"
+                android:id="@+id/other_ways_of_purifying_water_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/household_make_safe_water_checkbox_linear_layout"
@@ -716,6 +719,7 @@
                 tools:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_ways_of_purifying_water_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
@@ -731,7 +735,7 @@
                 android:id="@+id/toilet_facility_type_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/other_ways_of_purifying_water_edit_text"
+                android:layout_below="@id/other_ways_of_purifying_water_layout"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/lato_bold"
@@ -892,7 +896,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/other_toilet_facility_edit_text"
+                android:id="@+id/other_toilet_facility_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/family_toilet_facility_checkbox_linear_layout"
@@ -902,6 +906,7 @@
                 tools:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_toilet_facility_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
@@ -917,7 +922,7 @@
                 android:id="@+id/defecated_in_open_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/other_toilet_facility_edit_text"
+                android:layout_below="@id/other_toilet_facility_layout"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/lato_bold"
@@ -1044,6 +1049,7 @@
                 tools:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_open_defecation_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
@@ -1159,11 +1165,35 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/other_hand_wash_occasion_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hand_wash_occasion_linear_layout"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_hand_wash_occasion_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/other_specify"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/food_cooked_in_twenty_four_hours_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/hand_wash_occasion_linear_layout"
+                android:layout_below="@id/other_hand_wash_occasion_layout"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/lato_bold"
