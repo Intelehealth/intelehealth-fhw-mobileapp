@@ -145,6 +145,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "encounteruuid TEXT," +
             "conceptuuid TEXT," +
             "value TEXT," +
+            "comment TEXT," +
             "creator TEXT," +
             "voided TEXT DEFAULT '0'," +
             "obsservermodifieddate TEXT," +
@@ -240,7 +241,31 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('a86ac96e-2e07-47a7-8e72-8216a1a75bfd','VISIT_TELEMEDICINE')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
-
+            // Epartogram Timeline Encounters Creation for 12 Hrs...
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('ee560d18-34a1-4ad8-87c8-98aed99c663d','Stage1_Hour1_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('a367b296-601f-474b-afa4-c6989ef43f77','Stage1_Hour1_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('f540fdfb-9ad5-4b44-ae35-b941863b3439','Stage1_Hour2_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('ae69e6f0-7bf4-4981-8742-c59ad0040630','Stage1_Hour2_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('b89a6a89-a61d-4416-ae3e-ec527db3607a','Stage1_Hour3_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('ec2a1d58-c6f8-4aca-a182-e986d1cf6f15','Stage1_Hour3_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('62bc5735-ea58-4a6d-b818-11de18134f55','Stage1_Hour4_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('c20ab5de-b694-483b-bd31-2a0d84ffe32d','Stage1_Hour4_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('0b52a5ba-63dd-432f-9dec-856e4bb1e2f8','Stage1_Hour5_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('6be7c08e-1c99-4c25-826e-ce0fd4819b25','Stage1_Hour5_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('6730fd1e-82d7-4d2f-98c7-c5798edfd20e','Stage1_Hour6_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('ea1bbd4a-5e59-4124-bd0f-aefe7095abaf','Stage1_Hour6_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('769c612f-88d7-4d23-8288-4c8bb107cbd1','Stage1_Hour7_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('9e3b1576-726f-4963-9d7e-9a8b543273c1','Stage1_Hour7_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('4e947877-1dde-4c5e-bf0b-7c26995a7966','Stage1_Hour8_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('92d6cc84-a720-4106-8519-f474c4a7cca9','Stage1_Hour8_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('f3641f3f-a83e-47c7-b734-e11be3998836','Stage1_Hour9_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('b8611dbb-5ea4-4839-a6a4-d33e5866d087','Stage1_Hour9_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('e91e88fe-6282-42c5-93fe-2646b995983d','Stage1_Hour10_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('596207d9-0d7a-4835-bdd2-3f2c9f8c34be','Stage1_Hour10_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('dd9612ad-6781-41ee-8579-180b99be87dd','Stage1_Hour11_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('736ec5de-d780-4e34-a1cb-2de28702b0de','Stage1_Hour11_2')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('03ecf7c8-0750-4916-9c2d-466509ae28e7','Stage1_Hour12_1')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('9d83f930-6d7f-4cbb-8bfc-b5ef34b2f584','Stage1_Hour12_2')");
 
         }
     }

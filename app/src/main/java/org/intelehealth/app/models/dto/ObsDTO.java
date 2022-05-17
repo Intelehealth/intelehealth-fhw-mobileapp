@@ -18,6 +18,9 @@ public class ObsDTO {
     @SerializedName("value")
     @Expose
     private String value;
+    @SerializedName("comment")
+    @Expose
+    private String comment;
     @SerializedName("obsServerModifiedDate")
     @Expose
     private String obsServerModifiedDate;
@@ -58,6 +61,14 @@ public class ObsDTO {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getCreator() {

@@ -14,6 +14,9 @@ public class Ob {
     @SerializedName("value")
     @Expose
     private String value;
+    @SerializedName("comment")
+    @Expose
+    private String comment;
 
     public String getUuid() {
         return uuid;
@@ -39,4 +42,11 @@ public class Ob {
         this.value = value;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

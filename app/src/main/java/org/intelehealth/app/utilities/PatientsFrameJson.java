@@ -185,7 +185,7 @@ public class PatientsFrameJson {
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
         Gson gson = new Gson();
-        Log.d("OBS: ","OBS: "+gson.toJson(pushRequestApiCall));
+        Log.d("PushPayload: ","PushPayload: "+gson.toJson(pushRequestApiCall));
 
 
         return pushRequestApiCall;
