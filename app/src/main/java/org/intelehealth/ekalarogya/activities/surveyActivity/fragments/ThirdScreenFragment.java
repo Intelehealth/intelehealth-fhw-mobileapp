@@ -4,9 +4,11 @@ import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivi
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSelectedCheckboxes;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyValue;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,6 +30,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
+import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
@@ -36,6 +39,7 @@ import org.intelehealth.ekalarogya.databinding.FragmentThirdScreenBinding;
 import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -47,6 +51,8 @@ public class ThirdScreenFragment extends Fragment {
     private FragmentThirdScreenBinding binding;
     private String patientUuid;
     private final PatientsDAO patientsDAO = new PatientsDAO();
+    private Context updatedContext = null;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,20 +60,17 @@ public class ThirdScreenFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         if (intent != null)
             patientUuid = intent.getStringExtra("patientUuid");
+        updatedContext = ((SurveyActivity) requireActivity()).getUpdatedContext();
+        sessionManager = ((SurveyActivity) requireActivity()).getSessionManager();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentThirdScreenBinding.inflate(inflater, container, false);
+        setOnClickListener();
         setData(patientUuid);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setOnClickListener();
     }
 
     @Override
@@ -140,7 +143,6 @@ public class ThirdScreenFragment extends Fragment {
         });
     }
 
-
     private void insertData() throws DAOException {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -150,7 +152,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.householdCookingFuelCheckboxLinearLayout,
+                requireActivity(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // householdLighting
@@ -158,7 +165,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.mainSourceOfLightingCheckboxLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // sourceOfDrinkingWater
@@ -166,7 +178,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sourceOfDrinkingWater"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // timeTakenToWalkTillWaterSource
@@ -182,8 +199,11 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterTreatment"));
-        patientAttributesDTO.setValue(getSurveyValue(
-                ((RadioButton) binding.treatWaterRadioGroup.findViewById(binding.treatWaterRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(getSurveyStrings(
+                ((RadioButton) binding.treatWaterRadioGroup.findViewById(binding.treatWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -192,7 +212,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("saferWaterMethods"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.householdMakeSafeWaterCheckboxLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // toiletFacility
@@ -200,7 +225,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("toiletFacility"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.familyToiletFacilityCheckboxLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // defecatedInOpen
@@ -208,8 +238,11 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("defecatedInOpen"));
-        patientAttributesDTO.setValue(getSurveyValue(
-                ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(getSurveyStrings(
+                ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -218,7 +251,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("reasonForOpenDefecation"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.reasonForOpenDefecationCheckboxLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // soapHandWashingOccasion
@@ -226,7 +264,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("soapHandWashingOccasion"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.handWashOccasionLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.handWashOccasionLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // foodItemsPreparedInTwentyFourHours
@@ -234,7 +277,12 @@ public class ThirdScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHours"));
-        patientAttributesDTO.setValue(getSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout));
+        patientAttributesDTO.setValue(getSelectedCheckboxes(
+                binding.foodCookedInTwentyFourHoursLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         boolean isPatientUpdated = patientsDAO.surveyUpdatePatientToDB(patientUuid, patientAttributesDTOList);

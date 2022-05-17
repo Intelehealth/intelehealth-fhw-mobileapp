@@ -6,6 +6,7 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getIndex;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,11 +24,13 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.databinding.FragmentFirstScreenBinding;
 import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -40,6 +43,8 @@ public class FirstScreenFragment extends Fragment {
     private FragmentFirstScreenBinding binding;
     private String patientUuid;
     private final PatientsDAO patientsDAO = new PatientsDAO();
+    private Context updatedContext = null;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,20 +52,17 @@ public class FirstScreenFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         if (intent != null)
             patientUuid = intent.getStringExtra("patientUuid");
+        updatedContext = ((SurveyActivity) requireActivity()).getUpdatedContext();
+        sessionManager = ((SurveyActivity) requireActivity()).getSessionManager();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFirstScreenBinding.inflate(inflater, container, false);
+        setListeners();
         setData(patientUuid);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setListeners();
     }
 
     @Override
@@ -239,8 +241,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdStructureType"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.householdStructureRadioGroup.findViewById(binding.householdStructureRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.householdStructureRadioGroup.findViewById(binding.householdStructureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -257,7 +262,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.religionDropDown.getSelectedItem().toString()));
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // caste
@@ -265,7 +274,12 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.casteDropDown.getSelectedItem().toString()));
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                binding.casteDropDown.getSelectedItem().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // numberOfSmartphones
@@ -297,7 +311,12 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.primarySourceOfIncomeCheckboxLinearLayout));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(
+                binding.primarySourceOfIncomeCheckboxLinearLayout,
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // electricityStatus
@@ -305,8 +324,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -331,8 +353,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdToiletStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.householdToiletRadioGroup.findViewById(binding.householdToiletRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.householdToiletRadioGroup.findViewById(binding.householdToiletRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -341,8 +366,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.householdToiletRadioGroup.findViewById(binding.householdToiletRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.householdToiletRadioGroup.findViewById(binding.householdToiletRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -367,8 +395,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cultivableLandOwned"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -377,8 +408,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("unitsOfCultivableLand"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.unitsRadioGroup.findViewById(binding.unitsRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.unitsRadioGroup.findViewById(binding.unitsRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -387,8 +421,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -397,8 +434,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -407,8 +447,11 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 

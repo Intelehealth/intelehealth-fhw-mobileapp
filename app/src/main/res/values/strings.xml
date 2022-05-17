@@ -822,8 +822,8 @@
     <string name="sale_of_animals_or_animal_products">Sale of animals or animal products</string>
     <string name="agricultural_wage_labor_employed_for_farm_work">Agricultural wage labor (employed for farm work)</string>
     <string name="salaried_worker_fixed_monthly_salary">Salaried worker (fixed monthly salary) - Government, private, etc.</string>
-    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture/petty business)</string>
-    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labour (unskilled work- Agricultural/non-Agricultural)</string>
+    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture or petty business)</string>
+    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labour (unskilled work- Agricultural or non-Agricultural)</string>
     <string name="nrega">NREGA</string>
     <string name="seasonal_labor">Seasonal Labour</string>
     <string name="no_paid_work">No paid work</string>
@@ -973,10 +973,10 @@
     <string name="before_eating">Before Eating</string>
     <string name="after_using_toilet">After Using Toilet</string>
     <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">What kind of food items were cooked/prepared in the last 24hr in your household?</string>
-    <string name="starch_staple_food">Starch Staple Food\n(Rice, Roti, Bread, Pressed rice, Muri, Potato, sweet potato, arbi, Cassava, Banana, any other roots and tubers, noodles, pasta)</string>
-    <string name="beans_and_peas">Beans and peas\n(Beans, peas, Mung dal, Chana dal, Arahar dal, Urad dal, kidney beans, Matter dal, other pulse and Soybeans, Seem, mustard)</string>
-    <string name="nuts_and_cheese">Nuts and Cheese\n(Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds)</string>
-    <string name="dairy">Dairy\n(Milk – cow/goat/buffalo, Powder milk, Liquid packet milk, Curd, Paneer, sewai, kheer, sweets, Butter, Ghee)</string>
+    <string name="starch_staple_food">Starch Staple Food (Rice, Roti, Bread, Pressed rice, Muri, Potato, sweet potato, arbi, Cassava, Banana, any other roots and tubers, noodles, pasta)</string>
+    <string name="beans_and_peas">Beans and peas (Beans, peas, Mung dal, Chana dal, Arahar dal, Urad dal, kidney beans, Matter dal, other pulse and Soybeans, Seem, mustard)</string>
+    <string name="nuts_and_cheese">Nuts and Cheese, Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds)</string>
+    <string name="dairy">Dairy (Milk – cow or goat or buffalo, Powder milk, Liquid packet milk, Curd, Paneer, sewai, kheer, sweets, Butter, Ghee)</string>
     <string name="eggs">Eggs</string>
     <string name="flesh_food">Flesh Food (Meat, chicken, fish etc.)</string>
     <string name="any_vegetables">Any Vegetables</string>

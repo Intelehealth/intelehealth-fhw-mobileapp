@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.surveyActivity.fragments;
 import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,11 +21,13 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.databinding.FragmentSecondScreenBinding;
 import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -36,6 +39,8 @@ public class SecondScreenFragment extends Fragment {
     private FragmentSecondScreenBinding binding;
     private String patientUuid;
     private final PatientsDAO patientsDAO = new PatientsDAO();
+    private Context updatedContext = null;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,20 +48,17 @@ public class SecondScreenFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         if (intent != null)
             patientUuid = intent.getStringExtra("patientUuid");
+        updatedContext = ((SurveyActivity) requireActivity()).getUpdatedContext();
+        sessionManager = ((SurveyActivity) requireActivity()).getSessionManager();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSecondScreenBinding.inflate(inflater, container, false);
+        setListeners();
         setData(patientUuid);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setListeners();
     }
 
     @Override
@@ -91,8 +93,11 @@ public class SecondScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bankorPostOfficeAccountStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.bankOrPostOfficeAccountRadioGroup.findViewById(binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.bankOrPostOfficeAccountRadioGroup.findViewById(binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -101,8 +106,11 @@ public class SecondScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bplCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.bplRadioGroup.findViewById(binding.bplRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.bplRadioGroup.findViewById(binding.bplRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -111,8 +119,11 @@ public class SecondScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("antodayaCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.antodayaRadioGroup.findViewById(binding.antodayaRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.antodayaRadioGroup.findViewById(binding.antodayaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -121,8 +132,11 @@ public class SecondScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rsbyCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.rsbyRadioGroup.findViewById(binding.rsbyRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.rsbyRadioGroup.findViewById(binding.rsbyRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -131,8 +145,11 @@ public class SecondScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(
-                ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString()
+        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
