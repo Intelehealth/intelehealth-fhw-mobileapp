@@ -88,16 +88,20 @@ public class EncounterDAO {
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("sync", "false");
+            values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
+
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
             if (createdRecordsCount != 0)
                 isCreated = true;
             db.setTransactionSuccessful();
+
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
+
         } finally {
             db.endTransaction();
 
@@ -124,7 +128,9 @@ public class EncounterDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         //Distinct keyword is used to remove all duplicate records.
-        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
+        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time," +
+                "a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND " +
+                "a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
         Log.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
         if (idCursor.getCount() != 0) {

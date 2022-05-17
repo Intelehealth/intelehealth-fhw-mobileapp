@@ -33,7 +33,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TimelineAdapter adapter;
     Context context;
-    private String encounterAdultIntials, EncounterAdultInitial_LatestVisi, patientUuid, patientName;
+    private String patientName;
     Intent intent;
     ArrayList<String> timeList;
     String startVisitTime;
@@ -85,8 +85,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         if(intent != null) {
             startVisitTime = intent.getStringExtra("startdate");
-            patientName = intent.getStringExtra("patientNameTimeline");
             timeList.add(startVisitTime);
+            patientName = intent.getStringExtra("patientNameTimeline");
         }
     }
 

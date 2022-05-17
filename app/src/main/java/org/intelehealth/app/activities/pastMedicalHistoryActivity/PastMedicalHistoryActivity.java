@@ -113,6 +113,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
     String new_result;
+    String stage1Hr1_1_EncounterUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,16 +140,19 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             edit_PatHist = intent.getStringExtra("edit_PatHist");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+//            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+//            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
 
-            if(edit_PatHist == null)
-                new_result = getPastMedicalVisitData();
+
+            //TODO: temporary..
+//            if(edit_PatHist == null)
+//                new_result = getPastMedicalVisitData();
         }
 
         boolean past = sessionManager.isReturning();
@@ -168,8 +172,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            Log.v(TAG, new_result);
-            textView.setText(Html.fromHtml(new_result));
+          //  Log.v(TAG, new_result); //TODO: temporary..
+           // textView.setText(Html.fromHtml(new_result)); //TODO: temporary..
 
 
 //            alertdialog.setMessage(getString(R.string.question_update_details));
@@ -382,9 +386,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+//            intent.putExtra("encounterUuidVitals", encounterVitals);
+//            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+//            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("gender", patientGender);
@@ -413,13 +417,15 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+//            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+//            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
+
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
 
@@ -436,8 +442,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     public boolean insertDb(String value) {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
-        obsDTO.setEncounteruuid(encounterAdultIntials);
+//        obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+//        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setConceptuuid(UuidDictionary.COMPANION);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(StringUtils.getValue(value));
         boolean isInserted = false;

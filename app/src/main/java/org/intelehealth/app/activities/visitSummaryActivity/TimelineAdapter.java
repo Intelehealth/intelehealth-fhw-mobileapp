@@ -36,9 +36,8 @@ import java.util.UUID;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewHolder> {
     Context context;
-    private String encounterAdultIntials, EncounterAdultInitial_LatestVisit, patientUuid, patientName, visitUuid;
+    private String patientUuid, patientName, visitUuid, stage1Hr1_1_EncounterUuid;
     ArrayList<String> timeList;
-    EncounterDTO encounterDTO;
 
     public TimelineAdapter(Context context, Intent intent, ArrayList<String> timeList, SessionManager sessionManager) {
         this.context = context;
@@ -46,29 +45,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             patientName = intent.getStringExtra("name");
-        }
-
-        if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
-            encounterAdultIntials = UUID.randomUUID().toString();
-        }
-
-        EncounterDAO encounterDAO = new EncounterDAO();
-        encounterDTO = new EncounterDTO();
-        encounterDTO.setUuid(encounterAdultIntials);
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-        encounterDTO.setVisituuid(visitUuid);
-        encounterDTO.setSyncd(false);
-        encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
-        encounterDTO.setVoided(0);
-        try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+            stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
         }
     }
 
@@ -120,8 +98,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     i1.putExtra("patientUuid", patientUuid);
                     i1.putExtra("name", patientName);
                     i1.putExtra("visitUuid", visitUuid);
-                    i1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    i1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    i1.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
                     context.startActivity(i1);
                 }
             });

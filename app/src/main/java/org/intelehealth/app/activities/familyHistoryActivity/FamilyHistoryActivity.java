@@ -101,6 +101,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     QuestionsAdapter adapter;
     String edit_FamHist = "";
     String new_result;
+    String stage1Hr1_1_EncounterUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,17 +125,20 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             state = intent.getStringExtra("state");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+          //  encounterVitals = intent.getStringExtra("encounterUuidVitals");
             edit_FamHist = intent.getStringExtra("edit_FamHist");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+//            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+//            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+
+            stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
             patientName = intent.getStringExtra("name");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_FamHist == null)
-                new_result = getFamilyHistoryVisitData();
+            //TODO: temporary..
+//            if(edit_FamHist == null)
+//                new_result = getFamilyHistoryVisitData();
         }
 
         boolean past = sessionManager.isReturning();
@@ -154,8 +158,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            Log.v(TAG, new_result);
-            textView.setText(Html.fromHtml(new_result));
+//            Log.v(TAG, new_result); //TODO: temporary..
+//            textView.setText(Html.fromHtml(new_result));
 
 
 //            alertdialog.setMessage(getString(R.string.question_update_details));
@@ -403,17 +407,21 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
             flag = false;
             sessionManager.setReturning(false);
-            Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
+           // Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
+            // TODO: For now commented Physical Exam screen....17-May-22
+            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+//            intent.putExtra("encounterUuidVitals", encounterVitals);
+//            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+//            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
+
             //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
@@ -424,8 +432,11 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     public boolean insertDb(String value) {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-        obsDTO.setEncounteruuid(encounterAdultIntials);
+//        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+//        obsDTO.setEncounteruuid(encounterAdultIntials);
+
+        obsDTO.setConceptuuid(UuidDictionary.PAINRELIEF);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
         boolean isInserted = false;

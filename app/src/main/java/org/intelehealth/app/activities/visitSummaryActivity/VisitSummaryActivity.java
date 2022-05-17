@@ -323,6 +323,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+    String stage1Hr1_1_EncounterUuid;
 
 
     @Override
@@ -475,15 +476,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             patientGender = intent.getStringExtra("gender");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+//            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+//            encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
+//            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
+            stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
+
+
 //            hasPrescription = intent.getStringExtra("hasPrescription");
 
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
@@ -846,12 +850,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
 
-        additionalDocumentImagesDownload();
+      //  additionalDocumentImagesDownload(); //TODO: temporary..
 
         //image download for physcialExamination documents
         physcialExaminationDownloadText.setPaintFlags(p.getColor());
         physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        physcialExaminationImagesDownload();
+      //  physcialExaminationImagesDownload(); //TODO: temporary..
 
 
         downloadButton.setEnabled(false);
@@ -919,6 +923,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         speciality_spinner.setEnabled(false);
 
 
+                    // Emergency/Priority - start
                     if (flag.isChecked()) {
                         try {
                             EncounterDAO encounterDAO = new EncounterDAO();
@@ -927,6 +932,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }
+                    // Emergency/Priority - end
+
                     if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                         String patientSelection = "uuid = ?";
                         String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -3365,7 +3372,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+           // String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+            String[] famHistArgs = {stage1Hr1_1_EncounterUuid, UuidDictionary.PAINRELIEF};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -3378,7 +3386,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+          //  String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            String[] medHistArgs = {stage1Hr1_1_EncounterUuid, UuidDictionary.COMPANION};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
@@ -3420,8 +3429,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-//adult intails display code
-        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
+        //adult intails display code
+        // TODO: Temporary....
+     /*   String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
         String[] encounterargs = {encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
         try {
@@ -3437,7 +3447,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         } catch (SQLException sql) {
             FirebaseCrashlytics.getInstance().recordException(sql);
-        }
+        }*/
 
         downloadPrescriptionDefault();
         downloadDoctorDetails();

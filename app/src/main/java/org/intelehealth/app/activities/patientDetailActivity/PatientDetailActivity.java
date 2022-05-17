@@ -185,6 +185,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+    List<String> encounterTypeUUIDListFor12Encounters = new ArrayList<>();
+    String stage1Hr1_1_EncounterUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,7 +286,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // extract both FH and PMH
                 SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
                 SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
-                Log.v(TAG, "timelne_time: " + timeLineTime);
+
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
                 String timeLineTimeValue = timeLineTime.format(todayDate);
@@ -364,10 +366,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     patientfullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 }
                 // end...
-                intent2.putExtra("patientUuid", patientUuid);
 
+                // Visit is created when clicked on the New Visit button...
                 VisitDTO visitDTO = new VisitDTO();
-
                 visitDTO.setUuid(uuid);
                 visitDTO.setPatientuuid(patient_new.getUuid());
                 visitDTO.setStartdate(thisDate);
@@ -382,14 +383,44 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
+                // end - visit
 
-                // visitUuid = String.valueOf(visitLong);
-//                localdb.close();
+                // Create 12 Encounters for 12hrs initially itself when going to the Timeline screen...
+                // This first encounter will contain sync as FALSE as it is the current one and that the timeline has started...
+                boolean isInserted = false;
+                EncounterDAO eDAO = new EncounterDAO();
+                EncounterDTO eDTO = new EncounterDTO();
+
+                stage1Hr1_1_EncounterUuid = UUID.randomUUID().toString();
+                eDTO.setUuid(stage1Hr1_1_EncounterUuid);
+                eDTO.setVisituuid(uuid);
+                eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                eDTO.setProvideruuid(sessionManager.getProviderID());
+                eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid("Stage1_Hour1_1"));
+                eDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
+                eDTO.setVoided(0);
+
+                Log.d("DTO", "DTOcomp: " + eDTO.getProvideruuid());
+                try {
+                    isInserted = eDAO.createEncountersToDB(eDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                // This 23 ones would be created initially itself with sync = true so that they wont be pushed bt only created.
+                if(isInserted) {
+                    addIntoEncounterList23UUIDs();
+                    for (int i = 0; i < encounterTypeUUIDListFor12Encounters.size(); i++) {
+                        create23EncountersForTimeline(uuid, encounterTypeUUIDListFor12Encounters.get(i));
+                    }
+                }
+                // end - Encounter
+
+
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("visitUuid", uuid);
                 intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
-                intent2.putExtra("encounterUuidAdultIntial", "");
-                intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+                intent2.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("patientNameTimeline", patientfullName);
                 intent2.putExtra("gender", mGender);
@@ -402,6 +433,55 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 //        LoadFamilyMembers();
 
+    }
+
+    // Create all the 24 encounters at once...
+    private void create23EncountersForTimeline(String uuid, String encounterTypeUUIDValue) {
+        EncounterDAO eDAO = new EncounterDAO();
+        EncounterDTO eDTO = new EncounterDTO();
+
+        eDTO.setUuid(UUID.randomUUID().toString());
+        eDTO.setVisituuid(uuid);
+        eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        eDTO.setProvideruuid(sessionManager.getProviderID());
+        eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid(encounterTypeUUIDValue));
+        eDTO.setSyncd(true); // so that this 23 encounters are just created but not pushed to the payload...
+        eDTO.setVoided(0);
+
+        Log.d("DTO", "DTOcomp: " + eDTO.getProvideruuid());
+        try {
+            eDAO.createEncountersToDB(eDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+    }
+
+    // Add this 12 into the arraylist and then pass this arraylist to the function so as to optimize code and reduce no of lines...
+    private void addIntoEncounterList23UUIDs() {
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour1_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour2_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour2_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour3_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour3_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour4_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour4_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour5_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour5_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour6_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour6_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour7_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour7_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour8_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour8_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour9_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour9_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour10_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour10_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour11_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour11_2");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour12_1");
+        encounterTypeUUIDListFor12Encounters.add("Stage1_Hour12_2");
     }
 
 //    private void LoadFamilyMembers() {

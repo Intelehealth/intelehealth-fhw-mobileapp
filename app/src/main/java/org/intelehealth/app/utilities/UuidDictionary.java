@@ -70,4 +70,7 @@ public class UuidDictionary {
     public static final String RATING = "78284507-fb71-4354-9b34-046ab205e18f";
     public static final String COMMENTS = "36d207d6-bee7-4b3e-9196-7d053c6eddce";
 
+    // TimeLine Concept Obs UUIDs...
+    public static final String COMPANION = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String PAINRELIEF = "9d313f72-538f-11e6-9cfe-86f436325720";
 }
