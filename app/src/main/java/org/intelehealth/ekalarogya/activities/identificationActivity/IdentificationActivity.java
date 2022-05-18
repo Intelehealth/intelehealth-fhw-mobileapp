@@ -1079,7 +1079,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------------change gujrati language---------------
-                        occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("[વર્ણન કરો]"));
                     } else {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
                     }
@@ -1274,7 +1274,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------replace with gujrati
-                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
+                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("અન્ય[દાખલ કરો]"));
                     } else {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
                     }
@@ -1330,7 +1330,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------replace with gujrati
-                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
+                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("અન્ય [દાખલ કરો]"));
                     } else {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                     }

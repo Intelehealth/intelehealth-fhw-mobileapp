@@ -598,7 +598,6 @@
     <string name="identification_screen_prompt_village">ଗାଁ *</string>
     <string name="failed_initial_synced">ସତେଜ ବିଫଳ, ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ | ଦୟାକରି ଆପ୍ ପୁନ rest ଆରମ୍ଭ କରନ୍ତୁ |</string>
 
-
     <!--APPOINTMENT Module strings START -->
     <string name="book_appointment">Book Appointment</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
