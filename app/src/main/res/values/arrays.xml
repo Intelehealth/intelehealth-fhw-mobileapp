@@ -725,7 +725,49 @@
         <item>@string/no_religion</item>
     </string-array>
 
+    <string-array name="religion_hi">
+        <item>@string/select</item>
+        <item>@string/hindu</item>
+        <item>@string/muslim</item>
+        <item>@string/christian</item>
+        <item>@string/sikh</item>
+        <item>@string/buddhist_neo_buddhist</item>
+        <item>@string/jain</item>
+        <item>@string/jewish</item>
+        <item>@string/parsi_zoroastrian</item>
+        <item>@string/no_religion</item>
+    </string-array>
+
+    <string-array name="religion_or">
+        <item>@string/select</item>
+        <item>@string/hindu</item>
+        <item>@string/muslim</item>
+        <item>@string/christian</item>
+        <item>@string/sikh</item>
+        <item>@string/buddhist_neo_buddhist</item>
+        <item>@string/jain</item>
+        <item>@string/jewish</item>
+        <item>@string/parsi_zoroastrian</item>
+        <item>@string/no_religion</item>
+    </string-array>
+
     <string-array name="survey_caste_en">
+        <item>@string/select</item>
+        <item>@string/schedule_caste</item>
+        <item>@string/schedule_tribe</item>
+        <item>@string/survey_other_backward_caste</item>
+        <item>@string/survey_general</item>
+    </string-array>
+
+    <string-array name="survey_caste_hi">
+        <item>@string/select</item>
+        <item>@string/schedule_caste</item>
+        <item>@string/schedule_tribe</item>
+        <item>@string/survey_other_backward_caste</item>
+        <item>@string/survey_general</item>
+    </string-array>
+
+    <string-array name="survey_caste_or">
         <item>@string/select</item>
         <item>@string/schedule_caste</item>
         <item>@string/schedule_tribe</item>

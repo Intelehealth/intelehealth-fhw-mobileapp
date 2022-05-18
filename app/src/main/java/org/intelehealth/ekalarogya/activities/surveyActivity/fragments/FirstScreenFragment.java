@@ -4,6 +4,9 @@ import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivi
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getIndex;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getOtherStringEdit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyValue;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 
 import android.content.Context;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -61,6 +65,7 @@ public class FirstScreenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFirstScreenBinding.inflate(inflater, container, false);
         setListeners();
+        setAdapters();
         setData(patientUuid);
         return binding.getRoot();
     }
@@ -311,11 +316,17 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
+
+        String otherString = null;
+        if (binding.otherIncomeCheckbox.isChecked())
+            otherString = binding.otherSourcesOfIncomeEditText.getText().toString();
+
         patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(
                 binding.primarySourceOfIncomeCheckboxLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(otherString)
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -501,6 +512,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("religion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        value1 = getSurveyStrings(value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                         int position = getIndex(binding.religionDropDown, value1);
                         binding.religionDropDown.setSelection(position);
                     }
@@ -510,6 +522,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("caste")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
+                        value1 = getSurveyStrings(value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                         int position = getIndex(binding.casteDropDown, value1);
                         binding.casteDropDown.setSelection(position);
                     }
@@ -543,6 +556,11 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("primarySourceOfIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     setSelectedCheckboxes(binding.primarySourceOfIncomeCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                    binding.otherSourcesOfIncomeEditText.setText(null);
+                    if (value1.contains(updatedContext.getString(R.string.other_source_of_income_please_specify))) {
+                        String otherString = getOtherStringEdit(value1);
+                        binding.otherSourcesOfIncomeEditText.setText(otherString);
+                    }
                 }
 
                 // electricityStatus
@@ -644,5 +662,32 @@ public class FirstScreenFragment extends Fragment {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
+    }
+
+    private void setAdapters() {
+        ArrayAdapter<CharSequence> religionAdapter = null, casteAdapter = null;
+        // Religion ArrayAdapter
+        try {
+            String religionLanguage = "religion_" + sessionManager.getAppLanguage();
+            int religionId = getResources().getIdentifier(religionLanguage, "array", requireContext().getPackageName());
+            if (religionId != 0) {
+                religionAdapter = ArrayAdapter.createFromResource(requireContext(), religionId, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.religionDropDown.setAdapter(religionAdapter);
+        } catch (Exception e) {
+            Logger.logE("FirstScreenFragment", "#648", e);
+        }
+
+        // Caste ArrayAdapter
+        try {
+            String casteLanguage = "survey_caste_" + sessionManager.getAppLanguage();
+            int casteId = getResources().getIdentifier(casteLanguage, "array", requireContext().getPackageName());
+            if (casteId != 0) {
+                casteAdapter = ArrayAdapter.createFromResource(requireContext(), casteId, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.casteDropDown.setAdapter(casteAdapter);
+        } catch (Exception e) {
+            Logger.logE("FirstScreenFragment", "#648", e);
+        }
     }
 }

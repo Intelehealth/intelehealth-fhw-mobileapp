@@ -19,6 +19,7 @@ import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -1766,7 +1767,7 @@ public final class StringUtils {
         return selectedCheckboxes == 0;
     }
 
-    public static String getSelectedCheckboxes(ViewGroup viewGroup, Context context, Context updatedContext, String locale) {
+    public static String getSelectedCheckboxes(ViewGroup viewGroup, Context context, Context updatedContext, String locale, String otherString) {
         if (viewGroup == null)
             return null;
 
@@ -1775,11 +1776,17 @@ public final class StringUtils {
         JSONArray result = new JSONArray();
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View childAt = viewGroup.getChildAt(i);
-            if (childAt instanceof CheckBox) {
-                if (((CheckBox) childAt).isChecked()) {
-                    text = getSurveyStrings(((CheckBox) childAt).getText().toString(), context, updatedContext, locale);
-                    result.put(text);
+            if (childAt instanceof CheckBox && ((CheckBox) childAt).isChecked()) {
+                text = getSurveyStrings(((CheckBox) childAt).getText().toString(), context, updatedContext, locale);
+
+                // Handling cases when the user selects any string which relates to Other
+                if (text.equalsIgnoreCase(updatedContext.getString(R.string.other_source_of_income_please_specify))
+                        || text.equalsIgnoreCase(updatedContext.getString(R.string.other_specify))
+                        || text.equalsIgnoreCase(updatedContext.getString(R.string.other_reasons_specify))
+                ) {
+                    text = text.concat(" : " + otherString);
                 }
+                result.put(text);
             }
         }
 
@@ -2263,4 +2270,11 @@ public final class StringUtils {
         return text;
     }
 
+    public static String getOtherStringEdit(String text) {
+        String result = "-";
+        int colonIndex = text.lastIndexOf(":");
+        int quoteIndex = text.lastIndexOf("\"");
+        result = text.substring(colonIndex + 1, quoteIndex);
+        return result.trim();
+    }
 }

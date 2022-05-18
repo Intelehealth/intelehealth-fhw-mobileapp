@@ -980,7 +980,7 @@
     <string name="eggs">Eggs</string>
     <string name="flesh_food">Flesh Food (Meat, chicken, fish etc.)</string>
     <string name="any_vegetables">Any Vegetables</string>
-    <string name="surveyDialogTitle">Saved Successful</string>
+    <string name="surveyDialogTitle">Saved</string>
     <string name="surveyDialogMessage">Survey added successfully</string>
     <string name="start_household_survey">Start Household Survey</string>
     <string name="what_is_your_relationship_with_the_head_of_household">What is your relationship with the head of household?</string>

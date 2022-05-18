@@ -244,7 +244,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="4sp"
                     android:paddingEnd="4sp"
-                    android:text="@string/electric"
+                    android:text="@string/electricity"
                     android:textSize="13sp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox

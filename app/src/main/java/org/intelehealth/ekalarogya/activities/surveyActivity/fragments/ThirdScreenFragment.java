@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.surveyActivity.fragments;
 import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getOtherStringEdit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSelectedCheckboxes;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyValue;
@@ -156,7 +157,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.householdCookingFuelCheckboxLinearLayout,
                 requireActivity(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherSourcesOfFuelEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -169,7 +171,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.mainSourceOfLightingCheckboxLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherSourcesOfLightingEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -182,7 +185,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherSourcesOfDrinkingWaterEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -216,7 +220,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.householdMakeSafeWaterCheckboxLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherWaysOfPurifyingWaterEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -229,7 +234,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.familyToiletFacilityCheckboxLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherToiletFacilityEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -255,7 +261,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.reasonForOpenDefecationCheckboxLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherOpenDefecationEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -268,7 +275,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.handWashOccasionLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                getSurveyValue(binding.otherHandWashOccasionEditText.getText().toString())
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -281,7 +289,8 @@ public class ThirdScreenFragment extends Fragment {
                 binding.foodCookedInTwentyFourHoursLinearLayout,
                 requireContext(),
                 updatedContext,
-                sessionManager.getAppLanguage()
+                sessionManager.getAppLanguage(),
+                "-"
         ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -331,6 +340,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherSourcesOfFuelEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_specify)))
+                            binding.otherSourcesOfFuelEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
@@ -339,6 +351,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherSourcesOfLightingEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_specify)))
+                            binding.otherSourcesOfLightingEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
@@ -347,6 +362,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherSourcesOfDrinkingWaterEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_specify)))
+                            binding.otherSourcesOfDrinkingWaterEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
@@ -371,6 +389,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherWaysOfPurifyingWaterEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_specify)))
+                            binding.otherWaysOfPurifyingWaterEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
@@ -379,6 +400,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherToiletFacilityEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_specify)))
+                            binding.otherToiletFacilityEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
@@ -395,6 +419,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherOpenDefecationEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_reasons_specify)))
+                            binding.otherOpenDefecationEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
@@ -403,6 +430,9 @@ public class ThirdScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         setSelectedCheckboxes(binding.handWashOccasionLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
+                        binding.otherHandWashOccasionEditText.setText(null);
+                        if (value1.contains(updatedContext.getString(R.string.other_specify)))
+                            binding.otherHandWashOccasionEditText.setText(getOtherStringEdit(value1));
                     }
                 }
 
