@@ -856,7 +856,6 @@
     <string name="ten_twenty_five_thousand">10,000 – 25,000</string>
     <string name="more_than_twenty_five_thousand">25,000 से अधिक</string>
     <string name="average_expenditure_on_education">शिक्षा पर वार्षिक व्यय</string>
-    <string name="prev">Prev</string>
 
     <!--    SURVEY SCREEN - 4 -->
     <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">क्या इस घर के किसी सदस्य का बैंक खाता या डाकघर खाता है?</string>
@@ -949,6 +948,11 @@
     <string name="eggs">अंडे</string>
     <string name="flesh_food">मांस भोजन (मांस, चिकन, मछली आदि।)</string>
     <string name="any_vegetables">कोई भी सब्जियां</string>
+    <string name="surveyDialogTitle">संरक्षित हो गया</string>
+    <string name="surveyDialogMessage">सर्वेक्षण सफलतापूर्वक जोड़ा गया</string>
+    <string name="start_household_survey">परिवार का  सर्वेक्षण शुरू करें</string>
+    <string name="submit">प्रस्तुत करें</string>
+    <string name="prev">पहले का</string>
 
     <!--    SURVEY SCREEN - 6 -->
     <string name="distance_to_sub_centre_in_walking_time">उप-स्वास्थ्य केंद्र से दूरी (पैदल चलने में)</string>
