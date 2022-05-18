@@ -378,7 +378,7 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.householdToiletRadioGroup.findViewById(binding.householdToiletRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                 requireContext(),
                 updatedContext,
                 sessionManager.getAppLanguage()
