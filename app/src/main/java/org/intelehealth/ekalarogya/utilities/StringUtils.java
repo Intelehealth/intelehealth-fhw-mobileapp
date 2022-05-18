@@ -1786,7 +1786,7 @@ public final class StringUtils {
         return result.toString();
     }
 
-    public static void setSelectedCheckboxes(ViewGroup viewGroup, String text) {
+    public static void setSelectedCheckboxes(ViewGroup viewGroup, String text, Context context, Context updatedContext, String locale) {
         if (viewGroup == null)
             return;
 
@@ -1794,14 +1794,12 @@ public final class StringUtils {
             View childAt = viewGroup.getChildAt(i);
             if (childAt instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) childAt;
-                if (text.contains(checkBox.getText().toString())) {
-                    checkBox.setChecked(true);
-                }
+                checkBox.setChecked(text.contains(getSurveyStrings(checkBox.getText().toString(), updatedContext, context, locale)));
             }
 
             if (childAt instanceof RadioButton) {
                 RadioButton radioButton = (RadioButton) childAt;
-                if (text.contains(radioButton.getText().toString())) {
+                if (text.contains(getSurveyStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
                     radioButton.setChecked(true);
                     break;
                 }
@@ -1819,8 +1817,8 @@ public final class StringUtils {
 
     public static String getSurveyStrings(String text, Context context, Context updatedContext, String locale) {
         text = getSurveyValue(text);
-        // If the app language is in English, only in that case will the strings be translated.
-        if (locale.equalsIgnoreCase("hi") || locale.equalsIgnoreCase("or")) {
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
             // Translate string Pucca to English
             if (context.getString(R.string.pucca).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.pucca);
@@ -2227,7 +2225,7 @@ public final class StringUtils {
             }
             // Translate string Before Eating to English
             if (context.getString(R.string.before_eating).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.before_cooking);
+                return updatedContext.getString(R.string.before_eating);
             }
             // Translate string After Using Toilet to English
             if (context.getString(R.string.after_using_toilet).equalsIgnoreCase(text)) {

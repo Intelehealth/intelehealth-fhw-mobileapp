@@ -219,7 +219,7 @@ public class SecondScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("bankorPostOfficeAccountStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.bankOrPostOfficeAccountRadioGroup, value1);
+                        setSelectedCheckboxes(binding.bankOrPostOfficeAccountRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -227,7 +227,7 @@ public class SecondScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("bplCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.bplRadioGroup, value1);
+                        setSelectedCheckboxes(binding.bplRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -235,7 +235,7 @@ public class SecondScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("antodayaCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.antodayaRadioGroup, value1);
+                        setSelectedCheckboxes(binding.antodayaRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -243,7 +243,7 @@ public class SecondScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("rsbyCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.rsbyRadioGroup, value1);
+                        setSelectedCheckboxes(binding.rsbyRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -251,7 +251,7 @@ public class SecondScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("mgnregaCardStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.mgnregaRadioGroup, value1);
+                        setSelectedCheckboxes(binding.mgnregaRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
             } while (idCursor1.moveToNext());

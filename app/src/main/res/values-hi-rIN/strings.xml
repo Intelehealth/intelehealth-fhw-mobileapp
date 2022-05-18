@@ -913,9 +913,9 @@
     <string name="use_alum">फिटकरी  का उपयोग करें</string>
     <string name="add_bleach_chlorine_tablets_drops">ब्लीच/क्लोरीन की गोलियां/बूंदें जोड़ें</string>
     <string name="strain_through_a_cloth">कपड़े के माध्यम से तनाव</string>
-    <string name="use_water_filter_ceramic_sand_composite_etc">Use Water Filter (Ceramic or Sand or Composite, etc.)</string>
-    <string name="use_electronic_purifier">Use Electronic Purifier</string>
-    <string name="let_it_stand_and_settle">Let It Stand And Settle</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">पानी फिल्टर का उपयोग करते है (सिरेमिक/रेत/समग्र/ईटीसी।)</string>
+    <string name="use_electronic_purifier">इलेक्ट्रॉनिक फ़िल्टर का उपयोग करते है</string>
+    <string name="let_it_stand_and_settle">इसे खड़े रहने दें और व्यवस्थित करें</string>
     <string name="flush_to_piped_sewer_system">पाइप्ड सीवर सिस्टम के लिए फ्लश</string>
     <string name="flush_to_septic_tank">फ्लश टू सेप्टिक टैंक</string>
     <string name="flush_to_pit_latrine">शौचालय गड्ढा करने के लिए फ्लश</string>
@@ -942,13 +942,13 @@
     <string name="before_eating">खाने से पहले</string>
     <string name="after_using_toilet">शौचालय का उपयोग करने के बाद</string>
     <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">आपके घर में पिछले 24 घंटों में किस तरह का खाना बनाया/बनाया गया था?</string>
-    <string name="starch_staple_food">स्टार्च प्रधान भोजन\n(चावल, रोटी, ब्रेड, दबा हुआ चावल, मुरी, आलू, शकरकंद, अरबी, कसावा, केला, कोई अन्य जड़ और कंद, नूडल्स, पास्ता)</string>
-    <string name="beans_and_peas">सेम और मटर\n(बीन्स, मटर, मूंग दाल, चना दाल, अरहर दाल, उड़द दाल, राजमा, दाल, अन्य दाल और सोयाबीन, सीम, सरसों)</string>
-    <string name="nuts_and_cheese">दाने और बीज\n(मूंगफली, खुबानी, बादाम, पिस्ता, नारियल, तिल के बीज, कमल के बीज, कटहल के बीज, काजू, अखरोट, सरसों के बीज, सूरजमुखी के बीज, कद्दू के बीज)</string>
-    <string name="dairy">डेयरी\n(दूध - गाय/बकरी/भैंस, पाउडर दूध, तरल पैकेट दूध, दही, पनीर, सेवई, खीर, मिठाई, मक्खन, घी)</string>
+    <string name="starch_staple_food">स्टार्च प्रधान भोजन (चावल, रोटी, ब्रेड, दबा हुआ चावल, मुरी, आलू, शकरकंद, अरबी, कसावा, केला, कोई अन्य जड़ और कंद, नूडल्स, पास्ता)</string>
+    <string name="beans_and_peas">सेम और मटर (बीन्स, मटर, मूंग दाल, चना दाल, अरहर दाल, उड़द दाल, राजमा, दाल, अन्य दाल और सोयाबीन, सीम, सरसों)</string>
+    <string name="nuts_and_cheese">दाने और बीज (मूंगफली, खुबानी, बादाम, पिस्ता, नारियल, तिल के बीज, कमल के बीज, कटहल के बीज, काजू, अखरोट, सरसों के बीज, सूरजमुखी के बीज, कद्दू के बीज)</string>
+    <string name="dairy">डेयरी (दूध - गाय/बकरी/भैंस, पाउडर दूध, तरल पैकेट दूध, दही, पनीर, सेवई, खीर, मिठाई, मक्खन, घी)</string>
     <string name="eggs">अंडे</string>
     <string name="flesh_food">मांस भोजन (मांस, चिकन, मछली आदि।)</string>
-    <string name="any_vegetables">G. कोई भी सब्जियां</string>
+    <string name="any_vegetables">कोई भी सब्जियां</string>
 
     <!--    SURVEY SCREEN - 6 -->
     <string name="distance_to_sub_centre_in_walking_time">उप-स्वास्थ्य केंद्र से दूरी (पैदल चलने में)</string>

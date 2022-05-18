@@ -330,7 +330,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("cookingFuel")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, value1);
+                        setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -338,7 +338,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("householdLighting")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, value1);
+                        setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -346,7 +346,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("sourceOfDrinkingWater")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout, value1);
+                        setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -362,7 +362,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("waterTreatment")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.treatWaterRadioGroup, value1);
+                        setSelectedCheckboxes(binding.treatWaterRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -370,7 +370,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("saferWaterMethods")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout, value1);
+                        setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -378,7 +378,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("toiletFacility")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout, value1);
+                        setSelectedCheckboxes(binding.familyToiletFacilityCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -386,7 +386,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("defecatedInOpen")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.openDefecationRadioGroup, value1);
+                        setSelectedCheckboxes(binding.openDefecationRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -394,7 +394,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("reasonForOpenDefecation")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout, value1);
+                        setSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -402,7 +402,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("soapHandWashingOccasion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.handWashOccasionLinearLayout, value1);
+                        setSelectedCheckboxes(binding.handWashOccasionLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -410,7 +410,7 @@ public class ThirdScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHours")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, value1);
+                        setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 

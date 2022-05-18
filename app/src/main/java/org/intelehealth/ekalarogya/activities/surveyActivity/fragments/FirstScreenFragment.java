@@ -485,7 +485,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("householdStructureType")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdStructureRadioGroup, value1);
+                        setSelectedCheckboxes(binding.householdStructureRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -542,14 +542,14 @@ public class FirstScreenFragment extends Fragment {
                 // primarySourceOfIncome
                 if (name.equalsIgnoreCase("primarySourceOfIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    setSelectedCheckboxes(binding.primarySourceOfIncomeCheckboxLinearLayout, value1);
+                    setSelectedCheckboxes(binding.primarySourceOfIncomeCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                 }
 
                 // electricityStatus
                 if (name.equalsIgnoreCase("electricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdElectricityRadioGroup, value1);
+                        setSelectedCheckboxes(binding.householdElectricityRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -573,7 +573,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("householdToiletStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdToiletRadioGroup, value1);
+                        setSelectedCheckboxes(binding.householdToiletRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -581,7 +581,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("runningWaterAvailability")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, value1);
+                        setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -605,7 +605,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("cultivableLandOwned")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.cultivableLandRadioGroup, value1);
+                        setSelectedCheckboxes(binding.cultivableLandRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -613,7 +613,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("unitsOfCultivableLand")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.unitsRadioGroup, value1);
+                        setSelectedCheckboxes(binding.unitsRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -621,7 +621,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("averageAnnualHouseholdIncome")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.averageAnnualHouseholdIncomeRadioGroup, value1);
+                        setSelectedCheckboxes(binding.averageAnnualHouseholdIncomeRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -629,7 +629,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("averageExpenditureOnHealth")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.annualHealthExpenditureRadioGroup, value1);
+                        setSelectedCheckboxes(binding.annualHealthExpenditureRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -637,7 +637,7 @@ public class FirstScreenFragment extends Fragment {
                 if (name.equalsIgnoreCase("averageExpenditureOnEducation")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.educationExpenditureRadioGroup, value1);
+                        setSelectedCheckboxes(binding.educationExpenditureRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
