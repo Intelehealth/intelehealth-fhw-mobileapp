@@ -8,12 +8,15 @@ import android.content.Intent;
 import androidx.appcompat.app.AlertDialog;
 
 import android.os.Build;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -65,6 +68,7 @@ import org.intelehealth.ekalarogya.activities.complaintNodeActivity.CustomArrayA
  */
 public class Node implements Serializable {
 
+    private String validation = ""; // MAX_TODAY , MIN_TODAY
     private String id;
     private String text;
     private String display;
@@ -146,6 +150,7 @@ public class Node implements Serializable {
     public Node(JSONObject jsonNode) {
         try {
             //this.id = jsonNode.getString("id");
+            this.validation = jsonNode.optString("validation");
 
             this.text = jsonNode.getString("text");
 
@@ -598,13 +603,25 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
                 } else {
-                    node.addLanguage(dialogEditText.getText().toString());
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    node.setSelected(false);
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
                 }
-                node.setSelected(true);
+
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -612,10 +629,30 @@ public class Node implements Serializable {
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                } else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.cancel();
             }
         });
         AlertDialog dialog = textInput.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1161,7 +1198,6 @@ public class Node implements Serializable {
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
-
                         if (!dateString.equalsIgnoreCase("")) {
                             if (node.getLanguage().contains("_")) {
                                 node.setLanguage(node.getLanguage().replace("_", dateString));
@@ -1183,16 +1219,36 @@ public class Node implements Serializable {
                                 }
                             }
                         }
+
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+            }
+        });
         datePickerDialog.setTitle(R.string.question_date_picker);
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        if (node.validation.equals("MAX_TODAY")) {
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        }
+        datePickerDialog.setCanceledOnTouchOutside(false);
+        datePickerDialog.setCancelable(false);
         datePickerDialog.show();
     }
-
     public void generatePopUp(final Activity context) {
 
         HashSet<String> messages = new HashSet<String>();
@@ -1293,14 +1349,26 @@ public class Node implements Serializable {
                 String value = String.valueOf(numberPicker.getValue());*/
                 String value = et_enter_value.getText().toString();
 
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", value));
+                if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                    } else {
+                        node.addLanguage(et_enter_value.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
                 } else {
-                    node.addLanguage(" " + value);
-                    node.setText(value);
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    node.setSelected(false);
+                    //} else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
                 }
-                node.setSelected(true);
+               // node.setSelected(true);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
 
                 dialog.dismiss();
@@ -1309,11 +1377,30 @@ public class Node implements Serializable {
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                    } else {
+                        node.addLanguage(et_enter_value.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                } else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
-
             }
         });
         AlertDialog dialog = numberDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1503,6 +1590,31 @@ public class Node implements Serializable {
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
+
+        EditText input = findInput(quantityPicker);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable.toString().length() != 0) {
+                    Integer value = Integer.parseInt(editable.toString());
+                    if (value >= quantityPicker.getMinValue())
+                        quantityPicker.setValue(value);
+                }
+            }
+        };
+
+        input.addTextChangedListener(textWatcher);
         durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1516,14 +1628,28 @@ public class Node implements Serializable {
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                if (quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
                 } else {
-                    node.addLanguage(" " + durationString);
-                    node.setText(durationString);
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    if (node.isRequired()) {
+                        node.setSelected(false);
+                    } else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                    }
                 }
-                node.setSelected(true);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1531,11 +1657,34 @@ public class Node implements Serializable {
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = durationDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private static EditText findInput(ViewGroup np) {
+        int count = np.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View child = np.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findInput((ViewGroup) child);
+            } else if (child instanceof EditText) {
+                return (EditText) child;
+            }
+        }
+        return null;
     }
 
     private static String hi_en(String unit) {
@@ -1606,13 +1755,18 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                if (dialogEditText.getText().toString().trim().isEmpty()) {
+                    node.setSelected(false);
                 } else {
-                    node.addLanguage(dialogEditText.getText().toString());
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
                 }
-                node.setSelected(true);
+
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1620,10 +1774,13 @@ public class Node implements Serializable {
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.notifyDataSetChanged();
                 dialog.cancel();
             }
         });
         AlertDialog dialog = textInput.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1652,8 +1809,27 @@ public class Node implements Serializable {
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+                node.setSelected(false);
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+        });
         datePickerDialog.setTitle(R.string.question_date_picker);
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+
+        if (node.validation.equals("MAX_TODAY")) {
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        }
         datePickerDialog.show();
     }
 
@@ -1675,14 +1851,20 @@ public class Node implements Serializable {
                 //numberPicker.setValue(numberPicker.getValue());
                 // String value = String.valueOf(numberPicker.getValue());
                 String value = et_enter_value.getText().toString();
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", value));
+                if (value.trim().isEmpty()) {
+                    node.setSelected(false);
                 } else {
-                    node.addLanguage(" " + value);
-                    node.setText(value);
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", value));
+                    } else {
+                        node.addLanguage(" " + value);
+                        node.setText(value);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
                 }
-                node.setSelected(true);
+
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1690,11 +1872,13 @@ public class Node implements Serializable {
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
-
             }
         });
         AlertDialog dialog = numberDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1916,6 +2100,32 @@ public class Node implements Serializable {
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
+
+        EditText input = findInput(quantityPicker);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable.toString().length() != 0) {
+                    Integer value = Integer.parseInt(editable.toString());
+                    if (value >= quantityPicker.getMinValue())
+                        quantityPicker.setValue(value);
+                }
+            }
+        };
+
+        input.addTextChangedListener(textWatcher);
+
         durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1929,15 +2139,28 @@ public class Node implements Serializable {
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
-
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                if (quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
                 } else {
-                    node.addLanguage(" " + durationString);
-                    node.setText(durationString);
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    if (node.isRequired()) {
+                        node.setSelected(false);
+                    } else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                    }
                 }
-                node.setSelected(true);
+                //adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1945,6 +2168,16 @@ public class Node implements Serializable {
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });

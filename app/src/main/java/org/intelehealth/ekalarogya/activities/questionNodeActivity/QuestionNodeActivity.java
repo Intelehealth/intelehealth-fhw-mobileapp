@@ -82,7 +82,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager = null;
     private float float_ageYear_Month;
 
-
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
     String mFileName = "knowledge.json"; //knowledge engine file
@@ -109,7 +108,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private JSONArray assoSympArr = new JSONArray();
     private JSONObject finalAssoSympObj = new JSONObject();
     ScrollingPagerIndicator recyclerViewIndicator;
-
 
     FloatingActionButton fab;
     RecyclerView question_recyclerView;
