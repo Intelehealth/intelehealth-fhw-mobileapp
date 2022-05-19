@@ -102,7 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory, patientHistoryHindi;
+    String patientHistory, patientHistoryHindi, patientHistoryOdiya;
     String phistory = "";
 
     boolean flag = false;
@@ -360,6 +360,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         //If nothing is selected, there is nothing to put into the database.
         patientHistory="";
         patientHistoryHindi="";
+        patientHistoryOdiya="";
         List<String> imagePathList = patientHistoryMap.getImagePathList();
 
         if (imagePathList != null) {
@@ -371,10 +372,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         if (intentTag != null && intentTag.equals("edit")) {
             if (patientHistoryMap.anySubSelected()) {
                 patientHistory = patientHistoryMap.generateLanguage();
-                if(!patientHistory.isEmpty() && !patientHistory.contains(" - <br/>")) {
+                //String []arr=patientHistory.split(" - <br/>");
+                if(!patientHistory.isEmpty() && !patientHistory.endsWith(" - <br/>")) {
                     if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                         patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                         ConfirmationDialog(patientHistory, patientHistoryHindi);
+                    }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                        patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
+                        ConfirmationDialog(patientHistory, patientHistoryOdiya);
                     } else {
                         ConfirmationDialog(patientHistory, patientHistory);
                     }
@@ -382,7 +387,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 //updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
             }
 
-            if(patientHistory.isEmpty() || patientHistory.contains(" - <br/>")) {
+            if(patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
                 patientHistory="";
                 updateDatabase(patientHistory);
                 Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
@@ -400,15 +405,18 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         } else {
             //if(patientHistoryMap.anySubSelected()){
             patientHistory = patientHistoryMap.generateLanguage();
-            if(patientHistory!=null && !patientHistory.isEmpty() && !patientHistory.contains(" - <br/>")) {
+            if(patientHistory!=null && !patientHistory.isEmpty() && !patientHistory.endsWith(" - <br/>")) {
                 if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                     patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                     ConfirmationDialog(patientHistory, patientHistoryHindi);
+                }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                    patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
+                    ConfirmationDialog(patientHistory, patientHistoryOdiya);
                 } else {
                     ConfirmationDialog(patientHistory, patientHistory);
                 }
             }else {
-                if (patientHistory==null || patientHistory.isEmpty() || patientHistory.contains(" - <br/>")) {
+                if (patientHistory==null || patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
                     patientHistory="";
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + patientHistory; // only PMH updated
@@ -439,6 +447,16 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     public void ConfirmationDialog(String patHist, String displayStr) {
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+
+        if (displayStr.contains("Yes [Describe]") || displayStr.contains("[Describe]") || displayStr.contains("[Describe]"))
+        {
+            displayStr.replaceAll("Yes [Describe]","");
+            displayStr.replaceAll("Other [Describe]","");
+            displayStr.replaceAll("[Describe]","");
+        }
+
+        displayStr=dateFormatForDisplay(displayStr);
+
         alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
         alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
             @Override
@@ -486,6 +504,51 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             confirmationAlertDialog.setCancelable(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, confirmationAlertDialog);
         }
+    }
+
+    public String dateFormatForDisplay(String displayStr) {
+        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi"))
+        {
+            displayStr=displayStr.replaceAll("Hours","घंटे")
+            .replaceAll("Days","दिन")
+            .replaceAll("Weeks","हफ्तों")
+            .replaceAll("Months","महीने")
+            .replaceAll("Years","वर्ष")
+
+            .replaceAll("Jan","जन")
+            .replaceAll("Feb","फ़र")
+            .replaceAll("Mar","मार्च")
+            .replaceAll("Apr","अप्रै")
+            .replaceAll("May","मई")
+            .replaceAll("Jun","जून")
+            .replaceAll("Jul","जुला")
+            .replaceAll("Aug","अग")
+            .replaceAll("Sep","सित")
+            .replaceAll("Oct","अक्टू")
+            .replaceAll("Nov","नव")
+            .replaceAll("Dec","दिस");
+        }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or"))
+        {
+            displayStr=displayStr.replaceAll("Hours","ଘଣ୍ଟା")
+            .replaceAll("Days","ଦିନଗୁଡିକ")
+            .replaceAll("Weeks","ସପ୍ତାହଗୁଡିକ")
+           .replaceAll("Months","ମାସଗୁଡିକ")
+            .replaceAll("Years","ବର୍ଷଗୁଡିକ")
+
+            .replaceAll("Jan","ଜାନ")
+            .replaceAll("Feb","ଫେବୃଆରୀ")
+            .replaceAll("Mar","ମାର୍")
+            .replaceAll("Apr","ଏପ୍ରିଲ୍")
+            .replaceAll("May","ହୋଇପାରେ")
+            .replaceAll("Jun","ଜୁନ୍")
+            .replaceAll("Jul","ଜୁଲ୍")
+            .replaceAll("Aug","ଅଗ")
+            .replaceAll("Sep","ସେପ୍ଟେମ୍ବର")
+            .replaceAll("Oct","ଅକ୍ଟୋବର")
+            .replaceAll("Nov","ନଭେମ୍ବର")
+            .replaceAll("Dec","ଡ଼ିସେ");
+        }
+        return displayStr;
     }
 
     /**

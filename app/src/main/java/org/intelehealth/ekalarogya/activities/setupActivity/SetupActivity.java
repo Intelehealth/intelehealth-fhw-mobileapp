@@ -656,7 +656,6 @@ public class SetupActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
         String admin_password = mAdminPasswordView.getText().toString();
 
-
         boolean cancel = false;
         View focusView = null;
 
@@ -1241,7 +1240,6 @@ public class SetupActivity extends AppCompatActivity {
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
