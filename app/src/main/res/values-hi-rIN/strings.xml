@@ -983,4 +983,18 @@
 
     <!--    SURVEY STRINGS - END -->
 
+    <!--    Occupation Strings -->
+    <string name="salaried_government_job">वेतनभोगी सरकारी नौकरी</string>
+    <string name="salaried_private_job">वेतनभोगी निजी नौकरी</string>
+    <string name="petty_business_shop_owner">छोटा व्यापार/दुकान का मालिक</string>
+    <string name="technician_craftsman_other_skilled_work">तकनीशियन/शिल्पकार/अन्य कुशल कार्य (चालक, राजमिस्त्री आदि)</string>
+    <string name="agricultural_farmer">कृषि</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">किराये की खेती / खेतिहर मजदूर</string>
+    <string name="daily_wage_worker_unskilled_workers">दैनिक वेतन भोगी (अकुशल कार्य)</string>
+    <string name="household_work">घर का काम</string>
+    <string name="student">छात्र</string>
+    <string name="unemployed">बेरोजगार</string>
+    <string name="retired_with_pension">सेवानिवृत्त (पेंशन के साथ)</string>
+    <string name="retired_without_pension">सेवानिवृत्त (पेंशन के बिना)</string>
+
 </resources>

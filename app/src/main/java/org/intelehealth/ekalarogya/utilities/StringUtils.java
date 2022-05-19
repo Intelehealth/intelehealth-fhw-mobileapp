@@ -2277,4 +2277,56 @@ public final class StringUtils {
         result = text.substring(colonIndex + 1, quoteIndex);
         return result.trim();
     }
+
+    public static String getOccupationString(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Salaried Government Job to English
+            if (context.getString(R.string.salaried_government_job).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.salaried_government_job);
+            }
+            // Translate string Salaried Private Job to English
+            if (context.getString(R.string.salaried_private_job).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.salaried_private_job);
+            }
+            // Translate string Technician or Craftsman or Other Skilled Work to English
+            if (context.getString(R.string.technician_craftsman_other_skilled_work).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.technician_craftsman_other_skilled_work);
+            }
+            // Translate string Agricultural Farmer to English
+            if (context.getString(R.string.agricultural_farmer).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.agricultural_farmer);
+            }
+            // Translate string Tenant Farmer to English
+            if (context.getString(R.string.tenant_farmer_agricultural_daily_wage_worker).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.tenant_farmer_agricultural_daily_wage_worker);
+            }
+            // Translate string Daily Wage Worker to English
+            if (context.getString(R.string.daily_wage_worker_unskilled_workers).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.daily_wage_worker_unskilled_workers);
+            }
+            // Translate string Household Work to English
+            if (context.getString(R.string.household_work).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.household_work);
+            }
+            // Translate string Student to English
+            if (context.getString(R.string.student).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.student);
+            }
+            // Translate string Unemployed to English
+            if (context.getString(R.string.unemployed).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.unemployed);
+            }
+            // Translate string Retired With Pension to English
+            if (context.getString(R.string.retired_with_pension).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.retired_with_pension);
+            }
+            // Translate string Retired Without Pension to English
+            if (context.getString(R.string.retired_without_pension).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.retired_without_pension);
+            }
+        }
+        return text;
+    }
 }

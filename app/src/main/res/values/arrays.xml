@@ -407,46 +407,81 @@
     </string-array>
 
     <!--    Hindi Occupation-->
+    <!--    <string-array name="occupation_spinner_hi">-->
+    <!--        <item>चुनते हैं</item>-->
+    <!--        <item>जवाब देने के लिए मना कर दिया</item>-->
+    <!--        <item>सरकारी नौकरी</item>-->
+    <!--        <item>बड़ा या मध्यम उद्योग</item>-->
+    <!--        <item>निजी क्षेत्र में नौकरी</item>-->
+    <!--        <item>छोटा उद्योग</item>-->
+    <!--        <item>बड़ी दूकान के मालिक</item>-->
+    <!--        <item>तकनीशियन</item>-->
+    <!--        <item>छोटे दूकान का मालिक</item>-->
+    <!--        <item>बड़ा किसान</item>-->
+    <!--        <item>दैनिक मजदूर</item>-->
+    <!--        <item>छोटे किसान/ दुसरे के खेत में काम करने वाले</item>-->
+    <!--        <item>बेरोजगार</item>-->
+    <!--        <item>ग्रहिणी</item>-->
+    <!--        <item>विद्यार्थी</item>-->
+    <!--        <item>5 साल से कम उम्र के बच्चे</item>-->
+    <!--        <item>अन्य कुशलता (ड्राईवर,राज मिस्त्री)</item>-->
+    <!--        &lt;!&ndash;        <item>वर्णन करे</item>&ndash;&gt;-->
+    <!--    </string-array>-->
+
+    <!--    Hindi Occupation-->
     <string-array name="occupation_spinner_hi">
-        <item>चुनते हैं</item>
-        <item>जवाब देने के लिए मना कर दिया</item>
-        <item>सरकारी नौकरी</item>
-        <item>बड़ा या मध्यम उद्योग</item>
-        <item>निजी क्षेत्र में नौकरी</item>
-        <item>छोटा उद्योग</item>
-        <item>बड़ी दूकान के मालिक</item>
-        <item>तकनीशियन</item>
-        <item>छोटे दूकान का मालिक</item>
-        <item>बड़ा किसान</item>
-        <item>दैनिक मजदूर</item>
-        <item>छोटे किसान/ दुसरे के खेत में काम करने वाले</item>
-        <item>बेरोजगार</item>
-        <item>ग्रहिणी</item>
-        <item>विद्यार्थी</item>
-        <item>5 साल से कम उम्र के बच्चे</item>
-        <item>अन्य कुशलता (ड्राईवर,राज मिस्त्री)</item>
-        <!--        <item>वर्णन करे</item>-->
+        <item>@string/select</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/other_specify</item>
     </string-array>
 
+    <!--    <string-array name="occupation_spinner_or">-->
+    <!--        <item>ଚୟନ କରନ୍ତୁ</item>-->
+    <!--        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>-->
+    <!--        <item>ସରକାରୀ ଚାକିରି</item>-->
+    <!--        <item>ମଧ୍ୟମ ଧରଣର ଶିଳ୍ପ ପାଇଁ ବଡ଼ ଆକାର</item>-->
+    <!--        <item>ବେସରକାରୀ କ୍ଷେତ୍ରରେ ବୃତ୍ତିଗତ କାର୍ଯ୍ୟ</item>-->
+    <!--        <item>କ୍ଷୁଦ୍ର ଶିଳ୍ପ</item>-->
+    <!--        <item>ବଡ ଦୋକାନ ମାଲିକ</item>-->
+    <!--        <item>ଟେକ୍ନିସିଆନ୍ / କାରିଗର</item>-->
+    <!--        <item>ଛୋଟ ଦୋକାନ ମାଲିକ</item>-->
+    <!--        <item>ବଡ଼ ଧରଣର କୃଷକ</item>-->
+    <!--        <item>ଦ Daily ନିକ ମଜୁରୀ</item>-->
+    <!--        <item>କ୍ଷୁଦ୍ର କୃଷକ / ଚାଷ ଶ୍ରମିକ</item>-->
+    <!--        <item>ବେକାର</item>-->
+    <!--        <item>ଗୃହିଣୀ</item>-->
+    <!--        <item>ଛାତ୍ର</item>-->
+    <!--        <item>5 ବର୍ଷରୁ କମ୍ ପିଲା</item>-->
+    <!--        <item>ଅନ୍ୟାନ୍ୟ କ skills ଶଳ (ଡ୍ରାଇଭର, ମସନ୍ ଇତ୍ୟାଦି)</item>-->
+    <!--        &lt;!&ndash;        <item>[Describe]</item>&ndash;&gt;-->
+    <!--    </string-array>-->
+
     <string-array name="occupation_spinner_or">
-        <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
-        <item>ସରକାରୀ ଚାକିରି</item>
-        <item>ମଧ୍ୟମ ଧରଣର ଶିଳ୍ପ ପାଇଁ ବଡ଼ ଆକାର</item>
-        <item>ବେସରକାରୀ କ୍ଷେତ୍ରରେ ବୃତ୍ତିଗତ କାର୍ଯ୍ୟ</item>
-        <item>କ୍ଷୁଦ୍ର ଶିଳ୍ପ</item>
-        <item>ବଡ ଦୋକାନ ମାଲିକ</item>
-        <item>ଟେକ୍ନିସିଆନ୍ / କାରିଗର</item>
-        <item>ଛୋଟ ଦୋକାନ ମାଲିକ</item>
-        <item>ବଡ଼ ଧରଣର କୃଷକ</item>
-        <item>ଦ Daily ନିକ ମଜୁରୀ</item>
-        <item>କ୍ଷୁଦ୍ର କୃଷକ / ଚାଷ ଶ୍ରମିକ</item>
-        <item>ବେକାର</item>
-        <item>ଗୃହିଣୀ</item>
-        <item>ଛାତ୍ର</item>
-        <item>5 ବର୍ଷରୁ କମ୍ ପିଲା</item>
-        <item>ଅନ୍ୟାନ୍ୟ କ skills ଶଳ (ଡ୍ରାଇଭର, ମସନ୍ ଇତ୍ୟାଦି)</item>
-        <!--        <item>[Describe]</item>-->
+        <item>@string/select</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/other_specify</item>
     </string-array>
 
     <string-array name="bank_account_spinner_en">
@@ -794,6 +829,63 @@
         <item>@string/not_stated</item>
     </string-array>
 
+    <string-array name="hoh_relationship_hi">
+        <item>@string/select</item>
+        <item>@string/spouse</item>
+        <item>@string/son_daughter</item>
+        <item>@string/grandchild</item>
+        <item>@string/father_mother</item>
+        <item>@string/father_mother_in_law</item>
+        <item>@string/brother_sister</item>
+        <item>@string/brother_sister_in_law</item>
+        <item>@string/niece_nephew</item>
+        <item>@string/grandparent_grandparent_in_law</item>
+        <item>@string/other_relative</item>
+        <item>@string/adopted_foster_stepchild</item>
+        <item>@string/domestic_servant</item>
+        <item>@string/other_not_related</item>
+        <item>@string/other_specify</item>
+        <item>@string/not_stated</item>
+    </string-array>
+
+    <string-array name="hoh_relationship_or">
+        <item>@string/select</item>
+        <item>@string/spouse</item>
+        <item>@string/son_daughter</item>
+        <item>@string/grandchild</item>
+        <item>@string/father_mother</item>
+        <item>@string/father_mother_in_law</item>
+        <item>@string/brother_sister</item>
+        <item>@string/brother_sister_in_law</item>
+        <item>@string/niece_nephew</item>
+        <item>@string/grandparent_grandparent_in_law</item>
+        <item>@string/other_relative</item>
+        <item>@string/adopted_foster_stepchild</item>
+        <item>@string/domestic_servant</item>
+        <item>@string/other_not_related</item>
+        <item>@string/other_specify</item>
+        <item>@string/not_stated</item>
+    </string-array>
+
+    <string-array name="hoh_relationship_gu">
+        <item>@string/select</item>
+        <item>@string/spouse</item>
+        <item>@string/son_daughter</item>
+        <item>@string/grandchild</item>
+        <item>@string/father_mother</item>
+        <item>@string/father_mother_in_law</item>
+        <item>@string/brother_sister</item>
+        <item>@string/brother_sister_in_law</item>
+        <item>@string/niece_nephew</item>
+        <item>@string/grandparent_grandparent_in_law</item>
+        <item>@string/other_relative</item>
+        <item>@string/adopted_foster_stepchild</item>
+        <item>@string/domestic_servant</item>
+        <item>@string/other_not_related</item>
+        <item>@string/other_specify</item>
+        <item>@string/not_stated</item>
+    </string-array>
+
     <string-array name="marital_status_en">
         <item>@string/select</item>
         <item>@string/currently_married</item>
@@ -803,9 +895,54 @@
         <item>@string/separated</item>
         <item>@string/deserted</item>
         <item>@string/never_married</item>
+        <item>@string/never_married</item>
+    </string-array>
+
+    <string-array name="marital_status_hi">
+        <item>@string/select</item>
+        <item>@string/currently_married</item>
+        <item>@string/married_gauna_not_performed</item>
+        <item>@string/widowed</item>
+        <item>@string/divorced</item>
+        <item>@string/separated</item>
+        <item>@string/deserted</item>
+        <item>@string/never_married</item>
+        <item>@string/never_married</item>
+    </string-array>
+
+    <string-array name="marital_status_or">
+        <item>@string/select</item>
+        <item>@string/currently_married</item>
+        <item>@string/married_gauna_not_performed</item>
+        <item>@string/widowed</item>
+        <item>@string/divorced</item>
+        <item>@string/separated</item>
+        <item>@string/deserted</item>
+        <item>@string/never_married</item>
+        <item>@string/never_married</item>
     </string-array>
 
     <string-array name="test_status_en">
+        <item>@string/select</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
+        <item>@string/between_one_month_to_three_months_ago</item>
+        <item>@string/between_three_months_to_six_months_ago</item>
+        <item>@string/more_than_six_months</item>
+    </string-array>
+
+    <string-array name="test_status_hi">
+        <item>@string/select</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
+        <item>@string/between_one_month_to_three_months_ago</item>
+        <item>@string/between_three_months_to_six_months_ago</item>
+        <item>@string/more_than_six_months</item>
+    </string-array>
+
+    <string-array name="test_status_or">
         <item>@string/select</item>
         <item>@string/never_checked</item>
         <item>@string/in_past_one_week</item>
