@@ -381,16 +381,16 @@ public final class StringUtils {
                 val = "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ";
                 break;
             case "No facility /uses open space or field":
-                val = "କ facility ଣସି ସୁବିଧା / ଖୋଲା ସ୍ଥାନ କିମ୍ବା କ୍ଷେତ୍ର ବ୍ୟବହାର କରେ ନାହିଁ";
+                val = "ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର";
                 break;
             case "Own toilet":
-                val = "ନିଜର ଶ et ଚାଳୟ";
+                val = "ନିଜର ଶୌଚାଳୟ";
                 break;
             case "Community toilet":
-                val = "ସମ୍ପ୍ରଦାୟ ଶ et ଚାଳୟ";
+                val = "ଗୋଷ୍ଠୀ ଶୌଚାଳୟ";
                 break;
             case "Shared toilet with other household":
-                val = "ଅନ୍ୟ ଘର ସହିତ ଶ toil ଚାଳୟ ଅଂଶୀଦାର";
+                val = "ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର";
                 break;
             case "Other [Enter]":
                 val = "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]";
@@ -458,16 +458,16 @@ public final class StringUtils {
             case "ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ":
                 val = "Declined to answer";
                 break;
-            case "କ facility ଣସି ସୁବିଧା / ଖୋଲା ସ୍ଥାନ କିମ୍ବା କ୍ଷେତ୍ର ବ୍ୟବହାର କରେ ନାହିଁ":
+            case "ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର":
                 val = "No facility /uses open space or field";
                 break;
-            case "ନିଜର ଶ et ଚାଳୟ":
+            case "ନିଜର ଶୌଚାଳୟ":
                 val = "Own toilet";
                 break;
-            case "ସମ୍ପ୍ରଦାୟ ଶ et ଚାଳୟ":
+            case "ଗୋଷ୍ଠୀ ଶୌଚାଳୟ":
                 val = "Community toilet";
                 break;
-            case "ଅନ୍ୟ ଘର ସହିତ ଶ toil ଚାଳୟ ଅଂଶୀଦାର":
+            case "ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର":
                 val = "Shared toilet with other household";
                 break;
             case "ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]":
@@ -845,7 +845,7 @@ public final class StringUtils {
             case "ବଡ଼ ଧରଣର କୃଷକ":
                 val = "Large scale farmer";
                 break;
-            case "ଦ Daily ନିକ ମଜୁରୀ":
+            case "ଦିନ ମଜୁରିଆ":
                 val = "Daily wage earner";
                 break;
             case "କ୍ଷୁଦ୍ର କୃଷକ / ଚାଷ ଶ୍ରମିକ":
@@ -863,7 +863,7 @@ public final class StringUtils {
             case "5 ବର୍ଷରୁ କମ୍ ପିଲା":
                 val = "Under 5 child";
                 break;
-            case "ଅନ୍ୟାନ୍ୟ କ skills ଶଳ (ଡ୍ରାଇଭର, ମସନ୍ ଇତ୍ୟାଦି)":
+            case "ଅନ୍ୟ କୌଶଳ/ତାଲିମ ପାଇଥିବା (ଡ଼୍ରାଇଭର , ମିସ୍ତ୍ରୀ ଇତ୍ୟାଦି)":
                 val = "Other skills (driver,mason etc)";
                 break;
             case "[ବର୍ଣ୍ଣନା କର]":
@@ -1004,7 +1004,7 @@ public final class StringUtils {
 
     public static String switch_or_en_mobile(String val) {
         switch (val) {
-            case "ମ Basic ଳିକ ଫୋନ୍":
+            case "ଛୋଟ ଫୋନ":
                 val = "Basic Phone";
                 break;
             case "ସ୍ମାର୍ଟଫୋନ୍":
@@ -1163,10 +1163,10 @@ public final class StringUtils {
 
     public static String switch_or_economic(String val) {
         switch (val) {
-            case "APL"://------replace with odiya
+            case "ଏପିଏଲ"://------replace with odiya
                 val = "APL";
                 break;
-            case "BPL":
+            case "ବିପିଏଲ":
                 val = "BPL";
                 break;
             default:
@@ -1275,10 +1275,10 @@ public final class StringUtils {
     public static String switch_or_economic_edit(String val) {
         switch (val) {
             case "APL":
-                val = "APL";//------replace with odiya
+                val = "ଏପିଏଲ";//------replace with odiya
                 break;
             case "BPL":
-                val = "BPL";
+                val = "ବିପିଏଲ";
                 break;
             default:
                 return val;
@@ -1442,7 +1442,7 @@ public final class StringUtils {
     public static String switch_or_mobiletype_edit(String val) {
         switch (val) {
             case "Basic Phone":
-                val = "ମ Basic ଳିକ ଫୋନ୍";
+                val = "ଛୋଟ ଫୋନ";
                 break;
             case "Smartphone":
                 val = "ସ୍ମାର୍ଟଫୋନ୍";
@@ -1943,7 +1943,7 @@ public final class StringUtils {
                 val = "ବଡ଼ ଧରଣର କୃଷକ";
                 break;
             case "Daily wage earner":
-                val = "ଦ Daily ନିକ ମଜୁରୀ";
+                val = "ଦିନ ମଜୁରିଆ";
                 break;
             case "Small scale farmer/farm worker":
                 val = "କ୍ଷୁଦ୍ର କୃଷକ / ଚାଷ ଶ୍ରମିକ";
@@ -1961,7 +1961,7 @@ public final class StringUtils {
                 val = "5 ବର୍ଷରୁ କମ୍ ପିଲା";
                 break;
             case "Other skills (driver,mason etc)":
-                val = "ଅନ୍ୟାନ୍ୟ କ skills ଶଳ (ଡ୍ରାଇଭର, ମସନ୍ ଇତ୍ୟାଦି)";
+                val = "ଅନ୍ୟ କୌଶଳ/ତାଲିମ ପାଇଥିବା (ଡ଼୍ରାଇଭର , ମିସ୍ତ୍ରୀ ଇତ୍ୟାଦି)";
                 break;
             case "[Describe]":
                 val = "[ବର୍ଣ୍ଣନା କର]";

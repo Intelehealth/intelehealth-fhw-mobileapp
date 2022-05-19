@@ -368,6 +368,16 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(TAG, "fabClick: update" + insertion);
+
+                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]"))
+                    {
+                        insertion=insertion.replaceAll("Yes [Describe]","")
+                                .replaceAll("Other [Describe]","")
+                                .replaceAll("[Describe]","");
+                    }
+
+                    insertion=Node.dateformate_hi_or_en(insertion,sessionManager);
+
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -385,6 +395,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     startActivity(intent);
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
+                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("[Describe]"))
+                    {
+                        insertion=insertion.replaceAll("Yes [Describe]","")
+                                .replaceAll("Other [Describe]","")
+                                .replaceAll("[Describe]","");
+                    }
+                    insertion=Node.dateformate_hi_or_en(insertion,sessionManager);
+
                     insertDb(insertion);
                     Intent intent = new Intent
                             (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);

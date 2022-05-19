@@ -159,8 +159,8 @@
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>ଏପିଏଲ</item>
+        <item>ବିପିଏଲ</item>
     </string-array>
 
     <string-array name="economic_cb">
@@ -455,13 +455,13 @@
         <item>ଟେକ୍ନିସିଆନ୍ / କାରିଗର</item>
         <item>ଛୋଟ ଦୋକାନ ମାଲିକ</item>
         <item>ବଡ଼ ଧରଣର କୃଷକ</item>
-        <item>ଦ Daily ନିକ ମଜୁରୀ</item>
+        <item>ଦିନ ମଜୁରିଆ</item>
         <item>କ୍ଷୁଦ୍ର କୃଷକ / ଚାଷ ଶ୍ରମିକ</item>
         <item>ବେକାର</item>
         <item>ଗୃହିଣୀ</item>
         <item>ଛାତ୍ର</item>
         <item>5 ବର୍ଷରୁ କମ୍ ପିଲା</item>
-        <item>ଅନ୍ୟାନ୍ୟ କ skills ଶଳ (ଡ୍ରାଇଭର, ମସନ୍ ଇତ୍ୟାଦି)</item>
+        <item>ଅନ୍ୟ କୌଶଳ/ତାଲିମ ପାଇଥିବା (ଡ଼୍ରାଇଭର , ମିସ୍ତ୍ରୀ ଇତ୍ୟାଦି)</item>
         <!--        <item>[Describe]</item>-->
     </string-array>
 
@@ -530,7 +530,7 @@
 
     <string-array name="mobilephone_spinner_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ମ Basic ଳିକ ଫୋନ୍</item>
+        <item>ଛୋଟ ଫୋନ</item>
         <item>ସ୍ମାର୍ଟଫୋନ୍</item>
         <item>ମୋବାଇଲ୍ ଫୋନ୍ ର ମାଲିକାନା ନାହିଁ</item>
     </string-array>
@@ -717,10 +717,10 @@
     <string-array name="toiletFacility_spinner_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
-        <item>କ facility ଣସି ସୁବିଧା / ଖୋଲା ସ୍ଥାନ କିମ୍ବା କ୍ଷେତ୍ର ବ୍ୟବହାର କରେ ନାହିଁ</item>
-        <item>ନିଜର ଶ et ଚାଳୟ</item>
-        <item>ସମ୍ପ୍ରଦାୟ ଶ et ଚାଳୟ</item>
-        <item>ଅନ୍ୟ ଘର ସହିତ ଶ toil ଚାଳୟ ଅଂଶୀଦାର</item>
+        <item>ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର</item>
+        <item>ନିଜର ଶୌଚାଳୟ</item>
+        <item>ଗୋଷ୍ଠୀ ଶୌଚାଳୟ</item>
+        <item>ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର</item>
         <item>ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]</item>
     </string-array>
 

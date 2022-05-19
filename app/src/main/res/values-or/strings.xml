@@ -377,9 +377,9 @@
     <string name="active_tag_patientDetail">" ସକ୍ରିୟ"</string>
     <string name="associated_symptoms_patientDetail">ସମ୍ମିଳତି ଲେଣ</string>
     <string name="device_ID">ଉପକରଣ ମୁଁଡି:</string>
-    <string name="enter_valid_license_url">ବ valid ଧ ଲାଇସେନ୍ସ Url ପ୍ରବେଶ କରନ୍ତୁ |</string>
-    <string name="please_enter_url_and_key">ଦୟାକରି URL ଏବଂ କି ପ୍ରବେଶ କରନ୍ତୁ |</string>
-    <string name="please_enter_valid_license_key">ଦୟାକରି ଏକ ବ valid ଧ ଲାଇସେନ୍ସ କୀ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="enter_valid_license_url">ବୈଧ ଥିବା ୟୁ ଆର୍ ଏଲ୍ ଲେଖନ୍ତୁ</string>
+    <string name="please_enter_url_and_key">ଦୟାକରି ୟୁ ଆର୍ ଏଲ ଏଵଂ କି ଲେଖନ୍ତୁ</string>
+    <string name="please_enter_valid_license_key">ଦୟାକରି ଏକ ଭ।ଲିଡ ବୈଧ କି ଲେଖନ୍ତୁ</string>
     <string name="permission_denied">ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ\n</string>
     <string name="reject_permission_results"><![CDATA[ଯଦି ଆପଣ ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତି, ଆପଣ ଏହି ସେବା ବ୍ୟବହାର କରିପାରିବେ ନାହିଁ\n\nଦୟାକରି ରେ ଅନୁମତି ଟର୍ନ୍ ଅନ୍ କରନ୍ତୁ [ସେଟିଂ] > [ଅନୁମତି]]]></string>
     <string name="current_time"><![CDATA[\"ସାମ୍ପ୍ରତିକ ସମୟ => \"]]></string>
@@ -404,7 +404,7 @@
     <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
     <string name="show_text">"ସଦଖନ୍ତୁ "</string>
     <string name="hide_text">"ଲୁଚାନ୍ତୁ "</string>
-    <string name="error_no_sd" translatable="false">ଏହିସବଶୈଷ୍ଟି ୟ ସକବଳ ଏସ.ର୍. ିକାର୍ଡଯୁକ୍ତ ର୍ଭିାଇସ୍ ସର ଉପଲବ</string>
+    <string name="error_no_sd" translatable="false">ମୋବାଇଲ୍ ର ଏସ ଡି କାରଡ୍ମାଧ୍ୟମରେ ଏହା ଚାଲି ପାରିବ</string>
     <string name="error_admin_password" translatable="false">"ଭୁଲ୍ ଆର୍ମିନ୍ ପାସୱାର୍ଡ "</string>
     <string name="patient_upload_error" translatable="false">"ସରାଗୀ ଅପସଲାଡ୍ ସହାଇନାହାନ୍ତି "</string>
     <string name="exit_survey_toast">ଦାଖଲ କରିବା ପୂବଡରୁଦୟାକରିଏକ ସ୍ମାଇଲିଚୟନ କରନ୍ତୁ</string>
@@ -477,8 +477,8 @@
     <string name="intelehealth_a_telemedicine_platform">"ଇସଣ୍ଟଲିସହଲଥ୍ ସହଉଛିଏକ ସଟଲିଔର୍ଧି ଆପିଲସକଶନ୍ ଯାହା ଗ୍ରାମୀଣ ଓ ଦୁଗଡମ ଅଞ୍ଚଳର ସ୍ୱାସ୍ଥୟକମଡୀଙ୍କୁଦୂରାନ୍ତ ର୍ାକ୍ତରଙ୍କ ସହ ସାଂଯୁକ୍ତ କରିଥ୍ାଏ, ଯାହାଦ୍ୱାରା ସସମାସନ ନଜି ସରାଗୀମାନଙ୍କୁ ଉଚ୍ଚମାନର ସ୍ୱାସ୍ଥୟସସବା ସଯାଗାଇପାରନ୍ତି। "</string>
     <string name="intelehealth_name">ଇସଣ୍ଟଲିସହଲଥ୍</string>
     <string name="close_button">ବନ୍ଦ କରନ</string>
-    <string name="temperature_F">ତାପମାତ୍ର(F):</string>
-    <string name="temperature_C">ତାପମାତ୍ର(C):</string>
+    <string name="temperature_F">ତାପମାତ୍ରା (F):</string>
+    <string name="temperature_C">ତାପମାତ୍ରା(C):</string>
     <string name="no_history_family_found">ପରିବାରସର ଅସୁସ୍ଥତାଗୁଡ଼କିର ଇତହିାସ ପ୍ରଦାନ କରାଯାଇନାହିଁ।</string>
     <string name="no_history_patient_illness_found">ସରାଗୀଙ୍କ ଅସୁସ୍ଥତାଗୁଡ଼କିର ଇତହିାସ ପ୍ରଦାନ କରାଯାଇନାହିଁ।</string>
     <string name="dr_registration_no">ପଞ୍ଜୀକରଣ ନାଂ.:</string>
@@ -489,17 +489,17 @@
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
-    <string name="whatsapp_presc_toast">ଫାଇଲ୍ ଏକ୍ସପ୍ଲୋରରରୁ ପ୍ରେସକ୍ରିପସନ୍ PDF ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ / ଆନ୍ତରିକତା_PDF|</string>
+    <string name="whatsapp_presc_toast">ଫାଇଲ ଏକ୍ସପ୍ଲୋରରୁ ପ୍ରେସସ୍କ୍ରିପସନ ପିଡ଼ିଫ ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ  / ଏକଲ ଆରୋଗ୍ୟ - ପୀଡ଼ିଫ</string>
     <string name="enter_mobile_number_to_share_prescription">ଯେଉଁ ମୋବାଇଲ୍ ନମ୍ବରକୁ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ବାଣ୍ଟିବାକୁ ଚାହୁଁଛନ୍ତି ତାହା ପ୍ରବେଶ କରନ୍ତୁ |</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସେଭିକା) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ନୋଟିସ୍ ପ the ିଛି ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ ( ସେଭିକା ) ନିଶ୍ଚିନ୍ତ କରୁଛି କି , ମୁଁ ଗୋପନୀୟତା ନୋଟିସ ପଢ଼ିଛି ଏଵଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି</string>
     <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
-    <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପ read ନ୍ତୁ |</string>
+    <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପଢନ୍ତୁ</string>
     <string name="download_prescription_first_before_sharing">ଅଂଶୀଦାର କରିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
     <string name="share">ଅଂଶୀଦାର କରନ୍ତୁ</string>
     <string name="view_print">ଦର୍ଶନ / ମୁଦ୍ରଣ</string>
     <string name="refresh">ସତେଜ</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଇଣ୍ଟେଲିହେଲଥ ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ | "</string>
-    <string name="and_enter_your_patient_id">" ଏବଂ ଆପଣଙ୍କର ରୋଗୀ ID ପ୍ରବେଶ କରନ୍ତୁ - "</string>
+    <string name="and_enter_your_patient_id">" ଏଵଂ ଆପଣଙ୍କର ରୋଗୀ ଆଇଡି ଲେଖନ୍ତୁ / ପ୍ରବେଶ କରନ୍ତୁ - "</string>
     <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
     <string name="no_family_member_registered">କ ପରିବାର ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି |</string>
     <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ - "</string>
@@ -508,17 +508,17 @@
     <string name="what_is_your_occupation">ତୁମର ଜୀବିକା କଣ?*</string>
     <string name="do_you_have_a_bank_account">ଆପଣଙ୍କର ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟ ଅଛି କି?*</string>
     <string name="what_kind_of_mobile_phone_do_you_personally_own">ଆପଣ ବ୍ୟକ୍ତିଗତ ଭାବରେ କେଉଁ ପ୍ରକାରର ମୋବାଇଲ୍ ଫୋନ୍ କରନ୍ତି?*</string>
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାର ସଦସ୍ୟ ହ୍ ats ାଟସ୍ ଆପ୍ ବ୍ୟବହାର କରନ୍ତି କି?*</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାର ସଦସ୍ୟ ୱାଟସଆପବ୍ୟବହାର କରନ୍ତି କି ?</string>
     <string name="total_number_of_members_in_the_household">ଘରର ମୋଟ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା*</string>
     <string name="enter_number">ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
-    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">ସାଧାରଣତ your କେତେଜଣ ସଦସ୍ୟ ଆପଣଙ୍କ ଘରେ ରୁହନ୍ତି କିମ୍ବା ବର୍ତ୍ତମାନ ଆପଣଙ୍କ ସହିତ ରୁହନ୍ତି*</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">ସାଧାରଣତଃ ଆପଣଙ୍କର କେତେ ଜଣ ସଦସ୍ୟ ଘରେ ରୁହନ୍ତି କିମ୍ବା ବର୍ତ୍ତମାନ ଆପଣଙ୍କ ସହିତ ରହୁଛନ୍ତି</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନଙ୍କ ପାଇଁ ପାନୀୟ ଜଳର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?*</string>
     <string name="what_do_you_do_to_make_drinking_water_safer">ପାନୀୟ ଜଳକୁ ସୁରକ୍ଷିତ କରିବା ପାଇଁ ଆପଣ କ’ଣ କରନ୍ତି?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">ସେଠାକୁ ଯିବା, ପାଣି ପାଇବା ଏବଂ ଗୋଟିଏ ଯାତ୍ରାରେ ଫେରିବା ପାଇଁ କେତେ ସମୟ ଲାଗେ?*</string>
     <string name="declined">ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</string>
     <string name="enter_time">ସମୟ ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">ଗତ ଦୁଇ ସପ୍ତାହ ମଧ୍ୟରେ, ଏହି ଉତ୍ସରୁ ଜଳ ଅତି କମରେ ଗୋଟିଏ ଦିନ ପାଇଁ ଉପଲବ୍ଧ ନଥିଲା କି?*</string>
-    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନେ ସାଧାରଣତ What କେଉଁ ପ୍ରକାରର ଶ et ଚାଳୟ ସୁବିଧା ବ୍ୟବହାର କରନ୍ତି?*</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟ ମାନେ ସାଧାରତଃ କେଉଁ ପ୍ରକାରର ଶୌଚାଳୟ ସୁବିଧା ବ୍ୟବହାର କରନ୍ତି ?*</string>
     <string name="select_the_structure_of_house">ଘରର ଗଠନ ଚୟନ କରନ୍ତୁ*</string>
     <string name="how_much_hectars_of_cultivable_land_your_family_owns">ଆପଣଙ୍କ ପରିବାରର କେତେ ହେକ୍ଟର ଚାଷ ଜମି ଅଛି?*</string>
     <string name="enter_answer">ଉତ୍ତର ପ୍ରବେଶ କରନ୍ତୁ</string>
@@ -576,12 +576,12 @@
     <string name="hw_personal_info_str" translatable="false">ବ୍ୟକ୍ତିଗତ ସୁଚ଼ନା</string>
     <string name="hw_state_str" translatable="false">ରାଜ୍ୟ</string>
     <string name="hw_mobile_str" translatable="false">ମୋବାଇଲ୍</string>
-    <string name="hw_whatsapp_str" translatable="false">ହ୍ ats ାଟସ୍ ଆପ୍</string>
+    <string name="hw_whatsapp_str" translatable="false">ହ୍ୱାଟସ ଆପ</string>
     <string name="hw_email_str" translatable="false">ଇମେଲ୍ କରନ୍ତୁ</string>
 
     //-------vital updated fields-------------
     <string name="blood_grp">ରକ୍ତ ଗୋଷ୍ଠୀ: </string>
-    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
+    <string name="visit_summary_hemoglobin" translatable="false">ଏଚଜିବ</string>
     <string name="visit_summary_sugar" translatable="false">ଚିନି ସ୍ତର (ରାଣ୍ଡମ)</string>
     <string name="visit_summary_sugarfast" translatable="false">ଚିନି ସ୍ତର (ଉପବାସ / ଭୋଜନ ପରେ)</string>
     <string name="visit_summary_blood" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
@@ -593,7 +593,7 @@
 
     <string name="table_hemoglobin" translatable="false">ହେମୋଗ୍ଲୋବିନ୍</string>
     <string name="table_bld_grp" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
-    <string name="table_sugar_level" translatable="false">ଚିନି ସ୍ତର -mg / dL (ରାଣ୍ଡମ)</string>
+    <string name="table_sugar_level" translatable="false">ସୁଗର ଲିଭେଲ (ସ୍ତର) - (ରାଣ୍ଡାମ)</string>
 
     <string name="weight_loss_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ କମ୍ |</string>
     <string name="weight_gain_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ ଅଧିକ |</string>
@@ -607,17 +607,16 @@
     <string name="vital_alert_pulse_button">ତୁମର ପଲ୍ସ ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_resp_button">ତୁମର ଶ୍ୱାସକ୍ରିୟା ହାର ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_temperature_button">ତୁମର ତାପମାତ୍ରା ସାଧାରଣ ନୁହେଁ |</string>
-    <string name="vital_alert_hgb_button">ତୁମର HGB ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_hgb_button">ତୁମର ଏଚଜିବ ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_sugar_random_button">ତୁମର ଚିନି ରାଣ୍ଡମ ସ୍ତର ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_sugar_fasting_button">ତୁମର ଚିନି ଉପବାସ ସ୍ତର ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_sugar_aftermeal_button">ଭୋଜନ ପରେ ତୁମର ଚିନି ସାଧାରଣ ନୁହେଁ |</string>
-    <string name="vital_alert_required_field_button">ଦାଖଲ ପାଇଁ Atleast One ଏଣ୍ଟ୍ରି ଆବଶ୍ୟକ |</string>
-
+    <string name="vital_alert_required_field_button">ଦାଖଲ କରିବା ପାଇଁ ଅତିକମରେ ଗୋଟେ ଏଣ୍ଟ୍ରି ଦରକାର</string>
 
     <string name="warning_app_update">ଦୟାକରି ଆପକୁ ନୂତନତମ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ</string>
 
     <string name="identification_screen_prompt_village">ଗାଁ *</string>
-    <string name="failed_initial_synced">ସତେଜ ବିଫଳ, ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ | ଦୟାକରି ଆପ୍ ପୁନ rest ଆରମ୍ଭ କରନ୍ତୁ |</string>
+    <string name="failed_initial_synced">ସତେଜ ବିଫଳ ହେଲେ ଆପଣଙ୍କର ଇଣ୍ଟର୍ନେଟ୍ ସଂଯୋଗ କୁ ଯାଞ୍ଚ କରନ୍ତୁ । ଦୟାକରି ଆପ କୁ ଆଉ ଥରେ ଷ୍ଟାର୍ଟ କରନ୍ତୁ</string>
 
     <!--APPOINTMENT Module strings START -->
     <string name="book_appointment">ବୁକ୍ ନିଯୁକ୍ତି |</string>
@@ -626,7 +625,7 @@
     <string name="appointment_booking_cancel_confirmation_txt">ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
     <string name="cancel_appointment">ନିଯୁକ୍ତି ବାତିଲ୍ କରନ୍ତୁ |</string>
     <string name="slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନାହିଁ!</string>
-    <string name="appointment_empty_message">ଆପଣଙ୍କର କ appointment ଣସି ନିଯୁକ୍ତି ନାହିଁ!</string>
+    <string name="appointment_empty_message">ଆପଣଙ୍କର କିଛି ନିଯୁକ୍ତି ନାହିଁ!</string>
     <string name="appointment_listing_title">ନିଯୁକ୍ତି ତାଲିକା |</string>
     <string name="appointment_booking_title">ନିଯୁକ୍ତି ବୁକିଂ |</string>
     <string name="appointment_for">ପାଇଁ ନିଯୁକ୍ତି</string>
@@ -644,7 +643,7 @@
     <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକିଂ ବିଫଳ ହେଲା!</string>
     <string name="failed_to_cancel_appointment">ନିଯୁକ୍ତି ବାତିଲ କରିବାରେ ବିଫଳ!</string>
     <string name="appointment_cancelled_success_txt">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବାତିଲ ହେଲା!</string>
-    <string name="please_select_your_reschedule_reason">ଦୟାକରି ଆପଣଙ୍କର ପୁନ ched ନିର୍ମାଣ କାରଣ ଚୟନ କରନ୍ତୁ |</string>
+    <string name="please_select_your_reschedule_reason">ଦୟାକରି ଆପଣଙ୍କର ନୂଆ ନିଯୁକ୍ତି ର କାରଣ କୁ ବାଛନ୍ତୁ</string>
     <string name="please_select_your_cancel_reason">ଦୟାକରି ଆପଣଙ୍କର ବାତିଲ୍ କାରଣ ଚୟନ କରନ୍ତୁ |</string>
     <string name="doctor_is_not_available">ଡାକ୍ତର ଉପଲବ୍ଧ ନାହିଁ |</string>
     <string name="patient_is_not_available">ରୋଗୀ ଉପଲବ୍ଧ ନାହିଁ |</string>
