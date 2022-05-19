@@ -102,7 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory, patientHistoryHindi, patientHistoryOdiya, patientHistoryGujrati;
+    String patientHistory, patientHistoryHindi, patientHistoryOdiya;
     String phistory = "";
 
     boolean flag = false;
@@ -361,7 +361,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         patientHistory="";
         patientHistoryHindi="";
         patientHistoryOdiya="";
-        patientHistoryGujrati="";
         List<String> imagePathList = patientHistoryMap.getImagePathList();
 
         if (imagePathList != null) {
@@ -381,10 +380,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
                         patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
                         ConfirmationDialog(patientHistory, patientHistoryOdiya);
-                    }if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
-                        patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
-                        ConfirmationDialog(patientHistory, patientHistoryGujrati);
-                    }  else {
+                    } else {
                         ConfirmationDialog(patientHistory, patientHistory);
                     }
                 }
@@ -416,10 +412,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
                     patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
                     ConfirmationDialog(patientHistory, patientHistoryOdiya);
-                } if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
-                    patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
-                    ConfirmationDialog(patientHistory, patientHistoryGujrati);
-                }else {
+                } else {
                     ConfirmationDialog(patientHistory, patientHistory);
                 }
             }else {
@@ -457,12 +450,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         if (displayStr.contains("Yes [Describe]") || displayStr.contains("[Describe]") || displayStr.contains("[Describe]"))
         {
-            displayStr=displayStr.replaceAll("Yes [Describe]","")
-            .replaceAll("Other [Describe]","")
-            .replaceAll("[Describe]","");
+            displayStr.replaceAll("Yes [Describe]","");
+            displayStr.replaceAll("Other [Describe]","");
+            displayStr.replaceAll("[Describe]","");
         }
 
-        displayStr=Node.dateformate_en_hi_or(displayStr,sessionManager);
+        displayStr=dateFormatForDisplay(displayStr);
 
         alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
         alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -511,6 +504,51 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             confirmationAlertDialog.setCancelable(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, confirmationAlertDialog);
         }
+    }
+
+    public String dateFormatForDisplay(String displayStr) {
+        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi"))
+        {
+            displayStr=displayStr.replaceAll("Hours","घंटे")
+                    .replaceAll("Days","दिन")
+                    .replaceAll("Weeks","हफ्तों")
+                    .replaceAll("Months","महीने")
+                    .replaceAll("Years","वर्ष")
+
+                    .replaceAll("Jan","जन")
+                    .replaceAll("Feb","फ़र")
+                    .replaceAll("Mar","मार्च")
+                    .replaceAll("Apr","अप्रै")
+                    .replaceAll("May","मई")
+                    .replaceAll("Jun","जून")
+                    .replaceAll("Jul","जुला")
+                    .replaceAll("Aug","अग")
+                    .replaceAll("Sep","सित")
+                    .replaceAll("Oct","अक्टू")
+                    .replaceAll("Nov","नव")
+                    .replaceAll("Dec","दिस");
+        }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or"))
+        {
+            displayStr=displayStr.replaceAll("Hours","ଘଣ୍ଟା")
+                    .replaceAll("Days","ଦିନଗୁଡିକ")
+                    .replaceAll("Weeks","ସପ୍ତାହଗୁଡିକ")
+                    .replaceAll("Months","ମାସଗୁଡିକ")
+                    .replaceAll("Years","ବର୍ଷଗୁଡିକ")
+
+                    .replaceAll("Jan","ଜାନ")
+                    .replaceAll("Feb","ଫେବୃଆରୀ")
+                    .replaceAll("Mar","ମାର୍")
+                    .replaceAll("Apr","ଏପ୍ରିଲ୍")
+                    .replaceAll("May","ହୋଇପାରେ")
+                    .replaceAll("Jun","ଜୁନ୍")
+                    .replaceAll("Jul","ଜୁଲ୍")
+                    .replaceAll("Aug","ଅଗ")
+                    .replaceAll("Sep","ସେପ୍ଟେମ୍ବର")
+                    .replaceAll("Oct","ଅକ୍ଟୋବର")
+                    .replaceAll("Nov","ନଭେମ୍ବର")
+                    .replaceAll("Dec","ଡ଼ିସେ");
+        }
+        return displayStr;
     }
 
     /**
@@ -672,4 +710,3 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         return result;
     }
 }
-
