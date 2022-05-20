@@ -96,7 +96,12 @@ import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
@@ -730,8 +735,7 @@ public class IdentificationActivity extends AppCompatActivity {
             String mobileTypeLanguage = "mobilephone_spinner_" + sessionManager.getAppLanguage();
             int mobiletype_id = res.getIdentifier(mobileTypeLanguage, "array", getApplicationContext().getPackageName());
             if (mobiletype_id != 0) {
-                mobile_adapt = ArrayAdapter.createFromResource(this,
-                        mobiletype_id, android.R.layout.simple_spinner_dropdown_item);
+                mobile_adapt = ArrayAdapter.createFromResource(this, mobiletype_id, android.R.layout.simple_spinner_dropdown_item);
             }
             mobilephone_spinner.setAdapter(mobile_adapt);
 
@@ -1129,14 +1133,20 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getEducation_level().equals("Not provided"/*getResources().getString(R.string.not_provided)*/))
                 mEducation.setSelection(0);
             else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String education = switch_hi_education_edit(patient1.getEducation_level());
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String education = switch_or_education_edit(patient1.getEducation_level());
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                } else {
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String education = switch_hi_education_edit(patient1.getEducation_level());
+//                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    String education = switch_or_education_edit(patient1.getEducation_level());
+//                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+//                } else {
+//                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//                }
+
+                if (patient1.getEducation_level() != null && !patient1.getEducation_level().equalsIgnoreCase("")) {
+                    String education = getEducationStrings(patient1.getEducation_level(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    int position = educationAdapter.getPosition(education);
+                    mEducation.setSelection(position);
                 }
             }
             //mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -1230,14 +1240,15 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if (patient1.getMobile_type() != null && !patient1.getMobile_type().equalsIgnoreCase("")) {
                 String mobile_Transl = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mobile_Transl = StringUtils.switch_or_mobiletype_edit(patient1.getMobile_type());
-                } else {
-                    mobile_Transl = patient1.getMobile_type();
-                }
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    mobile_Transl = StringUtils.switch_or_mobiletype_edit(patient1.getMobile_type());
+//                } else {
+//                    mobile_Transl = patient1.getMobile_type();
+//                }
 
+                mobile_Transl = getMobilePhoneOwnership(patient1.getMobile_type(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
                 int spinner_position = mobile_adapt.getPosition(mobile_Transl);
                 mobilephone_spinner.setSelection(spinner_position);
             }
@@ -1325,37 +1336,37 @@ public class IdentificationActivity extends AppCompatActivity {
 
             // Set data for marital spinner
             if (patient1.getMaritalStatus() != null && !patient1.getMaritalStatus().equalsIgnoreCase("")) {
-                int spinnerPosition = maritalAdapter.getPosition(patient1.getMaritalStatus());
+                int spinnerPosition = maritalAdapter.getPosition(getMaritalStatusStrings(patient1.getMaritalStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 maritalStatusSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for bp spinner
             if (patient1.getBpChecked() != null && !patient1.getBpChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = bp_adapt.getPosition(patient1.getBpChecked());
+                int spinnerPosition = bp_adapt.getPosition(getTestStrings(patient1.getBpChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 bpSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for sugar level spinner
             if (patient1.getSugarLevelChecked() != null && !patient1.getSugarLevelChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = sugar_adapt.getPosition(patient1.getSugarLevelChecked());
+                int spinnerPosition = sugar_adapt.getPosition(getTestStrings(patient1.getSugarLevelChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 sugarLevelSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for hb checked spinner
             if (patient1.getHbChecked() != null && !patient1.getHbChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = hbLevel_adapt.getPosition(patient1.getHbChecked());
+                int spinnerPosition = hbLevel_adapt.getPosition(getTestStrings(patient1.getHbChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 hbLevelSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for bmi checked spinner
             if (patient1.getBmiChecked() != null && !patient1.getBmiChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = bmi_adapt.getPosition(patient1.getBmiChecked());
+                int spinnerPosition = bmi_adapt.getPosition(getTestStrings(patient1.getBmiChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 bmiLevelSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for head of household
             if (patient1.getHeadOfHousehold() != null && !patient1.getHeadOfHousehold().equalsIgnoreCase("")) {
-                int spinnerPosition = hohRelationshipAdapter.getPosition(patient1.getHeadOfHousehold());
+                int spinnerPosition = hohRelationshipAdapter.getPosition(hohRelationship(patient1.getHeadOfHousehold(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 hohRelationshipSpinner.setSelection(spinnerPosition);
             }
 
@@ -2755,7 +2766,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2826,7 +2837,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+//            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2874,7 +2886,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
-            patientAttributesDTO.setValue(maritalStatusSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Check if the ll18 linearlayout is visible or not
@@ -2884,7 +2896,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
-                patientAttributesDTO.setValue(bpSpinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Sugar Level Checked
@@ -2892,7 +2904,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
-                patientAttributesDTO.setValue(sugarLevelSpinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -2901,7 +2913,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
-            patientAttributesDTO.setValue(hbLevelSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // BMI Checked Adapter
@@ -2909,7 +2921,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
-            patientAttributesDTO.setValue(bmiLevelSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             if (!familyhead_checkbox.isChecked()) {
@@ -2917,7 +2929,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
-                patientAttributesDTO.setValue(hohRelationshipSpinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -3679,7 +3691,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3751,7 +3763,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+//            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3799,7 +3812,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
-            patientAttributesDTO.setValue(maritalStatusSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Check if the ll18 linearlayout is visible or not
@@ -3809,7 +3822,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
-                patientAttributesDTO.setValue(bpSpinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Sugar Level Checked
@@ -3817,7 +3830,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
-                patientAttributesDTO.setValue(sugarLevelSpinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -3826,7 +3839,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
-            patientAttributesDTO.setValue(hbLevelSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // BMI Checked Adapter
@@ -3834,7 +3847,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
-            patientAttributesDTO.setValue(bmiLevelSpinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             if (!familyhead_checkbox.isChecked()) {
@@ -3842,7 +3855,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
-                patientAttributesDTO.setValue(hohRelationshipSpinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 

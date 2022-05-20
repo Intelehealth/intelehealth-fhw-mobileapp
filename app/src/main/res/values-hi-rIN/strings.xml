@@ -997,4 +997,58 @@
     <string name="retired_with_pension">सेवानिवृत्त (पेंशन के साथ)</string>
     <string name="retired_without_pension">सेवानिवृत्त (पेंशन के बिना)</string>
 
+    <!--    Smartphones strings -->
+    <string name="shared">साझा किया हुआ</string>
+    <string name="owns_smartphone">स्मार्टफोन है</string>
+    <string name="owns_feature_phone">सामान्य फोन है</string>
+
+    <!--    Marital Status Strings -->
+    <string name="what_is_your_marital_status">वैवाहिक स्थिति क्या है?</string>
+    <string name="currently_married">वर्तमान में विवाहित</string>
+    <string name="married_gauna_not_performed">विवाहित, गौना नहीं किया गया</string>
+    <string name="widowed">विधवा</string>
+    <string name="divorced">तलाकशुदा</string>
+    <string name="separated">अलग</string>
+    <string name="deserted">परित्यक्त</string>
+    <string name="never_married">कभी शादी नहीं की</string>
+
+    <!--    Check Strings -->
+    <string name="when_was_the_last_time_you_got_your_bp_checked">आखिरी बार आपने अपना बीपी कब चेक कराया था?</string>
+    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">पिछली बार कब आपने अपना शुगर लेवल चेक कराया था?</string>
+    <string name="when_was_the_last_time_you_got_your_hb_level_checked">पिछली बार आपने अपने एच. बी. स्तर का परीक्षण कब करवाया था?</string>
+    <string name="when_was_the_last_time_your_bmi_was_checked">आखिरी बार आपका बीएमआई (ऊंचाई और वजन) कब चेक किया गया था?</string>
+    <string name="never_checked">कभी चेक नहीं किया गया</string>
+    <string name="in_past_one_week">पिछले एक सप्ताह में</string>
+    <string name="within_last_month">पिछले महीने के भीतर</string>
+    <string name="between_one_month_to_three_months_ago">एक महीने से 3 महीने पहले के बीच</string>
+    <string name="between_three_months_to_six_months_ago">3 महीने - 6 महीने पहले के बीच</string>
+    <string name="more_than_six_months">6 महीने से अधिक</string>
+
+    <!--    Education Strings -->
+    <string name="cannot_read_and_write">पढ़ या लिख नहीं सकता</string>
+    <string name="can_read_and_write">पढ़ और लिख सकते हैं</string>
+    <string name="primary_education_till_class_five">प्राथमिक शिक्षा (कक्षा 5 तक)</string>
+    <string name="middle_school_sixth_eighth">मिडिल स्कूल (6वीं-8वीं)</string>
+    <string name="passed_secondary_school">माध्यमिक विद्यालय उत्तीर्ण (कक्षा 10वीं बोर्ड)</string>
+    <string name="passed_senior_secondary_school">वरिष्ठ माध्यमिक विद्यालय (12वीं बोर्ड) उत्तीर्ण</string>
+    <string name="graduate">स्नातक</string>
+    <string name="postgraduate">स्नातकोत्तर</string>
+
+    <!--    Household Head Relationship -->
+    <string name="spouse">पति / पत्नी</string>
+    <string name="son_daughter">बेटा / बेटी</string>
+    <string name="son_daughter_in_law">बेटा / बेटी</string>
+    <string name="grandchild">पोता</string>
+    <string name="father_mother">पिता / माता</string>
+    <string name="father_mother_in_law">ससुर / सास</string>
+    <string name="brother_sister">भाई / बहन</string>
+    <string name="brother_sister_in_law">साला /साली</string>
+    <string name="niece_nephew">भतीजी/भतीजा</string>
+    <string name="grandparent_grandparent_in_law">दादा ससुर / दादी सास</string>
+    <string name="other_relative">अन्य रिश्तेदार</string>
+    <string name="adopted_foster_stepchild">दत्तक/पालक / सौतेली संतान</string>
+    <string name="domestic_servant">घरेलू नौकर</string>
+    <string name="other_not_related">अन्य संबंधित नहीं</string>
+    <string name="not_stated">नहीं बताया गया</string>
+
 </resources>

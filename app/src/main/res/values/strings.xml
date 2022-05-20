@@ -1046,6 +1046,7 @@
     <string name="between_one_month_to_three_months_ago">Between one month to 3 months ago</string>
     <string name="between_three_months_to_six_months_ago">between 3 months-6months ago</string>
     <string name="more_than_six_months">More than 6 months</string>
+
     <string name="identification_screen_checkbox_other">Other</string>
     <string name="medical_history">Medical History</string>
     <string name="hypertension">Hypertension</string>

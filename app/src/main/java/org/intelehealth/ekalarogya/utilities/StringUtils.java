@@ -2329,4 +2329,205 @@ public final class StringUtils {
         }
         return text;
     }
+
+    public static String getMobilePhoneOwnership(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string None to English
+            if (context.getString(R.string.none).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.none);
+            }
+            // Translate string Shared to English
+            if (context.getString(R.string.shared).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.shared);
+            }
+            // Translate string Owns Smartphone to English
+            if (context.getString(R.string.owns_smartphone).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.owns_smartphone);
+            }
+            // Translate string Owns Feature Phone to English
+            if (context.getString(R.string.owns_feature_phone).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.owns_feature_phone);
+            }
+        }
+        return text;
+    }
+
+    public static String getMaritalStatusStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Currently Married to English
+            if (context.getString(R.string.currently_married).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.currently_married);
+            }
+            // Translate string Married, Gauna Not Performed to English
+            if (context.getString(R.string.married_gauna_not_performed).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.married_gauna_not_performed);
+            }
+            // Translate string Widowed to English
+            if (context.getString(R.string.widowed).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.widowed);
+            }
+            // Translate string Divorced to English
+            if (context.getString(R.string.divorced).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.divorced);
+            }
+            // Translate string Separated to English
+            if (context.getString(R.string.separated).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.separated);
+            }
+            // Translate string Deserted to English
+            if (context.getString(R.string.deserted).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.deserted);
+            }
+            // Translate string Never Married to English
+            if (context.getString(R.string.never_married).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.never_married);
+            }
+        }
+        return text;
+    }
+
+    // Strings for BP Checked, HB Checked, Sugar Checked, and BMI Checked
+    public static String getTestStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Never Checked to English
+            if (context.getString(R.string.never_checked).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.never_checked);
+            }
+            // Translate string In Past One Week to English
+            if (context.getString(R.string.in_past_one_week).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.in_past_one_week);
+            }
+            // Translate string Within Last Month to English
+            if (context.getString(R.string.within_last_month).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.within_last_month);
+            }
+            // Translate string Between One Month To Three Months Ago to English
+            if (context.getString(R.string.between_one_month_to_three_months_ago).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.between_one_month_to_three_months_ago);
+            }
+            // Translate string Between Three Months To Six Months Ago to English
+            if (context.getString(R.string.between_three_months_to_six_months_ago).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.between_three_months_to_six_months_ago);
+            }
+            // Translate string More Than Six Months to English
+            if (context.getString(R.string.more_than_six_months).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_six_months);
+            }
+        }
+        return text;
+    }
+
+    public static String getEducationStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Cannot Read and Write to English
+            if (context.getString(R.string.cannot_read_and_write).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.cannot_read_and_write);
+            }
+            // Translate string Can Read and Write to English
+            if (context.getString(R.string.can_read_and_write).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.can_read_and_write);
+            }
+            // Translate string Primary Education Till Class 5 to English
+            if (context.getString(R.string.primary_education_till_class_five).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.primary_education_till_class_five);
+            }
+            // Translate string Middle School to English
+            if (context.getString(R.string.middle_school_sixth_eighth).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.middle_school_sixth_eighth);
+            }
+            // Translate string Passed Secondary to English
+            if (context.getString(R.string.passed_secondary_school).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.passed_secondary_school);
+            }
+            // Translate string Passed Senior Secondary to English
+            if (context.getString(R.string.passed_senior_secondary_school).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.passed_senior_secondary_school);
+            }
+            // Translate string Graduate to English
+            if (context.getString(R.string.graduate).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.graduate);
+            }
+            // Translate string Postgraduate to English
+            if (context.getString(R.string.postgraduate).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.postgraduate);
+            }
+        }
+        return text;
+    }
+
+    public static String hohRelationship(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Spouse to English
+            if (context.getString(R.string.spouse).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.spouse);
+            }
+            // Translate string Son or Daughter to English
+            if (context.getString(R.string.son_daughter).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.son_daughter);
+            }
+            // Translate string Son or Daughter-In-Law to English
+            if (context.getString(R.string.son_daughter_in_law).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.son_daughter_in_law);
+            }
+            // Translate string Grandchild to English
+            if (context.getString(R.string.grandchild).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.grandchild);
+            }
+            // Translate string Father or Mother to English
+            if (context.getString(R.string.father_mother).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.father_mother);
+            }
+            // Translate string Father or Mother-In-Law to English
+            if (context.getString(R.string.father_mother_in_law).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.father_mother_in_law);
+            }
+            // Translate string Brother or Sister to English
+            if (context.getString(R.string.brother_sister).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.brother_sister);
+            }
+            // Translate string Brother or Sister-In-Law to English
+            if (context.getString(R.string.brother_sister_in_law).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.brother_sister_in_law);
+            }
+            // Translate string Niece or Nephew to English
+            if (context.getString(R.string.niece_nephew).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.niece_nephew);
+            }
+            // Translate string Grandparent or Grandparent-In-Law to English
+            if (context.getString(R.string.grandparent_grandparent_in_law).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.grandparent_grandparent_in_law);
+            }
+            // Translate string Other Relative to English
+            if (context.getString(R.string.other_relative).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.other_relative);
+            }
+            // Translate string Adopted Foster Stepchild to English
+            if (context.getString(R.string.adopted_foster_stepchild).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.adopted_foster_stepchild);
+            }
+            // Translate string Domestic Servant to English
+            if (context.getString(R.string.domestic_servant).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.domestic_servant);
+            }
+            // Translate string Other (Specify) to English
+            if (context.getString(R.string.other_specify).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.other_specify);
+            }
+            // Translate string Not Stated to English
+            if (context.getString(R.string.not_stated).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.not_stated);
+            }
+        }
+        return text;
+    }
 }
