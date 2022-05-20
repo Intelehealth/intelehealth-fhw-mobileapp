@@ -113,7 +113,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
     String new_result;
-    String stage1Hr1_1_EncounterUuid;
+    String stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +148,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
+            stage1Hr1_2_EncounterUuid = intent.getStringExtra("Stage1_Hr1_2_En");
 
 
             //TODO: temporary..
@@ -425,6 +426,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             intent.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
+            intent.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
 
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
@@ -456,6 +458,22 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+        ///
+        ObsDAO obsDAO1 = new ObsDAO();
+        ObsDTO obsDTO1 = new ObsDTO();
+        obsDTO1.setConceptuuid(UuidDictionary.COMPANION);
+        obsDTO1.setEncounteruuid(stage1Hr1_2_EncounterUuid);
+        obsDTO1.setCreator(sessionManager.getCreatorID());
+        //  obsDTO.setValue(StringUtils.getValue(value));
+        obsDTO1.setValue("COMPANION 2 VALUE");
+        isInserted = false;
+        try {
+            isInserted = obsDAO1.insertObs(obsDTO1);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        ///
 
         return isInserted;
     }

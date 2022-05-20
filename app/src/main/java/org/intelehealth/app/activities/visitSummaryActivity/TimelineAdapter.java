@@ -36,7 +36,7 @@ import java.util.UUID;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewHolder> {
     Context context;
-    private String patientUuid, patientName, visitUuid, stage1Hr1_1_EncounterUuid;
+    private String patientUuid, patientName, visitUuid, stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
     ArrayList<String> timeList;
 
     public TimelineAdapter(Context context, Intent intent, ArrayList<String> timeList, SessionManager sessionManager) {
@@ -47,6 +47,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             visitUuid = intent.getStringExtra("visitUuid");
             patientName = intent.getStringExtra("name");
             stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
+            stage1Hr1_2_EncounterUuid = intent.getStringExtra("Stage1_Hr1_2_En");
         }
 
     }
@@ -100,6 +101,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     i1.putExtra("name", patientName);
                     i1.putExtra("visitUuid", visitUuid);
                     i1.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
+                    i1.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                     context.startActivity(i1);
                 }
             });
