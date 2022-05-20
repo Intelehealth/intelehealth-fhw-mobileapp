@@ -186,7 +186,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Context context;
     float float_ageYear_Month;
     List<String> encounterTypeUUIDListFor12Encounters = new ArrayList<>();
-    String stage1Hr1_1_EncounterUuid;
+    String stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,7 +293,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
                 String uuid = UUID.randomUUID().toString();
-                EncounterDAO encounterDAO = new EncounterDAO();
+              /*  EncounterDAO encounterDAO = new EncounterDAO();
                 encounterDTO = new EncounterDTO();
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
@@ -310,6 +310,24 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
+*/
+               /* // create encounter adultinitial
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(UUID.randomUUID().toString());
+                encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
+                encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                encounterDTO.setVisituuid(uuid);
+                encounterDTO.setSyncd(false);
+                encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+                encounterDTO.setVoided(0);
+                try {
+                    encounterDAO.createEncountersToDB(encounterDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                // end*/
 
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
@@ -392,6 +410,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 EncounterDTO eDTO = new EncounterDTO();
 
                 stage1Hr1_1_EncounterUuid = UUID.randomUUID().toString();
+                stage1Hr1_2_EncounterUuid = UUID.randomUUID().toString();
+
                 eDTO.setUuid(stage1Hr1_1_EncounterUuid);
                 eDTO.setVisituuid(uuid);
                 eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());

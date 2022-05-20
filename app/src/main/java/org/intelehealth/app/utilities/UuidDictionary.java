@@ -12,10 +12,10 @@ public class UuidDictionary {
     public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String WEIGHT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public static final String SYSTOLIC_BP = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public static final String DIASTOLIC_BP = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//    public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//    public static final String SYSTOLIC_BP = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//    public static final String DIASTOLIC_BP = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//    public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String RESPIRATORY = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
@@ -71,6 +71,52 @@ public class UuidDictionary {
     public static final String COMMENTS = "36d207d6-bee7-4b3e-9196-7d053c6eddce";
 
     // TimeLine Concept Obs UUIDs...
+    // Supportive Care
     public static final String COMPANION = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public static final String PAINRELIEF = "9d313f72-538f-11e6-9cfe-86f436325720";
+    public static final String PAIN_RELIEF = "9d313f72-538f-11e6-9cfe-86f436325720";
+    public static final String ORAL_FLUID = "9d31451b-538f-11e6-9cfe-86f436325720";
+    public static final String POSTURE = "9d3148b1-538f-11e6-9cfe-86f436325720";
+
+    // Baby
+    public static final String BASELINE_FHR = "9d315400-538f-11e6-9cfe-86f436325720";
+    public static final String FHR_DECELERATION = "9d31573c-538f-11e6-9cfe-86f436325720";
+    public static final String AMNIOTIC_FLUID = "9d3160a6-538f-11e6-9cfe-86f436325720";
+    public static final String FETAL_POSITION = "9d316387-538f-11e6-9cfe-86f436325720";
+    public static final String CAPUT = "9d316761-538f-11e6-9cfe-86f436325720";
+    public static final String MOULDING = "9d316823-538f-11e6-9cfe-86f436325720";
+
+    // Woman
+    public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String SYSTOLIC_BP = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String DIASTOLIC_BP = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String URINE_PROTEIN = "9d3168a7-538f-11e6-9cfe-86f436325720";
+
+    // LABOUR PROGRESS
+    public static final String CONTRACTIONS_PER_10MIN = "9d316929-538f-11e6-9cfe-86f436325720";
+    public static final String DURATION_OF_CONTRACTION = "9d3169af-538f-11e6-9cfe-86f436325720";
+    public static final String CERVIX_PLOT_X = "9d316ab5-538f-11e6-9cfe-86f436325720";
+    public static final String DESCENT_PLOT_0 = "9d316d41-538f-11e6-9cfe-86f436325720";
+
+    // MEDICATION
+    public static final String OXYTOCIN_UL_DROPS_MIN = "9d316d82-538f-11e6-9cfe-86f436325720";
+    public static final String MEDICINE = "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca";
+    public static final String IV_FLUIDS = "98c5881f-b214-4597-83d4-509666e9a7c9";
+
+    // SHARED_DECISION_MAKING
+    public static final String ASSESSMENT = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";
+    public static final String PLAN = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

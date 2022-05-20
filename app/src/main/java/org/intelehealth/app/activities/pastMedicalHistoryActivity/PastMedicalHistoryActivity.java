@@ -444,10 +444,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         ObsDTO obsDTO = new ObsDTO();
 //        obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
 //        obsDTO.setEncounteruuid(encounterAdultIntials);
+
         obsDTO.setConceptuuid(UuidDictionary.COMPANION);
         obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(StringUtils.getValue(value));
+      //  obsDTO.setValue(StringUtils.getValue(value));
+        obsDTO.setValue("COMPANION VALUE");
         boolean isInserted = false;
         try {
             isInserted = obsDAO.insertObs(obsDTO);

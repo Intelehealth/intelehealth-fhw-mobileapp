@@ -48,6 +48,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             patientName = intent.getStringExtra("name");
             stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
         }
+
     }
 
     @NonNull

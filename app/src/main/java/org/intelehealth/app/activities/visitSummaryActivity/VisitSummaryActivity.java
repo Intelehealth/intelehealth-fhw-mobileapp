@@ -3373,7 +3373,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
            // String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
-            String[] famHistArgs = {stage1Hr1_1_EncounterUuid, UuidDictionary.PAINRELIEF};
+            String[] famHistArgs = {stage1Hr1_1_EncounterUuid, UuidDictionary.PAIN_RELIEF};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));

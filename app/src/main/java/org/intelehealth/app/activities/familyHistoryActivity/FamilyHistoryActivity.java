@@ -435,11 +435,276 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 //        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
 //        obsDTO.setEncounteruuid(encounterAdultIntials);
 
-        obsDTO.setConceptuuid(UuidDictionary.PAINRELIEF);
+        obsDTO.setConceptuuid(UuidDictionary.PAIN_RELIEF);
         obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
         obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
+       // obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
+        obsDTO.setValue("PAIN RELIEF");
         boolean isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //1
+        obsDTO.setConceptuuid(UuidDictionary.ORAL_FLUID);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("ORAL FLUID"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //2
+        obsDTO.setConceptuuid(UuidDictionary.POSTURE);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("POSTURE"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //3
+        obsDTO.setConceptuuid(UuidDictionary.BASELINE_FHR);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("123"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //4
+        obsDTO.setConceptuuid(UuidDictionary.FHR_DECELERATION);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("FHR"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //5
+        obsDTO.setConceptuuid(UuidDictionary.AMNIOTIC_FLUID);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("AMNIOTIC"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //6
+        obsDTO.setConceptuuid(UuidDictionary.FETAL_POSITION);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("FETAL POS"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //7
+        obsDTO.setConceptuuid(UuidDictionary.CAPUT);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("CAPUT"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //8
+        obsDTO.setConceptuuid(UuidDictionary.MOULDING);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("MOULDING"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //9
+        obsDTO.setConceptuuid(UuidDictionary.PULSE);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("999"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //10
+        obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("888"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //11
+        obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("777"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //12
+        obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("40"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //13
+        obsDTO.setConceptuuid(UuidDictionary.URINE_PROTEIN);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("URINE"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //14
+        obsDTO.setConceptuuid(UuidDictionary.CONTRACTIONS_PER_10MIN);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("111"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //15
+        obsDTO.setConceptuuid(UuidDictionary.DURATION_OF_CONTRACTION);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("222"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //16
+        obsDTO.setConceptuuid(UuidDictionary.CERVIX_PLOT_X);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("CERVIX"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //17
+        obsDTO.setConceptuuid(UuidDictionary.DESCENT_PLOT_0);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("333"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //18
+        obsDTO.setConceptuuid(UuidDictionary.OXYTOCIN_UL_DROPS_MIN);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("OXYTOCIN"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //19
+        obsDTO.setConceptuuid(UuidDictionary.MEDICINE);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("medicine"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //20
+        obsDTO.setConceptuuid(UuidDictionary.IV_FLUIDS);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("iv fluids"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //21
+        obsDTO.setConceptuuid(UuidDictionary.ASSESSMENT);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("assessment"));
+        isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //22
+        obsDTO.setConceptuuid(UuidDictionary.PLAN);
+        obsDTO.setEncounteruuid(stage1Hr1_1_EncounterUuid);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue("plan"));
+        isInserted = false;
         try {
             isInserted = obsDAO.insertObs(obsDTO);
         } catch (DAOException e) {
