@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
 import org.intelehealth.ekalarogya.databinding.LayoutSmokingHistoryBinding;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
 
 import java.util.List;
 

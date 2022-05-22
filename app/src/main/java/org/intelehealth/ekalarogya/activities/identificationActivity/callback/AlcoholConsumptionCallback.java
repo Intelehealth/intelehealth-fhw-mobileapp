@@ -4,4 +4,6 @@ import org.intelehealth.ekalarogya.activities.identificationActivity.data_classe
 
 public interface AlcoholConsumptionCallback {
     void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory);
+
+    void saveAlcoholConsumptionDataAtPosition(AlcoholConsumptionHistory alcoholConsumptionHistory, int position);
 }

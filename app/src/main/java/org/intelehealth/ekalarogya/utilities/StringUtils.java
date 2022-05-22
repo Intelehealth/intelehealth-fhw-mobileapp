@@ -1814,6 +1814,10 @@ public final class StringUtils {
                     radioButton.setChecked(true);
                     break;
                 }
+                if (text.contains(getAlcoholHistory(radioButton.getText().toString(), updatedContext, context, locale))) {
+                    radioButton.setChecked(true);
+                    break;
+                }
             }
         }
     }
@@ -2591,6 +2595,58 @@ public final class StringUtils {
             }
 
             // Translate string More Than 10 Years to English
+            if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_ten_years);
+            }
+        }
+
+        return text;
+    }
+
+    public static String getAlcoholHistory(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Yes to English
+            if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.yes);
+            }
+
+            // Translate string No or Denied to English
+            if (context.getString(R.string.no_denied).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.no_denied);
+            }
+
+            // Translate string Zero To Five Times to English
+            if (context.getString(R.string.zero_five_times).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.zero_five_times);
+            }
+
+            // Translate string Five To Ten Times to English
+            if (context.getString(R.string.five_ten_times).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.five_ten_times);
+            }
+
+            // Translate string More Than Ten Times to English
+            if (context.getString(R.string.more_than_10_times).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_10_times);
+            }
+
+            // Translate string Less Than A Year to English
+            if (context.getString(R.string.less_than_a_year).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.less_than_a_year);
+            }
+
+            // Translate string From One Year To Five Year to English
+            if (context.getString(R.string.from_one_year_to_five_year).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.from_one_year_to_five_year);
+            }
+
+            // Translate string From Five Year To Ten Year to English
+            if (context.getString(R.string.from_five_years_to_ten_years).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.from_five_years_to_ten_years);
+            }
+
+            // Translate string More Than Ten Years to English
             if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_ten_years);
             }

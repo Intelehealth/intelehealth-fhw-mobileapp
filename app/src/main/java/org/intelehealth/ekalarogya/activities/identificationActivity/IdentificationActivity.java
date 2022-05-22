@@ -4152,7 +4152,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     @Override
     public void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory) {
         alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
-        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this);
+        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+        alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+        alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(alcoholViewPager);
+    }
+
+    @Override
+    public void saveAlcoholConsumptionDataAtPosition(AlcoholConsumptionHistory alcoholConsumptionHistory, int position) {
+        alcoholConsumptionHistoryList.set(position, alcoholConsumptionHistory);
+        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
         alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
         alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -4237,6 +4247,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         listDialog.show();
     }
 
+    @Override
+    public void getAlcoholHistory(AlcoholConsumptionHistory alcoholConsumptionHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("historyOfAlcoholConsumption", alcoholConsumptionHistory.getHistoryOfAlcoholConsumption());
+                bundle.putString("rateOfAlcoholConsumption", alcoholConsumptionHistory.getRateOfAlcoholConsumption());
+                bundle.putString("durationOfAlcoholConsumption", alcoholConsumptionHistory.getDurationOfAlcoholConsumption());
+
+                AlcoholConsumptionHistoryDialog alcoholConsumptionHistoryDialog = new AlcoholConsumptionHistoryDialog();
+                alcoholConsumptionHistoryDialog.setArguments(bundle);
+                alcoholConsumptionHistoryDialog.show(getSupportFragmentManager(), AlcoholConsumptionHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, alcoholConsumptionHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
     public void deleteSurveyData(int position, Object object) {
         if (object instanceof MedicalHistory) {
             medicalHistoryList.remove(position);
@@ -4258,6 +4292,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
             smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             setViewPagerOffset(smokingHistoryViewPager);
+        }
+
+        if (object instanceof AlcoholConsumptionHistory) {
+            alcoholConsumptionHistoryList.remove(position);
+            alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+            alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+            if (!alcoholConsumptionHistoryList.isEmpty()) {
+                alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+            }
+            alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(alcoholViewPager);
         }
     }
 }
