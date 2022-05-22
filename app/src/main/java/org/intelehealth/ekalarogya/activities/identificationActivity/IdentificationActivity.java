@@ -4110,16 +4110,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     }
 
     @Override
-    public void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory) {
-        alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
-        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this);
-        alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
-        alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
-        alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        setViewPagerOffset(alcoholViewPager);
-    }
-
-    @Override
     public void saveMedicalHistoryData(MedicalHistory medicalHistory) {
         medicalHistoryList.add(medicalHistory);
         medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
@@ -4142,11 +4132,31 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     @Override
     public void saveSmokingHistory(SmokingHistory smokingHistory) {
         smokingHistoryList.add(smokingHistory);
-        smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this);
+        smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
         smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
         smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(smokingHistoryViewPager);
+    }
+
+    @Override
+    public void saveSmokingHistoryAtPosition(SmokingHistory smokingHistory, int position) {
+        smokingHistoryList.set(position, smokingHistory);
+        smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+        smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+        smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(smokingHistoryViewPager);
+    }
+
+    @Override
+    public void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory) {
+        alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
+        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this);
+        alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+        alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+        alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(alcoholViewPager);
     }
 
     private void setViewPagerOffset(ViewPager2 viewPager2) {
@@ -4203,6 +4213,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         listDialog.show();
     }
 
+    @Override
+    public void getSmokingHistory(SmokingHistory smokingHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("smokingStatus", smokingHistory.getSmokingStatus());
+                bundle.putString("rateOfSmoking", smokingHistory.getRateOfSmoking());
+                bundle.putString("durationOfSmoking", smokingHistory.getDurationOfSmoking());
+
+                SmokingHistoryDialog smokingHistoryDialog = new SmokingHistoryDialog();
+                smokingHistoryDialog.setArguments(bundle);
+                smokingHistoryDialog.show(getSupportFragmentManager(), SmokingHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, smokingHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
     public void deleteSurveyData(int position, Object object) {
         if (object instanceof MedicalHistory) {
             medicalHistoryList.remove(position);
@@ -4213,6 +4247,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
             medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             setViewPagerOffset(medicalHistoryViewPager);
+        }
+
+        if (object instanceof SmokingHistory) {
+            smokingHistoryList.remove(position);
+            smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+            smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+            if (!medicalHistoryList.isEmpty()) {
+                smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+            }
+            smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(smokingHistoryViewPager);
         }
     }
 }

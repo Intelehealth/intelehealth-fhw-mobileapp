@@ -1810,6 +1810,10 @@ public final class StringUtils {
                     radioButton.setChecked(true);
                     break;
                 }
+                if (text.contains(getSmokingHistoryStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
+                    radioButton.setChecked(true);
+                    break;
+                }
             }
         }
     }
@@ -2545,6 +2549,53 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.no);
             }
         }
+        return text;
+    }
+
+    public static String getSmokingHistoryStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Smoker to English
+            if (context.getString(R.string.smoker).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.smoker);
+            }
+
+            // Translate string Non-Smoker to English
+            if (context.getString(R.string.non_smoker).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.non_smoker);
+            }
+
+            // Translate string 5 - 10 bids / cigarette to English
+            if (context.getString(R.string.five_ten_bids_cigarette).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.five_ten_bids_cigarette);
+            }
+
+            // Translate string More Than 10 bids / cigarette to English
+            if (context.getString(R.string.more_than_ten_bids_cigarette).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_ten_bids_cigarette);
+            }
+
+            // Translate string Less Than A Year to English
+            if (context.getString(R.string.less_than_a_year).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.less_than_a_year);
+            }
+
+            // Translate string From One Year To Five Years to English
+            if (context.getString(R.string.from_one_year_to_five_year).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.from_one_year_to_five_year);
+            }
+
+            // Translate string From Five Years To Ten Years to English
+            if (context.getString(R.string.from_five_years_to_ten_years).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.from_five_years_to_ten_years);
+            }
+
+            // Translate string More Than 10 Years to English
+            if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_ten_years);
+            }
+        }
+
         return text;
     }
 }

@@ -4,4 +4,6 @@ import org.intelehealth.ekalarogya.activities.identificationActivity.data_classe
 
 public interface SmokingHistoryCallback {
     void saveSmokingHistory(SmokingHistory smokingHistory);
+
+    void saveSmokingHistoryAtPosition(SmokingHistory smokingHistory, int position);
 }

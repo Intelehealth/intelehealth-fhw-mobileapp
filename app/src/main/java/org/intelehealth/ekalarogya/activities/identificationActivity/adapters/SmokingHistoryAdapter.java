@@ -1,5 +1,7 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity.adapters;
 
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSmokingHistoryStrings;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
 import org.intelehealth.ekalarogya.databinding.LayoutSmokingHistoryBinding;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
 
 import java.util.List;
 
@@ -18,15 +22,21 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
     private final List<SmokingHistory> smokingHistoryList;
     private final String locale;
     private final Context context;
+    private final Context updatedContext;
+    private final ViewPagerCallback callback;
 
     public SmokingHistoryAdapter(
             List<SmokingHistory> smokingHistoryList,
             String locale,
-            Context context
+            Context context,
+            Context updatedContext,
+            ViewPagerCallback callback
     ) {
         this.smokingHistoryList = smokingHistoryList;
         this.locale = locale;
         this.context = context;
+        this.updatedContext = updatedContext;
+        this.callback = callback;
     }
 
     @NonNull
@@ -37,7 +47,7 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
                 parent,
                 false
         );
-        return new SmokingViewHolder(binding, context, locale);
+        return new SmokingViewHolder(binding, context, locale, updatedContext, callback);
     }
 
     @Override
@@ -55,24 +65,34 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
         public Context context;
         public String locale;
         public int position;
+        public Context updatedContext;
+        public ViewPagerCallback callback;
+        public SmokingHistory smokingHistory;
 
         public SmokingViewHolder(
                 @NonNull LayoutSmokingHistoryBinding binding,
                 Context context,
-                String locale
+                String locale,
+                Context updatedContext,
+                ViewPagerCallback callback
         ) {
             super(binding.getRoot());
             this.binding = binding;
             this.locale = locale;
             this.context = context;
+            this.updatedContext = updatedContext;
+            binding.llSmokingHistory.setOnClickListener(v -> callback.getSmokingHistory(smokingHistory, position));
         }
 
         public void initData(SmokingHistory history, int position) {
-            binding.tvSmokingHistory.setText(history.getSmokingStatus());
+            this.smokingHistory = history;
+            this.position = position;
+
+            binding.tvSmokingHistory.setText(getSmokingHistoryStrings(history.getSmokingStatus(), updatedContext, context, locale));
 
             if (!history.getRateOfSmoking().equalsIgnoreCase("-") && !history.getDurationOfSmoking().equalsIgnoreCase("-")) {
-                binding.tvSmokingRate.setText(history.getRateOfSmoking());
-                binding.tvSmokingDuration.setText(history.getDurationOfSmoking());
+                binding.tvSmokingRate.setText(getSmokingHistoryStrings(history.getRateOfSmoking(), updatedContext, context, locale));
+                binding.tvSmokingDuration.setText(getSmokingHistoryStrings(history.getDurationOfSmoking(), updatedContext, context, locale));
                 binding.llSmoking.setVisibility(View.VISIBLE);
             }
         }

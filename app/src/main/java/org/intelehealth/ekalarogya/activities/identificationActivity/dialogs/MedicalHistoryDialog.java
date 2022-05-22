@@ -81,7 +81,6 @@ public class MedicalHistoryDialog extends DialogFragment {
                 else {
                     MedicalHistory medicalHistory = getData();
 
-
                     if (bundle != null)
                         callback.saveMedicalHistoryDataAtPosition(medicalHistory, position);
                     else

@@ -1,5 +1,8 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity.dialogs;
 
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSmokingHistoryStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,10 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.SmokingHistoryCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.AlcoholConsumptionHistory;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
 import org.intelehealth.ekalarogya.databinding.DialogSmokingHistoryBinding;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,11 +33,23 @@ public class SmokingHistoryDialog extends DialogFragment {
     public static final String TAG = "SmokingHistoryDialog";
     private DialogSmokingHistoryBinding binding;
     private SmokingHistoryCallback callback;
+    private Bundle bundle;
+    private int position;
+    private Context updatedContext;
+    private SessionManager sessionManager;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         callback = (SmokingHistoryCallback) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bundle = getArguments();
+        updatedContext = ((IdentificationActivity) requireActivity()).getUpdatedContext();
+        sessionManager = new SessionManager(requireContext());
     }
 
     @NonNull
@@ -40,6 +58,10 @@ public class SmokingHistoryDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         binding = DialogSmokingHistoryBinding.inflate(inflater);
+        setListeners();
+
+        if (bundle != null)
+            setBundleData();
 
         builder.setView(binding.getRoot())
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
@@ -58,13 +80,17 @@ public class SmokingHistoryDialog extends DialogFragment {
                     Toast.makeText(requireContext(), "All fields are mandatory here", Toast.LENGTH_SHORT).show();
                 else {
                     SmokingHistory smokingHistory = fetchData();
-                    callback.saveSmokingHistory(smokingHistory);
+
+                    if (bundle != null)
+                        callback.saveSmokingHistoryAtPosition(smokingHistory, position);
+                    else
+                        callback.saveSmokingHistory(smokingHistory);
+
                     dialog1.dismiss();
                 }
             });
         });
 
-        setListeners();
         return dialog;
     }
 
@@ -106,21 +132,50 @@ public class SmokingHistoryDialog extends DialogFragment {
     private SmokingHistory fetchData() {
         SmokingHistory smokingHistory = new SmokingHistory();
         // History of smoking
-        smokingHistory.setSmokingStatus(
-                ((RadioButton) binding.smokerRadioGroup.findViewById(binding.smokerRadioGroup.getCheckedRadioButtonId())).getText().toString()
-        );
+        smokingHistory.setSmokingStatus(getSmokingHistoryStrings(
+                ((RadioButton) binding.smokerRadioGroup.findViewById(binding.smokerRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                requireContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        ));
 
         if (binding.smokerLinearLayout.getVisibility() == View.VISIBLE) {
             // Rate of smoking
-            smokingHistory.setRateOfSmoking(
-                    ((RadioButton) binding.rateOfConsumptionRadioGroup.findViewById(binding.rateOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString()
-            );
+            smokingHistory.setRateOfSmoking(getSmokingHistoryStrings(
+                    ((RadioButton) binding.rateOfConsumptionRadioGroup.findViewById(binding.rateOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    requireContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+
             // Duration of smoking
-            smokingHistory.setDurationOfSmoking(
-                    ((RadioButton) binding.durationOfSmokingRadioGroup.findViewById(binding.durationOfSmokingRadioGroup.getCheckedRadioButtonId())).getText().toString()
-            );
+            smokingHistory.setDurationOfSmoking(getSmokingHistoryStrings(
+                    ((RadioButton) binding.durationOfSmokingRadioGroup.findViewById(binding.durationOfSmokingRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    requireContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
         }
 
         return smokingHistory;
+    }
+
+    private void setBundleData() {
+        position = bundle.getInt("position");
+
+        String smokingStatus = bundle.getString("smokingStatus");
+        if (smokingStatus.equalsIgnoreCase(updatedContext.getString(R.string.smoker)))
+            binding.smokerRadioButton.setChecked(true);
+        else
+            binding.nonSmokerRadioButton.setChecked(true);
+
+        if (smokingStatus.equalsIgnoreCase(updatedContext.getString(R.string.smoker))) {
+
+            String rateOfSmoking = bundle.getString("rateOfSmoking");
+            setSelectedCheckboxes(binding.rateOfConsumptionRadioGroup, rateOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
+
+            String durationOfSmoking = bundle.getString("durationOfSmoking");
+            setSelectedCheckboxes(binding.durationOfSmokingRadioGroup, durationOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
+        }
     }
 }
