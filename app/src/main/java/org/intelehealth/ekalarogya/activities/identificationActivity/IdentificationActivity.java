@@ -51,6 +51,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.AlcoholConsumptionHistoryAdapter;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.MedicalHistoryAdapter;
@@ -193,9 +194,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     private Context updatedContext;
 
     // History Lists
-    private final List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
-    private final List<MedicalHistory> medicalHistoryList = new ArrayList<>();
-    private final List<SmokingHistory> smokingHistoryList = new ArrayList<>();
+    private List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
+    private List<MedicalHistory> medicalHistoryList = new ArrayList<>();
+    private List<SmokingHistory> smokingHistoryList = new ArrayList<>();
 
     // Adapters
     private AlcoholConsumptionHistoryAdapter alcoholConsumptionHistoryAdapter;
@@ -2201,13 +2202,44 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (name.equalsIgnoreCase("Family Cultivable Land")) {
                     patient1.setHectars_land(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("otherMedicalHistory")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    medicalHistoryList = new Gson().fromJson(value, new TypeToken<List<MedicalHistory>>() {
+                    }.getType());
+                    medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+                    medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+                    medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(medicalHistoryViewPager);
+                }
+
+                if (name.equalsIgnoreCase("smokingStatus")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    smokingHistoryList = new Gson().fromJson(value, new TypeToken<List<SmokingHistory>>() {
+                    }.getType());
+                    smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+                    smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+                    smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(smokingHistoryViewPager);
+                }
+
+                if (name.equalsIgnoreCase("alcoholConsumptionStatus")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    alcoholConsumptionHistoryList = new Gson().fromJson(value, new TypeToken<List<AlcoholConsumptionHistory>>() {
+                    }.getType());
+                    alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+                    alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+                    alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(alcoholViewPager);
+                }
 
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
 
     }
-
 
     @Override
     public void onBackPressed() {
@@ -2713,6 +2745,27 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
         }
 
+        if (medicalHistoryList.isEmpty()) {
+            Toast.makeText(this, "Medical History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = medicalHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (smokingHistoryList.isEmpty()) {
+            Toast.makeText(this, "Smoking History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = smokingHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (alcoholConsumptionHistoryList.isEmpty()) {
+            Toast.makeText(this, "Alcohol consumption history cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = alcoholViewPager;
+            cancel = true;
+            return;
+        }
+
 
         if (cancel) {
             focusView.requestFocus();
@@ -3139,6 +3192,29 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
+            // Medical History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("otherMedicalHistory"));
+            patientAttributesDTO.setValue(new Gson().toJson(medicalHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Smoking History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("smokingStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(smokingHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Alcohol Consumption History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("alcoholConsumptionStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(alcoholConsumptionHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             //patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
@@ -3638,6 +3714,26 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
         }
 
+        if (medicalHistoryList.isEmpty()) {
+            Toast.makeText(this, "Medical History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = medicalHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (smokingHistoryList.isEmpty()) {
+            Toast.makeText(this, "Smoking History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = smokingHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (alcoholConsumptionHistoryList.isEmpty()) {
+            Toast.makeText(this, "Alcohol consumption history cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = alcoholViewPager;
+            cancel = true;
+            return;
+        }
 
         if (cancel) {
             focusView.requestFocus();
@@ -4056,6 +4152,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
             }
             //end of checking if the family head checkbox is checked or not...
+
+            // Medical History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("otherMedicalHistory"));
+            patientAttributesDTO.setValue(new Gson().toJson(medicalHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Smoking History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("smokingStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(smokingHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Alcohol Consumption History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("alcoholConsumptionStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(alcoholConsumptionHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             //patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
