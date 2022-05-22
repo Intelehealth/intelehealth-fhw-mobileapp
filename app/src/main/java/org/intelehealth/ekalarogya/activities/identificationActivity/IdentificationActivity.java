@@ -23,6 +23,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -31,7 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -51,8 +52,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.AlcoholConsumptionHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.MedicalHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.SmokingHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.AlcoholConsumptionCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.MedicalHistoryCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.SmokingHistoryCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.AlcoholConsumptionHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.MedicalHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.AlcoholConsumptionHistoryDialog;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.MedicalHistoryDialog;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.SmokingHistoryDialog;
 import org.intelehealth.ekalarogya.activities.setupActivity.LocationArrayAdapter;
-import org.intelehealth.ekalarogya.database.dao.LocationDAO;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,14 +115,10 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOw
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
 
-public class IdentificationActivity extends AppCompatActivity {
+public class IdentificationActivity extends AppCompatActivity implements AlcoholConsumptionCallback, MedicalHistoryCallback, SmokingHistoryCallback, ViewPagerCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -180,7 +189,23 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner spinner_vaccination;
     private LinearLayoutCompat ll18;
     private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addAlcoholConsumptionButton;
+
     private Context updatedContext;
+
+    // History Lists
+    private final List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
+    private final List<MedicalHistory> medicalHistoryList = new ArrayList<>();
+    private final List<SmokingHistory> smokingHistoryList = new ArrayList<>();
+
+    // Adapters
+    private AlcoholConsumptionHistoryAdapter alcoholConsumptionHistoryAdapter;
+    private MedicalHistoryAdapter medicalHistoryAdapter;
+    private SmokingHistoryAdapter smokingHistoryAdapter;
+
+    // ViewPager2
+    private ViewPager2 alcoholViewPager;
+    private ViewPager2 medicalHistoryViewPager;
+    private ViewPager2 smokingHistoryViewPager;
 
     Intent i_privacy;
     String privacy_value;
@@ -205,7 +230,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void
+    onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
@@ -350,6 +376,11 @@ public class IdentificationActivity extends AppCompatActivity {
         addMedicalHistoryButton = findViewById(R.id.add_medical_history_button);
         addSmokingStatusButton = findViewById(R.id.add_smoking_status_button);
         addAlcoholConsumptionButton = findViewById(R.id.add_alcohol_consumption_button);
+
+        // ViewPager2
+        alcoholViewPager = findViewById(R.id.alcohol_consumption_view_pager);
+        medicalHistoryViewPager = findViewById(R.id.medical_history_view_pager);
+        smokingHistoryViewPager = findViewById(R.id.smoking_history_view_pager);
 
 //Initialize the local database to store patient information
 
@@ -4076,5 +4107,112 @@ public class IdentificationActivity extends AppCompatActivity {
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
         updatedContext = getBaseContext().createConfigurationContext(configuration);
+    }
+
+    @Override
+    public void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory) {
+        alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
+        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this);
+        alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+        alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+        alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(alcoholViewPager);
+    }
+
+    @Override
+    public void saveMedicalHistoryData(MedicalHistory medicalHistory) {
+        medicalHistoryList.add(medicalHistory);
+        medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+        medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+        medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(medicalHistoryViewPager);
+    }
+
+    @Override
+    public void saveMedicalHistoryDataAtPosition(MedicalHistory medicalHistory, int position) {
+        medicalHistoryList.set(position, medicalHistory);
+        medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+        medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+        medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(medicalHistoryViewPager);
+    }
+
+    @Override
+    public void saveSmokingHistory(SmokingHistory smokingHistory) {
+        smokingHistoryList.add(smokingHistory);
+        smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this);
+        smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+        smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+        smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(smokingHistoryViewPager);
+    }
+
+    private void setViewPagerOffset(ViewPager2 viewPager2) {
+        viewPager2.setClipToPadding(false);
+        viewPager2.setClipChildren(false);
+        viewPager2.setOffscreenPageLimit(3);
+
+        int pageMarginPx = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+        float offsetPx = getResources().getDimensionPixelOffset(R.dimen.offset);
+        viewPager2.setPageTransformer((page, position) -> {
+            ViewPager2 viewPager = (ViewPager2) page.getParent().getParent();
+            float offset = position * -(2 * offsetPx + pageMarginPx);
+            if (viewPager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
+                if (ViewCompat.getLayoutDirection(viewPager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                    page.setTranslationX(-offset);
+                } else {
+                    page.setTranslationX(offset);
+                }
+            } else {
+                page.setTranslationY(offset);
+            }
+        });
+    }
+
+    public Context getUpdatedContext() {
+        return updatedContext;
+    }
+
+    @Override
+    public void getMedicalHistory(MedicalHistory medicalHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("hypertension", medicalHistory.getHypertension());
+                bundle.putString("diabetes", medicalHistory.getDiabetes());
+                bundle.putString("arthritis", medicalHistory.getArthritis());
+                bundle.putString("anaemia", medicalHistory.getAnaemia());
+                bundle.putString("anySurgeries", medicalHistory.getAnySurgeries());
+                bundle.putString("reasonForSurgery", medicalHistory.getReasonForSurgery());
+                bundle.putString("other", medicalHistory.getOther());
+
+                MedicalHistoryDialog medicalHistoryDialog = new MedicalHistoryDialog();
+                medicalHistoryDialog.setArguments(bundle);
+                medicalHistoryDialog.show(getSupportFragmentManager(), MedicalHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, medicalHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
+    public void deleteSurveyData(int position, Object object) {
+        if (object instanceof MedicalHistory) {
+            medicalHistoryList.remove(position);
+            medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+            medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+            if (!medicalHistoryList.isEmpty()) {
+                medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+            }
+            medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(medicalHistoryViewPager);
+        }
     }
 }

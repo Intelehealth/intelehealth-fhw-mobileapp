@@ -1654,7 +1654,7 @@
                         </RelativeLayout>
 
                         <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/main_view_pager"
+                            android:id="@+id/smoking_history_view_pager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@id/main_relative_layout"

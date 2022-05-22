@@ -2530,4 +2530,21 @@ public final class StringUtils {
         }
         return text;
     }
+
+    public static String getMedicalHistoryStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Yes to English
+            if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.yes);
+            }
+
+            // Translate string No to English
+            if (context.getString(R.string.no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.no);
+            }
+        }
+        return text;
+    }
 }

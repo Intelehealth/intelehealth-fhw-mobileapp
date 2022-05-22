@@ -1055,8 +1055,8 @@
     <string name="anaemia">Anaemia</string>
     <string name="any_surgeries">Any Surgeries?</string>
     <string name="reason_for_surgery_specify_the_reason">Reason for surgery (specify the reason)</string>
+
     <string name="smoking_status_in_the_household">Smoking Status In The Household</string>
-    <string name="history_of_alcohol_consumption_in_the_household">History Of Alcohol Consumption In The Household</string>
     <string name="does_the_person_smoke">Does the person smoke?</string>
     <string name="smoker">Smoker</string>
     <string name="non_smoker">Non-Smoker</string>
@@ -1068,13 +1068,17 @@
     <string name="from_one_year_to_five_year">From 1 year to 5 years</string>
     <string name="from_five_years_to_ten_years">From 5 to 10 years</string>
     <string name="more_than_ten_years">More than 10 years</string>
+
+    <string name="history_of_alcohol_consumption_in_the_household">History Of Alcohol Consumption In The Household</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption in the household?</string>
     <string name="no_denied">No or Denied</string>
     <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
-    <string name="zero_five_times">0 - 5 times</string>
-    <string name="five_ten_times">5 - 10 times</string>
+    <string name="zero_five_times">0 – 5 times</string>
+    <string name="five_ten_times">5 – 10 times</string>
     <string name="more_than_10_times">More than 10 times</string>
     <string name="how_long_have_you_been_consuming_alcohol">How long have you been consuming alcohol?</string>
+    <string name="edit_dialog_button">Edit</string>
+    <string name="delete_dialog_button">Delete</string>
 
     <!--    SURVEY STRINGS - END-->
 
