@@ -36,7 +36,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private String patientName;
     Intent intent;
     ArrayList<String> timeList;
-    String startVisitTime;
+    String startVisitTime, patientUuid, visitUuid, whichScreenUserCameFromTag;
     SessionManager sessionManager;
 
     @Override
@@ -87,7 +87,18 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             startVisitTime = intent.getStringExtra("startdate");
             timeList.add(startVisitTime);
             patientName = intent.getStringExtra("patientNameTimeline");
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            whichScreenUserCameFromTag = intent.getStringExtra("fromNotificationTag");
+
+            Log.v("timeline", "patientname_1 "+ patientName + " " + patientUuid + " " + visitUuid);
+
+            if(whichScreenUserCameFromTag.equalsIgnoreCase("Notification")) {
+                // fetch all data for that visit from Local DB.
+            }
         }
+
+        setTitle(patientName);
     }
 
     public void triggerAlarm5MinsBefore() {
@@ -96,9 +107,12 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("timeline", "25min: "+ calendar.getTime().toString());
 
         Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.putExtra("name", patientName);
-        intent.putExtra("time", 5);
-        Log.v("timeline", "patientname "+ patientName);
+        intent.putExtra("patientNameTimeline", patientName);
+        intent.putExtra("timeTag", 5);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+
+        Log.v("timeline", "patientname_5 "+ patientName);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 5, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -117,8 +131,12 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
 
         Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.putExtra("name", patientName);
-        intent.putExtra("time", 15);
+        intent.putExtra("patientNameTimeline", patientName);
+        intent.putExtra("timeTag", 15);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        
+        Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 15, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

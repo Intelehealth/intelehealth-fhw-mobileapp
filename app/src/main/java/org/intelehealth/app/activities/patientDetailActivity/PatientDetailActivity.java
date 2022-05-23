@@ -457,7 +457,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("visitUuid", uuid);
-                intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+               // intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
                 intent2.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
                 intent2.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                 intent2.putExtra("name", fullName);

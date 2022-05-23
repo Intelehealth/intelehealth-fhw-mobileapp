@@ -142,8 +142,16 @@ public class NotificationUtils {
     public void createTimelineNotification(Context mcontext, Intent intentPassed) {
 
         String patientName = intentPassed.getStringExtra("patientNameTimeline");
-        int time = intentPassed.getIntExtra("time", 0);
+        int time = intentPassed.getIntExtra("timeTag", 0);
+        String patientUuid = intentPassed.getStringExtra("patientUuid");
+        String visitUuid = intentPassed.getStringExtra("visitUuid");
+
         Intent intent = new Intent(mcontext, TimelineVisitSummaryActivity.class);
+        intent.putExtra("patientNameTimeline", patientName);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("fromNotificationTag", "Notification");
+
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         if(time == 5)
