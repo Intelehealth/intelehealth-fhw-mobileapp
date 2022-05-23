@@ -132,7 +132,8 @@ public class NotificationUtils {
 
         Notification notification = mBuilder
                 .setSmallIcon(R.drawable.ic_cloud_upload)
-                .setAutoCancel(true).setContentTitle(title)
+                .setAutoCancel(true)
+                .setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setContentText(text).build();
         mNotifyManager.notify(mId, mBuilder.build());
@@ -169,7 +170,7 @@ public class NotificationUtils {
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mBuilder.setContentTitle(mcontext.getString(R.string.notificationTitle_Timeline, patientName))
                 .setContentText(mcontext.getString(R.string.notificationTimeline_Description))
-                .setAutoCancel(false)
+                .setAutoCancel(true) // user clicks than notifi is cleared from status bar
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -205,7 +206,7 @@ public class NotificationUtils {
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mBuilder.setContentTitle(mcontext.getString(R.string.notificationTitle_Timeline, patientName))
                 .setContentText("Is coming for data capture in 15mins")
-                .setAutoCancel(false)
+                .setAutoCancel(true) // user clicks than notifi is cleared from status bar
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

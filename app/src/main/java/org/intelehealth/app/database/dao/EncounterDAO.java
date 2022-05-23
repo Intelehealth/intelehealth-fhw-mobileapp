@@ -191,7 +191,35 @@ public class EncounterDAO {
         return encounterDTOList;
     }
 
-    public EncounterDTO getEncounterByVisitUUID(String visitUUID) {
+    public ArrayList<EncounterDTO> getEncountersByVisitUUID(String visitUUID) {
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT DISTINCT uuid, visituuid, encounter_type_uuid, provider_uuid, encounter_time FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time DESC", new String[]{visitUUID});
+        EncounterDTO encounterDTO = new EncounterDTO();
+        ArrayList<EncounterDTO> encounterDTOList = new ArrayList<>();
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
+                encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
+                encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+              //  encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
+                encounterDTOList.add(encounterDTO);
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return encounterDTOList;
+    }
+
+    public EncounterDTO getEncounterByVisitUUIDLimit1(String visitUUID) {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();

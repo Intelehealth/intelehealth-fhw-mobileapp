@@ -19,8 +19,11 @@ import android.widget.LinearLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.NotificationReceiver;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class TimelineVisitSummaryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -36,17 +40,18 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private String patientName;
     Intent intent;
     ArrayList<String> timeList;
-    String startVisitTime, patientUuid, visitUuid, whichScreenUserCameFromTag;
+    String startVisitTime, patientUuid, visitUuid, whichScreenUserCameFromTag, providerID;
     SessionManager sessionManager;
+    EncounterDAO encounterDAO;
+    ArrayList<EncounterDTO> encounterListDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_visit_summary);
-
         initUI();
-        adapter = new TimelineAdapter(context, intent, timeList, sessionManager);
-        recyclerView.setAdapter(adapter);
+//        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
+//        recyclerView.setAdapter(adapter);
         triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
         triggerAlarm15MinsBefore(); // Notification to show every 15min.
     }
@@ -93,12 +98,45 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
             Log.v("timeline", "patientname_1 "+ patientName + " " + patientUuid + " " + visitUuid);
 
-            if(whichScreenUserCameFromTag.equalsIgnoreCase("Notification")) {
-                // fetch all data for that visit from Local DB.
-            }
+           /* if(whichScreenUserCameFromTag != null && whichScreenUserCameFromTag.equalsIgnoreCase("Notification")) {
+                createNewEncounter(visitUuid);
+                whichScreenUserCameFromTag = "";
+            }*/
+            fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
         }
 
         setTitle(patientName);
+    }
+
+    // create a new encounter for the next interval so that a new card is populated...
+/*
+    private void createNewEncounter(String visitUuid) {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("Stage1_Hour1_2"));
+        encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value("true");
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
+*/
+
+    // fetch all encounters from encounter tbl local db for this particular visit and show on timeline...
+    private void fetchAllEncountersFromVisitForTimelineScreen(String visitUuid) {
+        encounterDAO = new EncounterDAO();
+        encounterListDTO = encounterDAO.getEncountersByVisitUUID(visitUuid);
+
+        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager);
+        recyclerView.setAdapter(adapter);
     }
 
     public void triggerAlarm5MinsBefore() {
@@ -111,6 +149,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("timeTag", 5);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("providerID", providerID);
 
         Log.v("timeline", "patientname_5 "+ patientName);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
@@ -126,7 +165,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    public void triggerAlarm15MinsBefore() {
+    public void triggerAlarm15MinsBefore() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
 
@@ -135,6 +174,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("timeTag", 15);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("providerID", providerID);
         
         Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
@@ -143,7 +183,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+                    /*1000*/AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
         }
     }
 

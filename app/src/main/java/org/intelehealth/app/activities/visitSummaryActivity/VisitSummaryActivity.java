@@ -545,7 +545,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
                 Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);

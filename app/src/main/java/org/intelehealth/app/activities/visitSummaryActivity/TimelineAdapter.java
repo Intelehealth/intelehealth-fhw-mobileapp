@@ -24,7 +24,11 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -36,18 +40,21 @@ import java.util.UUID;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewHolder> {
     Context context;
-    private String patientUuid, patientName, visitUuid, stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
-    ArrayList<String> timeList;
+    private String patientUuid, patientName, visitUuid;
+    ArrayList<EncounterDTO> encounterDTOList;
 
-    public TimelineAdapter(Context context, Intent intent, ArrayList<String> timeList, SessionManager sessionManager) {
+    public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList, SessionManager sessionManager) {
         this.context = context;
-        this.timeList = timeList;
+        this.encounterDTOList = encounterDTOList;
+
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             patientName = intent.getStringExtra("name");
-            stage1Hr1_1_EncounterUuid = intent.getStringExtra("Stage1_Hr1_1_En");
-            stage1Hr1_2_EncounterUuid = intent.getStringExtra("Stage1_Hr1_2_En");
+
+//            String time = intent.getStringExtra("encounter_time");
+//            SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+//            String timeLineTimeValue = timeLineTime.format(todayDate);
         }
 
     }
@@ -61,15 +68,28 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     @Override
     public void onBindViewHolder(@NonNull TimelineViewHolder holder, int position) {
-        if(timeList.size() > 0) {
-            holder.frame1.setVisibility(View.VISIBLE);
-            holder.time1.setText(timeList.get(position));
+        if(encounterDTOList.size() > 0) {
+            String time = encounterDTOList.get(position).getEncounterTime();
+            SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+            String encounterTimeAmPmFormat = "";
+            try {
+                Date timeDateType = longTimeFormat.parse(time);
+                encounterTimeAmPmFormat = timeFormat.format(timeDateType);
+                Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Log.e("timeline", "AM Format: " + e.getMessage());
+            }
+
+//            holder.frame1.setVisibility(View.VISIBLE);
+            holder.time1.setText(encounterTimeAmPmFormat);
         }
     }
 
     @Override
     public int getItemCount() {
-        return timeList.size();
+        return encounterDTOList.size();
     }
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
@@ -100,8 +120,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     i1.putExtra("patientUuid", patientUuid);
                     i1.putExtra("name", patientName);
                     i1.putExtra("visitUuid", visitUuid);
-                    i1.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
-                    i1.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
+//                    i1.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
+//                    i1.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                     context.startActivity(i1);
                 }
             });
