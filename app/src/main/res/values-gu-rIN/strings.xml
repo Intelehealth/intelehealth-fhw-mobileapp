@@ -264,6 +264,8 @@
     <string name="toast_crash" translatable="false">એપ્લિકેશન ભૂલ આવી; અહેવાલ મોકલ્યો</string>
 
     <string name="title_activity_setup" translatable="false">સ્થાપના</string>
+    <string name="error_login_str" translatable="false">ભૂલ લોગિન</string>
+    <string name="enter_url_str" translatable="false">URL દાખલ કરો</string>
 
     <string name="title_activity_camera" translatable="false">કેમેરા</string>
     <string name="title_activity_today_patient" translatable="false">આજની મુલાકાતો</string>
@@ -754,6 +756,7 @@
     <string name="appointment_for">માટે નિમણૂક</string>
     <string name="please_select_appointment_slot">કૃપા કરીને એપોઇન્ટમેન્ટ સ્લોટ પસંદ કરો</string>
     <string name="please_select_speciality">કૃપા કરીને વિશેષતા પસંદ કરો!</string>
+    <string name="speciality_str">વિશેષતા</string>
 
     <string name="doctor_appointments">ડૉક્ટરની નિમણૂંક</string>
     <string name="slot_info">સ્લોટ માહિતી</string>

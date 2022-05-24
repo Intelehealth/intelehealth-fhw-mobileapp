@@ -74,7 +74,7 @@ public class Node implements Serializable {
     private String display;
     private String display_oriya;
     private String display_cebuno;
-    private String display_hindi;
+    private String display_hindi, display_gujarati;
     private String language;
     private String choiceType;
     private String inputType;
@@ -197,6 +197,14 @@ public class Node implements Serializable {
             }
             if (this.display_hindi.isEmpty()) {
                 this.display_hindi = this.display;
+            }
+
+            this.display_gujarati = jsonNode.optString("display-gu");
+            if (this.display_gujarati.isEmpty()) {
+                this.display_gujarati = jsonNode.optString("display-gu");
+            }
+            if (this.display_gujarati.isEmpty()) {
+                this.display_gujarati = this.display;
             }
 
             this.language = jsonNode.optString("language");
@@ -412,6 +420,22 @@ public class Node implements Serializable {
                 if (display_oriya != null && !display_oriya.isEmpty()) {
                     //Log.i(TAG, "findDisplay: ori dis");
                     return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+
+            case "gu": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_gujarati;
                 } else {
                     if (display == null || display.isEmpty()) {
                         //Log.i(TAG, "findDisplay: eng/o txt");
@@ -764,9 +788,10 @@ public class Node implements Serializable {
                             } else {
                                 if (language.equalsIgnoreCase("hi")) {
                                     raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
-                                }
-                                if (language.equalsIgnoreCase("or")) {
+                                }else if (language.equalsIgnoreCase("or")) {
                                     raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                }else if (language.equalsIgnoreCase("gu")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
                                 } else {
                                     raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
                                 }
@@ -823,6 +848,8 @@ public class Node implements Serializable {
                         test = mOptions.get(i).getDisplay_hindi();
                     } else if (language.equalsIgnoreCase("or")) {
                         test = mOptions.get(i).getDisplay_oriya();
+                    }else if (language.equalsIgnoreCase("gu")) {
+                        test = mOptions.get(i).getDisplay_gujarati();
                     }
 
                     if (!test.isEmpty()) {
@@ -838,8 +865,9 @@ public class Node implements Serializable {
                                     //This means chip is selected as answer...
                                     if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
-                                    }
-                                    if (language.equalsIgnoreCase("or")) {
+                                    }else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    }else if (language.equalsIgnoreCase("gu")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
@@ -854,6 +882,8 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).getDisplay_hindi());
                                     } else if (language.equalsIgnoreCase("or") && !mOptions.get(i).getDisplay_oriya().startsWith("[")) {
                                         stringsList.add(mOptions.get(i).getDisplay_oriya());
+                                    }else if (language.equalsIgnoreCase("gu") && !mOptions.get(i).getDisplay_gujarati().startsWith("[")) {
+                                        stringsList.add(mOptions.get(i).getDisplay_gujarati());
                                     } else {
                                         stringsList.add(mOptions.get(i).getLanguage());
                                     }
@@ -909,6 +939,8 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
         }
         return mLanguage;
     }
@@ -936,6 +968,8 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("or")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("gu")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
                                     }
@@ -951,6 +985,8 @@ public class Node implements Serializable {
                                     if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    }else if (language.equalsIgnoreCase("gu")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
@@ -1004,6 +1040,8 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
         }
         return mLanguage;
     }
@@ -1025,6 +1063,21 @@ public class Node implements Serializable {
                 if (display_oriya != null && !display_oriya.isEmpty()) {
                     //Log.i(TAG, "findDisplay: ori dis");
                     return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "gu": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_gujarati;
                 } else {
                     if (display == null || display.isEmpty()) {
                         //Log.i(TAG, "findDisplay: eng/o txt");
@@ -1144,6 +1197,8 @@ public class Node implements Serializable {
             mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
         }
         return mLanguage;
     }
@@ -1479,7 +1534,8 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 startPicker.setValue(startPicker.getValue());
                 endPicker.setValue(endPicker.getValue());
-                String durationString = startPicker.getValue() + " to " + endPicker.getValue();
+                //String durationString = startPicker.getValue() + " to " + endPicker.getValue();
+                String durationString = startPicker.getValue() + " - " + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
 
                 if (node.getLanguage().contains("_")) {
@@ -1490,6 +1546,7 @@ public class Node implements Serializable {
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
                 node.setSelected(true);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1497,10 +1554,14 @@ public class Node implements Serializable {
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = rangeDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1625,6 +1686,7 @@ public class Node implements Serializable {
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]);//for Hindi
                 unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
+                unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1659,18 +1721,20 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 node.setSelected(false);
 
-                if (node.getLanguage().contains("_")) {
+                /*if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                 } else {
                     node.addLanguage("Question not answered");
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                }
+                }*/
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = durationDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1736,6 +1800,35 @@ public class Node implements Serializable {
                 break;
 
             case "ବର୍ଷଗୁଡିକ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String gu_en(String unit) {
+        switch (unit) {
+            case "કલાકો":
+                unit = "Hours";
+                break;
+
+            case "દિવસ":
+                unit = "Days";
+                break;
+
+            case "અઠવાડિયા":
+                unit = "Weeks";
+                break;
+
+            case "મહિનાઓ":
+                unit = "Months";
+                break;
+
+            case "વર્ષ":
                 unit = "Years";
                 break;
 
@@ -1990,7 +2083,8 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 startPicker.setValue(startPicker.getValue());
                 endPicker.setValue(endPicker.getValue());
-                String durationString = startPicker.getValue() + " to " + endPicker.getValue();
+                //String durationString = startPicker.getValue() + " to " + endPicker.getValue();
+                String durationString = startPicker.getValue() + " - " + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
 
                 if (node.getLanguage().contains("_")) {
@@ -2008,10 +2102,13 @@ public class Node implements Serializable {
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = rangeDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -2136,6 +2233,7 @@ public class Node implements Serializable {
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
+                unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -2170,18 +2268,18 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 node.setSelected(false);
 
-                if (node.getLanguage().contains("_")) {
+               /* if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                 } else {
                     node.addLanguage("Question not answered");
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                }
-
+                }*/
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = durationDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -2423,6 +2521,14 @@ public class Node implements Serializable {
 
     public void setDisplay_hindi(String display_hindi) {
         this.display_hindi = display_hindi;
+    }
+
+    public String getDisplay_gujarati() {
+        return display_gujarati;
+    }
+
+    public void setDisplay_gujarati(String display_gujarati) {
+        this.display_gujarati = display_gujarati;
     }
 
     public void setOptionsList(List<Node> optionsList) {
@@ -2751,6 +2857,7 @@ public class Node implements Serializable {
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                ", display_gujarati='" + display_gujarati + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
@@ -3016,7 +3123,7 @@ public class Node implements Serializable {
         no.remove(index);
     }
 
-    static public String dateformate_hi_or_en(String displayStr, SessionManager sessionManager) {
+    static public String dateformate_hi_or_gu_en(String displayStr, SessionManager sessionManager) {
         if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
             displayStr = displayStr.replaceAll("Hours", "घंटे")
                     .replaceAll("दिन", "Days")
@@ -3043,21 +3150,103 @@ public class Node implements Serializable {
                     .replaceAll("ମାସଗୁଡିକ", "Months")
                     .replaceAll("ବର୍ଷଗୁଡିକ", "Years")
 
-                    .replaceAll("ଜାନ", "Jan")
+                    .replaceAll("ଜାନୁଆରୀ", "Jan")
                     .replaceAll("ଫେବୃଆରୀ", "Feb")
-                    .replaceAll("ମାର୍", "Mar")
-                    .replaceAll("ଏପ୍ରିଲ୍", "Apr")
-                    .replaceAll("ହୋଇପାରେ", "May")
+                    .replaceAll("ମାର୍ଚ୍ଚ", "Mar")
+                    .replaceAll("ଅପ୍ରେଲ", "Apr")
+                    .replaceAll("ମଲ", "May")
                     .replaceAll("ଜୁନ୍", "Jun")
-                    .replaceAll("ଜୁଲ୍", "Jul")
-                    .replaceAll("ଅଗ", "Aug")
+                    .replaceAll("ଜୁଲାଇ", "Jul")
+                    .replaceAll("ଅଗଷ୍ଟ", "Aug")
                     .replaceAll("ସେପ୍ଟେମ୍ବର", "Sep")
                     .replaceAll("ଅକ୍ଟୋବର", "Oct")
                     .replaceAll("ନଭେମ୍ବର", "Nov")
-                    .replaceAll("ଡ଼ିସେ", "Dec");
+                    .replaceAll("ଡିସେମ୍ବର", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+            displayStr = displayStr.replaceAll("કલાકો", "Hours")
+                    .replaceAll("દિવસ", "Days")
+                    .replaceAll("અઠવાડિયા", "Weeks")
+                    .replaceAll("મહિનાઓ", "Months")
+                    .replaceAll("વર્ષ", "Years")
+
+                    .replaceAll("જાન્યુ", "Jan")
+                    .replaceAll("ફેબ્રુ", "Feb")
+                    .replaceAll("માર્ચ", "Mar")
+                    .replaceAll("એપ્રિલ", "Apr")
+                    .replaceAll("મે", "May")
+                    .replaceAll("જુન", "Jun")
+                    .replaceAll("જુલાઇ", "Jul")
+                    .replaceAll("ઓગસ્ટ", "Aug")
+                    .replaceAll("સપ્ટે", "Sep")
+                    .replaceAll("ઑક્ટો", "Oct")
+                    .replaceAll("નવે", "Nov")
+                    .replaceAll("ડિસે", "Dec");
         }
         return displayStr;
     }
 
+    static public String dateformat_en_hi_or_gu(String displayStr,SessionManager sessionManager) {
+        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi"))
+        {
+            displayStr=displayStr.replaceAll("Hours","घंटे")
+                    .replaceAll("Days","दिन")
+                    .replaceAll("Weeks","हफ्तों")
+                    .replaceAll("Months","महीने")
+                    .replaceAll("Years","वर्ष")
+
+                    .replaceAll("Jan","जन")
+                    .replaceAll("Feb","फ़र")
+                    .replaceAll("Mar","मार्च")
+                    .replaceAll("Apr","अप्रै")
+                    .replaceAll("May","मई")
+                    .replaceAll("Jun","जून")
+                    .replaceAll("Jul","जुला")
+                    .replaceAll("Aug","अग")
+                    .replaceAll("Sep","सित")
+                    .replaceAll("Oct","अक्टू")
+                    .replaceAll("Nov","नव")
+                    .replaceAll("Dec","दिस");
+        }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or"))
+        {
+            displayStr=displayStr.replaceAll("Hours","ଘଣ୍ଟା")
+                    .replaceAll("Days","ଦିନଗୁଡିକ")
+                    .replaceAll("Weeks","ସପ୍ତାହଗୁଡିକ")
+                    .replaceAll("Months","ମାସଗୁଡିକ")
+                    .replaceAll("Years","ବର୍ଷଗୁଡିକ")
+
+                    .replaceAll("Jan","ଜାନୁଆରୀ")
+                    .replaceAll("Feb","ଫେବୃଆରୀ")
+                    .replaceAll("Mar","ମାର୍ଚ୍ଚ")
+                    .replaceAll("Apr","ଅପ୍ରେଲ")
+                    .replaceAll("May","ମଲ")
+                    .replaceAll("Jun","ଜୁନ୍")
+                    .replaceAll("Jul","ଜୁଲାଇ")
+                    .replaceAll("Aug","ଅଗଷ୍ଟ")
+                    .replaceAll("Sep","ସେପ୍ଟେମ୍ବର")
+                    .replaceAll("Oct","ଅକ୍ଟୋବର")
+                    .replaceAll("Nov","ନଭେମ୍ବର")
+                    .replaceAll("Dec","ଡିସେମ୍ବର");
+        }else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+            displayStr = displayStr.replaceAll("Hours", "કલાકો")
+                    .replaceAll("Days", "દિવસ")
+                    .replaceAll("Weeks", "અઠવાડિયા")
+                    .replaceAll("Months", "મહિનાઓ")
+                    .replaceAll("Years", "વર્ષ")
+
+                    .replaceAll("Jan", "જાન્યુ")
+                    .replaceAll("Feb", "ફેબ્રુ")
+                    .replaceAll("Mar", "માર્ચ")
+                    .replaceAll("Apr", "એપ્રિલ")
+                    .replaceAll("May", "મે")
+                    .replaceAll("Jun", "જુન")
+                    .replaceAll("Jul", "જુલાઇ")
+                    .replaceAll("Aug", "ઓગસ્ટ")
+                    .replaceAll("Sep", "સપ્ટે")
+                    .replaceAll("Oct", "ઑક્ટો")
+                    .replaceAll("Nov", "નવે")
+                    .replaceAll("Dec", "ડિસે");
+        }
+        return displayStr;
+    }
 }
 

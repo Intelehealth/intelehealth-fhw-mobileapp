@@ -986,7 +986,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals("Not provided"/*getResources().getString(R.string.not_provided)*/))
+            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1008,7 +1008,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            if (patient1.getEconomic_status().equals("Not provided"/*getResources().getString(R.string.not_provided)*/))
+            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1026,7 +1026,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste().equals("Not provided"/*getResources().getString(R.string.not_provided)*/)) {
+            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
                 mCaste.setSelection(0);
             }else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {

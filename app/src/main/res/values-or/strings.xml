@@ -160,7 +160,7 @@
     <string name="table_height">ଉଚ୍ଚତା (ସେ.ମି)</string>
     <string name="table_weight">ଓଜନ (କି.ଗ୍ରା)</string>
     <string name="table_temp">ତାପମାତ୍ରା (ଏଫ)</string>
-    <string name="table_spo2">ଏସପିଓ ଦୁଇ (%)</string>
+    <string name="table_spo2">ଏସପିଓ2(%)</string>
     <string name="table_hw">ଶରୀର ମାପ</string>
     <string name="tag_optional">ଇଚ୍ଛାଧିନ</string>
     <string name="title_activity_additional_documents">ତିରକ୍ତ ଡ଼କୁ୍ଯମେଣ୍ଟସ୍ (ଦସ୍ତାବିଦ୍)</string>
@@ -400,7 +400,11 @@
     <string name="identification_screen_picker_months" translatable="false">ମାସ</string>
     <string name="identification_screen_picker_minute" translatable="false">ମିନିଟ୍</string>
     <string name="title_activity_question_node" translatable="false">ପ୍ରଶନସନାର୍ଗତବିଧ</string>
+
     <string name="title_activity_setup" translatable="false">ବନିୟାସ</string>
+    <string name="error_login_str" translatable="false">ତ୍ରୁଟି ଲଗଇନ୍</string>
+    <string name="enter_url_str" translatable="false">Url ପ୍ରବେଶ କରନ୍ତୁ</string>
+
     <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
     <string name="show_text">"ସଦଖନ୍ତୁ "</string>
     <string name="hide_text">"ଲୁଚାନ୍ତୁ "</string>
@@ -631,6 +635,7 @@
     <string name="appointment_for">ପାଇଁ ନିଯୁକ୍ତି</string>
     <string name="please_select_appointment_slot">ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଚୟନ କରନ୍ତୁ |</string>
     <string name="please_select_speciality">ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ!</string>
+    <string name="speciality_str">ବିଶେଷତା</string>
 
     <string name="doctor_appointments">ଡାକ୍ତର ନିଯୁକ୍ତି</string>
     <string name="slot_info">ସ୍ଲଟ୍ ସୂଚନା</string>
@@ -652,4 +657,19 @@
     <string name="save_amp_proceed"><![CDATA[ସଞ୍ଚୟ ଏବଂ ଅଗ୍ରଗତି କର |]]></string>
     <string name="please_enter_reason_txt">ଦୟାକରି ଏହାର କାରଣ ପ୍ରବେଶ କରନ୍ତୁ!</string>
     <!--END APPOINTMENT-->
+
+    <!-- Vitals Screen Error-->
+
+    <string name="weight_error" translatable="false">ଓଜନ %1$s କିଲୋଗ୍ରାମରୁ କମ୍ ହେବା ଉଚିତ୍ |</string>
+    <string name="height_error" translatable="false">ଉଚ୍ଚତା 0 ରୁ %1$s ସେମି ମଧ୍ୟରେ ରହିବା ଉଚିତ୍ |</string>
+    <string name="spo2_error" translatable="false">SpO2 %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+    <string name="pulse_error" translatable="false">ନାଡ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+    <string name="bpsys_error" translatable="false">ସିଷ୍ଟୋଲିକ୍ ଚାପ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+    <string name="bpdia_error" translatable="false">ଡାଇଷ୍ଟୋଲିକ୍ ଚାପ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+    <string name="resp_error" translatable="false">ଶ୍ୱାସ ପ୍ରଶ୍ୱାସ ହାର ମିନିଟ୍ ପ୍ରତି %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ୍</string>
+    <string name="temp_error" translatable="false">ତାପମାତ୍ରା %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+
+    <string name="chat_fab">ଚାଟ୍ ଫାବ୍ |</string>
+    <string name="notification_title">ପ୍ରକୃତ ସମୟ ସିଙ୍କ୍ ଅନ୍ ଅଛି |</string>
+
 </resources>

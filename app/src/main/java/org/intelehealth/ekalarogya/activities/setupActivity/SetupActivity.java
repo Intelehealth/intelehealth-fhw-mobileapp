@@ -725,7 +725,7 @@ public class SetupActivity extends AppCompatActivity {
             if (focusView != null) {
                 if (TextUtils.isEmpty(url)) {
                     mUrlField.requestFocus();
-                    mUrlField.setError("Enter Url");
+                    mUrlField.setError(getResources().getString(R.string.enter_url_str));
                 }
                 focusView.requestFocus();
             }
@@ -1384,7 +1384,7 @@ public class SetupActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
+                dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_str), getString(R.string.error_incorrect_password), "ok");
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
                 mLoginButton.setText(getString(R.string.action_sign_in));

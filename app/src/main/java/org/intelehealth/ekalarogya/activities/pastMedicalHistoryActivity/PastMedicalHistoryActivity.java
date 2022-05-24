@@ -102,7 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory, patientHistoryHindi, patientHistoryOdiya;
+    String patientHistory, patientHistoryHindi, patientHistoryOdiya,patientHistoryGujrati;
     String phistory = "";
 
     boolean flag = false;
@@ -235,7 +235,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         }
 
-
         setTitle(getString(R.string.title_activity_patient_history));
         setTitle(getTitle() + ": " + patientName);
 
@@ -361,6 +360,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         patientHistory="";
         patientHistoryHindi="";
         patientHistoryOdiya="";
+        patientHistoryGujrati="";
         List<String> imagePathList = patientHistoryMap.getImagePathList();
 
         if (imagePathList != null) {
@@ -377,9 +377,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                         patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                         ConfirmationDialog(patientHistory, patientHistoryHindi);
-                    }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                    }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
                         patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
                         ConfirmationDialog(patientHistory, patientHistoryOdiya);
+                    }else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+                        patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
+                        ConfirmationDialog(patientHistory, patientHistoryGujrati);
                     } else {
                         ConfirmationDialog(patientHistory, patientHistory);
                     }
@@ -409,9 +412,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                     patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                     ConfirmationDialog(patientHistory, patientHistoryHindi);
-                }if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
                     patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
                     ConfirmationDialog(patientHistory, patientHistoryOdiya);
+                }else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+                    patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
+                    ConfirmationDialog(patientHistory, patientHistoryGujrati);
                 } else {
                     ConfirmationDialog(patientHistory, patientHistory);
                 }
@@ -421,10 +427,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + patientHistory; // only PMH updated
                         sessionManager.setReturning(true);
+                        phistory=Node.dateformate_hi_or_gu_en(phistory,sessionManager);
                         insertDb(phistory);
                         // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                     } else  // new patient, directly insert into database
                     {
+                        patientHistory=Node.dateformate_hi_or_gu_en(patientHistory,sessionManager);
                         insertDb(patientHistory);
                     }
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
@@ -455,25 +463,29 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             displayStr.replaceAll("[Describe]","");
         }
 
-        displayStr=dateFormatForDisplay(displayStr);
+        displayStr=Node.dateformat_en_hi_or_gu(displayStr,sessionManager);
+        patHist=Node.dateformate_hi_or_gu_en(patHist,sessionManager);
+        phistory=Node.dateformate_hi_or_gu_en(phistory,sessionManager);
+        String finalPatHist = patHist;
 
         alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
+
         alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent;
                 if (intentTag != null && intentTag.equals("edit")) {
-                    updateDatabase(patHist);
+                    updateDatabase(finalPatHist);
                     intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                 } else {
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                        phistory = phistory + patHist; // only PMH updated
+                        phistory = phistory + finalPatHist; // only PMH updated
                         sessionManager.setReturning(true);
                         insertDb(phistory);
                         // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                     } else  // new patient, directly insert into database
                     {
-                        insertDb(patHist);
+                        insertDb(finalPatHist);
                     }
                     intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class); // earlier it was vitals
                 }
@@ -506,51 +518,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         }
     }
 
-    public String dateFormatForDisplay(String displayStr) {
-        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi"))
-        {
-            displayStr=displayStr.replaceAll("Hours","घंटे")
-                    .replaceAll("Days","दिन")
-                    .replaceAll("Weeks","हफ्तों")
-                    .replaceAll("Months","महीने")
-                    .replaceAll("Years","वर्ष")
-
-                    .replaceAll("Jan","जन")
-                    .replaceAll("Feb","फ़र")
-                    .replaceAll("Mar","मार्च")
-                    .replaceAll("Apr","अप्रै")
-                    .replaceAll("May","मई")
-                    .replaceAll("Jun","जून")
-                    .replaceAll("Jul","जुला")
-                    .replaceAll("Aug","अग")
-                    .replaceAll("Sep","सित")
-                    .replaceAll("Oct","अक्टू")
-                    .replaceAll("Nov","नव")
-                    .replaceAll("Dec","दिस");
-        }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or"))
-        {
-            displayStr=displayStr.replaceAll("Hours","ଘଣ୍ଟା")
-                    .replaceAll("Days","ଦିନଗୁଡିକ")
-                    .replaceAll("Weeks","ସପ୍ତାହଗୁଡିକ")
-                    .replaceAll("Months","ମାସଗୁଡିକ")
-                    .replaceAll("Years","ବର୍ଷଗୁଡିକ")
-
-                    .replaceAll("Jan","ଜାନ")
-                    .replaceAll("Feb","ଫେବୃଆରୀ")
-                    .replaceAll("Mar","ମାର୍")
-                    .replaceAll("Apr","ଏପ୍ରିଲ୍")
-                    .replaceAll("May","ହୋଇପାରେ")
-                    .replaceAll("Jun","ଜୁନ୍")
-                    .replaceAll("Jul","ଜୁଲ୍")
-                    .replaceAll("Aug","ଅଗ")
-                    .replaceAll("Sep","ସେପ୍ଟେମ୍ବର")
-                    .replaceAll("Oct","ଅକ୍ଟୋବର")
-                    .replaceAll("Nov","ନଭେମ୍ବର")
-                    .replaceAll("Dec","ଡ଼ିସେ");
-        }
-        return displayStr;
-    }
-
     /**
      * This method inserts medical history of patient in database.
      *
@@ -573,7 +540,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         return isInserted;
     }
-
 
     private void updateImageDatabase(String imagePath) {
 

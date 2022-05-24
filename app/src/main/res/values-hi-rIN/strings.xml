@@ -20,7 +20,6 @@
     <string name="generic_update">अपडेट करें</string>
     <string name="generic_deleted">हटाए गए</string>
 
-
     //Database Schema Names
     <string name="db_first_name">first_name</string>
     <string name="db_middle_name">middle_name</string>
@@ -274,6 +273,8 @@
 
 
     <string name="title_activity_setup">सेट अप</string>
+    <string name="error_login_str" translatable="false">लॉगिन एरर</string>
+    <string name="enter_url_str" translatable="false">यू आर एल दर्ज करो</string>
 
     <string name="title_activity_camera">कैमरा</string>
     <string name="title_activity_today_patient">आज की विज़िट्स</string>
@@ -762,6 +763,7 @@
     <string name="appointment_for">अपॉइंटमेंट के लिए</string>
     <string name="please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट चुनें</string>
     <string name="please_select_speciality">कृपया विशेषता चुनें!</string>
+    <string name="speciality_str">विशेषता</string>
 
     <string name="doctor_appointments">डॉक्टर अपॉइंटमेंट</string>
     <string name="slot_info">स्लॉट की जानकारी</string>

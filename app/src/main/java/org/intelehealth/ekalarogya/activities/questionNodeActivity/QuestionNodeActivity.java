@@ -376,7 +376,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("[Describe]","");
                     }
 
-                    insertion=Node.dateformate_hi_or_en(insertion,sessionManager);
+                    insertion=Node.dateformate_hi_or_gu_en(insertion,sessionManager);
 
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
@@ -401,7 +401,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("Other [Describe]","")
                                 .replaceAll("[Describe]","");
                     }
-                    insertion=Node.dateformate_hi_or_en(insertion,sessionManager);
+                    insertion=Node.dateformate_hi_or_gu_en(insertion,sessionManager);
 
                     insertDb(insertion);
                     Intent intent = new Intent
@@ -640,10 +640,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String a = currentNode.formQuestionAnswer(0);
-            Log.d("tag", a);
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            String currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal=currentNodeVal
                     .replace("Question not answered", "सवाल का जवाब नहीं दिया")
                     .replace("Patient reports -", "पेशेंट ने सूचित किया -")
                     .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
@@ -652,10 +652,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Years", "वर्ष")
                     .replace("times per hour", "प्रति घंटे बार").replace("time per day", "प्रति दिन का समय")
                     .replace("times per week", "प्रति सप्ताह बार").replace("times per month", "प्रति माह बार")
-                    .replace("times per year", "प्रति वर्ष बार")));
+                    .replace("times per year", "प्रति वर्ष बार");
+            currentNodeVal=Node.dateformat_en_hi_or_gu(currentNodeVal,sessionManager);
+            Log.d("tag", currentNodeVal);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            String currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal= currentNodeVal
                     .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
                     .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
                     .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
@@ -664,7 +668,23 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Years", "ବର୍ଷ")
                     .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
-                    .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
+                    .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ");
+            currentNodeVal=Node.dateformat_en_hi_or_gu(currentNodeVal,sessionManager);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            String currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal= currentNodeVal
+                    .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
+                    .replace("Patient reports -", "દર્દીના અહેવાલો -")
+                    .replace("Patient denies -", "દર્દી નકારે છે -")
+                    .replace("Hours", "કલાકો").replace("Days", "દિવસ")
+                    .replace("Weeks", "અઠવાડિયા").replace("Months", "મહિનાઓ")
+                    .replace("Years", "વર્ષ")
+                    .replace("times per hour", "કલાક દીઠ વખત").replace("time per day", "દિવસ દીઠ વખત")
+                    .replace("times per week", "સપ્તાહ દીઠ વખત").replace("times per month", "દર મહિને વખત")
+                    .replace("times per year", "દર વર્ષે વખત");
+            currentNodeVal=Node.dateformat_en_hi_or_gu(currentNodeVal,sessionManager);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }

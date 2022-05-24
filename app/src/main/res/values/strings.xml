@@ -273,8 +273,9 @@
     <string name="pref_title_vibrate" translatable="false">Vibrate</string>
     <string name="toast_crash" translatable="false">Application error encountered; report sent</string>
 
-
     <string name="title_activity_setup" translatable="false">Setup</string>
+    <string name="error_login_str" translatable="false">Error Login</string>
+    <string name="enter_url_str" translatable="false">Enter Url</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
     <string name="title_activity_today_patient" translatable="false">Today\'s Visits</string>
@@ -768,6 +769,7 @@
     <string name="appointment_for">Appointment For</string>
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
+    <string name="speciality_str">Speciality</string>
 
     <string name="doctor_appointments">Doctor Appointments</string>
     <string name="slot_info">Slot info</string>
