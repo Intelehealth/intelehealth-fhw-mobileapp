@@ -322,6 +322,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
             String complaintString = currentNode.generateLanguage();
+            if(complaintString.contains("Glycosylated hemoglobin (HbA1c)"))
+                complaintString = complaintString.replace("Glycosylated hemoglobin (HbA1c) -", "Glycosylated hemoglobin (HbA1c), "); //fixing this format for MSF Diabetes MM only as Kanika wanted it in the particular format for dashboard indicators: By Nishita
+
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
