@@ -1954,6 +1954,26 @@ public final class StringUtils {
             if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.survey_no);
             }
+            // Translate string 0 - 1 to English
+            if (context.getString(R.string.zero_one).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.zero_one);
+            }
+            // Translate string 1 - 2 to English
+            if (context.getString(R.string.one_two).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.one_two);
+            }
+            // Translate string 2 - 5 to English
+            if (context.getString(R.string.two_five).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.two_five);
+            }
+            // Translate string 5 - 10 to English
+            if (context.getString(R.string.five_ten).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.five_ten);
+            }
+            // Translate string More than 10 to English
+            if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_10);
+            }
             // Translate string Bigha to English
             if (context.getString(R.string.bigha).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.bigha);

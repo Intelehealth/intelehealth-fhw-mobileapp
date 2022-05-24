@@ -785,9 +785,6 @@
 
     <!--    SURVEY STRINGS - START-->
 
-    <!--    SURVEY SCREEN - 1 -->
-    <string name="name_of_district">Name of District</string>
-    <string name="name_of_village">Name of Village</string>
     <string name="household_structure_type">घर का प्रकार</string>
     <string name="kucha">कच्चा</string>
     <string name="pucca">पक्का</string>
@@ -1085,5 +1082,7 @@
     <string name="five_ten_times">5 – 10 बार</string>
     <string name="more_than_10_times">10 से अधिक बार</string>
     <string name="how_long_have_you_been_consuming_alcohol">How long have you been consuming alcohol?</string>
+    <string name="edit_dialog_button">Edit</string>
+    <string name="delete_dialog_button">Delete</string>
 
 </resources>

@@ -793,8 +793,6 @@
 
     <!--    SURVEY STRINGS - START-->
 
-    <string name="name_of_district">Name of District</string>
-    <string name="name_of_village">Name of Village</string>
     <string name="household_structure_type">Household Structure Type</string>
     <string name="kucha">Kucha</string>
     <string name="pucca">Pucca</string>
