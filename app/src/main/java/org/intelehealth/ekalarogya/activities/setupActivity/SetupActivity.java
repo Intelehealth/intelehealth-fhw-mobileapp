@@ -34,6 +34,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
@@ -132,13 +134,16 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
-    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4=null;
+    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4 = null;
     boolean value = false;
     String base_url;
     Map.Entry<String, String> village_name;
     int state_count = 0, district_count = 0, sanch_count = 0, village_count = 0;
-    private String selectedState = "",selectedDistrict="",selectedSanch="", selectedVillage="";
-    NewLocationDao newLocationDao=null;
+    private String selectedState = "", selectedDistrict = "", selectedSanch = "", selectedVillage = "";
+    NewLocationDao newLocationDao = null;
+
+    private RadioGroup subCentreRadioGroup, primaryCentreRadioGroup, communityHealthCentreRadioGroup, districtHospitalRadioGroup,
+            medicalStoreRadioGroup, pathologicalLabRadioGroup, privateClinicWithMbbsDoctorRadioGroup, privateClinicWithAlternateMedicalRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,11 +177,12 @@ public class SetupActivity extends AppCompatActivity {
         // populateAutoComplete(); TODO: create our own autocomplete code
 
         mLoginButton = findViewById(R.id.setup_submit_button);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptLogin();
+        mLoginButton.setOnClickListener(v -> {
+            if (!areFieldsValid()) {
+                Toast.makeText(context, "Please fill up all required fields", Toast.LENGTH_SHORT).show();
+                return;
             }
+            attemptLogin();
         });
 
         r1 = findViewById(R.id.demoMindmap);
@@ -194,6 +200,16 @@ public class SetupActivity extends AppCompatActivity {
         spinner_district = findViewById(R.id.spinner_district);
         spinner_sanch = findViewById(R.id.spinner_sanch);
         spinner_village = findViewById(R.id.spinner_village);
+
+        // Set up for Radio Group.
+        subCentreRadioGroup = findViewById(R.id.distance_to_sub_centre_radio_group);
+        primaryCentreRadioGroup = findViewById(R.id.distance_to_nearest_primary_centre_radio_group);
+        communityHealthCentreRadioGroup = findViewById(R.id.distance_to_nearest_community_health_centre_radio_group);
+        districtHospitalRadioGroup = findViewById(R.id.distance_to_nearest_district_hospital_radio_group);
+        medicalStoreRadioGroup = findViewById(R.id.distance_to_nearest_medical_store_radio_group);
+        pathologicalLabRadioGroup = findViewById(R.id.distance_to_nearest_pathological_lab_radio_group);
+        privateClinicWithMbbsDoctorRadioGroup = findViewById(R.id.distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group);
+        privateClinicWithAlternateMedicalRadioGroup = findViewById(R.id.distance_to_nearest_private_clinic_with_alternate_medical_radio_group);
 
         spinner_state.setEnabled(false);
         spinner_district.setEnabled(false);
@@ -260,7 +276,7 @@ public class SetupActivity extends AppCompatActivity {
                     // user didn't typed for 1.5 seconds, do whatever you want
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                            String BASE_URL = "https://" +mUrlField.getText().toString() + ":3004/api/openmrs/";
+                            String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
                                 value = getLocationFromServer(BASE_URL); //state wise locations...
                             else
@@ -285,11 +301,11 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
-                if(position!=0){
+                if (position != 0) {
                     String state_uuid = "";
                     selectedState = spinner_state.getSelectedItem().toString();
-                    List<String> district_locations = newLocationDao.getDistrictList(selectedState,context);
-                    if(district_locations.size()>1) {
+                    List<String> district_locations = newLocationDao.getDistrictList(selectedState, context);
+                    if (district_locations.size() > 1) {
                         LocationArrayAdapter locationArrayAdapter =
                                 new LocationArrayAdapter(SetupActivity.this, district_locations);
 
@@ -297,7 +313,7 @@ public class SetupActivity extends AppCompatActivity {
                         spinner_district.setAlpha(1);
                         spinner_district.setAdapter(locationArrayAdapter);
                         isLocationFetched = true;
-                    }else{
+                    } else {
                         empty_spinner("state");
                     }
                 }
@@ -359,11 +375,11 @@ public class SetupActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
 
-                if(position!=0){
+                if (position != 0) {
                     String district_uuid = "";
-                    selectedDistrict=spinner_district.getSelectedItem().toString();
-                    List<String> sanch_locations = newLocationDao.getSanchList(selectedState,selectedDistrict,context);
-                    if(sanch_locations.size()>1) {
+                    selectedDistrict = spinner_district.getSelectedItem().toString();
+                    List<String> sanch_locations = newLocationDao.getSanchList(selectedState, selectedDistrict, context);
+                    if (sanch_locations.size() > 1) {
                         LocationArrayAdapter locationArrayAdapter =
                                 new LocationArrayAdapter(SetupActivity.this, sanch_locations);
 
@@ -371,10 +387,10 @@ public class SetupActivity extends AppCompatActivity {
                         spinner_sanch.setAlpha(1);
                         spinner_sanch.setAdapter(locationArrayAdapter);
                         isLocationFetched = true;
-                    }else{
+                    } else {
                         empty_spinner("district");
                     }
-                }else{
+                } else {
                     empty_spinner("district");
                 }
                 /*String district_uuid = "";
@@ -431,22 +447,22 @@ public class SetupActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //sanch wise locations...
 
-                if(position!=0){
+                if (position != 0) {
                     String sanch_uuid = "";
-                    selectedSanch=spinner_sanch.getSelectedItem().toString();
-                    List<String> village_locations = newLocationDao.getVillageList(selectedState,selectedDistrict,selectedSanch,context);
-                    if(village_locations.size()>1){
-                    LocationArrayAdapter locationArrayAdapter =
-                            new LocationArrayAdapter(SetupActivity.this, village_locations);
+                    selectedSanch = spinner_sanch.getSelectedItem().toString();
+                    List<String> village_locations = newLocationDao.getVillageList(selectedState, selectedDistrict, selectedSanch, context);
+                    if (village_locations.size() > 1) {
+                        LocationArrayAdapter locationArrayAdapter =
+                                new LocationArrayAdapter(SetupActivity.this, village_locations);
 
-                    spinner_village.setEnabled(true);
-                    spinner_village.setAlpha(1);
-                    spinner_village.setAdapter(locationArrayAdapter);
-                    isLocationFetched = true;
-                    }else{
+                        spinner_village.setEnabled(true);
+                        spinner_village.setAlpha(1);
+                        spinner_village.setAdapter(locationArrayAdapter);
+                        isLocationFetched = true;
+                    } else {
                         empty_spinner("sanch");
                     }
-                }else {
+                } else {
                     empty_spinner("sanch");
                 }
 
@@ -504,18 +520,18 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //village wise locations...
-                try{
-                    if(position!=0) {
+                try {
+                    if (position != 0) {
                         String village_uuid = "";
                         selectedVillage = spinner_village.getSelectedItem().toString();
-                        village_uuid = newLocationDao.getVillageUuid(selectedState,selectedDistrict,selectedSanch,selectedVillage);
+                        village_uuid = newLocationDao.getVillageUuid(selectedState, selectedDistrict, selectedSanch, selectedVillage);
                         hashMap4 = new HashMap<>();
-                        hashMap4.put(village_uuid,selectedVillage);
+                        hashMap4.put(village_uuid, selectedVillage);
                         for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
                             village_name = entry;
                         }
                     }
-                }catch (Exception E){
+                } catch (Exception E) {
                     E.printStackTrace();
                 }
 
@@ -559,6 +575,59 @@ public class SetupActivity extends AppCompatActivity {
 
 
         showProgressbar();
+    }
+
+    private boolean areFieldsValid() {
+        AtomicBoolean validations = new AtomicBoolean(true);
+
+        // Validation for distance_to_sub_centre_radio_group
+        if (subCentreRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for distance_to_nearest_primary_centre_radio_group
+        if (primaryCentreRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for distance_to_nearest_community_health_centre_radio_group
+        if (communityHealthCentreRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for distance_to_nearest_district_hospital_radio_group
+        if (districtHospitalRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+        // Validation for distance_to_nearest_medical_store_radio_group
+        if (medicalStoreRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for distance_to_nearest_pathological_lab_radio_group
+        if (pathologicalLabRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group
+        if (privateClinicWithMbbsDoctorRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for distance_to_nearest_private_clinic_with_alternate_medical_radio_group
+        if (privateClinicWithAlternateMedicalRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        return validations.get();
     }
 
     private void empty_spinner(String value) {
@@ -695,7 +764,7 @@ public class SetupActivity extends AppCompatActivity {
             TextView t = (TextView) spinner_state.getSelectedView();
             t.setError(getResources().getString(R.string.setup_select_state_str));
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this,getResources().getString(R.string.setup_select_dropdown_state_msg), Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getResources().getString(R.string.setup_select_dropdown_state_msg), Toast.LENGTH_LONG).show();
         } else if (spinner_district.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_district;
@@ -941,9 +1010,9 @@ public class SetupActivity extends AppCompatActivity {
                                     newLocationDao.insertSetupLocations(location);
                                     customProgressDialog.dismiss();
 
-                                    List<String> state_locations=newLocationDao.getStateList(context);
+                                    List<String> state_locations = newLocationDao.getStateList(context);
 
-                                    if(state_locations.size()!=0) {
+                                    if (state_locations.size() != 0) {
                                         LocationArrayAdapter locationArrayAdapter =
                                                 new LocationArrayAdapter(SetupActivity.this, state_locations);
 
@@ -951,7 +1020,7 @@ public class SetupActivity extends AppCompatActivity {
                                         spinner_state.setAlpha(1);
                                         spinner_state.setAdapter(locationArrayAdapter);
                                         isLocationFetched = true;
-                                    }else{
+                                    } else {
                                         empty_spinner("state");
                                     }
 
