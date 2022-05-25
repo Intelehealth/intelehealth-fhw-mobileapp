@@ -2967,7 +2967,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Marital Status Adapter
             patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
             patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -2977,7 +2977,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             if (ll18.getVisibility() == View.VISIBLE) {
                 // BP Checked Adapter
                 patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
                 patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -2985,7 +2985,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 // Sugar Level Checked
                 patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
                 patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -2994,7 +2994,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // HB Checked Adapter
             patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
             patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3002,7 +3002,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // BMI Checked Adapter
             patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
             patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3010,7 +3010,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (!familyhead_checkbox.isChecked()) {
                 patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
                 patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3936,7 +3936,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Marital Status Adapter
             patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
             patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3946,7 +3946,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             if (ll18.getVisibility() == View.VISIBLE) {
                 // BP Checked Adapter
                 patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
                 patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3954,7 +3954,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 // Sugar Level Checked
                 patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
                 patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3963,7 +3963,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // HB Checked Adapter
             patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
             patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3971,7 +3971,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // BMI Checked Adapter
             patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
             patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
@@ -3979,7 +3979,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (!familyhead_checkbox.isChecked()) {
                 patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
                 patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));

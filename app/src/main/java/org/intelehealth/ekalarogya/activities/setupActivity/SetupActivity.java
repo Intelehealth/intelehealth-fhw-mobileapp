@@ -177,12 +177,15 @@ public class SetupActivity extends AppCompatActivity {
         // populateAutoComplete(); TODO: create our own autocomplete code
 
         mLoginButton = findViewById(R.id.setup_submit_button);
-        mLoginButton.setOnClickListener(v -> {
-            if (!areFieldsValid()) {
-                Toast.makeText(context, "Please fill up all required fields", Toast.LENGTH_SHORT).show();
-                return;
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!areFieldsValid()) {
+                    Toast.makeText(context, "Please fill up all required fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                attemptLogin();
             }
-            attemptLogin();
         });
 
         r1 = findViewById(R.id.demoMindmap);
@@ -234,6 +237,10 @@ public class SetupActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!areFieldsValid()) {
+                    Toast.makeText(context, "Please fill up all required fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 attemptLogin();
                 //progressBar.setVisibility(View.VISIBLE);
                 //progressBar.setProgress(0);
