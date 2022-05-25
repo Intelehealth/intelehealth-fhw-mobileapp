@@ -1061,12 +1061,12 @@
 
     <!--    Smoking History Strings -->
     <string name="smoking_status_in_the_household">परिवार में धूम्रपान की स्थिति</string>
-    <string name="does_the_person_smoke">Does the person smoke?</string>
+    <string name="does_the_person_smoke">क्या व्यक्ति धूम्रपान करता है?</string>
     <string name="smoker">धूम्रपान करने</string>
     <string name="non_smoker">धूम्रपान न करने वाला</string>
     <string name="five_ten_bids_cigarette">5 – 10 बीड़ी/सिगरेट</string>
     <string name="more_than_ten_bids_cigarette">10 से अधिक बीड़ी / सिगरेट</string>
-    <string name="rate_of_smoking">Rate of smoking</string>
+    <string name="rate_of_smoking">धूम्रपान की दर</string>
     <string name="how_long_have_you_been_smoking">How long have you been smoking</string>
     <string name="less_than_a_year">एक साल से कम</string>
     <string name="from_one_year_to_five_year">1 साल से 5 साल तक</string>
@@ -1075,14 +1075,14 @@
 
     <!--    Alcohol Consumption Strings -->
     <string name="history_of_alcohol_consumption_in_the_household">घर में शराब के सेवन का इतिहास</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption in the household?</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या घर में शराब पीने का कोई इतिहास है?</string>
     <string name="no_denied">नहीं / अस्वीकार</string>
-    <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
+    <string name="rate_of_alcohol_consumption">शराब की खपत की दर</string>
     <string name="zero_five_times">0 – 5 बार</string>
     <string name="five_ten_times">5 – 10 बार</string>
     <string name="more_than_10_times">10 से अधिक बार</string>
     <string name="how_long_have_you_been_consuming_alcohol">How long have you been consuming alcohol?</string>
-    <string name="edit_dialog_button">Edit</string>
-    <string name="delete_dialog_button">Delete</string>
+    <string name="edit_dialog_button">संपादित करें</string>
+    <string name="delete_dialog_button">हटाएं</string>
 
 </resources>

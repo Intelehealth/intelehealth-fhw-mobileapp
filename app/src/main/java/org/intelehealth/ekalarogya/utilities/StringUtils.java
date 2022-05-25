@@ -2674,4 +2674,79 @@ public final class StringUtils {
 
         return text;
     }
+
+    public static String getDistanceStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Within 5 minutes to English
+            if (context.getString(R.string.within_5_minutes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.within_5_minutes);
+            }
+            // Translate string Within Five To Fifteen Minutes to English
+            if (context.getString(R.string.five_fifteen_minutes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.five_fifteen_minutes);
+            }
+            // Translate string Within Fifteen To Thirty Minutes to English
+            if (context.getString(R.string.fifteen_thirty_minutes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.fifteen_thirty_minutes);
+            }
+            // Translate string More Than Thirty Minutes to English
+            if (context.getString(R.string.more_than_thirty_minutes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_thirty_minutes);
+            }
+            // Translate string Within 1 km to English
+            if (context.getString(R.string.within_1_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.within_1_km);
+            }
+            // Translate string Within 1 - 3 km to English
+            if (context.getString(R.string.one_three_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.one_three_km);
+            }
+            // Translate string Within 3 - 5 km to English
+            if (context.getString(R.string.three_five_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.one_three_km);
+            }
+            // Translate string More Than 5 km to English
+            if (context.getString(R.string.more_than_five_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_five_km);
+            }
+            // Translate string Within 3 km to English
+            if (context.getString(R.string.within_3_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.within_3_km);
+            }
+            // Translate string 3 - 6 km to English
+            if (context.getString(R.string.three_six_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.three_six_km);
+            }
+            // Translate string 6 - 10 km to English
+            if (context.getString(R.string.six_ten_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.six_ten_km);
+            }
+            // Translate string More Than 10 km to English
+            if (context.getString(R.string.more_than_10km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_10km);
+            }
+            // Translate string Within 5 km to English
+            if (context.getString(R.string.within_5_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.within_5_km);
+            }
+            // Translate string Within 5 - 10 km to English
+            if (context.getString(R.string.five_ten_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.five_ten_km);
+            }
+            // Translate string 10 - 20 km to English
+            if (context.getString(R.string.ten_twenty_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.ten_twenty_km);
+            }
+            // Translate string Within 20 - 30 km to English
+            if (context.getString(R.string.twenty_thirty_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.twenty_thirty_km);
+            }
+            // Translate string More than 30 km to English
+            if (context.getString(R.string.more_than_thirty_km).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_thirty_km);
+            }
+        }
+        return text;
+    }
 }

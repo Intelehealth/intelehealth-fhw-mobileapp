@@ -666,8 +666,8 @@
     <string name="self_employed_non_agricultural_petty_business">ଆତ୍ମନିର୍ଭରଶୀଳ (ଅଣଳୃଷି/୪ୁଦ୍ର ବ୍ୟବସାୟ)</string>
     <string name="daily_labor_unskilled_work_agricultural_non_agricultural">ଦିନ ମୁରୀଆ(ଅଣ ଶିକ୍ଷିତ କାର୍ଯ୍ୟ-କୃଷି/ଅଣକୃଷି)</string>
     <string name="nrega">ଏନ.ଆର.ଇ.ଜି.ଏରେ ଶ୍ରମିକ</string>
-    <string name="seasonal_labor">मौसमी श्रम</string>
-    <string name="no_paid_work">ଦରମା ପ୍ରାପ୍ତ କାର୍ଯ୍ୟ</string>
+    <string name="seasonal_labor">ଋତୁ କାଳୀନ ଶ୍ରମିକ</string>
+    <string name="no_paid_work">କୌଣସି ଦେୟ ଯୁକ୍ତ କାମ ନାହିଁ</string>
     <string name="pension">ପେନସନ</string>
     <string name="remittances_checkbox">ଟଙ୍କା ପଠାଇବା</string>
     <string name="other_source_of_income_please_specify">ଅନ୍ୟାନ୍ୟ ଆୟର ଉତ୍ସ (ଦୟାକରି ଦର୍ଶାନ୍ତୁ)</string>
@@ -753,8 +753,8 @@
     <string name="tanker_truck">ଟ୍ୟାଙ୍କର ପାଣି</string>
     <string name="cart_with_small_tank">टଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି</string>
     <string name="surface_water">ଭୂପୃଷ୍ଠ ଜଳ</string>
-    <string name="common_hand_pump">ହାତ ପମ୍ପ</string>
-    <string name="hand_pump_at_home">घर पर हैंड पंप</string>
+    <string name="common_hand_pump">ସାଧାରଣ ହାତ ପମ୍ପ</string>
+    <string name="hand_pump_at_home">ଘରେ ଥିବା ହାତ ପମ୍ପ</string>
     <string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">ତୁମ ଘରୁ ଜଳ ଉତ୍ସ ପର୍ଯ୍ୟନ୍ତ ଚାଲିବା ପାଇଁ କେତେ ସମୟ ଲାଗେ?</string>
     <string name="number_of_minutes">ମିନିଟ୍‌</string>
     <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">ଏହାକୁ ପିଇବାକୁ ଅଧିକ ନିରାପଦ କରିବା ପାଇଁ ଆପଣ ନିଜ ଜଳକୁ କି ପ୍ରକାରେ ବ୍ୟବହାର କରନ୍ତି?</string>
@@ -765,18 +765,18 @@
     <string name="strain_through_a_cloth">କପଡାରେ ଛାଣନ୍ତି</string>
     <string name="use_water_filter_ceramic_sand_composite_etc">ୱାଟର ଫିଲଟର ବ୍ୟବହାର</string>
     <string name="use_electronic_purifier">ବିଦ୍ୟୁତ ବିଶୋଧନକାରୀ ଯନ୍ତ୍ର </string>
-    <string name="let_it_stand_and_settle">Let It Stand And Settle</string>
+    <string name="let_it_stand_and_settle">ଏହାକୁ ଛିଡ଼ା ହେବାକୁ ଦିଅନ୍ତୁ ଏଵଂ ସ୍ଥିର / ବ୍ୟବସ୍ଥା କରନ୍ତୁ</string>
     <string name="flush_to_piped_sewer_system">ପାଇପ ପାଇଖାନା ସିଷ୍ଟମକୁ ଫ୍ଲାଶ କରି</string>
     <string name="flush_to_septic_tank">ସେଫଯିକ ଟ୍ୟାଙ୍କକୁ ଫ୍ଲାଶ କରିବା</string>
     <string name="flush_to_pit_latrine">ପିଟ୍ ଲାଟ୍ରିନକୁ ଫ୍ଲାଶ କରି</string>
-    <string name="flush_to_somewhere_else">कहीं और फ्लश करें</string>
-    <string name="flush_dont_know_where">फ्लश, पता नहीं कहाँ</string>
-    <string name="ventilated_improved_pit_biogas_latrine">हवादार उन्नत गड्ढे (वीआईपी) / बायोगैस शौचालय</string>
-    <string name="pit_latrine_with_slab">गड्ढा युक्त शौचालय गड्ढा</string>
-    <string name="pit_latrine_without_slab_open_pit">बिना स्लैब/खुले गड्ढे के शौचालय गड्ढा</string>
-    <string name="twin_pit_composting_toilet">जुड़वां गड्ढे/खाद बनाने का शौचालय</string>
-    <string name="dry_toilet">सूखा शौचालय</string>
-    <string name="no_facility_uses_open_space_or_field">कोई सुविधा/खुली जगह या क्षेत्र का उपयोग नहीं करता है</string>
+    <string name="flush_to_somewhere_else">ଅନ୍ୟତ୍ର ଶୌଚ କ୍ରିୟା କରନ୍ତୁ</string>
+    <string name="flush_dont_know_where">ଶୌଚ କ୍ରିୟା କେଉଁଠାରେ ହେବ ଜାଣିନି</string>
+    <string name="ventilated_improved_pit_biogas_latrine">ବାୟୁ ଚଳ ପ୍ରଚଳ ଉନ୍ନତ ଗର୍ତ୍ତ ( ଭି ଆଇ ପି ) ବାୟୋଗସ ପାଇଖାନା</string>
+    <string name="pit_latrine_with_slab">ଗାତ ଯୁକ୍ତ ପାଇଖାନା ଘୋଡନି ସହିତ</string>
+    <string name="pit_latrine_without_slab_open_pit">ଘୋଡନି ବିହୀନ ଗାତ ଯୁକ୍ତ ପାଇଖାନା ବା ଖୋଲା ଗାତ</string>
+    <string name="twin_pit_composting_toilet">ଦୁଇ ଗାତ ଯୁକ୍ତ କିମ୍ବା କମ୍ପୋଷ୍ଟ ଶୌଚାଳୟ</string>
+    <string name="dry_toilet">ଶୁଖିଲା ଶୌଚାଳୟ</string>
+    <string name="no_facility_uses_open_space_or_field">କୌଣସି ସୁବିଧା ନାହିଁ କିମ୍ବା ଖୋଲା ସ୍ଥାନ କିମ୍ବା ଖେତ ର ବ୍ୟବହାର</string>
     <string name="in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason">ବିଗତ ସପ୍ତାହରେ ଆପଣଙ୍କ ଘରର କେହି (ପିଲାମାନଙ୍କୁ ଅନ୍ତର୍ଭୁକ୍ତ କରି)  କୌଣସି କାରଣରୁ ଖୋଲା ସ୍ଥାନରେ ମଳତ୍ୟାଗ କରିବାକୁ ପଡିଥିଲା କି?</string>
     <string name="what_was_the_main_reason_due_to_which_you_had_to_relieve_yourself_in_the_open">ଏହାର ମୁଖ୍ୟ କାରଣ କ’ଣ ଥିଲା ଯାହା ହେତୁ ଆପଣଙ୍କୁ ଖୋଲା ସ୍ଥାନରେ ନିଜକୁ ମୁକ୍ତ କରିବାକୁ ପଡିଲା?</string>
     <string name="no_water_available_in_the_toilet">ପାଇଖାନାରେ ପାଣି ନାହିଁ</string>
@@ -852,7 +852,7 @@
 
     <string name="what_is_your_marital_status">ବୈବାହିକ ସ୍ଥିତି</string>
     <string name="currently_married">ବିବାହିତ</string>
-    <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
+    <string name="married_gauna_not_performed">ବିବାହିତ , ସମ୍ପାଦନ ହୋଇନାହିଁ</string>
     <string name="widowed">ବିଧବା</string>
     <string name="divorced">ଛାଡପତ୍ର</string>
     <string name="separated">ପୃଥକ ରହିବା</string>
@@ -906,28 +906,28 @@
     <string name="reason_for_surgery_specify_the_reason">ଅସ୍ତ୍ରୋପଚାରର କାରଣ (କାରଣ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ)</string>
 
     <string name="smoking_status_in_the_household">ଗୃହରେ ଧୂମପାନ ସ୍ଥିତି ଜ୍ଝ</string>
-    <string name="does_the_person_smoke">Does the person smoke?</string>
+    <string name="does_the_person_smoke">ଏହି ଲୋକ ଧୁମ୍ରପାନ କରେକି?</string>
     <string name="smoker">ଧୂମପାନକାରୀ</string>
     <string name="non_smoker">ଅଣ ଧୂମପାନକାରୀ</string>
     <string name="five_ten_bids_cigarette">5 – 10 ବିଡି / ସିଗାରେଟ୍</string>
     <string name="more_than_ten_bids_cigarette">10 ରୁ ଅଧିକ ବିଡି / ସିଗାରେଟ୍</string>
     <string name="rate_of_smoking">Rate of smoking</string>
-    <string name="how_long_have_you_been_smoking">How long have you been smoking</string>
+    <string name="how_long_have_you_been_smoking">- କେତେ ଦିନ ହେଲାଣି ଆପଣ ଧୁମ୍ରପାନ କରୁଛନ୍ତି?</string>
     <string name="less_than_a_year">ଏକ ବର୍ଷରୁ କମ୍</string>
     <string name="from_one_year_to_five_year">1 ବର୍ଷରୁ 5 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
     <string name="from_five_years_to_ten_years">5 ବର୍ଷରୁ 10 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
     <string name="more_than_ten_years">10 ବର୍ଷରୁ ଅଧିକ</string>
 
     <string name="history_of_alcohol_consumption_in_the_household">ଘରେ ମଦ୍ୟପାନର ଇତିହାସ</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption in the household?</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ପରିବାର ରେ କେହି ମଦ୍ୟ ପାନ କରୁଥିବାର ନଜିର ଅଛି କି?</string>
     <string name="no_denied">ନା / ଅସ୍ୱୀକାର</string>
-    <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
+    <string name="rate_of_alcohol_consumption">କେତେ ପରିମାଣର ମଦ୍ୟ ପାନ କରନ୍ତି</string>
     <string name="zero_five_times">0 – 5 ଥର</string>
     <string name="five_ten_times">5 ରୁ 10 ଥର</string>
     <string name="more_than_10_times">10 ରୁ ଅଧିକ ଥର</string>
-    <string name="how_long_have_you_been_consuming_alcohol">How long have you been consuming alcohol?</string>
-    <string name="edit_dialog_button">Edit</string>
-    <string name="delete_dialog_button">Delete</string>
+    <string name="how_long_have_you_been_consuming_alcohol">କେତେ ଦିନ ହେବ ଆପଣ ମଦ୍ୟ ପାନ କରୁଛନ୍ତି?</string>
+    <string name="edit_dialog_button">ସଂଶୋଧନ କର ( ଏଡିଟ )</string>
+    <string name="delete_dialog_button">ଡିଲିଟ ( ବିଲୋପ ) କର</string>
 
     <!--    SURVEY STRINGS - END -->
 
