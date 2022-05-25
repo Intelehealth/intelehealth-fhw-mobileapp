@@ -673,6 +673,16 @@
     <string name="protocol_download_failed_alertdialog">நெறிமுறை பின்னர் பதிவிறக்கம் செய்யப்படுகிறது । நெறிமுறை பதிவிறக்கத்தை மறுஉண்மைசெய்ய \'ஆம்\' அழுத்தவும் । டெமோ நெறிமுறையுடன் தொடர்ச்சிக்கு \'இல்லை\' அழுத்தவும் ।</string>
     <string name="am">time</string>
     <string name="search_visits_hint">Search visits...</string>
+    <string name="daughter_wife_of">Daughter/Wife of</string>
+    <string name="total_birth_count_val_txt">Please enter the total birth count</string>
+    <string name="total_miscarriage_count_val_txt">Please enter the total miscarriage count</string>
+    <string name="labor_onset_val_txt">"Please select labor onset "</string>
+    <string name="active_labor_diagnosed_date_val_txt">Select the active labor diagnosed date</string>
+    <string name="active_labor_diagnosed_time_val_txt">Select the active labor diagnosed time</string>
+    <string name="membrane_ruptured_date_val_txt">Please select membrane ruptured date</string>
+    <string name="membrane_ruptured_time_val_txt">Please select membrane ruptured time</string>
+    <string name="risk_factors_val_txt">Please select the risk factors</string>
+    <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
 
 </resources>
 

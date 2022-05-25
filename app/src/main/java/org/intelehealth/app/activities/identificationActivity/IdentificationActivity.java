@@ -1,6 +1,19 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,15 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -28,39 +32,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -75,64 +77,26 @@ import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.IReturnValues;
 import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidGenerator;
-
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.convertUsingStringBuilder;
-import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.getValue;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
-
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_education;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -206,6 +170,29 @@ public class IdentificationActivity extends AppCompatActivity {
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
 
 
+    /*New*/
+    private EditText mTotalBirthEditText, mTotalMiscarriageEditText;
+    private RadioGroup mLaborOnsetRadioGroup;
+    private RadioGroup mHospitalMaternityRadioGroup;
+    private TextView mActiveLaborDiagnosedDateTextView, mActiveLaborDiagnosedTimeTextView;
+    private TextView mMembraneRupturedDateTextView, mMembraneRupturedTimeTextView;
+    private TextView mRiskFactorsTextView;
+    private CheckBox mUnknownMembraneRupturedCheckBox;
+
+    // strings
+    private String mTotalBirthCount = "0", mTotalMiscarriageCount = "0";
+    private String mLaborOnsetString = "";
+    private String mHospitalMaternityString = "";
+    private String mActiveLaborDiagnosedDate = "", mActiveLaborDiagnosedTime = "";
+    private String mMembraneRupturedDate = "", mMembraneRupturedTime = "";
+    private String mRiskFactorsString = "";
+    private List<String> mSelectedRiskFactorList = new ArrayList<String>();
+
+    private boolean mIsEditMode = false;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    /*end*/
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -228,6 +215,194 @@ public class IdentificationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*new*/
+        mTotalBirthEditText = findViewById(R.id.etvTotalBirth);
+        mTotalMiscarriageEditText = findViewById(R.id.etvTotalMiscarriage);
+        mLaborOnsetRadioGroup = findViewById(R.id.rgLaborOnset);
+        mHospitalMaternityRadioGroup = findViewById(R.id.rgHospitalMaternity);
+        mActiveLaborDiagnosedDateTextView = findViewById(R.id.tvActiveLaborDiagnosedDate);
+        mActiveLaborDiagnosedTimeTextView = findViewById(R.id.tvActiveLaborDiagnosedTime);
+        mMembraneRupturedDateTextView = findViewById(R.id.tvMembraneRupturedDate);
+        mMembraneRupturedTimeTextView = findViewById(R.id.tvMembraneRupturedTime);
+        mRiskFactorsTextView = findViewById(R.id.tvRiskFactors);
+        mUnknownMembraneRupturedCheckBox = findViewById(R.id.cbUnknownMembraneRuptured);
+
+        mUnknownMembraneRupturedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mMembraneRupturedDateTextView.setVisibility(View.GONE);
+                    mMembraneRupturedTimeTextView.setVisibility(View.GONE);
+                } else {
+                    mMembraneRupturedDateTextView.setVisibility(View.VISIBLE);
+                    mMembraneRupturedTimeTextView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        mActiveLaborDiagnosedDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mCalendar = Calendar.getInstance();
+                int year = mCalendar.get(Calendar.YEAR);
+                int month = mCalendar.get(Calendar.MONTH);
+                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(0);
+                        cal.set(year, month, dayOfMonth);
+                        Date date = cal.getTime();
+
+                        mActiveLaborDiagnosedDate = simpleDateFormat.format(date);
+                        mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
+                    }
+                }, year, month, dayOfMonth);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+            }
+        });
+        mActiveLaborDiagnosedTimeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get Current Time
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                mActiveLaborDiagnosedTime = hourOfDay + ":" + minute;
+                                mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
+                            }
+                        }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        mMembraneRupturedDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mCalendar = Calendar.getInstance();
+                int year = mCalendar.get(Calendar.YEAR);
+                int month = mCalendar.get(Calendar.MONTH);
+                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(0);
+                        cal.set(year, month, dayOfMonth);
+                        Date date = cal.getTime();
+
+                        mMembraneRupturedDate = simpleDateFormat.format(date);
+                        mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
+                    }
+                }, year, month, dayOfMonth);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+            }
+        });
+        mMembraneRupturedTimeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get Current Time
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                mMembraneRupturedTime = hourOfDay + ":" + minute;
+                                mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
+                            }
+                        }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
+        mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String[] items = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
+                        "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+                boolean[] selectedItems = new boolean[items.length];
+                for (int i = 0; i < items.length; i++) {
+                    selectedItems[i] = mSelectedRiskFactorList.contains(items[i]);
+                }
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(IdentificationActivity.this);
+
+                builder.setTitle("Select Risk Factors")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setMultiChoiceItems(items, selectedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                            public void onClick(DialogInterface dialog, int itemIndex, boolean isChecked) {
+                                Log.i("Dialogos", "Opción elegida: " + items[itemIndex]);
+                                if (isChecked) {
+                                    if (itemIndex == 0) {
+                                        mSelectedRiskFactorList.clear();
+                                    } else {
+                                        mSelectedRiskFactorList.remove(items[0]);
+                                    }
+                                    if (!mSelectedRiskFactorList.contains(items[itemIndex]))
+                                        mSelectedRiskFactorList.add(items[itemIndex]);
+                                } else {
+                                    mSelectedRiskFactorList.remove(items[itemIndex]);
+                                }
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (int i = 0; i < mSelectedRiskFactorList.size(); i++) {
+                                    if (!stringBuilder.toString().isEmpty())
+                                        stringBuilder.append(",");
+                                    stringBuilder.append(mSelectedRiskFactorList.get(i));
+
+                                }
+                                mRiskFactorsString = stringBuilder.toString();
+                                mRiskFactorsTextView.setText(mRiskFactorsString);
+                            }
+                        });
+
+
+                builder.create().show();
+            }
+        });
+        mLaborOnsetRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbLOSpontaneous) {
+                    mLaborOnsetString = "Spontaneous";
+                } else if (checkedId == R.id.rbLOInduced) {
+                    mLaborOnsetString = "Induced";
+                }
+            }
+        });
+
+        mHospitalMaternityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbHospital) {
+                    mHospitalMaternityString = "Hospital";
+                } else if (checkedId == R.id.rbMaternity) {
+                    mHospitalMaternityString = "Maternity";
+                } else {
+                    mHospitalMaternityString = "Others";
+                }
+
+
+            }
+        });
+        /*end*/
 
         i_privacy = getIntent();
         context = IdentificationActivity.this;
@@ -304,10 +479,12 @@ public class IdentificationActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("patientUuid")) {
+                mIsEditMode = true;
                 this.setTitle(R.string.update_patient_identification);
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
+                updateUI(patient1);
             }
         }
 //        if (sessionManager.valueContains("licensekey"))
@@ -479,7 +656,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                R.array.caste, R.layout.custom_spinner);
 //        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
-        try {
+       /* try {
             String casteLanguage = "caste_" + sessionManager.getAppLanguage();
             int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
             if (castes != 0) {
@@ -518,7 +695,7 @@ public class IdentificationActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
-        }
+        }*/
 
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
@@ -788,46 +965,46 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     }*/
 
-                        if (country.matches("India")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_india, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
-                            // setting state according database when user clicks edit details
+                    if (country.matches("India")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_india, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                        // setting state according database when user clicks edit details
 
-                            if (patientID_edit != null)
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            else
-                                mState.setSelection(stateAdapter.getPosition(state));
+                        if (patientID_edit != null)
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        else
+                            mState.setSelection(stateAdapter.getPosition(state));
 
-                        } else if (country.matches("United States")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_us, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
+                    } else if (country.matches("United States")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_us, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
 
-                            if (patientID_edit != null) {
+                        if (patientID_edit != null) {
 
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            }
-                        } else if (country.matches("Philippines")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_philippines, R.layout.custom_spinner);
-                            stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
-
-                            if (patientID_edit != null) {
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            } else {
-                                mState.setSelection(stateAdapter.getPosition("Bukidnon"));
-                            }
-
-                        } else {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.state_error, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
+                    } else if (country.matches("Philippines")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_philippines, R.layout.custom_spinner);
+                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+
+                        if (patientID_edit != null) {
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        } else {
+                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
+                        }
+
+                    } else {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.state_error, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                    }
                 }
 
             }
@@ -957,16 +1134,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String dob_text = en__as_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
                 } else {
@@ -1018,13 +1195,13 @@ public class IdentificationActivity extends AppCompatActivity {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 String dob_text = en__te_dob(dob); //to show text of English into Telugu...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String dob_text = en__mr_dob(dob); //to show text of English into marathi...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into assame...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1169,7 +1346,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
                         mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -1178,22 +1355,22 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String dob_text = en__te_dob(dobString); //to show text of English into telugu...
                         mDOB.setText(dob_text);
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
                         mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String dob_text = en__as_dob(dobString); //to show text of English into assame...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String dob_text = en__ml_dob(dobString);
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
                         mDOB.setText(dob_text);
                     } else {
@@ -1223,6 +1400,68 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
         });
+    }
+
+    /**
+     * During edit update ui with the existing data
+     *
+     * @param patient
+     */
+    private void updateUI(Patient patient) {
+        // parity
+        if (patient.getParity() != null) {
+            mTotalBirthCount = patient.getParity().split(",")[0];
+            mTotalMiscarriageCount = patient.getParity().split(",")[1];
+            mTotalBirthEditText.setText(mTotalBirthCount);
+            mTotalMiscarriageEditText.setText(mTotalMiscarriageCount);
+        }
+
+        //Labor Onset
+        if (patient.getLaborOnset() != null) {
+            mLaborOnsetString = patient.getLaborOnset();
+            if (mLaborOnsetString.equalsIgnoreCase("Spontaneous")) {
+                mLaborOnsetRadioGroup.check(mLaborOnsetRadioGroup.getChildAt(0).getId());
+            } else if (mLaborOnsetString.equalsIgnoreCase("Induced")) {
+                mLaborOnsetRadioGroup.check(mLaborOnsetRadioGroup.getChildAt(1).getId());
+            }
+        }
+        //When was active labor diagnosed?
+        if (patient.getActiveLaborDiagnosed() != null) {
+            mActiveLaborDiagnosedDate = patient.getActiveLaborDiagnosed().split(" ")[0];
+            mActiveLaborDiagnosedTime = patient.getActiveLaborDiagnosed().split(" ")[1];
+            mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
+            mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
+        }
+
+        //When was the membrane ruptured?
+        if (patient.getMembraneRupturedTimestamp() != null) {
+            if (patient.getMembraneRupturedTimestamp().equalsIgnoreCase("U")) {
+                mUnknownMembraneRupturedCheckBox.setChecked(true);
+            } else {
+                mUnknownMembraneRupturedCheckBox.setChecked(false);
+                mMembraneRupturedDate = patient.getMembraneRupturedTimestamp().split(" ")[0];
+                mMembraneRupturedTime = patient.getMembraneRupturedTimestamp().split(" ")[1];
+                mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
+                mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
+            }
+        }
+        //Risk factors
+        if (patient.getRiskFactors() != null) {
+            mRiskFactorsString = patient.getRiskFactors();
+            mRiskFactorsTextView.setText(mRiskFactorsString);
+        }
+
+        //Hospital/Maternity?
+        if (patient.getHospitalMaternity() != null) {
+            mHospitalMaternityString = patient.getHospitalMaternity();
+            if (mHospitalMaternityString.equalsIgnoreCase("Hospital")) {
+                mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(0).getId());
+            } else if (mHospitalMaternityString.equalsIgnoreCase("Maternity")) {
+                mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(1).getId());
+            } else {
+                mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(2).getId());
+            }
+        }
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1343,11 +1582,11 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     // This method is for setting the screen with existing values in database whenn user clicks edit details
-    private void setscreen(String str) {
+    private void setscreen(String patientUID) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String patientSelection = "uuid=?";
-        String[] patientArgs = {str};
+        String[] patientArgs = {patientUID};
         String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
@@ -1376,7 +1615,7 @@ public class IdentificationActivity extends AppCompatActivity {
             idCursor.close();
         }
         String patientSelection1 = "patientuuid = ?";
-        String[] patientArgs1 = {str};
+        String[] patientArgs1 = {patientUID};
         String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
         final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         String name = "";
@@ -1406,6 +1645,26 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                /*new*/
+                if (name.equalsIgnoreCase("Parity")) {
+                    patient1.setParity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Labor Onset")) {
+                    patient1.setLaborOnset(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Active Labor Diagnosed")) {
+                    patient1.setActiveLaborDiagnosed(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Membrane Ruptured Timestamp")) {
+                    patient1.setMembraneRupturedTimestamp(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Risk factors")) {
+                    patient1.setRiskFactors(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Hospital_Maternity")) {
+                    patient1.setHospitalMaternity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                /*end*/
 
             } while (idCursor1.moveToNext());
         }
@@ -1482,6 +1741,10 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     public void onPatientCreateClicked() {
+
+        mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
+        mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
+
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -1632,6 +1895,47 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             stateText.setError(null);
         }
+        /*new*/
+        if (mTotalBirthCount.isEmpty()) {
+            Toast.makeText(this, getString(R.string.total_birth_count_val_txt), Toast.LENGTH_SHORT).show();
+            mTotalBirthEditText.requestFocus();
+            return;
+        }
+        if (mTotalMiscarriageCount.isEmpty()) {
+            Toast.makeText(this, getString(R.string.total_miscarriage_count_val_txt), Toast.LENGTH_SHORT).show();
+            mTotalMiscarriageEditText.requestFocus();
+            return;
+        }
+        if (mLaborOnsetString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.labor_onset_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mActiveLaborDiagnosedDate.isEmpty()) {
+            Toast.makeText(this, getString(R.string.active_labor_diagnosed_date_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mActiveLaborDiagnosedTime.isEmpty()) {
+            Toast.makeText(this, getString(R.string.active_labor_diagnosed_time_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!mUnknownMembraneRupturedCheckBox.isChecked() && mMembraneRupturedDate.isEmpty()) {
+            Toast.makeText(this, getString(R.string.membrane_ruptured_date_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!mUnknownMembraneRupturedCheckBox.isChecked() && mMembraneRupturedTime.isEmpty()) {
+            Toast.makeText(this, getString(R.string.membrane_ruptured_time_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mRiskFactorsString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.risk_factors_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mHospitalMaternityString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.hospital_matermnity_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        /*end*/
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -1687,6 +1991,57 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            /*new*/
+            //Parity
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Parity"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mTotalBirthCount + "," + mTotalMiscarriageCount));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Labor Onset
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Labor Onset"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mLaborOnsetString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Active Labor Diagnosed
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Active Labor Diagnosed"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mActiveLaborDiagnosedDate + " " + mActiveLaborDiagnosedTime));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Membrane Ruptured Timestamp
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Membrane Ruptured Timestamp"));
+            patientAttributesDTO.setValue(mUnknownMembraneRupturedCheckBox.isChecked() ? "U" : StringUtils.getValue(mMembraneRupturedDate + " " + mMembraneRupturedTime));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Risk factors
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Risk factors"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mRiskFactorsString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Hospital_Maternity
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Hospital_Maternity"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mHospitalMaternityString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            /*end*/
 
             /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1810,6 +2165,10 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {
+
+        mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
+        mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
+
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -1960,6 +2319,49 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             stateText.setError(null);
         }
+
+        /*new*/
+        if (mTotalBirthCount.isEmpty()) {
+            Toast.makeText(this, getString(R.string.total_birth_count_val_txt), Toast.LENGTH_SHORT).show();
+            mTotalBirthEditText.requestFocus();
+            return;
+        }
+        if (mTotalMiscarriageCount.isEmpty()) {
+            Toast.makeText(this, getString(R.string.total_miscarriage_count_val_txt), Toast.LENGTH_SHORT).show();
+            mTotalMiscarriageEditText.requestFocus();
+            return;
+        }
+        if (mLaborOnsetString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.labor_onset_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mActiveLaborDiagnosedDate.isEmpty()) {
+            Toast.makeText(this, getString(R.string.active_labor_diagnosed_date_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mActiveLaborDiagnosedTime.isEmpty()) {
+            Toast.makeText(this, getString(R.string.active_labor_diagnosed_time_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!mUnknownMembraneRupturedCheckBox.isChecked() && mMembraneRupturedDate.isEmpty()) {
+            Toast.makeText(this, getString(R.string.membrane_ruptured_date_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!mUnknownMembraneRupturedCheckBox.isChecked() && mMembraneRupturedTime.isEmpty()) {
+            Toast.makeText(this, getString(R.string.membrane_ruptured_time_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mRiskFactorsString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.risk_factors_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mHospitalMaternityString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.hospital_matermnity_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        /*end*/
+
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -2004,12 +2406,12 @@ public class IdentificationActivity extends AppCompatActivity {
 //                patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
 //           patientdto.setState_province(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
-            patientAttributesDTO = new PatientAttributesDTO();
+           /* patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2018,7 +2420,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
@@ -2050,7 +2452,59 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());*/
+
+
+            /*new*/
+            //Parity
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Parity"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mTotalBirthCount + "," + mTotalMiscarriageCount));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Labor Onset
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Labor Onset"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mLaborOnsetString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Active Labor Diagnosed
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Active Labor Diagnosed"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mActiveLaborDiagnosedDate + " " + mActiveLaborDiagnosedTime));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Membrane Ruptured Timestamp
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Membrane Ruptured Timestamp"));
+            patientAttributesDTO.setValue(mUnknownMembraneRupturedCheckBox.isChecked() ? "U" : StringUtils.getValue(mMembraneRupturedDate + " " + mMembraneRupturedTime));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Risk factors
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Risk factors"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mRiskFactorsString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Hospital_Maternity
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Hospital_Maternity"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mHospitalMaternityString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            /*end*/
 
 
             //House Hold Registration
