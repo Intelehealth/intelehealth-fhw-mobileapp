@@ -22,6 +22,14 @@ public class Patient {
     private String education_level;
     private String caste;
     private String emergency;
+    /*new*/
+    private String parity;
+    private String laborOnset;
+    private String activeLaborDiagnosed;
+    private String membraneRupturedTimestamp;
+    private String riskFactors;
+    private String hospitalMaternity;
+    /*end*/
 
     public String getUuid() {
         return uuid;
@@ -189,5 +197,53 @@ public class Patient {
 
     public void setEmergency(String emergency) {
         this.emergency = emergency;
+    }
+
+    public String getHospitalMaternity() {
+        return hospitalMaternity;
+    }
+
+    public void setHospitalMaternity(String hospitalMaternity) {
+        this.hospitalMaternity = hospitalMaternity;
+    }
+
+    public String getRiskFactors() {
+        return riskFactors;
+    }
+
+    public void setRiskFactors(String riskFactors) {
+        this.riskFactors = riskFactors;
+    }
+
+    public String getMembraneRupturedTimestamp() {
+        return membraneRupturedTimestamp;
+    }
+
+    public void setMembraneRupturedTimestamp(String membraneRupturedTimestamp) {
+        this.membraneRupturedTimestamp = membraneRupturedTimestamp;
+    }
+
+    public String getActiveLaborDiagnosed() {
+        return activeLaborDiagnosed;
+    }
+
+    public void setActiveLaborDiagnosed(String activeLaborDiagnosed) {
+        this.activeLaborDiagnosed = activeLaborDiagnosed;
+    }
+
+    public String getParity() {
+        return parity;
+    }
+
+    public void setParity(String parity) {
+        this.parity = parity;
+    }
+
+    public String getLaborOnset() {
+        return laborOnset;
+    }
+
+    public void setLaborOnset(String laborOnset) {
+        this.laborOnset = laborOnset;
     }
 }

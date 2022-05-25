@@ -625,13 +625,14 @@
                 </androidx.cardview.widget.CardView>
 
 
-                <LinearLayout android:visibility="gone"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -653,12 +654,13 @@
                 </LinearLayout>
 
 
-                <androidx.cardview.widget.CardView android:visibility="gone"
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardview3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="visible"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false">
@@ -670,12 +672,301 @@
                         android:orientation="vertical"
                         android:padding="8dp">
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <!--New-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/common_padding"
+                            android:text="Parity"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:visibility="gone"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/common_padding"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:padding="@dimen/common_padding"
+                                android:visibility="visible">
+
+                                <EditText
+                                    android:id="@+id/etvTotalBirth"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:drawableStart="@drawable/ic_baseline_child_care_24"
+                                    android:drawableLeft="@drawable/ic_baseline_child_care_24"
+                                    android:drawablePadding="10dp"
+                                    android:ems="10"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:freezesText="true"
+                                    android:hint="Total Birth"
+                                    android:imeOptions="actionUnspecified"
+                                    android:inputType="number"
+                                    android:maxLength="25"
+                                    android:maxLines="1"
+                                    android:minHeight="@dimen/edit_box_min_height"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/content_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dip"
+                                android:layout_marginTop="@dimen/common_padding"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:padding="@dimen/common_padding"
+                                android:visibility="visible">
+
+                                <EditText
+                                    android:id="@+id/etvTotalMiscarriage"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:drawableStart="@drawable/ic_baseline_child_care_24_red"
+                                    android:drawableLeft="@drawable/ic_baseline_child_care_24_red"
+                                    android:drawablePadding="10dp"
+                                    android:ems="10"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:freezesText="true"
+                                    android:hint="Total Miscarriage"
+                                    android:imeOptions="actionUnspecified"
+                                    android:inputType="number"
+                                    android:maxLength="25"
+                                    android:maxLines="1"
+                                    android:minHeight="@dimen/edit_box_min_height"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/content_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:paddingHorizontal="@dimen/common_padding"
+                            android:text="Labor Onset"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <RadioGroup
+                            android:id="@+id/rgLaborOnset"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/common_padding">
+
+                            <RadioButton
+                                android:id="@+id/rbLOSpontaneous"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Spontaneous"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/rbLOInduced"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_padding"
+                                android:text="Induced"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+                        </RadioGroup>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:paddingHorizontal="@dimen/common_padding"
+                            android:text="When was active labor diagnosed?"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/common_padding"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:id="@+id/tvActiveLaborDiagnosedDate"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:gravity="center"
+                                android:hint="Date : dd/mm/yyyy"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:padding="@dimen/common_padding"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+
+                            <TextView
+                                android:id="@+id/tvActiveLaborDiagnosedTime"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_padding"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:gravity="center"
+                                android:hint="Time : hh:mm"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:padding="@dimen/common_padding"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:paddingVertical="@dimen/common_padding">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toStartOf="@+id/cbUnknownMembraneRuptured"
+                                android:paddingHorizontal="@dimen/common_padding"
+                                android:text="When was the membrane ruptured?"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/header_text_size" />
+
+                            <CheckBox
+                                android:id="@+id/cbUnknownMembraneRuptured"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/common_padding"
+                                android:text="Unknown?" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/common_padding"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:id="@+id/tvMembraneRupturedDate"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:gravity="center"
+                                android:hint="Date : dd/mm/yyyy"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:padding="@dimen/common_padding"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+
+                            <TextView
+                                android:id="@+id/tvMembraneRupturedTime"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_padding"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:gravity="center"
+                                android:hint="Time : hh:mm"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:padding="@dimen/common_padding"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:paddingHorizontal="@dimen/common_padding"
+                            android:text="Risk factors"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <TextView
+                            android:id="@+id/tvRiskFactors"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/common_padding"
                             android:layout_marginTop="@dimen/common_padding"
                             android:background="@drawable/round_corner_gray_stroke_light"
+                            android:drawableEnd="@drawable/ic_baseline_expand_more_24"
+                            android:gravity="center_vertical"
+                            android:hint="Select risk factors"
+                            android:minHeight="@dimen/edit_box_min_height"
+                            android:padding="@dimen/common_padding"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/content_text_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:paddingHorizontal="@dimen/common_padding"
+                            android:text="Hospital/Maternity?"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <RadioGroup
+                            android:id="@+id/rgHospitalMaternity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
                             android:padding="@dimen/common_padding">
+
+                            <RadioButton
+                                android:id="@+id/rbHospital"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hospital"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/rbMaternity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_padding"
+                                android:text="Maternity"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/rbOthers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_padding"
+                                android:text="Others"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+                        </RadioGroup>
+
+                        <!--end-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_relationship"
