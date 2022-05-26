@@ -1,370 +1,820 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".activities.setupActivity.SetupActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ToolbarTheme"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:theme="@style/ToolbarTheme"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-        </com.google.android.material.appbar.AppBarLayout>
+    <!--<include layout="@layout/content_setup" />-->
+    <LinearLayout
+        android:id="@+id/content_setup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="io.intelehealth.client.activities.setup_activity.SetupActivity"
+        tools:showIn="@layout/activity_setup">
 
-        <!--<include layout="@layout/content_setup" />-->
-        <LinearLayout
-            android:id="@+id/content_setup"
+        <ScrollView
+            android:id="@+id/setup_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="io.intelehealth.client.activities.setup_activity.SetupActivity"
-            tools:showIn="@layout/activity_setup">
+            android:layout_height="match_parent">
 
-            <ScrollView
-                android:id="@+id/setup_scroll"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview1"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        app:cardCornerRadius="10sp"
-                        android:layout_marginTop="15dp"
-                        app:cardElevation="5sp"
-                        app:cardPreventCornerOverlap="false"
-                        >
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="10dp">
-                            <TextView
+                            android:ems="10"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:text="@string/which_server_would_you_like_to_connect_to"
+                            android:textSize="16sp" />
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp">
+
+                            <EditText
+                                android:id="@+id/editText_URL"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:includeFontPadding="false"
-                                android:text="@string/which_server_would_you_like_to_connect_to"
-                                android:textSize="16sp"
-                                android:fontFamily="@font/lato_bold"/>
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/enter_url"
+                                android:inputType="textUri"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
+                    </LinearLayout>
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dp">
+                </androidx.cardview.widget.CardView>
 
-                                <EditText
-                                    android:id="@+id/editText_URL"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/enter_url"
-                                    android:textSize="14sp"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:inputType="textUri"
-                                    android:focusable="true"
-                                    android:focusableInTouchMode="true"/>
-                            </com.google.android.material.textfield.TextInputLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_locations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
 
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview_locations"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        app:cardCornerRadius="10sp"
-                        android:layout_marginTop="15dp"
-                        app:cardElevation="5sp"
-                        app:cardPreventCornerOverlap="false">
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:ems="10"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:text="@string/choose_a_location_to_login"
+                            android:textSize="16sp" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:includeFontPadding="false"
-                                android:textSize="16sp"
-                                android:text="@string/choose_a_location_to_login"
-                                android:fontFamily="@font/lato_bold" />
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
 
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
+                        <Spinner
+                            android:id="@+id/spinner_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.4"
+                            android:entries="@array/location_state"
+                            android:focusable="true"
+                            android:nextFocusForward="@+id/spinner_district" />
 
-                                <Spinner
-                                    android:id="@+id/spinner_state"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:nextFocusForward="@+id/spinner_district"
-                                    android:entries="@array/location_state"
-                                    android:alpha="0.4"
-                                    android:focusable="true"
-                                    />
+                        <android.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
 
-                                <android.widget.Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp"/>
+                        <Spinner
+                            android:id="@+id/spinner_district"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.4"
+                            android:entries="@array/location_district"
+                            android:focusable="true"
+                            android:nextFocusForward="@+id/spinner_sanch" />
 
-                                <Spinner
-                                    android:id="@+id/spinner_district"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:nextFocusForward="@+id/spinner_sanch"
-                                    android:entries="@array/location_district"
-                                    android:focusable="true"
-                                    android:alpha="0.4"
-                                    />
+                        <android.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
 
-                                <android.widget.Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp"/>
+                        <Spinner
+                            android:id="@+id/spinner_sanch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.4"
+                            android:entries="@array/location_sanch"
+                            android:focusable="true"
+                            android:nextFocusForward="@+id/spinner_village" />
 
-                                <Spinner
-                                    android:id="@+id/spinner_sanch"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:nextFocusForward="@+id/spinner_village"
-                                    android:entries="@array/location_sanch"
-                                    android:focusable="true"
-                                    android:alpha="0.4"
-                                    />
+                        <android.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
 
-                                <android.widget.Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp"/>
+                        <Spinner
+                            android:id="@+id/spinner_village"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.4"
+                            android:entries="@array/location_village"
+                            android:focusable="true"
+                            android:nextFocusForward="@+id/demoMindmap" />
 
-                                <Spinner
-                                    android:id="@+id/spinner_village"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:nextFocusForward="@+id/demoMindmap"
-                                    android:entries="@array/location_village"
-                                    android:focusable="true"
-                                    android:alpha="0.4"
-                                    />
-
-                                <android.widget.Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp"/>
+                        <android.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
 
 
-                        </LinearLayout>
+                    </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview2"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        app:cardCornerRadius="10sp"
-                        android:layout_marginTop="15dp"
-                        app:cardElevation="5sp"
-                        app:cardPreventCornerOverlap="false"
-                        >
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                        <LinearLayout
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_sub_centre_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="10dp">
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_sub_centre_in_walking_time"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
 
-                            <TextView
+                        <RadioGroup
+                            android:id="@+id/distance_to_sub_centre_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_sub_centre_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="16sp"
-                                android:includeFontPadding="false"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="@string/choose_an_option_for_protocols"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                                android:text="@string/within_5_minutes"
+                                android:textSize="13sp" />
 
-                            <Space
+                            <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <RadioButton
-                                android:id="@+id/demoMindmap"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:textSize="14sp"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_regular"
-                                android:onClick="onRadioClick"
-                                android:textAppearance="@style/RobotoTextViewStyle"
-                                android:text="@string/setup_use_demo_mindmap" />
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/five_fifteen_minutes"
+                                android:textSize="13sp" />
 
-
-
-                            <RadioButton
-                                android:id="@+id/downloadMindmap"
-                                android:layout_width="wrap_content"
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:onClick="onRadioClick"
-                                android:textSize="14sp"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_regular"
-                                android:textAppearance="@style/RobotoTextViewStyle"
-                                android:text="@string/setup_download_mindmap" />
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/fifteen_thirty_minutes"
+                                android:textSize="13sp" />
 
-                        </LinearLayout>
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_thirty_minutes"
+                                android:textSize="13sp" />
 
-                    </androidx.cardview.widget.CardView>
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_primary_centre_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_sub_centre_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_nearest_primary_health_centers"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_primary_centre_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_primary_centre_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_1_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/one_three_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_five_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_five_km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_community_health_centre_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_primary_centre_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_nearest_community_health_centre_in_walking_time"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_community_health_centre_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_community_health_centre_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_3_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_six_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/six_ten_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_10km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_district_hospital_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_community_health_centre_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_nearest_district_hospital"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_district_hospital_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_district_hospital_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_5_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/five_ten_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/ten_twenty_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/twenty_thirty_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_thirty_km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_medical_store_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_district_hospital_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_the_nearest_medical_store"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_medical_store_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_medical_store_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_3_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_six_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/six_ten_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_10km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_pathological_lab_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_medical_store_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_the_nearest_pathological_lab"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_pathological_lab_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_pathological_lab_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_3_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_six_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/six_ten_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_10km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_private_clinic_with_mbbs_doctor_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_pathological_lab_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_the_nearest_private_clinic_with_mbbs_doctor"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_private_clinic_with_mbbs_doctor_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_3_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_six_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/six_ten_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_10km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/distance_to_nearest_private_clinic_with_alternate_medical_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/distance_to_the_nearest_private_clinic_with_alternate_medical"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/distance_to_nearest_private_clinic_with_alternate_medical_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/distance_to_nearest_private_clinic_with_alternate_medical_text_view"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/within_3_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_six_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/six_ten_km"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_10km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:text="@string/choose_an_option_for_protocols"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="16sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <RadioButton
+                            android:id="@+id/demoMindmap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:onClick="onRadioClick"
+                            android:text="@string/setup_use_demo_mindmap"
+                            android:textAppearance="@style/RobotoTextViewStyle"
+                            android:textSize="14sp" />
+
+
+                        <RadioButton
+                            android:id="@+id/downloadMindmap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:onClick="onRadioClick"
+                            android:text="@string/setup_download_mindmap"
+                            android:textAppearance="@style/RobotoTextViewStyle"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    app:cardCornerRadius="10sp"
                     android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
                     app:cardElevation="5sp"
-                    app:cardPreventCornerOverlap="false"
-                    >
+                    app:cardPreventCornerOverlap="false">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/textView2"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:includeFontPadding="false"
-                        android:textSize="16sp"
-                        android:text="@string/please_enter_your_username_and_password"
-                        android:fontFamily="@font/lato_bold" />
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/email"
+                        <TextView
+                            android:id="@+id/textView2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_email"
-                            android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/lato_regular"
-                            android:nextFocusForward="@id/password" />
+                            android:ems="10"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:text="@string/please_enter_your_username_and_password"
+                            android:textSize="16sp" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/password"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/prompt_password"
-                            android:imeOptions="actionDone"
-                            android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/lato_regular"/>
+                            android:layout_height="wrap_content">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/prompt_email"
+                                android:imeOptions="actionNext"
+                                android:inputType="textEmailAddress"
+                                android:maxLines="1"
+                                android:nextFocusForward="@id/password"
+                                android:textSize="14sp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/admin_password"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/prompt_admin_password"
-                            android:imeActionLabel="@string/action_sign_in_short"
-                            android:imeOptions="actionUnspecified"
-                            android:inputType="textPassword"
-                            android:visibility="gone"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/lato_regular"/>
+                            android:layout_height="wrap_content">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <EditText
+                                android:id="@+id/password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/prompt_password"
+                                android:imeOptions="actionDone"
+                                android:inputType="textPassword"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="14sp" />
 
-                </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/admin_password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/prompt_admin_password"
+                                android:imeActionLabel="@string/action_sign_in_short"
+                                android:imeOptions="actionUnspecified"
+                                android:inputType="textPassword"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
 
+                <!--<Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20sp" />-->
 
+                <Button
+                    android:id="@+id/setup_submit_button"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/lato_bold"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="@string/action_sign_in"
+                    android:textColor="@color/white" />
 
-                    <!--<Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />-->
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15sp" />
 
-                    <Button
-                        android:id="@+id/setup_submit_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/action_sign_in"
-                        android:fontFamily="@font/lato_bold"
-                        android:background="@color/colorPrimary"
-                        android:textColor="@color/white"
-                        style="@style/SelectableItemBackground"
-                        android:foreground="?android:attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/textView_Aid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/lato_regular"
+                    android:gravity="end"
+                    android:includeFontPadding="false"
+                    android:text="@string/android_id"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="14sp" />
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="15sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textView_Aid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:textSize="14sp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_gravity="end"
-                        android:gravity="end"
-                        android:fontFamily="@font/lato_regular"
-                        android:ems="10"
-                        android:text="@string/android_id"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

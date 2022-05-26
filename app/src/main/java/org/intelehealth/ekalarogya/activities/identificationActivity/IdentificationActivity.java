@@ -19,8 +19,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -29,7 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -48,9 +51,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.AlcoholConsumptionHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.MedicalHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.SmokingHistoryAdapter;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.AlcoholConsumptionCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.MedicalHistoryCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.SmokingHistoryCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.AlcoholConsumptionHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.MedicalHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.SmokingHistory;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.AlcoholConsumptionHistoryDialog;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.MedicalHistoryDialog;
+import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.SmokingHistoryDialog;
 import org.intelehealth.ekalarogya.activities.setupActivity.LocationArrayAdapter;
-import org.intelehealth.ekalarogya.database.dao.LocationDAO;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,19 +115,23 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_caste_
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
 
-public class IdentificationActivity extends AppCompatActivity {
+public class IdentificationActivity extends AppCompatActivity implements AlcoholConsumptionCallback, MedicalHistoryCallback, SmokingHistoryCallback, ViewPagerCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
+    private ArrayAdapter<CharSequence> hohRelationshipAdapter, maritalAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -144,6 +164,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton mGenderO;
     RadioButton radioYes;
     RadioButton radioNo;
     EditText mRelationship;
@@ -172,6 +193,25 @@ public class IdentificationActivity extends AppCompatActivity {
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     FrameLayout framelayout_vaccination, framelayout_vaccine_question;
     Spinner spinner_vaccination;
+    private LinearLayoutCompat ll18;
+    private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addAlcoholConsumptionButton;
+
+    private Context updatedContext;
+
+    // History Lists
+    private List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
+    private List<MedicalHistory> medicalHistoryList = new ArrayList<>();
+    private List<SmokingHistory> smokingHistoryList = new ArrayList<>();
+
+    // Adapters
+    private AlcoholConsumptionHistoryAdapter alcoholConsumptionHistoryAdapter;
+    private MedicalHistoryAdapter medicalHistoryAdapter;
+    private SmokingHistoryAdapter smokingHistoryAdapter;
+
+    // ViewPager2
+    private ViewPager2 alcoholViewPager;
+    private ViewPager2 medicalHistoryViewPager;
+    private ViewPager2 smokingHistoryViewPager;
 
     Intent i_privacy;
     String privacy_value;
@@ -180,13 +220,15 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerDate;
     Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner,
             source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
-            toilet_facility_spinner, structure_of_house_spinner;
+            toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner,
+            bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner;
     MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
     EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
-            occupation_edittext, watersafe_edittext, toiletfacility_edittext;
-    CardView cardview_household;
+            occupation_edittext, watersafe_edittext, toiletfacility_edittext, otherHohRelationshipEditText;
+    CardView cardview_household, hohRelationshipCardView;
     ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt,
-            sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
+            sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt,
+            bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -194,7 +236,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void
+    onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
@@ -206,6 +249,7 @@ public class IdentificationActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        setUpTranslationTools();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
@@ -256,8 +300,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mAddress2 = findViewById(R.id.identification_address2);
         mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-       // mCity = findViewById(R.id.identification_city);
-      //  mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        // mCity = findViewById(R.id.identification_city);
+        //  mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -270,6 +314,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        mGenderO = findViewById(R.id.identification_gender_other);
         radioYes = findViewById(R.id.identification_yes);
         radioNo = findViewById(R.id.identification_no);
         framelayout_vaccination = findViewById(R.id.framelayout_vaccination);
@@ -307,20 +352,41 @@ public class IdentificationActivity extends AppCompatActivity {
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
+        hohRelationshipSpinner = findViewById(R.id.hoh_relationship_spinner);
+        maritalStatusSpinner = findViewById(R.id.marital_status_spinner);
+        bpSpinner = findViewById(R.id.bp_spinner);
+        sugarLevelSpinner = findViewById(R.id.sugar_level_spinner);
+        hbLevelSpinner = findViewById(R.id.hb_level_spinner);
+        bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
 
         //HOH - Checkbox
         familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
         time_water_checkbox = findViewById(R.id.time_water_checkbox);
         hectars_land_checkbox = findViewById(R.id.hectars_land_checkbox);
 
+        // LinearLayout
+        ll18 = findViewById(R.id.ll_18);
+
         //EditText
         time_water_editText = findViewById(R.id.time_water_editText);
         hectars_land_editText = findViewById(R.id.hectars_land_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
+        otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
 
         //Cardview
         cardview_household = findViewById(R.id.cardview_household);
+        hohRelationshipCardView = findViewById(R.id.cardview_hoh_relationship);
+
+        // Button
+        addMedicalHistoryButton = findViewById(R.id.add_medical_history_button);
+        addSmokingStatusButton = findViewById(R.id.add_smoking_status_button);
+        addAlcoholConsumptionButton = findViewById(R.id.add_alcohol_consumption_button);
+
+        // ViewPager2
+        alcoholViewPager = findViewById(R.id.alcohol_consumption_view_pager);
+        medicalHistoryViewPager = findViewById(R.id.medical_history_view_pager);
+        smokingHistoryViewPager = findViewById(R.id.smoking_history_view_pager);
 
 //Initialize the local database to store patient information
 
@@ -481,7 +547,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mDOB.setText(patient1.getDate_of_birth());
         }*/
         mDOB.setText(patient1.getDate_of_birth());
-        Log.v("main", "dob: "+patient1.getDate_of_birth());
+        Log.v("main", "dob: " + patient1.getDate_of_birth());
 
 
         mPhoneNum.setText(patient1.getPhone_number());
@@ -549,6 +615,100 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
+        // Hoh Relationship Adapter
+        try {
+            String hohRelationshipLanguage = "hoh_relationship_" + sessionManager.getAppLanguage();
+            int hoh_relationship_id = res.getIdentifier(hohRelationshipLanguage, "array", getApplicationContext().getPackageName());
+            if (hoh_relationship_id != 0) {
+                hohRelationshipAdapter = ArrayAdapter.createFromResource(this, hoh_relationship_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            hohRelationshipSpinner.setAdapter(hohRelationshipAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, "Head of Household Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // Marital Status Spinner
+        try {
+            String maritalStatusLanguage = "marital_status_" + sessionManager.getAppLanguage();
+            int marital_id = res.getIdentifier(maritalStatusLanguage, "array", getApplicationContext().getPackageName());
+            if (marital_id != 0) {
+                maritalAdapter = ArrayAdapter.createFromResource(this, marital_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            maritalStatusSpinner.setAdapter(maritalAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, "Marital Status Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        //  BP Spinner
+        try {
+            String bpLanguage = "test_status_" + sessionManager.getAppLanguage();
+            int bp_id = res.getIdentifier(bpLanguage, "array", getApplicationContext().getPackageName());
+            if (bp_id != 0) {
+                bp_adapt = ArrayAdapter.createFromResource(this, bp_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            bpSpinner.setAdapter(bp_adapt);
+        } catch (Exception e) {
+            Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        //  Sugar Level Spinner
+        try {
+            String sugarLanguage = "test_status_" + sessionManager.getAppLanguage();
+            int sugar_id = res.getIdentifier(sugarLanguage, "array", getApplicationContext().getPackageName());
+            if (sugar_id != 0) {
+                sugar_adapt = ArrayAdapter.createFromResource(this, sugar_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            sugarLevelSpinner.setAdapter(sugar_adapt);
+        } catch (Exception e) {
+            Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        //  Hb Level Spinner
+        try {
+            String hbLanguage = "test_status_" + sessionManager.getAppLanguage();
+            int hb_id = res.getIdentifier(hbLanguage, "array", getApplicationContext().getPackageName());
+            if (hb_id != 0) {
+                hbLevel_adapt = ArrayAdapter.createFromResource(this, hb_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            hbLevelSpinner.setAdapter(hbLevel_adapt);
+        } catch (Exception e) {
+            Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        //  BMI Level Spinner
+        try {
+            String bmiLanguage = "test_status_" + sessionManager.getAppLanguage();
+            int bmi_id = res.getIdentifier(bmiLanguage, "array", getApplicationContext().getPackageName());
+            if (bmi_id != 0) {
+                bmi_adapt = ArrayAdapter.createFromResource(this, bmi_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            bmiLevelSpinner.setAdapter(hbLevel_adapt);
+        } catch (Exception e) {
+            Toast.makeText(this, "Values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        hohRelationshipSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getSelectedItem().toString().equals(getString(R.string.other_specify))) {
+                    otherHohRelationshipEditText.setVisibility(View.VISIBLE);
+                } else {
+                    otherHohRelationshipEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         //Occupation Adapter ...
         try {
             String occupationLanguage = "occupation_spinner_" + sessionManager.getAppLanguage();
@@ -575,9 +735,7 @@ public class IdentificationActivity extends AppCompatActivity {
         occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getSelectedItem().toString().equalsIgnoreCase("[Describe]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("वर्णन करे") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("[ବର୍ଣ୍ଣନା କର]")) {
+                if (position == 13) {
                     occupation_edittext.setVisibility(View.VISIBLE);
                     occupation_edittext.requestFocus();
                     occupation_edittext.setFocusable(true);
@@ -616,8 +774,7 @@ public class IdentificationActivity extends AppCompatActivity {
             String mobileTypeLanguage = "mobilephone_spinner_" + sessionManager.getAppLanguage();
             int mobiletype_id = res.getIdentifier(mobileTypeLanguage, "array", getApplicationContext().getPackageName());
             if (mobiletype_id != 0) {
-                mobile_adapt = ArrayAdapter.createFromResource(this,
-                        mobiletype_id, android.R.layout.simple_spinner_dropdown_item);
+                mobile_adapt = ArrayAdapter.createFromResource(this, mobiletype_id, android.R.layout.simple_spinner_dropdown_item);
             }
             mobilephone_spinner.setAdapter(mobile_adapt);
 
@@ -809,7 +966,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 time_water_editText.setVisibility(View.VISIBLE);
                 time_water_editText.setText(patient1.getTime_travel_water().replaceAll("hours",
                         getResources().getString(R.string.identification_screen_picker_hours)).replaceAll("minute",
-                                        getResources().getString(R.string.identification_screen_picker_minute)));
+                        getResources().getString(R.string.identification_screen_picker_minute)));
             }
             if (patient1.getHectars_land().equalsIgnoreCase("Declined to answer")) {
                 hectars_land_editText.setVisibility(View.GONE);
@@ -825,6 +982,21 @@ public class IdentificationActivity extends AppCompatActivity {
             generateUuid();
 
         }
+
+        addMedicalHistoryButton.setOnClickListener(v -> {
+            MedicalHistoryDialog dialog = new MedicalHistoryDialog();
+            dialog.show(getSupportFragmentManager(), MedicalHistoryDialog.TAG);
+        });
+
+        addSmokingStatusButton.setOnClickListener(v -> {
+            SmokingHistoryDialog dialog = new SmokingHistoryDialog();
+            dialog.show(getSupportFragmentManager(), SmokingHistoryDialog.TAG);
+        });
+
+        addAlcoholConsumptionButton.setOnClickListener(v -> {
+            AlcoholConsumptionHistoryDialog dialog = new AlcoholConsumptionHistoryDialog();
+            dialog.show(getSupportFragmentManager(), AlcoholConsumptionHistoryDialog.TAG);
+        });
 
         time_water_editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -929,16 +1101,26 @@ public class IdentificationActivity extends AppCompatActivity {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
+                if (mGenderO.isChecked())
+                    mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
-            } else {
+            } else if (patient1.getGender().equals("F")) {
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
+                if (mGenderO.isChecked())
+                    mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
+            } else {
+                mGenderO.setChecked(true);
+                if (mGenderM.isChecked())
+                    mGenderM.setChecked(false);
+                if (mGenderF.isChecked())
+                    mGenderF.setChecked(false);
             }
 
             //vacciantion...
-            if(patient1.getVaccination() != null) {
+            if (patient1.getVaccination() != null) {
                 if (!patient1.getVaccination().equalsIgnoreCase("No")) {
                     if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                         framelayout_vaccine_question.setVisibility(View.GONE);
@@ -962,8 +1144,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (radioYes.isChecked())
                         radioYes.setChecked(false);
                 }
-            }
-            else {
+            } else {
                 //on edit if no data was present that means that age was less than 18 when registring a patient. So, if null then hide then question and not show that question...
                 framelayout_vaccine_question.setVisibility(View.GONE);
                 framelayout_vaccination.setVisibility(View.GONE);
@@ -977,8 +1158,10 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         if (mGenderM.isChecked()) {
             mGender = "M";
-        } else {
+        } else if (mGenderF.isChecked()) {
             mGender = "F";
+        } else {
+            mGender = "O";
         }
 
 
@@ -1000,6 +1183,20 @@ public class IdentificationActivity extends AppCompatActivity {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String education = switch_hi_education_edit(patient1.getEducation_level());
+//                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    String education = switch_or_education_edit(patient1.getEducation_level());
+//                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+//                } else {
+//                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//                }
+
+                if (patient1.getEducation_level() != null && !patient1.getEducation_level().equalsIgnoreCase("")) {
+                    String education = getEducationStrings(patient1.getEducation_level(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    int position = educationAdapter.getPosition(education);
+                    mEducation.setSelection(position);
                 }
             }
             //mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -1042,8 +1239,6 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
                 }
 
-            }
-
             //Houselhold Head...
             if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
                     && !patient1.getNo_of_family_members().isEmpty()) {
@@ -1067,6 +1262,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     occupation_Transl = patient1.getOccupation();
                 }
 
+                occupation_Transl = getOccupationString(patient1.getOccupation(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
                 int spinner_position = occupation_adapt.getPosition(occupation_Transl);
                 if (spinner_position >= 0) {
                     occupation_spinner.setSelection(spinner_position); //user selected value items from spinner
@@ -1084,16 +1280,23 @@ public class IdentificationActivity extends AppCompatActivity {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
                     }
 
+//                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                        occupation_spinner.setSelection(occupation_adapt.getPosition("वर्णन करे"));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                        occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
+//                    } else {
+//                        occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
+//                    }
+                    occupation_spinner.setSelection(occupation_adapt.getPosition(getString(R.string.other_specify)));
                     occupation_edittext.setVisibility(View.VISIBLE);
                     occupation_edittext.setText(patient1.getOccupation());
                 }
-
             }
             if (patient1.getBank_account() != null && !patient1.getBank_account().equalsIgnoreCase("")) {
                 String bankacc_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     bankacc_Transl = StringUtils.switch_hi_bankaccount_edit(patient1.getBank_account());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     bankacc_Transl = StringUtils.switch_gu_bankaccount_edit(patient1.getBank_account());
@@ -1116,6 +1319,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mobile_Transl = patient1.getMobile_type();
                 }
 
+                mobile_Transl = getMobilePhoneOwnership(patient1.getMobile_type(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
                 int spinner_position = mobile_adapt.getPosition(mobile_Transl);
                 mobilephone_spinner.setSelection(spinner_position);
             }
@@ -1124,7 +1328,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String whatsapp_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     whatsapp_Transl = StringUtils.switch_or_whatsapp_edit(patient1.getWhatsapp_mobile());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     whatsapp_Transl = StringUtils.switch_gu_whatsapp_edit(patient1.getWhatsapp_mobile());
@@ -1146,58 +1350,53 @@ public class IdentificationActivity extends AppCompatActivity {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                             framelayout_vaccine_question.setVisibility(View.GONE);
                             framelayout_vaccination.setVisibility(View.GONE);
                             int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
                             spinner_vaccination.setSelection(spinner_position);
                             radioYes.setChecked(false);
                             radioNo.setChecked(false);
-                        }
-                        else {
+                        } else {
                             vaccination_Transl = StringUtils.switch_hi_vaccination_edit(patient1.getVaccination());
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                             framelayout_vaccine_question.setVisibility(View.GONE);
                             framelayout_vaccination.setVisibility(View.GONE);
                             int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
                             spinner_vaccination.setSelection(spinner_position);
                             radioYes.setChecked(false);
                             radioNo.setChecked(false);
-                        }
-                        else {
+                        } else {
                             vaccination_Transl = patient1.getVaccination();
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
-                }
-                else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
 
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
                             framelayout_vaccine_question.setVisibility(View.GONE);
                             framelayout_vaccination.setVisibility(View.GONE);
                             int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
                             spinner_vaccination.setSelection(spinner_position);
                             radioYes.setChecked(false);
                             radioNo.setChecked(false);
-                        }
-                        else {
+                        } else {
                             vaccination_Transl = StringUtils.switch_or_vaccination_edit(patient1.getVaccination());
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
@@ -1230,13 +1429,49 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             //vaccinatio - end
 
+            // Set data for marital spinner
+            if (patient1.getMaritalStatus() != null && !patient1.getMaritalStatus().equalsIgnoreCase("")) {
+                int spinnerPosition = maritalAdapter.getPosition(getMaritalStatusStrings(patient1.getMaritalStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                maritalStatusSpinner.setSelection(spinnerPosition);
+            }
+
+            // Set data for bp spinner
+            if (patient1.getBpChecked() != null && !patient1.getBpChecked().equalsIgnoreCase("")) {
+                int spinnerPosition = bp_adapt.getPosition(getTestStrings(patient1.getBpChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                bpSpinner.setSelection(spinnerPosition);
+            }
+
+            // Set data for sugar level spinner
+            if (patient1.getSugarLevelChecked() != null && !patient1.getSugarLevelChecked().equalsIgnoreCase("")) {
+                int spinnerPosition = sugar_adapt.getPosition(getTestStrings(patient1.getSugarLevelChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                sugarLevelSpinner.setSelection(spinnerPosition);
+            }
+
+            // Set data for hb checked spinner
+            if (patient1.getHbChecked() != null && !patient1.getHbChecked().equalsIgnoreCase("")) {
+                int spinnerPosition = hbLevel_adapt.getPosition(getTestStrings(patient1.getHbChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                hbLevelSpinner.setSelection(spinnerPosition);
+            }
+
+            // Set data for bmi checked spinner
+            if (patient1.getBmiChecked() != null && !patient1.getBmiChecked().equalsIgnoreCase("")) {
+                int spinnerPosition = bmi_adapt.getPosition(getTestStrings(patient1.getBmiChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                bmiLevelSpinner.setSelection(spinnerPosition);
+            }
+
+            // Set data for head of household
+            if (patient1.getHeadOfHousehold() != null && !patient1.getHeadOfHousehold().equalsIgnoreCase("")) {
+                int spinnerPosition = hohRelationshipAdapter.getPosition(hohRelationship(patient1.getHeadOfHousehold(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                hohRelationshipSpinner.setSelection(spinnerPosition);
+            }
+
             if (patient1.getSource_of_water() != null && !patient1.getSource_of_water()
                     .equalsIgnoreCase("")) {
 
                 String watersource_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     watersource_Transl = StringUtils.switch_hi_watersource_edit(patient1.getSource_of_water());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     watersource_Transl = StringUtils.switch_or_watersource_edit(patient1.getSource_of_water());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     watersource_Transl = StringUtils.switch_gu_watersource_edit(patient1.getSource_of_water());
@@ -1252,7 +1487,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String watersafe_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     watersafe_Transl = StringUtils.switch_hi_watersafe_edit(patient1.getWater_safe());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     watersafe_Transl = StringUtils.switch_or_watersafe_edit(patient1.getWater_safe());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     watersafe_Transl = StringUtils.switch_gu_watersafe_edit(patient1.getWater_safe());
@@ -1270,7 +1505,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("अन्य [दर्ज करें]"));
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------replace with gujrati
@@ -1290,7 +1525,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String wateravail_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     wateravail_Transl = StringUtils.switch_hi_wateravail_edit(patient1.getWater_availability());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     wateravail_Transl = StringUtils.switch_or_wateravail_edit(patient1.getWater_availability());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     wateravail_Transl = StringUtils.switch_gu_wateravail_edit(patient1.getWater_availability());
@@ -1307,7 +1542,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String toiletfacility_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     toiletfacility_Transl = StringUtils.switch_hi_toiletfacil_edit(patient1.getToilet_facility());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     toiletfacility_Transl = StringUtils.switch_gu_toiletfacil_edit(patient1.getToilet_facility());
@@ -1326,7 +1561,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //on edit the spinner value will be selected based on the current app lang...
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("अन्य [दर्ज करें]"));
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------replace with gujrati
@@ -1346,7 +1581,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String housestruct_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     housestruct_Transl = StringUtils.switch_hi_housestructure_edit(patient1.getStructure_house());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     housestruct_Transl = StringUtils.switch_gu_housestructure_edit(patient1.getStructure_house());
@@ -1363,16 +1598,16 @@ public class IdentificationActivity extends AppCompatActivity {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
-        NewLocationDao newLocationDao=new NewLocationDao();
-        List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(),sessionManager.getDistrictName()
-                ,sessionManager.getSanchName(),context);
-        if(villageList.size()>1) {
+        NewLocationDao newLocationDao = new NewLocationDao();
+        List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName()
+                , sessionManager.getSanchName(), context);
+        if (villageList.size() > 1) {
             LocationArrayAdapter locationArrayAdapter =
                     new LocationArrayAdapter(IdentificationActivity.this, villageList);
             mVillage.setAdapter(locationArrayAdapter);
-            if(patientID_edit!=null){
+            if (patientID_edit != null) {
                 mVillage.setSelection(locationArrayAdapter.getPosition(patient1.getCity_village()));
-            }else {
+            } else {
                 mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
             }
         }
@@ -1445,15 +1680,15 @@ public class IdentificationActivity extends AppCompatActivity {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.odisha_villages, R.layout.custom_spinner);
-                   // mCity.setThreshold(1);//will start working from first character
-                   // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    // mCity.setThreshold(1);//will start working from first character
+                    // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else if (state.matches("Bukidnon")) {
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.bukidnon_villages, R.layout.custom_spinner);
-                   // mCity.setThreshold(1);//will start working from first character
-                   // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    // mCity.setThreshold(1);//will start working from first character
+                    // mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
-                   // mCity.setAdapter(null);
+                    // mCity.setAdapter(null);
                 }
             }
 
@@ -1471,6 +1706,13 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         mGenderM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        mGenderO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
@@ -1562,15 +1804,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setText(ageString);
 
                 //vaccination if above or equal to 18 than show visibility....
-                if(mAgeYears >= 18) {
+                if (mAgeYears >= 18) {
                     framelayout_vaccine_question.setVisibility(View.VISIBLE);
-                   // framelayout_vaccination.setVisibility(View.GONE);
-                }
-                else {
+                    ll18.setVisibility(View.VISIBLE);
+                    // framelayout_vaccination.setVisibility(View.GONE);
+                } else {
                     framelayout_vaccine_question.setVisibility(View.GONE);
-                    if(radioYes.isChecked()) //so that no previous data be gone to the db
+                    ll18.setVisibility(View.GONE);
+                    if (radioYes.isChecked()) //so that no previous data be gone to the db
                         radioYes.setChecked(false);
-                    if(radioNo.isChecked())
+                    if (radioNo.isChecked())
                         radioNo.setChecked(false);
 
                     spinner_vaccination.setSelection(0);
@@ -1594,7 +1837,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             //dob to be displayed based on translation...
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
-            Log.v("main", "dob: "+patient1.getDate_of_birth() + "\n" + dob);
+            Log.v("main", "dob: " + patient1.getDate_of_birth() + "\n" + dob);
 
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
@@ -1609,7 +1852,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setText(dob);
             }
 
-          //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+            //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
@@ -1620,15 +1863,16 @@ public class IdentificationActivity extends AppCompatActivity {
             mAge.setText(yrMoDays);
 
             //vaccination if above or equal to 18 than show visibility....
-            if(mAgeYears >= 18) {
+            if (mAgeYears >= 18) {
                 framelayout_vaccine_question.setVisibility(View.VISIBLE);
-               // framelayout_vaccination.setVisibility(View.GONE);
-            }
-            else {
+                // framelayout_vaccination.setVisibility(View.GONE);
+                ll18.setVisibility(View.VISIBLE);
+            } else {
                 framelayout_vaccine_question.setVisibility(View.GONE);
-                if(radioYes.isChecked())
+                ll18.setVisibility(View.GONE);
+                if (radioYes.isChecked())
                     radioYes.setChecked(false);
-                if(radioNo.isChecked())
+                if (radioNo.isChecked())
                     radioNo.setChecked(false);
 
                 spinner_vaccination.setSelection(0);
@@ -1707,15 +1951,16 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAge.setText(ageString);
 
                     //vaccination if above or equal to 18 than show visibility....
-                    if(mAgeYears >= 18) {
+                    if (mAgeYears >= 18) {
                         framelayout_vaccine_question.setVisibility(View.VISIBLE);
-                       // framelayout_vaccination.setVisibility(View.GONE);
-                    }
-                    else {
+                        ll18.setVisibility(View.VISIBLE);
+                        // framelayout_vaccination.setVisibility(View.GONE);
+                    } else {
                         framelayout_vaccine_question.setVisibility(View.GONE);
-                        if(radioYes.isChecked())
+                        ll18.setVisibility(View.GONE);
+                        if (radioYes.isChecked())
                             radioYes.setChecked(false);
-                        if(radioNo.isChecked())
+                        if (radioNo.isChecked())
                             radioNo.setChecked(false);
 
                         spinner_vaccination.setSelection(0);
@@ -1748,7 +1993,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dob_indexValue = mDOBPicker.getDatePicker().getMonth(); //if user manually selects Age then...
-                    Log.d("dd", "dd: "+dob_indexValue);
+                    Log.d("dd", "dd: " + dob_indexValue);
                     dialog.dismiss();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -1776,14 +2021,18 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (familyhead_checkbox.isChecked()) {
                     cardview_household.setVisibility(View.VISIBLE);
+                    hohRelationshipCardView.setVisibility(View.GONE);
                     no_of_member_edittext.requestFocus();
                     no_of_member_edittext.setFocusable(true);
                     no_of_member_edittext.setFocusableInTouchMode(true);
                 } else {
                     cardview_household.setVisibility(View.GONE);
+                    hohRelationshipCardView.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1859,6 +2108,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (checked)
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
+                break;
+            case R.id.identification_gender_other:
+                if (checked)
+                    mGender = "O";
+                Log.v(TAG, "gender: " + mGender);
                 break;
             case R.id.identification_yes:
                 if (checked)
@@ -1985,7 +2239,24 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Covid Vaccination")) {
                     patient1.setVaccination(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-
+                if (name.equalsIgnoreCase("martialStatus")) {
+                    patient1.setMaritalStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("bpChecked")) {
+                    patient1.setBpChecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("sugarChecked")) {
+                    patient1.setSugarLevelChecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("hbChecked")) {
+                    patient1.setHbChecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("bmiChecked")) {
+                    patient1.setBmiChecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("hohRelationship")) {
+                    patient1.setHeadOfHousehold(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("Total Family Members")) {
                     patient1.setNo_of_family_members(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2013,13 +2284,44 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Family Cultivable Land")) {
                     patient1.setHectars_land(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("otherMedicalHistory")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    medicalHistoryList = new Gson().fromJson(value, new TypeToken<List<MedicalHistory>>() {
+                    }.getType());
+                    medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+                    medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+                    medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(medicalHistoryViewPager);
+                }
+
+                if (name.equalsIgnoreCase("smokingStatus")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    smokingHistoryList = new Gson().fromJson(value, new TypeToken<List<SmokingHistory>>() {
+                    }.getType());
+                    smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+                    smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+                    smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(smokingHistoryViewPager);
+                }
+
+                if (name.equalsIgnoreCase("alcoholConsumptionStatus")) {
+                    String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                    alcoholConsumptionHistoryList = new Gson().fromJson(value, new TypeToken<List<AlcoholConsumptionHistory>>() {
+                    }.getType());
+                    alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+                    alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+                    alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+                    alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+                    setViewPagerOffset(alcoholViewPager);
+                }
 
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
 
     }
-
 
     @Override
     public void onBackPressed() {
@@ -2172,7 +2474,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !villageText.getText().toString().equals("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("")
-                && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -2197,7 +2499,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setError(getString(R.string.error_field_required));
             }*/
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -2299,7 +2601,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //vaccination
-        if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+        if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
             if (!radioYes.isChecked() && !radioNo.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new
                         MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2332,6 +2634,67 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //vaccination - end
 
+        // Marital Status Validation
+        if (maritalStatusSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) maritalStatusSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = maritalStatusSpinner;
+            cancel = true;
+            return;
+        }
+
+        // BP Level Validation
+        if (bpSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) bpSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = bpSpinner;
+            cancel = true;
+            return;
+        }
+
+        // Sugar Level Validation
+        if (sugarLevelSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) sugarLevelSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = sugarLevelSpinner;
+            cancel = true;
+            return;
+        }
+
+        // HB Level Validation
+        if (hbLevelSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) hbLevelSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = hbLevelSpinner;
+            cancel = true;
+            return;
+        }
+
+        // BMI Validation
+        if (bmiLevelSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) bmiLevelSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = bmiLevelSpinner;
+            cancel = true;
+            return;
+        }
+
+        if (!familyhead_checkbox.isChecked()) {
+            // HOH Relationship Validation
+            if (hohRelationshipSpinner.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) hohRelationshipSpinner.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = hohRelationshipSpinner;
+                cancel = true;
+                return;
+            }
+        }
 
         if (familyhead_checkbox.isChecked()) {
 
@@ -2464,6 +2827,27 @@ public class IdentificationActivity extends AppCompatActivity {
 
         }
 
+        if (medicalHistoryList.isEmpty()) {
+            Toast.makeText(this, "Medical History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = medicalHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (smokingHistoryList.isEmpty()) {
+            Toast.makeText(this, "Smoking History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = smokingHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (alcoholConsumptionHistoryList.isEmpty()) {
+            Toast.makeText(this, "Alcohol consumption history cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = alcoholViewPager;
+            cancel = true;
+            return;
+        }
+
 
         if (cancel) {
             focusView.requestFocus();
@@ -2498,7 +2882,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-           // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+            // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -2510,12 +2894,12 @@ public class IdentificationActivity extends AppCompatActivity {
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2549,7 +2933,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2599,7 +2983,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
                 //patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(occupation_spinner));
+                patientAttributesDTO.setValue(getOccupationString(occupation_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
@@ -2620,7 +3004,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+//            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2634,7 +3019,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+            if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
                     //Vaccination ...
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -2653,14 +3038,65 @@ public class IdentificationActivity extends AppCompatActivity {
                     Log.d("HOH", "Vaccination: " + "No");
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
-            }
-            else {
+            } else {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
                 patientAttributesDTO.setValue("Age less than 18 years");
                 Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            // Marital Status Adapter
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
+            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Check if the ll18 linearlayout is visible or not
+            if (ll18.getVisibility() == View.VISIBLE) {
+                // BP Checked Adapter
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
+                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Sugar Level Checked
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
+                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            // HB Checked Adapter
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
+            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // BMI Checked Adapter
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
+            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (!familyhead_checkbox.isChecked()) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
+                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -2732,8 +3168,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
-                    String water_time=time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours),"hours")
-                            .replaceAll(getString(R.string.identification_screen_picker_minute),"minute");
+                    String water_time = time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours), "hours")
+                            .replaceAll(getString(R.string.identification_screen_picker_minute), "minute");
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
@@ -2839,6 +3275,29 @@ public class IdentificationActivity extends AppCompatActivity {
 //            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
+            // Medical History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("otherMedicalHistory"));
+            patientAttributesDTO.setValue(new Gson().toJson(medicalHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Smoking History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("smokingStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(smokingHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Alcohol Consumption History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("alcoholConsumptionStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(alcoholConsumptionHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             //patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
@@ -2986,7 +3445,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !villageText.getText().toString().equalsIgnoreCase("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -3011,7 +3470,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setError(getString(R.string.error_field_required));
             }*/
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -3113,7 +3572,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //vaccination
-        if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+        if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
             if (!radioYes.isChecked() && !radioNo.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new
                         MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -3145,6 +3604,68 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
         //vaccination - end...
+
+        // Marital Status Validation
+        if (maritalStatusSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) maritalStatusSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = maritalStatusSpinner;
+            cancel = true;
+            return;
+        }
+
+        // BP Level Validation
+        if (bpSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) bpSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = bpSpinner;
+            cancel = true;
+            return;
+        }
+
+        // Sugar Level Validation
+        if (sugarLevelSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) sugarLevelSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = sugarLevelSpinner;
+            cancel = true;
+            return;
+        }
+
+        // HB Level Validation
+        if (hbLevelSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) hbLevelSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = hbLevelSpinner;
+            cancel = true;
+            return;
+        }
+
+        // BMI Validation
+        if (bmiLevelSpinner.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) bmiLevelSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = bmiLevelSpinner;
+            cancel = true;
+            return;
+        }
+
+        if (!familyhead_checkbox.isChecked()) {
+            // HOH Relationship Validation
+            if (hohRelationshipSpinner.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) hohRelationshipSpinner.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = hohRelationshipSpinner;
+                cancel = true;
+                return;
+            }
+        }
 
         if (familyhead_checkbox.isChecked()) {
 
@@ -3276,6 +3797,26 @@ public class IdentificationActivity extends AppCompatActivity {
 
         }
 
+        if (medicalHistoryList.isEmpty()) {
+            Toast.makeText(this, "Medical History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = medicalHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (smokingHistoryList.isEmpty()) {
+            Toast.makeText(this, "Smoking History cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = smokingHistoryViewPager;
+            cancel = true;
+            return;
+        }
+
+        if (alcoholConsumptionHistoryList.isEmpty()) {
+            Toast.makeText(this, "Alcohol consumption history cannot be empty", Toast.LENGTH_SHORT).show();
+            focusView = alcoholViewPager;
+            cancel = true;
+            return;
+        }
 
         if (cancel) {
             focusView.requestFocus();
@@ -3320,13 +3861,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3360,7 +3901,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3411,7 +3952,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
                 //patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(occupation_spinner));
+                patientAttributesDTO.setValue(getOccupationString(occupation_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
@@ -3432,7 +3973,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+//            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
+            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3446,7 +3988,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+            if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
                     //Vaccination ...
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -3465,14 +4007,65 @@ public class IdentificationActivity extends AppCompatActivity {
                     Log.d("HOH", "Vaccination: " + "No");
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
-            }
-            else {
+            } else {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
                 patientAttributesDTO.setValue("Age less than 18 years");
                 Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            // Marital Status Adapter
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
+            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Check if the ll18 linearlayout is visible or not
+            if (ll18.getVisibility() == View.VISIBLE) {
+                // BP Checked Adapter
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
+                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Sugar Level Checked
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
+                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            // HB Checked Adapter
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
+            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // BMI Checked Adapter
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
+            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (!familyhead_checkbox.isChecked()) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
+                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -3544,8 +4137,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
-                    String water_time=time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours),"hours")
-                            .replaceAll(getString(R.string.identification_screen_picker_minute),"minute");
+                    String water_time = time_water_editText.getText().toString().replaceAll(getString(R.string.identification_screen_picker_hours), "hours")
+                            .replaceAll(getString(R.string.identification_screen_picker_minute), "minute");
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
@@ -3643,6 +4236,30 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             //end of checking if the family head checkbox is checked or not...
 
+            // Medical History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("otherMedicalHistory"));
+            patientAttributesDTO.setValue(new Gson().toJson(medicalHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Smoking History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("smokingStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(smokingHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // Alcohol Consumption History
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("alcoholConsumptionStatus"));
+            patientAttributesDTO.setValue(new Gson().toJson(alcoholConsumptionHistoryList));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
             //patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             //patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
@@ -3688,5 +4305,207 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
+    private void setUpTranslationTools() {
+        sessionManager = new SessionManager(this);
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        updatedContext = getBaseContext().createConfigurationContext(configuration);
+    }
 
+    @Override
+    public void saveMedicalHistoryData(MedicalHistory medicalHistory) {
+        medicalHistoryList.add(medicalHistory);
+        medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+        medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+        medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(medicalHistoryViewPager);
+    }
+
+    @Override
+    public void saveMedicalHistoryDataAtPosition(MedicalHistory medicalHistory, int position) {
+        medicalHistoryList.set(position, medicalHistory);
+        medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+        medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+        medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(medicalHistoryViewPager);
+    }
+
+    @Override
+    public void saveSmokingHistory(SmokingHistory smokingHistory) {
+        smokingHistoryList.add(smokingHistory);
+        smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+        smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+        smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(smokingHistoryViewPager);
+    }
+
+    @Override
+    public void saveSmokingHistoryAtPosition(SmokingHistory smokingHistory, int position) {
+        smokingHistoryList.set(position, smokingHistory);
+        smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+        smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+        smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(smokingHistoryViewPager);
+    }
+
+    @Override
+    public void saveAlcoholConsumptionData(AlcoholConsumptionHistory alcoholConsumptionHistory) {
+        alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
+        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+        alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+        alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(alcoholViewPager);
+    }
+
+    @Override
+    public void saveAlcoholConsumptionDataAtPosition(AlcoholConsumptionHistory alcoholConsumptionHistory, int position) {
+        alcoholConsumptionHistoryList.set(position, alcoholConsumptionHistory);
+        alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+        alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+        alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+        alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(alcoholViewPager);
+    }
+
+    private void setViewPagerOffset(ViewPager2 viewPager2) {
+        viewPager2.setClipToPadding(false);
+        viewPager2.setClipChildren(false);
+        viewPager2.setOffscreenPageLimit(3);
+
+        int pageMarginPx = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+        float offsetPx = getResources().getDimensionPixelOffset(R.dimen.offset);
+        viewPager2.setPageTransformer((page, position) -> {
+            ViewPager2 viewPager = (ViewPager2) page.getParent().getParent();
+            float offset = position * -(2 * offsetPx + pageMarginPx);
+            if (viewPager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
+                if (ViewCompat.getLayoutDirection(viewPager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                    page.setTranslationX(-offset);
+                } else {
+                    page.setTranslationX(offset);
+                }
+            } else {
+                page.setTranslationY(offset);
+            }
+        });
+    }
+
+    public Context getUpdatedContext() {
+        return updatedContext;
+    }
+
+    @Override
+    public void getMedicalHistory(MedicalHistory medicalHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("hypertension", medicalHistory.getHypertension());
+                bundle.putString("diabetes", medicalHistory.getDiabetes());
+                bundle.putString("arthritis", medicalHistory.getArthritis());
+                bundle.putString("anaemia", medicalHistory.getAnaemia());
+                bundle.putString("anySurgeries", medicalHistory.getAnySurgeries());
+                bundle.putString("reasonForSurgery", medicalHistory.getReasonForSurgery());
+                bundle.putString("other", medicalHistory.getOther());
+
+                MedicalHistoryDialog medicalHistoryDialog = new MedicalHistoryDialog();
+                medicalHistoryDialog.setArguments(bundle);
+                medicalHistoryDialog.show(getSupportFragmentManager(), MedicalHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, medicalHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
+    @Override
+    public void getSmokingHistory(SmokingHistory smokingHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("smokingStatus", smokingHistory.getSmokingStatus());
+                bundle.putString("rateOfSmoking", smokingHistory.getRateOfSmoking());
+                bundle.putString("durationOfSmoking", smokingHistory.getDurationOfSmoking());
+
+                SmokingHistoryDialog smokingHistoryDialog = new SmokingHistoryDialog();
+                smokingHistoryDialog.setArguments(bundle);
+                smokingHistoryDialog.show(getSupportFragmentManager(), SmokingHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, smokingHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
+    @Override
+    public void getAlcoholHistory(AlcoholConsumptionHistory alcoholConsumptionHistory, int position) {
+        MaterialAlertDialogBuilder listDialog = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        listDialog.setItems(new String[]{getString(R.string.edit_dialog_button), getString(R.string.delete_dialog_button)}, (dialog, which) -> {
+            if (which == 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                bundle.putString("historyOfAlcoholConsumption", alcoholConsumptionHistory.getHistoryOfAlcoholConsumption());
+                bundle.putString("rateOfAlcoholConsumption", alcoholConsumptionHistory.getRateOfAlcoholConsumption());
+                bundle.putString("durationOfAlcoholConsumption", alcoholConsumptionHistory.getDurationOfAlcoholConsumption());
+
+                AlcoholConsumptionHistoryDialog alcoholConsumptionHistoryDialog = new AlcoholConsumptionHistoryDialog();
+                alcoholConsumptionHistoryDialog.setArguments(bundle);
+                alcoholConsumptionHistoryDialog.show(getSupportFragmentManager(), AlcoholConsumptionHistoryDialog.TAG);
+            }
+
+            if (which == 1) {
+                deleteSurveyData(position, alcoholConsumptionHistory);
+            }
+        });
+
+        listDialog.show();
+    }
+
+    public void deleteSurveyData(int position, Object object) {
+        if (object instanceof MedicalHistory) {
+            medicalHistoryList.remove(position);
+            medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+            medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
+            if (!medicalHistoryList.isEmpty()) {
+                medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
+            }
+            medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(medicalHistoryViewPager);
+        }
+
+        if (object instanceof SmokingHistory) {
+            smokingHistoryList.remove(position);
+            smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+            smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
+            if (!medicalHistoryList.isEmpty()) {
+                smokingHistoryViewPager.setCurrentItem(smokingHistoryList.size() - 1);
+            }
+            smokingHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(smokingHistoryViewPager);
+        }
+
+        if (object instanceof AlcoholConsumptionHistory) {
+            alcoholConsumptionHistoryList.remove(position);
+            alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
+            alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
+            if (!alcoholConsumptionHistoryList.isEmpty()) {
+                alcoholViewPager.setCurrentItem(alcoholConsumptionHistoryList.size() - 1);
+            }
+            alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+            setViewPagerOffset(alcoholViewPager);
+        }
+    }
 }

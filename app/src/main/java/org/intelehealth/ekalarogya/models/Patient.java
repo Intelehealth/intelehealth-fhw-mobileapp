@@ -35,6 +35,52 @@ public class Patient {
     private String hectars_land;
     private String emergency;
     private String vaccination;
+    private String maritalStatus;
+    private String bpChecked;
+    private String sugarLevelChecked;
+    private String hbChecked;
+    private String bmiChecked;
+    private String headOfHousehold;
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getBpChecked() {
+        return bpChecked;
+    }
+
+    public void setBpChecked(String bpChecked) {
+        this.bpChecked = bpChecked;
+    }
+
+    public String getSugarLevelChecked() {
+        return sugarLevelChecked;
+    }
+
+    public void setSugarLevelChecked(String sugarLevelChecked) {
+        this.sugarLevelChecked = sugarLevelChecked;
+    }
+
+    public String getHbChecked() {
+        return hbChecked;
+    }
+
+    public void setHbChecked(String hbChecked) {
+        this.hbChecked = hbChecked;
+    }
+
+    public String getBmiChecked() {
+        return bmiChecked;
+    }
+
+    public void setBmiChecked(String bmiChecked) {
+        this.bmiChecked = bmiChecked;
+    }
 
     public String getUuid() {
         return uuid;
@@ -306,5 +352,13 @@ public class Patient {
 
     public void setVaccination(String vaccination) {
         this.vaccination = vaccination;
+    }
+
+    public String getHeadOfHousehold() {
+        return headOfHousehold;
+    }
+
+    public void setHeadOfHousehold(String headOfHousehold) {
+        this.headOfHousehold = headOfHousehold;
     }
 }
