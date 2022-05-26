@@ -823,7 +823,7 @@
     <string name="twenty_thirty_km">20 – 30 କିମି</string>
     <string name="more_than_thirty_km">30 କିଲୋମିଟରରୁ ଅଧିକ</string>
     <string name="distance_to_the_nearest_medical_store">ନିକଟସ୍ଥ ମେଡିକାଲ୍ ଷ୍ଟୋର୍‌କୁ ଦୂରତା</string>
-    <string name="distance_to_the_nearest_pathological_lab">नନିକଟସ୍ଥ ପାଥୋଲୋଜିକାଲ ଲ୍ୟାବ ପାଇଁ ଦୂରତା</string>
+    <string name="distance_to_the_nearest_pathological_lab">ନିକଟସ୍ଥ ପାଥୋଲୋଜିକାଲ ଲ୍ୟାବ ପାଇଁ ଦୂରତା</string>
     <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକକୁ ଦୂରତା (ଏକ MBBS ଡାକ୍ତରଙ୍କ ସହିତ)</string>
     <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକ୍ ପାଇଁ ଦୂରତା (ବିକଳ୍ପ ଡାକ୍ତରୀ ଚିକିତ୍ସକଙ୍କ ସହିତ - BAMS, BHMS, ଆୟୁର୍ବେଦ ଇତ୍ୟାଦି)</string>
 
@@ -896,7 +896,7 @@
     <string name="between_three_months_to_six_months_ago">୩ ମାସ - ୬ ମାସ ପୂର୍ବରୁ </string>
     <string name="more_than_six_months">୬ ମାସରୁ ଅଧିକ</string>
 
-    <string name="identification_screen_checkbox_other">Other</string>
+    <string name="identification_screen_checkbox_other">ଅନ୍ୟାନ୍ୟ</string>
     <string name="medical_history">ଚିକିତ୍ସା ଇତିହାସ</string>
     <string name="hypertension">ଉଚ୍ଚ ରକ୍ତଚାପ</string>
     <string name="diabetes">ମଧୁମେହ</string>

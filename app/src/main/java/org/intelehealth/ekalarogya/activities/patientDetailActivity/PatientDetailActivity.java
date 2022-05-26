@@ -95,6 +95,8 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
@@ -147,6 +149,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
+    private Context updatedContext;
     float float_ageYear_Month;
 
     @Override
@@ -162,6 +165,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        setupTranslationTools();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail);
@@ -270,6 +274,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         LoadFamilyMembers();
 
+    }
+
+    private void setupTranslationTools() {
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        updatedContext = getBaseContext().createConfigurationContext(configuration);
     }
 
     private void startVisitConfirmation(String startNewAdviceBy) {
@@ -685,6 +695,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else if (patient_new.getGender().equalsIgnoreCase("O")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
@@ -693,6 +705,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else if (patient_new.getGender().equalsIgnoreCase("O")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
@@ -745,19 +759,25 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 education_statusView.setText("नहीं दिया गया");
-            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                education_statusView.setText(patient_new.getEducation_level());
+//            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                education_statusView.setText(patient_new.getEducation_level());
             } else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String education = switch_hi_education_edit(patient_new.getEducation_level());
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String education = switch_hi_education_edit(patient_new.getEducation_level());
+//                    education_statusView.setText(education);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    String education = switch_or_education_edit(patient_new.getEducation_level());
+//                    education_statusView.setText(education);
+//                } else {
+//                    education_statusView.setText(patient_new.getEducation_level());
+//                }
+
+                if (patient_new.getEducation_level() != null && !patient_new.getEducation_level().equalsIgnoreCase("")) {
+                    String education = getEducationStrings(patient_new.getEducation_level(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
                     education_statusView.setText(education);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String education = switch_or_education_edit(patient_new.getEducation_level());
-                    education_statusView.setText(education);
-                } else {
-                    education_statusView.setText(patient_new.getEducation_level());
                 }
+
                 // education_statusView.setText(patient_new.getEducation_level());
             }
         }
@@ -814,15 +834,18 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 //
         if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
-                occuView.setText(occupation);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                String occupation = switch_or_occupation_edit(patient_new.getOccupation());
-                occuView.setText(occupation);
-            } else {
-                occuView.setText(patient_new.getOccupation());
-            }
+//            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                String occupation = getOccupationString(patient_new.getOccupation(), getBaseContext(), updatedContext, sessionManager.getAppLanguage());
+//                occuView.setText(occupation);
+//            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                String occupation = getOccupationString(patient_new.getOccupation(), getBaseContext(), updatedContext, sessionManager.getAppLanguage());
+//                occuView.setText(occupation);
+//            } else {
+//                occuView.setText(patient_new.getOccupation());
+//            }
+
+            String education = getOccupationString(patient_new.getOccupation(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+            occuView.setText(education);
 
         } else {
 //            occuRow.setVisibility(View.GONE);

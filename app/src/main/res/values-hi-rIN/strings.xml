@@ -1032,6 +1032,7 @@
     <string name="postgraduate">स्नातकोत्तर</string>
 
     <!--    Household Head Relationship -->
+    <string name="what_is_your_relationship_with_the_head_of_household">घर के मुखिया से क्या संबंध है?</string>
     <string name="spouse">पति / पत्नी</string>
     <string name="son_daughter">बेटा / बेटी</string>
     <string name="son_daughter_in_law">बेटा / बेटी</string>
@@ -1048,7 +1049,7 @@
     <string name="other_not_related">अन्य संबंधित नहीं</string>
     <string name="not_stated">नहीं बताया गया</string>
 
-    <string name="identification_screen_checkbox_other">Other</string>
+    <string name="identification_screen_checkbox_other">अन्य</string>
 
     <!--    Medical History Strings -->
     <string name="medical_history">चिकित्सा का इतिहास</string>
