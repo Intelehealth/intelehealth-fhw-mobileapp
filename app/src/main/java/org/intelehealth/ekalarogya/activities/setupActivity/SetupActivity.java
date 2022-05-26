@@ -1,5 +1,7 @@
 package org.intelehealth.ekalarogya.activities.setupActivity;
 
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getDistanceStrings;
+
 import android.accounts.Account;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -80,6 +82,7 @@ import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringEncryption;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
@@ -1317,7 +1320,7 @@ public class SetupActivity extends AppCompatActivity {
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-
+        getDataFromRadioButtons();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -1591,5 +1594,83 @@ public class SetupActivity extends AppCompatActivity {
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
         Log.e("DOWNLOAD", "isSTARTED");
 
+    }
+
+    private void getDataFromRadioButtons() {
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        Context updatedContext = getBaseContext().createConfigurationContext(configuration);
+
+        String subCenterDistance = getDistanceStrings(
+                ((RadioButton) subCentreRadioGroup.findViewById(subCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setSubCentreDistance(subCenterDistance);
+
+        String primaryHealthCenterDistance = getDistanceStrings(
+                ((RadioButton) primaryCentreRadioGroup.findViewById(primaryCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setPrimaryHealthCentreDistance(primaryHealthCenterDistance);
+
+        String communityHealthCenterDistance = getDistanceStrings(
+                ((RadioButton) communityHealthCentreRadioGroup.findViewById(communityHealthCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setCommunityHealthCentreDistance(communityHealthCenterDistance);
+
+        String districtHospital = getDistanceStrings(
+                ((RadioButton) districtHospitalRadioGroup.findViewById(districtHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setDistrictHospitalDistance(districtHospital);
+
+        String medicalStore = getDistanceStrings(
+                ((RadioButton) medicalStoreRadioGroup.findViewById(medicalStoreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setMedicalStoreDistance(medicalStore);
+
+        String pathologicalLab = getDistanceStrings(
+                ((RadioButton) pathologicalLabRadioGroup.findViewById(pathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setPathologicalLabDistance(pathologicalLab);
+
+        String privateClinicWithMbbsDoctorDistance = getDistanceStrings(
+                ((RadioButton) privateClinicWithMbbsDoctorRadioGroup.findViewById(privateClinicWithMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setPrivateClinicWithMbbsDoctorDistance(privateClinicWithMbbsDoctorDistance);
+
+        String privateClinicWithAlternateDoctorDistance = getDistanceStrings(
+                ((RadioButton) privateClinicWithAlternateMedicalRadioGroup.findViewById(privateClinicWithAlternateMedicalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setPrivateClinicWithAlternateDoctorDistance(privateClinicWithAlternateDoctorDistance);
     }
 }
