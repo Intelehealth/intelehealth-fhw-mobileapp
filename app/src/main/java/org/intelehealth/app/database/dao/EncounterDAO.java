@@ -477,4 +477,26 @@ public class EncounterDAO {
         return encounterTypeUuid_Name;
     }
 
+    public String getEndDateForVisit(String visitUUID) {
+        String endDate = null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        Cursor idCursor = db.rawQuery("SELECT enddate FROM tbl_visit where visituuid = ?",
+                new String[] {visitUUID});
+
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                 endDate = idCursor.getString(idCursor.getColumnIndexOrThrow("enddate"));
+            }
+        }
+        idCursor.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return endDate;
+    }
+
 }

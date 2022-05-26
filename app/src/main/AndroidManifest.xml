@@ -45,7 +45,7 @@
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:label="@string/title_activity_visit_summary"
-            android:parentActivityName=".activities.patientDetailActivity.PatientDetailActivity"
+            android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:exported="false" />
 
         <activity

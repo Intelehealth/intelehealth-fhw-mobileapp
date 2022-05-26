@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -97,22 +98,23 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent visitSummary = new Intent(context, VisitSummaryActivity.class);
+                Intent visitSummary = new Intent(context, TimelineVisitSummaryActivity.class);
                 String patientUuid = todayPatientModel.getPatientuuid();
 
                 String patientSelection = "uuid = ?";
                 String[] patientArgs = {patientUuid};
                 String[] patientColumns = {"first_name", "middle_name", "last_name", "gender",
-                        "date_of_birth",};
+                        "date_of_birth"};
                 SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
-                String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "";
+                String visit_id = "";
+                String end_date = "",dob = "", mGender = "", patientName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
@@ -135,16 +137,17 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         do {
                             if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase(""+todayPatientModel.getUuid())){
                             end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));}
+                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                            }
                             else{
-
+                                // do nothing...
                             }
                         } while (visitCursor.moveToPrevious());
                     }
                 }
                 visitCursor.close();
 
-                String encounterlocalAdultintial = "";
+              /*  String encounterlocalAdultintial = "";
                 String encountervitalsLocal = null;
                 String encounterIDSelection = "visituuid = ?";
 
@@ -172,17 +175,17 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 }
 
                 float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
-
+*/
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
-                visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
-                visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
-                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
+//                visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
+//                visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
+//                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", "");
-                visitSummary.putExtra("pastVisit", past_visit);
+//                visitSummary.putExtra("pastVisit", past_visit);
 
                 if (holder.ivPriscription.getTag().equals("1")) {
                     visitSummary.putExtra("hasPrescription", "true");

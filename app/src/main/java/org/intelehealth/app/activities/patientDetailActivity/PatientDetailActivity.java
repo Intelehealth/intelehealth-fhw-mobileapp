@@ -249,6 +249,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
         });
+
 //        ib_addFamilyMember.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -329,7 +330,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 // end*/
 
-                InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
+               /* InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
                 String CREATOR_ID = sessionManager.getCreatorID();
@@ -353,6 +354,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     sessionManager.setReturning(returning);
                 }
                 cursor.close();
+                */
 
 //                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
 //                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
@@ -403,12 +405,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 // end - visit
 
-                // Create 12 Encounters for 12hrs initially itself when going to the Timeline screen...
-                // This first encounter will contain sync as FALSE as it is the current one and that the timeline has started...
+                // Create a static Stage1_Hr1_1 encounter so than to link all the other encounters.
+                // Start - encounter
                 boolean isInserted = false;
                 EncounterDAO eDAO = new EncounterDAO();
                 EncounterDTO eDTO = new EncounterDTO();
-
                 stage1Hr1_1_EncounterUuid = UUID.randomUUID().toString();
                 eDTO.setUuid(stage1Hr1_1_EncounterUuid);
                 eDTO.setVisituuid(uuid);
@@ -424,6 +425,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
+                // end - encounter
 
                 // This 23 ones would be created initially itself with sync = true so that they wont be pushed bt only created.
                   /*  addIntoEncounterList23UUIDs();
@@ -447,6 +449,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
                 intent2.putExtra("providerID", sessionManager.getProviderID());
                 startActivity(intent2);
+                finish();
+                // so that Timeline screen when clicked back doesnt come back to this screen rather go to HomeScreen...
             }
         });
 
@@ -1609,6 +1613,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             visitCursor.close();
         }
     }
+
 
     public void pastVisits(String patientuuid) {
         String visitSelection = "patientuuid = ?";
