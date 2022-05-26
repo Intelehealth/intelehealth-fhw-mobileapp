@@ -123,6 +123,7 @@ public class EncounterDAO {
         return encounterTypeUuid;
     }
 
+
     public List<EncounterDTO> unsyncedEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -439,4 +440,41 @@ public class EncounterDAO {
 
         return false;
     }
+
+    public String fetchLatestEncounterTypeUuid(String visitUuid) {
+        String latestEncounterTypeUuid = "";
+        String encounterTypeUuid_Name = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ? ORDER BY encounter_time DESC LIMIT 1",
+                new String[] {visitUuid});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                latestEncounterTypeUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid"));
+            }
+        }
+        idCursor.close();
+
+        Log.v("Timeline:", "fetch latest encounter: " + latestEncounterTypeUuid);
+        // 2nd transcation
+       // SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        if(latestEncounterTypeUuid != null && !latestEncounterTypeUuid.equalsIgnoreCase("")) {
+            Cursor cursor = db.rawQuery("SELECT name FROM tbl_uuid_dictionary where uuid = ? COLLATE NOCASE", new String[]{latestEncounterTypeUuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    encounterTypeUuid_Name = cursor.getString(cursor.getColumnIndexOrThrow("name")); // this returns Stagex_Hrx_x format encounter
+                    Log.v("Timeline:", "fetch encounter: " + encounterTypeUuid_Name);
+                }
+            }
+            cursor.close();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return encounterTypeUuid_Name;
+    }
+
 }

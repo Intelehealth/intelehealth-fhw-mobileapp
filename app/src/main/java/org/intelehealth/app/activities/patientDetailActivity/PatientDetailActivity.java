@@ -444,6 +444,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("tag", "new");
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent2.putExtra("encounter_time", eDTO.getEncounterTime());
+                intent2.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
+                intent2.putExtra("providerID", sessionManager.getProviderID());
                 startActivity(intent2);
             }
         });
@@ -1344,9 +1346,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             past_visit = false;
 
-            // TODO: remove this comment later.
 
-           /* if (newVisit.isEnabled()) {
+            if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
             }
             if (newVisit.isClickable()) {
@@ -1360,7 +1361,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
                     newVisit.setTextColor(getResources().getColor(R.color.white));
                 }
-            }*/
+            }
 
         } else {
             // when visit has ended

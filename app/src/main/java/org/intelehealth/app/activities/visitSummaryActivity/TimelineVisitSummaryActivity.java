@@ -40,7 +40,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private String patientName;
     Intent intent;
     ArrayList<String> timeList;
-    String startVisitTime, patientUuid, visitUuid, whichScreenUserCameFromTag, providerID;
+    String startVisitTime, patientUuid, visitUuid, whichScreenUserCameFromTag, providerID, Stage1_Hour1_1;
     SessionManager sessionManager;
     EncounterDAO encounterDAO;
     ArrayList<EncounterDTO> encounterListDTO;
@@ -52,8 +52,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
-        triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
-        triggerAlarm15MinsBefore(); // Notification to show every 15min.
+      //  triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
+
     }
 
   /*  @Override
@@ -94,30 +94,38 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("patientNameTimeline");
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
-            whichScreenUserCameFromTag = intent.getStringExtra("fromNotificationTag");
+            providerID = intent.getStringExtra("providerID");
+            whichScreenUserCameFromTag = intent.getStringExtra("tag");
+            Stage1_Hour1_1 = intent.getStringExtra("Stage1_Hour1_1");
 
             Log.v("timeline", "patientname_1 "+ patientName + " " + patientUuid + " " + visitUuid);
 
-           /* if(whichScreenUserCameFromTag != null && whichScreenUserCameFromTag.equalsIgnoreCase("Notification")) {
-                createNewEncounter(visitUuid);
-                whichScreenUserCameFromTag = "";
-            }*/
-            fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
-        }
+            if(whichScreenUserCameFromTag != null &&
+                    whichScreenUserCameFromTag.equalsIgnoreCase("new")) {
+                triggerAlarmEvery30Minutes(); // Notification to show every 30min.
+            }
+            else {
+                // do nothing
+            }
 
+            fetchAllEncountersFromVisitForTimelineScreen(visitUuid); // fetch all records...
+
+
+        }
         setTitle(patientName);
     }
 
-    // create a new encounter for the next interval so that a new card is populated...
+    // create a new encounter for the first interval so that a new card is populated for Stage1Hr1_1...
 /*
     private void createNewEncounter(String visitUuid) {
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
+
         encounterDTO.setUuid(UUID.randomUUID().toString());
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("Stage1_Hour1_2"));
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("Stage1_Hour1_1"));
         encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value("true");
@@ -165,9 +173,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    public void triggerAlarm15MinsBefore() { // TODO: change 1min to 15mins.....
+    public void triggerAlarmEvery30Minutes() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+        calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
 
         Intent intent = new Intent(this, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -175,15 +183,16 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("providerID", providerID);
+        intent.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
         
         Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                15, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    /*1000*/AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+                    /*1000*/AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
         }
     }
 

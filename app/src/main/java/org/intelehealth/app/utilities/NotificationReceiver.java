@@ -24,17 +24,22 @@ import java.util.UUID;
 
 public class NotificationReceiver extends BroadcastReceiver {
     PowerManager.WakeLock wl;
-    String visitUuid, providerID;
+    String visitUuid, providerID, nextIntervalEncounterTypeUuid_Name;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        NotificationUtils notificationUtils = new NotificationUtils();
-        notificationUtils.createTimelineNotification(context, intent);
+//        NotificationUtils notificationUtils = new NotificationUtils();
+//        notificationUtils.createTimelineNotification(context, intent);
 
-        createNewEncounter(intent);
+        if(intent != null) {
+            visitUuid = intent.getStringExtra("visitUuid");
+            providerID = intent.getStringExtra("providerID");
+            fetchLatestEncounterTypeUuid_DisplayText(visitUuid);
+        }
 
-        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+
+      /*  PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
 
         if(isScreenOn==false)
@@ -48,22 +53,140 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             // Official Doc: acquire() -> Ensures that the device is on at the level requested when the wake lock was created.
             // The lock will be released after the given timeout expires.
-        }
+        }*/
 
     }
 
-    private void createNewEncounter(Intent intent) {
+    private void fetchLatestEncounterTypeUuid_DisplayText(String visitUuid) {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterTypeName = "";
+
+        encounterTypeName = encounterDAO.fetchLatestEncounterTypeUuid(visitUuid);
+
+        if(encounterTypeName != null && !encounterTypeName.equalsIgnoreCase("")) {
+            nextIntervalEncounterTypeUuid_Name = compareAndProvideNextIntervalEncounterTypeUuid(encounterTypeName);
+
+            if(nextIntervalEncounterTypeUuid_Name != null && !nextIntervalEncounterTypeUuid_Name.equalsIgnoreCase("")) {
+                createNewEncounter(visitUuid, providerID, nextIntervalEncounterTypeUuid_Name);
+            }
+        }
+    }
+
+    private String compareAndProvideNextIntervalEncounterTypeUuid(String encounterTypeName) {
+        String result = "";
+        switch (encounterTypeName) {
+            case "Stage1_Hour1_1":
+                result = "Stage1_Hour1_2";
+                break;
+
+            case "Stage1_Hour1_2":
+                result = "Stage1_Hour2_1";
+                break;
+
+            case "Stage1_Hour2_1":
+                result = "Stage1_Hour2_2";
+                break;
+
+            case "Stage1_Hour2_2":
+                result = "Stage1_Hour3_1";
+                break;
+
+            case "Stage1_Hour3_1":
+                result = "Stage1_Hour3_2";
+                break;
+
+            case "Stage1_Hour3_2":
+                result = "Stage1_Hour4_1";
+                break;
+
+            case "Stage1_Hour4_1":
+                result = "Stage1_Hour4_2";
+                break;
+
+            case "Stage1_Hour4_2":
+                result = "Stage1_Hour5_1";
+                break;
+
+            case "Stage1_Hour5_1":
+                result = "Stage1_Hour5_2";
+                break;
+
+            case "Stage1_Hour5_2":
+                result = "Stage1_Hour6_1";
+                break;
+
+            case "Stage1_Hour6_1":
+                result = "Stage1_Hour6_2";
+                break;
+
+            case "Stage1_Hour6_2":
+                result = "Stage1_Hour7_1";
+                break;
+
+            case "Stage1_Hour7_1":
+                result = "Stage1_Hour7_2";
+                break;
+
+            case "Stage1_Hour7_2":
+                result = "Stage1_Hour8_1";
+                break;
+
+            case "Stage1_Hour8_1":
+                result = "Stage1_Hour8_2";
+                break;
+
+            case "Stage1_Hour8_2":
+                result = "Stage1_Hour9_1";
+                break;
+
+            case "Stage1_Hour9_1":
+                result = "Stage1_Hour9_2";
+                break;
+
+            case "Stage1_Hour9_2":
+                result = "Stage1_Hour10_1";
+                break;
+
+            case "Stage1_Hour10_1":
+                result = "Stage1_Hour10_2";
+                break;
+
+            case "Stage1_Hour10_2":
+                result = "Stage1_Hour11_1";
+                break;
+
+            case "Stage1_Hour11_1":
+                result = "Stage1_Hour11_2";
+                break;
+
+            case "Stage1_Hour11_2":
+                result = "Stage1_Hour12_1";
+                break;
+
+            case "Stage1_Hour12_1":
+                result = "Stage1_Hour12_2";
+                break;
+
+            case "Stage1_Hour12_2":
+                result = "Stage1_Hour13_1";
+                break;
+
+            default:
+                result = "";
+        }
+
+        return result;
+    }
+
+    private void createNewEncounter(String visit_UUID, String provider_ID, String nextEncounterTypeUuid) {
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
 
-        visitUuid = intent.getStringExtra("visitUuid");
-        providerID = intent.getStringExtra("providerID");
-
         encounterDTO.setUuid(UUID.randomUUID().toString());
-        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setVisituuid(visit_UUID);
         encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-        encounterDTO.setProvideruuid(providerID);
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("Stage1_Hour1_2"));
+        encounterDTO.setProvideruuid(provider_ID);
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(nextEncounterTypeUuid));
         encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value("true");
