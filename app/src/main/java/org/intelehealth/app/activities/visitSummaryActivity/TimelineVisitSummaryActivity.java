@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -175,7 +176,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     public void triggerAlarmEvery30Minutes() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 1); // So that after 15mins this notifi is triggered and scheduled...
+        calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
 
         Intent intent = new Intent(this, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -192,8 +193,15 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    1000/*AlarmManager.INTERVAL_HALF_HOUR*/, pendingIntent);
+                    /*1000*/AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 }

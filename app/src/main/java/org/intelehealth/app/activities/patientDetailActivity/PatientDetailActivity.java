@@ -449,8 +449,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
                 intent2.putExtra("providerID", sessionManager.getProviderID());
                 startActivity(intent2);
-                finish();
-                // so that Timeline screen when clicked back doesnt come back to this screen rather go to HomeScreen...
             }
         });
 
