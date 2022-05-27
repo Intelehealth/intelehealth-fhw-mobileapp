@@ -953,11 +953,11 @@
     <string name="edit_dialog_button">ସଂଶୋଧନ କର ( ଏଡିଟ )</string>
     <string name="delete_dialog_button">ଡିଲିଟ ( ବିଲୋପ ) କର</string>
 
-    <string name="all_fields_are_mandatory">ସମସ୍ତ କ୍ଷେତ୍ର ବାଧ୍ୟତାମୂଳକ</string>
-    <string name="please_fill_up_all_required_fields">ଦୟାକରି ସମସ୍ତ ଆବଶ୍ୟକୀୟ କ୍ଷେତ୍ର ପୁରଣ କରନ୍ତୁ</string>
-    <string name="medical_history_cannot_be_empty">ଚିକିତ୍ସା ଇତିହାସ ଖାଲି ହୋଇପାରିବ ନାହିଁ</string>
-    <string name="smoking_history_cannot_be_empty">ଧୂମପାନ ଇତିହାସ ଖାଲି ହୋଇପାରିବ ନାହିଁ</string>
-    <string name="alcohol_consumption_history_cannot_be_empty">ମଦ୍ୟପାନର ଇତିହାସ ଖାଲି ହୋଇପାରିବ ନାହିଁ</string>
+    <string name="all_fields_are_mandatory">ସବୁ ସୁଚନା ଦେବା ଭଲ ହେବ (ବଧ୍ୟାତା ଅଟେ)</string>
+    <string name="please_fill_up_all_required_fields">ଦୟାକରି ସବୁ ପୂରଣ କରନ୍ତୁ</string>
+    <string name="medical_history_cannot_be_empty">ଚିକିସ୍ଥ୍ୟଗତ ଇତିହାସ ପୂରଣ ନ ହେବା ଉଚିତ</string>
+    <string name="smoking_history_cannot_be_empty">ତମାଖୁ (ବିଡି, ସିଗାରେଟ) ବ୍ୟବହାର ନ ହେବା ଉଚିତ୍</string>
+    <string name="alcohol_consumption_history_cannot_be_empty">ମଦ୍ୟପାନ ବ୍ୟବହାର ନ ହେବା ଉଚିତ୍</string>
 
     <!--    SURVEY STRINGS - END -->
 
