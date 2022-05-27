@@ -1070,7 +1070,7 @@
     <string name="five_ten_bids_cigarette">5 – 10 बीड़ी/सिगरेट</string>
     <string name="more_than_ten_bids_cigarette">10 से अधिक बीड़ी / सिगरेट</string>
     <string name="rate_of_smoking">धूम्रपान की दर</string>
-    <string name="how_long_have_you_been_smoking">How long have you been smoking</string>
+    <string name="how_long_have_you_been_smoking">आप कब से धूम्रपान कर रहे हैं?</string>
     <string name="less_than_a_year">एक साल से कम</string>
     <string name="from_one_year_to_five_year">1 साल से 5 साल तक</string>
     <string name="from_five_years_to_ten_years">5 साल से 10 साल तक</string>
@@ -1084,8 +1084,15 @@
     <string name="zero_five_times">0 – 5 बार</string>
     <string name="five_ten_times">5 – 10 बार</string>
     <string name="more_than_10_times">10 से अधिक बार</string>
-    <string name="how_long_have_you_been_consuming_alcohol">How long have you been consuming alcohol?</string>
+    <string name="how_long_have_you_been_consuming_alcohol">आप कब से शराब का सेवन कर रहे हैं?</string>
     <string name="edit_dialog_button">संपादित करें</string>
     <string name="delete_dialog_button">हटाएं</string>
+
+    <!--    Survey strings -->
+    <string name="all_fields_are_mandatory">सभी जवाब अनिवार्य हैं।</string>
+    <string name="please_fill_up_all_required_fields">कृपया सभी आवश्यक जवाब भरें।</string>
+    <string name="medical_history_cannot_be_empty">चिकित्सा इतिहास खाली नहीं हो सकता</string>
+    <string name="smoking_history_cannot_be_empty">धूम्रपान इतिहास खाली नहीं हो सकता</string>
+    <string name="alcohol_consumption_history_cannot_be_empty">शराब के सेवन का इतिहास खाली नहीं हो सकता</string>
 
 </resources>

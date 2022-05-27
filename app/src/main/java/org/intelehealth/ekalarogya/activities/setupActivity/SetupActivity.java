@@ -184,7 +184,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!areFieldsValid()) {
-                    Toast.makeText(context, "Please fill up all required fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 attemptLogin();
@@ -241,7 +241,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!areFieldsValid()) {
-                    Toast.makeText(context, "Please fill up all required fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 attemptLogin();

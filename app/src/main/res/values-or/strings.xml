@@ -935,8 +935,8 @@
     <string name="non_smoker">ଅଣ ଧୂମପାନକାରୀ</string>
     <string name="five_ten_bids_cigarette">5 – 10 ବିଡି / ସିଗାରେଟ୍</string>
     <string name="more_than_ten_bids_cigarette">10 ରୁ ଅଧିକ ବିଡି / ସିଗାରେଟ୍</string>
-    <string name="rate_of_smoking">Rate of smoking</string>
-    <string name="how_long_have_you_been_smoking">- କେତେ ଦିନ ହେଲାଣି ଆପଣ ଧୁମ୍ରପାନ କରୁଛନ୍ତି?</string>
+    <string name="rate_of_smoking">ଧୂମପାନର ହାର</string>
+    <string name="how_long_have_you_been_smoking">କେତେ ଦିନ ହେଲାଣି ଆପଣ ଧୁମ୍ରପାନ କରୁଛନ୍ତି?</string>
     <string name="less_than_a_year">ଏକ ବର୍ଷରୁ କମ୍</string>
     <string name="from_one_year_to_five_year">1 ବର୍ଷରୁ 5 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
     <string name="from_five_years_to_ten_years">5 ବର୍ଷରୁ 10 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
@@ -952,6 +952,12 @@
     <string name="how_long_have_you_been_consuming_alcohol">କେତେ ଦିନ ହେବ ଆପଣ ମଦ୍ୟ ପାନ କରୁଛନ୍ତି?</string>
     <string name="edit_dialog_button">ସଂଶୋଧନ କର ( ଏଡିଟ )</string>
     <string name="delete_dialog_button">ଡିଲିଟ ( ବିଲୋପ ) କର</string>
+
+    <string name="all_fields_are_mandatory">ସମସ୍ତ କ୍ଷେତ୍ର ବାଧ୍ୟତାମୂଳକ</string>
+    <string name="please_fill_up_all_required_fields">ଦୟାକରି ସମସ୍ତ ଆବଶ୍ୟକୀୟ କ୍ଷେତ୍ର ପୁରଣ କରନ୍ତୁ</string>
+    <string name="medical_history_cannot_be_empty">ଚିକିତ୍ସା ଇତିହାସ ଖାଲି ହୋଇପାରିବ ନାହିଁ</string>
+    <string name="smoking_history_cannot_be_empty">ଧୂମପାନ ଇତିହାସ ଖାଲି ହୋଇପାରିବ ନାହିଁ</string>
+    <string name="alcohol_consumption_history_cannot_be_empty">ମଦ୍ୟପାନର ଇତିହାସ ଖାଲି ହୋଇପାରିବ ନାହିଁ</string>
 
     <!--    SURVEY STRINGS - END -->
 

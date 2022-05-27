@@ -162,7 +162,7 @@ public final class StringUtils {
             val = switch_or_caste(val);
             val = switch_or_economic(val);
             val = switch_or_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_caste(val);
             val = switch_gu_economic(val);
             val = switch_gu_education(val);
@@ -191,7 +191,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             switch (checkbox_text) {
                 case "જવાબ આપવાનો ઇનકાર કર્યો"://----replace with gujrati
                     val = "Declined to answer";
@@ -215,7 +215,7 @@ public final class StringUtils {
             val = switch_hi_en_vaccination(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_en_vaccination(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_en_vaccination(val);
         }
         return val;
@@ -246,7 +246,7 @@ public final class StringUtils {
             val = switch_or_en_wateravail(val);
             val = switch_or_en_toiletfacil(val);
             val = switch_or_en_housestructure(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_en_occupation(val);
             val = switch_gu_en_bankaccount(val);
             val = switch_gu_en_mobile(val);
@@ -2246,7 +2246,6 @@ public final class StringUtils {
         return mdob_text;
     }
 
-        if (locale.equalsIgnoreCase("hi")) {
     public static String en__gu_dob(String dob) { //English dob is replaced to Odiya text.
         String mdob_text = dob
                 .replace("January", "જાન્યુઆરી")//replace with gujrati---replacement value
@@ -2267,7 +2266,7 @@ public final class StringUtils {
 
     public static String hi_or_gu_en_noEdit(String dobString, String locale) {
 
-        if(locale.equalsIgnoreCase("hi")) {
+        if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
                     //Hindi
                     .replace("जनवरी", "January")
@@ -2299,7 +2298,7 @@ public final class StringUtils {
                     .replace("ନଭେମ୍ବର", "November")
                     .replace("ଡିସେମ୍ବର", "December");
             return dob;
-        }else if(locale.equalsIgnoreCase("gu")) {
+        } else if (locale.equalsIgnoreCase("gu")) {
             //replace with gujrati
             String dob = dobString
                     .replace("જાન્યુઆરી", "January")//-----------replace with gujrati---target value
@@ -2315,8 +2314,7 @@ public final class StringUtils {
                     .replace("નવેમ્બર", "November")
                     .replace("ડિસેમ્બર", "December");
             return dob;
-        }
-        else {
+        } else {
             return dobString;
         }
 
@@ -2459,7 +2457,8 @@ public final class StringUtils {
                     return val;
             }
 
-        }if (locale.equalsIgnoreCase("gu")) {
+        }
+        if (locale.equalsIgnoreCase("gu")) {
 
             switch (val.toLowerCase()) {
                 case "booked":

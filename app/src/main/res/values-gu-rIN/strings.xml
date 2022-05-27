@@ -778,4 +778,312 @@
     <string name="save_amp_proceed"><![CDATA[સાચવો અને આગળ વધો]]></string>
     <string name="please_enter_reason_txt">કૃપા કરીને કારણ દાખલ કરો!</string>
     <!--END APPOINTMENT-->
+
+    <string name="household_structure_type">ઘરનો પ્રકાર </string>
+    <string name="kucha">કાચું</string>
+    <string name="pucca">પાકું</string>
+    <string name="name_of_head_of_household">ઘરના મુખિ યાનું  નામ </string>
+    <string name="religion">ધર્મ </string>
+    <string name="hindu">હિંદુ</string>
+    <string name="muslim">મુસ્લિમ</string>
+    <string name="christian">ઈસાઈ</string>
+    <string name="sikh">સિખ</string>
+    <string name="buddhist_neo_buddhist">બૌદ્ધ/ નવ-બૌદ્ધ</string>
+    <string name="jain">જૈન</string>
+    <string name="jewish">યહૂદી</string>
+    <string name="parsi_zoroastrian">પારસી</string>
+    <string name="no_religion">કોઈ ધર્મ નથી </string>
+
+    <string name="schedule_caste">અનુસુચિત જાતિ</string>
+    <string name="schedule_tribe">અનુસુચિત જનજાતિ</string>
+    <string name="survey_other_backward_caste">અન્ય પછાત વર્ગ ( ઓબીસી)</string>
+    <string name="survey_general">સામાન્ય</string>
+    <string name="number_of_smartphones_in_the_house">ઘરમાં સ્માર્ટફોનની સંખ્યા</string>
+    <string name="number_of_feature_phones_in_the_house">ઘરમાં સામાન્ય ફોનની સંખ્યા</string>
+    <string name="no_of_earning_members_in_the_household">ઘરમાં કમાવાવાળા સભ્યોની સંખ્યા</string>
+    <string name="primary_source_of_income">આવકનો પ્રાથમિક સ્ત્રોત</string>
+    <string name="sale_of_cereal_production">અનાજનું વેચાણ(ઘઉં,મકાઇ, જુવાર), રોકડિયા પાક(કપાસ,શેરડી),કે શાકભાજી અને ફળોનું વેચાણ</string>
+    <string name="sale_of_animals_or_animal_products">પશુ પાલન અને વેચાણ</string>
+    <string name="agricultural_wage_labor_employed_for_farm_work">ખેત મજૂરી</string>
+    <string name="salaried_worker_fixed_monthly_salary">પગારધારી  કાર્યકર્તા (નિશ્ચિત માસિક પગાર ) - સરકારી ,ખાનગી,વગેરે.</string>
+    <string name="self_employed_non_agricultural_petty_business">સ્વરોજગાર (ગૈર ખેતી/ નાનો ધંધો )</string>
+    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">દહાડી મજૂર (અકુશળ કાર્ય ખેતી/ગૈર ખેતી )</string>
+    <string name="nrega">નરેગા</string>
+    <string name="seasonal_labor">મૌસમી મજૂરી</string>
+    <string name="no_paid_work">કોઈ પેઇડ કામ નથી</string>
+    <string name="pension">પેન્સન</string>
+    <string name="remittances_checkbox">મોકલવામાં આવેલી રકમ</string>
+    <string name="other_source_of_income_please_specify">આવક ના અન્ય સ્ત્રોત(સૂચિત કરો)</string>
+    <string name="survey_yes">હા</string>
+    <string name="survey_no">ના</string>
+    <string name="does_the_house_have_electricity">શું ઘરમાં વીજળી છે?</string>
+    <string name="no_of_hours_per_day">દરરોજ કલાકની સંખ્યા</string>
+    <string name="no_of_days_per_week">દર અઠવાડિયે દિવસોની સંખ્યા</string>
+    <string name="load_shedding">વીજળીનો કાપ </string>
+    <string name="is_there_a_toilet_in_the_house">શું ઘરમાં સૌચાલય છે?</string>
+    <string name="is_there_running_water_available_in_the_house">શું ઘરમાં વેહતું પાણી ઉપલબ્ધ છે?</string>
+    <string name="availability_of_water_supply">પાણી આપૂર્તિની ઉપલબ્ધતા</string>
+    <string name="does_the_household_have_a_bank_account">Does the household have a bank account?</string>
+    <string name="amount_of_cultivable_land_owned_by_the_household">પરિવારમાં ખેતીલાયક જમીન કેટલી છે?</string>
+    <string name="zero_one">0 – 1</string>
+    <string name="one_two">1 – 2</string>
+    <string name="two_five">2 – 5</string>
+    <string name="five_ten">5 – 10</string>
+    <string name="more_than_10">10 થી વધુ</string>
+    <string name="units">એકમ</string>
+    <string name="bigha">વીઘા</string>
+    <string name="acre">એકર</string>
+    <string name="gunta">ગુંઠા</string>
+    <string name="hectare">હેક્ટર</string>
+    <string name="average_annual_household_income">અંદાજિત ઘરની વાર્ષિક આવક(રૂ.)</string>
+    <string name="zero_thirty_thousand">0 – 30,000</string>
+    <string name="thirty_fifty_thousand">30,000 – 50,000</string>
+    <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+    <string name="more_than_two_lakh_fifty_thousand">2,50,000 થી વધુ </string>
+    <string name="average_expenditure_on_health">સ્વાસ્થ્ય પર વાર્ષિક ખર્ચ</string>
+    <string name="zero_three_thousand">0 – 3,000</string>
+    <string name="three_five_thousand">3,000 – 5,000</string>
+    <string name="five_ten_thousand">5,000 – 10,000</string>
+    <string name="ten_twenty_five_thousand">10,000 – 25,000</string>
+    <string name="more_than_twenty_five_thousand">25,000 થી વધુ</string>
+    <string name="average_expenditure_on_education">શિક્ષણ પર વાર્ષિક ખર્ચ</string>
+    <string name="prev">અગાઉના</string>
+
+    <string name="distance_to_sub_centre_in_walking_time">ઉપ- સ્વાસ્થ કેન્દ્ર થી દૂરી (પગથી ચાલતા)</string>
+    <string name="within_5_minutes">5 મિનિટની અંદર</string>
+    <string name="five_fifteen_minutes">5 – 15 મિનિટ</string>
+    <string name="fifteen_thirty_minutes">15 – 30 મિનિટ</string>
+    <string name="more_than_thirty_minutes">30 મિનિટથી વધુ</string>
+    <string name="within_1_km">1 કિમીની અંદર</string>
+    <string name="one_three_km">1–3 કિમી</string>
+    <string name="three_five_km">3–5 કિમી</string>
+    <string name="more_than_five_km">5 કિમીની અંદર</string>
+    <string name="distance_to_nearest_primary_health_centers">નજીકના પ્રાથમિક આરોગ્ય કેન્દ્રથી દૂરી(કિલોમીટર)</string>
+    <string name="distance_to_nearest_community_health_centre_in_walking_time">નજીકના સાર્વજનિક દવાખાનાથી દૂરી</string>
+    <string name="within_3_km">3 કિમીની અંદર</string>
+    <string name="three_six_km">3–6 કિમી</string>
+    <string name="more_than_10km">10કિમીથી વધુ</string>
+    <string name="distance_to_nearest_district_hospital">નજીકના જિલ્લા દવાખાનાથી દૂરી</string>
+    <string name="six_ten_km">6–10 કિમી</string>
+    <string name="within_5_km">5 કિમીની અંદર</string>
+    <string name="five_ten_km">5–10 કિમી</string>
+    <string name="ten_twenty_km">10–20 કિમી</string>
+    <string name="twenty_thirty_km">20–30 કિમી </string>
+    <string name="more_than_thirty_km">30 કિમીથી વધુ</string>
+    <string name="distance_to_the_nearest_medical_store">નજીકના મેડિકલ સ્ટોરથી દૂરી</string>
+    <string name="distance_to_the_nearest_pathological_lab">નજીકના પેથોલોજિકલ લેબથી દૂરી</string>
+    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">નજીકના ખાનગી દવાખાનાથી દૂરી (MBBS ડોક્ટર હોય એવા)</string>
+    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">નજીકના ખાનગી દવાખાનાથી દૂરી (અન્ય ડોકટોરો BHMS, BAMS, આયુર્વેદ વગેરે )</string>
+
+    <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">શું આ ઘરના કોઈ સભ્યનું બેન્ક ખાતું કે પોસ્ટ ખાતું છે?</string>
+    <string name="do_not_know">નથી જાણતા</string>
+    <string name="does_this_household_have_a_bpl_card_coupon">શું આ પરિવાર પાસે બીપીએલ કાર્ડ/કૂપન છે?</string>
+    <string name="yes_card_seen">હા, કાર્ડ જોયો</string>
+    <string name="yes_card_not_seen">હા, કાર્ડ નથી જોયો</string>
+    <string name="no_card">કોઈ કાર્ડ નથી</string>
+    <string name="does_this_household_have_an_antodaya_card_coupon">શું આ પરિવાર પાસે અંત્યોદય કાર્ડ/કૂપન છે?</string>
+    <string name="does_this_household_have_a_rsby_card_coupon">શું આ પરિવાર પાસે રાષ્ટ્રીય સ્વાસ્થ વીમા યોજના કાર્ડ/કૂપન છે?</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">શું આ પરિવાર પાસે મનારેગા કાર્ડ/કૂપન છે?</string>
+    <string name="submit">સબમિટ કરો</string>
+
+    <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">આપના ઘરમાં મુખ્ય રીતે રસોઈ બનાવા માટે કયા પ્ર્કારના ઈંધણનો ઉપયોગ કરવામાં આવે છે?</string>
+    <string name="electricity">વીજળી</string>
+    <string name="lpg_natural_gas">એલપીજી/નેચરલ ગેસ</string>
+    <string name="biogas_checkbox">બાયોગાસ</string>
+    <string name="kerosene">કેરોસીન</string>
+    <string name="coal_lignite">કોલ</string>
+    <string name="wood">લાકડા</string>
+    <string name="charcoal">ચારકોલ</string>
+    <string name="straw_shrubs_grass">સ્ટ્રો/ઝાડવા/ઘાસ</string>
+    <string name="agricultural_crop_waste">કૃષિ પાકનો કચરો</string>
+    <string name="dung_cakes">ગોબરની કેક</string>
+    <string name="other_specify">અન્ય (સ્પષ્ટ કરો)</string>
+
+    <string name="what_is_the_main_source_of_lighting_in_this_household">તમારા ઘરમાં લાઇટનો મુખ્ય સ્ત્રોત કયો છે?</string>
+    <string name="lantern">લાલટેન</string>
+    <string name="kerosene_lamp">કેરોસીન દીવો</string>
+    <string name="candle">મીણબતી</string>
+    <string name="electric">વીજળી </string>
+    <string name="lpg">એલપીજી</string>
+    <string name="solar_energy">સૌર ઉર્જા</string>
+    <string name="none">કોઈ નથી</string>
+    <string name="piped_into_dwelling">રહેઠાણમાં પાઈપ</string>
+    <string name="piped_into_yard_plot">પાઈપ ટુ યાર્ડ/પ્લોટ</string>
+    <string name="public_tap_standpipe">પબ્લિક ટેપ/સ્ટેન્ડપાઈપ</string>
+    <string name="tube_well_borehole">ટ્યુબ વેલ/બોરહોલ</string>
+    <string name="protected_well_checkbox">સારી રીતે સુરક્ષિત</string>
+    <string name="unprotected_well">અસુરક્ષિત કૂવો</string>
+    <string name="protected_spring">સુરક્ષિત ઝરણું</string>
+    <string name="unprotected_spring">અસુરક્ષિત ઝરણું</string>
+    <string name="rainwater">વરસાદી પાણી</string>
+    <string name="tanker_truck">ટેન્કર ટ્રક</string>
+    <string name="cart_with_small_tank">નાની ટાંકી સાથેનું કાર્ટ</string>
+    <string name="surface_water">સપાટીનું પાણી</string>
+    <string name="common_hand_pump">કોમન હેન્ડ પંપ</string>
+    <string name="hand_pump_at_home">ઘરે હેન્ડ પંપ</string>
+    <string name="survey_what_is_the_main_source_of_drinking_water_for_members_of_your_household">આપના ઘરના સભ્યો માટે પીવાના પાણીનો મુખ્ય સ્ત્રોત કયો છે?</string>
+    <string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">આપના ઘરથી પાણીના સ્ત્રોત સુધી ચાલવામાં કેટલો ટાઇમ લાગે છે?</string>
+    <string name="number_of_minutes">મિનિટોની સંખ્યા </string>
+    <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">શું તમે તમારા પાણીને પીવા માટે સુરક્ષિત બનવા માટે કોઈ પ્રકારનો ઉપાય કરો છો?</string>
+    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
+    <string name="boil">ઉકાળો</string>
+    <string name="use_alum">ફટકડીનો ઉપયોગ કરો</string>
+    <string name="add_bleach_chlorine_tablets_drops">બ્લીચ/ક્લોરીન ટેબ્લેટ/ટીપાં ઉમેરો</string>
+    <string name="strain_through_a_cloth">કાપડ દ્વારા તાણ</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">વોટર ફિલ્ટરનો ઉપયોગ કરો (સિરામિક/રેતી/કમ્પોઝિટ/ઇટીસી.)</string>
+    <string name="use_electronic_purifier">ઈલેક્ટ્રોનિક પ્યુરીફાયરનો ઉપયોગ કરો</string>
+    <string name="let_it_stand_and_settle">મુકી રાખો  અને સ્થિર થવા દો</string>
+    <string name="flush_to_piped_sewer_system">પાઇપ્ડ ગટર સિસ્ટમ માટે ફ્લશ</string>
+    <string name="flush_to_septic_tank">સેપ્ટિક ટાંકીમાં ફ્લશ</string>
+    <string name="flush_to_pit_latrine">પીટ લેટ્રીન માટે ફ્લશ</string>
+    <string name="flush_to_somewhere_else">બીજે ક્યાંક ફ્લશ</string>
+    <string name="flush_dont_know_where">ફ્લશ, ક્યાં ખબર નથી</string>
+    <string name="ventilated_improved_pit_biogas_latrine">વેન્ટિલેટેડ સુધારેલ ખાડો ()/બાયોગાસ લેટ્રીન</string>
+    <string name="pit_latrine_with_slab">સ્લેબ સાથે પીટ લેટ્રીન</string>
+    <string name="pit_latrine_without_slab_open_pit">સ્લેબ/ખુલ્લો ખાડો . વિના ખાડો લેટ્રીન</string>
+    <string name="twin_pit_composting_toilet">ટ્વિન પિટ/કમ્પોસ્ટિંગ ટોઇલેટ</string>
+    <string name="dry_toilet">શુષ્ક શૌચાલય</string>
+    <string name="no_facility_uses_open_space_or_field">કોઈ સુવિધા/ઓપન સ્પેસ અથવા ફીલ્ડનો ઉપયોગ નથી</string>
+    <string name="in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason">છેલ્લા એક આઠવ અઠવાડિયામાં આપના પરિવારમાથી કોઈને(બાળકો સાથે) ખુલ્લામાં સૌચ કરવાની જરૂર પડી છે?</string>
+    <string name="what_was_the_main_reason_due_to_which_you_had_to_relieve_yourself_in_the_open">એ મુખ્ય કારણ શું હતું જેના કારણે આપને ખુલ્લામાં સૌચ કરવાની ફરજ પડી </string>
+    <string name="no_water_available_in_the_toilet">સૌચાલયમાં પાણી ઉપલબ્ધ નથી</string>
+    <string name="no_electricity_available_in_the_toilet">સૌચાલયમાં વીજળી ઉપલબ્ધ નથી</string>
+    <string name="toilet_is_often_occupied_by_other_members">સૌચાલય વધારે કરીને અન્ય લોકો દ્વારા કબ્જો કરી લેવામાં આવે છે. </string>
+    <string name="problem_in_toilet_plumbing">ટોયલેટ પ્લમ્બિંગમાં સમસ્યા</string>
+    <string name="other_reasons_specify">અન્ય કારણ (સૂચિત કરો)</string>
+
+    <string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">कल से अब तक आपने किन मौकों पर साबुन से हाथ धोए हैं?</string>
+    <string name="no_soap_available_in_the_household">ઘરમાં સાબુ ઉપલબ્ધ નથી</string>
+    <string name="soap_available_in_the_household_but_did_not_use_it_to_wash_hands">ઘરમાં સાબુ ઉપલબ્ધ છે પણ હાથ ધોવામાં એનો ઉપયોગ કરેલ નથી </string>
+    <string name="before_cooking">જમવાનું  બનાવતા પહેલા </string>
+    <string name="after_handling_food">જમવાનું બનાવ્યા પછી  </string>
+    <string name="before_eating">જમતા પહેલા </string>
+    <string name="after_using_toilet">સૌચાલયનો ઉપયોગ કર્યા પછી</string>
+
+    <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">आपके घर में पिछले 24 घंटों में किस तरह का खाना बनाया/बनाया गया था? साक्षात्कारकर्ताओं के लिए?</string>
+    <string name="starch_staple_food">સ્ટાર્ચ મુખ્ય ખોરાક  (ચોખા, રોટલી, બ્રેડ, દાબેલા ભાત, મુરી, બટેટા, શક્કરીયા, અરબી, કસાવા, કેળા, અન્ય કોઈપણ મૂળ અને કંદ, નૂડલ્સ, પાસ્તા)</string>
+    <string name="beans_and_peas">કઠોળ અને વટાણા (કઠોળ, વટાણા, મગની દાળ, ચણાની દાળ, અરાહર(તુવેર) દાળ, અડદની દાળ, રાજમા, વટાણા દાળ, અન્ય કઠોળ અને સોયાબીન, સીમ, સરસવ)</string>
+    <string name="nuts_and_cheese">અખરોટ અને બીજ ,બદામ, પિસ્તા, કાજુ., મગફળી, જરદાળુ, બદામ, પિસ્તા, નારિયેળ, સીસમના બીજ, કમળના બીજ, { જેકફ્રૂટ }ના    બીજ, કાજુ, અખરોટ, સરસવના બીજ, સૂર્યમુખીના બીજ, કોળાના બીજ)</string>
+    <string name="dairy">ડેરી (દૂધ - ગાય/બકરી/ભૈંસ, પાઉડર દૂધ, પેકેટ દૂધ,દહી, પનીર, ખીર, મીઠાઈ, માખણ, ઘી )</string>
+    <string name="eggs">ઈંડા </string>
+    <string name="flesh_food">માંસ, ચિકન,માછલી વગેરે </string>
+    <string name="any_vegetables">કોઈપણ શાકભાજી </string>
+    <string name="surveyDialogTitle">સાચવેલ</string>
+    <string name="surveyDialogMessage">સર્વે સફળતાપૂર્વક ઉમેરાયો</string>
+    <string name="start_household_survey">ઘરગથ્થુ સર્વેક્ષણ શરૂ કરો</string>
+
+    <!--    HOH Relationship -->
+    <string name="what_is_your_relationship_with_the_head_of_household">ઘરના મુખિયા સાથે શું સંબંધ છે?</string>
+    <string name="spouse">પતિ/પત્ની</string>
+    <string name="son_daughter">દીકરો/દીકરી</string>
+    <string name="son_daughter_in_law">દીકરો/દીકરી</string>
+    <string name="grandchild">પોતા</string>
+    <string name="father_mother">પિતા/માતા</string>
+    <string name="father_mother_in_law">સસરો /સાસુ</string>
+    <string name="brother_sister">ભાઈ/બેન </string>
+    <string name="brother_sister_in_law">સાળો/સાળી</string>
+    <string name="niece_nephew">ભતીજી/ભતીજો</string>
+    <string name="grandparent_grandparent_in_law">દાદા સસરો/ દાદી સાસુ </string>
+    <string name="other_relative">અન્ય સગાસબંધી </string>
+    <string name="adopted_foster_stepchild">દત્તક/પાલન/સૌપિક બાળક</string>
+    <string name="domestic_servant">ઘરનો નોકર</string>
+    <string name="other_not_related">અન્ય સંબંધિત નથી</string>
+    <string name="not_stated">જણાવવામાં આવેલ નથી</string>
+
+    <string name="identification_screen_checkbox_other">અન્ય</string>
+
+    <!--    Marital Status -->
+    <string name="what_is_your_marital_status">ની વૈવાહિક સ્થિતિ શું છે?</string>
+    <string name="currently_married">વર્તમાનમાં વિવાહિત</string>
+    <string name="married_gauna_not_performed">પરણિત, ગૌણ પરફોર્મ કર્યું નથી</string>
+    <string name="widowed">વિધવા</string>
+    <string name="divorced">છૂટાછેડવાળા</string>
+    <string name="separated">અલગ</string>
+    <string name="deserted">નિર્જન</string>
+    <string name="never_married">ક્યારે લગ્ન નથી કર્યા</string>
+
+    <!--    Education -->
+    <string name="cannot_read_and_write">વાંચી કે લખી શકતા નથી</string>
+    <string name="can_read_and_write">વાંચી અને લખી શકે છે </string>
+    <string name="primary_education_till_class_five">પ્રાથમિક શિક્ષા(ધોરણ 5 સુધી)</string>
+    <string name="middle_school_sixth_eighth">મિડલ સ્કૂલ (6ઠ્ઠી-8મી)</string>
+    <string name="passed_secondary_school">માધ્યમિક શાળા(10 બોર્ડ ) પાસ</string>
+    <string name="passed_senior_secondary_school">ઉચ્ચતર માધ્યમિક શાળા(12 બોર્ડ) પાસ</string>
+    <string name="graduate">સ્નાતક</string>
+    <string name="postgraduate">અનુસ્નાતક</string>
+
+    <!--    Occupation -->
+    <string name="salaried_government_job">પગારવાળી સરકારી નોકરી </string>
+    <string name="salaried_private_job">પગારવાળી ખાનગી નોકરી </string>
+    <string name="petty_business_shop_owner">નાનો ધંધો/દુકાનના માલિક </string>
+    <string name="technician_craftsman_other_skilled_work">ટેક્નીસિયન/સિલ્પકાર/અન્ય કુશળ કારીગર (ડ્રાઇવર, સુથાર વગેરે)</string>
+    <string name="agricultural_farmer">ખેતી </string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ભાડોકી ખેતી/ ખેત મજૂર </string>
+    <string name="daily_wage_worker_unskilled_workers">દહાડી મજૂર( અકુશળ કારીગર )</string>
+    <string name="household_work">ઘરનું કામ </string>
+    <string name="student">વિદ્યાર્થી</string>
+    <string name="unemployed">બેરોજગાર </string>
+    <string name="retired_with_pension">સેવા નિવૃત (પેન્સન સાથે)</string>
+    <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
+
+    <!--    Smartphones strings -->
+    <string name="shared">साझा किया हुआ</string>
+    <string name="owns_smartphone">સ્માર્ટફોન છે </string>
+    <string name="owns_feature_phone">સાદો ફોન છે </string>
+
+    <!--    Check Strings -->
+    <string name="when_was_the_last_time_you_got_your_bp_checked">શું પરિવારની પાસે બેન્ક ખાતું છે?</string>
+    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
+    <string name="when_was_the_last_time_you_got_your_hb_level_checked">છેલ્લી વાર તમે તમારું સુગર લેવલ  ક્યારે તપાસ્યું હતું?</string>
+    <string name="when_was_the_last_time_your_bmi_was_checked">છેલ્લી વાર તમે તમારા એચબી સ્તરનું પરીક્ષણ  ક્યારે કરાવ્યુ  હતું?</string>
+    <string name="never_checked">ક્યારે તપાસવામાં આવ્યું નથી </string>
+    <string name="in_past_one_week">પાછલા એક અઠવાડિયામાં</string>
+    <string name="within_last_month">પાછલા એક માહિનામાં </string>
+    <string name="between_one_month_to_three_months_ago">1 થી 3 મહિનાની વચ્ચે </string>
+    <string name="between_three_months_to_six_months_ago">3 મહિના અને 6 મહિનાની વચ્ચે</string>
+    <string name="more_than_six_months">6 મહિનાથી વધારે</string>
+
+    <!--    Medical History Strings -->
+    <string name="medical_history">સરવારનો ઇતિહાસ</string>
+    <string name="hypertension">ઊંચું લોહીનું દબાણ</string>
+    <string name="diabetes">સુગર</string>
+    <string name="arthritis">ગાંઠ</string>
+    <string name="anaemia">એનીમિયા</string>
+    <string name="any_surgeries">કોઈ સર્જરી</string>
+    <string name="reason_for_surgery_specify_the_reason">સર્જરીનું કારણ(કારણ જણાવો)</string>
+
+    <!--    Smoking History Strings -->
+    <string name="smoking_status_in_the_household">પરિવારમાં ધૂમ્રપાનની સ્થિતિ</string>
+    <string name="does_the_person_smoke">क्या व्यक्ति धूम्रपान करता है?</string>
+    <string name="smoker">ધૂમ્રપાન કરવાવાળા</string>
+    <string name="non_smoker">ધૂમ્રપાન ના કરવાવાળા</string>
+    <string name="five_ten_bids_cigarette">5 – 10 બીડી/સિગારેટ</string>
+    <string name="more_than_ten_bids_cigarette">10 થી વધારે બીડી/સિગારેટ</string>
+    <string name="rate_of_smoking">धूम्रपान की दर</string>
+    <string name="how_long_have_you_been_smoking">તમે કેટલા સમયથી ધૂમ્રપાન કરો છો?</string>
+    <string name="less_than_a_year">એક વર્ષથી વધારે</string>
+    <string name="from_one_year_to_five_year">1 વર્ષ થી 5 વર્ષ સુધી</string>
+    <string name="from_five_years_to_ten_years">5 વર્ષ થી 10 વર્ષ સુધી</string>
+    <string name="more_than_ten_years">10 વર્ષથી વધુ</string>
+
+    <!--    Alcohol Consumption Strings -->
+    <string name="history_of_alcohol_consumption_in_the_household">ઘરમાં દારૂ પીવાનો ઇતિહાસ</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या घर में शराब पीने का कोई इतिहास है?</string>
+    <string name="no_denied">ના/અસ્વીકાર</string>
+    <string name="rate_of_alcohol_consumption">शराब की खपत की दर</string>
+    <string name="zero_five_times">0 – 5 વાર</string>
+    <string name="five_ten_times">5 થી 10 વાર </string>
+    <string name="more_than_10_times">10 થી વધારે વાર</string>
+    <string name="how_long_have_you_been_consuming_alcohol">તમે કેટલા સમયથી દારૂનું સેવન કરો છો?</string>
+    <string name="edit_dialog_button">संपादित करें</string>
+    <string name="delete_dialog_button">हटाएं</string>
+
+    <!--    Survey strings -->
+    <string name="all_fields_are_mandatory">બધા જવાબ ફરજિયાત છે.</string>
+    <string name="please_fill_up_all_required_fields">કૃપા કરીને તમામ જરૂરી જવાબ ભરો.</string>
+    <string name="medical_history_cannot_be_empty">તબીબી ઇતિહાસ ખાલી હોઈ શકતો નથી</string>
+    <string name="smoking_history_cannot_be_empty">ધૂમ્રપાનનો ઇતિહાસ ખાલી હોઈ શકતો નથી</string>
+    <string name="alcohol_consumption_history_cannot_be_empty">આલ્કોહોલના વપરાશનો ઇતિહાસ ખાલી હોઈ શકતો નથી</string>
+
 </resources>

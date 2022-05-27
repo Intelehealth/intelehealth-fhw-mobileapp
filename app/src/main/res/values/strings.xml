@@ -1081,4 +1081,10 @@
 
     <!--    SURVEY STRINGS - END-->
 
+    <string name="all_fields_are_mandatory">All Fields Are Mandatory</string>
+    <string name="please_fill_up_all_required_fields">Please Fill Up All Required Fields</string>
+    <string name="medical_history_cannot_be_empty">Medical History Cannot Be Empty</string>
+    <string name="smoking_history_cannot_be_empty">Smoking History Cannot Be Empty</string>
+    <string name="alcohol_consumption_history_cannot_be_empty">Alcohol Consumption History Cannot Be Empty</string>
+
 </resources>

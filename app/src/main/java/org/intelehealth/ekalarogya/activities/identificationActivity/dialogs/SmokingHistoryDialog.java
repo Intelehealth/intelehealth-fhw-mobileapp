@@ -77,7 +77,7 @@ public class SmokingHistoryDialog extends DialogFragment {
 
             positiveButton.setOnClickListener(v -> {
                 if (!isDataValid())
-                    Toast.makeText(requireContext(), "All fields are mandatory here", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), getString(R.string.all_fields_are_mandatory), Toast.LENGTH_SHORT).show();
                 else {
                     SmokingHistory smokingHistory = fetchData();
 

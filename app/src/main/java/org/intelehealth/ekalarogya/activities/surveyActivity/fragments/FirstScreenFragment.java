@@ -100,7 +100,7 @@ public class FirstScreenFragment extends Fragment {
 
         binding.nextButtonLinearLayout.setOnClickListener(v -> {
             if (!areFieldsValid()) {
-                Toast.makeText(requireContext(), "Please fill up all the required fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 return;
             }
             try {

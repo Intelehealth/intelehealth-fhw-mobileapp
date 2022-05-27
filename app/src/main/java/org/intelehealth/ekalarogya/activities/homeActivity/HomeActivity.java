@@ -330,15 +330,6 @@ public class HomeActivity extends AppCompatActivity {
         showProgressbar();
 
         HeartBitApi();
-
-        Logger.logD("Sub Center Distance", sessionManager.getSubCentreDistance());
-        Logger.logD("Primary Health Center Distance", sessionManager.getPrimaryHealthCentreDistance());
-        Logger.logD("Community Health Center Distance", sessionManager.getCommunityHealthCentreDistance());
-        Logger.logD("District Hospital Distance", sessionManager.getDistrictHospitalDistance());
-        Logger.logD("Medical Store Distance", sessionManager.getMedicalStoreDistance());
-        Logger.logD("Pathological Lab Distance", sessionManager.getPathologicalLabDistance());
-        Logger.logD("Private Clinic MBBS Distance", sessionManager.getPrivateClinicWithMbbsDoctorDistance());
-        Logger.logD("Private Clinic without MBBS Distance", sessionManager.getPrivateClinicWithAlternateDoctorDistance());
     }
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
