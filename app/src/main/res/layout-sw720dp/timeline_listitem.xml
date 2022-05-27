@@ -21,16 +21,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="06:00 AM" />
+                android:layout_marginStart="@dimen/timeTextview_margin_start"
+                android:text="06:00 AM"
+                android:textSize="@dimen/text_18sp"
+                android:textColor="@color/colorPrimaryDark" />
 
             <View
                 android:id="@+id/vl_1"
                 android:layout_width="2dp"
                 android:layout_height="120dp"
                 android:layout_above="@+id/vl_2"
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="31dp"
                 android:layout_toEndOf="@id/time1"
                 android:background="#33000000" />
 
@@ -39,13 +40,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="24dp"
                 android:layout_toEndOf="@+id/time1"
                 android:src="@drawable/circle_indicator_timeline" />
 
             <View
                 android:id="@+id/hl_1"
-                android:layout_width="20dp"
+                android:layout_width="@dimen/horizontalLine_Width"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/circle1"
@@ -56,10 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="@dimen/card_margin_end"
                 android:layout_toEndOf="@+id/hl_1"
                 android:clipChildren="false"
                 android:clipToPadding="false"

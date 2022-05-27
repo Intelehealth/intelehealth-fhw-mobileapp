@@ -65,4 +65,10 @@
     <dimen name="header_text_size">15sp</dimen>
     <dimen name="header_text_size_1">14sp</dimen>
     <dimen name="content_text_size">13sp</dimen>
+
+<!--    Timeline -->
+    <dimen name="card_margin_end">10dp</dimen>
+    <dimen name="horizontalLine_Width">40dp</dimen>
+    <dimen name="timeTextview_margin_start">40dp</dimen>
+
 </resources>

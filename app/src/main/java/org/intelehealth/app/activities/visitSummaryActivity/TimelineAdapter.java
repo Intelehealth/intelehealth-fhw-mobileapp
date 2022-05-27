@@ -105,7 +105,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
                 }
 
-
                 encounterTimeAmPmFormat = timeFormat.format(timeDateType);
                 Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
             } catch (ParseException e) {
