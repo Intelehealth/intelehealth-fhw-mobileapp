@@ -2655,24 +2655,26 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
-        // BP Level Validation
-        if (bpSpinner.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) bpSpinner.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = bpSpinner;
-            cancel = true;
-            return;
-        }
+        if (ll18.getVisibility() == View.VISIBLE) {
+            // BP Level Validation
+            if (bpSpinner.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) bpSpinner.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = bpSpinner;
+                cancel = true;
+                return;
+            }
 
-        // Sugar Level Validation
-        if (sugarLevelSpinner.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) sugarLevelSpinner.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = sugarLevelSpinner;
-            cancel = true;
-            return;
+            // Sugar Level Validation
+            if (sugarLevelSpinner.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) sugarLevelSpinner.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = sugarLevelSpinner;
+                cancel = true;
+                return;
+            }
         }
 
         // HB Level Validation
@@ -3625,24 +3627,26 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
-        // BP Level Validation
-        if (bpSpinner.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) bpSpinner.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = bpSpinner;
-            cancel = true;
-            return;
-        }
+        if (ll18.getVisibility() == View.VISIBLE) {
+            // BP Level Validation
+            if (bpSpinner.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) bpSpinner.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = bpSpinner;
+                cancel = true;
+                return;
+            }
 
-        // Sugar Level Validation
-        if (sugarLevelSpinner.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) sugarLevelSpinner.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = sugarLevelSpinner;
-            cancel = true;
-            return;
+            // Sugar Level Validation
+            if (sugarLevelSpinner.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) sugarLevelSpinner.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = sugarLevelSpinner;
+                cancel = true;
+                return;
+            }
         }
 
         // HB Level Validation

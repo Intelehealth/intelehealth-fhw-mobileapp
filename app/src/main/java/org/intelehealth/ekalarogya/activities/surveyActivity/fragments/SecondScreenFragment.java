@@ -68,9 +68,9 @@ public class SecondScreenFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.prevButton.setOnClickListener(v -> requireActivity().onBackPressed());
+        binding.prevButtonImage.setOnClickListener(v -> requireActivity().onBackPressed());
 
-        binding.nextButton.setOnClickListener(v -> {
+        binding.nextButtonImage.setOnClickListener(v -> {
             if (!areFieldsValid()) {
                 Toast.makeText(requireContext(), getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 return;

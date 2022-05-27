@@ -1256,6 +1256,8 @@ public class SetupActivity extends AppCompatActivity {
                                             }
                                         } else {
                                             Toast.makeText(SetupActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                                            r1.setChecked(true);
+                                            r2.setChecked(false);
                                         }
 
                                     }

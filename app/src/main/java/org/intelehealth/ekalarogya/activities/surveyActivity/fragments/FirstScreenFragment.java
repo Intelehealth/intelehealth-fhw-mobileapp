@@ -98,7 +98,7 @@ public class FirstScreenFragment extends Fragment {
                 binding.runningWaterAvailabilityLinearLayout.setVisibility(View.GONE);
         });
 
-        binding.nextButtonLinearLayout.setOnClickListener(v -> {
+        binding.nextButton.setOnClickListener(v -> {
             if (!areFieldsValid()) {
                 Toast.makeText(requireContext(), getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 return;

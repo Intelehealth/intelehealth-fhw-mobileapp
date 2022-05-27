@@ -926,7 +926,7 @@
     <string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">આપના ઘરથી પાણીના સ્ત્રોત સુધી ચાલવામાં કેટલો ટાઇમ લાગે છે?</string>
     <string name="number_of_minutes">મિનિટોની સંખ્યા </string>
     <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">શું તમે તમારા પાણીને પીવા માટે સુરક્ષિત બનવા માટે કોઈ પ્રકારનો ઉપાય કરો છો?</string>
-    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
+    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">તમે સામાન્ય રીતે પાણીને પીવા માટે સુરક્ષિત બનાવવા માટે શું કરો છો?</string>
     <string name="boil">ઉકાળો</string>
     <string name="use_alum">ફટકડીનો ઉપયોગ કરો</string>
     <string name="add_bleach_chlorine_tablets_drops">બ્લીચ/ક્લોરીન ટેબ્લેટ/ટીપાં ઉમેરો</string>
@@ -953,7 +953,7 @@
     <string name="problem_in_toilet_plumbing">ટોયલેટ પ્લમ્બિંગમાં સમસ્યા</string>
     <string name="other_reasons_specify">અન્ય કારણ (સૂચિત કરો)</string>
 
-    <string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">कल से अब तक आपने किन मौकों पर साबुन से हाथ धोए हैं?</string>
+    <string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">ગઈકાલે આ સમયથી તમે કયા પ્રસંગોએ તમારા હાથ સાબુથી ધોયા?</string>
     <string name="no_soap_available_in_the_household">ઘરમાં સાબુ ઉપલબ્ધ નથી</string>
     <string name="soap_available_in_the_household_but_did_not_use_it_to_wash_hands">ઘરમાં સાબુ ઉપલબ્ધ છે પણ હાથ ધોવામાં એનો ઉપયોગ કરેલ નથી </string>
     <string name="before_cooking">જમવાનું  બનાવતા પહેલા </string>
@@ -961,7 +961,7 @@
     <string name="before_eating">જમતા પહેલા </string>
     <string name="after_using_toilet">સૌચાલયનો ઉપયોગ કર્યા પછી</string>
 
-    <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">आपके घर में पिछले 24 घंटों में किस तरह का खाना बनाया/बनाया गया था? साक्षात्कारकर्ताओं के लिए?</string>
+    <string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">તમારા ઘરમાં છેલ્લા 24 કલાકમાં કેવા પ્રકારની ખાદ્ય વસ્તુઓ રાંધવામાં/તૈયાર કરવામાં આવી હતી?</string>
     <string name="starch_staple_food">સ્ટાર્ચ મુખ્ય ખોરાક  (ચોખા, રોટલી, બ્રેડ, દાબેલા ભાત, મુરી, બટેટા, શક્કરીયા, અરબી, કસાવા, કેળા, અન્ય કોઈપણ મૂળ અને કંદ, નૂડલ્સ, પાસ્તા)</string>
     <string name="beans_and_peas">કઠોળ અને વટાણા (કઠોળ, વટાણા, મગની દાળ, ચણાની દાળ, અરાહર(તુવેર) દાળ, અડદની દાળ, રાજમા, વટાણા દાળ, અન્ય કઠોળ અને સોયાબીન, સીમ, સરસવ)</string>
     <string name="nuts_and_cheese">અખરોટ અને બીજ ,બદામ, પિસ્તા, કાજુ., મગફળી, જરદાળુ, બદામ, પિસ્તા, નારિયેળ, સીસમના બીજ, કમળના બીજ, { જેકફ્રૂટ }ના    બીજ, કાજુ, અખરોટ, સરસવના બીજ, સૂર્યમુખીના બીજ, કોળાના બીજ)</string>
@@ -1028,7 +1028,7 @@
     <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
 
     <!--    Smartphones strings -->
-    <string name="shared">साझा किया हुआ</string>
+    <string name="shared">શેર કરેલ</string>
     <string name="owns_smartphone">સ્માર્ટફોન છે </string>
     <string name="owns_feature_phone">સાદો ફોન છે </string>
 
@@ -1055,12 +1055,12 @@
 
     <!--    Smoking History Strings -->
     <string name="smoking_status_in_the_household">પરિવારમાં ધૂમ્રપાનની સ્થિતિ</string>
-    <string name="does_the_person_smoke">क्या व्यक्ति धूम्रपान करता है?</string>
+    <string name="does_the_person_smoke">શું વ્યક્તિ ધૂમ્રપાન કરે છે?</string>
     <string name="smoker">ધૂમ્રપાન કરવાવાળા</string>
     <string name="non_smoker">ધૂમ્રપાન ના કરવાવાળા</string>
     <string name="five_ten_bids_cigarette">5 – 10 બીડી/સિગારેટ</string>
     <string name="more_than_ten_bids_cigarette">10 થી વધારે બીડી/સિગારેટ</string>
-    <string name="rate_of_smoking">धूम्रपान की दर</string>
+    <string name="rate_of_smoking">ધૂમ્રપાનનો દર</string>
     <string name="how_long_have_you_been_smoking">તમે કેટલા સમયથી ધૂમ્રપાન કરો છો?</string>
     <string name="less_than_a_year">એક વર્ષથી વધારે</string>
     <string name="from_one_year_to_five_year">1 વર્ષ થી 5 વર્ષ સુધી</string>
@@ -1069,15 +1069,15 @@
 
     <!--    Alcohol Consumption Strings -->
     <string name="history_of_alcohol_consumption_in_the_household">ઘરમાં દારૂ પીવાનો ઇતિહાસ</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या घर में शराब पीने का कोई इतिहास है?</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ઘરમાં દારૂ પીવાનો ઇતિહાસ ધરાવો છો</string>
     <string name="no_denied">ના/અસ્વીકાર</string>
-    <string name="rate_of_alcohol_consumption">शराब की खपत की दर</string>
+    <string name="rate_of_alcohol_consumption">આલ્કોહોલ વપરાશ દર</string>
     <string name="zero_five_times">0 – 5 વાર</string>
     <string name="five_ten_times">5 થી 10 વાર </string>
     <string name="more_than_10_times">10 થી વધારે વાર</string>
     <string name="how_long_have_you_been_consuming_alcohol">તમે કેટલા સમયથી દારૂનું સેવન કરો છો?</string>
-    <string name="edit_dialog_button">संपादित करें</string>
-    <string name="delete_dialog_button">हटाएं</string>
+    <string name="edit_dialog_button">સંપાદિત કરો</string>
+    <string name="delete_dialog_button">કાઢી નાખો</string>
 
     <!--    Survey strings -->
     <string name="all_fields_are_mandatory">બધા જવાબ ફરજિયાત છે.</string>
