@@ -58,6 +58,11 @@
                 android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/hl_1"
                 app:cardCornerRadius="15dp"
+                android:elevation="8dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0.0px"
+                android:clipToPadding="false"
+                android:clipChildren="false"
                 app:cardElevation="10dp"
                 app:cardPreventCornerOverlap="true"
                 app:contentPadding="10dp">
