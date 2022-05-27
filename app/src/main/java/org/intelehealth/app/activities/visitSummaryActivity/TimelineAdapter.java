@@ -27,6 +27,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -75,6 +76,36 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             String encounterTimeAmPmFormat = "";
             try {
                 Date timeDateType = longTimeFormat.parse(time);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(timeDateType);
+
+                Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
+                if(position % 2 == 0) { // Even
+                    calendar.add(Calendar.HOUR, 1);
+                    calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                   // calendar.add(Calendar.MINUTE, 2); // Testing
+                    Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+                }
+                else { // Odd
+                    calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                  //  calendar.add(Calendar.MINUTE, 1); // Testing
+                    Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+                }
+
+                if(calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
+                    holder.cardview.setClickable(true);
+                    holder.cardview.setEnabled(true);
+                    holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
+                }
+                else {
+                    holder.cardview.setClickable(false);
+                    holder.cardview.setEnabled(false);
+                    holder.cardview.setCardElevation(0);
+                    holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
+                }
+
+
                 encounterTimeAmPmFormat = timeFormat.format(timeDateType);
                 Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
             } catch (ParseException e) {
@@ -82,8 +113,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 Log.e("timeline", "AM Format: " + e.getMessage());
             }
 
-//            holder.frame1.setVisibility(View.VISIBLE);
-            holder.time1.setText(encounterTimeAmPmFormat);
+            holder.timeTextview.setText(encounterTimeAmPmFormat);
         }
     }
 
@@ -93,27 +123,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     }
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
-        CardView c1hr, c15min, c30min, c45min;
-        TextView time1, time2, time3, time4;
+        CardView cardview;
+        TextView timeTextview;
         FrameLayout frame1, frame2, frame3, frame4;
 
         public TimelineViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            c1hr = itemView.findViewById(R.id.cardview_parent);
-            c15min = itemView.findViewById(R.id.cardview_parent1);
-            c30min = itemView.findViewById(R.id.cardview_parent2);
-            c45min = itemView.findViewById(R.id.cardview_parent3);
-            time1 = itemView.findViewById(R.id.time1);
-            time2 = itemView.findViewById(R.id.time2);
-            time3 = itemView.findViewById(R.id.time3);
-            time4 = itemView.findViewById(R.id.time4);
+            cardview = itemView.findViewById(R.id.cardview_parent);
+            timeTextview = itemView.findViewById(R.id.time1);
             frame1 = itemView.findViewById(R.id.frame1);
-            frame2 = itemView.findViewById(R.id.frame2);
-            frame3 = itemView.findViewById(R.id.frame3);
-            frame4 = itemView.findViewById(R.id.frame4);
 
-            c1hr.setOnClickListener(new View.OnClickListener() {
+            cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i1 = new Intent(context, PastMedicalHistoryActivity.class);
