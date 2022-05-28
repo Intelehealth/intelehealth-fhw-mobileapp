@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import org.intelehealth.app.R;
@@ -45,6 +46,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     SessionManager sessionManager;
     EncounterDAO encounterDAO;
     ArrayList<EncounterDTO> encounterListDTO;
+    Button endStageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void initUI() {
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
+        endStageButton = findViewById(R.id.endStageButton);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;
@@ -114,6 +117,12 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         }
         setTitle(patientName);
+
+        // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
+        endStageButton.setOnClickListener(v -> {
+
+
+        });
     }
 
     // create a new encounter for the first interval so that a new card is populated for Stage1Hr1_1...

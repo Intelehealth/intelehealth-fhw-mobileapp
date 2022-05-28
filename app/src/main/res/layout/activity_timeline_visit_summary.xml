@@ -11,7 +11,7 @@
         android:id="@+id/recyclerview_timeline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/rectangle_1"
+        android:layout_above="@+id/endStageButton"
         android:fadeScrollbars="false"
         android:scrollbarSize="5dp"
         android:scrollbarThumbVertical="@color/colorAccent"
@@ -23,11 +23,11 @@
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:background="@android:color/darker_gray"
-        android:layout_above="@+id/rectangle_1"
+        android:layout_above="@+id/endStageButton"
         android:layout_marginHorizontal="20dp"/>
 
     <Button
-        android:id="@+id/rectangle_1"
+        android:id="@+id/endStageButton"
         android:layout_width="140dp"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
