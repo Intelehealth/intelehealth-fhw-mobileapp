@@ -1,8 +1,19 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -14,17 +25,8 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -41,15 +43,40 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
-import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,85 +89,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.database.InteleHealthDatabaseHelper;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.Patient;
-import org.intelehealth.app.models.dto.EncounterDTO;
-import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.DownloadFilesUtils;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.app.utilities.NetworkConnection;
-import org.intelehealth.app.utilities.exception.DAOException;
-
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ml_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_mr_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -378,11 +331,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 // For Timeline Notification...
                 String patientfullName = "";
-                if(patient_new.getMiddle_name() != null && !patient_new.getMiddle_name().equalsIgnoreCase("")
+                if (patient_new.getMiddle_name() != null && !patient_new.getMiddle_name().equalsIgnoreCase("")
                         && !patient_new.getMiddle_name().isEmpty()) {
                     patientfullName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
-                }
-                else {
+                } else {
                     patientfullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 }
                 // end...
@@ -400,6 +352,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 try {
                     visitsDAO.insertPatientToDB(visitDTO);
+
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    speciality_attributes
+                            .insertVisitAttributes(uuid, "General Physician");
+
+
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -437,9 +395,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("visitUuid", uuid);
-               // intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+                // intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
                 intent2.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
-               // intent2.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
+                // intent2.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("patientNameTimeline", patientfullName);
                 intent2.putExtra("gender", mGender);

@@ -64,6 +64,7 @@ public class ObsDAO {
             values.put("encounteruuid", obsDTOS.getEncounteruuid());
             values.put("creator", obsDTOS.getCreator());
             values.put("conceptuuid", obsDTOS.getConceptuuid());
+            values.put("comment", obsDTOS.getComment());
             values.put("value", obsDTOS.getValue());
             values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
@@ -92,6 +93,7 @@ public class ObsDAO {
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
@@ -124,6 +126,7 @@ public class ObsDAO {
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
@@ -165,6 +168,7 @@ public class ObsDAO {
                 values.put("encounteruuid", ob.getEncounteruuid());
                 values.put("creator", ob.getCreator());
                 values.put("conceptuuid", ob.getConceptuuid());
+                values.put("comment", ob.getComment());
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "0");
@@ -199,6 +203,7 @@ public class ObsDAO {
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                 obsDTOList.add(obsDTO);
             }
         }
@@ -290,6 +295,7 @@ public class ObsDAO {
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");

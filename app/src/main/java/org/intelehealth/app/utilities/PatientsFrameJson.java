@@ -1,16 +1,12 @@
 package org.intelehealth.app.utilities;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -33,6 +29,9 @@ import org.intelehealth.app.models.pushRequestApiCall.Person;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientsFrameJson {
     private PatientsDAO patientsDAO = new PatientsDAO();
@@ -144,9 +143,9 @@ public class PatientsFrameJson {
             List<EncounterProvider> encounterProviderList = new ArrayList<>();
             EncounterProvider encounterProvider = new EncounterProvider();
             encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
-          //  encounterProvider.setProvider(session.getProviderID());
+            //  encounterProvider.setProvider(session.getProviderID());
             encounterProvider.setProvider(encounterDTO.getProvideruuid());
-            Log.d("DTO","DTO:frame "+ encounterProvider.getProvider());
+            Log.d("DTO", "DTO:frame " + encounterProvider.getProvider());
             encounterProviderList.add(encounterProvider);
             encounter.setEncounterProviders(encounterProviderList);
 
@@ -163,6 +162,7 @@ public class PatientsFrameJson {
                             ob.setUuid(obs.getUuid());
                             ob.setConcept(obs.getConceptuuid());
                             ob.setValue(obs.getValue());
+                            ob.setComment(obs.getComment());
                             obsList.add(ob);
 
                         }
@@ -174,18 +174,18 @@ public class PatientsFrameJson {
             encounter.setLocation(session.getLocationUuid());
 
             // encounterList.add(encounter);
-            if (speciality_row_exist_check(encounter.getVisit())){
-                encounterList.add(encounter);
-            }
+            //if (speciality_row_exist_check(encounter.getVisit())){
+            encounterList.add(encounter);
+            //}
 
-    }
+        }
 
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
         Gson gson = new Gson();
-        Log.v("PushPayload: ","PushPayload: "+gson.toJson(pushRequestApiCall));
+        Log.v("PushPayload: ", "PushPayload: " + gson.toJson(pushRequestApiCall));
 
 
         return pushRequestApiCall;

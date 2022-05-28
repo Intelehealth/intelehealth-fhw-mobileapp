@@ -1,0 +1,87 @@
+package org.intelehealth.app.partogram.model;
+
+import java.io.Serializable;
+
+public class ParamInfo implements Serializable {
+    private String paramSectionName;
+    private String paramName;
+    private String paramDateType;
+    private String[] options;
+    private String[] values;
+    private boolean isHalfHourField;
+    private boolean isFifteenMinField;
+    private String capturedValue;
+    private String conceptUUID;
+
+    public String getParamSectionName() {
+        return paramSectionName;
+    }
+
+    public void setParamSectionName(String paramSectionName) {
+        this.paramSectionName = paramSectionName;
+    }
+
+    public String getParamName() {
+        return paramName;
+    }
+
+    public void setParamName(String paramName) {
+        this.paramName = paramName;
+    }
+
+    public String getParamDateType() {
+        return paramDateType;
+    }
+
+    public void setParamDateType(String paramDateType) {
+        this.paramDateType = paramDateType;
+    }
+
+    public String[] getOptions() {
+        return options;
+    }
+
+    public void setOptions(String[] options) {
+        this.options = options;
+    }
+
+    public String[] getValues() {
+        return values;
+    }
+
+    public void setValues(String[] values) {
+        this.values = values;
+    }
+
+    public boolean isHalfHourField() {
+        return isHalfHourField;
+    }
+
+    public void setHalfHourField(boolean halfHourField) {
+        isHalfHourField = halfHourField;
+    }
+
+    public boolean isFifteenMinField() {
+        return isFifteenMinField;
+    }
+
+    public void setFifteenMinField(boolean fifteenMinField) {
+        isFifteenMinField = fifteenMinField;
+    }
+
+    public String getCapturedValue() {
+        return capturedValue;
+    }
+
+    public void setCapturedValue(String capturedValue) {
+        this.capturedValue = capturedValue;
+    }
+
+    public String getConceptUUID() {
+        return conceptUUID;
+    }
+
+    public void setConceptUUID(String conceptUUID) {
+        this.conceptUUID = conceptUUID;
+    }
+}

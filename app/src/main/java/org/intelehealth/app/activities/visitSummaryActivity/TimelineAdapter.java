@@ -7,22 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.partogram.PartogramDataCaptureActivity;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Created by Prajwal Maruti Waingankar on 04-05-2022, 19:14
@@ -69,7 +62,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     @Override
     public void onBindViewHolder(@NonNull TimelineViewHolder holder, int position) {
-        if(encounterDTOList.size() > 0) {
+        if (encounterDTOList.size() > 0) {
             String time = encounterDTOList.get(position).getEncounterTime();
             SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
@@ -81,15 +74,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 calendar.setTime(timeDateType);
 
                 Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
-                if(position % 2 == 0) { // Even
+                if (position % 2 == 0) { // Even
                     calendar.add(Calendar.HOUR, 1);
                     calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                   // calendar.add(Calendar.MINUTE, 2); // Testing
+                    // calendar.add(Calendar.MINUTE, 2); // Testing
                     Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                }
-                else { // Odd
+                } else { // Odd
                     calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                  //  calendar.add(Calendar.MINUTE, 1); // Testing
+                    //  calendar.add(Calendar.MINUTE, 1); // Testing
                     Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                 }
 
@@ -125,6 +117,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         CardView cardview;
         TextView timeTextview;
         FrameLayout frame1, frame2, frame3, frame4;
+        int index;
 
         public TimelineViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -136,10 +129,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i1 = new Intent(context, PastMedicalHistoryActivity.class);
+                    Intent i1 = new Intent(context, PartogramDataCaptureActivity.class);
                     i1.putExtra("patientUuid", patientUuid);
                     i1.putExtra("name", patientName);
                     i1.putExtra("visitUuid", visitUuid);
+                    i1.putExtra("encounterUuid", encounterDTOList.get(getAdapterPosition()).getUuid());
+                    i1.putExtra("type", getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY);
 //                    i1.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
 //                    i1.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                     context.startActivity(i1);
@@ -147,4 +142,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             });
         }
     }
+
+    private static final int HOURLY = 0;
+    private static final int HALF_HOUR = 1;
+    private static final int FIFTEEN_MIN = 2;
 }
