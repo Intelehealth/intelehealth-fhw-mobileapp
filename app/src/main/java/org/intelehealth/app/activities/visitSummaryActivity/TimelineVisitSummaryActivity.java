@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,9 +20,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.NotificationReceiver;
@@ -106,23 +111,65 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
             if(whichScreenUserCameFromTag != null &&
                     whichScreenUserCameFromTag.equalsIgnoreCase("new")) {
-                triggerAlarmEvery30Minutes(); // Notification to show every 30min.
+                triggerAlarm_Stage1_every30mins(); // Notification to show every 30min.
+                Log.v("timeline", "whichscreen: " + whichScreenUserCameFromTag);
             }
             else {
                 // do nothing
             }
 
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid); // fetch all records...
-
-
         }
+
         setTitle(patientName);
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
-
-
+            cancelStage1_ConfirmationDialog();
         });
+    }
+
+    // Timeline stage 1 end confirmation dialog
+    private void cancelStage1_ConfirmationDialog() {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+        alertDialog.setTitle("Are you sure you want to End Stage 1?");
+       // alertDialog.setMessage("");
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        endStageButton.setText("End Second Stage");
+                        cancelStage1_30minAlarm();
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = alertDialog.show();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private void cancelStage1_30minAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        Log.v("timeline", "visituuid_int "+ visitUuid.replaceAll("[^\\d]", ""));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // to set different alarms for different patients.
+        alarmManager.cancel(pendingIntent);
+
+        // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
+        triggerAlarm_Stage2_every15mins();
     }
 
     // create a new encounter for the first interval so that a new card is populated for Stage1Hr1_1...
@@ -183,27 +230,54 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    public void triggerAlarmEvery30Minutes() { // TODO: change 1min to 15mins.....
+    private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-       // calendar.add(Calendar.MINUTE, 1); // Testing
+        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+      //  calendar.add(Calendar.MINUTE, 1); // Testing
 
-        Intent intent = new Intent(this, NotificationReceiver.class);
+        Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
         intent.putExtra("timeTag", 15);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("providerID", providerID);
         intent.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
-        
+
         Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
+        Log.v("timeline", "visituuid_int_15min "+ visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    /*1000*/AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
+                    /*60000*/AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        }
+    }
+
+    private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
+        Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
+        calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
+       // calendar.add(Calendar.MINUTE, 2); // Testing
+
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra("patientNameTimeline", patientName);
+        intent.putExtra("timeTag", 30);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("providerID", providerID);
+        intent.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
+        
+        Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
+        Log.v("timeline", "visituuid_int_30min "+ visitUuid.replaceAll("[^\\d]", ""));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    /*120000*/AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
         }
     }
 

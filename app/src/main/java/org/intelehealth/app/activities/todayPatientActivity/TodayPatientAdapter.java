@@ -184,7 +184,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", "");
+                visitSummary.putExtra("tag", "home");
 //                visitSummary.putExtra("pastVisit", past_visit);
 
                 if (holder.ivPriscription.getTag().equals("1")) {

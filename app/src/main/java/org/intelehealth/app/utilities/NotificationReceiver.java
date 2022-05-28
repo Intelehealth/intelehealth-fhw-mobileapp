@@ -171,6 +171,90 @@ public class NotificationReceiver extends BroadcastReceiver {
                 result = "Stage1_Hour13_1";
                 break;
 
+            case "Stage1_Hour13_1":
+                result = "Stage1_Hour13_2";
+                break;
+
+            case "Stage1_Hour13_2":
+                result = "Stage2_Hour1_1";
+                break;
+
+            case "Stage2_Hour1_1":
+                result = "Stage2_Hour1_2";
+                break;
+
+            case "Stage2_Hour1_2":
+                result = "Stage2_Hour1_3";
+                break;
+
+            case "Stage2_Hour1_3":
+                result = "Stage2_Hour1_4";
+                break;
+
+            case "Stage2_Hour1_4":
+                result = "Stage2_Hour2_1";
+                break;
+
+            case "Stage2_Hour2_1":
+                result = "Stage2_Hour2_2";
+                break;
+
+            case "Stage2_Hour2_2":
+                result = "Stage2_Hour2_3";
+                break;
+
+            case "Stage2_Hour2_3":
+                result = "Stage2_Hour2_4";
+                break;
+
+            case "Stage2_Hour2_4":
+                result = "Stage2_Hour3_1";
+                break;
+
+            case "Stage2_Hour3_1":
+                result = "Stage2_Hour3_2";
+                break;
+
+            case "Stage2_Hour3_2":
+                result = "Stage2_Hour3_3";
+                break;
+
+            case "Stage2_Hour3_3":
+                result = "Stage2_Hour3_4";
+                break;
+
+            case "Stage2_Hour3_4":
+                result = "Stage2_Hour4_1";
+                break;
+
+            case "Stage2_Hour4_1":
+                result = "Stage2_Hour4_2";
+                break;
+
+            case "Stage2_Hour4_2":
+                result = "Stage2_Hour4_3";
+                break;
+
+            case "Stage2_Hour4_3":
+                result = "Stage2_Hour4_4";
+                break;
+
+            case "Stage2_Hour4_4":
+                result = "Stage2_Hour5_1";
+                break;
+
+            case "Stage2_Hour5_1":
+                result = "Stage2_Hour5_2";
+                break;
+
+            case "Stage2_Hour5_2":
+                result = "Stage2_Hour5_3";
+                break;
+
+            case "Stage2_Hour5_3":
+                result = "Stage2_Hour5_4";
+                break;
+
             default:
                 result = "";
         }
