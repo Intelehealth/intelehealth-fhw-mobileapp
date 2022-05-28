@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -43,11 +43,14 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".partogram.PartogramDataCaptureActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
+            android:exported="false"
             android:label="@string/title_activity_visit_summary"
-            android:parentActivityName=".activities.homeActivity.HomeActivity"
-            android:exported="false" />
-
+            android:parentActivityName=".activities.homeActivity.HomeActivity" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
@@ -343,10 +346,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <receiver
-            android:name="org.intelehealth.app.utilities.NotificationReceiver"/>
-
-
+        <receiver android:name="org.intelehealth.app.utilities.NotificationReceiver" />
     </application>
 
 </manifest>
