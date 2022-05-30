@@ -42,10 +42,12 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -66,6 +68,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private TodayPatientAdapter todayPatientAdapter;
+
 
     public static long getTodayVisitsCount(SQLiteDatabase db) {
         int count = 0;
@@ -154,10 +157,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                 }
             });
         }
-
         getVisits();
-
     }
+
 
     @Override
     protected void onDestroy() {
@@ -238,8 +240,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")));
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        todayPatientList.add(model
-                        );
+
+                        todayPatientList.add(model);
+
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }

@@ -76,11 +76,13 @@ import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.ActivePatientModel;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
@@ -171,6 +173,12 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
+    EncounterDAO encounterDAO = new EncounterDAO();
+    EncounterDTO encounterDTO = null;
+    String encounterUUID = "";
+    ObsDAO obsDAO = new ObsDAO();
+    List<ObsDTO> obsDTOList = null;
+
     /*eZazi End*/
 
     private void saveToken() {
@@ -314,7 +322,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(HomeActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
@@ -565,6 +574,49 @@ public class HomeActivity extends AppCompatActivity {
             findViewById(R.id.tvEmpty).setVisibility(View.GONE);
             mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = doQuery(offset);
+
+            // #-- Alert logic -- start
+            for (int j = 0; j < activePatientModels.size(); j++) {
+                encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter.
+                encounterUUID = encounterDTO.getUuid();
+
+                int red = 2, yellow = 1, green = 0;
+                int r_count = 0, y_count = 0, g_count = 0;
+                int count = 0;
+
+                // alert logic - start
+                if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
+
+                   /* obsDTOList = obsDAO.obsCommentList(encounterUUID);
+                    for (int i = 0; i < obsDTOList.size(); i++) {
+                        if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {
+                            r_count++;
+                        } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("Y")) {
+                            y_count++;
+                        } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("G")) {
+                            g_count++;
+                        }
+                    }*/ // TODO: uncomment
+
+                    // testing - start // TODO: remove line
+                    r_count = 40;
+                    y_count = 6;
+                    g_count = 8;
+                    // test - end
+
+                    // multiply and add
+                    red = red * r_count;
+                    yellow = yellow * y_count;
+                    green = green * g_count;
+
+                    count = red + yellow + green;
+
+                }
+                // set count of total to this visit to which it belongs to...
+                activePatientModels.get(j).setAlertFlagTotal(count);
+            }
+            // #-- Alert logic -- end
+
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
