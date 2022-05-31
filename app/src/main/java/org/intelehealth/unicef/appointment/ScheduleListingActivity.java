@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -231,7 +232,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = "";  //to handle Illegal Argument Exception
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().equalsIgnoreCase(""))
+            baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        else return;
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .bookAppointment(url, request)
@@ -263,7 +267,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     private void getSlots() {
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = ""; //to handle Illegal Argument Exception
+        if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().equalsIgnoreCase(""))
+            baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        else return;
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
                 .enqueue(new Callback<SlotInfoResponse>() {
