@@ -2,6 +2,7 @@
 <resources>
     <string name="search_visits_hint">Search visits...</string>
     <string name="endStageButton">End First Stage</string>
+    <string name="end2StageButton">End Second Stage</string>
     <string name="notificationTitle_Timeline">Patient: %1s</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="daughter_wife_of">Daughter/Wife of</string>

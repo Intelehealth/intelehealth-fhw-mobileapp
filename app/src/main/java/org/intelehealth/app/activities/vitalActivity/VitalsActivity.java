@@ -828,7 +828,6 @@ public class VitalsActivity extends AppCompatActivity {
                     obsDTO.setValue(results.getHeight());
                 }
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
-
                 obsDAO.updateObs(obsDTO);
 
                 obsDTO = new ObsDTO();
@@ -891,8 +890,8 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
-
                 obsDAO.updateObs(obsDTO);
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {

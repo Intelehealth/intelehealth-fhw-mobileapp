@@ -14,7 +14,9 @@ public class TodayPatientModel {
     String sync;
     String gender;
 
-    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
+    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate,
+                             String openmrs_id, String first_name, String middle_name, String last_name,
+                             String date_of_birth, String phone_number, String sync) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -123,4 +125,5 @@ public class TodayPatientModel {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
 }

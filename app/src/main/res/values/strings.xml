@@ -842,6 +842,7 @@
     <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
     <string name="setupUrl">ezazi.intelehealth.org</string>
     <string name="endStageButton">End First Stage</string>
+    <string name="end2StageButton">End Second Stage</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
 
 </resources>

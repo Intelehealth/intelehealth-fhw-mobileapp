@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +29,10 @@ import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummary
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.TodayPatientModel;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.StringUtils;
 
@@ -48,6 +52,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    String visit_id = "";
+    String end_date = "",dob_ = "", mGender = "", patientName = "", patientUuid = "";
+    float float_ageYear_Month = 0;
 
     public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
         this.todayPatientModelList = todayPatientModelList;
@@ -99,93 +106,19 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
 
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent visitSummary = new Intent(context, TimelineVisitSummaryActivity.class);
-                String patientUuid = todayPatientModel.getPatientuuid();
 
-                String patientSelection = "uuid = ?";
-                String[] patientArgs = {patientUuid};
-                String[] patientColumns = {"first_name", "middle_name", "last_name", "gender",
-                        "date_of_birth"};
-                SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-                Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
-
-                String visit_id = "";
-                String end_date = "",dob = "", mGender = "", patientName = "";
-                float float_ageYear_Month = 0;
-                if (idCursor.moveToFirst()) {
-                    do {
-                        mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
-                        patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
-                                idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
-                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
-                    } while (idCursor.moveToNext());
-                }
-                idCursor.close();
-
-                String visitSelection = "patientuuid = ?";
-                String[] visitArgs = {patientUuid};
-                String[] visitColumns = {"uuid, startdate", "enddate"};
-                String visitOrderBy = "startdate";
-                Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-
-                if (visitCursor.getCount() >= 1) {
-                    if (visitCursor.moveToLast() && visitCursor != null) {
-                        do {
-                            if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase(""+todayPatientModel.getUuid())){
-                            end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            else{
-                                // do nothing...
-                            }
-                        } while (visitCursor.moveToPrevious());
-                    }
-                }
-                visitCursor.close();
-
-              /*  String encounterlocalAdultintial = "";
-                String encountervitalsLocal = null;
-                String encounterIDSelection = "visituuid = ?";
-
-                String[] encounterIDArgs = {visit_id};
-
-                EncounterDAO encounterDAO = new EncounterDAO();
-                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                    do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                            encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                        }
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                            encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                        }
-                    } while (encounterCursor.moveToNext());
-                }
-                encounterCursor.close();
-
-                Boolean past_visit = false;
-                if (end_date == null || end_date.isEmpty()) {
-                    past_visit = false;
-                } else {
-                    past_visit = true;
-                }
-
-                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
-*/
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
-//                visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
-//                visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
-//                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", "");
-//                visitSummary.putExtra("pastVisit", past_visit);
+                visitSummary.putExtra("tag", "home");
 
                 if (holder.ivPriscription.getTag().equals("1")) {
                     visitSummary.putExtra("hasPrescription", "true");
@@ -194,22 +127,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 }
                 context.startActivity(visitSummary);
 
-                /*String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", todayPatientModel.getPatientuuid());
-                intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "");
-
-                if (holder.ivPriscription.getTag().equals("1")) {
-                    intent.putExtra("hasPrescription", "true");
-                } else {
-                    intent.putExtra("hasPrescription", "false");
-                }
-
-                context.startActivity(intent);*/
             }
         };
-//        holder.getRootView().setOnClickListener(listener);
+
         holder.btnVisitDetails.setOnClickListener(listener);
 
         boolean enableEndVisit = false;
@@ -257,6 +177,33 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 }
             });
         }
+    }
+
+    private void fetchVisitDetails(TodayPatientModel todayPatientModel) {
+        // visit details fetch --> start
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String visitSelection = "patientuuid = ?";
+        String[] visitArgs = {patientUuid};
+        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+
+        if (visitCursor.getCount() >= 1) {
+            if (visitCursor.moveToLast() && visitCursor != null) {
+                do {
+                    if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase(""+todayPatientModel.getUuid())){
+                        end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                        visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                    }
+                    else{
+                        // do nothing...
+                    }
+                } while (visitCursor.moveToPrevious());
+            }
+        }
+        visitCursor.close();
+        // visit fetch --> end
     }
 
     @Override

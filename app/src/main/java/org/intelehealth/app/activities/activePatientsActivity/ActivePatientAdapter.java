@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -112,6 +113,23 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
+
+        // alert -> start
+        int count = activePatientModel.getAlertFlagTotal();
+        if(count > 40) {
+           // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
+            holder.ivPriscription.setColorFilter(context.getResources().getColor(R.color.red_1));
+        }
+        else if(count >= 30 && count <= 40) {
+           // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
+            holder.ivPriscription.setColorFilter(context.getResources().getColor(R.color.darkYellow2));
+        }
+        else if (count < 30) {
+           // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
+            holder.ivPriscription.setColorFilter(context.getResources().getColor(R.color.green2));
+        }
+        // alert -> end
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,6 +308,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private TextView tv_not_uploaded;
         TextView btnEndVisit, btnVisitDetails;
         TextView tvAgeGender;
+        private CardView cardView_todaysVisit;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
@@ -301,6 +320,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
             btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
             tvAgeGender = itemView.findViewById(R.id.tv_age_gender);
+            cardView_todaysVisit = itemView.findViewById(R.id.cardView_todaysVisit);
             rootView = itemView;
         }
 
