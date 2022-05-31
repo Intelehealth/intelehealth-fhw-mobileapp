@@ -14,7 +14,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.partogram.PartogramDataCaptureActivity;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -36,10 +38,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     Context context;
     private String patientUuid, patientName, visitUuid;
     ArrayList<EncounterDTO> encounterDTOList;
+    ObsDAO obsDAO;
+    ObsDTO obsDTO;
+    SessionManager sessionManager;
 
     public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList, SessionManager sessionManager) {
         this.context = context;
         this.encounterDTOList = encounterDTOList;
+        this.sessionManager = sessionManager;
 
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -65,6 +71,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         if (encounterDTOList.size() > 0) {
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
+
                 String time = encounterDTOList.get(position).getEncounterTime();
                 SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
@@ -95,7 +102,17 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);
                         holder.cardview.setCardElevation(0);
-                        holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
+
+                        /* since card is disabled that means the either the user has filled data or has forgotten to fill.
+                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+                         If no obs created than create Missed Enc obs for this disabled encounter. */
+                        obsDAO = new ObsDAO();
+                        boolean isMissed = false;
+                        isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
+                        if(isMissed)
+                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.red0));
+                        else
+                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
                     }
 
                     encounterTimeAmPmFormat = timeFormat.format(timeDateType);
@@ -109,6 +126,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             }
         }
     }
+
 
     @Override
     public int getItemCount() {

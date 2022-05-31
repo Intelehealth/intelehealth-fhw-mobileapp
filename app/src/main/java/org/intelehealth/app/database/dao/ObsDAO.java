@@ -338,4 +338,44 @@ public class ObsDAO {
     }
 
 
+    /**
+     * @param encounterUuid
+     * @param creatorID
+     * since card is disabled that means that either the user has filled data or has forgotten to fill.
+     * We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+     * If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
+     */
+    public boolean checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
+        boolean isMissed = false;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
+                new String[]{encounterUuid});
+
+        if (idCursor.getCount() <= 0) {
+            // that means there is no obs for this enc which means that this encounter is missed...
+            // now insert a new row in obs table against this encoutneruuid and set sync to false.
+            isMissed = true;
+            ContentValues values = new ContentValues();
+                values.put("uuid", UUID.randomUUID().toString());
+                values.put("encounteruuid", encounterUuid);
+                values.put("creator", creatorID);
+                values.put("conceptuuid", "35c3afdd-bb96-4b61-afb9-22a5fc2d088e"); // Missed Encounter
+                values.put("comment", "");
+                values.put("value", "-");
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("voided", "0");
+                values.put("sync", "false");
+
+                db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            //end
+        }
+        else {
+            isMissed = false;
+            // this means that this encounter is filled with obs ie. It was answered and then disabled.
+        }
+        idCursor.close();
+
+        return isMissed;
+    }
 }

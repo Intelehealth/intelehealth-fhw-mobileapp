@@ -18,13 +18,14 @@
 
             <TextView
                 android:id="@+id/time1"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/timeTextview_margin_start"
                 android:text="06:00 AM"
-                android:textSize="@dimen/text_18sp"
-                android:textColor="@color/colorPrimaryDark" />
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_18sp" />
 
             <View
                 android:id="@+id/vl_1"
