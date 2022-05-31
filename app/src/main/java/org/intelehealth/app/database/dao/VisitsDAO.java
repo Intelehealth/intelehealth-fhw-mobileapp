@@ -326,7 +326,7 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+       // db.close();
         return visitDTOList;
     }
 

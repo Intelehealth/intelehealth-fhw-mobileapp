@@ -125,7 +125,13 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
-            cancelStage1_ConfirmationDialog();
+            if(endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.endStageButton))) {
+                cancelStage1_ConfirmationDialog(); // cancel and start stage 2
+            }
+            else if(endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.end2StageButton))) {
+
+            }
+
         });
     }
 
@@ -204,6 +210,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+/*
     public void triggerAlarm5MinsBefore() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 25); // So that just before 5mins of 30mins we get the notification
@@ -229,11 +236,12 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             //  triggerTime: 25mins from the time user came to this screen & repeatTime: 30mins everytime...
         }
     }
+*/
 
     private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
-      //  calendar.add(Calendar.MINUTE, 1); // Testing
+      //  calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+        calendar.add(Calendar.MINUTE, 1); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -252,14 +260,14 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    /*60000*/AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+                    60000/*AlarmManager.INTERVAL_FIFTEEN_MINUTES*/, pendingIntent);
         }
     }
 
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-       // calendar.add(Calendar.MINUTE, 2); // Testing
+       // calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
+        calendar.add(Calendar.MINUTE, 2); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -277,7 +285,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    /*120000*/AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
+                    120000/*AlarmManager.INTERVAL_HALF_HOUR*/, pendingIntent);
         }
     }
 

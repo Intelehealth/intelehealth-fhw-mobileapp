@@ -25,6 +25,7 @@ import java.util.UUID;
 public class NotificationReceiver extends BroadcastReceiver {
     PowerManager.WakeLock wl;
     String visitUuid, providerID, nextIntervalEncounterTypeUuid_Name;
+    int timeTag = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -35,6 +36,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         if(intent != null) {
             visitUuid = intent.getStringExtra("visitUuid");
             providerID = intent.getStringExtra("providerID");
+            timeTag = intent.getIntExtra("timeTag", 0);
             fetchLatestEncounterTypeUuid_DisplayText(visitUuid);
         }
 
@@ -64,13 +66,111 @@ public class NotificationReceiver extends BroadcastReceiver {
         encounterTypeName = encounterDAO.fetchLatestEncounterTypeUuid(visitUuid);
 
         if(encounterTypeName != null && !encounterTypeName.equalsIgnoreCase("")) {
-            nextIntervalEncounterTypeUuid_Name = compareAndProvideNextIntervalEncounterTypeUuid(encounterTypeName);
+            if(timeTag == 15) {
+                nextIntervalEncounterTypeUuid_Name = compareAndProvideStage2EncounterUuid(encounterTypeName);
+            }
+            else if (timeTag == 30) {
+                nextIntervalEncounterTypeUuid_Name = compareAndProvideNextIntervalEncounterTypeUuid(encounterTypeName);
+            }
+            else {
 
-            if(nextIntervalEncounterTypeUuid_Name != null && !nextIntervalEncounterTypeUuid_Name.equalsIgnoreCase("")) {
+            }
+
+            if(nextIntervalEncounterTypeUuid_Name != null &&
+                    !nextIntervalEncounterTypeUuid_Name.equalsIgnoreCase("")) {
                 createNewEncounter(visitUuid, providerID, nextIntervalEncounterTypeUuid_Name);
             }
         }
     }
+
+    private String compareAndProvideStage2EncounterUuid(String encounterTypeName) {
+        String result = "";
+
+        switch (encounterTypeName) {
+            case "Stage2_Hour1_1":
+                result = "Stage2_Hour1_2";
+                break;
+
+            case "Stage2_Hour1_2":
+                result = "Stage2_Hour1_3";
+                break;
+
+            case "Stage2_Hour1_3":
+                result = "Stage2_Hour1_4";
+                break;
+
+            case "Stage2_Hour1_4":
+                result = "Stage2_Hour2_1";
+                break;
+
+            case "Stage2_Hour2_1":
+                result = "Stage2_Hour2_2";
+                break;
+
+            case "Stage2_Hour2_2":
+                result = "Stage2_Hour2_3";
+                break;
+
+            case "Stage2_Hour2_3":
+                result = "Stage2_Hour2_4";
+                break;
+
+            case "Stage2_Hour2_4":
+                result = "Stage2_Hour3_1";
+                break;
+
+            case "Stage2_Hour3_1":
+                result = "Stage2_Hour3_2";
+                break;
+
+            case "Stage2_Hour3_2":
+                result = "Stage2_Hour3_3";
+                break;
+
+            case "Stage2_Hour3_3":
+                result = "Stage2_Hour3_4";
+                break;
+
+            case "Stage2_Hour3_4":
+                result = "Stage2_Hour4_1";
+                break;
+
+            case "Stage2_Hour4_1":
+                result = "Stage2_Hour4_2";
+                break;
+
+            case "Stage2_Hour4_2":
+                result = "Stage2_Hour4_3";
+                break;
+
+            case "Stage2_Hour4_3":
+                result = "Stage2_Hour4_4";
+                break;
+
+            case "Stage2_Hour4_4":
+                result = "Stage2_Hour5_1";
+                break;
+
+            case "Stage2_Hour5_1":
+                result = "Stage2_Hour5_2";
+                break;
+
+            case "Stage2_Hour5_2":
+                result = "Stage2_Hour5_3";
+                break;
+
+            case "Stage2_Hour5_3":
+                result = "Stage2_Hour5_4";
+                break;
+
+            default:
+                result = "Stage2_Hour1_1";
+                // ie. If any other encounterName is passed and it will be passed from Stage1 obvious
+                // it doesnt match above than it will return this value that we need to start the stage2 encounters list.
+        }
+        return result;
+    }
+
 
     private String compareAndProvideNextIntervalEncounterTypeUuid(String encounterTypeName) {
         String result = "";
@@ -173,86 +273,6 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             case "Stage1_Hour13_1":
                 result = "Stage1_Hour13_2";
-                break;
-
-            case "Stage1_Hour13_2":
-                result = "Stage2_Hour1_1";
-                break;
-
-            case "Stage2_Hour1_1":
-                result = "Stage2_Hour1_2";
-                break;
-
-            case "Stage2_Hour1_2":
-                result = "Stage2_Hour1_3";
-                break;
-
-            case "Stage2_Hour1_3":
-                result = "Stage2_Hour1_4";
-                break;
-
-            case "Stage2_Hour1_4":
-                result = "Stage2_Hour2_1";
-                break;
-
-            case "Stage2_Hour2_1":
-                result = "Stage2_Hour2_2";
-                break;
-
-            case "Stage2_Hour2_2":
-                result = "Stage2_Hour2_3";
-                break;
-
-            case "Stage2_Hour2_3":
-                result = "Stage2_Hour2_4";
-                break;
-
-            case "Stage2_Hour2_4":
-                result = "Stage2_Hour3_1";
-                break;
-
-            case "Stage2_Hour3_1":
-                result = "Stage2_Hour3_2";
-                break;
-
-            case "Stage2_Hour3_2":
-                result = "Stage2_Hour3_3";
-                break;
-
-            case "Stage2_Hour3_3":
-                result = "Stage2_Hour3_4";
-                break;
-
-            case "Stage2_Hour3_4":
-                result = "Stage2_Hour4_1";
-                break;
-
-            case "Stage2_Hour4_1":
-                result = "Stage2_Hour4_2";
-                break;
-
-            case "Stage2_Hour4_2":
-                result = "Stage2_Hour4_3";
-                break;
-
-            case "Stage2_Hour4_3":
-                result = "Stage2_Hour4_4";
-                break;
-
-            case "Stage2_Hour4_4":
-                result = "Stage2_Hour5_1";
-                break;
-
-            case "Stage2_Hour5_1":
-                result = "Stage2_Hour5_2";
-                break;
-
-            case "Stage2_Hour5_2":
-                result = "Stage2_Hour5_3";
-                break;
-
-            case "Stage2_Hour5_3":
-                result = "Stage2_Hour5_4";
                 break;
 
             default:
