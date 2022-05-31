@@ -97,7 +97,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
-                        holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
+                      //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
                     } else {
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);

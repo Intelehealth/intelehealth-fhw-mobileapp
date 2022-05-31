@@ -107,16 +107,7 @@ public class UuidDictionary {
     public static final String ASSESSMENT = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";
     public static final String PLAN = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
-
-
-
-
-
-
-
-
-
-
-
+    // MISSED ENCOUNTER _ OBS
+    public static final String MISSED_ENCOUNTER = "35c3afdd-bb96-4b61-afb9-22a5fc2d088e";
 
 }

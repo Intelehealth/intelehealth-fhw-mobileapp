@@ -1,5 +1,7 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.MISSED_ENCOUNTER;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -338,7 +340,7 @@ public class ObsDAO {
     }
 
 
-    /**
+    /** MISSED_ENCOUNTER --> MISSED_OBS
      * @param encounterUuid
      * @param creatorID
      * since card is disabled that means that either the user has filled data or has forgotten to fill.
@@ -349,8 +351,8 @@ public class ObsDAO {
         boolean isMissed = false;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
-                new String[]{encounterUuid});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
+                new String[]{encounterUuid, MISSED_ENCOUNTER});
 
         if (idCursor.getCount() <= 0) {
             // that means there is no obs for this enc which means that this encounter is missed...
@@ -360,7 +362,7 @@ public class ObsDAO {
                 values.put("uuid", UUID.randomUUID().toString());
                 values.put("encounteruuid", encounterUuid);
                 values.put("creator", creatorID);
-                values.put("conceptuuid", "35c3afdd-bb96-4b61-afb9-22a5fc2d088e"); // Missed Encounter
+                values.put("conceptuuid", MISSED_ENCOUNTER); // Missed Encounter
                 values.put("comment", "");
                 values.put("value", "-");
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());

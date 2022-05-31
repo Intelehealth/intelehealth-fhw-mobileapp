@@ -16,7 +16,7 @@
         android:scrollbarSize="5dp"
         android:scrollbarThumbVertical="@color/colorAccent"
         android:scrollbars="vertical"
-        tools:listitem="@layout/timeline_listitem"/>
+        tools:listitem="@layout/timeline_listitem" />
 
     <View
         android:layout_width="match_parent"
