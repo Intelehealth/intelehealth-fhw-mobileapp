@@ -205,7 +205,6 @@
                             android:id="@+id/distance_to_sub_centre_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_sub_centre_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -247,7 +246,6 @@
                             android:id="@+id/distance_to_nearest_primary_centre_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_sub_centre_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -259,7 +257,6 @@
                             android:id="@+id/distance_to_nearest_primary_centre_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_primary_centre_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -301,7 +298,6 @@
                             android:id="@+id/distance_to_nearest_community_health_centre_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_primary_centre_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -313,7 +309,6 @@
                             android:id="@+id/distance_to_nearest_community_health_centre_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_community_health_centre_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -355,7 +350,6 @@
                             android:id="@+id/distance_to_nearest_district_hospital_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_community_health_centre_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -367,7 +361,6 @@
                             android:id="@+id/distance_to_nearest_district_hospital_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_district_hospital_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -417,7 +410,6 @@
                             android:id="@+id/distance_to_nearest_medical_store_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_district_hospital_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -429,7 +421,6 @@
                             android:id="@+id/distance_to_nearest_medical_store_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_medical_store_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -471,7 +462,6 @@
                             android:id="@+id/distance_to_nearest_pathological_lab_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_medical_store_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -483,7 +473,6 @@
                             android:id="@+id/distance_to_nearest_pathological_lab_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_pathological_lab_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -525,7 +514,6 @@
                             android:id="@+id/distance_to_nearest_private_clinic_with_mbbs_doctor_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_pathological_lab_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -537,7 +525,6 @@
                             android:id="@+id/distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_private_clinic_with_mbbs_doctor_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -579,7 +566,6 @@
                             android:id="@+id/distance_to_nearest_private_clinic_with_alternate_medical_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group"
                             android:layout_marginStart="5sp"
                             android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_medium"
@@ -591,7 +577,6 @@
                             android:id="@+id/distance_to_nearest_private_clinic_with_alternate_medical_radio_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/distance_to_nearest_private_clinic_with_alternate_medical_text_view"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical">
 
@@ -625,6 +610,42 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/more_than_10km"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/jal_jeevan_yojana_scheme_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_medium"
+                            android:text="@string/does_the_village_get_water_under_the_jal_jeevan_yojana_scheme"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/jal_jeevan_yojana_scheme_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/generic_yes"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/generic_no"
                                 android:textSize="13sp" />
 
                         </RadioGroup>

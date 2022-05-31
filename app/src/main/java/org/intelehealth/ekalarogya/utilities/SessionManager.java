@@ -65,6 +65,7 @@ public class SessionManager {
     private static final String PATHOLOGICAL_LAB_DISTANCE = "PATHOLOGICAL_LAB_DISTANCE";
     private static final String PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE";
     private static final String PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE";
+    private static final String JAL_JEEVAN_YOJANA_SCHEME = "JAL_JEEVAN_YOJANA_SCHEME";
 
     private static final String USERDETAILS = "USERDETAILS";
 
@@ -614,6 +615,15 @@ public class SessionManager {
 
     public void setPrivateClinicWithAlternateDoctorDistance(String privateClinicWithAlternateDoctorDistance) {
         editor.putString(PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE, privateClinicWithAlternateDoctorDistance);
+        editor.commit();
+    }
+
+    public String getJalJeevanYojanaScheme() {
+        return pref.getString(JAL_JEEVAN_YOJANA_SCHEME, "");
+    }
+
+    public void setJalJeevanYojanaScheme(String jalJeevanYojanaScheme) {
+        editor.putString(JAL_JEEVAN_YOJANA_SCHEME, jalJeevanYojanaScheme);
         editor.commit();
     }
 }

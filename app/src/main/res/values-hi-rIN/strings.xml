@@ -954,7 +954,7 @@
     <string name="prev">पहले का</string>
 
     <!--    SURVEY SCREEN - 6 -->
-    <string name="distance_to_sub_centre_in_walking_time">उप-स्वास्थ्य केंद्र से दूरी (पैदल चलने में)</string>
+    <string name="distance_to_sub_centre_in_walking_time">उप-स्वास्थ्य केंद्र से दूरी (पैदल चलने में)*</string>
     <string name="within_5_minutes">5 मिनट के भीतर</string>
     <string name="five_fifteen_minutes">5 – 15 मिनट</string>
     <string name="fifteen_thirty_minutes">15 – 30 मिनट</string>
@@ -963,22 +963,22 @@
     <string name="one_three_km">1 – 3 किमी</string>
     <string name="three_five_km">3 – 5 किमी</string>
     <string name="more_than_five_km">5 किमी से अधिक</string>
-    <string name="distance_to_nearest_primary_health_centers">निकटतम प्राथमिक स्वास्थ्य केंद्रों से दूरी (किलोमीटर)</string>
-    <string name="distance_to_nearest_community_health_centre_in_walking_time">निकटतम सामुदायिक स्वास्थ्य केंद्रों से दूरी</string>
+    <string name="distance_to_nearest_primary_health_centers">निकटतम प्राथमिक स्वास्थ्य केंद्रों से दूरी (किलोमीटर)*</string>
+    <string name="distance_to_nearest_community_health_centre_in_walking_time">निकटतम सामुदायिक स्वास्थ्य केंद्रों से दूरी*</string>
     <string name="within_3_km">3 किमी  के भीतर</string>
     <string name="three_six_km">3 – 6 किमी</string>
     <string name="more_than_10km">10 किमी से अधिक</string>
-    <string name="distance_to_nearest_district_hospital">निकटतम जिला अस्पताल से दूरी</string>
+    <string name="distance_to_nearest_district_hospital">निकटतम जिला अस्पताल से दूरी*</string>
     <string name="six_ten_km">6 – 10 किमी </string>
     <string name="within_5_km">5 किमी के भीतर</string>
     <string name="five_ten_km">5 – 10 किमी</string>
     <string name="ten_twenty_km">10 – 20 किमी</string>
     <string name="twenty_thirty_km">20 – 30 किमी</string>
     <string name="more_than_thirty_km">30 किमी से अधिक</string>
-    <string name="distance_to_the_nearest_medical_store">नजदीकी मेडिकल स्टोर से दूरी</string>
-    <string name="distance_to_the_nearest_pathological_lab">निकटतम पैथोलॉजिकल लैब से दूरी</string>
-    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">निकटतम निजी क्लिनिक से दूरी (एमबीबीएस डॉक्टर के साथ)</string>
-    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">निकटतम निजी क्लिनिक से दूरी (वैकल्पिक चिकित्सा चिकित्सकों के साथ - बीएएमएस, बीएचएमएस, आयुर्वेद आदि)</string>
+    <string name="distance_to_the_nearest_medical_store">नजदीकी मेडिकल स्टोर से दूरी*</string>
+    <string name="distance_to_the_nearest_pathological_lab">निकटतम पैथोलॉजिकल लैब से दूरी*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">निकटतम निजी क्लिनिक से दूरी (एमबीबीएस डॉक्टर के साथ)*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">निकटतम निजी क्लिनिक से दूरी (वैकल्पिक चिकित्सा चिकित्सकों के साथ - बीएएमएस, बीएचएमएस, आयुर्वेद आदि)*</string>
 
     <!--    SURVEY STRINGS - END -->
 

@@ -3468,6 +3468,14 @@ public final class StringUtils {
             if (context.getString(R.string.more_than_thirty_km).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_thirty_km);
             }
+            // Translate string Yes to English
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
+            }
+            // Translate string No to English
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
+            }
         }
         return text;
     }

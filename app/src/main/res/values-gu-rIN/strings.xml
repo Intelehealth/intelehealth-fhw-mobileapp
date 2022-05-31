@@ -850,7 +850,7 @@
     <string name="average_expenditure_on_education">શિક્ષણ પર વાર્ષિક ખર્ચ</string>
     <string name="prev">અગાઉના</string>
 
-    <string name="distance_to_sub_centre_in_walking_time">ઉપ- સ્વાસ્થ કેન્દ્ર થી દૂરી (પગથી ચાલતા)</string>
+    <string name="distance_to_sub_centre_in_walking_time">ઉપ- સ્વાસ્થ કેન્દ્ર થી દૂરી (પગથી ચાલતા)*</string>
     <string name="within_5_minutes">5 મિનિટની અંદર</string>
     <string name="five_fifteen_minutes">5 – 15 મિનિટ</string>
     <string name="fifteen_thirty_minutes">15 – 30 મિનિટ</string>
@@ -859,22 +859,22 @@
     <string name="one_three_km">1–3 કિમી</string>
     <string name="three_five_km">3–5 કિમી</string>
     <string name="more_than_five_km">5 કિમીની અંદર</string>
-    <string name="distance_to_nearest_primary_health_centers">નજીકના પ્રાથમિક આરોગ્ય કેન્દ્રથી દૂરી(કિલોમીટર)</string>
-    <string name="distance_to_nearest_community_health_centre_in_walking_time">નજીકના સાર્વજનિક દવાખાનાથી દૂરી</string>
+    <string name="distance_to_nearest_primary_health_centers">નજીકના પ્રાથમિક આરોગ્ય કેન્દ્રથી દૂરી(કિલોમીટર)*</string>
+    <string name="distance_to_nearest_community_health_centre_in_walking_time">નજીકના સાર્વજનિક દવાખાનાથી દૂરી*</string>
     <string name="within_3_km">3 કિમીની અંદર</string>
     <string name="three_six_km">3–6 કિમી</string>
     <string name="more_than_10km">10કિમીથી વધુ</string>
-    <string name="distance_to_nearest_district_hospital">નજીકના જિલ્લા દવાખાનાથી દૂરી</string>
+    <string name="distance_to_nearest_district_hospital">નજીકના જિલ્લા દવાખાનાથી દૂરી*</string>
     <string name="six_ten_km">6–10 કિમી</string>
     <string name="within_5_km">5 કિમીની અંદર</string>
     <string name="five_ten_km">5–10 કિમી</string>
     <string name="ten_twenty_km">10–20 કિમી</string>
     <string name="twenty_thirty_km">20–30 કિમી </string>
     <string name="more_than_thirty_km">30 કિમીથી વધુ</string>
-    <string name="distance_to_the_nearest_medical_store">નજીકના મેડિકલ સ્ટોરથી દૂરી</string>
-    <string name="distance_to_the_nearest_pathological_lab">નજીકના પેથોલોજિકલ લેબથી દૂરી</string>
-    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">નજીકના ખાનગી દવાખાનાથી દૂરી (MBBS ડોક્ટર હોય એવા)</string>
-    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">નજીકના ખાનગી દવાખાનાથી દૂરી (અન્ય ડોકટોરો BHMS, BAMS, આયુર્વેદ વગેરે )</string>
+    <string name="distance_to_the_nearest_medical_store">નજીકના મેડિકલ સ્ટોરથી દૂરી*</string>
+    <string name="distance_to_the_nearest_pathological_lab">નજીકના પેથોલોજિકલ લેબથી દૂરી*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">નજીકના ખાનગી દવાખાનાથી દૂરી (MBBS ડોક્ટર હોય એવા)*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">નજીકના ખાનગી દવાખાનાથી દૂરી (અન્ય ડોકટોરો BHMS, BAMS, આયુર્વેદ વગેરે)*</string>
 
     <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">શું આ ઘરના કોઈ સભ્યનું બેન્ક ખાતું કે પોસ્ટ ખાતું છે?</string>
     <string name="do_not_know">નથી જાણતા</string>

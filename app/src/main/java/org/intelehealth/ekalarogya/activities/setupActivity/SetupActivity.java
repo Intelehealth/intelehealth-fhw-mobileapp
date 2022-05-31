@@ -146,7 +146,8 @@ public class SetupActivity extends AppCompatActivity {
     NewLocationDao newLocationDao = null;
 
     private RadioGroup subCentreRadioGroup, primaryCentreRadioGroup, communityHealthCentreRadioGroup, districtHospitalRadioGroup,
-            medicalStoreRadioGroup, pathologicalLabRadioGroup, privateClinicWithMbbsDoctorRadioGroup, privateClinicWithAlternateMedicalRadioGroup;
+            medicalStoreRadioGroup, pathologicalLabRadioGroup, privateClinicWithMbbsDoctorRadioGroup, privateClinicWithAlternateMedicalRadioGroup,
+            jalJeevanYojanaSchemeRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +217,7 @@ public class SetupActivity extends AppCompatActivity {
         pathologicalLabRadioGroup = findViewById(R.id.distance_to_nearest_pathological_lab_radio_group);
         privateClinicWithMbbsDoctorRadioGroup = findViewById(R.id.distance_to_nearest_private_clinic_with_mbbs_doctor_radio_group);
         privateClinicWithAlternateMedicalRadioGroup = findViewById(R.id.distance_to_nearest_private_clinic_with_alternate_medical_radio_group);
+        jalJeevanYojanaSchemeRadioGroup = findViewById(R.id.jal_jeevan_yojana_scheme_radio_group);
 
         spinner_state.setEnabled(false);
         spinner_district.setEnabled(false);
@@ -633,6 +635,12 @@ public class SetupActivity extends AppCompatActivity {
 
         // Validation for distance_to_nearest_private_clinic_with_alternate_medical_radio_group
         if (privateClinicWithAlternateMedicalRadioGroup.getCheckedRadioButtonId() == -1) {
+            validations.set(false);
+            return validations.get();
+        }
+
+        // Validation for jal_jeevan_yojana_scheme_radio_group
+        if (jalJeevanYojanaSchemeRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
             return validations.get();
         }
@@ -1673,5 +1681,14 @@ public class SetupActivity extends AppCompatActivity {
         );
 
         sessionManager.setPrivateClinicWithAlternateDoctorDistance(privateClinicWithAlternateDoctorDistance);
+
+        String jalJeevanYojana = getDistanceStrings(
+                ((RadioButton) jalJeevanYojanaSchemeRadioGroup.findViewById(jalJeevanYojanaSchemeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                getBaseContext(),
+                updatedContext,
+                sessionManager.getAppLanguage()
+        );
+
+        sessionManager.setJalJeevanYojanaScheme(jalJeevanYojana);
     }
 }

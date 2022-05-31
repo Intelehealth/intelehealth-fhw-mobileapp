@@ -825,7 +825,7 @@
     <string name="any_vegetables">ଯେ କୌଣସି ପନିପରିବା</string>
 
     <!--    SURVEY SCREEN - 6 -->
-    <string name="distance_to_sub_centre_in_walking_time">ଉପ-କେନ୍ଦ୍ରକୁ ଦୂରତା (ଚାଲିବା ସମୟରେ)</string>
+    <string name="distance_to_sub_centre_in_walking_time">ଉପ-କେନ୍ଦ୍ରକୁ ଦୂରତା (ଚାଲିବା ସମୟରେ)*</string>
     <string name="within_5_minutes">5 ମିନିଟ୍ ମଧ୍ୟରେ</string>
     <string name="five_fifteen_minutes">5 – 15 ମିନିଟ୍</string>
     <string name="fifteen_thirty_minutes">15 – 30 ମିନିଟ୍</string>
@@ -834,22 +834,22 @@
     <string name="one_three_km">1 – 3 କିମି</string>
     <string name="three_five_km">3 – 5 କିମି</string>
     <string name="more_than_five_km">5 କିଲୋମିଟରରୁ ଅଧିକ |</string>
-    <string name="distance_to_nearest_primary_health_centers">ନିକଟସ୍ଥ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା (IN KMS)</string>
-    <string name="distance_to_nearest_community_health_centre_in_walking_time">ନିକଟସ୍ଥ ସମ୍ପ୍ରଦାୟ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା |</string>
+    <string name="distance_to_nearest_primary_health_centers">ନିକଟସ୍ଥ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା (IN KMS)*</string>
+    <string name="distance_to_nearest_community_health_centre_in_walking_time">ନିକଟସ୍ଥ ସମ୍ପ୍ରଦାୟ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା*</string>
     <string name="within_3_km">3 କିଲୋମିଟର ମଧ୍ୟରେ</string>
     <string name="three_six_km">3 – 6 କିମି</string>
     <string name="more_than_10km">10 କିଲୋମିଟରରୁ ଅଧିକ</string>
-    <string name="distance_to_nearest_district_hospital">ନିକଟସ୍ଥ ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟର ଦୂରତା |</string>
+    <string name="distance_to_nearest_district_hospital">ନିକଟସ୍ଥ ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟର ଦୂରତା*</string>
     <string name="six_ten_km">6 – 10 କିଲୋମିଟର</string>
     <string name="within_5_km">5 କିମି ମଧ୍ୟରେ</string>
     <string name="five_ten_km">5 – 10 କିମି</string>
     <string name="ten_twenty_km">10 – 20 କିମି</string>
     <string name="twenty_thirty_km">20 – 30 କିମି</string>
     <string name="more_than_thirty_km">30 କିଲୋମିଟରରୁ ଅଧିକ</string>
-    <string name="distance_to_the_nearest_medical_store">ନିକଟସ୍ଥ ମେଡିକାଲ୍ ଷ୍ଟୋର୍‌କୁ ଦୂରତା</string>
-    <string name="distance_to_the_nearest_pathological_lab">ନିକଟସ୍ଥ ପାଥୋଲୋଜିକାଲ ଲ୍ୟାବ ପାଇଁ ଦୂରତା</string>
-    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକକୁ ଦୂରତା (ଏକ MBBS ଡାକ୍ତରଙ୍କ ସହିତ)</string>
-    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକ୍ ପାଇଁ ଦୂରତା (ବିକଳ୍ପ ଡାକ୍ତରୀ ଚିକିତ୍ସକଙ୍କ ସହିତ - BAMS, BHMS, ଆୟୁର୍ବେଦ ଇତ୍ୟାଦି)</string>
+    <string name="distance_to_the_nearest_medical_store">ନିକଟସ୍ଥ ମେଡିକାଲ୍ ଷ୍ଟୋର୍‌କୁ ଦୂରତା*</string>
+    <string name="distance_to_the_nearest_pathological_lab">ନିକଟସ୍ଥ ପାଥୋଲୋଜିକାଲ ଲ୍ୟାବ ପାଇଁ ଦୂରତା*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକକୁ ଦୂରତା (ଏକ MBBS ଡାକ୍ତରଙ୍କ ସହିତ)*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକ୍ ପାଇଁ ଦୂରତା (ବିକଳ୍ପ ଡାକ୍ତରୀ ଚିକିତ୍ସକଙ୍କ ସହିତ - BAMS, BHMS, ଆୟୁର୍ବେଦ ଇତ୍ୟାଦି)*</string>
 
     <string name="surveyDialogTitle">ସଞ୍ଚୟ ହୋଇଛି</string>
     <string name="surveyDialogMessage">ସର୍ଭେ ସଫଳତାର ସହିତ ଯୋଡ଼ି ହୋଇଗଲା</string>
