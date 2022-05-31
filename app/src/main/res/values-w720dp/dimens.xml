@@ -32,4 +32,6 @@
     <dimen name="horizontalLine_Width">50dp</dimen>
     <dimen name="timeTextview_margin_start">30dp</dimen>
 
+    <dimen name="timeTextview_min_width">100dip</dimen>
+
 </resources>
