@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.app.partogram.model.ParamInfo;
@@ -102,19 +104,21 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             alertDialogBuilder.show();
         } else {
             ObsDAO obsDAO = new ObsDAO();
+            VisitsDAO visitsDAO = new VisitsDAO();
             try {
                 obsDAO.insertObsToDb(obsDTOList);
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
+                //visitsDAO.updateVisitSync(mVisitUUID, "false");
+
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                 if (isSynced) {
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload),
-                            getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
+                    Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
+                    /*AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload),
+                            getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);*/
                     finish();
                 } else {
-                    AppConstants.notificationUtils.DownloadDone(
-                            getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, PartogramDataCaptureActivity.this);
-
+                    Toast.makeText(this, "Unable to upload the data!", Toast.LENGTH_SHORT).show();
                 }
 
 
