@@ -22,10 +22,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/timeTextview_margin_start"
-                android:text="06:00 AM"
                 android:gravity="center"
+                android:minWidth="@dimen/timeTextview_min_width"
+                android:text="06:00 AM"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_18sp" />
+                android:textSize="@dimen/header_text_size" />
 
             <View
                 android:id="@+id/vl_1"

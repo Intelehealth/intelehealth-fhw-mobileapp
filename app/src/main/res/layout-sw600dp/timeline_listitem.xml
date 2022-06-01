@@ -21,10 +21,10 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:gravity="center"
-                android:text="06:00 AM"
-                android:textColor="@color/colorPrimaryDark" />
+                android:layout_marginStart="10dp"
+                android:gravity="center"  android:textSize="@dimen/content_text_size"
+                android:minWidth="@dimen/header_text_size"
+                android:text="06:00 AM" />
 
             <View
                 android:id="@+id/vl_1"
