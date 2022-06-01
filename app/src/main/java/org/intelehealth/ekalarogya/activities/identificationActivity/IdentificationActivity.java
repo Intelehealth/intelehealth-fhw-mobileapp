@@ -1,11 +1,13 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity;
 
+import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getIndex;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
@@ -237,7 +239,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     CardView cardview_household, hohRelationshipCardView;
     ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt,
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt,
-            bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt, unitsAdapter;
+            bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt, unitsAdapter, religionAdapter;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -868,6 +870,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             Logger.logE("Identification", "#648", e);
         }
 
+        // Religion ArrayAdapter
+        try {
+            String religionLanguage = "religion_" + sessionManager.getAppLanguage();
+            int religionId = getResources().getIdentifier(religionLanguage, "array", getApplicationContext().getPackageName());
+            if (religionId != 0) {
+                religionAdapter = ArrayAdapter.createFromResource(this, religionId, android.R.layout.simple_spinner_dropdown_item);
+            }
+            binding.religionDropDown.setAdapter(religionAdapter);
+        } catch (Exception e) {
+            Logger.logE("FirstScreenFragment", "#648", e);
+        }
 
         toilet_facility_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1053,6 +1066,16 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 } else {
                     time_water_editText.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        binding.householdRunningWaterRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == binding.waterSupplyYes.getId())
+                binding.runningWaterAvailabilityLinearLayout.setVisibility(View.VISIBLE);
+            else {
+                binding.runningWaterAvailabilityLinearLayout.setVisibility(View.GONE);
+                binding.runningWaterHoursEditText.setText(null);
+                binding.runningWaterDaysEditText.setText(null);
             }
         });
 
@@ -1451,6 +1474,38 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     binding.landOwnedEditText.setText(splitString[0].trim());
                 int spinnerPosition = unitsAdapter.getPosition(getSurveyStrings(splitString[1], updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                 unitsSpinner.setSelection(spinnerPosition);
+            }
+
+            if (patient1.getReligion() != null && !patient1.getReligion().equalsIgnoreCase("")) {
+                String religionTranslation = getSurveyStrings(patient1.getReligion(), updatedContext, this, sessionManager.getAppLanguage());
+                int position = religionAdapter.getPosition(religionTranslation);
+                binding.religionDropDown.setSelection(position);
+            }
+
+            if (patient1.getNumberOfSmartphones() != null && !patient1.getNumberOfSmartphones().equalsIgnoreCase("")) {
+                binding.numberOfSmartphonesEditText.setText(patient1.getNumberOfSmartphones());
+            }
+
+            if (patient1.getNumberOfFeaturePhones() != null && !patient1.getNumberOfFeaturePhones().equalsIgnoreCase("")) {
+                binding.numberOfFeaturePhonesEditText.setText(patient1.getNumberOfFeaturePhones());
+            }
+
+            if (patient1.getNumberOfEarningMembers() != null && !patient1.getNumberOfEarningMembers().equalsIgnoreCase("")) {
+                binding.noOfEarningMembersEditText.setText(patient1.getNumberOfEarningMembers());
+            }
+
+            if (patient1.getWaterSupplyStatus() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, patient1.getWaterSupplyStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
+                    !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
+                binding.runningWaterHoursEditText.setText(patient1.getWaterSupplyHoursPerDay());
+            }
+
+            if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
+                    !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
+                binding.runningWaterDaysEditText.setText(patient1.getWaterSupplyDaysPerWeek());
             }
 
             if (patient1.getWater_availability() != null && !patient1.getWater_availability()
@@ -2198,11 +2253,38 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (name.equalsIgnoreCase("hohRelationship")) {
                     patient1.setHeadOfHousehold(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("religion")) {
+                    patient1.setReligion(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("Total Family Members")) {
                     patient1.setNo_of_family_members(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Total Family Members Staying")) {
                     patient1.setNo_of_family_currently_live(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // numberOfSmartphones
+                if (name.equalsIgnoreCase("numberOfSmartphones")) {
+                    patient1.setNumberOfSmartphones(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // numberOfFeaturePhones
+                if (name.equalsIgnoreCase("numberOfFeaturePhones")) {
+                    patient1.setNumberOfFeaturePhones(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // numberOfEarningMembers
+                if (name.equalsIgnoreCase("numberOfEarningMembers")) {
+                    patient1.setNumberOfEarningMembers(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // runningWaterAvailability
+                if (name.equalsIgnoreCase("runningWaterAvailability")) {
+                    patient1.setWaterSupplyStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // waterSupplyAvailabilityHoursPerDay
+                if (name.equalsIgnoreCase("waterSupplyAvailabilityHoursPerDay")) {
+                    patient1.setWaterSupplyHoursPerDay(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // waterSupplyAvailabilityDaysPerWeek
+                if (name.equalsIgnoreCase("waterSupplyAvailabilityDaysPerWeek")) {
+                    patient1.setWaterSupplyDaysPerWeek(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Drinking Water Source")) {
                     patient1.setSource_of_water(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2635,6 +2717,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         }
 
         if (hohRadioGroup.getCheckedRadioButtonId() != -1) {
+            if (checkIfEmpty(this, binding.religionDropDown.getSelectedItem().toString())) {
+                TextView t = (TextView) binding.religionDropDown.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.religionDropDown;
+                cancel = true;
+                return;
+            }
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_member_edittext.getText().toString().isEmpty()) {
@@ -2657,6 +2747,55 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             if (Integer.parseInt(no_of_staying_members_edittext.getText().toString()) > Integer.parseInt(no_of_member_edittext.getText().toString())) {
                 no_of_staying_members_edittext.setError(getString(R.string.no_of_members_living_cannot_be_greater_than_total_number_of_members));
                 focusView = no_of_staying_members_edittext;
+                cancel = true;
+                return;
+            }
+
+            // Validation for number of smartphones field
+            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
+                binding.numberOfSmartphonesEditText.setText(getString(R.string.enter_number));
+                focusView = binding.numberOfSmartphonesEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validation for number of feature phones field
+            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
+                binding.numberOfFeaturePhonesEditText.setText(getString(R.string.enter_number));
+                focusView = binding.numberOfFeaturePhonesEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validation for number of earning members field
+            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
+                binding.noOfEarningMembersEditText.setText(getString(R.string.enter_number));
+                focusView = binding.noOfEarningMembersEditText;
+                cancel = true;
+                return;
+            }
+
+
+            // Validations for Running Water Radio Group
+            if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_state_if_you_have_running_water_in_the_household), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdRunningWaterRadioGroup;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Running Water Hours Edit Text
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
+                binding.runningWaterHoursEditText.setError(getString(R.string.enter_number));
+                focusView = binding.runningWaterHoursEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Running Water Days Edit Text
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterDaysEditText.getText()).toString())) {
+                binding.runningWaterDaysEditText.setError(getString(R.string.enter_number));
+                focusView = binding.runningWaterDaysEditText;
                 cancel = true;
                 return;
             }
@@ -3037,6 +3176,19 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             //Check first if Are you Head of Household checkbox is checked or not...
             if (hohRadioGroup.getCheckedRadioButtonId() == hohYes.getId()) {
+
+                // religion
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
                 //Total no of members in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3054,6 +3206,59 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         .getUuidForAttribute("Total Family Members Staying"));
                 patientAttributesDTO.setValue(StringUtils.getValue(no_of_staying_members_edittext.getText().toString()));
                 Log.d("HOH", "Total family stay: " + no_of_staying_members_edittext.getText().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // numberOfSmartphones
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfSmartphones"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.numberOfSmartphonesEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // numberOfFeaturePhones
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfFeaturePhones"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.numberOfFeaturePhonesEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // numberOfEarningMembers
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfEarningMembers"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.noOfEarningMembersEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // runningWaterAvailability
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // waterSupplyAvailabilityHoursPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterHoursEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // waterSupplyAvailabilityDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterDaysEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Main source of drinking water...
@@ -3588,6 +3793,15 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
         if (hohRadioGroup.getCheckedRadioButtonId() != -1) {
 
+            if (checkIfEmpty(this, binding.religionDropDown.getSelectedItem().toString())) {
+                TextView t = (TextView) binding.religionDropDown.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = binding.religionDropDown;
+                cancel = true;
+                return;
+            }
+
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_member_edittext.getText().toString().isEmpty()) {
                 no_of_member_edittext.setError(getString(R.string.select));
@@ -3609,6 +3823,54 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             if (Integer.parseInt(no_of_staying_members_edittext.getText().toString()) > Integer.parseInt(no_of_member_edittext.getText().toString())) {
                 no_of_staying_members_edittext.setError(getString(R.string.no_of_members_living_cannot_be_greater_than_total_number_of_members));
                 focusView = no_of_staying_members_edittext;
+                cancel = true;
+                return;
+            }
+
+            // Validation for number of smartphones field
+            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
+                binding.numberOfSmartphonesEditText.setText(getString(R.string.enter_number));
+                focusView = binding.numberOfSmartphonesEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validation for number of feature phones field
+            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
+                binding.numberOfFeaturePhonesEditText.setText(getString(R.string.enter_number));
+                focusView = binding.numberOfFeaturePhonesEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validation for number of earning members field
+            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
+                binding.noOfEarningMembersEditText.setText(getString(R.string.enter_number));
+                focusView = binding.noOfEarningMembersEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Running Water Radio Group
+            if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_state_if_you_have_running_water_in_the_household), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdRunningWaterRadioGroup;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Running Water Hours Edit Text
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
+                binding.runningWaterHoursEditText.setError(getString(R.string.enter_number));
+                focusView = binding.runningWaterHoursEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Running Water Days Edit Text
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterDaysEditText.getText()).toString())) {
+                binding.runningWaterDaysEditText.setError(getString(R.string.enter_number));
+                focusView = binding.runningWaterDaysEditText;
                 cancel = true;
                 return;
             }
@@ -3990,6 +4252,19 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             //Check first if Are you Head of Household checkbox is checked or not...
             if (hohRadioGroup.getCheckedRadioButtonId() == hohYes.getId()) {
+
+                // religion
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
                 //Total no of members in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -4008,6 +4283,60 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setValue(StringUtils.getValue(no_of_staying_members_edittext.getText().toString()));
                 Log.d("HOH", "Total family stay: " + no_of_staying_members_edittext.getText().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
+
+                // numberOfSmartphones
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfSmartphones"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.numberOfSmartphonesEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // numberOfFeaturePhones
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfFeaturePhones"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.numberOfFeaturePhonesEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // numberOfEarningMembers
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfEarningMembers"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.noOfEarningMembersEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // runningWaterAvailability
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // waterSupplyAvailabilityHoursPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterHoursEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // waterSupplyAvailabilityDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterDaysEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
 
                 //Main source of drinking water...
                 patientAttributesDTO = new PatientAttributesDTO();

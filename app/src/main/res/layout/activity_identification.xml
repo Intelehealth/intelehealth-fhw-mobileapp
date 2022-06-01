@@ -1467,6 +1467,35 @@
                         android:orientation="vertical"
                         android:padding="8dp">
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/religion_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/religion"
+                            android:textColor="@color/primary_text"
+                            android:textSize="15sp" />
+
+                        <Spinner
+                            android:id="@+id/religion_drop_down"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/religion_text_view"
+                            android:layout_marginTop="10dp"
+                            android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                            android:entries="@array/religion_en"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/lato_bold"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1506,6 +1535,170 @@
                         <Space
                             android:layout_width="15dp"
                             android:layout_height="15dp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/number_of_smartphones_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/number_of_smartphones_in_the_house"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/number_of_smartphones_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/enter_number"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/number_of_feature_phones_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/number_of_feature_phones_in_the_house"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/number_of_feature_phones_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/enter_number"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/no_of_earning_members_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/no_of_earning_members_in_the_household"
+                            android:textColor="@color/primary_text"
+                            android:textSize="16sp" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/no_of_earning_members_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/enter_number"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
+
+                        <Space
+                            android:layout_width="15dp"
+                            android:layout_height="15dp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/running_water_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/is_there_running_water_available_in_the_house"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <RadioGroup
+                            android:id="@+id/household_running_water_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/water_supply_yes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_medium"
+                                android:text="@string/survey_yes"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/water_supply_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/survey_no"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </RadioGroup>
+
+                        <Space
+                            android:layout_width="15dp"
+                            android:layout_height="15dp" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/running_water_availability_linear_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/availability_of_running_water_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/availability_of_water_supply"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/running_water_hours_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no_of_hours_per_day"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/running_water_hours_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/running_water_days_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15sp"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no_of_days_per_week"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/running_water_days_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -1693,7 +1886,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:background="?android:attr/listDivider" />
 

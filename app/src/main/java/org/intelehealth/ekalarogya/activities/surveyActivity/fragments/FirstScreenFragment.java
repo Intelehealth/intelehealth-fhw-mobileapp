@@ -77,13 +77,6 @@ public class FirstScreenFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.otherIncomeCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                binding.otherSourcesOfIncomeLayout.setVisibility(View.VISIBLE);
-            else
-                binding.otherSourcesOfIncomeLayout.setVisibility(View.GONE);
-        });
-
         binding.householdElectricityRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == binding.householdElectricityYes.getId())
                 binding.llLoadShedding.setVisibility(View.VISIBLE);
@@ -113,27 +106,8 @@ public class FirstScreenFragment extends Fragment {
 
     private boolean areFieldsValid() {
         AtomicBoolean validations = new AtomicBoolean(true);
-
-        // Validation for household structure RadioGroup
-        if (binding.householdStructureRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validation for head of household EditText
-        if (checkIfEmpty(requireContext(), Objects.requireNonNull(binding.nameOfHeadOfHouseholdEditText.getText()).toString())) {
-            validations.set(false);
-            return validations.get();
-        }
-
         // Validation for religion spinner
         if (checkIfEmpty(requireContext(), binding.religionDropDown.getSelectedItem().toString())) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validation for caste spinner
-        if (checkIfEmpty(requireContext(), binding.casteDropDown.getSelectedItem().toString())) {
             validations.set(false);
             return validations.get();
         }
@@ -156,18 +130,6 @@ public class FirstScreenFragment extends Fragment {
             return validations.get();
         }
 
-        // Validation for Primary Source of Income Checkbox Layout
-        if (checkIfCheckboxesEmpty(binding.primarySourceOfIncomeCheckboxLinearLayout)) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validation for Other Income field
-        if (binding.otherIncomeCheckbox.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.otherSourcesOfIncomeEditText.getText()).toString())) {
-            validations.set(false);
-            return validations.get();
-        }
-
         // Validations for Household Electricity Group
         if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
@@ -186,12 +148,6 @@ public class FirstScreenFragment extends Fragment {
             return validations.get();
         }
 
-        // Validations for Household Toilet Radio Group
-        if (binding.householdToiletRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
         // Validations for Running Water Hours Edit Text
         if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
@@ -200,18 +156,6 @@ public class FirstScreenFragment extends Fragment {
 
         // Validations for Running Water Days Edit Text
         if (binding.waterSupplyYes.isChecked() && checkIfEmpty(requireContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validations for Cultivable Radio Group
-        if (binding.cultivableLandRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validations for Units Radio Group
-        if (binding.unitsRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
             return validations.get();
         }
@@ -241,46 +185,12 @@ public class FirstScreenFragment extends Fragment {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO;
 
-        // householdStructureType
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdStructureType"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.householdStructureRadioGroup.findViewById(binding.householdStructureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // nameOfHeadOfHousehold
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nameOfHeadOfHousehold"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.nameOfHeadOfHouseholdEditText.getText().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
         // religion
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
         patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // caste
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                binding.casteDropDown.getSelectedItem().toString(),
                 requireContext(),
                 updatedContext,
                 sessionManager.getAppLanguage()
@@ -317,19 +227,6 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
 
-        String otherString = null;
-        if (binding.otherIncomeCheckbox.isChecked())
-            otherString = binding.otherSourcesOfIncomeEditText.getText().toString();
-
-        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(
-                binding.primarySourceOfIncomeCheckboxLinearLayout,
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage(),
-                getSurveyValue(otherString)
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
         // electricityStatus
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -359,19 +256,6 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingDaysEditText.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        // householdToiletStatus
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdToiletStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.householdToiletRadioGroup.findViewById(binding.householdToiletRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
         // runningWaterAvailability
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -399,32 +283,6 @@ public class FirstScreenFragment extends Fragment {
         patientAttributesDTO.setPatientuuid(patientUuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
         patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterDaysEditText.getText().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // cultivableLandOwned
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cultivableLandOwned"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.cultivableLandRadioGroup.findViewById(binding.cultivableLandRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // unitsOfCultivableLand
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("unitsOfCultivableLand"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.unitsRadioGroup.findViewById(binding.unitsRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // averageAnnualHouseholdIncome
@@ -492,22 +350,6 @@ public class FirstScreenFragment extends Fragment {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-                // householdStructureType
-                if (name.equalsIgnoreCase("householdStructureType")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdStructureRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
-                }
-
-                // nameOfHeadOfHousehold
-                if (name.equalsIgnoreCase("nameOfHeadOfHousehold")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        binding.nameOfHeadOfHouseholdEditText.setText(value1);
-                    }
-                }
-
                 // religion
                 if (name.equalsIgnoreCase("religion")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -515,16 +357,6 @@ public class FirstScreenFragment extends Fragment {
                         value1 = getSurveyStrings(value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                         int position = getIndex(binding.religionDropDown, value1);
                         binding.religionDropDown.setSelection(position);
-                    }
-                }
-
-                // caste
-                if (name.equalsIgnoreCase("caste")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        value1 = getSurveyStrings(value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                        int position = getIndex(binding.casteDropDown, value1);
-                        binding.casteDropDown.setSelection(position);
                     }
                 }
 
@@ -552,17 +384,6 @@ public class FirstScreenFragment extends Fragment {
                     }
                 }
 
-                // primarySourceOfIncome
-                if (name.equalsIgnoreCase("primarySourceOfIncome")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    setSelectedCheckboxes(binding.primarySourceOfIncomeCheckboxLinearLayout, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    binding.otherSourcesOfIncomeEditText.setText(null);
-                    if (value1.contains(updatedContext.getString(R.string.other_source_of_income_please_specify))) {
-                        String otherString = getOtherStringEdit(value1);
-                        binding.otherSourcesOfIncomeEditText.setText(otherString);
-                    }
-                }
-
                 // electricityStatus
                 if (name.equalsIgnoreCase("electricityStatus")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -587,14 +408,6 @@ public class FirstScreenFragment extends Fragment {
                     }
                 }
 
-                // householdToiletStatus
-                if (name.equalsIgnoreCase("householdToiletStatus")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.householdToiletRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
-                }
-
                 // runningWaterAvailability
                 if (name.equalsIgnoreCase("runningWaterAvailability")) {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -616,22 +429,6 @@ public class FirstScreenFragment extends Fragment {
                     String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     if (value1 != null && !value1.equalsIgnoreCase("-")) {
                         binding.runningWaterDaysEditText.setText(value1);
-                    }
-                }
-
-                // cultivableLandOwned
-                if (name.equalsIgnoreCase("cultivableLandOwned")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.cultivableLandRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
-                }
-
-                // unitsOfCultivableLand
-                if (name.equalsIgnoreCase("unitsOfCultivableLand")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.unitsRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
                     }
                 }
 
@@ -674,18 +471,6 @@ public class FirstScreenFragment extends Fragment {
                 religionAdapter = ArrayAdapter.createFromResource(requireContext(), religionId, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.religionDropDown.setAdapter(religionAdapter);
-        } catch (Exception e) {
-            Logger.logE("FirstScreenFragment", "#648", e);
-        }
-
-        // Caste ArrayAdapter
-        try {
-            String casteLanguage = "survey_caste_" + sessionManager.getAppLanguage();
-            int casteId = getResources().getIdentifier(casteLanguage, "array", requireContext().getPackageName());
-            if (casteId != 0) {
-                casteAdapter = ArrayAdapter.createFromResource(requireContext(), casteId, android.R.layout.simple_spinner_dropdown_item);
-            }
-            binding.casteDropDown.setAdapter(casteAdapter);
         } catch (Exception e) {
             Logger.logE("FirstScreenFragment", "#648", e);
         }

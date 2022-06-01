@@ -1114,5 +1114,6 @@
     <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">Number of members living cannot be greater than Total number of members in the household</string>
     <string name="please_select_the_main_source_of_drinking_water">Please select the main source of drinking water</string>
     <string name="please_select_the_methods_of_purifying_water">Please select the methods for purifying water</string>
+    <string name="please_state_if_you_have_running_water_in_the_household">Please state if you have running water in the household</string>
 
 </resources>

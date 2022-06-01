@@ -988,9 +988,9 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/jewish</item>
         <item>@string/parsi_zoroastrian</item>
         <item>@string/no_religion</item>
+        <item>@string/denied_to_answer</item>
     </string-array>
 
     <string-array name="religion_hi">
@@ -1001,7 +1001,6 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/jewish</item>
         <item>@string/parsi_zoroastrian</item>
         <item>@string/no_religion</item>
     </string-array>
@@ -1014,7 +1013,6 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/jewish</item>
         <item>@string/parsi_zoroastrian</item>
         <item>@string/no_religion</item>
     </string-array>
@@ -1027,7 +1025,6 @@
         <item>@string/sikh</item>
         <item>@string/buddhist_neo_buddhist</item>
         <item>@string/jain</item>
-        <item>@string/jewish</item>
         <item>@string/parsi_zoroastrian</item>
         <item>@string/no_religion</item>
     </string-array>

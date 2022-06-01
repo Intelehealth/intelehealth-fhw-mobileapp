@@ -41,6 +41,13 @@ public class Patient {
     private String hbChecked;
     private String bmiChecked;
     private String headOfHousehold;
+    private String religion;
+    private String numberOfSmartphones;
+    private String numberOfFeaturePhones;
+    private String numberOfEarningMembers;
+    private String waterSupplyStatus;
+    private String waterSupplyHoursPerDay;
+    private String waterSupplyDaysPerWeek;
 
     public String getMaritalStatus() {
         return maritalStatus;
@@ -360,5 +367,61 @@ public class Patient {
 
     public void setHeadOfHousehold(String headOfHousehold) {
         this.headOfHousehold = headOfHousehold;
+    }
+
+    public String getReligion() {
+        return religion;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
+
+    public String getNumberOfSmartphones() {
+        return numberOfSmartphones;
+    }
+
+    public void setNumberOfSmartphones(String numberOfSmartphones) {
+        this.numberOfSmartphones = numberOfSmartphones;
+    }
+
+    public String getNumberOfFeaturePhones() {
+        return numberOfFeaturePhones;
+    }
+
+    public void setNumberOfFeaturePhones(String numberOfFeaturePhones) {
+        this.numberOfFeaturePhones = numberOfFeaturePhones;
+    }
+
+    public String getNumberOfEarningMembers() {
+        return numberOfEarningMembers;
+    }
+
+    public void setNumberOfEarningMembers(String numberOfEarningMembers) {
+        this.numberOfEarningMembers = numberOfEarningMembers;
+    }
+
+    public String getWaterSupplyStatus() {
+        return waterSupplyStatus;
+    }
+
+    public void setWaterSupplyStatus(String waterSupplyStatus) {
+        this.waterSupplyStatus = waterSupplyStatus;
+    }
+
+    public String getWaterSupplyHoursPerDay() {
+        return waterSupplyHoursPerDay;
+    }
+
+    public void setWaterSupplyHoursPerDay(String waterSupplyHoursPerDay) {
+        this.waterSupplyHoursPerDay = waterSupplyHoursPerDay;
+    }
+
+    public String getWaterSupplyDaysPerWeek() {
+        return waterSupplyDaysPerWeek;
+    }
+
+    public void setWaterSupplyDaysPerWeek(String waterSupplyDaysPerWeek) {
+        this.waterSupplyDaysPerWeek = waterSupplyDaysPerWeek;
     }
 }

@@ -21,69 +21,9 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/household_structure_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/household_structure_type"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp" />
-
-            <RadioGroup
-                android:id="@+id/household_structure_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/household_structure_text_view"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/kucha_radio_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_medium"
-                    android:text="@string/kucha"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/pucca_radio_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_medium"
-                    android:text="@string/pucca"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/name_of_head_of_household_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/household_structure_radio_group"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/name_of_head_of_household"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_of_head_of_household_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_head_of_household_text_view"
-                android:fontFamily="@font/lato_regular"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textSize="14sp" />
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/religion_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/name_of_head_of_household_edit_text"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/religion"
@@ -104,34 +44,10 @@
                 android:textSize="14sp" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/caste_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/religion_drop_down"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/caste"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp" />
-
-            <Spinner
-                android:id="@+id/caste_drop_down"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/caste_text_view"
-                android:layout_marginTop="10dp"
-                android:drawableEnd="@drawable/ic_keyboard_arrow_down"
-                android:entries="@array/survey_caste_en"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/lato_bold"
-                android:textSize="14sp" />
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/number_of_smartphones_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/caste_drop_down"
+                android:layout_below="@id/religion_drop_down"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/number_of_smartphones_in_the_house"
@@ -191,186 +107,10 @@
                 android:textSize="14sp" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/primary_source_of_income_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/no_of_earning_members_edit_text"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/primary_source_of_income"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/primary_source_of_income_checkbox_linear_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@id/primary_source_of_income_text_view"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sale_of_cereal_production_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/lato_medium"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/sale_of_cereal_production"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/sale_of_animal_products_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/sale_of_animals_or_animal_products"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/agricultural_wage_labor_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/agricultural_wage_labor_employed_for_farm_work"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/salaried_worker_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/salaried_worker_fixed_monthly_salary"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/self_employed_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/self_employed_non_agricultural_petty_business"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/daily_labor_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/daily_labor_unskilled_work_agricultural_non_agricultural"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/nrega_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/nrega"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/seasonal_labor_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/seasonal_labor"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/no_paid_work_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/no_paid_work"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/pension_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/pension"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/remittance_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/remittances_checkbox"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/other_income_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="4sp"
-                    android:paddingEnd="4sp"
-                    android:text="@string/other_source_of_income_please_specify"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/other_sources_of_income_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/other_sources_of_income_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:fontFamily="@font/lato_regular"
-                        android:hint="@string/other_source_of_income_please_specify"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textSize="14sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/household_electricity_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/primary_source_of_income_checkbox_linear_layout"
+                android:layout_below="@id/no_of_earning_members_edit_text"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
@@ -466,47 +206,10 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/toilet_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_load_shedding"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/is_there_a_toilet_in_the_house"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/household_toilet_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/toilet_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_medium"
-                    android:text="@string/survey_yes"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_no"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/running_water_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/household_toilet_radio_group"
+                android:layout_below="@id/ll_load_shedding"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/is_there_running_water_available_in_the_house"
@@ -602,124 +305,10 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/cultivable_land_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/running_water_availability_linear_layout"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/amount_of_cultivable_land_owned_by_the_household"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/cultivable_land_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cultivable_land_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_medium"
-                    android:text="@string/zero_one"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/one_two"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/two_five"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/five_ten"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/more_than_10"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/units_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cultivable_land_radio_group"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/units"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/units_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/units_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_medium"
-                    android:text="@string/bigha"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/acre"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/gunta"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/hectare"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/average_annual_household_income_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/units_radio_group"
+                android:layout_below="@id/running_water_availability_linear_layout"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="20sp"
                 android:fontFamily="@font/lato_bold"
