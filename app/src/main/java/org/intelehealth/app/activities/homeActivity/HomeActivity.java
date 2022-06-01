@@ -617,7 +617,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             // #-- Alert logic -- end
 
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override

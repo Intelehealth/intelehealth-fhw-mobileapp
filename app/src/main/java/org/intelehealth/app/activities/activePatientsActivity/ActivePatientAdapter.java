@@ -32,6 +32,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.ActivePatientModel;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
 /**
@@ -50,11 +51,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    SessionManager sessionManager;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context,
+                                ArrayList<String> _listPatientUUID, SessionManager sessionManager) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -215,6 +219,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", "");
+                visitSummary.putExtra("providerID", sessionManager.getProviderID());
                 visitSummary.putExtra("pastVisit", past_visit);
 
                 if (holder.ivPriscription.getTag().equals("1")) {

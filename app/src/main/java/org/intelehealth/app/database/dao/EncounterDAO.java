@@ -242,7 +242,7 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+      //  db.close();
 
         return encounterDTO;
     }
