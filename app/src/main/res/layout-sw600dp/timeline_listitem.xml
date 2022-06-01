@@ -18,7 +18,7 @@
 
             <TextView
                 android:id="@+id/time1"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
@@ -31,7 +31,7 @@
                 android:layout_width="2dp"
                 android:layout_height="120dp"
                 android:layout_above="@+id/vl_2"
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="31dp"
                 android:layout_toEndOf="@id/time1"
                 android:background="#33000000" />
 
@@ -40,13 +40,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="23dp"
                 android:layout_toEndOf="@+id/time1"
                 android:src="@drawable/circle_indicator_timeline" />
 
             <View
                 android:id="@+id/hl_1"
-                android:layout_width="20dp"
+                android:layout_width="40dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/circle1"
@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/hl_1"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
@@ -96,11 +96,11 @@
 
             <TextView
                 android:id="@+id/time2"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:text="06:15 AM" />
+                android:text="26:65 PM" />
 
             <View
                 android:id="@+id/vl_2"

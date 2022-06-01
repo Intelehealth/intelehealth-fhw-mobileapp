@@ -242,7 +242,7 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+      //  db.close();
 
         return encounterDTO;
     }
@@ -441,6 +441,8 @@ public class EncounterDAO {
         return false;
     }
 
+    // Cursor returns eg: 10 rows but we have return type as String and not list and traversing is from top to bottom.
+    // So let the cursor extract, finally it will give the latest record itself coz the value of string will get overridden.
     public String fetchLatestEncounterTypeUuid(String visitUuid) {
         String latestEncounterTypeUuid = "";
         String encounterTypeUuid_Name = "";
@@ -448,6 +450,7 @@ public class EncounterDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ? ORDER BY encounter_time DESC LIMIT 1",
+      //  Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ?", // temp testing
                 new String[] {visitUuid});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

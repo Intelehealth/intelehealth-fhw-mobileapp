@@ -149,7 +149,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = doQuery(offset);
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID, sessionManager);
             recyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override
@@ -624,7 +624,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, sessionManager);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
             /*recyclerView.addItemDecoration(new
