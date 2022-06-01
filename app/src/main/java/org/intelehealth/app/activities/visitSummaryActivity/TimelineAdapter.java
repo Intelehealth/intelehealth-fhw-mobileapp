@@ -102,7 +102,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     } else {
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);
-                        holder.cardview.setCardElevation(0);
+                      //  holder.cardview.setCardElevation(0);
 
                         /* since card is disabled that means the either the user has filled data or has forgotten to fill.
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
@@ -112,10 +112,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
-                            //  holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
                         } else {
-                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
+//                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
                         }
                     }
 
