@@ -586,7 +586,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 // alert logic - start
                 if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
-
                     obsDTOList = obsDAO.obsCommentList(encounterUUID);
                     for (int i = 0; i < obsDTOList.size(); i++) {
                         if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {

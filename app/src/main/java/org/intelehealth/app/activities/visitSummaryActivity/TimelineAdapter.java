@@ -74,7 +74,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
                 String time = encounterDTOList.get(position).getEncounterTime();
-                SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
                 try {
@@ -85,13 +85,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
                     Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
                     if (position % 2 == 0) { // Even
-                        //  calendar.add(Calendar.HOUR, 1);
-                        // calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                        calendar.add(Calendar.MINUTE, 2); // Testing
+                          calendar.add(Calendar.HOUR, 1);
+                          calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                      //  calendar.add(Calendar.MINUTE, 2); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else { // Odd
-                        // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                        calendar.add(Calendar.MINUTE, 1); // Testing
+                         calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                       // calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                     }
 
