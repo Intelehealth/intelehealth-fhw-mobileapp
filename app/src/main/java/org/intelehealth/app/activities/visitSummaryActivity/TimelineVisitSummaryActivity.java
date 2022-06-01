@@ -60,22 +60,22 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
-      //  triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
+        //  triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
 
     }
 
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_viewepartogram, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    /*  @Override
+      public boolean onCreateOptionsMenu(Menu menu) {
+          MenuInflater inflater = getMenuInflater();
+          inflater.inflate(R.menu.menu_viewepartogram, menu);
+          return super.onCreateOptionsMenu(menu);
+      }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-*/
+      @Override
+      public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+          return super.onOptionsItemSelected(item);
+      }
+  */
     private void initUI() {
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
@@ -97,7 +97,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        if(intent != null) {
+        if (intent != null) {
             startVisitTime = intent.getStringExtra("startdate");
             timeList.add(startVisitTime);
             patientName = intent.getStringExtra("patientNameTimeline");
@@ -107,14 +107,13 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
             Stage1_Hour1_1 = intent.getStringExtra("Stage1_Hour1_1");
 
-            Log.v("timeline", "patientname_1 "+ patientName + " " + patientUuid + " " + visitUuid);
+            Log.v("timeline", "patientname_1 " + patientName + " " + patientUuid + " " + visitUuid);
 
-            if(whichScreenUserCameFromTag != null &&
+            if (whichScreenUserCameFromTag != null &&
                     whichScreenUserCameFromTag.equalsIgnoreCase("new")) {
                 triggerAlarm_Stage1_every30mins(); // Notification to show every 30min.
                 Log.v("timeline", "whichscreen: " + whichScreenUserCameFromTag);
-            }
-            else {
+            } else {
                 // do nothing
             }
 
@@ -125,10 +124,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
-            if(endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.endStageButton))) {
+            if (endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.endStageButton))) {
                 cancelStage1_ConfirmationDialog(); // cancel and start stage 2
-            }
-            else if(endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.end2StageButton))) {
+            } else if (endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.end2StageButton))) {
 
             }
 
@@ -139,7 +137,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void cancelStage1_ConfirmationDialog() {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
         alertDialog.setTitle("Are you sure you want to End Stage 1?");
-       // alertDialog.setMessage("");
+        // alertDialog.setMessage("");
         alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -168,7 +166,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void cancelStage1_30minAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
-        Log.v("timeline", "visituuid_int "+ visitUuid.replaceAll("[^\\d]", ""));
+        Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarms for different patients.
@@ -241,7 +239,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
-      //  calendar.add(Calendar.MINUTE, 1); // Testing
+        //  calendar.add(Calendar.MINUTE, 1); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -251,8 +249,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("providerID", providerID);
         intent.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
 
-        Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
-        Log.v("timeline", "visituuid_int_15min "+ visitUuid.replaceAll("[^\\d]", ""));
+        Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
+        Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarams for different patients.
@@ -267,7 +265,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-       // calendar.add(Calendar.MINUTE, 2); // Testing
+        // calendar.add(Calendar.MINUTE, 2); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -276,9 +274,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("providerID", providerID);
         intent.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
-        
-        Log.v("timeline", "patientname_3 "+ patientName + " " + patientUuid + " " + visitUuid);
-        Log.v("timeline", "visituuid_int_30min "+ visitUuid.replaceAll("[^\\d]", ""));
+
+        Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
+        Log.v("timeline", "visituuid_int_30min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
 

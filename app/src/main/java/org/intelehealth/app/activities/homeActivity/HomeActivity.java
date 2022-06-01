@@ -806,6 +806,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private MenuItem mLastUpdateMenuItem;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -1543,7 +1544,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setLastSyncTime(String lastSyncTime) {
         String convertedString = getFullMonthName(lastSyncTime);
 
-        if(mLastUpdateMenuItem != null) {
+        if (mLastUpdateMenuItem != null) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
                 mLastUpdateMenuItem.setTitle(sync_text);

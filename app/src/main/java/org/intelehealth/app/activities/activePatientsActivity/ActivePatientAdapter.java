@@ -105,7 +105,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         String age = DateAndTimeUtils.getAgeInYears(activePatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
 //        String body = String.format("%s %s (%s)", context.getString(R.string.identification_screen_prompt_age), age, activePatientModel.getGender());
-        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " ("+ StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
+        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
 
         holder.getHeadTextView().setText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()));
         holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
@@ -120,16 +120,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         // alert -> start
         int count = activePatientModel.getAlertFlagTotal();
-        if(count > 40) {
-           // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
+        if (count > 40) {
+            // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
             holder.ivPriscription.setColorFilter(context.getResources().getColor(R.color.red_1));
-        }
-        else if(count >= 30 && count <= 40) {
-           // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
+        } else if (count >= 30 && count <= 40) {
+            // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
             holder.ivPriscription.setColorFilter(context.getResources().getColor(R.color.darkYellow2));
-        }
-        else if (count < 30) {
-           // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
+        } else if (count < 30) {
+            // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
             holder.ivPriscription.setColorFilter(context.getResources().getColor(R.color.green2));
         }
         // alert -> end
@@ -149,14 +147,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "";
+                String end_date = "", dob = "", mGender = "", patientName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
                         mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
                         patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
                                 idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
-                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
+                        dob = idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
                     } while (idCursor.moveToNext());
                 }
                 idCursor.close();
@@ -170,10 +168,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 if (visitCursor.getCount() >= 1) {
                     if (visitCursor.moveToLast() && visitCursor != null) {
                         do {
-                            if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase(""+activePatientModel.getUuid())){
+                            if (visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase("" + activePatientModel.getUuid())) {
                                 end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                                visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));}
-                            else{
+                                visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                            } else {
 
                             }
                         } while (visitCursor.moveToPrevious());
@@ -208,7 +206,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                     past_visit = true;
                 }
 
-                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
+                float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dob);
 
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
