@@ -60,6 +60,7 @@ public class EncounterDAO {
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
+            values.put("encounter_time", encounter.getEncounterTime());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
@@ -196,7 +197,8 @@ public class EncounterDAO {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT DISTINCT uuid, visituuid, encounter_type_uuid, provider_uuid, encounter_time FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time", new String[]{visitUUID});
+        Cursor idCursor = db.rawQuery("SELECT DISTINCT uuid, visituuid, encounter_type_uuid, provider_uuid, encounter_time " +
+                "FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time", new String[]{visitUUID});
         EncounterDTO encounterDTO = new EncounterDTO();
         ArrayList<EncounterDTO> encounterDTOList = new ArrayList<>();
 
