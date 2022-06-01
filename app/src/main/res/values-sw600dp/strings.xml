@@ -15,4 +15,7 @@
     <string name="membrane_ruptured_time_val_txt">Please select membrane ruptured time</string>
     <string name="risk_factors_val_txt">Please select the risk factors</string>
     <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
+    <string name="click_to_enter"><u>Click to Enter</u></string>
+    <string name="missed_interval"><u>Missed</u></string>
+    <string name="submitted_interval"><u>Submitted</u></string>
 </resources>

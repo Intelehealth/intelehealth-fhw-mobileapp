@@ -798,5 +798,6 @@
     <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
     <string name="endStageButton">End Second Stage</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
+    <string name="click_to_enter">Click to Enter</string>
 
 </resources>

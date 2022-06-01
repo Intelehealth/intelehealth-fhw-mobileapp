@@ -66,6 +66,7 @@ public class DateAndTimeUtils {
 
     public String currentDateTime() {
         Locale.setDefault(Locale.ENGLISH);
+       // DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();

@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,10 +110,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         obsDAO = new ObsDAO();
                         boolean isMissed = false;
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if(isMissed)
-                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.red0));
-                        else
+                        if(isMissed) {
+                            holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
+                          //  holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                        }
+                        else {
                             holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
+                            holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+                        }
                     }
 
                     encounterTimeAmPmFormat = timeFormat.format(timeDateType);
@@ -135,7 +140,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
         CardView cardview;
-        TextView timeTextview;
+        TextView timeTextview, summary_textview;
         FrameLayout frame1, frame2, frame3, frame4;
         int index;
 
@@ -144,6 +149,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             cardview = itemView.findViewById(R.id.cardview_parent);
             timeTextview = itemView.findViewById(R.id.time1);
+            summary_textview = itemView.findViewById(R.id.summary_textview);
             frame1 = itemView.findViewById(R.id.frame1);
 
             cardview.setOnClickListener(new View.OnClickListener() {
