@@ -489,6 +489,16 @@
                     android:text="@string/hand_pump_at_home"
                     android:textSize="13sp" />
 
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/nal_jal_yojana_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/nal_jal_yojana"
+                    android:textSize="13sp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/other_source_of_water_checkbox"

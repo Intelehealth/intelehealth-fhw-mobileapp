@@ -92,6 +92,7 @@ public class SmokingHistoryAdapter extends RecyclerView.Adapter<SmokingHistoryAd
             if (!history.getRateOfSmoking().equalsIgnoreCase("-") && !history.getDurationOfSmoking().equalsIgnoreCase("-")) {
                 binding.tvSmokingRate.setText(getSmokingHistoryStrings(history.getRateOfSmoking(), updatedContext, context, locale));
                 binding.tvSmokingDuration.setText(getSmokingHistoryStrings(history.getDurationOfSmoking(), updatedContext, context, locale));
+                binding.tvSmokingFrequency.setText(getSmokingHistoryStrings(history.getFrequencyOfSmoking(), updatedContext, context, locale));
                 binding.llSmoking.setVisibility(View.VISIBLE);
             }
         }

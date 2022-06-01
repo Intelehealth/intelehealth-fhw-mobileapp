@@ -182,9 +182,6 @@ public class MedicalHistoryDialog extends DialogFragment {
         if (medicalHistory.getAnySurgeries().equalsIgnoreCase("Yes"))
             medicalHistory.setReasonForSurgery(binding.reasonForSurgeryEditText.getText().toString());
 
-        if (!binding.otherEditText.getText().toString().equalsIgnoreCase("") && !binding.otherEditText.getText().toString().isEmpty())
-            medicalHistory.setOther(binding.otherEditText.getText().toString());
-
         return medicalHistory;
     }
 
@@ -211,9 +208,5 @@ public class MedicalHistoryDialog extends DialogFragment {
             binding.reasonForSurgeryEditText.setText(reasonForSurgery);
             binding.surgeryLinearLayout.setVisibility(View.VISIBLE);
         }
-
-        String other = bundle.getString("other");
-        if (other != null && !other.equalsIgnoreCase("-"))
-            binding.otherEditText.setText(other);
     }
 }

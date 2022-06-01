@@ -95,6 +95,31 @@
                     android:paddingHorizontal="5dp"
                     android:textSize="15sp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10sp"
+                    android:background="?android:attr/listDivider" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingHorizontal="5dp"
+                    android:text="@string/frequency_of_consumption"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_smoking_frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingHorizontal="5dp"
+                    android:textSize="15sp" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View

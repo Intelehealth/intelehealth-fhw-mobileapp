@@ -1047,14 +1047,14 @@
     <!--    Medical History Strings -->
     <string name="medical_history">સરવારનો ઇતિહાસ</string>
     <string name="hypertension">ઊંચું લોહીનું દબાણ</string>
-    <string name="diabetes">સુગર</string>
-    <string name="arthritis">ગાંઠ</string>
-    <string name="anaemia">એનીમિયા</string>
-    <string name="any_surgeries">કોઈ સર્જરી</string>
-    <string name="reason_for_surgery_specify_the_reason">સર્જરીનું કારણ(કારણ જણાવો)</string>
+    <string name="diabetes">સુગર*</string>
+    <string name="arthritis">ગાંઠ*</string>
+    <string name="anaemia">એનીમિયા*</string>
+    <string name="any_surgeries">કોઈ સર્જરી*</string>
+    <string name="reason_for_surgery_specify_the_reason">સર્જરીનું કારણ(કારણ જણાવો)*</string>
 
     <!--    Smoking History Strings -->
-    <string name="smoking_status_in_the_household">પરિવારમાં ધૂમ્રપાનની સ્થિતિ</string>
+    <string name="smoking_status">પરિવારમાં ધૂમ્રપાનની સ્થિતિ</string>
     <string name="does_the_person_smoke">શું વ્યક્તિ ધૂમ્રપાન કરે છે?</string>
     <string name="smoker">ધૂમ્રપાન કરવાવાળા</string>
     <string name="non_smoker">ધૂમ્રપાન ના કરવાવાળા</string>
@@ -1068,7 +1068,7 @@
     <string name="more_than_ten_years">10 વર્ષથી વધુ</string>
 
     <!--    Alcohol Consumption Strings -->
-    <string name="history_of_alcohol_consumption_in_the_household">ઘરમાં દારૂ પીવાનો ઇતિહાસ</string>
+    <string name="history_of_alcohol_consumption">ઘરમાં દારૂ પીવાનો ઇતિહાસ</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ઘરમાં દારૂ પીવાનો ઇતિહાસ ધરાવો છો</string>
     <string name="no_denied">ના/અસ્વીકાર</string>
     <string name="rate_of_alcohol_consumption">આલ્કોહોલ વપરાશ દર</string>

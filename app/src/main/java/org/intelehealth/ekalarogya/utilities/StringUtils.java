@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.List;
@@ -2486,6 +2487,7 @@ public final class StringUtils {
             if (childAt instanceof CheckBox && ((CheckBox) childAt).isChecked())
                 selectedCheckboxes++;
         }
+        Logger.logD("Selected", String.valueOf(selectedCheckboxes));
         return selectedCheckboxes == 0;
     }
 
@@ -2512,6 +2514,7 @@ public final class StringUtils {
             }
         }
 
+        Logger.logD("Toast", result.toString());
         return result.toString();
     }
 
@@ -2867,6 +2870,10 @@ public final class StringUtils {
             // Translate string Hand Pump At Home to English
             if (context.getString(R.string.hand_pump_at_home).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hand_pump_at_home);
+            }
+            // Translate string Nal Jal Yojana to English
+            if (context.getString(R.string.nal_jal_yojana).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.nal_jal_yojana);
             }
             // Translate string Boil to English
             if (context.getString(R.string.boil).equalsIgnoreCase(text)) {
@@ -3340,6 +3347,26 @@ public final class StringUtils {
             if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_ten_years);
             }
+
+            // Translate strings Daily to English
+            if (context.getString(R.string.daily).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.daily);
+            }
+
+            // Translate strings Once A Week to English
+            if (context.getString(R.string.once_a_week).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.once_a_week);
+            }
+
+            // Translate strings Twice A Week to English
+            if (context.getString(R.string.twice_a_week).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.twice_a_week);
+            }
+
+            // Translate strings Occasionally to English
+            if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
+            }
         }
 
         return text;
@@ -3391,6 +3418,26 @@ public final class StringUtils {
             // Translate string More Than Ten Years to English
             if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_ten_years);
+            }
+
+            // Translate strings Daily to English
+            if (context.getString(R.string.daily).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.daily);
+            }
+
+            // Translate strings Once A Week to English
+            if (context.getString(R.string.once_a_week).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.once_a_week);
+            }
+
+            // Translate strings Twice A Week to English
+            if (context.getString(R.string.twice_a_week).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.twice_a_week);
+            }
+
+            // Translate strings Occasionally to English
+            if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
             }
         }
 
@@ -3475,6 +3522,25 @@ public final class StringUtils {
             // Translate string No to English
             if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.generic_no);
+            }
+        }
+        return text;
+    }
+
+    public static String getWhatsAppStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Yes (Family Member) to English
+            if (context.getString(R.string.yes_family_member).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.yes_family_member);
+            }
+            // Translate string Yes (Personal) to English
+            if (context.getString(R.string.yes_family_member).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.yes_family_member);
+            }
+            // Translate string No to English
+            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_no);
             }
         }
         return text;

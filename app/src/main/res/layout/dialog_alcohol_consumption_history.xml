@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/smoker_radio_button"
+                    android:id="@+id/yes_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
@@ -38,11 +38,19 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/non_smoker_radio_button"
+                    android:id="@+id/no_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
-                    android:text="@string/no_denied"
+                    android:text="@string/survey_no"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/denied_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="@string/survey_denied_to_answer"
                     android:textSize="14sp" />
 
             </RadioGroup>
@@ -137,6 +145,51 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:text="@string/more_than_ten_years"
+                        android:textSize="14sp" />
+
+                </RadioGroup>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingHorizontal="5dp"
+                    android:text="@string/frequency_of_consumption"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/frequency_of_consumption_radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/daily"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/once_a_week"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/twice_a_week"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/occasionally_once_a_month_or_less"
                         android:textSize="14sp" />
 
                 </RadioGroup>

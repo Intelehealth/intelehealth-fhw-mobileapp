@@ -7,7 +7,6 @@ public class MedicalHistory {
     private String anaemia = "-";
     private String anySurgeries = "-";
     private String reasonForSurgery = "-";
-    private String other = "-";
 
     public String getHypertension() {
         return hypertension;
@@ -55,13 +54,5 @@ public class MedicalHistory {
 
     public void setReasonForSurgery(String reasonForSurgery) {
         this.reasonForSurgery = reasonForSurgery;
-    }
-
-    public String getOther() {
-        return other;
-    }
-
-    public void setOther(String other) {
-        this.other = other;
     }
 }

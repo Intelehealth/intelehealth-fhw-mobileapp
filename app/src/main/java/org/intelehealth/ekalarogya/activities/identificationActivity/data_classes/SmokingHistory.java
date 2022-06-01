@@ -4,6 +4,7 @@ public class SmokingHistory {
     private String smokingStatus = "-";
     private String rateOfSmoking = "-";
     private String durationOfSmoking = "-";
+    private String frequencyOfSmoking = "-";
 
     public String getSmokingStatus() {
         return smokingStatus;
@@ -27,5 +28,13 @@ public class SmokingHistory {
 
     public void setDurationOfSmoking(String durationOfSmoking) {
         this.durationOfSmoking = durationOfSmoking;
+    }
+
+    public String getFrequencyOfSmoking() {
+        return frequencyOfSmoking;
+    }
+
+    public void setFrequencyOfSmoking(String frequencyOfSmoking) {
+        this.frequencyOfSmoking = frequencyOfSmoking;
     }
 }

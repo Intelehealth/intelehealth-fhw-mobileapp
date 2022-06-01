@@ -4,6 +4,7 @@ public class AlcoholConsumptionHistory {
     private String historyOfAlcoholConsumption = "-";
     private String rateOfAlcoholConsumption = "-";
     private String durationOfAlcoholConsumption = "-";
+    private String frequencyOfAlcoholConsumption = "-";
 
     public String getHistoryOfAlcoholConsumption() {
         return historyOfAlcoholConsumption;
@@ -27,5 +28,13 @@ public class AlcoholConsumptionHistory {
 
     public void setDurationOfAlcoholConsumption(String durationOfAlcoholConsumption) {
         this.durationOfAlcoholConsumption = durationOfAlcoholConsumption;
+    }
+
+    public String getFrequencyOfAlcoholConsumption() {
+        return frequencyOfAlcoholConsumption;
+    }
+
+    public void setFrequencyOfAlcoholConsumption(String frequencyOfAlcoholConsumption) {
+        this.frequencyOfAlcoholConsumption = frequencyOfAlcoholConsumption;
     }
 }

@@ -21,6 +21,7 @@
         <item>Select</item>
         <item>First dose</item>
         <item>Second dose</item>
+        <item>Third dose</item>
     </string-array>
 
     <string-array name="vaccination_spinner_hi">
@@ -495,7 +496,7 @@
         <item>@string/unemployed</item>
         <item>@string/retired_with_pension</item>
         <item>@string/retired_without_pension</item>
-        <item>@string/other_specify</item>
+        <item>@string/not_applicable</item>
     </string-array>
 
     <!--    Hindi Occupation-->
@@ -616,38 +617,39 @@
 
     <string-array name="bank_account_spinner_en">
         <item>Select</item>
-        <item>Declined to answer</item>
         <item>Yes</item>
         <item>No</item>
+        <item>Declined to answer</item>
     </string-array>
 
     <string-array name="bank_account_spinner_hi">
         <item>चुनते हैं</item>
-        <item>जवाब देने के लिए मना कर दिया</item>
         <item>हाँ</item>
         <item>नहीं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
     </string-array>
 
     <string-array name="bank_account_spinner_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
         <item>ହଁ</item>
         <item>ନା</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
     </string-array>
 
     <string-array name="bank_account_spinner_gu">
         <item>પસંદ કરો</item>
-        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
         <item>હા</item>
         <item>ના</item>
+        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_en">
         <item>@string/select</item>
         <item>@string/none</item>
-        <item>@string/shared</item>
-        <item>@string/owns_smartphone</item>
-        <item>@string/owns_feature_phone</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_smartphone</item>
     </string-array>
 
     <!--    <string-array name="mobilephone_spinner_hi">-->
@@ -660,9 +662,10 @@
     <string-array name="mobilephone_spinner_hi">
         <item>@string/select</item>
         <item>@string/none</item>
-        <item>@string/shared</item>
-        <item>@string/owns_smartphone</item>
-        <item>@string/owns_feature_phone</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_smartphone</item>
     </string-array>
 
     <!--    <string-array name="mobilephone_spinner_or">-->
@@ -675,17 +678,19 @@
     <string-array name="mobilephone_spinner_or">
         <item>@string/select</item>
         <item>@string/none</item>
-        <item>@string/shared</item>
-        <item>@string/owns_smartphone</item>
-        <item>@string/owns_feature_phone</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_smartphone</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_gu">
         <item>@string/select</item>
         <item>@string/none</item>
-        <item>@string/shared</item>
-        <item>@string/owns_smartphone</item>
-        <item>@string/owns_feature_phone</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_smartphone</item>
     </string-array>
 
     <!--    <string-array name="mobilephone_spinner_gu">-->
@@ -696,27 +701,31 @@
     <!--    </string-array>-->
 
     <string-array name="familymember_whatsapp_en">
-        <item>Select</item>
-        <item>Yes</item>
-        <item>No</item>
+        <item>@string/select</item>
+        <item>@string/yes_family_member</item>
+        <item>@string/yes_personal</item>
+        <item>@string/survey_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_hi">
-        <item>चुनते हैं</item>
-        <item>हाँ</item>
-        <item>नहीं</item>
+        <item>@string/select</item>
+        <item>@string/yes_family_member</item>
+        <item>@string/yes_personal</item>
+        <item>@string/survey_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_or">
-        <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ହଁ</item>
-        <item>ନା</item>
+        <item>@string/select</item>
+        <item>@string/yes_family_member</item>
+        <item>@string/yes_personal</item>
+        <item>@string/survey_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_gu">
-        <item>પસંદ કરો</item>
-        <item>હા</item>
-        <item>ના</item>
+        <item>@string/select</item>
+        <item>@string/yes_family_member</item>
+        <item>@string/yes_personal</item>
+        <item>@string/survey_no</item>
     </string-array>
 
     <string-array name="sourcewater_spinner_en">
@@ -817,74 +826,70 @@
 
     <string-array name="water_availability_spinner_en">
         <item>Select</item>
-        <item>Declined to answer</item>
         <item>Yes</item>
         <item>No</item>
         <item>Don\'t know</item>
+        <item>Declined to answer</item>
     </string-array>
 
     <string-array name="water_availability_spinner_hi">
         <item>चुनते हैं</item>
-        <item>जवाब देने के लिए मना कर दिया</item>
         <item>हाँ</item>
         <item>नहीं</item>
         <item>पता नहीं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
     </string-array>
 
     <string-array name="water_availability_spinner_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
         <item>ହଁ</item>
         <item>ନା</item>
         <item>ଜାଣ ନାହିଁ</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
     </string-array>
 
     <string-array name="water_availability_spinner_gu">
         <item>પસંદ કરો</item>
-        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
         <item>હા</item>
         <item>ના</item>
         <item>ખબર નથી</item>
+        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_en">
         <item>Select</item>
-        <item>Declined to answer</item>
         <item>No facility /uses open space or field</item>
         <item>Own toilet</item>
         <item>Community toilet</item>
         <item>Shared toilet with other household</item>
-        <item>Other [Enter]</item>
+        <item>Declined to answer</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_hi">
         <item>चुनते हैं</item>
-        <item>जवाब देने के लिए मना कर दिया</item>
         <item>कोई सुविधा नहीं  / खुली जगह या क्षेत्र का उपयोग करते हैं</item>
         <item>खुद का शौचालय</item>
         <item>सामुदायिक शौचालय</item>
         <item>अन्य घर के साथ साझा शौचालय</item>
-        <item>अन्य [दर्ज करें]</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
         <item>ସୁବିଧା ନାହିଁ / ଖୋଲା ସ୍ଥାନ ବା ଖେତ ର ବ୍ୟବହାର</item>
         <item>ନିଜର ଶୌଚାଳୟ</item>
         <item>ଗୋଷ୍ଠୀ ଶୌଚାଳୟ</item>
         <item>ଅନ୍ୟ ପଡିଶା ଘର ଶୌଚାଳୟ ବ୍ୟବହାର</item>
-        <item>ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]</item>
+        <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_gu">
         <item>પસંદ કરો</item>
-        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
         <item>કોઈ સુવિધા / ખુલ્લી જગ્યા અથવા ક્ષેત્રનો ઉપયોગ કરતું નથી</item>
         <item>પોતાનું શૌચાલય</item>
         <item>સામુદાયિક શૌચાલય</item>
         <item>અન્ય ઘર સાથે વહેંચાયેલ શૌચાલય</item>
-        <item>અન્ય [દાખલ કરો]</item>
+        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
     </string-array>
 
     <string-array name="structure_house_en">
@@ -1139,48 +1144,42 @@
         <item>@string/select</item>
         <item>@string/currently_married</item>
         <item>@string/married_gauna_not_performed</item>
+        <item>@string/never_married</item>
         <item>@string/widowed</item>
         <item>@string/divorced</item>
         <item>@string/separated</item>
-        <item>@string/deserted</item>
-        <item>@string/never_married</item>
-        <item>@string/never_married</item>
     </string-array>
 
     <string-array name="marital_status_hi">
         <item>@string/select</item>
         <item>@string/currently_married</item>
         <item>@string/married_gauna_not_performed</item>
+        <item>@string/never_married</item>
         <item>@string/widowed</item>
         <item>@string/divorced</item>
         <item>@string/separated</item>
-        <item>@string/deserted</item>
-        <item>@string/never_married</item>
-        <item>@string/never_married</item>
     </string-array>
 
     <string-array name="marital_status_or">
         <item>@string/select</item>
         <item>@string/currently_married</item>
         <item>@string/married_gauna_not_performed</item>
+        <item>@string/never_married</item>
         <item>@string/widowed</item>
         <item>@string/divorced</item>
         <item>@string/separated</item>
         <item>@string/deserted</item>
-        <item>@string/never_married</item>
-        <item>@string/never_married</item>
     </string-array>
 
     <string-array name="marital_status_gu">
         <item>@string/select</item>
         <item>@string/currently_married</item>
         <item>@string/married_gauna_not_performed</item>
+        <item>@string/never_married</item>
         <item>@string/widowed</item>
         <item>@string/divorced</item>
         <item>@string/separated</item>
         <item>@string/deserted</item>
-        <item>@string/never_married</item>
-        <item>@string/never_married</item>
     </string-array>
 
     <string-array name="test_status_en">
@@ -1221,6 +1220,38 @@
         <item>@string/between_one_month_to_three_months_ago</item>
         <item>@string/between_three_months_to_six_months_ago</item>
         <item>@string/more_than_six_months</item>
+    </string-array>
+
+    <string-array name="land_units_en">
+        <item>@string/select</item>
+        <item>@string/bigha</item>
+        <item>@string/gunta</item>
+        <item>@string/acre</item>
+        <item>@string/hectare</item>
+    </string-array>
+
+    <string-array name="land_units_hi">
+        <item>@string/select</item>
+        <item>@string/bigha</item>
+        <item>@string/gunta</item>
+        <item>@string/acre</item>
+        <item>@string/hectare</item>
+    </string-array>
+
+    <string-array name="land_units_or">
+        <item>@string/select</item>
+        <item>@string/bigha</item>
+        <item>@string/gunta</item>
+        <item>@string/acre</item>
+        <item>@string/hectare</item>
+    </string-array>
+
+    <string-array name="land_units_gu">
+        <item>@string/select</item>
+        <item>@string/bigha</item>
+        <item>@string/gunta</item>
+        <item>@string/acre</item>
+        <item>@string/hectare</item>
     </string-array>
 
 </resources>

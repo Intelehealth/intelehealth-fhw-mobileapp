@@ -96,7 +96,7 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
 
     private void setListeners() {
         binding.alcoholConsumptionRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == binding.smokerRadioButton.getId())
+            if (checkedId == binding.yesRadioButton.getId())
                 binding.alcoholConsumptionLinearLayout.setVisibility(View.VISIBLE);
             else
                 binding.alcoholConsumptionLinearLayout.setVisibility(View.GONE);
@@ -121,6 +121,11 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
             }
 
             if (binding.durationOfAlcoholConsumptionRadioGroup.getCheckedRadioButtonId() == -1) {
+                validation.set(false);
+                return validation.get();
+            }
+
+            if (binding.frequencyOfConsumptionRadioGroup.getCheckedRadioButtonId() == -1) {
                 validation.set(false);
                 return validation.get();
             }
@@ -154,6 +159,13 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
+
+            alcoholConsumptionHistory.setFrequencyOfAlcoholConsumption(getAlcoholHistory(
+                    ((RadioButton) binding.frequencyOfConsumptionRadioGroup.findViewById(binding.frequencyOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    requireContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
         }
 
         return alcoholConsumptionHistory;
@@ -171,6 +183,9 @@ public class AlcoholConsumptionHistoryDialog extends DialogFragment {
 
             String durationOfAlcoholConsumption = bundle.getString("durationOfAlcoholConsumption");
             setSelectedCheckboxes(binding.durationOfAlcoholConsumptionRadioGroup, durationOfAlcoholConsumption, updatedContext, requireContext(), sessionManager.getAppLanguage());
+
+            String frequencyOfAlcoholConsumption = bundle.getString("frequencyOfAlcoholConsumption");
+            setSelectedCheckboxes(binding.frequencyOfConsumptionRadioGroup, frequencyOfAlcoholConsumption, updatedContext, requireContext(), sessionManager.getAppLanguage());
         }
     }
 }

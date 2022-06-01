@@ -1056,14 +1056,14 @@
     <!--    Medical History Strings -->
     <string name="medical_history">चिकित्सा का इतिहास</string>
     <string name="hypertension">उच्च रक्तचाप</string>
-    <string name="diabetes">मधुमेह</string>
-    <string name="arthritis">गठिया</string>
-    <string name="anaemia">एनीमिया</string>
-    <string name="any_surgeries">कोई सर्जरी?</string>
-    <string name="reason_for_surgery_specify_the_reason">सर्जरी का कारण (कारण बताएं)</string>
+    <string name="diabetes">मधुमेह*</string>
+    <string name="arthritis">गठिया*</string>
+    <string name="anaemia">एनीमिया*</string>
+    <string name="any_surgeries">कोई सर्जरी?*</string>
+    <string name="reason_for_surgery_specify_the_reason">सर्जरी का कारण (कारण बताएं)*</string>
 
     <!--    Smoking History Strings -->
-    <string name="smoking_status_in_the_household">परिवार में धूम्रपान की स्थिति</string>
+    <string name="smoking_status">परिवार में धूम्रपान की स्थिति</string>
     <string name="does_the_person_smoke">क्या व्यक्ति धूम्रपान करता है?</string>
     <string name="smoker">धूम्रपान करने</string>
     <string name="non_smoker">धूम्रपान न करने वाला</string>
@@ -1077,7 +1077,7 @@
     <string name="more_than_ten_years">10 साल से अधिक</string>
 
     <!--    Alcohol Consumption Strings -->
-    <string name="history_of_alcohol_consumption_in_the_household">घर में शराब के सेवन का इतिहास</string>
+    <string name="history_of_alcohol_consumption">घर में शराब के सेवन का इतिहास</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या घर में शराब पीने का कोई इतिहास है?</string>
     <string name="no_denied">नहीं / अस्वीकार</string>
     <string name="rate_of_alcohol_consumption">शराब की खपत की दर</string>

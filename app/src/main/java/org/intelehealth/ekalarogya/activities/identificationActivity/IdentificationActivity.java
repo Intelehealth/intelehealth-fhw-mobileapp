@@ -1,5 +1,26 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity;
 
+import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSelectedCheckboxes;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,21 +32,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.ViewCompat;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -42,17 +48,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
+import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.AlcoholConsumptionHistoryAdapter;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.MedicalHistoryAdapter;
 import org.intelehealth.ekalarogya.activities.identificationActivity.adapters.SmokingHistoryAdapter;
@@ -66,8 +89,30 @@ import org.intelehealth.ekalarogya.activities.identificationActivity.data_classe
 import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.AlcoholConsumptionHistoryDialog;
 import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.MedicalHistoryDialog;
 import org.intelehealth.ekalarogya.activities.identificationActivity.dialogs.SmokingHistoryDialog;
+import org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ekalarogya.activities.setupActivity.LocationArrayAdapter;
+import org.intelehealth.ekalarogya.activities.setupActivity.SetupActivity;
+import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
+import org.intelehealth.ekalarogya.database.dao.ImagesPushDAO;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
+import org.intelehealth.ekalarogya.database.dao.SyncDAO;
+import org.intelehealth.ekalarogya.databinding.ActivityIdentificationBinding;
+import org.intelehealth.ekalarogya.models.Patient;
+import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
+import org.intelehealth.ekalarogya.models.dto.PatientDTO;
+import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalarogya.utilities.EditTextUtils;
+import org.intelehealth.ekalarogya.utilities.FileUtils;
+import org.intelehealth.ekalarogya.utilities.IReturnValues;
+import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NetworkConnection;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
+import org.intelehealth.ekalarogya.utilities.UuidGenerator;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,51 +126,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
-
-import org.intelehealth.ekalarogya.R;
-import org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity;
-import org.intelehealth.ekalarogya.app.AppConstants;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
-import org.intelehealth.ekalarogya.database.dao.ImagesPushDAO;
-import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
-import org.intelehealth.ekalarogya.database.dao.SyncDAO;
-import org.intelehealth.ekalarogya.models.Patient;
-import org.intelehealth.ekalarogya.models.dto.PatientAttributesDTO;
-import org.intelehealth.ekalarogya.models.dto.PatientDTO;
-import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
-import org.intelehealth.ekalarogya.utilities.EditTextUtils;
-import org.intelehealth.ekalarogya.utilities.FileUtils;
-import org.intelehealth.ekalarogya.utilities.IReturnValues;
-import org.intelehealth.ekalarogya.utilities.Logger;
-import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.UuidGenerator;
-
-import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
-import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalarogya.activities.setupActivity.SetupActivity;
-import org.intelehealth.ekalarogya.utilities.NetworkConnection;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
-
-import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_caste_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
 
 public class IdentificationActivity extends AppCompatActivity implements AlcoholConsumptionCallback, MedicalHistoryCallback, SmokingHistoryCallback, ViewPagerCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -200,6 +200,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     private AppCompatImageButton addMedicalHistoryButton, addSmokingStatusButton, addAlcoholConsumptionButton;
 
     private Context updatedContext;
+    private ActivityIdentificationBinding binding;
 
     // History Lists
     private List<AlcoholConsumptionHistory> alcoholConsumptionHistoryList = new ArrayList<>();
@@ -216,22 +217,27 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     private ViewPager2 medicalHistoryViewPager;
     private ViewPager2 smokingHistoryViewPager;
 
+    // RadioButtons
+    private MaterialRadioButton hohYes, hohNo;
+
+    // RadioGroup
+    private RadioGroup hohRadioGroup;
+
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
     private int retainPickerMonth;
     private int retainPickerDate;
-    Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner,
-            source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
+    Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner, water_availability_spinner,
             toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner,
-            bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner;
-    MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
-    EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
-            occupation_edittext, watersafe_edittext, toiletfacility_edittext, otherHohRelationshipEditText;
+            bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner, unitsSpinner;
+    MaterialCheckBox time_water_checkbox;
+    EditText time_water_editText, no_of_member_edittext, no_of_staying_members_edittext, landOwnedEditText, occupation_edittext,
+            toiletfacility_edittext, otherHohRelationshipEditText;
     CardView cardview_household, hohRelationshipCardView;
     ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt,
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt,
-            bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt;
+            bp_adapt, sugar_adapt, hbLevel_adapt, bmi_adapt, unitsAdapter;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -239,8 +245,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
 
     @Override
-    protected void
-    onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
@@ -255,7 +260,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         setUpTranslationTools();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_identification);
+        binding = ActivityIdentificationBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setTitle(R.string.title_activity_identification);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -348,13 +354,11 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
         whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
-        source_of_water_spinner = findViewById(R.id.source_of_water_spinner);
-        howtomake_water_safe_spinner = findViewById(R.id.howtomake_water_safe_spinner);
-        watersafe_edittext = findViewById(R.id.watersafe_edittext);
         water_availability_spinner = findViewById(R.id.water_availability_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
+        unitsSpinner = findViewById(R.id.units_spinner);
         hohRelationshipSpinner = findViewById(R.id.hoh_relationship_spinner);
         maritalStatusSpinner = findViewById(R.id.marital_status_spinner);
         bpSpinner = findViewById(R.id.bp_spinner);
@@ -363,19 +367,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
 
         //HOH - Checkbox
-        familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
         time_water_checkbox = findViewById(R.id.time_water_checkbox);
-        hectars_land_checkbox = findViewById(R.id.hectars_land_checkbox);
 
         // LinearLayout
         ll18 = findViewById(R.id.ll_18);
 
         //EditText
         time_water_editText = findViewById(R.id.time_water_editText);
-        hectars_land_editText = findViewById(R.id.hectars_land_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
         otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
+        landOwnedEditText = findViewById(R.id.land_owned_edit_text);
 
         //Cardview
         cardview_household = findViewById(R.id.cardview_household);
@@ -391,7 +393,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         medicalHistoryViewPager = findViewById(R.id.medical_history_view_pager);
         smokingHistoryViewPager = findViewById(R.id.smoking_history_view_pager);
 
-//Initialize the local database to store patient information
+        // RadioButton
+        hohYes = findViewById(R.id.hoh_yes);
+        hohNo = findViewById(R.id.hoh_no);
+
+        // RadioGroup
+        hohRadioGroup = findViewById(R.id.hoh_radio_group);
+
+        //Initialize the local database to store patient information
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -735,24 +744,24 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         //Vaccination - start
         //Vaccination - end
 
-        occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 13) {
-                    occupation_edittext.setVisibility(View.VISIBLE);
-                    occupation_edittext.requestFocus();
-                    occupation_edittext.setFocusable(true);
-                    occupation_edittext.setFocusableInTouchMode(true);
-                } else {
-                    occupation_edittext.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (position == 13) {
+//                    occupation_edittext.setVisibility(View.VISIBLE);
+//                    occupation_edittext.requestFocus();
+//                    occupation_edittext.setFocusable(true);
+//                    occupation_edittext.setFocusableInTouchMode(true);
+//                } else {
+//                    occupation_edittext.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         //Bank Account Adapter ...
         try {
@@ -822,64 +831,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             Toast.makeText(this, "Vaccination values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-
-
-//        sourcewater_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-//                getResources().getStringArray(R.array.sourcewater_spinner));
-
-        //Source Water Adapter ...
-        try {
-            String sourcewaterLanguage = "sourcewater_spinner_" + sessionManager.getAppLanguage();
-            int sourcewater_id = res.getIdentifier(sourcewaterLanguage, "array", getApplicationContext().getPackageName());
-            if (sourcewater_id != 0) {
-                sourcewater_adapt = ArrayAdapter.createFromResource(this,
-                        sourcewater_id, android.R.layout.simple_spinner_dropdown_item);
-            }
-            source_of_water_spinner.setAdapter(sourcewater_adapt);
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Water Source values are missing", Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-
-//        watersafe_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-//                getResources().getStringArray(R.array.howtomake_water_safe));
-
-        // Water Safe Adapter ...
-        try {
-            String watersafeLanguage = "howtomake_water_safe_" + sessionManager.getAppLanguage();
-            int watersafe_id = res.getIdentifier(watersafeLanguage, "array", getApplicationContext().getPackageName());
-            if (watersafe_id != 0) {
-                watersafe_adapt = ArrayAdapter.createFromResource(this,
-                        watersafe_id, android.R.layout.simple_spinner_dropdown_item);
-            }
-            howtomake_water_safe_spinner.setAdapter(watersafe_adapt);
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Water Safe values are missing", Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-
-        howtomake_water_safe_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getSelectedItem().toString().equalsIgnoreCase("Other[Enter]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]") ||
-                        parent.getSelectedItem().toString().equalsIgnoreCase("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]")) {
-                    watersafe_edittext.setVisibility(View.VISIBLE);
-                    watersafe_edittext.requestFocus();
-                    watersafe_edittext.setFocusable(true);
-                    watersafe_edittext.setFocusableInTouchMode(true);
-                } else {
-                    watersafe_edittext.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
 //        availa_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.water_availability_spinner));
@@ -957,6 +908,35 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             Logger.logE("Identification", "#648", e);
         }
 
+        // Land Owned Units Adapter
+        try {
+            String unitsLanguage = "land_units_" + sessionManager.getAppLanguage();
+            int unitsID = res.getIdentifier(unitsLanguage, "array", getApplicationContext().getPackageName());
+            if (unitsID != 0) {
+                unitsAdapter = ArrayAdapter.createFromResource(this, unitsID, android.R.layout.simple_spinner_dropdown_item);
+            }
+            unitsSpinner.setAdapter(unitsAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, "Unit values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        unitsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    landOwnedEditText.setVisibility(View.VISIBLE);
+                } else {
+                    landOwnedEditText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         //editText values values are set for the household fields ...
         no_of_member_edittext.setText(patient1.getNo_of_family_members());
         no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
@@ -971,15 +951,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         getResources().getString(R.string.identification_screen_picker_hours)).replaceAll("minute",
                         getResources().getString(R.string.identification_screen_picker_minute)));
             }
-            if (patient1.getHectars_land().equalsIgnoreCase("Declined to answer")) {
-                hectars_land_editText.setVisibility(View.GONE);
-                hectars_land_checkbox.setChecked(true);
-            } else {
-                hectars_land_editText.setVisibility(View.VISIBLE);
-                hectars_land_editText.setText(patient1.getHectars_land());
-            }
         }
-
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
@@ -1080,19 +1052,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     time_water_editText.setVisibility(View.GONE);
                 } else {
                     time_water_editText.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        hectars_land_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    hectars_land_checkbox.setError(null);
-                    hectars_land_editText.setError(null);
-                    hectars_land_editText.setVisibility(View.GONE);
-                } else {
-                    hectars_land_editText.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -1210,7 +1169,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
             }
 
-
             if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else {
@@ -1249,11 +1207,11 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             //Houselhold Head...
             if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
                     && !patient1.getNo_of_family_members().isEmpty()) {
-                familyhead_checkbox.setChecked(true);
+                hohYes.setChecked(true);
                 cardview_household.setVisibility(View.VISIBLE);
                 //sessionManager.setHOH_checkbox(false);
             } else {
-                familyhead_checkbox.setChecked(false);
+                hohNo.setChecked(false);
                 cardview_household.setVisibility(View.GONE);
             }
 
@@ -1470,58 +1428,29 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 hohRelationshipSpinner.setSelection(spinnerPosition);
             }
 
-            if (patient1.getSource_of_water() != null && !patient1.getSource_of_water()
-                    .equalsIgnoreCase("")) {
-
-                String watersource_Transl = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    watersource_Transl = StringUtils.switch_hi_watersource_edit(patient1.getSource_of_water());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    watersource_Transl = StringUtils.switch_or_watersource_edit(patient1.getSource_of_water());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    watersource_Transl = StringUtils.switch_gu_watersource_edit(patient1.getSource_of_water());
-                } else {
-                    watersource_Transl = patient1.getSource_of_water();
-                }
-
-                int spinner_position = sourcewater_adapt.getPosition(watersource_Transl);
-                source_of_water_spinner.setSelection(spinner_position);
+            if (patient1.getSource_of_water() != null && !patient1.getSource_of_water().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
+                        patient1.getSource_of_water(),
+                        updatedContext,
+                        getBaseContext(),
+                        sessionManager.getAppLanguage()
+                );
             }
+
             if (patient1.getWater_safe() != null && !patient1.getWater_safe().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,
+                        patient1.getWater_safe(),
+                        updatedContext,
+                        getBaseContext(),
+                        sessionManager.getAppLanguage());
+            }
 
-                String watersafe_Transl = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    watersafe_Transl = StringUtils.switch_hi_watersafe_edit(patient1.getWater_safe());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    watersafe_Transl = StringUtils.switch_or_watersafe_edit(patient1.getWater_safe());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    watersafe_Transl = StringUtils.switch_gu_watersafe_edit(patient1.getWater_safe());
-                } else {
-                    watersafe_Transl = patient1.getWater_safe();
-                }
-
-                int spinner_position = watersafe_adapt.getPosition(watersafe_Transl);
-                howtomake_water_safe_spinner.setSelection(spinner_position);
-
-                if (spinner_position >= 0) {
-                    howtomake_water_safe_spinner.setSelection(spinner_position); //user selected value items from spinner
-                }
-                //sicne we will have to show our dynamuic values here..
-                else {
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("अन्य [दर्ज करें]"));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("ଅନ୍ୟାନ୍ୟ [ଏଣ୍ଟର୍]"));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        //-------replace with gujrati
-                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("અન્ય[દાખલ કરો]"));
-                    } else {
-                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
-                    }
-
-                    watersafe_edittext.setVisibility(View.VISIBLE);
-                    watersafe_edittext.setText(patient1.getWater_safe());
-                }
+            if (patient1.getHectars_land() != null && !patient1.getHectars_land().equalsIgnoreCase("")) {
+                String[] splitString = patient1.getHectars_land().split(" ");
+                if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
+                    binding.landOwnedEditText.setText(splitString[0].trim());
+                int spinnerPosition = unitsAdapter.getPosition(getSurveyStrings(splitString[1], updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                unitsSpinner.setSelection(spinnerPosition);
             }
 
             if (patient1.getWater_availability() != null && !patient1.getWater_availability()
@@ -1597,6 +1526,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 int spinner_position = structure_adapt.getPosition(housestruct_Transl);
                 structure_of_house_spinner.setSelection(spinner_position);
             }
+
+
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
@@ -1610,6 +1541,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             LocationArrayAdapter locationArrayAdapter =
                     new LocationArrayAdapter(IdentificationActivity.this, villageList);
             mVillage.setAdapter(locationArrayAdapter);
+            mVillage.setEnabled(false);
             if (patientID_edit != null) {
                 mVillage.setSelection(locationArrayAdapter.getPosition(patient1.getCity_village()));
             } else {
@@ -2027,10 +1959,10 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
         });
 
-        familyhead_checkbox.setOnClickListener(new View.OnClickListener() {
+        hohRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (familyhead_checkbox.isChecked()) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == hohYes.getId()) {
                     cardview_household.setVisibility(View.VISIBLE);
                     hohRelationshipCardView.setVisibility(View.GONE);
                     no_of_member_edittext.requestFocus();
@@ -2042,8 +1974,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 }
             }
         });
-
-
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -2697,19 +2627,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
-        if (!familyhead_checkbox.isChecked()) {
-            // HOH Relationship Validation
-            if (hohRelationshipSpinner.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) hohRelationshipSpinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = hohRelationshipSpinner;
-                cancel = true;
-                return;
-            }
+        if (hohRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_state_if_you_are_the_head_of_the_family), Toast.LENGTH_SHORT).show();
+            focusView = hohRadioGroup;
+            cancel = true;
+            return;
         }
 
-        if (familyhead_checkbox.isChecked()) {
+        if (hohRadioGroup.getCheckedRadioButtonId() != -1) {
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_member_edittext.getText().toString().isEmpty()) {
@@ -2729,30 +2654,24 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            if (source_of_water_spinner.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) source_of_water_spinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = source_of_water_spinner;
+            if (Integer.parseInt(no_of_staying_members_edittext.getText().toString()) > Integer.parseInt(no_of_member_edittext.getText().toString())) {
+                no_of_staying_members_edittext.setError(getString(R.string.no_of_members_living_cannot_be_greater_than_total_number_of_members));
+                focusView = no_of_staying_members_edittext;
                 cancel = true;
                 return;
             }
 
-            if (howtomake_water_safe_spinner.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) howtomake_water_safe_spinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = howtomake_water_safe_spinner;
+            // Validations for Main Source of Drinking Water Linear Layout
+            if (!checkIfCheckboxesEmpty(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout)) {
+                Toast.makeText(this, getString(R.string.please_select_the_main_source_of_drinking_water), Toast.LENGTH_SHORT).show();
+                focusView = binding.mainSourceOfDrinkingWaterCheckboxLinearLayout;
                 cancel = true;
                 return;
             }
 
-            if (watersafe_edittext.getVisibility() == View.VISIBLE && watersafe_edittext.getText().toString().isEmpty() &&
-                    watersafe_edittext.getText().toString().equalsIgnoreCase("") &&
-                    watersafe_edittext.getText().toString() != null) {
-
-                watersafe_edittext.setError(getString(R.string.select));
-                focusView = watersafe_edittext;
+            if (checkIfCheckboxesEmpty(binding.householdMakeSafeWaterCheckboxLinearLayout)) {
+                Toast.makeText(this, getString(R.string.please_select_the_methods_of_purifying_water), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdMakeSafeWaterCheckboxLinearLayout;
                 cancel = true;
                 return;
             }
@@ -2815,19 +2734,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            if (!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
-                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
-                //checks if both the fields are not selected...
-                hectars_land_checkbox.setError(getString(R.string.select));
-
-                focusView = hectars_land_checkbox;
-                focusView = hectars_land_editText;
-                cancel = true;
-                return;
-
-            }
-
-
 //                if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
 //                        hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
 //                    //checks that checkbox is checked but editTExt is empty...
@@ -2861,6 +2767,23 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
+        if (checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
+            TextView t = (TextView) binding.unitsSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = binding.unitsSpinner;
+            cancel = true;
+            return;
+        }
+
+        if (!checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
+            if (checkIfEmpty(this, binding.landOwnedEditText.getText().toString())) {
+                binding.landOwnedEditText.setError(getString(R.string.enter_number));
+                focusView = binding.landOwnedEditText;
+                cancel = true;
+                return;
+            }
+        }
 
         if (cancel) {
             focusView.requestFocus();
@@ -3027,7 +2950,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Use WhatsApp"));
             // patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
+            patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3103,7 +3026,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if (!familyhead_checkbox.isChecked()) {
+            if (hohRadioGroup.getCheckedRadioButtonId() == hohNo.getId()) {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -3113,7 +3036,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             //Check first if Are you Head of Household checkbox is checked or not...
-            if (familyhead_checkbox.isChecked()) {
+            if (hohRadioGroup.getCheckedRadioButtonId() == hohYes.getId()) {
                 //Total no of members in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3140,32 +3063,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Drinking Water Source"));
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(source_of_water_spinner));
-                Log.d("HOH", "source of water: " + source_of_water_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //How do you make Drinking water Safe?
-                if (watersafe_edittext.getVisibility() == View.VISIBLE && !watersafe_edittext.getText().toString()
-                        .isEmpty() && !watersafe_edittext.getText().toString().equalsIgnoreCase("")) {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Safe Drinking Water"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(watersafe_edittext.getText().toString()));
-                    Log.d("HOH", "water safe: " + watersafe_edittext.getText().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO); //edit text is visible...
-                } else {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Safe Drinking Water"));
-                    // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-                    patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(howtomake_water_safe_spinner));
-                    Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO);
-                }
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Safe Drinking Water"));
+                // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.householdMakeSafeWaterCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Time taken to get water...
                 if (time_water_checkbox.isChecked()) {
@@ -3247,28 +3168,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // Hectars of Land...
-                if (hectars_land_checkbox.isChecked()) {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Family Cultivable Land"));
-                    //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(hectars_land_checkbox.getText().toString()));
-                    Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO);
-                } else {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Family Cultivable Land"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_editText.getText().toString()));
-                    Log.d("HOH", "Hectars value entered: " + hectars_land_editText.getText().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                }
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Family Cultivable Land"));
+                String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getSurveyStrings(
+                        binding.unitsSpinner.getSelectedItem().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(cultivableLand);
+                patientAttributesDTOList.add(patientAttributesDTO);
 
                 // sessionManager.setHOH_checkbox(true);
                 // Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
@@ -3669,19 +3579,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
-        if (!familyhead_checkbox.isChecked()) {
-            // HOH Relationship Validation
-            if (hohRelationshipSpinner.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) hohRelationshipSpinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = hohRelationshipSpinner;
-                cancel = true;
-                return;
-            }
+        if (hohRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_state_if_you_are_the_head_of_the_family), Toast.LENGTH_SHORT).show();
+            focusView = hohRadioGroup;
+            cancel = true;
+            return;
         }
 
-        if (familyhead_checkbox.isChecked()) {
+        if (hohRadioGroup.getCheckedRadioButtonId() != -1) {
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_member_edittext.getText().toString().isEmpty()) {
@@ -3701,30 +3606,24 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            if (source_of_water_spinner.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) source_of_water_spinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = source_of_water_spinner;
+            if (Integer.parseInt(no_of_staying_members_edittext.getText().toString()) > Integer.parseInt(no_of_member_edittext.getText().toString())) {
+                no_of_staying_members_edittext.setError(getString(R.string.no_of_members_living_cannot_be_greater_than_total_number_of_members));
+                focusView = no_of_staying_members_edittext;
                 cancel = true;
                 return;
             }
 
-            if (howtomake_water_safe_spinner.getSelectedItemPosition() == 0) {
-                TextView t = (TextView) howtomake_water_safe_spinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
-                focusView = howtomake_water_safe_spinner;
+            // Validations for Main Source of Drinking Water Linear Layout
+            if (checkIfCheckboxesEmpty(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout)) {
+                Toast.makeText(this, getString(R.string.please_select_the_main_source_of_drinking_water), Toast.LENGTH_SHORT).show();
+                focusView = binding.mainSourceOfDrinkingWaterCheckboxLinearLayout;
                 cancel = true;
                 return;
             }
 
-            if (watersafe_edittext.getVisibility() == View.VISIBLE && watersafe_edittext.getText().toString().isEmpty() &&
-                    watersafe_edittext.getText().toString().equalsIgnoreCase("") &&
-                    watersafe_edittext.getText().toString() != null) {
-
-                watersafe_edittext.setError(getString(R.string.select));
-                focusView = watersafe_edittext;
+            if (checkIfCheckboxesEmpty(binding.householdMakeSafeWaterCheckboxLinearLayout)) {
+                Toast.makeText(this, getString(R.string.please_select_the_methods_of_purifying_water), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdMakeSafeWaterCheckboxLinearLayout;
                 cancel = true;
                 return;
             }
@@ -3787,18 +3686,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
-            if (!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
-                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
-                //checks if both the fields are not selected...
-                hectars_land_checkbox.setError(getString(R.string.select));
-
-                focusView = hectars_land_checkbox;
-                focusView = hectars_land_editText;
-                cancel = true;
-                return;
-
-            }
-
 //            if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
 //                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
 //                //checks that checkbox is checked but editTExt is empty...
@@ -3830,6 +3717,24 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             focusView = alcoholViewPager;
             cancel = true;
             return;
+        }
+
+        if (checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
+            TextView t = (TextView) binding.unitsSpinner.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = binding.unitsSpinner;
+            cancel = true;
+            return;
+        }
+
+        if (!checkIfEmpty(this, binding.unitsSpinner.getSelectedItem().toString())) {
+            if (checkIfEmpty(this, binding.landOwnedEditText.getText().toString())) {
+                binding.landOwnedEditText.setError(getString(R.string.enter_number));
+                focusView = binding.landOwnedEditText;
+                cancel = true;
+                return;
+            }
         }
 
         if (cancel) {
@@ -3998,7 +3903,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Use WhatsApp"));
             // patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
+            patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4074,7 +3979,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if (!familyhead_checkbox.isChecked()) {
+            if (hohRadioGroup.getCheckedRadioButtonId() == hohNo.getId()) {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -4084,7 +3989,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             //Check first if Are you Head of Household checkbox is checked or not...
-            if (familyhead_checkbox.isChecked()) {
+            if (hohRadioGroup.getCheckedRadioButtonId() == hohYes.getId()) {
                 //Total no of members in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -4111,32 +4016,29 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Drinking Water Source"));
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(source_of_water_spinner));
-                Log.d("HOH", "source of water: " + source_of_water_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //How do you make Drinking water Safe?
-                if (watersafe_edittext.getVisibility() == View.VISIBLE && !watersafe_edittext.getText().toString()
-                        .isEmpty() && !watersafe_edittext.getText().toString().equalsIgnoreCase("")) {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Safe Drinking Water"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(watersafe_edittext.getText().toString()));
-                    Log.d("HOH", "water safe: " + watersafe_edittext.getText().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO); //edit text is visible...
-                } else {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Safe Drinking Water"));
-                    // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-                    patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(howtomake_water_safe_spinner));
-                    Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO);
-                }
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Safe Drinking Water"));
+                // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.householdMakeSafeWaterCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Time taken to get water...
                 if (time_water_checkbox.isChecked()) {
@@ -4218,28 +4120,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // Hectars of Land...
-                if (hectars_land_checkbox.isChecked()) {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Family Cultivable Land"));
-                    //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(hectars_land_checkbox.getText().toString()));
-                    Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO);
-                } else {
-                    patientAttributesDTO = new PatientAttributesDTO();
-                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                    patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                            .getUuidForAttribute("Family Cultivable Land"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_editText.getText().toString()));
-                    Log.d("HOH", "Hectars value entered: " + hectars_land_editText.getText().toString());
-                    patientAttributesDTOList.add(patientAttributesDTO);
-
-                }
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Family Cultivable Land"));
+                String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getSurveyStrings(
+                        binding.unitsSpinner.getSelectedItem().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(cultivableLand);
+                patientAttributesDTOList.add(patientAttributesDTO);
 
 //                sessionManager.setHOH_checkbox(true);
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
@@ -4427,7 +4318,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 bundle.putString("anaemia", medicalHistory.getAnaemia());
                 bundle.putString("anySurgeries", medicalHistory.getAnySurgeries());
                 bundle.putString("reasonForSurgery", medicalHistory.getReasonForSurgery());
-                bundle.putString("other", medicalHistory.getOther());
 
                 MedicalHistoryDialog medicalHistoryDialog = new MedicalHistoryDialog();
                 medicalHistoryDialog.setArguments(bundle);
@@ -4452,6 +4342,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 bundle.putString("smokingStatus", smokingHistory.getSmokingStatus());
                 bundle.putString("rateOfSmoking", smokingHistory.getRateOfSmoking());
                 bundle.putString("durationOfSmoking", smokingHistory.getDurationOfSmoking());
+                bundle.putString("frequencyOfSmoking", smokingHistory.getFrequencyOfSmoking());
 
                 SmokingHistoryDialog smokingHistoryDialog = new SmokingHistoryDialog();
                 smokingHistoryDialog.setArguments(bundle);
@@ -4477,6 +4368,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 bundle.putString("historyOfAlcoholConsumption", alcoholConsumptionHistory.getHistoryOfAlcoholConsumption());
                 bundle.putString("rateOfAlcoholConsumption", alcoholConsumptionHistory.getRateOfAlcoholConsumption());
                 bundle.putString("durationOfAlcoholConsumption", alcoholConsumptionHistory.getDurationOfAlcoholConsumption());
+                bundle.putString("frequencyOfAlcoholConsumption", alcoholConsumptionHistory.getFrequencyOfAlcoholConsumption());
 
                 AlcoholConsumptionHistoryDialog alcoholConsumptionHistoryDialog = new AlcoholConsumptionHistoryDialog();
                 alcoholConsumptionHistoryDialog.setArguments(bundle);

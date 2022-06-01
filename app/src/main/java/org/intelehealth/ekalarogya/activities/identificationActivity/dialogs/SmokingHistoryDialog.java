@@ -124,6 +124,11 @@ public class SmokingHistoryDialog extends DialogFragment {
                 validation.set(false);
                 return validation.get();
             }
+
+            if (binding.frequencyOfConsumptionRadioGroup.getCheckedRadioButtonId() == -1) {
+                validation.set(false);
+                return validation.get();
+            }
         }
 
         return validation.get();
@@ -155,6 +160,14 @@ public class SmokingHistoryDialog extends DialogFragment {
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
+
+            // Frequency of Smoking
+            smokingHistory.setFrequencyOfSmoking(getSmokingHistoryStrings(
+                    ((RadioButton) binding.frequencyOfConsumptionRadioGroup.findViewById(binding.frequencyOfConsumptionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    requireContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
         }
 
         return smokingHistory;
@@ -176,6 +189,9 @@ public class SmokingHistoryDialog extends DialogFragment {
 
             String durationOfSmoking = bundle.getString("durationOfSmoking");
             setSelectedCheckboxes(binding.durationOfSmokingRadioGroup, durationOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
+
+            String frequencyOfSmoking = bundle.getString("frequencyOfSmoking");
+            setSelectedCheckboxes(binding.frequencyOfConsumptionRadioGroup, frequencyOfSmoking, updatedContext, requireContext(), sessionManager.getAppLanguage());
         }
     }
 }

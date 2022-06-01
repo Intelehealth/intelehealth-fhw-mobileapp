@@ -94,11 +94,6 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
                 binding.tvReasonForSurgery.setText(medicalHistory.getReasonForSurgery());
                 binding.llReasonForSurgery.setVisibility(View.VISIBLE);
             }
-
-            if (medicalHistory.getOther() != null && !medicalHistory.getOther().equalsIgnoreCase("-")) {
-                binding.tvOther.setText(medicalHistory.getOther());
-                binding.llOther.setVisibility(View.VISIBLE);
-            }
         }
     }
 }

@@ -923,13 +923,13 @@
     <string name="identification_screen_checkbox_other">ଅନ୍ୟାନ୍ୟ</string>
     <string name="medical_history">ଚିକିତ୍ସା ଇତିହାସ</string>
     <string name="hypertension">ଉଚ୍ଚ ରକ୍ତଚାପ</string>
-    <string name="diabetes">ମଧୁମେହ</string>
-    <string name="arthritis">ଆର୍ଥ୍ରାଇଟିସ୍</string>
-    <string name="anaemia">ରକ୍ତହୀନତା</string>
-    <string name="any_surgeries">ଯେକ ଇଦ୍ଭଚ୍ଚ ଣସି ଅସ୍ତ୍ରୋପଚାର</string>
-    <string name="reason_for_surgery_specify_the_reason">ଅସ୍ତ୍ରୋପଚାରର କାରଣ (କାରଣ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ)</string>
+    <string name="diabetes">ମଧୁମେହ*</string>
+    <string name="arthritis">ଆର୍ଥ୍ରାଇଟିସ୍*</string>
+    <string name="anaemia">ରକ୍ତହୀନତା*</string>
+    <string name="any_surgeries">ଯେକ ଇଦ୍ଭଚ୍ଚ ଣସି ଅସ୍ତ୍ରୋପଚାର*</string>
+    <string name="reason_for_surgery_specify_the_reason">ଅସ୍ତ୍ରୋପଚାରର କାରଣ (କାରଣ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ)*</string>
 
-    <string name="smoking_status_in_the_household">ଗୃହରେ ଧୂମପାନ ସ୍ଥିତି ଜ୍ଝ</string>
+    <string name="smoking_status">ଗୃହରେ ଧୂମପାନ ସ୍ଥିତି ଜ୍ଝ</string>
     <string name="does_the_person_smoke">ଏହି ଲୋକ ଧୁମ୍ରପାନ କରେକି?</string>
     <string name="smoker">ଧୂମପାନକାରୀ</string>
     <string name="non_smoker">ଅଣ ଧୂମପାନକାରୀ</string>
@@ -942,7 +942,7 @@
     <string name="from_five_years_to_ten_years">5 ବର୍ଷରୁ 10 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
     <string name="more_than_ten_years">10 ବର୍ଷରୁ ଅଧିକ</string>
 
-    <string name="history_of_alcohol_consumption_in_the_household">ଘରେ ମଦ୍ୟପାନର ଇତିହାସ</string>
+    <string name="history_of_alcohol_consumption">ଘରେ ମଦ୍ୟପାନର ଇତିହାସ</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ପରିବାର ରେ କେହି ମଦ୍ୟ ପାନ କରୁଥିବାର ନଜିର ଅଛି କି?</string>
     <string name="no_denied">ନା / ଅସ୍ୱୀକାର</string>
     <string name="rate_of_alcohol_consumption">କେତେ ପରିମାଣର ମଦ୍ୟ ପାନ କରନ୍ତି</string>

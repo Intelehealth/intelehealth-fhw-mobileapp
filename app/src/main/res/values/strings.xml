@@ -659,6 +659,7 @@
     <string name="what_is_your_occupation">What is your occupation?*</string>
     <string name="do_you_have_a_bank_account">Do you have a bank account?*</string>
     <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?*</string>
+    <string name="phone_ownership">Phone Ownership</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?*</string>
     <string name="total_number_of_members_in_the_household">Total number of members in the household*</string>
     <string name="enter_number">Enter Number</string>
@@ -1030,10 +1031,20 @@
     <string name="unemployed">Unemployed</string>
     <string name="retired_with_pension">Retired (With Pension)</string>
     <string name="retired_without_pension">Retired (Without Pension)</string>
+    <string name="not_applicable">Not Applicable</string>
 
     <string name="shared">Shared</string>
     <string name="owns_smartphone">Owns Smartphone</string>
     <string name="owns_feature_phone">Owns Feature Phone</string>
+
+    <string name="own_smartphone">Own Smartphone</string>
+    <string name="own_feature_phone">Own Feature Phone</string>
+    <string name="shared_smartphone">Shared Smartphone</string>
+    <string name="shared_feature_phone">Shared Feature Phone</string>
+
+    <string name="yes_family_member">Yes (Family Member)</string>
+    <string name="yes_personal">Yes (Personal)</string>
+
     <string name="when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?</string>
     <string name="when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?</string>
     <string name="when_was_the_last_time_you_got_your_hb_level_checked">When was the last time you got your HB level checked?</string>
@@ -1043,19 +1054,19 @@
     <string name="in_past_one_week">In past one week</string>
     <string name="within_last_month">Within last month</string>
     <string name="between_one_month_to_three_months_ago">Between one month to 3 months ago</string>
-    <string name="between_three_months_to_six_months_ago">between 3 months-6months ago</string>
+    <string name="between_three_months_to_six_months_ago">Between 3 months to 6 months ago</string>
     <string name="more_than_six_months">More than 6 months</string>
 
     <string name="identification_screen_checkbox_other">Other</string>
     <string name="medical_history">Medical History</string>
     <string name="hypertension">Hypertension</string>
-    <string name="diabetes">Diabetes</string>
-    <string name="arthritis">Arthritis</string>
-    <string name="anaemia">Anaemia</string>
-    <string name="any_surgeries">Any Surgeries?</string>
-    <string name="reason_for_surgery_specify_the_reason">Reason for surgery (specify the reason)</string>
+    <string name="diabetes">Diabetes*</string>
+    <string name="arthritis">Arthritis*</string>
+    <string name="anaemia">Anaemia*</string>
+    <string name="any_surgeries">Any Surgeries?*</string>
+    <string name="reason_for_surgery_specify_the_reason">Reason for surgery (specify the reason)*</string>
 
-    <string name="smoking_status_in_the_household">Smoking Status In The Household</string>
+    <string name="smoking_status">Smoking Status</string>
     <string name="does_the_person_smoke">Does the person smoke?</string>
     <string name="smoker">Smoker</string>
     <string name="non_smoker">Non-Smoker</string>
@@ -1068,7 +1079,7 @@
     <string name="from_five_years_to_ten_years">From 5 to 10 years</string>
     <string name="more_than_ten_years">More than 10 years</string>
 
-    <string name="history_of_alcohol_consumption_in_the_household">History Of Alcohol Consumption In The Household</string>
+    <string name="history_of_alcohol_consumption">History Of Alcohol Consumption</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption in the household?</string>
     <string name="no_denied">No or Denied</string>
     <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
@@ -1087,5 +1098,21 @@
     <string name="smoking_history_cannot_be_empty">Smoking History Cannot Be Empty</string>
     <string name="alcohol_consumption_history_cannot_be_empty">Alcohol Consumption History Cannot Be Empty</string>
     <string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">Does the village get water under the Jal Jeevan Yojana scheme?</string>
+    <string name="nal_jal_yojana">Nal Jal Yojana</string>
+    <string name="how_much_cultivable_land_does_your_family_own">How much cultivable land does your family own?</string>
+    <string name="bp">BP*</string>
+    <string name="less_than_5_cigarettes">Less than 5 cigarettes</string>
+    <string name="denied_to_answer">Denied To Answer</string>
+    <string name="survey_denied_to_answer">Denied To Answer</string>
+    <string name="frequency_of_consumption">Frequency of consumption</string>
+    <string name="daily">Daily</string>
+    <string name="once_a_week">Once a week</string>
+    <string name="twice_a_week">Twice a week</string>
+    <string name="occasionally_once_a_month_or_less">Occasionally (Once a month or less)</string>
+
+    <string name="please_state_if_you_are_the_head_of_the_family">Please state if you\'re the head of the family</string>
+    <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">Number of members living cannot be greater than Total number of members in the household</string>
+    <string name="please_select_the_main_source_of_drinking_water">Please select the main source of drinking water</string>
+    <string name="please_select_the_methods_of_purifying_water">Please select the methods for purifying water</string>
 
 </resources>

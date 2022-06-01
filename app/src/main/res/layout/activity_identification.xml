@@ -924,8 +924,8 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/what_kind_of_mobile_phone_do_you_personally_own"
+                                android:paddingHorizontal="5dp"
+                                android:text="@string/phone_ownership"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <Space
@@ -1200,18 +1200,253 @@
 
                 <!-- End of Occupation UI -->
 
-                <!-- Here we will add the Cardview and Checkbox for Head Of Household -->
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/familyhead_checkbox"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_medical_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/are_you_head_of_the_family"
-                    android:textSize="@dimen/card_content_text_size">
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
-                </com.google.android.material.checkbox.MaterialCheckBox>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/medical_history_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/medical_history_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_medical_history_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/medical_history"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_medical_history_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/medical_history_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/medical_history_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_smoking_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/main_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/heading_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_smoking_status_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/smoking_status"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_smoking_status_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/smoking_history_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/main_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_alcohol_consumption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/alcohol_consumption_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/alcohol_consumption_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toStartOf="@id/add_alcohol_consumption_button"
+                                android:fontFamily="@font/lato_bold"
+                                android:padding="12dp"
+                                android:text="@string/history_of_alcohol_consumption"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_18sp" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/add_alcohol_consumption_button"
+                                android:layout_width="30sp"
+                                android:layout_height="30sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_add_24dp" />
+
+                        </RelativeLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/alcohol_consumption_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/alcohol_consumption_relative_layout"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@android:color/darker_gray"
+                            android:minHeight="64dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_hoh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_hoh"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview"
+                            android:fontFamily="@font/lato_bold"
+                            android:padding="12dp"
+                            android:text="@string/are_you_head_of_the_family"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_18sp" />
+
+                        <RadioGroup
+                            android:id="@+id/hoh_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_hoh">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/hoh_yes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/yes"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/hoh_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/no"
+                                android:textSize="14sp" />
+
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--                &lt;!&ndash; Here we will add the Cardview and Checkbox for Head Of Household &ndash;&gt;-->
+                <!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+                <!--                    android:id="@+id/familyhead_checkbox"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="10dp"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:layout_marginBottom="5dp"-->
+                <!--                    android:text="@string/are_you_head_of_the_family"-->
+                <!--                    android:textSize="@dimen/card_content_text_size">-->
+
+                <!--                </com.google.android.material.checkbox.MaterialCheckBox>-->
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_household"
@@ -1283,10 +1518,177 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <Spinner
-                            android:id="@+id/source_of_water_spinner"
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/main_source_of_drinking_water_checkbox_linear_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/piped_into_dwelling_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/piped_into_dwelling"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/piped_into_yard_plot_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/piped_into_yard_plot"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/public_tap_standpipe_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/public_tap_standpipe"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/tube_well_borehole_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/tube_well_borehole"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/protected_well_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/protected_well_checkbox"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/unprotected_well_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/unprotected_well"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/protected_spring_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/protected_spring"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/unprotected_spring_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/unprotected_spring"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/rainwater_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/rainwater"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/tanker_truck_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/tanker_truck"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cart_with_small_tank_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/cart_with_small_tank"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/surface_water_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/surface_water"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/common_hand_pump_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/common_hand_pump"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/hand_pump_at_home_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/hand_pump_at_home"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/nal_jal_yojana_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/nal_jal_yojana"
+                                android:textSize="13sp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <View
                             android:layout_width="match_parent"
@@ -1298,7 +1700,8 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingHorizontal="5dp"
                             android:text="@string/what_do_you_do_to_make_drinking_water_safer"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -1306,21 +1709,101 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <Spinner
-                            android:id="@+id/howtomake_water_safe_spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <EditText
-                            android:id="@+id/watersafe_edittext"
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/household_make_safe_water_checkbox_linear_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:hint="@string/enter_answer"
-                            android:textSize="@dimen/card_content_sub_text_size"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
+                            android:orientation="vertical">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/boil_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/boil"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/use_alum_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/use_alum"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/add_bleach_chlorine_tablets_drops_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/add_bleach_chlorine_tablets_drops"
+                                android:textSize="13sp" />
+
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/strain_through_a_cloth_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/strain_through_a_cloth"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/use_water_filter_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/use_water_filter_ceramic_sand_composite_etc"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/use_electronic_purifier_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/use_electronic_purifier"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/let_it_stand_and_settle_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:paddingStart="4sp"
+                                android:paddingEnd="4sp"
+                                android:text="@string/let_it_stand_and_settle"
+                                android:textSize="13sp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <!--                        <EditText-->
+                        <!--                            android:id="@+id/watersafe_edittext"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:focusable="true"-->
+                        <!--                            android:focusableInTouchMode="true"-->
+                        <!--                            android:hint="@string/enter_answer"-->
+                        <!--                            android:textSize="@dimen/card_content_sub_text_size"-->
+                        <!--                            android:visibility="gone"-->
+                        <!--                            tools:visibility="visible" />-->
 
                         <View
                             android:layout_width="match_parent"
@@ -1332,7 +1815,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
+                            android:paddingHorizontal="5dp"
                             android:text="@string/how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -1453,43 +1936,34 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/how_much_hectars_of_cultivable_land_your_family_owns"
+                            android:paddingHorizontal="5dp"
+                            android:text="@string/how_much_cultivable_land_does_your_family_own"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/hectars_land_checkbox"
+                        <Spinner
+                            android:id="@+id/units_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/land_owned_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/declined"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:fontFamily="@font/lato_regular"
+                            android:freezesText="true"
+                            android:hint="@string/enter_number"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:maxLines="1"
+                            android:singleLine="true"
                             android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <EditText
-                                android:id="@+id/hectars_land_editText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"
-                                android:fontFamily="@font/lato_regular"
-                                android:freezesText="true"
-                                android:hint="@string/enter_number"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="number"
-                                android:maxLength="3"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -1501,7 +1975,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false"
@@ -1548,185 +2022,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_view_medical_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <RelativeLayout
-                            android:id="@+id/medical_history_relative_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/titleBar_cardview">
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/medical_history_text_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toStartOf="@id/add_medical_history_button"
-                                android:fontFamily="@font/lato_bold"
-                                android:padding="12dp"
-                                android:text="@string/medical_history"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/text_18sp" />
-
-                            <androidx.appcompat.widget.AppCompatImageButton
-                                android:id="@+id/add_medical_history_button"
-                                android:layout_width="30sp"
-                                android:layout_height="30sp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="10dp"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/ic_add_24dp" />
-
-                        </RelativeLayout>
-
-                        <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/medical_history_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_below="@id/medical_history_relative_layout"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:background="@android:color/darker_gray"
-                            android:minHeight="64dp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_view_smoking_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <RelativeLayout
-                            android:id="@+id/main_relative_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/titleBar_cardview">
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/heading_text_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toStartOf="@id/add_smoking_status_button"
-                                android:fontFamily="@font/lato_bold"
-                                android:padding="12dp"
-                                android:text="@string/smoking_status_in_the_household"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/text_18sp" />
-
-                            <androidx.appcompat.widget.AppCompatImageButton
-                                android:id="@+id/add_smoking_status_button"
-                                android:layout_width="30sp"
-                                android:layout_height="30sp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="10dp"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/ic_add_24dp" />
-
-                        </RelativeLayout>
-
-                        <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/smoking_history_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_below="@id/main_relative_layout"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:background="@android:color/darker_gray"
-                            android:minHeight="64dp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_view_alcohol_consumption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <RelativeLayout
-                            android:id="@+id/alcohol_consumption_relative_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/titleBar_cardview">
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/alcohol_consumption_text_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toStartOf="@id/add_alcohol_consumption_button"
-                                android:fontFamily="@font/lato_bold"
-                                android:padding="12dp"
-                                android:text="@string/history_of_alcohol_consumption_in_the_household"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/text_18sp" />
-
-                            <androidx.appcompat.widget.AppCompatImageButton
-                                android:id="@+id/add_alcohol_consumption_button"
-                                android:layout_width="30sp"
-                                android:layout_height="30sp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="10dp"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/ic_add_24dp" />
-
-                        </RelativeLayout>
-
-                        <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/alcohol_consumption_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_below="@id/alcohol_consumption_relative_layout"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:background="@android:color/darker_gray"
-                            android:minHeight="64dp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
 
                 <!-- End of HOH -->
 

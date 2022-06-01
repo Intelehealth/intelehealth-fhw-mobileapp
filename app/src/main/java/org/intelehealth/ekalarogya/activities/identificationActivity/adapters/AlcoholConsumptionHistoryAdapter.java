@@ -93,6 +93,7 @@ public class AlcoholConsumptionHistoryAdapter extends RecyclerView.Adapter<Alcoh
             if (!history.getRateOfAlcoholConsumption().equalsIgnoreCase("-") && !history.getDurationOfAlcoholConsumption().equalsIgnoreCase("-")) {
                 binding.tvConsumptionRate.setText(getAlcoholHistory(history.getRateOfAlcoholConsumption(), updatedContext, context, locale));
                 binding.tvConsumptionDuration.setText(getAlcoholHistory(history.getDurationOfAlcoholConsumption(), updatedContext, context, locale));
+                binding.tvAlcoholConsumptionFrequency.setText(getAlcoholHistory(history.getFrequencyOfAlcoholConsumption(), updatedContext, context, locale));
                 binding.llAlcoholConsumption.setVisibility(View.VISIBLE);
             }
         }
