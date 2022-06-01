@@ -78,9 +78,11 @@
                     android:padding="2dp">
 
                     <TextView
+                        android:id="@+id/summary_textview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Summary: This looks a summary \n\n Alert: This is an Alert!!!" />
+                        android:text="@string/click_to_enter"
+                        android:gravity="center" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginHorizontal="10dp">
 
     <FrameLayout
@@ -78,9 +79,11 @@
                     android:padding="2dp">
 
                     <TextView
+                        android:id="@+id/summary_textview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Summary: This looks a summary \n\n Alert: This is an Alert!!!" />
+                        android:text="@string/click_to_enter"
+                        android:gravity="center"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -246,6 +246,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         holder.btnVisitDetails.setOnClickListener(listener);
 
         boolean enableEndVisit = false;
+/*
         for (int i = 0; i < listPatientUUID.size(); i++) {
             if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
@@ -253,6 +254,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 enableEndVisit = true;
             }
         }
+*/
 
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.btnVisitDetails.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary)));

@@ -203,7 +203,7 @@ public class ObsDAO {
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 obsDTO = new ObsDTO();
-                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
                 obsDTOList.add(obsDTO);
             }
         }

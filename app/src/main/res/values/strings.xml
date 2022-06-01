@@ -844,5 +844,9 @@
     <string name="endStageButton">End First Stage</string>
     <string name="end2StageButton">End Second Stage</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
+    <string name="click_to_enter"><u>Click to Enter</u></string>
+    <string name="missed_interval"><u>Missed</u></string>
+    <string name="submitted_interval"><u>Submitted</u></string>
+
 
 </resources>

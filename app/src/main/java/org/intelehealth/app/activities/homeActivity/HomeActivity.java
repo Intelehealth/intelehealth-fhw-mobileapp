@@ -586,8 +586,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 // alert logic - start
                 if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
-
-                   /* obsDTOList = obsDAO.obsCommentList(encounterUUID);
+                    obsDTOList = obsDAO.obsCommentList(encounterUUID);
                     for (int i = 0; i < obsDTOList.size(); i++) {
                         if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {
                             r_count++;
@@ -596,12 +595,12 @@ public class HomeActivity extends AppCompatActivity {
                         } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("G")) {
                             g_count++;
                         }
-                    }*/ // TODO: uncomment
+                    } // TODO: uncomment - done
 
-                    // testing - start // TODO: remove line
-                    r_count = 40;
+                    // testing - start // TODO: remove line - done
+                   /* r_count = 40;
                     y_count = 6;
-                    g_count = 8;
+                    g_count = 8;*/
                     // test - end
 
                     // multiply and add
