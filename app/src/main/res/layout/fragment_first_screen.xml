@@ -453,7 +453,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/lato_bold"
-                    android:text="@string/zero_three_thousand"
+                    android:text="@string/no_expense"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/one_three_thousand"
                     android:textSize="13sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton

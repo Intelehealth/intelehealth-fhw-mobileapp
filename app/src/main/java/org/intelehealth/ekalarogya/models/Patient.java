@@ -48,6 +48,12 @@ public class Patient {
     private String waterSupplyStatus;
     private String waterSupplyHoursPerDay;
     private String waterSupplyDaysPerWeek;
+    private String electricityStatus;
+    private String loadSheddingHoursPerDay;
+    private String loadSheddingDaysPerWeek;
+    private String averageAnnualHouseholdIncome;
+    private String averageExpenditureOnHealth;
+    private String averageExpenditureOnEducation;
 
     public String getMaritalStatus() {
         return maritalStatus;
@@ -423,5 +429,53 @@ public class Patient {
 
     public void setWaterSupplyDaysPerWeek(String waterSupplyDaysPerWeek) {
         this.waterSupplyDaysPerWeek = waterSupplyDaysPerWeek;
+    }
+
+    public String getElectricityStatus() {
+        return electricityStatus;
+    }
+
+    public void setElectricityStatus(String electricityStatus) {
+        this.electricityStatus = electricityStatus;
+    }
+
+    public String getLoadSheddingHoursPerDay() {
+        return loadSheddingHoursPerDay;
+    }
+
+    public void setLoadSheddingHoursPerDay(String loadSheddingHoursPerDay) {
+        this.loadSheddingHoursPerDay = loadSheddingHoursPerDay;
+    }
+
+    public String getLoadSheddingDaysPerWeek() {
+        return loadSheddingDaysPerWeek;
+    }
+
+    public void setLoadSheddingDaysPerWeek(String loadSheddingDaysPerWeek) {
+        this.loadSheddingDaysPerWeek = loadSheddingDaysPerWeek;
+    }
+
+    public String getAverageAnnualHouseholdIncome() {
+        return averageAnnualHouseholdIncome;
+    }
+
+    public void setAverageAnnualHouseholdIncome(String averageAnnualHouseholdIncome) {
+        this.averageAnnualHouseholdIncome = averageAnnualHouseholdIncome;
+    }
+
+    public String getAverageExpenditureOnHealth() {
+        return averageExpenditureOnHealth;
+    }
+
+    public void setAverageExpenditureOnHealth(String averageExpenditureOnHealth) {
+        this.averageExpenditureOnHealth = averageExpenditureOnHealth;
+    }
+
+    public String getAverageExpenditureOnEducation() {
+        return averageExpenditureOnEducation;
+    }
+
+    public void setAverageExpenditureOnEducation(String averageExpenditureOnEducation) {
+        this.averageExpenditureOnEducation = averageExpenditureOnEducation;
     }
 }

@@ -3023,6 +3023,10 @@ public final class StringUtils {
             if (context.getString(R.string.any_vegetables).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.any_vegetables);
             }
+            // Translate string No Expense to English
+            if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.no_expense);
+            }
         }
         return text;
     }

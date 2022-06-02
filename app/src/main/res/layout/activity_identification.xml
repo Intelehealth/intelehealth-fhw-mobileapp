@@ -1600,6 +1600,107 @@
                             android:layout_height="15dp" />
 
                         <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/household_electricity_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/does_the_house_have_electricity"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/household_electricity_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/household_electricity_yes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_medium"
+                                android:text="@string/survey_yes"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/household_electricity_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/survey_no"
+                                android:textSize="14sp" />
+
+                        </RadioGroup>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/ll_load_shedding"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/load_shedding_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15sp"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/load_shedding"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/load_shedding_hours_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no_of_hours_per_day"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/load_shedding_hours_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/load_shedding_days_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15sp"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no_of_days_per_week"
+                                android:textColor="@color/primary_text"
+                                android:textSize="15sp" />
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/load_shedding_days_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <Space
+                            android:layout_width="15dp"
+                            android:layout_height="15dp" />
+
+                        <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/running_water_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1670,8 +1771,9 @@
                                 android:id="@+id/running_water_hours_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:focusable="false"
                                 android:fontFamily="@font/lato_regular"
-                                android:inputType="text"
+                                android:inputType="none"
                                 android:maxLines="1"
                                 android:textSize="14sp" />
 
@@ -1689,8 +1791,9 @@
                                 android:id="@+id/running_water_days_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:focusable="false"
                                 android:fontFamily="@font/lato_regular"
-                                android:inputType="text"
+                                android:inputType="none"
                                 android:maxLines="1"
                                 android:textSize="14sp" />
 
@@ -2157,6 +2260,194 @@
                             android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/average_annual_household_income_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="20sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/average_annual_household_income"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/average_annual_household_income_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/zero_thirty_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/thirty_fifty_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/fifty_thousand_one_lakh"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/one_lakh_two_lakh_fifty_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_two_lakh_fifty_thousand"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/health_expenditure_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="20sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/average_expenditure_on_health"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/annual_health_expenditure_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/zero_three_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_five_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/five_ten_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/ten_twenty_five_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_twenty_five_thousand"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/education_expenditure_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:layout_marginTop="20sp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/average_expenditure_on_education"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp" />
+
+                        <RadioGroup
+                            android:id="@+id/education_expenditure_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/no_expense"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/one_three_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/three_five_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/five_ten_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/ten_twenty_five_thousand"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/more_than_twenty_five_thousand"
+                                android:textSize="13sp" />
+
+                        </RadioGroup>
 
                     </LinearLayout>
 

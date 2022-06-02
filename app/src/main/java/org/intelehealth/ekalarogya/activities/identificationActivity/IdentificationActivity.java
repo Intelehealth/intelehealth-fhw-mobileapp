@@ -986,6 +986,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             dialog.show(getSupportFragmentManager(), AlcoholConsumptionHistoryDialog.TAG);
         });
 
+        binding.runningWaterHoursEditText.setOnClickListener(v -> timePicker(getString(R.string.identification_screen_picker_hours), binding.runningWaterHoursEditText, 24));
+
+        binding.runningWaterDaysEditText.setOnClickListener(v -> timePicker(getString(R.string.days), binding.runningWaterDaysEditText, 7));
+
+        binding.loadSheddingHoursEditText.setOnClickListener(v -> timePicker(getString(R.string.identification_screen_picker_hours), binding.loadSheddingHoursEditText, 24));
+
+        binding.loadSheddingDaysEditText.setOnClickListener(v -> timePicker(getString(R.string.days), binding.loadSheddingDaysEditText, 7));
+
         time_water_editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1076,6 +1084,16 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 binding.runningWaterAvailabilityLinearLayout.setVisibility(View.GONE);
                 binding.runningWaterHoursEditText.setText(null);
                 binding.runningWaterDaysEditText.setText(null);
+            }
+        });
+
+        binding.householdElectricityRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == binding.householdElectricityYes.getId())
+                binding.llLoadShedding.setVisibility(View.VISIBLE);
+            else {
+                binding.llLoadShedding.setVisibility(View.GONE);
+                binding.loadSheddingHoursEditText.setText(null);
+                binding.loadSheddingDaysEditText.setText(null);
             }
         });
 
@@ -1506,6 +1524,32 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
                     !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                 binding.runningWaterDaysEditText.setText(patient1.getWaterSupplyDaysPerWeek());
+            }
+
+            if (patient1.getElectricityStatus() != null && !patient1.getElectricityStatus().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.householdElectricityRadioGroup, patient1.getElectricityStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
+                    && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
+                binding.loadSheddingHoursEditText.setText(patient1.getLoadSheddingHoursPerDay());
+            }
+
+            if (patient1.getLoadSheddingDaysPerWeek() != null && !patient1.getLoadSheddingDaysPerWeek().equalsIgnoreCase("")
+                    && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
+                binding.loadSheddingDaysEditText.setText(patient1.getLoadSheddingDaysPerWeek());
+            }
+
+            if (patient1.getAverageAnnualHouseholdIncome() != null && !patient1.getAverageAnnualHouseholdIncome().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.averageAnnualHouseholdIncomeRadioGroup, patient1.getAverageAnnualHouseholdIncome(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getAverageExpenditureOnHealth() != null && !patient1.getAverageExpenditureOnHealth().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.annualHealthExpenditureRadioGroup, patient1.getAverageExpenditureOnHealth(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getAverageExpenditureOnEducation() != null && !patient1.getAverageExpenditureOnEducation().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.educationExpenditureRadioGroup, patient1.getAverageExpenditureOnEducation(), updatedContext, this, sessionManager.getAppLanguage());
             }
 
             if (patient1.getWater_availability() != null && !patient1.getWater_availability()
@@ -2274,6 +2318,18 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (name.equalsIgnoreCase("numberOfEarningMembers")) {
                     patient1.setNumberOfEarningMembers(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                // electricityStatus
+                if (name.equalsIgnoreCase("electricityStatus")) {
+                    patient1.setElectricityStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // loadSheddingHoursPerDay
+                if (name.equalsIgnoreCase("loadSheddingHoursPerDay")) {
+                    patient1.setLoadSheddingHoursPerDay(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // loadSheddingDaysPerWeek
+                if (name.equalsIgnoreCase("loadSheddingDaysPerWeek")) {
+                    patient1.setLoadSheddingDaysPerWeek(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 // runningWaterAvailability
                 if (name.equalsIgnoreCase("runningWaterAvailability")) {
                     patient1.setWaterSupplyStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2306,6 +2362,18 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 }
                 if (name.equalsIgnoreCase("Family Cultivable Land")) {
                     patient1.setHectars_land(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // averageAnnualHouseholdIncome
+                if (name.equalsIgnoreCase("averageAnnualHouseholdIncome")) {
+                    patient1.setAverageAnnualHouseholdIncome(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // averageExpenditureOnHealth
+                if (name.equalsIgnoreCase("averageExpenditureOnHealth")) {
+                    patient1.setAverageExpenditureOnHealth(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // averageExpenditureOnEducation
+                if (name.equalsIgnoreCase("averageExpenditureOnEducation")) {
+                    patient1.setAverageExpenditureOnEducation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("otherMedicalHistory")) {
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
@@ -2775,6 +2843,29 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
+            // Validations for Electricity Status Radio Group
+            if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_state_if_you_have_electricity_in_the_household), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdRunningWaterRadioGroup;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Load Shedding Hours Edit Text
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
+                binding.loadSheddingHoursEditText.setError(getString(R.string.enter_number));
+                focusView = binding.loadSheddingHoursEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Load Shedding Days Edit Text
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
+                binding.loadSheddingDaysEditText.setError(getString(R.string.enter_number));
+                focusView = binding.loadSheddingDaysEditText;
+                cancel = true;
+                return;
+            }
 
             // Validations for Running Water Radio Group
             if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1) {
@@ -2922,6 +3013,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 cancel = true;
                 return;
             }
+        }
+
+        // Validations for Income Radio Group
+        if (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.averageAnnualHouseholdIncomeRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Annual Health Expenditure Radio Group
+        if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.annualHealthExpenditureRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Education Expenditure Radio Group
+        if (binding.educationExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.educationExpenditureRadioGroup;
+            cancel = true;
+            return;
         }
 
         if (cancel) {
@@ -3211,7 +3326,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // numberOfSmartphones
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfSmartphones"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.numberOfSmartphonesEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
@@ -3219,7 +3334,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // numberOfFeaturePhones
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfFeaturePhones"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.numberOfFeaturePhonesEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
@@ -3227,15 +3342,44 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // numberOfEarningMembers
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("numberOfEarningMembers"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.noOfEarningMembersEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // electricityStatus
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // loadSheddingHoursPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingHoursEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // loadSheddingDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingDaysEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // runningWaterAvailability
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
@@ -3248,7 +3392,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // waterSupplyAvailabilityHoursPerDay
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterHoursEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
@@ -3256,7 +3400,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // waterSupplyAvailabilityDaysPerWeek
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(patientUuid);
+                patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterDaysEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
@@ -3383,6 +3527,45 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         updatedContext,
                         sessionManager.getAppLanguage());
                 patientAttributesDTO.setValue(cultivableLand);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // averageAnnualHouseholdIncome
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // averageExpenditureOnHealth
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // averageExpenditureOnEducation
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // sessionManager.setHOH_checkbox(true);
@@ -3851,6 +4034,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 return;
             }
 
+            // Validations for Electricity Status Radio Group
+            if (binding.householdElectricityRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, getString(R.string.please_state_if_you_have_electricity_in_the_household), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdRunningWaterRadioGroup;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Load Shedding Hours Edit Text
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
+                binding.loadSheddingHoursEditText.setError(getString(R.string.enter_number));
+                focusView = binding.loadSheddingHoursEditText;
+                cancel = true;
+                return;
+            }
+
+            // Validations for Load Shedding Days Edit Text
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
+                binding.loadSheddingDaysEditText.setError(getString(R.string.enter_number));
+                focusView = binding.loadSheddingDaysEditText;
+                cancel = true;
+                return;
+            }
+
             // Validations for Running Water Radio Group
             if (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_state_if_you_have_running_water_in_the_household), Toast.LENGTH_SHORT).show();
@@ -3997,6 +4204,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 cancel = true;
                 return;
             }
+        }
+
+        // Validations for Income Radio Group
+        if (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.averageAnnualHouseholdIncomeRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Annual Health Expenditure Radio Group
+        if (binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.annualHealthExpenditureRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Education Expenditure Radio Group
+        if (binding.educationExpenditureRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.educationExpenditureRadioGroup;
+            cancel = true;
+            return;
         }
 
         if (cancel) {
@@ -4308,6 +4539,35 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.noOfEarningMembersEditText.getText().toString()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
+                // electricityStatus
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // loadSheddingHoursPerDay
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingHoursEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // loadSheddingDaysPerWeek
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingDaysEditText.getText().toString()));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
                 // runningWaterAvailability
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -4459,6 +4719,45 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         updatedContext,
                         sessionManager.getAppLanguage());
                 patientAttributesDTO.setValue(cultivableLand);
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // averageAnnualHouseholdIncome
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // averageExpenditureOnHealth
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // averageExpenditureOnEducation
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
+                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
 //                sessionManager.setHOH_checkbox(true);
@@ -4745,5 +5044,27 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             alcoholViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             setViewPagerOffset(alcoholViewPager);
         }
+    }
+
+    private void timePicker(String unit, EditText editText, int maxValue) {
+        MaterialAlertDialogBuilder timeBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this, R.style.AlertDialogStyle);
+        timeBuilder.setTitle(getString(R.string.select) + " " + unit);
+        final LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_1_number_1_unit_picker, null);
+        timeBuilder.setView(convertView);
+
+        NumberPicker timeQuantity = convertView.findViewById(R.id.quantity_text_view);
+        TextView timeUnit = convertView.findViewById(R.id.units_text_view);
+        timeQuantity.setMinValue(1);
+        timeQuantity.setMaxValue(maxValue);
+        timeUnit.setText(unit);
+
+        timeBuilder.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
+            String hoursString = timeQuantity.getValue() + " " + timeUnit.getText().toString();
+            editText.setText(hoursString);
+        });
+
+        AlertDialog alertDialog = timeBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
     }
 }
