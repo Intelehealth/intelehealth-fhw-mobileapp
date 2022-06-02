@@ -170,7 +170,7 @@ public class Node implements Serializable {
 
             this.display = jsonNode.optString("display");
             if (this.display.isEmpty()) {
-                this.display = jsonNode.optString("display ");
+                this.display = jsonNode.optString("display");
             }
             if (this.display.isEmpty()) {
                 this.display = this.text;
@@ -689,10 +689,10 @@ public class Node implements Serializable {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                            (associatedTest.trim().equals("H/o specific illness")) ||
+                            (associatedTest.trim().equals("H/o specific illness")) || associatedTest.trim().equals("સંકળાયેલ લક્ષણો") ||
                             (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("સંકળાયેલ લક્ષણો") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -720,7 +720,7 @@ public class Node implements Serializable {
                 } else {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("સંકળાયેલ લક્ષણો") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             raw = raw.substring(6);
@@ -2755,7 +2755,7 @@ public class Node implements Serializable {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
@@ -2788,7 +2788,7 @@ public class Node implements Serializable {
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);

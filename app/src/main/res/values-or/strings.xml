@@ -116,7 +116,7 @@
     <string name="pref_default_display_name">ଜନ୍ ସ୍କିଥ୍</string>
     <string name="pref_header_data_sync">ଡ଼ାଟା ଏବଂ ମିଙ୍କ୍</string>
     <string name="pref_header_general">ସାମାନ୍ଯ</string>
-    <string name="pref_header_notifications">ନା</string>
+    <string name="pref_header_notifications">ବିଜ୍ଞପ୍ତିଗୁଡିକ |</string>
     <string name="pref_ringtone_silent">ନିରବ</string>
     <string name="pref_title_display_name">"ନାମ ପ୍ରଦର୍ଶନ "</string>
     <string name="pref_title_id_prefix">"ସ୍ଥାନ ଉପସର୍ଶ "</string>
@@ -227,7 +227,7 @@
     <string name="visit_summary_bp">ରକ୍ତଚାପ</string>
     <string name="wash_hands">"ହାଥ ଧୋଇବା ପାଇଁ ମନେରଖ "</string>
     <string name="pref_title_social_recommendations">"ସାମାଜିକ ଉପାୟ କୋ ଚଲାଅ "</string>
-    <string name="pref_description_social_recommendations">"ଆପଣଂକ ମେସେଜ ମାଧ୍ୟମ ରେ ବ୍ୟକ୍ତି ମାନକ ପାଖରେ ପହଂଚିବା ପାଇଁ ଉପାୟ "</string>
+        <string name="pref_description_social_recommendations">"ଆପଣଂକ ମେସେଜ ମାଧ୍ୟମ ରେ ବ୍ୟକ୍ତି ମାନକ ପାଖରେ ପହଂଚିବା ପାଇଁ ଉପାୟ "</string>
     <string name="sync_stopped">"ବନ୍ଦ ହେଇ ଗଲା  "</string>
     <string name="sync_in_progress">କାମ ଚାଲୁ ଅଛି</string>
     <string name="question_update_details">"ଆପଣ ଡିଟେଲସ ଅପଡେଟ କରିବା ପାଇଁ ଚାହୁଁଛନ୍ତି କି "</string>
@@ -603,7 +603,7 @@
     <string name="weight_gain_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ ଅଧିକ |</string>
     <string name="doctor_advice_alert_msg">ଆପଣ ଡାକ୍ତରଙ୍କ ଠାରୁ ଟେଲି ପରାମର୍ଶ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="vital_alert_save_button">ସଞ୍ଚୟ କରନ୍ତୁ</string>
-    <string name="vital_alert_continue_button">ହଁ, ଜାରି ରଖ</string>
+        <string name="vital_alert_continue_button">ହଁ, ଜାରି ରଖ</string>
 
     <string name="vital_alert_bp_dia_button">ତୁମର ଡାଇଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_bp_sys_button">ତୁମର ସିଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
