@@ -1552,6 +1552,18 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 setSelectedCheckboxes(binding.educationExpenditureRadioGroup, patient1.getAverageExpenditureOnEducation(), updatedContext, this, sessionManager.getAppLanguage());
             }
 
+            if (patient1.getAyushmanCardStatus() != null && !patient1.getAyushmanCardStatus().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.ayushmanRadioGroup, patient1.getAyushmanCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getMgnregaCardStatus() != null && !patient1.getMgnregaCardStatus().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.mgnregaRadioGroup, patient1.getMgnregaCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
             if (patient1.getWater_availability() != null && !patient1.getWater_availability()
                     .equalsIgnoreCase("")) {
 
@@ -2371,6 +2383,18 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (name.equalsIgnoreCase("averageExpenditureOnHealth")) {
                     patient1.setAverageExpenditureOnHealth(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                // ayushmanCardStatus
+                if (name.equalsIgnoreCase("ayushmanCardStatus")) {
+                    patient1.setAyushmanCardStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // mgnregaCardStatus
+                if (name.equalsIgnoreCase("mgnregaCardStatus")) {
+                    patient1.setMgnregaCardStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // ayushmanCardStatus
+                if (name.equalsIgnoreCase("rationCardStatus")) {
+                    patient1.setRationCardStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 // averageExpenditureOnEducation
                 if (name.equalsIgnoreCase("averageExpenditureOnEducation")) {
                     patient1.setAverageExpenditureOnEducation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2408,7 +2432,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     setViewPagerOffset(alcoholViewPager);
                 }
 
-            } while (idCursor1.moveToNext());
+            }
+            while (idCursor1.moveToNext());
         }
         idCursor1.close();
 
@@ -2641,6 +2666,27 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         } else {
             villageText.setError(null);
+        }
+
+        if (binding.ayushmanRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.ayushmanRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        if (binding.mgnregaRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.mgnregaRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        if (binding.rationCardRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.rationCardRadioGroup;
+            cancel = true;
+            return;
         }
 
         // TODO: Add validations for all Spinners here...
@@ -3110,6 +3156,42 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
 //            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
 //            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
+            patientAttributesDTO.setValue(getSurveyStrings(
+                    ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    getBaseContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
+            patientAttributesDTO.setValue(getSurveyStrings(
+                    ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    getBaseContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
+            patientAttributesDTO.setValue(getSurveyStrings(
+                    ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    getBaseContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3833,6 +3915,27 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             villageText.setError(null);
         }
 
+        if (binding.ayushmanRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.ayushmanRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        if (binding.mgnregaRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.mgnregaRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        if (binding.rationCardRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.rationCardRadioGroup;
+            cancel = true;
+            return;
+        }
+
         // TODO: Add validations for all Spinners here...
         if (occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
@@ -4301,6 +4404,42 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
 //            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
 //            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
+            patientAttributesDTO.setValue(getSurveyStrings(
+                    ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    getBaseContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
+            patientAttributesDTO.setValue(getSurveyStrings(
+                    ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    getBaseContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
+            patientAttributesDTO.setValue(getSurveyStrings(
+                    ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                    getBaseContext(),
+                    updatedContext,
+                    sessionManager.getAppLanguage()
+            ));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

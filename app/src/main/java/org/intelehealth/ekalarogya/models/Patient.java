@@ -54,6 +54,9 @@ public class Patient {
     private String averageAnnualHouseholdIncome;
     private String averageExpenditureOnHealth;
     private String averageExpenditureOnEducation;
+    private String ayushmanCardStatus;
+    private String mgnregaCardStatus;
+    private String rationCardStatus;
 
     public String getMaritalStatus() {
         return maritalStatus;
@@ -477,5 +480,29 @@ public class Patient {
 
     public void setAverageExpenditureOnEducation(String averageExpenditureOnEducation) {
         this.averageExpenditureOnEducation = averageExpenditureOnEducation;
+    }
+
+    public String getAyushmanCardStatus() {
+        return ayushmanCardStatus;
+    }
+
+    public void setAyushmanCardStatus(String ayushmanCardStatus) {
+        this.ayushmanCardStatus = ayushmanCardStatus;
+    }
+
+    public String getMgnregaCardStatus() {
+        return mgnregaCardStatus;
+    }
+
+    public void setMgnregaCardStatus(String mgnregaCardStatus) {
+        this.mgnregaCardStatus = mgnregaCardStatus;
+    }
+
+    public String getRationCardStatus() {
+        return rationCardStatus;
+    }
+
+    public void setRationCardStatus(String rationCardStatus) {
+        this.rationCardStatus = rationCardStatus;
     }
 }

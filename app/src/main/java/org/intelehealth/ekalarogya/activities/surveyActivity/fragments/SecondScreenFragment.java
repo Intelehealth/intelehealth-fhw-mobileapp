@@ -68,77 +68,12 @@ public class SecondScreenFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.prevButtonImage.setOnClickListener(v -> requireActivity().onBackPressed());
 
-        binding.nextButtonImage.setOnClickListener(v -> {
-            if (!areFieldsValid()) {
-                Toast.makeText(requireContext(), getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                insertData();
-            } catch (DAOException exception) {
-                exception.printStackTrace();
-            }
-        });
     }
 
     private void insertData() throws DAOException {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO;
-
-        // bankorPostOfficeAccountStatus
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bankorPostOfficeAccountStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.bankOrPostOfficeAccountRadioGroup.findViewById(binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // bplCardStatus
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bplCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.bplRadioGroup.findViewById(binding.bplRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // antodayaCardStatus
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("antodayaCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.antodayaRadioGroup.findViewById(binding.antodayaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // rsbyCardStatus
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(patientUuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rsbyCardStatus"));
-        patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                ((RadioButton) binding.rsbyRadioGroup.findViewById(binding.rsbyRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                requireContext(),
-                updatedContext,
-                sessionManager.getAppLanguage()
-        ));
-        patientAttributesDTOList.add(patientAttributesDTO);
 
         // mgnregaCardStatus
         patientAttributesDTO = new PatientAttributesDTO();
@@ -165,30 +100,6 @@ public class SecondScreenFragment extends Fragment {
     private boolean areFieldsValid() {
         AtomicBoolean validations = new AtomicBoolean(true);
 
-        // Validation for Bank or Post Office Radio Group
-        if (binding.bankOrPostOfficeAccountRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validation for BPL Radio Group
-        if (binding.bplRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validation for Antodaya Radio Group
-        if (binding.antodayaRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
-        // Validation for RSBY Radio Group
-        if (binding.rsbyRadioGroup.getCheckedRadioButtonId() == -1) {
-            validations.set(false);
-            return validations.get();
-        }
-
         // Validation for MGNREGA Radio Group
         if (binding.mgnregaRadioGroup.getCheckedRadioButtonId() == -1) {
             validations.set(false);
@@ -213,38 +124,6 @@ public class SecondScreenFragment extends Fragment {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                }
-
-                // bankorPostOfficeAccountStatus
-                if (name.equalsIgnoreCase("bankorPostOfficeAccountStatus")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.bankOrPostOfficeAccountRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
-                }
-
-                // bplCardStatus
-                if (name.equalsIgnoreCase("bplCardStatus")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.bplRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
-                }
-
-                // antodayaCardStatus
-                if (name.equalsIgnoreCase("antodayaCardStatus")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.antodayaRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
-                }
-
-                // rsbyCardStatus
-                if (name.equalsIgnoreCase("rsbyCardStatus")) {
-                    String value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
-                    if (value1 != null && !value1.equalsIgnoreCase("-")) {
-                        setSelectedCheckboxes(binding.rsbyRadioGroup, value1, updatedContext, requireContext(), sessionManager.getAppLanguage());
-                    }
                 }
 
                 // mgnregaCardStatus

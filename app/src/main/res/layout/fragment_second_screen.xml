@@ -19,175 +19,21 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank_or_post_office_account_text_view"
+                android:id="@+id/ayushman_card_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_medium"
-                android:text="@string/does_any_member_of_the_household_have_a_bank_account_or_post_office_account"
+                android:text="@string/does_this_household_have_an_ayushman_card"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
 
             <RadioGroup
-                android:id="@+id/bank_or_post_office_account_radio_group"
+                android:id="@+id/ayushman_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/bank_or_post_office_account_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_yes"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/survey_no"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/do_not_know"
-                    android:textSize="13sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bpl_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bank_or_post_office_account_radio_group"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_medium"
-                android:text="@string/does_this_household_have_a_bpl_card_coupon"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/bpl_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bpl_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/yes_card_seen"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/yes_card_not_seen"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/no_card"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/do_not_know"
-                    android:textSize="13sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/antodaya_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bpl_radio_group"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_medium"
-                android:text="@string/does_this_household_have_an_antodaya_card_coupon"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/antodaya_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/antodaya_text_view"
-                android:layout_marginTop="13dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/yes_card_seen"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/yes_card_not_seen"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/no_card"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="@string/do_not_know"
-                    android:textSize="13sp" />
-
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/rsby_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/antodaya_radio_group"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="15sp"
-                android:fontFamily="@font/lato_medium"
-                android:text="@string/does_this_household_have_a_rsby_card_coupon"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp" />
-
-            <RadioGroup
-                android:id="@+id/rsby_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rsby_text_view"
+                android:layout_below="@id/ayushman_card_text_view"
                 android:layout_marginTop="13dp"
                 android:orientation="vertical">
 
@@ -229,7 +75,7 @@
                 android:id="@+id/mgnrega_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rsby_radio_group"
+                android:layout_below="@id/ayushman_radio_group"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="15sp"
                 android:fontFamily="@font/lato_medium"
@@ -279,63 +125,59 @@
 
             </RadioGroup>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/next_button"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/ration_card_text_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/mgnrega_radio_group"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
-                android:orientation="horizontal">
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/lato_medium"
+                android:text="@string/does_this_household_have_ration_card"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/next_button_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/next"
-                    android:textSize="14sp"
-                    app:fontFamily="@font/lato_medium" />
-
-                <ImageButton
-                    android:id="@+id/next_button_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/rounded_image_button_background"
-                    app:srcCompat="@drawable/ic_arrow_right" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/prev_button"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/ration_card_radio_group"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/mgnrega_radio_group"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
-                android:orientation="horizontal">
+                android:layout_below="@id/ration_card_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/prev_button_text"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/prev"
-                    android:textSize="14sp"
-                    app:fontFamily="@font/lato_medium" />
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/yes_card_seen"
+                    android:textSize="13sp" />
 
-                <ImageButton
-                    android:id="@+id/prev_button_image"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/rounded_image_button_background"
-                    app:srcCompat="@drawable/ic_back_arrow" />
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/yes_card_not_seen"
+                    android:textSize="13sp" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/no_card"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/do_not_know"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
 
         </RelativeLayout>
 
