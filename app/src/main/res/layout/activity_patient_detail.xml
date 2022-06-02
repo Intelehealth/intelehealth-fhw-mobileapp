@@ -826,7 +826,8 @@
                 android:elevation="5dp"
                 android:fontFamily="@font/lato_bold"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="@string/start_household_survey" />
+                android:text="@string/start_household_survey"
+                android:visibility="gone" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_previous_visits"

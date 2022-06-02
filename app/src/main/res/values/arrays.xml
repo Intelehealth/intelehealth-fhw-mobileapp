@@ -649,7 +649,7 @@
         <item>@string/own_smartphone</item>
         <item>@string/own_feature_phone</item>
         <item>@string/shared_smartphone</item>
-        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
     </string-array>
 
     <!--    <string-array name="mobilephone_spinner_hi">-->
@@ -665,7 +665,7 @@
         <item>@string/own_smartphone</item>
         <item>@string/own_feature_phone</item>
         <item>@string/shared_smartphone</item>
-        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
     </string-array>
 
     <!--    <string-array name="mobilephone_spinner_or">-->
@@ -681,7 +681,7 @@
         <item>@string/own_smartphone</item>
         <item>@string/own_feature_phone</item>
         <item>@string/shared_smartphone</item>
-        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_gu">
@@ -690,7 +690,7 @@
         <item>@string/own_smartphone</item>
         <item>@string/own_feature_phone</item>
         <item>@string/shared_smartphone</item>
-        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
     </string-array>
 
     <!--    <string-array name="mobilephone_spinner_gu">-->

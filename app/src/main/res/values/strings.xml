@@ -655,11 +655,11 @@
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="document_">"Document - "</string>
     <string name="gender">Gender</string>
-    <string name="are_you_head_of_the_family">Are you Head of the Family?</string>
+    <string name="are_you_head_of_the_family">Are you Head of the Family?*</string>
     <string name="what_is_your_occupation">What is your occupation?*</string>
     <string name="do_you_have_a_bank_account">Do you have a bank account?*</string>
     <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?*</string>
-    <string name="phone_ownership">Phone Ownership</string>
+    <string name="phone_ownership">Phone Ownership*</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?*</string>
     <string name="total_number_of_members_in_the_household">Total number of members in the household*</string>
     <string name="enter_number">Enter Number</string>
@@ -692,7 +692,7 @@
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
-    <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?</string>
+    <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?*</string>
     <string name="select_option_vaccination_dialog">Select Option for Vaccination</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
 
@@ -900,7 +900,7 @@
     <string name="no_card">No Card</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">Does this household have an Antodaya card/coupon?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">Does this household have an MGNREGA card?</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">Does this household have an MGNREGA card?*</string>
     <string name="submit">Submit</string>
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">What type of fuel does your household mainly used for cooking?</string>
     <string name="electricity">Electricity</string>
@@ -984,7 +984,7 @@
     <string name="surveyDialogTitle">Saved</string>
     <string name="surveyDialogMessage">Survey added successfully</string>
     <string name="start_household_survey">Start Household Survey</string>
-    <string name="what_is_your_relationship_with_the_head_of_household">What is your relationship with the head of household?</string>
+    <string name="what_is_your_relationship_with_the_head_of_household">What is your relationship with the head of household?*</string>
 
     <string name="spouse">Spouse</string>
     <string name="son_daughter">Son or Daughter</string>
@@ -1002,7 +1002,7 @@
     <string name="other_not_related">Other Not Related</string>
     <string name="not_stated">Not Stated</string>
 
-    <string name="what_is_your_marital_status">What is your marital status?</string>
+    <string name="what_is_your_marital_status">What is your marital status?*</string>
     <string name="currently_married">Currently Married</string>
     <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
     <string name="widowed">Widowed</string>
@@ -1046,10 +1046,10 @@
     <string name="yes_family_member">Yes (Family Member)</string>
     <string name="yes_personal">Yes (Personal)</string>
 
-    <string name="when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?</string>
-    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?</string>
-    <string name="when_was_the_last_time_you_got_your_hb_level_checked">When was the last time you got your HB level checked?</string>
-    <string name="when_was_the_last_time_your_bmi_was_checked">When was the last time your BMI (Height and weight) was checked?</string>
+    <string name="when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?*</string>
+    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?*</string>
+    <string name="when_was_the_last_time_you_got_your_hb_level_checked">When was the last time you got your HB level checked?*</string>
+    <string name="when_was_the_last_time_your_bmi_was_checked">When was the last time your BMI (Height and weight) was checked?*</string>
 
     <string name="never_checked">Never Checked</string>
     <string name="in_past_one_week">In past one week</string>
@@ -1059,7 +1059,7 @@
     <string name="more_than_six_months">More than 6 months</string>
 
     <string name="identification_screen_checkbox_other">Other</string>
-    <string name="medical_history">Medical History</string>
+    <string name="medical_history">Medical History*</string>
     <string name="hypertension">Hypertension</string>
     <string name="diabetes">Diabetes*</string>
     <string name="arthritis">Arthritis*</string>
@@ -1067,7 +1067,7 @@
     <string name="any_surgeries">Any Surgeries?*</string>
     <string name="reason_for_surgery_specify_the_reason">Reason for surgery (specify the reason)*</string>
 
-    <string name="smoking_status">Smoking Status</string>
+    <string name="smoking_status">Smoking Status*</string>
     <string name="does_the_person_smoke">Does the person smoke?</string>
     <string name="smoker">Smoker</string>
     <string name="non_smoker">Non-Smoker</string>
@@ -1080,7 +1080,7 @@
     <string name="from_five_years_to_ten_years">From 5 to 10 years</string>
     <string name="more_than_ten_years">More than 10 years</string>
 
-    <string name="history_of_alcohol_consumption">History Of Alcohol Consumption</string>
+    <string name="history_of_alcohol_consumption">History Of Alcohol Consumption*</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption in the household?</string>
     <string name="no_denied">No or Denied</string>
     <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
@@ -1119,7 +1119,7 @@
     <string name="select_hours">Select Hours</string>
     <string name="please_state_if_you_have_electricity_in_the_household">Please state if you have electricity in the household</string>
     <string name="no_expense">No expense</string>
-    <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?</string>
-    <string name="does_this_household_have_ration_card">Does this household have a ration card?</string>
+    <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
+    <string name="does_this_household_have_ration_card">Does this household have a ration card?*</string>
 
 </resources>

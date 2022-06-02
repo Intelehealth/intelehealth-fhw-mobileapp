@@ -642,7 +642,7 @@
     <string name="no_family_member_registered">કુટુંબના કોઈ સભ્ય નોંધાયેલા નથી</string>
     <string name="document_">"દસ્તાવેજ - "</string>
     <string name="gender">જાતિ</string>
-    <string name="are_you_head_of_the_family">શું તમે કુટુંબના વડા છો?</string>
+    <string name="are_you_head_of_the_family">શું તમે કુટુંબના વડા છો?*</string>
     <string name="what_is_your_occupation">તમારા વ્યવસાય શું છે?*</string>
     <string name="do_you_have_a_bank_account">શું તમારી પાસે બેંક ખાતું છે?*</string>
     <string name="what_kind_of_mobile_phone_do_you_personally_own">તમારી પાસે વ્યક્તિગત રીતે કેવા પ્રકારના મોબાઈલ ફોન છે?*</string>
@@ -678,7 +678,7 @@
     <!--@lincon-->
     <string name="failed_initial_synced">તાજું કરવામાં નિષ્ફળ, તમારું ઇન્ટરનેટ કનેક્શન તપાસો. કૃપા કરીને એપ્લિકેશનને ફરીથી પ્રારંભ કરો.</string>
     <string name="something_went_wrong">કંઈક ખોટું થયું. કૃપા કરીને સપોર્ટનો સંપર્ક કરો</string>
-    <string name="have_you_taken_a_covid_vaccine">શું તમે કોવિડની રસી લીધી છે?</string>
+    <string name="have_you_taken_a_covid_vaccine">શું તમે કોવિડની રસી લીધી છે?*</string>
     <string name="select_option_vaccination_dialog">રસીકરણ માટે વિકલ્પ પસંદ કરો</string>
     <string name="warning_app_update">કૃપા કરીને એપ્લિકેશનને નવીનતમ સંસ્કરણ પર અપડેટ કરો.</string>
 
@@ -884,7 +884,7 @@
     <string name="no_card">કોઈ કાર્ડ નથી</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">શું આ પરિવાર પાસે અંત્યોદય કાર્ડ/કૂપન છે?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">શું આ પરિવાર પાસે રાષ્ટ્રીય સ્વાસ્થ વીમા યોજના કાર્ડ/કૂપન છે?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">શું આ પરિવાર પાસે મનારેગા કાર્ડ/કૂપન છે?</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">શું આ પરિવાર પાસે મનારેગા કાર્ડ/કૂપન છે?*</string>
     <string name="submit">સબમિટ કરો</string>
 
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">આપના ઘરમાં મુખ્ય રીતે રસોઈ બનાવા માટે કયા પ્ર્કારના ઈંધણનો ઉપયોગ કરવામાં આવે છે?</string>
@@ -974,7 +974,7 @@
     <string name="start_household_survey">ઘરગથ્થુ સર્વેક્ષણ શરૂ કરો</string>
 
     <!--    HOH Relationship -->
-    <string name="what_is_your_relationship_with_the_head_of_household">ઘરના મુખિયા સાથે શું સંબંધ છે?</string>
+    <string name="what_is_your_relationship_with_the_head_of_household">ઘરના મુખિયા સાથે શું સંબંધ છે?*</string>
     <string name="spouse">પતિ/પત્ની</string>
     <string name="son_daughter">દીકરો/દીકરી</string>
     <string name="son_daughter_in_law">દીકરો/દીકરી</string>
@@ -994,7 +994,7 @@
     <string name="identification_screen_checkbox_other">અન્ય</string>
 
     <!--    Marital Status -->
-    <string name="what_is_your_marital_status">ની વૈવાહિક સ્થિતિ શું છે?</string>
+    <string name="what_is_your_marital_status">ની વૈવાહિક સ્થિતિ શું છે?*</string>
     <string name="currently_married">વર્તમાનમાં વિવાહિત</string>
     <string name="married_gauna_not_performed">પરણિત, ગૌણ પરફોર્મ કર્યું નથી</string>
     <string name="widowed">વિધવા</string>
@@ -1033,10 +1033,10 @@
     <string name="owns_feature_phone">સાદો ફોન છે </string>
 
     <!--    Check Strings -->
-    <string name="when_was_the_last_time_you_got_your_bp_checked">શું પરિવારની પાસે બેન્ક ખાતું છે?</string>
-    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
-    <string name="when_was_the_last_time_you_got_your_hb_level_checked">છેલ્લી વાર તમે તમારું સુગર લેવલ  ક્યારે તપાસ્યું હતું?</string>
-    <string name="when_was_the_last_time_your_bmi_was_checked">છેલ્લી વાર તમે તમારા એચબી સ્તરનું પરીક્ષણ  ક્યારે કરાવ્યુ  હતું?</string>
+    <string name="when_was_the_last_time_you_got_your_bp_checked">શું પરિવારની પાસે બેન્ક ખાતું છે?*</string>
+    <string name="when_was_the_last_time_you_got_your_sugar_level_checked">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?*</string>
+    <string name="when_was_the_last_time_you_got_your_hb_level_checked">છેલ્લી વાર તમે તમારું સુગર લેવલ  ક્યારે તપાસ્યું હતું?*</string>
+    <string name="when_was_the_last_time_your_bmi_was_checked">છેલ્લી વાર તમે તમારા એચબી સ્તરનું પરીક્ષણ  ક્યારે કરાવ્યુ  હતું?*</string>
     <string name="never_checked">ક્યારે તપાસવામાં આવ્યું નથી </string>
     <string name="in_past_one_week">પાછલા એક અઠવાડિયામાં</string>
     <string name="within_last_month">પાછલા એક માહિનામાં </string>
@@ -1045,7 +1045,7 @@
     <string name="more_than_six_months">6 મહિનાથી વધારે</string>
 
     <!--    Medical History Strings -->
-    <string name="medical_history">સરવારનો ઇતિહાસ</string>
+    <string name="medical_history">સરવારનો ઇતિહાસ*</string>
     <string name="hypertension">ઊંચું લોહીનું દબાણ</string>
     <string name="diabetes">સુગર*</string>
     <string name="arthritis">ગાંઠ*</string>
@@ -1054,7 +1054,7 @@
     <string name="reason_for_surgery_specify_the_reason">સર્જરીનું કારણ(કારણ જણાવો)*</string>
 
     <!--    Smoking History Strings -->
-    <string name="smoking_status">પરિવારમાં ધૂમ્રપાનની સ્થિતિ</string>
+    <string name="smoking_status">પરિવારમાં ધૂમ્રપાનની સ્થિતિ*</string>
     <string name="does_the_person_smoke">શું વ્યક્તિ ધૂમ્રપાન કરે છે?</string>
     <string name="smoker">ધૂમ્રપાન કરવાવાળા</string>
     <string name="non_smoker">ધૂમ્રપાન ના કરવાવાળા</string>
@@ -1068,7 +1068,7 @@
     <string name="more_than_ten_years">10 વર્ષથી વધુ</string>
 
     <!--    Alcohol Consumption Strings -->
-    <string name="history_of_alcohol_consumption">ઘરમાં દારૂ પીવાનો ઇતિહાસ</string>
+    <string name="history_of_alcohol_consumption">ઘરમાં દારૂ પીવાનો ઇતિહાસ*</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ઘરમાં દારૂ પીવાનો ઇતિહાસ ધરાવો છો</string>
     <string name="no_denied">ના/અસ્વીકાર</string>
     <string name="rate_of_alcohol_consumption">આલ્કોહોલ વપરાશ દર</string>

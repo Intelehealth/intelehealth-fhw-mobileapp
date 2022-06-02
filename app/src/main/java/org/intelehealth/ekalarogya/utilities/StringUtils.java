@@ -2843,6 +2843,10 @@ public final class StringUtils {
             if (context.getString(R.string.protected_spring).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.protected_spring);
             }
+            // Translate string Rainwater to English
+            if (context.getString(R.string.rainwater).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.rainwater);
+            }
             // Translate string Unprotected Spring to English
             if (context.getString(R.string.unprotected_spring).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.unprotected_spring);
@@ -3099,17 +3103,21 @@ public final class StringUtils {
             if (context.getString(R.string.none).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.none);
             }
-            // Translate string Shared to English
-            if (context.getString(R.string.shared).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.shared);
+            // Translate string Own Smartphone to English
+            if (context.getString(R.string.own_smartphone).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.own_smartphone);
             }
-            // Translate string Owns Smartphone to English
-            if (context.getString(R.string.owns_smartphone).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.owns_smartphone);
+            // Translate string Own Feature Phone to English
+            if (context.getString(R.string.own_feature_phone).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.own_feature_phone);
             }
-            // Translate string Owns Feature Phone to English
-            if (context.getString(R.string.owns_feature_phone).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.owns_feature_phone);
+            // Translate string Shared Smartphone to English
+            if (context.getString(R.string.shared_smartphone).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.shared_smartphone);
+            }
+            // Translate string Shared Feature Phone to English
+            if (context.getString(R.string.shared_feature_phone).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.shared_feature_phone);
             }
         }
         return text;

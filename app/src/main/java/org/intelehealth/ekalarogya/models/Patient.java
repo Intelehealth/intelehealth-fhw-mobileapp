@@ -63,6 +63,8 @@ public class Patient {
     private String reasonForOpenDefecation;
     private String handWashOccasion;
     private String foodPreparedInTwentyFourHours;
+    private String hohRelationship;
+    private String relationWithHead;
 
     public String getMaritalStatus() {
         return maritalStatus;
@@ -558,5 +560,21 @@ public class Patient {
 
     public void setFoodPreparedInTwentyFourHours(String foodPreparedInTwentyFourHours) {
         this.foodPreparedInTwentyFourHours = foodPreparedInTwentyFourHours;
+    }
+
+    public String getHohRelationship() {
+        return hohRelationship;
+    }
+
+    public void setHohRelationship(String hohRelationship) {
+        this.hohRelationship = hohRelationship;
+    }
+
+    public String getRelationWithHead() {
+        return relationWithHead;
+    }
+
+    public void setRelationWithHead(String relationWithHead) {
+        this.relationWithHead = relationWithHead;
     }
 }
