@@ -24,7 +24,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/lato_bold"
                 android:paddingHorizontal="5dp"
-                android:text="@string/hypertension"
+                android:text="@string/bp"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

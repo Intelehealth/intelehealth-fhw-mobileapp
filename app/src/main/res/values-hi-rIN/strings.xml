@@ -656,6 +656,7 @@
     <string name="what_is_your_occupation">आपका क्या व्ययसाय है?*</string>
     <string name="do_you_have_a_bank_account">क्या आपके पास एक बैंक खाता है?*</string>
     <string name="what_kind_of_mobile_phone_do_you_personally_own">क्या आप अपना फोन खुद रखते हैं?*</string>
+    <string name="phone_ownership">फोन स्वामित्व*</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">क्या आप या आपके परिवार का कोई सदस्य व्हाट्सएप का उपयोग करता है?*</string>
     <string name="total_number_of_members_in_the_household">घर के कुल सदस्य कितने हैं?*</string>
     <string name="enter_number">नंबर डालें</string>
@@ -995,11 +996,19 @@
     <string name="unemployed">बेरोजगार</string>
     <string name="retired_with_pension">सेवानिवृत्त (पेंशन के साथ)</string>
     <string name="retired_without_pension">सेवानिवृत्त (पेंशन के बिना)</string>
+    <string name="not_applicable">लागू नहीं</string>
 
     <!--    Smartphones strings -->
     <string name="shared">साझा किया हुआ</string>
     <string name="owns_smartphone">स्मार्टफोन है</string>
     <string name="owns_feature_phone">सामान्य फोन है</string>
+    <string name="own_smartphone">स्वयं का स्मार्टफोन है</string>
+    <string name="own_feature_phone">स्वयं का फीचर फोन है</string>
+    <string name="shared_smartphone">साझा स्मार्टफोन है</string>
+    <string name="shared_feature_phone">साझा फीचर फोन है</string>
+
+    <string name="yes_family_member">हां (परिवार के सदस्य)</string>
+    <string name="yes_personal">हां (व्यक्तिगत)</string>
 
     <!--    Marital Status Strings -->
     <string name="what_is_your_marital_status">वैवाहिक स्थिति क्या है?*</string>
@@ -1020,7 +1029,7 @@
     <string name="in_past_one_week">पिछले एक सप्ताह में</string>
     <string name="within_last_month">पिछले महीने के भीतर</string>
     <string name="between_one_month_to_three_months_ago">एक महीने से 3 महीने पहले के बीच</string>
-    <string name="between_three_months_to_six_months_ago">3 महीने - 6 महीने पहले के बीच</string>
+    <string name="between_three_months_to_six_months_ago">3 से 6 महीने पहले</string>
     <string name="more_than_six_months">6 महीने से अधिक</string>
 
     <!--    Education Strings -->
@@ -1077,7 +1086,7 @@
     <string name="more_than_ten_years">10 साल से अधिक</string>
 
     <!--    Alcohol Consumption Strings -->
-    <string name="history_of_alcohol_consumption">घर में शराब के सेवन का इतिहास*</string>
+    <string name="history_of_alcohol_consumption">शराब के सेवन का इतिहास*</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या घर में शराब पीने का कोई इतिहास है?</string>
     <string name="no_denied">नहीं / अस्वीकार</string>
     <string name="rate_of_alcohol_consumption">शराब की खपत की दर</string>
@@ -1094,5 +1103,32 @@
     <string name="medical_history_cannot_be_empty">चिकित्सा इतिहास खाली नहीं हो सकता</string>
     <string name="smoking_history_cannot_be_empty">धूम्रपान इतिहास खाली नहीं हो सकता</string>
     <string name="alcohol_consumption_history_cannot_be_empty">शराब के सेवन का इतिहास खाली नहीं हो सकता</string>
+    <string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">क्या जल जीवन मिशन योजना के तहत गांव को पानी मिलता है?</string>
+
+    <string name="nal_jal_yojana">नल जल योजना</string>
+    <string name="how_much_cultivable_land_does_your_family_own">आपके परिवार के पास कितनी कृषि योग्य भूमि है?</string>
+    <string name="bp">BP*</string>
+    <string name="less_than_5_cigarettes">5 से कम सिगरेट</string>
+    <string name="denied_to_answer">जवाब देने से इनकार</string>
+    <string name="survey_denied_to_answer">जवाब देने से इनकार</string>
+    <string name="frequency_of_consumption">सेवन की आवृत्ति</string>
+    <string name="daily">रोज</string>
+    <string name="once_a_week">सप्ताह मेँ एक बार</string>
+    <string name="twice_a_week">सप्ताह में दो बार</string>
+    <string name="occasionally_once_a_month_or_less">कभी-कभी (महीने में एक बार या उससे कम)</string>
+
+    <string name="please_state_if_you_are_the_head_of_the_family">कृपया बताएं कि क्या आप परिवार के मुखिया हैं</string>
+    <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">रहने वाले सदस्यों की संख्या घर में सदस्यों की कुल संख्या से अधिक नहीं हो सकती</string>
+    <string name="please_select_the_main_source_of_drinking_water">कृपया पेयजल के मुख्य स्रोत का चयन करें</string>
+    <string name="please_select_the_methods_of_purifying_water">कृपया पानी को शुद्ध करने के तरीकों का चयन करें</string>
+    <string name="please_state_if_you_have_running_water_in_the_household">कृपया बताएं कि क्या आपके घर में बहता पानी (पाइप से बहता पानी) है।</string>
+    <string name="select_hours">घंटे चुनें</string>
+    <string name="please_state_if_you_have_electricity_in_the_household">कृपया बताएं कि क्या आपके घर में बिजली है</string>
+    <string name="no_expense">कोई खर्च नहीं</string>
+    <string name="does_this_household_have_an_ayushman_card">क्या इस परिवार के पास आयुष्मान कार्ड है?*</string>
+    <string name="does_this_household_have_ration_card">क्या इस परिवार के पास राशन कार्ड है?*</string>
+
+    <string name="third_dose">तीसरी खुराक</string>
+
 
 </resources>
