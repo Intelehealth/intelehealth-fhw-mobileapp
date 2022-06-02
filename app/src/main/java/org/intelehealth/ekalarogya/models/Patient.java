@@ -57,6 +57,12 @@ public class Patient {
     private String ayushmanCardStatus;
     private String mgnregaCardStatus;
     private String rationCardStatus;
+    private String cookingFuel;
+    private String householdLighting;
+    private String openDefecationStatus;
+    private String reasonForOpenDefecation;
+    private String handWashOccasion;
+    private String foodPreparedInTwentyFourHours;
 
     public String getMaritalStatus() {
         return maritalStatus;
@@ -504,5 +510,53 @@ public class Patient {
 
     public void setRationCardStatus(String rationCardStatus) {
         this.rationCardStatus = rationCardStatus;
+    }
+
+    public String getCookingFuel() {
+        return cookingFuel;
+    }
+
+    public void setCookingFuel(String cookingFuel) {
+        this.cookingFuel = cookingFuel;
+    }
+
+    public String getHouseholdLighting() {
+        return householdLighting;
+    }
+
+    public void setHouseholdLighting(String householdLighting) {
+        this.householdLighting = householdLighting;
+    }
+
+    public String getOpenDefecationStatus() {
+        return openDefecationStatus;
+    }
+
+    public void setOpenDefecationStatus(String openDefecationStatus) {
+        this.openDefecationStatus = openDefecationStatus;
+    }
+
+    public String getReasonForOpenDefecation() {
+        return reasonForOpenDefecation;
+    }
+
+    public void setReasonForOpenDefecation(String reasonForOpenDefecation) {
+        this.reasonForOpenDefecation = reasonForOpenDefecation;
+    }
+
+    public String getHandWashOccasion() {
+        return handWashOccasion;
+    }
+
+    public void setHandWashOccasion(String handWashOccasion) {
+        this.handWashOccasion = handWashOccasion;
+    }
+
+    public String getFoodPreparedInTwentyFourHours() {
+        return foodPreparedInTwentyFourHours;
+    }
+
+    public void setFoodPreparedInTwentyFourHours(String foodPreparedInTwentyFourHours) {
+        this.foodPreparedInTwentyFourHours = foodPreparedInTwentyFourHours;
     }
 }

@@ -7,7 +7,6 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
-import static org.intelehealth.ekalarogya.utilities.StringUtils.getIndex;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
@@ -950,6 +949,14 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
         });
 
+        binding.openDefecationRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == binding.openDefecationYes.getId()) {
+                binding.llReasonForOpenDefecation.setVisibility(View.VISIBLE);
+            } else {
+                binding.llReasonForOpenDefecation.setVisibility(View.GONE);
+            }
+        });
+
         //editText values values are set for the household fields ...
         no_of_member_edittext.setText(patient1.getNo_of_family_members());
         no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
@@ -1562,6 +1569,35 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
                 setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getCookingFuel() != null && !patient1.getCookingFuel().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.householdCookingFuelCheckboxLinearLayout, patient1.getCookingFuel(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getHouseholdLighting() != null && !patient1.getHouseholdLighting().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.mainSourceOfLightingCheckboxLinearLayout, patient1.getHouseholdLighting(), updatedContext, this, sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getOpenDefecationStatus() != null && !patient1.getOpenDefecationStatus().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.openDefecationRadioGroup, patient1.getOpenDefecationStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                if (patient1.getOpenDefecationStatus().equalsIgnoreCase(getString(R.string.survey_yes)))
+                    binding.llReasonForOpenDefecation.setVisibility(View.VISIBLE);
+                else
+                    binding.llReasonForOpenDefecation.setVisibility(View.GONE);
+            }
+
+            if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE &&
+                    patient1.getReasonForOpenDefecation() != null && !patient1.getReasonForOpenDefecation().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout, patient1.getReasonForOpenDefecation(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getHandWashOccasion() != null && !patient1.getHandWashOccasion().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.handWashOccasionLinearLayout, patient1.getHandWashOccasion(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+            }
+
+            if (patient1.getFoodPreparedInTwentyFourHours() != null && !patient1.getFoodPreparedInTwentyFourHours().equalsIgnoreCase("")) {
+                setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, patient1.getFoodPreparedInTwentyFourHours(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
             }
 
             if (patient1.getWater_availability() != null && !patient1.getWater_availability()
@@ -2399,6 +2435,30 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (name.equalsIgnoreCase("averageExpenditureOnEducation")) {
                     patient1.setAverageExpenditureOnEducation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                // cookingFuel
+                if (name.equalsIgnoreCase("cookingFuel")) {
+                    patient1.setCookingFuel(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // householdLighting
+                if (name.equalsIgnoreCase("householdLighting")) {
+                    patient1.setHouseholdLighting(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // defecatedInOpen
+                if (name.equalsIgnoreCase("defecatedInOpen")) {
+                    patient1.setOpenDefecationStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // reasonForOpenDefecation
+                if (name.equalsIgnoreCase("reasonForOpenDefecation")) {
+                    patient1.setReasonForOpenDefecation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // soapHandWashingOccasion
+                if (name.equalsIgnoreCase("soapHandWashingOccasion")) {
+                    patient1.setHandWashOccasion(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                // foodItemsPreparedInTwentyFourHours
+                if (name.equalsIgnoreCase("foodItemsPreparedInTwentyFourHours")) {
+                    patient1.setFoodPreparedInTwentyFourHours(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("otherMedicalHistory")) {
                     String value = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                     medicalHistoryList = new Gson().fromJson(value, new TypeToken<List<MedicalHistory>>() {
@@ -3085,6 +3145,53 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
+        // Validations for Household Cooking Fuel Linear Layout
+        if (checkIfCheckboxesEmpty(binding.householdCookingFuelCheckboxLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.householdCookingFuelCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Household Cooking Fuel Linear Layout
+        if (checkIfCheckboxesEmpty(binding.mainSourceOfLightingCheckboxLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.mainSourceOfLightingCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Open Defecation Radio Group
+        if (binding.openDefecationRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.openDefecationRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
+            if (checkIfCheckboxesEmpty(binding.reasonForOpenDefecationCheckboxLinearLayout)) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdCookingFuelCheckboxLinearLayout;
+                cancel = true;
+                return;
+            }
+        }
+
+        if (checkIfCheckboxesEmpty(binding.handWashOccasionLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.householdCookingFuelCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
+        if (checkIfCheckboxesEmpty(binding.foodCookedInTwentyFourHoursLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.householdCookingFuelCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -3647,6 +3754,91 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         getBaseContext(),
                         updatedContext,
                         sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // cookingFuel
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.householdCookingFuelCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // householdLighting
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.mainSourceOfLightingCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // defecatedInOpen
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("defecatedInOpen"));
+                patientAttributesDTO.setValue(getSurveyStrings(
+                        ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
+                    // reasonForOpenDefecation
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("reasonForOpenDefecation"));
+                    patientAttributesDTO.setValue(getSelectedCheckboxes(
+                            binding.reasonForOpenDefecationCheckboxLinearLayout,
+                            getBaseContext(),
+                            updatedContext,
+                            sessionManager.getAppLanguage(),
+                            "-"
+                    ));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+
+                // soapHandWashingOccasion
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("soapHandWashingOccasion"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.handWashOccasionLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // foodItemsPreparedInTwentyFourHours
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHours"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.foodCookedInTwentyFourHoursLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4333,6 +4525,53 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             return;
         }
 
+        // Validations for Household Cooking Fuel Linear Layout
+        if (checkIfCheckboxesEmpty(binding.householdCookingFuelCheckboxLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.householdCookingFuelCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Main Source of Lighting Fuel Linear Layout
+        if (checkIfCheckboxesEmpty(binding.mainSourceOfLightingCheckboxLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.mainSourceOfLightingCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
+        // Validations for Open Defecation Radio Group
+        if (binding.openDefecationRadioGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.openDefecationRadioGroup;
+            cancel = true;
+            return;
+        }
+
+        if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
+            if (checkIfCheckboxesEmpty(binding.reasonForOpenDefecationCheckboxLinearLayout)) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                focusView = binding.householdCookingFuelCheckboxLinearLayout;
+                cancel = true;
+                return;
+            }
+        }
+
+        if (checkIfCheckboxesEmpty(binding.handWashOccasionLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.householdCookingFuelCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
+        if (checkIfCheckboxesEmpty(binding.foodCookedInTwentyFourHoursLinearLayout)) {
+            Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+            focusView = binding.householdCookingFuelCheckboxLinearLayout;
+            cancel = true;
+            return;
+        }
+
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -4901,6 +5140,91 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
 //                sessionManager.setHOH_checkbox(true);
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
+
+                // cookingFuel
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.householdCookingFuelCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // householdLighting
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.mainSourceOfLightingCheckboxLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // defecatedInOpen
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("defecatedInOpen"));
+                patientAttributesDTO.setValue(getSurveyStrings(
+                        ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage()
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE) {
+                    // reasonForOpenDefecation
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("reasonForOpenDefecation"));
+                    patientAttributesDTO.setValue(getSelectedCheckboxes(
+                            binding.reasonForOpenDefecationCheckboxLinearLayout,
+                            getBaseContext(),
+                            updatedContext,
+                            sessionManager.getAppLanguage(),
+                            "-"
+                    ));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+
+                // soapHandWashingOccasion
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("soapHandWashingOccasion"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.handWashOccasionLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // foodItemsPreparedInTwentyFourHours
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHours"));
+                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                        binding.foodCookedInTwentyFourHoursLinearLayout,
+                        getBaseContext(),
+                        updatedContext,
+                        sessionManager.getAppLanguage(),
+                        "-"
+                ));
+                patientAttributesDTOList.add(patientAttributesDTO);
 
             } else {
 //                sessionManager.setHOH_checkbox(false);
