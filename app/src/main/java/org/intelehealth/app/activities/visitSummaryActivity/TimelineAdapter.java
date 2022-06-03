@@ -75,12 +75,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
                 String time = encounterDTOList.get(position).getEncounterTime();
                 SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
                 int isMissed = 0;
+                /* since card is disabled that means the either the user has filled data or has forgotten to fill.
+                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+                         If no obs created than create Missed Enc obs for this disabled encounter. */
+                obsDAO = new ObsDAO();
+                isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
+
                 try {
                     Date timeDateType = longTimeFormat.parse(time);
-
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(timeDateType);
 
@@ -125,6 +131,51 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 } catch (ParseException e) {
                     e.printStackTrace();
                     Log.e("timeline", "AM Format: " + e.getMessage());
+
+                    // work around since backend end Time not coming in same format in which we r sending
+                    Date timeDateType = null;
+                    try {
+                        timeDateType = longTimeFormat_.parse(time);
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(timeDateType);
+
+                    Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
+                    if (position % 2 == 0) { // Even
+                       /* calendar.add(Calendar.HOUR, 1);
+                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min*/
+                        calendar.add(Calendar.MINUTE, 2); // Testing
+                        Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+                    } else { // Odd
+                        // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                        calendar.add(Calendar.MINUTE, 1); // Testing
+                        Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+                    }
+
+                    if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
+                        holder.cardview.setClickable(true);
+                        holder.cardview.setEnabled(true);
+                        //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
+                    } else {
+                        holder.cardview.setClickable(false);
+                        holder.cardview.setEnabled(false);
+                        //  holder.cardview.setCardElevation(0);
+
+                        if (isMissed == 1) {
+                            holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
+                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                        } else if(isMissed == 2) {
+//                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
+                            holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+                            holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+                        }
+                    }
+
+                    encounterTimeAmPmFormat = timeFormat.format(timeDateType);
+                    Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
+                    //
                 }
 
                 if(isMissed == 2) { // This so that once submitted it should be closed and not allowed to edit again.
