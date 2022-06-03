@@ -51,6 +51,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -161,7 +162,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
@@ -598,7 +599,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         idCursor1.close();
 
-        photoView = findViewById(R.id.imageView_patient);
+        //photoView = findViewById(R.id.imageView_patient);
 
         idView = findViewById(R.id.textView_ID);
         TextView patinetName = findViewById(R.id.textView_name);
@@ -666,6 +667,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 //            showAlertDialogButtonClicked(e.toString());
         }
 
+        Log.v("patient_new", new Gson().toJson(patient_new));
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
             patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
@@ -690,13 +692,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
-        Glide.with(PatientDetailActivity.this)
+        /*Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .into(photoView);
+                .into(photoView);*/
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
             idView.setText(patient_new.getOpenmrs_id());
@@ -895,6 +897,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
         phoneView.setText(patient_new.getPhone_number());
+        if (patient_new.getPhone_number() == null || patient_new.getPhone_number().isEmpty()) {
+            calling.setVisibility(View.GONE);
+            whatsapp_no.setVisibility(View.GONE);
+            phoneView.setText(getString(R.string.not_provided));
+        }
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
@@ -1232,13 +1239,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
-                            Glide.with(PatientDetailActivity.this)
+                           /* Glide.with(PatientDetailActivity.this)
                                     .load(AppConstants.IMAGE_PATH + patientUuid + ".jpg")
                                     .thumbnail(0.3f)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
-                                    .into(photoView);
+                                    .into(photoView);*/
                         }
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;
@@ -1684,17 +1691,20 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+   /* public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XML
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.detail_home:
                 Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

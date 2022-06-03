@@ -21,6 +21,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.partogram.PartogramConstants;
 import org.intelehealth.app.partogram.model.ParamInfo;
 import org.intelehealth.app.partogram.model.PartogramItemData;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,9 +114,23 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         EditText dataEditText = tempView.findViewById(R.id.etvData);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
-        if(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()!=null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()){
+        if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues()).indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
+        } else {
+            if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Initial")) {
+                String[] initials = new SessionManager(mContext).getChwname().split(" ");
+                String name = "";
+                if (initials.length >= 2) {
+                    name = initials[0].substring(0, 1) + "" + initials[1].substring(0, 1);
+                } else {
+                    name = initials[0].substring(0, 2);
+                }
+                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(name.toLowerCase());
+                dataEditText.setText(name.toUpperCase());
+            }
         }
+
+
         if (paramDateType.equalsIgnoreCase(PartogramConstants.INPUT_TXT_TYPE)) {
             dataEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         } else {
@@ -156,7 +171,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         TextView dropdownTextView = tempView.findViewById(R.id.tvData);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
-        if(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()!=null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()){
+        if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues()).indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
         }
         dropdownTextView.setOnClickListener(new View.OnClickListener() {

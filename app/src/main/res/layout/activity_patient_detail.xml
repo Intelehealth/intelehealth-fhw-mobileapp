@@ -11,35 +11,11 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:id="@+id/imageView_patient"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/colorPrimary"
-                android:contentDescription="TODO"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -439,10 +415,11 @@
 
                         </TableRow>
 
-                        <TableRow android:visibility="gone"
+                        <TableRow
                             android:id="@+id/tableRow_SDW"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -473,10 +450,11 @@
 
                         </TableRow>
 
-                        <TableRow android:visibility="gone"
+                        <TableRow
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -506,10 +484,11 @@
 
                         </TableRow>
 
-                        <TableRow android:visibility="gone"
+                        <TableRow
                             android:id="@+id/tableRow_Economic_Status"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -537,10 +516,11 @@
 
                         </TableRow>
 
-                        <TableRow android:visibility="gone"
+                        <TableRow
                             android:id="@+id/tableRow_Education_Status"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -570,10 +550,11 @@
 
                         </TableRow>
 
-                        <TableRow android:visibility="gone"
+                        <TableRow
                             android:id="@+id/tableRow_Caste"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -694,6 +675,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/padding_card"
+                android:visibility="gone"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">
@@ -840,6 +822,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/padding_card"
+                android:visibility="gone"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">

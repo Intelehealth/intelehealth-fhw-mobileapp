@@ -34,7 +34,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/common_padding"
-                android:text="@string/patient"
+                android:text="@string/add_patient_txt"
                 android:textColor="@color/white"
                 android:textSize="@dimen/header_text_size_1"
                 android:textStyle="bold"

@@ -655,5 +655,6 @@
     <string name="endStageButton">End Second Stage</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="click_to_enter">Click to Enter</string>
+    <string name="add_patient_txt">Add Patient</string>
 
 </resources>

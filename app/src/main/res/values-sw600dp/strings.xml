@@ -18,4 +18,5 @@
     <string name="click_to_enter"><u>Click to Enter</u></string>
     <string name="missed_interval"><u>Missed</u></string>
     <string name="submitted_interval"><u>Submitted</u></string>
+    <string name="add_patient_txt">Add Patient</string>
 </resources>

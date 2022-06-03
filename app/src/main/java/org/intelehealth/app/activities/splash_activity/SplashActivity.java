@@ -230,9 +230,9 @@ public class SplashActivity extends AppCompatActivity {
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
-        if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
+       /* if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
-        }
+        }*/
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);

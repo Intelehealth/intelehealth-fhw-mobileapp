@@ -686,6 +686,7 @@
     <string name="risk_factors_val_txt">Please select the risk factors</string>
     <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
     <string name="click_to_enter">Click to Enter</string>
+    <string name="add_patient_txt">Add Patient</string>
 
 </resources>
 
