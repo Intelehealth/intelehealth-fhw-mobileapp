@@ -23,8 +23,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -179,7 +181,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private TextView mRiskFactorsTextView;
     private CheckBox mUnknownMembraneRupturedCheckBox;
 
-    private EditText mAlternateNumberEditText, mWifeDaughterOfEditText;
+    private EditText mOthersEditText, mAlternateNumberEditText, mWifeDaughterOfEditText;
     private TextView mAdmissionDateTextView, mAdmissionTimeTextView;
 
     // strings
@@ -193,6 +195,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     private String mAlternateNumberString = "", mWifeDaughterOfString = "";
     private String mAdmissionDateString = "", mAdmissionTimeString = "";
+    private String mOthersString = "";
 
     private boolean mIsEditMode = false;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -223,6 +226,7 @@ public class IdentificationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*new*/
+        mOthersEditText = findViewById(R.id.etvOthersText);
         mAlternateNumberEditText = findViewById(R.id.identification_alt_phone_number);
         mWifeDaughterOfEditText = findViewById(R.id.etv_wife_daughter_of);
         mAdmissionDateTextView = findViewById(R.id.tvAdmissionDate);
@@ -446,12 +450,14 @@ public class IdentificationActivity extends AppCompatActivity {
         mHospitalMaternityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mOthersEditText.setVisibility(View.GONE);
                 if (checkedId == R.id.rbHospital) {
                     mHospitalMaternityString = "Hospital";
                 } else if (checkedId == R.id.rbMaternity) {
                     mHospitalMaternityString = "Maternity";
                 } else {
-                    mHospitalMaternityString = "Others";
+                    mHospitalMaternityString = "";
+                    mOthersEditText.setVisibility(View.VISIBLE);
                 }
 
 
@@ -1531,15 +1537,36 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //Hospital/Maternity?
         if (patient.getHospitalMaternity() != null) {
+            mOthersEditText.setVisibility(View.GONE);
             mHospitalMaternityString = patient.getHospitalMaternity();
             if (mHospitalMaternityString.equalsIgnoreCase("Hospital")) {
                 mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(0).getId());
             } else if (mHospitalMaternityString.equalsIgnoreCase("Maternity")) {
                 mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(1).getId());
             } else {
+                mOthersEditText.setVisibility(View.VISIBLE);
+                mOthersEditText.setText(mHospitalMaternityString);
+                mOthersString = mHospitalMaternityString;
                 mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(2).getId());
             }
         }
+        mOthersEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mOthersString = s.toString();
+                mHospitalMaternityString = mOthersString;
+            }
+        });
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {

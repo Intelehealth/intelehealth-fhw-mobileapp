@@ -81,14 +81,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false">
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/common_padding"
                         android:orientation="vertical"
                         android:padding="@dimen/common_padding">
 
@@ -418,14 +421,16 @@
                     android:layout_marginTop="10dp"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false">
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/common_padding"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="@dimen/common_padding">
 
                         <LinearLayout
                             android:id="@+id/identification_llcountry_state"
@@ -696,14 +701,16 @@
                     android:visibility="visible"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false">
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/common_padding"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="@dimen/common_padding">
 
                         <!--New-->
                         <com.google.android.material.textfield.TextInputLayout
@@ -740,7 +747,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
-                            android:paddingHorizontal="@dimen/common_padding"
+
                             android:text="Admission date &amp; time"
                             android:textColor="@color/gray_6"
                             android:textSize="@dimen/header_text_size" />
@@ -748,7 +755,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/common_padding"
                             android:layout_marginTop="@dimen/common_padding"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -785,7 +791,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
-                            android:paddingHorizontal="@dimen/common_padding"
+
                             android:text="Parity"
                             android:textColor="@color/gray_6"
                             android:textSize="@dimen/header_text_size" />
@@ -866,7 +872,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
-                            android:paddingHorizontal="@dimen/common_padding"
+
                             android:text="Labor Onset"
                             android:textColor="@color/gray_6"
                             android:textSize="@dimen/header_text_size" />
@@ -876,7 +882,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:padding="@dimen/common_padding">
+                            android:paddingVertical="@dimen/common_padding">
 
                             <RadioButton
                                 android:id="@+id/rbLOSpontaneous"
@@ -900,7 +906,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
-                            android:paddingHorizontal="@dimen/common_padding"
+
                             android:text="When was active labor diagnosed?"
                             android:textColor="@color/gray_6"
                             android:textSize="@dimen/header_text_size" />
@@ -908,7 +914,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/common_padding"
                             android:layout_marginTop="@dimen/common_padding"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -952,7 +957,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/cbUnknownMembraneRuptured"
-                                android:paddingHorizontal="@dimen/common_padding"
                                 android:text="When was the membrane ruptured?"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/header_text_size" />
@@ -962,14 +966,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="@dimen/common_padding"
                                 android:text="Unknown?" />
                         </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/common_padding"
                             android:orientation="horizontal"
                             android:weightSum="2">
 
@@ -1005,7 +1007,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
-                            android:paddingHorizontal="@dimen/common_padding"
                             android:text="Risk factors"
                             android:textColor="@color/gray_6"
                             android:textSize="@dimen/header_text_size" />
@@ -1014,7 +1015,6 @@
                             android:id="@+id/tvRiskFactors"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/common_padding"
                             android:layout_marginTop="@dimen/common_padding"
                             android:background="@drawable/round_corner_gray_stroke_light"
                             android:drawableEnd="@drawable/ic_baseline_expand_more_24"
@@ -1029,7 +1029,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
-                            android:paddingHorizontal="@dimen/common_padding"
                             android:text="Hospital/Maternity?"
                             android:textColor="@color/gray_6"
                             android:textSize="@dimen/header_text_size" />
@@ -1039,7 +1038,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:padding="@dimen/common_padding">
+                            android:paddingVertical="@dimen/common_padding">
 
                             <RadioButton
                                 android:id="@+id/rbHospital"
@@ -1067,6 +1066,21 @@
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
                         </RadioGroup>
+
+                        <EditText
+                            android:id="@+id/etvOthersText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:gravity="center_vertical"
+                            android:hint="Enter other location except Hospital &amp; Maternity"
+                            android:inputType="text"
+                            android:minHeight="@dimen/edit_box_min_height"
+                            android:padding="@dimen/common_padding"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/content_text_size"
+                            android:visibility="gone" />
+
 
                         <!--end-->
                         <com.google.android.material.textfield.TextInputLayout
