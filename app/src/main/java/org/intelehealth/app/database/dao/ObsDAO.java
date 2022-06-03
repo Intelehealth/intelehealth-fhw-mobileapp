@@ -380,4 +380,26 @@ public class ObsDAO {
 
         return isMissed;
     }
+
+    public int checkObsAddedOrNt(String encounterUuid, String creatorID) {
+        int isMissed = 0;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
+                new String[]{encounterUuid, MISSED_ENCOUNTER});
+
+        if (idCursor.getCount() <= 0) {
+            // that means there is no obs for this enc which means that this encounter is missed...
+            // now insert a new row in obs table against this encoutneruuid and set sync to false.
+            isMissed = 1; // missed
+        }
+        else {
+            isMissed = 2; // submitted
+            // this means that this encounter is filled with obs ie. It was answered and then disabled.
+        }
+        idCursor.close();
+
+        return isMissed;
+    }
+
 }

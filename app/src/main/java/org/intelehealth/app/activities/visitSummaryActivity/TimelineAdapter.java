@@ -79,12 +79,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
                 int isMissed = 0;
-                /* since card is disabled that means the either the user has filled data or has forgotten to fill.
-                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
-                         If no obs created than create Missed Enc obs for this disabled encounter. */
+                int issubmitted = 0;
+                // check for this enc any obs created if yes than show submitted...
                 obsDAO = new ObsDAO();
-                isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-
+                issubmitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                 try {
                     Date timeDateType = longTimeFormat.parse(time);
                     Calendar calendar = Calendar.getInstance();
@@ -105,16 +103,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
-                        //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
                     } else {
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);
-                      //  holder.cardview.setCardElevation(0);
 
                         /* since card is disabled that means the either the user has filled data or has forgotten to fill.
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
                          If no obs created than create Missed Enc obs for this disabled encounter. */
-                        obsDAO = new ObsDAO();
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed == 1) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
@@ -163,6 +158,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.cardview.setEnabled(false);
                         //  holder.cardview.setCardElevation(0);
 
+                        /* since card is disabled that means the either the user has filled data or has forgotten to fill.
+                         We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+                         If no obs created than create Missed Enc obs for this disabled encounter. */
+                        isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed == 1) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
@@ -178,7 +177,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     //
                 }
 
-                if(isMissed == 2) { // This so that once submitted it should be closed and not allowed to edit again.
+                if(issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
                     holder.cardview.setClickable(false);
                     holder.cardview.setEnabled(false);
                     holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
