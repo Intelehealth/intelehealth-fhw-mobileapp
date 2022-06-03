@@ -122,12 +122,24 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         setTitle(patientName);
 
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
+        // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
+        String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+        if (latestEncounterName.toLowerCase().contains("stage2")) {
+            endStageButton.setText("End Stage 2");
+        } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+            endStageButton.setText("End Stage 1");
+        } else {
+            // do nothing
+        }
+
+
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
             if (endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.endStageButton))) {
                 cancelStage1_ConfirmationDialog(); // cancel and start stage 2
             } else if (endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.end2StageButton))) {
-
+                //
             }
 
         });
@@ -141,7 +153,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        endStageButton.setText("End Second Stage");
+                      //  endStageButton.setText("End Second Stage");
                         cancelStage1_30minAlarm();
                         dialog.dismiss();
                     }

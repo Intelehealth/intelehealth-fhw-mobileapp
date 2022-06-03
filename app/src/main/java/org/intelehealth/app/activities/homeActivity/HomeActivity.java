@@ -581,8 +581,8 @@ public class HomeActivity extends AppCompatActivity {
             for (int j = 0; j < activePatientModels.size(); j++) {
                 encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter.
                 encounterUUID = encounterDTO.getUuid();
-                String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
-                String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(latestEncounterTypeId);
+               // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
+                String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
                 if (latestEncounterName.toLowerCase().contains("stage2")) {
                     activePatientModels.get(j).setStageName("Stage-2");
                 } else if (latestEncounterName.toLowerCase().contains("stage1")) {
