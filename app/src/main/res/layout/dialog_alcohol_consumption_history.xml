@@ -79,27 +79,43 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/zero_five_radio_button"
+                        android:id="@+id/zero_fifty_radio_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="@string/zero_five_times"
+                        android:text="@string/zero_fifty_ml"
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/five_ten_radio_button"
+                        android:id="@+id/fifty_hundred_ml"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="@string/five_ten_times"
+                        android:text="@string/fifty_hundred_ml"
                         android:textSize="14sp" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/more_than_ten_radio_button"
+                        android:id="@+id/hundred_two_hundred_fifty_ml"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
-                        android:text="@string/more_than_10_times"
+                        android:text="@string/hundred_two_hundred_fifty_ml"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/two_hundred_fifty_five_hundred_ml"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/two_hundred_fifty_five_hundred_ml"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/more_than_five_hundred_ml_radio_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/more_than_five_hundred_ml"
                         android:textSize="14sp" />
 
                 </RadioGroup>

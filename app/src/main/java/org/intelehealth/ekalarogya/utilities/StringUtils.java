@@ -1748,6 +1748,9 @@ public final class StringUtils {
             case "दूसरा टिका":
                 val = "Second dose";
                 break;
+            case "तीसरी खुराक":
+                val = "Third dose";
+                break;
             default:
                 return val;
         }
@@ -1762,6 +1765,9 @@ public final class StringUtils {
             case "ଦ୍ୱିତୀୟ ମାତ୍ରା":
                 val = "Second dose";
                 break;
+            case "ତୃତୀୟ ଦୋଜ":
+                val = "Third dose";
+                break;
             default:
                 return val;
         }
@@ -1775,6 +1781,9 @@ public final class StringUtils {
                 break;
             case "બીજી માત્રા":
                 val = "Second dose";
+                break;
+            case "ત્રીજો ડોઝ":
+                val = "Third dose";
                 break;
             default:
                 return val;
@@ -1791,6 +1800,9 @@ public final class StringUtils {
             case "Second dose":
                 val = "दूसरा टिका";
                 break;
+            case "Third dose":
+                val = "तीसरी खुराक";
+                break;
             default:
                 return val;
         }
@@ -1805,6 +1817,9 @@ public final class StringUtils {
             case "Second dose":
                 val = "ଦ୍ୱିତୀୟ ମାତ୍ରା";
                 break;
+            case "Third dose":
+                val = "ତୃତୀୟ ଦୋଜ";
+                break;
             default:
                 return val;
         }
@@ -1818,6 +1833,9 @@ public final class StringUtils {
                 break;
             case "Second dose":
                 val = "બીજી માત્રા";
+                break;
+            case "Third dose":
+                val = "ત્રીજો ડોઝ";
                 break;
             default:
                 return val;
@@ -3031,6 +3049,14 @@ public final class StringUtils {
             if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_expense);
             }
+            // Translate string Hours to English
+            if (context.getString(R.string.identification_screen_picker_hours).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.identification_screen_picker_hours);
+            }
+            // Translate string Days to English
+            if (context.getString(R.string.days).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.days);
+            }
         }
         return text;
     }
@@ -3330,6 +3356,11 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.non_smoker);
             }
 
+            // Translate string Less than 5 bidis / cigarettes
+            if (context.getString(R.string.less_than_5_cigarettes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.less_than_5_cigarettes);
+            }
+
             // Translate string 5 - 10 bids / cigarette to English
             if (context.getString(R.string.five_ten_bids_cigarette).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.five_ten_bids_cigarette);
@@ -3379,6 +3410,11 @@ public final class StringUtils {
             if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
             }
+
+            // Translate string Denied to Answer
+            if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.denied_to_answer);
+            }
         }
 
         return text;
@@ -3391,65 +3427,65 @@ public final class StringUtils {
             if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.yes);
             }
-
             // Translate string No or Denied to English
             if (context.getString(R.string.no_denied).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_denied);
             }
-
+            // Translate string No to English
+            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_no);
+            }
+            // Translate string Denied to Answer
+            if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.denied_to_answer);
+            }
             // Translate string Zero To Five Times to English
             if (context.getString(R.string.zero_five_times).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.zero_five_times);
             }
-
             // Translate string Five To Ten Times to English
             if (context.getString(R.string.five_ten_times).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.five_ten_times);
             }
-
             // Translate string More Than Ten Times to English
             if (context.getString(R.string.more_than_10_times).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_10_times);
             }
-
             // Translate string Less Than A Year to English
             if (context.getString(R.string.less_than_a_year).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.less_than_a_year);
             }
-
             // Translate string From One Year To Five Year to English
             if (context.getString(R.string.from_one_year_to_five_year).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.from_one_year_to_five_year);
             }
-
             // Translate string From Five Year To Ten Year to English
             if (context.getString(R.string.from_five_years_to_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.from_five_years_to_ten_years);
             }
-
             // Translate string More Than Ten Years to English
             if (context.getString(R.string.more_than_ten_years).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_ten_years);
             }
-
             // Translate strings Daily to English
             if (context.getString(R.string.daily).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.daily);
             }
-
             // Translate strings Once A Week to English
             if (context.getString(R.string.once_a_week).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.once_a_week);
             }
-
             // Translate strings Twice A Week to English
             if (context.getString(R.string.twice_a_week).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.twice_a_week);
             }
-
             // Translate strings Occasionally to English
             if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
+            }
+            // Translate string More than 500 ml to English
+            if (context.getString(R.string.more_than_five_hundred_ml).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.more_than_five_hundred_ml);
             }
         }
 
@@ -3553,6 +3589,20 @@ public final class StringUtils {
             // Translate string No to English
             if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.survey_no);
+            }
+        }
+        return text;
+    }
+
+    public static String getTimeStrings(String text, Context context, Context updatedContext, String locale) {
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate hours to English
+            if (context.getString(R.string.identification_screen_picker_hours).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.identification_screen_picker_hours);
+            }
+            // Translate days to English
+            if (context.getString(R.string.days).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.days);
             }
         }
         return text;

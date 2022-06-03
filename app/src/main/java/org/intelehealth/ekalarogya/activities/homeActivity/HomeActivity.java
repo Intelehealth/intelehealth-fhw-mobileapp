@@ -327,6 +327,7 @@ public class HomeActivity extends AppCompatActivity {
             requestPermission();
         }
 
+        Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
         showProgressbar();
 
         HeartBitApi();

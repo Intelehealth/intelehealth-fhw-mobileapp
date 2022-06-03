@@ -28,12 +28,14 @@
         <item>चयन करें</item>
         <item>पहला टिका</item>
         <item>दूसरा टिका</item>
+        <item>तीसरी खुराक</item>
     </string-array>
 
     <string-array name="vaccination_spinner_or">
         <item>ଚୟନ</item>
         <item>ପ୍ରଥମ ଡୋଜ୍</item>
         <item>ଦ୍ୱିତୀୟ ମାତ୍ରା</item>
+        <item>ତୃତୀୟ ଦୋଜ</item>
     </string-array>
 
     //-----replace with gujrati
@@ -41,6 +43,7 @@
         <item>પસંદ કરો</item>
         <item>પ્રથમ ડોઝ</item>
         <item>બીજી માત્રા</item>
+        <item>ત્રીજો ડોઝ</item>
     </string-array>
 
     <string-array name="speciality_values">
@@ -536,7 +539,7 @@
         <item>@string/unemployed</item>
         <item>@string/retired_with_pension</item>
         <item>@string/retired_without_pension</item>
-        <item>@string/other_specify</item>
+        <item>@string/not_applicable</item>
     </string-array>
 
     <!--    <string-array name="occupation_spinner_or">-->
@@ -574,7 +577,7 @@
         <item>@string/unemployed</item>
         <item>@string/retired_with_pension</item>
         <item>@string/retired_without_pension</item>
-        <item>@string/other_specify</item>
+        <item>@string/not_applicable</item>
     </string-array>
 
     <string-array name="occupation_spinner_gu">
@@ -591,7 +594,7 @@
         <item>@string/unemployed</item>
         <item>@string/retired_with_pension</item>
         <item>@string/retired_without_pension</item>
-        <item>@string/other_specify</item>
+        <item>@string/not_applicable</item>
     </string-array>
 
     <!--    <string-array name="occupation_spinner_gu">-->

@@ -1028,7 +1028,7 @@
     <string name="never_checked">कभी चेक नहीं किया गया</string>
     <string name="in_past_one_week">पिछले एक सप्ताह में</string>
     <string name="within_last_month">पिछले महीने के भीतर</string>
-    <string name="between_one_month_to_three_months_ago">एक महीने से 3 महीने पहले के बीच</string>
+    <string name="between_one_month_to_three_months_ago">1 महीने से 3 महीने पहले के बीच</string>
     <string name="between_three_months_to_six_months_ago">3 से 6 महीने पहले</string>
     <string name="more_than_six_months">6 महीने से अधिक</string>
 
@@ -1107,8 +1107,8 @@
 
     <string name="nal_jal_yojana">नल जल योजना</string>
     <string name="how_much_cultivable_land_does_your_family_own">आपके परिवार के पास कितनी कृषि योग्य भूमि है?</string>
-    <string name="bp">BP*</string>
-    <string name="less_than_5_cigarettes">5 से कम सिगरेट</string>
+    <string name="bp">बी.पी.*</string>
+    <string name="less_than_5_cigarettes">5 से कम बीड़ी / सिगरेट</string>
     <string name="denied_to_answer">जवाब देने से इनकार</string>
     <string name="survey_denied_to_answer">जवाब देने से इनकार</string>
     <string name="frequency_of_consumption">सेवन की आवृत्ति</string>
@@ -1129,6 +1129,10 @@
     <string name="does_this_household_have_ration_card">क्या इस परिवार के पास राशन कार्ड है?*</string>
 
     <string name="third_dose">तीसरी खुराक</string>
-
+    <string name="zero_fifty_ml">0 – 50 ml</string>
+    <string name="fifty_hundred_ml">50 – 100 ml</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 ml</string>
+    <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ml</string>
+    <string name="more_than_five_hundred_ml">500 ml से अधिक</string>
 
 </resources>

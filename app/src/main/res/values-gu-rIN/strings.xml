@@ -1026,6 +1026,7 @@
     <string name="unemployed">બેરોજગાર </string>
     <string name="retired_with_pension">સેવા નિવૃત (પેન્સન સાથે)</string>
     <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
+    <string name="not_applicable">લાગુ પડતું નથી</string>
 
     <!--    Smartphones strings -->
     <string name="shared">શેર કરેલ</string>
@@ -1085,5 +1086,47 @@
     <string name="medical_history_cannot_be_empty">તબીબી ઇતિહાસ ખાલી હોઈ શકતો નથી</string>
     <string name="smoking_history_cannot_be_empty">ધૂમ્રપાનનો ઇતિહાસ ખાલી હોઈ શકતો નથી</string>
     <string name="alcohol_consumption_history_cannot_be_empty">આલ્કોહોલના વપરાશનો ઇતિહાસ ખાલી હોઈ શકતો નથી</string>
+
+    <string name="zero_fifty_ml">0 – 50 મિલીથી</string>
+    <string name="fifty_hundred_ml">50 – 100 મિલીથી</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 મિલીથી</string>
+    <string name="two_hundred_fifty_five_hundred_ml">250 – 500 મિલીથી</string>
+    <string name="more_than_five_hundred_ml">500 મિલીથી વધુ</string>
+
+    <string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">શું જલ જીવન મિશન યોજના હેઠળ ગામને પાણી મળે છે?</string>
+    <string name="phone_ownership">ફોનની માલિકી*</string>
+    <string name="own_smartphone">પોતાનો સ્માર્ટફોન</string>
+    <string name="own_feature_phone">પોતાનો ફીચર ફોન</string>
+    <string name="shared_smartphone">શેર કરેલ સ્માર્ટફોન</string>
+    <string name="shared_feature_phone">શેર કરેલ ફીચર ફોન</string>
+
+    <string name="nal_jal_yojana">નળ જલ યોજના</string>
+
+    <string name="yes_family_member">હા (કુટુંબના સભ્ય)</string>
+    <string name="yes_personal">હા (વ્યક્તિગત)</string>
+
+    <string name="how_much_cultivable_land_does_your_family_own">તમારું કુટુંબ કેટલી ખેતીલાયક જમીન ધરાવે છે?</string>
+    <string name="bp">બી.પી*</string>
+    <string name="less_than_5_cigarettes">5 કરતાં ઓછી બીડી/સિગારેટ</string>
+    <string name="denied_to_answer">જવાબ આપવાનો ઇનકાર કર્યો</string>
+    <string name="survey_denied_to_answer">જવાબ આપવાનો ઇનકાર કર્યો</string>
+    <string name="frequency_of_consumption">વપરાશની આવર્તન</string>
+    <string name="daily">દૈનિક</string>
+    <string name="once_a_week">અઠવાડિયા માં એકવાર</string>
+    <string name="twice_a_week">અઠવાડિયામાં બે વાર</string>
+    <string name="occasionally_once_a_month_or_less">ક્યારેક-ક્યારેક (મહિનામાં એક વખત કે તેથી ઓછા સમયમાં)</string>
+
+    <string name="please_state_if_you_are_the_head_of_the_family">કૃપા કરીને જણાવો કે શું તમે પરિવારના વડા છો</string>
+    <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">રહેતા સભ્યોની સંખ્યા ઘરના કુલ સભ્યોની સંખ્યા કરતા વધારે ન હોઈ શકે</string>
+    <string name="please_select_the_main_source_of_drinking_water">મહેરબાની કરીને પીવાના પાણીનો મુખ્ય સ્ત્રોત પસંદ કરો</string>
+    <string name="please_select_the_methods_of_purifying_water">કૃપા કરીને પાણીને શુદ્ધ કરવા માટેની પદ્ધતિઓ પસંદ કરો</string>
+    <string name="please_state_if_you_have_running_water_in_the_household">કૃપા કરીને જણાવો કે શું તમારા ઘરમાં વહેતું પાણી છે.</string>
+    <string name="select_hours">કલાક</string>
+    <string name="please_state_if_you_have_electricity_in_the_household">કૃપા કરીને જણાવો કે શું તમારા ઘરમાં વીજળી છે</string>
+    <string name="no_expense">કોઈ ખર્ચ નથી</string>
+    <string name="does_this_household_have_an_ayushman_card">શું આ પરિવાર પાસે આયુષ્માન કાર્ડ છે?*</string>
+    <string name="does_this_household_have_ration_card">શું આ પરિવાર પાસે રાશન કાર્ડ છે?*</string>
+
+    <string name="third_dose">ତୃତୀୟ ଦୋଜ</string>
 
 </resources>

@@ -876,7 +876,7 @@
     <string name="one_three_km">1 – 3 km</string>
     <string name="three_five_km">3 – 5km</string>
     <string name="more_than_five_km">More than 5km</string>
-    <string name="distance_to_nearest_primary_health_centers">Distance to nearest Primary health centre (IN KMS)*</string>
+    <string name="distance_to_nearest_primary_health_centers">Distance to nearest Primary Health Centre (In KMS)*</string>
     <string name="distance_to_nearest_community_health_centre_in_walking_time">Distance to nearest Community Health Centre*</string>
     <string name="within_3_km">Within 3 km</string>
     <string name="three_six_km">3 – 6km</string>
@@ -1054,7 +1054,7 @@
     <string name="never_checked">Never Checked</string>
     <string name="in_past_one_week">In past one week</string>
     <string name="within_last_month">Within last month</string>
-    <string name="between_one_month_to_three_months_ago">Between one month to 3 months ago</string>
+    <string name="between_one_month_to_three_months_ago">Between 1 month to 3 months ago</string>
     <string name="between_three_months_to_six_months_ago">Between 3 months to 6 months ago</string>
     <string name="more_than_six_months">More than 6 months</string>
 
@@ -1102,7 +1102,7 @@
     <string name="nal_jal_yojana">Nal Jal Yojana</string>
     <string name="how_much_cultivable_land_does_your_family_own">How much cultivable land does your family own?</string>
     <string name="bp">BP*</string>
-    <string name="less_than_5_cigarettes">Less than 5 cigarettes</string>
+    <string name="less_than_5_cigarettes">Less than 5 bidis / cigarettes</string>
     <string name="denied_to_answer">Denied To Answer</string>
     <string name="survey_denied_to_answer">Denied To Answer</string>
     <string name="frequency_of_consumption">Frequency of consumption</string>
@@ -1120,8 +1120,13 @@
     <string name="please_state_if_you_have_electricity_in_the_household">Please state if you have electricity in the household</string>
     <string name="no_expense">No expense</string>
     <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
-    <string name="does_this_household_have_ration_card">Does this household have a ration card?*</string>
+    <string name="does_this_household_have_ration_card">Does this household have a Ration Card?*</string>
 
     <string name="third_dose">Third Dose</string>
+    <string name="zero_fifty_ml">0 – 50 ml</string>
+    <string name="fifty_hundred_ml">50 – 100 ml</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 ml</string>
+    <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ml</string>
+    <string name="more_than_five_hundred_ml">More than 500 ml</string>
 
 </resources>

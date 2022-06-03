@@ -13,6 +13,8 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationStr
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSelectedCheckboxes;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getTimeStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getWhatsAppStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_economic_edit;
@@ -1322,19 +1324,23 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
             if (patient1.getWhatsapp_mobile() != null && !patient1.getWhatsapp_mobile()
                     .equalsIgnoreCase("")) {
-                String whatsapp_Transl = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    whatsapp_Transl = StringUtils.switch_or_whatsapp_edit(patient1.getWhatsapp_mobile());
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    whatsapp_Transl = StringUtils.switch_gu_whatsapp_edit(patient1.getWhatsapp_mobile());
-                } else {
-                    whatsapp_Transl = patient1.getWhatsapp_mobile();
-                }
+//                String whatsapp_Transl = "";
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    whatsapp_Transl = StringUtils.switch_or_whatsapp_edit(patient1.getWhatsapp_mobile());
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                    whatsapp_Transl = StringUtils.switch_gu_whatsapp_edit(patient1.getWhatsapp_mobile());
+//                } else {
+//                    whatsapp_Transl = patient1.getWhatsapp_mobile();
+//                }
+//
+//                int spinner_position = whatsapp_adapt.getPosition(whatsapp_Transl);
+//                whatsapp_spinner.setSelection(spinner_position);
 
-                int spinner_position = whatsapp_adapt.getPosition(whatsapp_Transl);
-                whatsapp_spinner.setSelection(spinner_position);
+                String whatsAppTranslation = getWhatsAppStrings(patient1.getWhatsapp_mobile(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                int whatsAppPosition = whatsapp_adapt.getPosition(whatsAppTranslation);
+                whatsapp_spinner.setSelection(whatsAppPosition);
             }
 
             //vaccination - start
@@ -1546,12 +1552,16 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
                         !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    binding.runningWaterHoursEditText.setText(patient1.getWaterSupplyHoursPerDay());
+                    String[] timeArray = patient1.getWaterSupplyHoursPerDay().split(" ");
+                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                    binding.runningWaterHoursEditText.setText(time);
                 }
 
                 if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
                         !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    binding.runningWaterDaysEditText.setText(patient1.getWaterSupplyDaysPerWeek());
+                    String[] timeArray = patient1.getWaterSupplyDaysPerWeek().split(" ");
+                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                    binding.runningWaterDaysEditText.setText(time);
                 }
 
                 if (patient1.getElectricityStatus() != null && !patient1.getElectricityStatus().equalsIgnoreCase("")) {
@@ -1560,12 +1570,16 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
                         && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    binding.loadSheddingHoursEditText.setText(patient1.getLoadSheddingHoursPerDay());
+                    String[] timeArray = patient1.getLoadSheddingHoursPerDay().split(" ");
+                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                    binding.loadSheddingHoursEditText.setText(time);
                 }
 
                 if (patient1.getLoadSheddingDaysPerWeek() != null && !patient1.getLoadSheddingDaysPerWeek().equalsIgnoreCase("")
                         && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    binding.loadSheddingDaysEditText.setText(patient1.getLoadSheddingDaysPerWeek());
+                    String[] timeArray = patient1.getLoadSheddingDaysPerWeek().split(" ");
+                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                    binding.loadSheddingDaysEditText.setText(time);
                 }
 
                 if (patient1.getAverageAnnualHouseholdIncome() != null && !patient1.getAverageAnnualHouseholdIncome().equalsIgnoreCase("")) {
@@ -3008,7 +3022,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Main Source of Drinking Water Linear Layout
-            if (!checkIfCheckboxesEmpty(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout)) {
+            if (checkIfCheckboxesEmpty(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout)) {
                 Toast.makeText(this, getString(R.string.please_select_the_main_source_of_drinking_water), Toast.LENGTH_SHORT).show();
                 focusView = binding.mainSourceOfDrinkingWaterCheckboxLinearLayout;
                 cancel = true;
@@ -3572,7 +3586,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingHoursEditText.getText().toString()));
+                String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
+                String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(loadSheddingHours);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // loadSheddingDaysPerWeek
@@ -3580,7 +3596,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingDaysEditText.getText().toString()));
+                String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
+                String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(loadSheddingDays);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // runningWaterAvailability
@@ -3601,7 +3619,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterHoursEditText.getText().toString()));
+                String[] runningWaterHoursArray = binding.runningWaterHoursEditText.getText().toString().split(" ");
+                String runningWaterHours = runningWaterHoursArray[0] + " " + getTimeStrings(runningWaterHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(runningWaterHours);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // waterSupplyAvailabilityDaysPerWeek
@@ -3609,7 +3629,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterDaysEditText.getText().toString()));
+                String[] runningWaterDaysArray = binding.runningWaterDaysEditText.getText().toString().split(" ");
+                String runningWaterDays = runningWaterDaysArray[0] + " " + getTimeStrings(runningWaterDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(runningWaterDays);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Main source of drinking water...
@@ -4959,7 +4981,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingHoursEditText.getText().toString()));
+                String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
+                String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(loadSheddingHours);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // loadSheddingDaysPerWeek
@@ -4967,7 +4991,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.loadSheddingDaysEditText.getText().toString()));
+                String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
+                String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(loadSheddingDays);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // runningWaterAvailability
@@ -5003,7 +5029,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterHoursEditText.getText().toString()));
+                String[] runningWaterHoursArray = binding.runningWaterHoursEditText.getText().toString().split(" ");
+                String runningWaterHours = runningWaterHoursArray[0] + " " + getTimeStrings(runningWaterHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(runningWaterHours);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // waterSupplyAvailabilityDaysPerWeek
@@ -5011,7 +5039,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyValue(binding.runningWaterDaysEditText.getText().toString()));
+                String[] runningWaterDaysArray = binding.runningWaterDaysEditText.getText().toString().split(" ");
+                String runningWaterDays = runningWaterDaysArray[0] + " " + getTimeStrings(runningWaterDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                patientAttributesDTO.setValue(runningWaterDays);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Main source of drinking water...
@@ -5354,6 +5384,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
         medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(medicalHistoryViewPager);
+        binding.cardViewMedicalHistory.requestFocus();
     }
 
     @Override
@@ -5364,6 +5395,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         medicalHistoryViewPager.setCurrentItem(medicalHistoryList.size() - 1);
         medicalHistoryViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(medicalHistoryViewPager);
+        binding.cardViewMedicalHistory.requestFocus();
     }
 
     @Override

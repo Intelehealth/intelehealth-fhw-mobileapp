@@ -227,7 +227,7 @@
     <string name="visit_summary_bp">ରକ୍ତଚାପ</string>
     <string name="wash_hands">"ହାଥ ଧୋଇବା ପାଇଁ ମନେରଖ "</string>
     <string name="pref_title_social_recommendations">"ସାମାଜିକ ଉପାୟ କୋ ଚଲାଅ "</string>
-        <string name="pref_description_social_recommendations">"ଆପଣଂକ ମେସେଜ ମାଧ୍ୟମ ରେ ବ୍ୟକ୍ତି ମାନକ ପାଖରେ ପହଂଚିବା ପାଇଁ ଉପାୟ "</string>
+    <string name="pref_description_social_recommendations">"ଆପଣଂକ ମେସେଜ ମାଧ୍ୟମ ରେ ବ୍ୟକ୍ତି ମାନକ ପାଖରେ ପହଂଚିବା ପାଇଁ ଉପାୟ "</string>
     <string name="sync_stopped">"ବନ୍ଦ ହେଇ ଗଲା  "</string>
     <string name="sync_in_progress">କାମ ଚାଲୁ ଅଛି</string>
     <string name="question_update_details">"ଆପଣ ଡିଟେଲସ ଅପଡେଟ କରିବା ପାଇଁ ଚାହୁଁଛନ୍ତି କି "</string>
@@ -603,7 +603,7 @@
     <string name="weight_gain_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ ଅଧିକ |</string>
     <string name="doctor_advice_alert_msg">ଆପଣ ଡାକ୍ତରଙ୍କ ଠାରୁ ଟେଲି ପରାମର୍ଶ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="vital_alert_save_button">ସଞ୍ଚୟ କରନ୍ତୁ</string>
-        <string name="vital_alert_continue_button">ହଁ, ଜାରି ରଖ</string>
+    <string name="vital_alert_continue_button">ହଁ, ଜାରି ରଖ</string>
 
     <string name="vital_alert_bp_dia_button">ତୁମର ଡାଇଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_bp_sys_button">ତୁମର ସିଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
@@ -775,7 +775,7 @@
     <string name="unprotected_spring">ଅସୁରକ୍ଷିତ ଝରଣା</string>
     <string name="rainwater">ବର୍ଷାପାଣି</string>
     <string name="tanker_truck">ଟ୍ୟାଙ୍କର ପାଣି</string>
-    <string name="cart_with_small_tank">टଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି</string>
+    <string name="cart_with_small_tank">ଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି</string>
     <string name="surface_water">ଭୂପୃଷ୍ଠ ଜଳ</string>
     <string name="common_hand_pump">ସାଧାରଣ ହାତ ପମ୍ପ</string>
     <string name="hand_pump_at_home">ଘରେ ଥିବା ହାତ ପମ୍ପ</string>
@@ -834,7 +834,7 @@
     <string name="one_three_km">1 – 3 କିମି</string>
     <string name="three_five_km">3 – 5 କିମି</string>
     <string name="more_than_five_km">5 କିଲୋମିଟରରୁ ଅଧିକ |</string>
-    <string name="distance_to_nearest_primary_health_centers">ନିକଟସ୍ଥ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା (IN KMS)*</string>
+    <string name="distance_to_nearest_primary_health_centers">ନିକଟସ୍ଥ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା (କିମିରେ)*</string>
     <string name="distance_to_nearest_community_health_centre_in_walking_time">ନିକଟସ୍ଥ ସମ୍ପ୍ରଦାୟ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା*</string>
     <string name="within_3_km">3 କିଲୋମିଟର ମଧ୍ୟରେ</string>
     <string name="three_six_km">3 – 6 କିମି</string>
@@ -916,8 +916,8 @@
     <string name="never_checked">କଦାପି ଯାଞ୍ଚ କରାଯାଇ ନାହିଁ</string>
     <string name="in_past_one_week">ଗତ ଏକ ସପ୍ତାହରେ</string>
     <string name="within_last_month">ଗତ ମାସ ମଧ୍ୟରେ</string>
-    <string name="between_one_month_to_three_months_ago">ଏକ ମାସରୁ 3 ମାସ ପୂର୍ବରୁ</string>
-    <string name="between_three_months_to_six_months_ago">୩ ମାସ - ୬ ମାସ ପୂର୍ବରୁ </string>
+    <string name="between_one_month_to_three_months_ago">୧ ରୁ ୩ ମାସ ମଧ୍ୟରେ</string>
+    <string name="between_three_months_to_six_months_ago">୩ ରୁ ୬ ମାସ ପୂର୍ବେ</string>
     <string name="more_than_six_months">୬ ମାସରୁ ଅଧିକ</string>
 
     <string name="identification_screen_checkbox_other">ଅନ୍ୟାନ୍ୟ</string>
@@ -933,14 +933,14 @@
     <string name="does_the_person_smoke">ଏହି ଲୋକ ଧୁମ୍ରପାନ କରେକି?</string>
     <string name="smoker">ଧୂମପାନକାରୀ</string>
     <string name="non_smoker">ଅଣ ଧୂମପାନକାରୀ</string>
-    <string name="five_ten_bids_cigarette">5 – 10 ବିଡି / ସିଗାରେଟ୍</string>
-    <string name="more_than_ten_bids_cigarette">10 ରୁ ଅଧିକ ବିଡି / ସିଗାରେଟ୍</string>
+    <string name="five_ten_bids_cigarette">୫ – ୧୦ ବିଡି / ସିଗାରେଟ୍</string>
+    <string name="more_than_ten_bids_cigarette">୧୦ ରୁ ଅଧିକ ବିଡି / ସିଗାରେଟ୍</string>
     <string name="rate_of_smoking">ଧୂମପାନର ହାର</string>
     <string name="how_long_have_you_been_smoking">କେତେ ଦିନ ହେଲାଣି ଆପଣ ଧୁମ୍ରପାନ କରୁଛନ୍ତି?</string>
     <string name="less_than_a_year">ଏକ ବର୍ଷରୁ କମ୍</string>
-    <string name="from_one_year_to_five_year">1 ବର୍ଷରୁ 5 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
-    <string name="from_five_years_to_ten_years">5 ବର୍ଷରୁ 10 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
-    <string name="more_than_ten_years">10 ବର୍ଷରୁ ଅଧିକ</string>
+    <string name="from_one_year_to_five_year">୧ ବର୍ଷରୁ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
+    <string name="from_five_years_to_ten_years">୫ ବର୍ଷରୁ ୧୦ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
+    <string name="more_than_ten_years">୧୦ ବର୍ଷରୁ ଅଧିକ</string>
 
     <string name="history_of_alcohol_consumption">ଘରେ ମଦ୍ୟପାନର ଇତିହାସ*</string>
     <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ପରିବାର ରେ କେହି ମଦ୍ୟ ପାନ କରୁଥିବାର ନଜିର ଅଛି କି?</string>
@@ -958,6 +958,48 @@
     <string name="medical_history_cannot_be_empty">ଚିକିସ୍ଥ୍ୟଗତ ଇତିହାସ ପୂରଣ ନ ହେବା ଉଚିତ</string>
     <string name="smoking_history_cannot_be_empty">ତମାଖୁ (ବିଡି, ସିଗାରେଟ) ବ୍ୟବହାର ନ ହେବା ଉଚିତ୍</string>
     <string name="alcohol_consumption_history_cannot_be_empty">ମଦ୍ୟପାନ ବ୍ୟବହାର ନ ହେବା ଉଚିତ୍</string>
+
+    <string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">ଜଳ ଜୀବନ ଯୋଜନା ର ଅନ୍ତର୍ଭୁକ୍ତ ହୋଇଥିବା ଯୋଜନାର ପାଣି ଲୋକମାନେ ପିଉଛନ୍ତି କି?</string>
+    <string name="not_applicable">ଉପଯୁକ୍ତ ନୁହେଁ</string>
+
+    <string name="phone_ownership">ନିଜର ଫୋନ୍*</string>
+    <string name="own_smartphone">ନିଜର ସ୍ମାର୍ଟ ଫୋନ୍</string>
+    <string name="own_feature_phone">ନିଜର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
+    <string name="shared_smartphone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ମାର୍ଟ ଫୋନ୍</string>
+    <string name="shared_feature_phone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
+    <string name="yes_family_member">ହଁ (ପରିବାର ସଦସ୍ୟ)</string>
+    <string name="yes_personal">ହଁ (ନିଜସ୍ଵ)</string>
+
+    <string name="nal_jal_yojana">ଜଳ ଯୋଜନା ଟ୍ୟାପ୍ କରନ୍ତୁ</string>
+    <string name="how_much_cultivable_land_does_your_family_own">ଆପଣଙ୍କ ପରିବାର ର କେତେ ପରିମାଣର ଚାଷ ଉପଯୋଗୀ ଜମି ଅଛି?</string>
+    <string name="bp">ବ୍ଲଡ଼ ପ୍ରେସର (ରକ୍ତ ଚାପ)*</string>
+    <string name="less_than_5_cigarettes">୫ ରୁ କମ୍ ବିଡିସ୍ / ସିଗାରେଟ୍</string>
+    <string name="denied_to_answer">ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</string>
+    <string name="survey_denied_to_answer">ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</string>
+    <string name="frequency_of_consumption">ବ୍ୟବହାର କରିବାର ପରିମାଣ</string>
+    <string name="daily">ପ୍ରତିଦିନ</string>
+    <string name="once_a_week">ସପ୍ତାହକୁ ଥରେ</string>
+    <string name="twice_a_week">ସପ୍ତାହରେ ଦୁଇ ଥର</string>
+    <string name="occasionally_once_a_month_or_less">ବେଳେବେଳେ (ମାସରେ ଥରେ କିମ୍ବା ତା’ଠାରୁ କମ୍)</string>
+
+    <string name="please_state_if_you_are_the_head_of_the_family">ଦୟାକରି କୁହ, ତୁମେ କଣ ପରିବାରର ମୁଖ୍ୟ?</string>
+    <string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">ବାସ କରୁଥିବା ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା ଘରର ମୋଟ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟାଠାରୁ ଅଧିକ ହୋଇପାରିବ ନାହିଁ</string>
+    <string name="please_select_the_main_source_of_drinking_water">ଦୟାକରି କୁହ ପାନୀୟ ଜଳର ଉସ୍ଥ୍ୟ କଣ?</string>
+    <string name="please_select_the_methods_of_purifying_water">ଦୟାକରି କୁହ ତୁମେ କିପରି ପାଣିକୁ ବିଶୁଧିକରଣ କରୁ ଅଛ</string>
+    <string name="please_state_if_you_have_running_water_in_the_household">ଦୟାକରି କୁହ ତୁମ ଘରେ ସବୁବେଳେ ପାଣିର ଉତ୍ସ ଅଛି କି?</string>
+    <string name="select_hours">ଘଣ୍ଟା (ସମୟ)</string>
+    <string name="please_state_if_you_have_electricity_in_the_household">ଦୟାକରି କୁହ ତୁମ ଘରେ ବିଜୁଳି ଆଲୁଅ ଅଛି କି?</string>
+    <string name="no_expense">କିଛି ଖର୍ଚ୍ଚ ନାହିଁ</string>
+    <string name="does_this_household_have_an_ayushman_card">ଏହି ଘରର ଆୟୁଷମାନ କାର୍ଡ ଅଛି କି?*</string>
+    <string name="does_this_household_have_ration_card">ଏହି ଘରର ରେସନ କାର୍ଡ ଅଛି କି?*</string>
+
+    <string name="third_dose">ତୃତୀୟ ଦୋଜ</string>
+
+    <string name="zero_fifty_ml">0 – 50 ମିଲିରୁ</string>
+    <string name="fifty_hundred_ml">50 – 100 ମିଲିରୁ</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 ମିଲିରୁ</string>
+    <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ମିଲିରୁ</string>
+    <string name="more_than_five_hundred_ml">500 ମିଲିରୁ ଅଧିକ</string>
 
     <!--    SURVEY STRINGS - END -->
 
