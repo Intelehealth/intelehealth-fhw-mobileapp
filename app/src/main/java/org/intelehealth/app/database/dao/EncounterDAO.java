@@ -124,6 +124,20 @@ public class EncounterDAO {
         return encounterTypeUuid;
     }
 
+    public String getEncounterTypeNameByUUID(String uuid) {
+        String name = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT name FROM tbl_uuid_dictionary where uuid  = ? COLLATE NOCASE", new String[]{uuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            }
+        }
+        cursor.close();
+
+        return name;
+    }
+
 
     public List<EncounterDTO> unsyncedEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();

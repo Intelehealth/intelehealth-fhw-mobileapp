@@ -55,7 +55,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -98,7 +97,6 @@ import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.apprtc.ChatActivity;
@@ -583,6 +581,15 @@ public class HomeActivity extends AppCompatActivity {
             for (int j = 0; j < activePatientModels.size(); j++) {
                 encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter.
                 encounterUUID = encounterDTO.getUuid();
+                String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
+                String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(latestEncounterTypeId);
+                if (latestEncounterName.toLowerCase().contains("stage2")) {
+                    activePatientModels.get(j).setStageName("Stage-2");
+                } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+                    activePatientModels.get(j).setStageName("Stage-1");
+                } else {
+                    activePatientModels.get(j).setStageName("");
+                }
 
                 int red = 2, yellow = 1, green = 0;
                 int r_count = 0, y_count = 0, g_count = 0;
@@ -666,61 +673,61 @@ public class HomeActivity extends AppCompatActivity {
 
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
                     //if (hasPrescription) {
-                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
-                        alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                    alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
+                    alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    String finalFollowupdate = followupdate;
+                    String finalEncounterVitalslocal = encounterVitalslocal;
+                    String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+                    alertDialogBuilder.setPositiveButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                            EncounterDTO encounterDTO = new EncounterDTO();
+                            String uuid = UUID.randomUUID().toString();
+                            EncounterDAO encounterDAO = new EncounterDAO();
+                            encounterDTO = new EncounterDTO();
+                            encounterDTO.setUuid(uuid);
+                            encounterDTO.setEncounterTypeUuid("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e");
+
+                            //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
+                            try {
+                                encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                        });
-                        String finalFollowupdate = followupdate;
-                        String finalEncounterVitalslocal = encounterVitalslocal;
-                        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-                        alertDialogBuilder.setPositiveButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
 
-                                EncounterDTO encounterDTO = new EncounterDTO();
-                                String uuid = UUID.randomUUID().toString();
-                                EncounterDAO encounterDAO = new EncounterDAO();
-                                encounterDTO = new EncounterDTO();
-                                encounterDTO.setUuid(uuid);
-                                encounterDTO.setEncounterTypeUuid("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e");
+                            encounterDTO.setVisituuid(visitUuid);
+                            //        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
+                            encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
+                            encounterDTO.setSyncd(false);
+                            encounterDTO.setVoided(0);
+                            try {
+                                encounterDAO.createEncountersToDB(encounterDTO);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
 
-                                //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
-                                try {
-                                    encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                            VisitsDAO visitsDAO = new VisitsDAO();
+                            try {
+                                visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
 
-                                encounterDTO.setVisituuid(visitUuid);
-                                //        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
-                                encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
-                                encounterDTO.setSyncd(false);
-                                encounterDTO.setVoided(0);
-                                try {
-                                    encounterDAO.createEncountersToDB(encounterDTO);
-                                } catch (DAOException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
-
-                                VisitsDAO visitsDAO = new VisitsDAO();
-                                try {
-                                    visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
-                                } catch (DAOException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
-
-                                //SyncDAO syncDAO = new SyncDAO();
-                                //syncDAO.pushDataApi();
-                                syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
-                                // the Time will be changed for last sync.
+                            //SyncDAO syncDAO = new SyncDAO();
+                            //syncDAO.pushDataApi();
+                            syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
+                            // the Time will be changed for last sync.
 
 //        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
 
-                                sessionManager.removeVisitSummary(activePatientModel.getPatientuuid(), visitUuid);
+                            sessionManager.removeVisitSummary(activePatientModel.getPatientuuid(), visitUuid);
 
                                /* VisitUtils.endVisit(HomeActivity.this,
                                         visitUuid,
@@ -736,11 +743,11 @@ public class HomeActivity extends AppCompatActivity {
 
 //                                AppointmentDAO appointmentDAO = new AppointmentDAO();
 //                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    //alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
 
                     /*} else {
                         alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.error_no_data));
@@ -760,6 +767,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
     public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
         long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
