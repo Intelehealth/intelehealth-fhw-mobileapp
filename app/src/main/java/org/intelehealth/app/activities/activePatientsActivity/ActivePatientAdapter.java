@@ -213,7 +213,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
                 visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
-                visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("patientNameTimeline", patientName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", "");

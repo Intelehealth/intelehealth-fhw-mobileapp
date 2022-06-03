@@ -347,8 +347,8 @@ public class ObsDAO {
      * We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
      * If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
      */
-    public boolean checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
-        boolean isMissed = false;
+    public int checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
+        int isMissed = 0;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
@@ -357,7 +357,7 @@ public class ObsDAO {
         if (idCursor.getCount() <= 0) {
             // that means there is no obs for this enc which means that this encounter is missed...
             // now insert a new row in obs table against this encoutneruuid and set sync to false.
-            isMissed = true;
+            isMissed = 1; // missed
             ContentValues values = new ContentValues();
                 values.put("uuid", UUID.randomUUID().toString());
                 values.put("encounteruuid", encounterUuid);
@@ -373,7 +373,7 @@ public class ObsDAO {
             //end
         }
         else {
-            isMissed = false;
+            isMissed = 2; // submitted
             // this means that this encounter is filled with obs ie. It was answered and then disabled.
         }
         idCursor.close();
