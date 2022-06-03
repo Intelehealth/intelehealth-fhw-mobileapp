@@ -1,7 +1,11 @@
 package org.intelehealth.app.partogram;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,19 +17,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.app.partogram.model.ParamInfo;
 import org.intelehealth.app.partogram.model.PartogramItemData;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +48,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private String mVisitUUID = "";
     private String mEncounterUUID = "";
     private String mEncounterNameUUID = "";
+    private String mPatientUuid = "", mPatientName = "";
     private static final int HOURLY = 0;
     private static final int HALF_HOUR = 1;
     private static final int FIFTEEN_MIN = 2;
@@ -53,6 +65,8 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rvQuery);
         mVisitUUID = getIntent().getStringExtra("visitUuid");
         mEncounterUUID = getIntent().getStringExtra("encounterUuid");
+        mPatientName = getIntent().getStringExtra("name");
+        mPatientUuid = getIntent().getStringExtra("patientUuid");
         Log.v("visitUuid", mVisitUUID);
         Log.v("EncounterUUID", mEncounterUUID);
         mQueryFor = getIntent().getIntExtra("type", 0);
@@ -66,6 +80,62 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveObs();
+            }
+        });
+
+        FloatingActionButton fabc = findViewById(R.id.fabc);
+        fabc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
+                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
+                Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, ChatActivity.class);
+                chatIntent.putExtra("patientName", mPatientName);
+                chatIntent.putExtra("visitUuid", mVisitUUID);
+                chatIntent.putExtra("patientUuid", mPatientUuid);
+                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+                chatIntent.putExtra("isForVideo", false);
+                if (rtcConnectionDTO != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+                }
+                startActivity(chatIntent);
+            }
+        });
+        FloatingActionButton fabv = findViewById(R.id.fabv);
+        fabv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
+                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
+                Intent in = new Intent(PartogramDataCaptureActivity.this, CompleteActivity.class);
+                String roomId = mVisitUUID;
+                String doctorName = "";
+                String nurseId = encounterDTO.getProvideruuid();
+                in.putExtra("roomId", roomId);
+                in.putExtra("isInComingRequest", false);
+                in.putExtra("doctorname", doctorName);
+                in.putExtra("nurseId", nurseId);
+                in.putExtra("startNewCall", true);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                    startActivity(in);
+                }
             }
         });
 

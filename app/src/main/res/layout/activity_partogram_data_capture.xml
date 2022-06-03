@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +13,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:minHeight="@dimen/button_min_height"
+        android:minHeight="?actionBarSize"
         android:padding="@dimen/common_padding"
         android:text="@string/save_button"
         android:textAllCaps="true"
@@ -27,6 +28,29 @@
         android:layout_above="@+id/tvSave"
         android:background="@color/gray_0"
         android:padding="16dip" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dip"
+        android:contentDescription="@string/chat_fab"
+        android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fabc"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:contentDescription="@string/chat_fab"
+        android:src="@drawable/ic_baseline_videocam_24"
+        app:backgroundTint="@color/yellow" />
 
 
 </RelativeLayout>

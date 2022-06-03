@@ -1,5 +1,10 @@
 package org.intelehealth.apprtc;
 
+import static org.webrtc.SessionDescription.Type.ANSWER;
+import static org.webrtc.SessionDescription.Type.OFFER;
+import static io.socket.client.Socket.EVENT_CONNECT;
+import static io.socket.client.Socket.EVENT_DISCONNECT;
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -58,11 +63,6 @@ import java.util.List;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import static io.socket.client.Socket.EVENT_CONNECT;
-import static io.socket.client.Socket.EVENT_DISCONNECT;
-import static org.webrtc.SessionDescription.Type.ANSWER;
-import static org.webrtc.SessionDescription.Type.OFFER;
-
 public class CompleteActivity extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
     private static final int RC_CALL = 111;
@@ -75,6 +75,7 @@ public class CompleteActivity extends AppCompatActivity {
     private boolean isInitiator;
     private boolean isChannelReady;
     private boolean isStarted;
+    private boolean mIsStartNewCall = false;
 
 
     MediaConstraints audioConstraints;
@@ -133,16 +134,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("nurseId"))
             mNurseId = getIntent().getStringExtra("nurseId");
 
-        if (mIsInComingRequest) {
-            binding.callingLayout.setVisibility(View.VISIBLE);
-            binding.rippleBackgroundContent.startRippleAnimation();
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            mRingtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            //mRingtone.setLooping(true);
-            mRingtone.play();
-        } else {
-            binding.callingLayout.setVisibility(View.GONE);
-        }
+
         binding.callerNameTv.setText(mDoctorName);
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,10 +247,21 @@ public class CompleteActivity extends AppCompatActivity {
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(broadcastReceiver, receiverFilter);
 
-        start();
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
+
+        if (mIsInComingRequest) {
+            binding.callingLayout.setVisibility(View.VISIBLE);
+            binding.rippleBackgroundContent.startRippleAnimation();
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            mRingtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            //mRingtone.setLooping(true);
+            mRingtone.play();
+            start();
+        } else {
+            binding.callingLayout.setVisibility(View.GONE);
+        }
     }
 
     private void stopRinging() {
@@ -269,6 +272,7 @@ public class CompleteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 
         // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
@@ -278,6 +282,8 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (socket != null)
                     socket.emit("bye");
+                else
+                    finish();
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.no, null);

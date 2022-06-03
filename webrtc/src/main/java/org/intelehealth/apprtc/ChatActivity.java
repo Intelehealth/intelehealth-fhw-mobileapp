@@ -145,6 +145,10 @@ public class ChatActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        if(getIntent().getBooleanExtra("isForVideo",false)){
+
+        }
     }
 
     public void hideSoftKeyboard() {
