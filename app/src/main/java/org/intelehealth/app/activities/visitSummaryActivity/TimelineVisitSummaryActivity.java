@@ -52,6 +52,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     EncounterDAO encounterDAO;
     ArrayList<EncounterDTO> encounterListDTO;
     Button endStageButton;
+    int stageNo = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,20 +127,22 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
         String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
         if (latestEncounterName.toLowerCase().contains("stage2")) {
+            stageNo = 2;
             endStageButton.setText("End Stage 2");
         } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+            stageNo = 1;
             endStageButton.setText("End Stage 1");
         } else {
+            stageNo = 0;
             // do nothing
         }
 
-
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
-            if (endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.endStageButton))) {
+            if (stageNo == 1) {
                 cancelStage1_ConfirmationDialog(); // cancel and start stage 2
-            } else if (endStageButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.end2StageButton))) {
-                //
+            } else if (stageNo == 2) {
+                // end visit on stage 2 ie. visit complete encoutner call....
             }
 
         });
