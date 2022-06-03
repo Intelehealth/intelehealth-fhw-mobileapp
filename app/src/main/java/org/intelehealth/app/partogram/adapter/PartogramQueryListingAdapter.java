@@ -115,7 +115,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         EditText dataEditText = tempView.findViewById(R.id.etvData);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
-            dataEditText.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues()).indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
+            dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
         } else {
             if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Initial")) {
                 String[] initials = new SessionManager(mContext).getChwname().split(" ");
@@ -125,7 +125,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else {
                     name = initials[0].substring(0, 2);
                 }
-                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(name.toLowerCase());
+                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(name.toUpperCase());
                 dataEditText.setText(name.toUpperCase());
             }
         }

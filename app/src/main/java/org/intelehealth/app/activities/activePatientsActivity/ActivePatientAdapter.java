@@ -12,28 +12,23 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.ActivePatientModel;
-import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -243,7 +238,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 //        holder.getRootView().setOnClickListener(listener);
         holder.btnVisitDetails.setOnClickListener(listener);
 
-        boolean enableEndVisit = false;
+        boolean enableEndVisit = true;
 /*
         for (int i = 0; i < listPatientUUID.size(); i++) {
             if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
@@ -263,35 +258,35 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
 
         holder.btnEndVisit.setEnabled(enableEndVisit);
-        if (enableEndVisit) {
-            if (activePatientModel.getEnddate() == null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                } else {
-                    holder.btnEndVisit.setBackgroundResource(R.drawable.bg_end_visit);
-                }
-                holder.btnEndVisit.setText(context.getString(R.string.action_end_visit));
+        //if (enableEndVisit) {
+        if (activePatientModel.getEnddate() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                } else {
-                    holder.btnEndVisit.setBackgroundResource(R.drawable.bg_visit_closed);
-                }
-
-                holder.btnEndVisit.setText(context.getString(R.string.visit_closed));
+                holder.btnEndVisit.setBackgroundResource(R.drawable.bg_end_visit);
+            }
+            holder.btnEndVisit.setText(context.getString(R.string.action_end_visit));
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+            } else {
+                holder.btnEndVisit.setBackgroundResource(R.drawable.bg_visit_closed);
             }
 
-            holder.btnEndVisit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (activePatientModel.getEnddate() != null)
-                        return;
-
-                    if (actionListener != null)
-                        actionListener.onEndVisitClicked(activePatientModel, "1".equals(holder.ivPriscription.getTag()));
-                }
-            });
+            holder.btnEndVisit.setText(context.getString(R.string.visit_closed));
         }
+
+        holder.btnEndVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (activePatientModel.getEnddate() != null)
+                    return;
+
+                if (actionListener != null)
+                    actionListener.onEndVisitClicked(activePatientModel, "1".equals(holder.ivPriscription.getTag()));
+            }
+        });
+        //}
     }
 
     @Override

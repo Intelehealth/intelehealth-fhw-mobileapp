@@ -109,6 +109,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -119,6 +120,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -171,7 +173,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView mActiveVisitsRecyclerView;
     private ActivePatientAdapter mActivePatientAdapter;
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
-    int limit = 20, offset = 0;
+    int limit = 120, offset = 0;
     boolean fullyLoaded = false;
     EncounterDAO encounterDAO = new EncounterDAO();
     EncounterDTO encounterDTO = null;
@@ -318,7 +320,7 @@ public class HomeActivity extends AppCompatActivity {
         mActiveVisitsRecyclerView = findViewById(R.id.rcvActiveVisits);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mActiveVisitsRecyclerView.setLayoutManager(reLayoutManager);
-        mActiveVisitsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*mActiveVisitsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -331,11 +333,13 @@ public class HomeActivity extends AppCompatActivity {
                         fullyLoaded = true;
                     }
 
-                    mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
-                    mActivePatientAdapter.notifyDataSetChanged();
+                    if (!allPatientsFromDB.isEmpty()) {
+                        mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
+                        mActivePatientAdapter.notifyDataSetChanged();
+                    }
                 }
             }
-        });
+        });*/
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         loadVisits();
 
@@ -661,7 +665,7 @@ public class HomeActivity extends AppCompatActivity {
                     visitCursor.close();
 
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
-                    if (hasPrescription) {
+                    //if (hasPrescription) {
                         alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
                         alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                             @Override
@@ -676,7 +680,49 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                VisitUtils.endVisit(HomeActivity.this,
+
+                                EncounterDTO encounterDTO = new EncounterDTO();
+                                String uuid = UUID.randomUUID().toString();
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDTO = new EncounterDTO();
+                                encounterDTO.setUuid(uuid);
+                                encounterDTO.setEncounterTypeUuid("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e");
+
+                                //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
+                                try {
+                                    encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                encounterDTO.setVisituuid(visitUuid);
+                                //        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
+                                encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
+                                encounterDTO.setSyncd(false);
+                                encounterDTO.setVoided(0);
+                                try {
+                                    encounterDAO.createEncountersToDB(encounterDTO);
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                }
+
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                try {
+                                    visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                }
+
+                                //SyncDAO syncDAO = new SyncDAO();
+                                //syncDAO.pushDataApi();
+                                syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
+                                // the Time will be changed for last sync.
+
+//        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
+
+                                sessionManager.removeVisitSummary(activePatientModel.getPatientuuid(), visitUuid);
+
+                               /* VisitUtils.endVisit(HomeActivity.this,
                                         visitUuid,
                                         activePatientModel.getPatientuuid(),
                                         finalFollowupdate,
@@ -685,7 +731,7 @@ public class HomeActivity extends AppCompatActivity {
                                         null,
                                         String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
                                         ""
-                                );
+                                );*/
 
 
 //                                AppointmentDAO appointmentDAO = new AppointmentDAO();
@@ -696,7 +742,7 @@ public class HomeActivity extends AppCompatActivity {
                         //alertDialog.show();
                         IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
 
-                    } else {
+                    /*} else {
                         alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.error_no_data));
                         alertDialogBuilder.setNeutralButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
@@ -707,14 +753,21 @@ public class HomeActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alertDialogBuilder.show();
                         //alertDialog.show();
                         IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
-                    }
+                    }*/
                 }
             });
         }
 
 
     }
+    public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
+    }
 
     //function for handling the video library feature...
     private void videoLibrary() {

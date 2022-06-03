@@ -179,6 +179,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private TextView mRiskFactorsTextView;
     private CheckBox mUnknownMembraneRupturedCheckBox;
 
+    private EditText mAlternateNumberEditText, mWifeDaughterOfEditText;
+    private TextView mAdmissionDateTextView, mAdmissionTimeTextView;
+
     // strings
     private String mTotalBirthCount = "0", mTotalMiscarriageCount = "0";
     private String mLaborOnsetString = "";
@@ -187,6 +190,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private String mMembraneRupturedDate = "", mMembraneRupturedTime = "";
     private String mRiskFactorsString = "";
     private List<String> mSelectedRiskFactorList = new ArrayList<String>();
+
+    private String mAlternateNumberString = "", mWifeDaughterOfString = "";
+    private String mAdmissionDateString = "", mAdmissionTimeString = "";
 
     private boolean mIsEditMode = false;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -217,6 +223,11 @@ public class IdentificationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*new*/
+        mAlternateNumberEditText = findViewById(R.id.identification_alt_phone_number);
+        mWifeDaughterOfEditText = findViewById(R.id.etv_wife_daughter_of);
+        mAdmissionDateTextView = findViewById(R.id.tvAdmissionDate);
+        mAdmissionTimeTextView = findViewById(R.id.tvAdmissionTime);
+
         mTotalBirthEditText = findViewById(R.id.etvTotalBirth);
         mTotalMiscarriageEditText = findViewById(R.id.etvTotalMiscarriage);
         mLaborOnsetRadioGroup = findViewById(R.id.rgLaborOnset);
@@ -227,6 +238,50 @@ public class IdentificationActivity extends AppCompatActivity {
         mMembraneRupturedTimeTextView = findViewById(R.id.tvMembraneRupturedTime);
         mRiskFactorsTextView = findViewById(R.id.tvRiskFactors);
         mUnknownMembraneRupturedCheckBox = findViewById(R.id.cbUnknownMembraneRuptured);
+
+        mAdmissionDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mCalendar = Calendar.getInstance();
+                int year = mCalendar.get(Calendar.YEAR);
+                int month = mCalendar.get(Calendar.MONTH);
+                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(0);
+                        cal.set(year, month, dayOfMonth);
+                        Date date = cal.getTime();
+
+                        mAdmissionDateString = simpleDateFormat.format(date);
+                        mAdmissionDateTextView.setText(mAdmissionDateString);
+                    }
+                }, year, month, dayOfMonth);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+            }
+        });
+        mAdmissionTimeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get Current Time
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                mAdmissionTimeString = hourOfDay + ":" + minute;
+                                mAdmissionTimeTextView.setText(mAdmissionTimeString);
+                            }
+                        }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
 
         mUnknownMembraneRupturedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1408,6 +1463,29 @@ public class IdentificationActivity extends AppCompatActivity {
      * @param patient
      */
     private void updateUI(Patient patient) {
+
+        //AlternateNo
+        if (patient.getAlternateNo() != null) {
+            mAlternateNumberString = patient.getAlternateNo();
+            mAlternateNumberEditText.setText(mAlternateNumberString);
+        }
+        //Wife_Daughter_Of
+        if (patient.getWifeDaughterOf() != null) {
+            mWifeDaughterOfString = patient.getWifeDaughterOf();
+            mWifeDaughterOfEditText.setText(mWifeDaughterOfString);
+        }
+
+        //Admission_Date
+        if (patient.getAdmissionDate() != null) {
+            mAdmissionDateString = patient.getAdmissionDate();
+            mAdmissionDateTextView.setText(mAdmissionDateString);
+        }
+        //Admission_Time
+        if (patient.getAdmissionTime() != null) {
+            mAdmissionTimeString = patient.getAdmissionTime();
+            mAdmissionTimeTextView.setText(mAdmissionTimeString);
+        }
+
         // parity
         if (patient.getParity() != null) {
             mTotalBirthCount = patient.getParity().split(",")[0];
@@ -1646,6 +1724,20 @@ public class IdentificationActivity extends AppCompatActivity {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 /*new*/
+                if (name.equalsIgnoreCase("AlternateNo")) {
+                    patient1.setAlternateNo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Wife_Daughter_Of")) {
+                    patient1.setWifeDaughterOf(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Admission_Date")) {
+                    patient1.setAdmissionDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Admission_Time")) {
+                    patient1.setAdmissionTime(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+
                 if (name.equalsIgnoreCase("Parity")) {
                     patient1.setParity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -1744,6 +1836,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
         mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
+        mAlternateNumberString = mAlternateNumberEditText.getText().toString().trim();
+        mWifeDaughterOfString = mWifeDaughterOfEditText.getText().toString().trim();
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -1896,6 +1990,24 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(null);
         }
         /*new*/
+
+        if (mWifeDaughterOfString.isEmpty()) {
+            Toast.makeText(this, "Please enter wife/daughter of name", Toast.LENGTH_SHORT).show();
+            mWifeDaughterOfEditText.requestFocus();
+            return;
+        }
+
+        if (mAdmissionDateString.isEmpty()) {
+            Toast.makeText(this, "Please select admission date", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        if (mAdmissionTimeString.isEmpty()) {
+            Toast.makeText(this, "Please select admission time", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
         if (mTotalBirthCount.isEmpty()) {
             Toast.makeText(this, getString(R.string.total_birth_count_val_txt), Toast.LENGTH_SHORT).show();
             mTotalBirthEditText.requestFocus();
@@ -1943,7 +2055,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-          //  patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+            //  patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
 
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -1993,6 +2105,38 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTOList.add(patientAttributesDTO);
 
             /*new*/
+            //AlternateNo
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("AlternateNo"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mAlternateNumberString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Wife_Daughter_Of
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Wife_Daughter_Of"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mWifeDaughterOfString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Admission_Date
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Admission_Date"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mAdmissionDateString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Admission_Time
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Admission_Time"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mAdmissionTimeString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
             //Parity
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2168,6 +2312,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
         mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
+        mAlternateNumberString = mAlternateNumberEditText.getText().toString().trim();
+        mWifeDaughterOfString = mWifeDaughterOfEditText.getText().toString().trim();
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -2321,6 +2467,23 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         /*new*/
+        if (mWifeDaughterOfString.isEmpty()) {
+            Toast.makeText(this, "Please enter wife/daughter of name", Toast.LENGTH_SHORT).show();
+            mWifeDaughterOfEditText.requestFocus();
+            return;
+        }
+
+        if (mAdmissionDateString.isEmpty()) {
+            Toast.makeText(this, "Please select admission date", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        if (mAdmissionTimeString.isEmpty()) {
+            Toast.makeText(this, "Please select admission time", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
         if (mTotalBirthCount.isEmpty()) {
             Toast.makeText(this, getString(R.string.total_birth_count_val_txt), Toast.LENGTH_SHORT).show();
             mTotalBirthEditText.requestFocus();
@@ -2456,6 +2619,38 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             /*new*/
+            //AlternateNo
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("AlternateNo"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mAlternateNumberString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Wife_Daughter_Of
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Wife_Daughter_Of"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mWifeDaughterOfString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Admission_Date
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Admission_Date"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mAdmissionDateString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Admission_Time
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Admission_Time"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mAdmissionTimeString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
             //Parity
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

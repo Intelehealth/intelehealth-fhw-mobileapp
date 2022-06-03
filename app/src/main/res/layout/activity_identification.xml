@@ -342,6 +342,39 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
+
+                            <EditText
+                                android:id="@+id/identification_alt_phone_number"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Alternate Mobile Number"
+                                android:imeOptions="actionUnspecified"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                     </LinearLayout>
 
@@ -673,9 +706,85 @@
                         android:padding="8dp">
 
                         <!--New-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:layout_marginBottom="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:padding="@dimen/common_padding">
+
+                            <EditText
+                                android:id="@+id/etv_wife_daughter_of"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:drawableStart="@drawable/person_icon"
+                                android:drawableLeft="@drawable/person_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Wife/Daughter Of"
+                                android:imeOptions="actionUnspecified"
+                                android:inputType="textCapWords"
+                                android:maxLength="50"
+                                android:maxLines="2"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:paddingHorizontal="@dimen/common_padding"
+                            android:text="Admission date &amp; time"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/common_padding"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:id="@+id/tvAdmissionDate"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:gravity="center"
+                                android:hint="Date : dd/mm/yyyy"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:padding="@dimen/common_padding"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+
+                            <TextView
+                                android:id="@+id/tvAdmissionTime"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_padding"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_corner_gray_stroke_light"
+                                android:gravity="center"
+                                android:hint="Time : hh:mm"
+                                android:minHeight="@dimen/edit_box_min_height"
+                                android:padding="@dimen/common_padding"
+                                android:textColor="@color/gray_6"
+                                android:textSize="@dimen/content_text_size" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
                             android:paddingHorizontal="@dimen/common_padding"
                             android:text="Parity"
                             android:textColor="@color/gray_6"

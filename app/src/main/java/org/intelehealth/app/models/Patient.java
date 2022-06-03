@@ -29,6 +29,11 @@ public class Patient {
     private String membraneRupturedTimestamp;
     private String riskFactors;
     private String hospitalMaternity;
+
+    private String alternateNo;
+    private String wifeDaughterOf;
+    private String admissionDate;
+    private String admissionTime;
     /*end*/
 
     public String getUuid() {
@@ -245,5 +250,37 @@ public class Patient {
 
     public void setLaborOnset(String laborOnset) {
         this.laborOnset = laborOnset;
+    }
+
+    public String getAdmissionTime() {
+        return admissionTime;
+    }
+
+    public void setAdmissionTime(String admissionTime) {
+        this.admissionTime = admissionTime;
+    }
+
+    public String getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(String admissionDate) {
+        this.admissionDate = admissionDate;
+    }
+
+    public String getWifeDaughterOf() {
+        return wifeDaughterOf;
+    }
+
+    public void setWifeDaughterOf(String wifeDaughterOf) {
+        this.wifeDaughterOf = wifeDaughterOf;
+    }
+
+    public String getAlternateNo() {
+        return alternateNo;
+    }
+
+    public void setAlternateNo(String alternateNo) {
+        this.alternateNo = alternateNo;
     }
 }
