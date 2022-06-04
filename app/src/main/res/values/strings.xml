@@ -848,6 +848,9 @@
     <string name="missed_interval"><u>Missed</u></string>
     <string name="submitted_interval"><u>Submitted</u></string>
     <string name="add_patient_txt">Add Patient</string>
+    <string name="title_activity_epartogram">Epartogram</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 
 </resources>

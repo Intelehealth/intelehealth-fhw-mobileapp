@@ -18,27 +18,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.epartogramActivity.Epartogram;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.NotificationReceiver;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.exception.DAOException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 public class TimelineVisitSummaryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -65,7 +59,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    /*  @Override
+      @Override
       public boolean onCreateOptionsMenu(Menu menu) {
           MenuInflater inflater = getMenuInflater();
           inflater.inflate(R.menu.menu_viewepartogram, menu);
@@ -74,9 +68,23 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
       @Override
       public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-          return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.epartogramView:
+                showEpartogram();
+                break;
+        }
+
+        return true;
       }
-  */
+
+    private void showEpartogram() {
+        // Call webview here...
+        Intent intent = new Intent(context, Epartogram.class);
+        intent.putExtra("patientuuid", patientUuid);
+        intent.putExtra("visituuid", visitUuid);
+        startActivity(intent);
+    }
+
     private void initUI() {
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
@@ -313,4 +321,6 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         super.onStart();
         adapter.notifyDataSetChanged();
     }
+
+
 }

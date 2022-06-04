@@ -10,12 +10,12 @@
     </declare-styleable>
 
     <declare-styleable name="password_edit_text">
-        <attr name="show_drawable" format="integer"/>
-        <attr name="hide_drawable" format="integer"/>
-        <attr name="password_visible" format="boolean"/>
-        <attr name="show_as_text" format="boolean"/>
-        <attr name="hide_text" format="string"/>
-        <attr name="show_text" format="string"/>
+        <attr name="show_drawable" format="integer" />
+        <attr name="hide_drawable" format="integer" />
+        <attr name="password_visible" format="boolean" />
+        <attr name="show_as_text" format="boolean" />
+        <attr name="hide_text" format="string" />
+        <attr name="show_text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CircleProgressBar">
@@ -41,9 +41,7 @@
     </declare-styleable>
 
 
-
-
-    <attr name="scrollingPagerIndicatorStyle"/>
+    <attr name="scrollingPagerIndicatorStyle" />
 
     <declare-styleable name="ScrollingPagerIndicator">
         <attr name="spi_dotColor" format="color" />
@@ -59,6 +57,10 @@
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
+    </declare-styleable>
+    <declare-styleable name="FullscreenAttrs">
+        <attr name="fullscreenBackgroundColor" format="color" />
+        <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
 
 </resources>

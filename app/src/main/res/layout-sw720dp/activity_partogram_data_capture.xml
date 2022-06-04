@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="20dp"
     android:layout_marginHorizontal="5dp"
     tools:context=".partogram.PartogramDataCaptureActivity">
 
     <TextView
         android:id="@+id/tvSave"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="190dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:textAlignment="center"
         android:padding="@dimen/common_padding"
         android:text="@string/save_button"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="@dimen/header_text_size"
@@ -28,12 +28,11 @@
 
     <TextView
         android:id="@+id/tvEpartogram"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:textAlignment="center"
@@ -44,7 +43,6 @@
         android:textColor="@color/white"
         android:textSize="@dimen/header_text_size"
         android:textStyle="bold" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvQuery"

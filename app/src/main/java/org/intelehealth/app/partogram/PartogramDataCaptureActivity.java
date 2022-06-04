@@ -20,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.epartogramActivity.Epartogram;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
@@ -43,7 +44,7 @@ import java.util.List;
 
 public class PartogramDataCaptureActivity extends AppCompatActivity {
 
-    private TextView mSaveTextView;
+    private TextView mSaveTextView, mEpartogramTextView;
     private RecyclerView mRecyclerView;
     private String mVisitUUID = "";
     private String mEncounterUUID = "";
@@ -62,6 +63,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("History Collection");
         mSaveTextView = findViewById(R.id.tvSave);
+        mEpartogramTextView = findViewById(R.id.tvEpartogram);
         mRecyclerView = findViewById(R.id.rvQuery);
         mVisitUUID = getIntent().getStringExtra("visitUuid");
         mEncounterUUID = getIntent().getStringExtra("encounterUuid");
@@ -76,11 +78,19 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         } else if (mQueryFor == HALF_HOUR) {
             prepareDataForHalfHourly();
         }
+
         mSaveTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveObs();
             }
+        });
+
+        mEpartogramTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Epartogram.class);
+            intent.putExtra("patientuuid", mPatientUuid);
+            intent.putExtra("visituuid", mVisitUUID);
+            startActivity(intent);
         });
 
         FloatingActionButton fabc = findViewById(R.id.fabc);

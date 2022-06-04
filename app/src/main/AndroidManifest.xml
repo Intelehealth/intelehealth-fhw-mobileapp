@@ -43,6 +43,13 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.epartogramActivity.Epartogram"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_epartogram"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".partogram.PartogramDataCaptureActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
