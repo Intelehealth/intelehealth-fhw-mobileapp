@@ -73,6 +73,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
+                if (encounterDTOList.get(position).getEncounterTypeUuid().equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
+                    holder.stage2start.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.stage2start.setVisibility(View.GONE);
+                }
+
                 String time = encounterDTOList.get(position).getEncounterTime();
                 SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
                 SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -184,7 +191,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
                 }
 
-
                 holder.timeTextview.setText(encounterTimeAmPmFormat);
             }
         }
@@ -198,7 +204,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
         CardView cardview;
-        TextView timeTextview, summary_textview;
+        TextView timeTextview, summary_textview, stage2start;
         FrameLayout frame1, frame2, frame3, frame4;
         int index;
 
@@ -207,6 +213,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             cardview = itemView.findViewById(R.id.cardview_parent);
             timeTextview = itemView.findViewById(R.id.time1);
+            stage2start = itemView.findViewById(R.id.stage2start);
             summary_textview = itemView.findViewById(R.id.summary_textview);
             frame1 = itemView.findViewById(R.id.frame1);
 

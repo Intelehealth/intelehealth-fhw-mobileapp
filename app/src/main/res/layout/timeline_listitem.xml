@@ -6,10 +6,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginHorizontal="10dp">
 
+    <TextView
+        android:id="@+id/stage2start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="10dp"
+        android:gravity="center"
+        android:text="Stage 2"
+        android:textAlignment="center"
+        android:textColor="@color/gray_2"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <FrameLayout
         android:id="@+id/frame1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stage2start">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +48,7 @@
                 android:layout_above="@+id/vl_2"
                 android:layout_marginStart="21dp"
                 android:layout_toEndOf="@id/time1"
-                android:background="#33000000" />
+                android:background="@color/gray_2" />
 
             <ImageView
                 android:id="@+id/circle1"
@@ -51,7 +65,7 @@
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/circle1"
-                android:background="#33000000" />
+                android:background="@color/gray_2" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_parent"
@@ -92,8 +106,9 @@
         </RelativeLayout>
     </FrameLayout>
 
+
     <!--    Child A-->
-    <FrameLayout
+   <!-- <FrameLayout
         android:id="@+id/frame2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -171,7 +186,7 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <!--    Child B-->
+    &lt;!&ndash;    Child B&ndash;&gt;
     <FrameLayout
         android:id="@+id/frame3"
         android:layout_width="match_parent"
@@ -249,7 +264,7 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <!--    Child C-->
+    &lt;!&ndash;    Child C&ndash;&gt;
     <FrameLayout
         android:id="@+id/frame4"
         android:layout_width="match_parent"
@@ -325,5 +340,5 @@
 
 
         </RelativeLayout>
-    </FrameLayout>
+    </FrameLayout>-->
 </RelativeLayout>
