@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-
     app:cardCornerRadius="8dip"
     app:cardElevation="8dip"
     app:cardUseCompatPadding="true">
@@ -34,8 +33,5 @@
             android:padding="@dimen/common_padding">
 
         </LinearLayout>
-
     </RelativeLayout>
-
-
 </androidx.cardview.widget.CardView>

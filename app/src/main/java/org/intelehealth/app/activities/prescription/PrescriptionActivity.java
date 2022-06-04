@@ -134,6 +134,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
 
     TextView txtDignosisHeading;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         mContext = newBase;
@@ -179,7 +180,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         context = getApplicationContext();
         presContext = PrescriptionActivity.this;
 
-        txtDignosisHeading=findViewById(R.id.txtDignosisHeading);
+        txtDignosisHeading = findViewById(R.id.txtDignosisHeading);
         txtDignosisHeading.setText(getString(R.string.diagnosis));
         initUI();
     }
@@ -566,7 +567,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
         ProviderDAO providerDAO = new ProviderDAO();
-        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+        Log.v("chwname", "chwnam: " + sessionManager.getChwname() + ", " + sessionManager.getProviderID());
         doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
         doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         doctorDetails.setSpecialization("Family Doctor");

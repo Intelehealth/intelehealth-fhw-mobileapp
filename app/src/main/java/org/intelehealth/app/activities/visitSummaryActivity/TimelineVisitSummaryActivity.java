@@ -59,15 +59,15 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     }
 
-      @Override
-      public boolean onCreateOptionsMenu(Menu menu) {
-          MenuInflater inflater = getMenuInflater();
-          inflater.inflate(R.menu.menu_viewepartogram, menu);
-          return super.onCreateOptionsMenu(menu);
-      }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_viewepartogram, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-      @Override
-      public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.epartogramView:
                 showEpartogram();
@@ -75,7 +75,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
 
         return true;
-      }
+    }
 
     private void showEpartogram() {
         // Call webview here...
@@ -164,7 +164,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                      //  endStageButton.setText("End Second Stage");
+                        //  endStageButton.setText("End Second Stage");
                         cancelStage1_30minAlarm();
                         dialog.dismiss();
                     }
@@ -261,7 +261,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
         //  calendar.add(Calendar.MINUTE, 1); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
@@ -288,7 +288,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-       //  calendar.add(Calendar.MINUTE, 2); // Testing
+        //  calendar.add(Calendar.MINUTE, 2); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);

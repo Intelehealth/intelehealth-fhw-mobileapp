@@ -5,6 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,9 +16,9 @@ public class Epartogram extends AppCompatActivity {
     WebView webView;
     String patientUuid, visitUuid;
     Intent intent;
-    public static final String  URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
-           // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
-           private SwipeRefreshLayout mySwipeRefreshLayout;
+    public static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
+    // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
+    private SwipeRefreshLayout mySwipeRefreshLayout;
     private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
 
     @Override
@@ -26,13 +27,14 @@ public class Epartogram extends AppCompatActivity {
         setContentView(R.layout.activity_epartogram);
 
         intent = this.getIntent();
-        if(intent != null) {
+        if (intent != null) {
             patientUuid = intent.getStringExtra("patientuuid");
             visitUuid = intent.getStringExtra("visituuid");
         }
+        Log.v("epartog", "epratog: " + "puid: " + patientUuid + "--" + " vuid: " + visitUuid);
 
         webView = findViewById(R.id.webview_epartogram);
-        mySwipeRefreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.swipeContainer);
+        mySwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipeContainer);
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBuiltInZoomControls(true);
