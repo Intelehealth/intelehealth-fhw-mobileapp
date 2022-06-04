@@ -73,7 +73,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
-                if (encounterDTOList.get(position).getEncounterTypeUuid().equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
+                // Stage 1
+                if (encounterDTOList.get(position).getEncounterTypeUuid()
+                        .equalsIgnoreCase("ee560d18-34a1-4ad8-87c8-98aed99c663d")) {
+                    holder.stage1start.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.stage1start.setVisibility(View.GONE);
+                }
+
+                // Stage 2
+                if (encounterDTOList.get(position).getEncounterTypeUuid()
+                        .equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
                     holder.stage2start.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -204,7 +215,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
         CardView cardview;
-        TextView timeTextview, summary_textview, stage2start;
+        TextView timeTextview, summary_textview, stage1start, stage2start;
         FrameLayout frame1, frame2, frame3, frame4;
         int index;
 
@@ -213,6 +224,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
             cardview = itemView.findViewById(R.id.cardview_parent);
             timeTextview = itemView.findViewById(R.id.time1);
+            stage1start = itemView.findViewById(R.id.stage1start);
             stage2start = itemView.findViewById(R.id.stage2start);
             summary_textview = itemView.findViewById(R.id.summary_textview);
             frame1 = itemView.findViewById(R.id.frame1);

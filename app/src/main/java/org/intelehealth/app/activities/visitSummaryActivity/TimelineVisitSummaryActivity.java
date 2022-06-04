@@ -136,10 +136,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
         if (latestEncounterName.toLowerCase().contains("stage2")) {
             stageNo = 2;
-            endStageButton.setText("End Stage 2");
+            endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
         } else if (latestEncounterName.toLowerCase().contains("stage1")) {
             stageNo = 1;
-            endStageButton.setText("End Stage 1");
+            endStageButton.setText(context.getResources().getText(R.string.endStageButton));
         } else {
             stageNo = 0;
             // do nothing
@@ -164,7 +164,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //  endStageButton.setText("End Second Stage");
+                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
                         cancelStage1_30minAlarm();
                         dialog.dismiss();
                     }

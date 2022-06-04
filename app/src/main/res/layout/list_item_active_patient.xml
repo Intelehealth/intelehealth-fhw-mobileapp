@@ -114,7 +114,7 @@
                     android:id="@+id/iv_prescription"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_prescription_gray"
+                    android:src="@drawable/ic__9ca4b3f_55c1_43e5_b7af_01f1bc908181"
                     android:tag="0" />
 
             </LinearLayout>
