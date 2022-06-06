@@ -130,7 +130,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
                 Intent in = new Intent(PartogramDataCaptureActivity.this, CompleteActivity.class);
-                String roomId = mVisitUUID;
+                String roomId = mPatientUuid;
                 String doctorName = "";
                 String nurseId = encounterDTO.getProvideruuid();
                 in.putExtra("roomId", roomId);

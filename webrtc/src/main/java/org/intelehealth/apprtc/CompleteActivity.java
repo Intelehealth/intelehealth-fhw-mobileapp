@@ -122,6 +122,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     BroadcastReceiver broadcastReceiver;
     boolean mMicrophonePluggedIn = false;
+    private JSONObject mRoomJsonObject = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,11 @@ public class CompleteActivity extends AppCompatActivity {
         if (getIntent().hasExtra("nurseId"))
             mNurseId = getIntent().getStringExtra("nurseId");
 
-
+        try {
+            mRoomJsonObject.put("room", mRoomId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         binding.callerNameTv.setText(mDoctorName);
         binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +147,8 @@ public class CompleteActivity extends AppCompatActivity {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
-                    socket.emit("create or join", mRoomId);
+                    //socket.emit("create or join", mRoomId);
+                    socket.emit("create_or_join_hw", mRoomJsonObject);
                     initializeSurfaceViews();
 
                     initializePeerConnectionFactory();
@@ -160,7 +166,8 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (socket != null) {
-                    socket.emit("create or join", mRoomId);
+                    //socket.emit("create or join", mRoomId);
+                    socket.emit("create_or_join_hw", mRoomId);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -250,7 +257,7 @@ public class CompleteActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
-
+        start();
         if (mIsInComingRequest) {
             binding.callingLayout.setVisibility(View.VISIBLE);
             binding.rippleBackgroundContent.startRippleAnimation();
@@ -258,9 +265,14 @@ public class CompleteActivity extends AppCompatActivity {
             mRingtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
             //mRingtone.setLooping(true);
             mRingtone.play();
-            start();
+
         } else {
             binding.callingLayout.setVisibility(View.GONE);
+            if (socket != null) {
+                //socket.emit("create or join", mRoomId);
+                socket.emit("create_or_join_hw", mRoomJsonObject);
+
+            }
         }
     }
 
@@ -381,18 +393,17 @@ public class CompleteActivity extends AppCompatActivity {
         if (checkAndRequestPermissions()) {
             connectToSignallingServer();
 
-            if (!mIsInComingRequest) {
+            initializeSurfaceViews();
 
-                initializeSurfaceViews();
+            initializePeerConnectionFactory();
 
-                initializePeerConnectionFactory();
+            createVideoTrackFromCameraAndShowIt();
 
-                createVideoTrackFromCameraAndShowIt();
+            initializePeerConnections();
 
-                initializePeerConnections();
+            startStreamingVideo();
 
-                startStreamingVideo();
-            }
+
         }
     }
 
@@ -431,11 +442,9 @@ public class CompleteActivity extends AppCompatActivity {
             socket.on(EVENT_CONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: connect");
                 //socket.emit("create or join", "foo");
-                if (!mIsInComingRequest) {
+                socket.emit("create_or_join_hw", mRoomJsonObject);
 
-                    socket.emit("create or join", mRoomId);
 
-                }
             }).on("ipaddr", args -> {
                 Log.d(TAG, "connectToSignallingServer: ipaddr");
             }).on("bye", args -> {
@@ -444,7 +453,8 @@ public class CompleteActivity extends AppCompatActivity {
 
             }).on("call", args -> {
                 Log.d(TAG, "connectToSignallingServer: call");
-                socket.emit("create or join", mRoomId);
+                //socket.emit("create or join", mRoomId);
+                socket.emit("create_or_join_hw", mRoomJsonObject);
             }).on("no_answer", args -> {
                 Log.d(TAG, "connectToSignallingServer: no answer");
                 disconnectAll();
@@ -454,16 +464,38 @@ public class CompleteActivity extends AppCompatActivity {
             }).on("full", args -> {
                 Log.d(TAG, "connectToSignallingServer: full");
             }).on("join", args -> {
+                for (int i = 0; i < args.length; i++) {
+                    Log.d(TAG, "join - " + args[i]);
+                }
                 Log.d(TAG, "connectToSignallingServer: join");
                 Log.d(TAG, "connectToSignallingServer: Another peer made a request to join room");
                 Log.d(TAG, "connectToSignallingServer: This peer is the initiator of room");
                 isChannelReady = true;
             }).on("joined", args -> {
                 Log.d(TAG, "connectToSignallingServer: joined");
+                for (Object arg : args) {
+                    Log.d(TAG, "joined - " + arg);
+                }
                 isChannelReady = true;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        binding.statusTv.setVisibility(View.GONE);
+                    }
+                });
+
+            }).on("ready", args -> {
+                for (Object arg : args) {
+                    Log.d(TAG, "ready - " + arg);
+                }
+                Log.d(TAG, "connectToSignallingServer: ready");
+                isChannelReady = true;
+                maybeStart();
+                //
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CompleteActivity.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
                         binding.statusTv.setVisibility(View.GONE);
                     }
                 });
@@ -497,6 +529,9 @@ public class CompleteActivity extends AppCompatActivity {
                             Log.d(TAG, "connectToSignallingServer: receiving candidates");
                             IceCandidate candidate = new IceCandidate(message.getString("id"), message.getInt("label"), message.getString("candidate"));
                             peerConnection.addIceCandidate(candidate);
+                            if (!isInitiator && !isStarted) {
+                                maybeStart();
+                            }
                         }
                         /*else if (message === 'bye' && isStarted) {
                         handleRemoteHangup();
@@ -544,10 +579,9 @@ public class CompleteActivity extends AppCompatActivity {
         Log.d(TAG, "maybeStart: " + isStarted + " " + isChannelReady);
         if (!isStarted && isChannelReady) {
             isStarted = true;
-            Log.d(TAG, "isInitiator: " + isInitiator);
-//            if (isInitiator) {
-            doCall();
-//            }
+            if (isInitiator) {
+                doCall();
+            }
         }
     }
 

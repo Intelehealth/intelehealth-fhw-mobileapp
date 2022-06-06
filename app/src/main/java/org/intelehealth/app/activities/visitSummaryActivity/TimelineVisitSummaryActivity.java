@@ -104,7 +104,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
                 Intent in = new Intent(TimelineVisitSummaryActivity.this, CompleteActivity.class);
-                String roomId = visitUuid;
+                String roomId = patientUuid;
                 String doctorName = "";
                 String nurseId = encounterDTO.getProvideruuid();
                 in.putExtra("roomId", roomId);
