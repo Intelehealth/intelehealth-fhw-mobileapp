@@ -282,7 +282,7 @@ public class PartogramConstants {
         paramInfo.setConceptUUID("165171AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         stringList.add(paramInfo);
 
-        //sectionParamInfoMap.put(SECTION_LIST[6], stringList);//Initials
+        sectionParamInfoMap.put(SECTION_LIST[6], stringList);//Initials
 
         //Actions
         stringList = new ArrayList<>();
