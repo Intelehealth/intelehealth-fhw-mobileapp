@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,17 +27,41 @@
 
     <Button
         android:id="@+id/endStageButton"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="@dimen/body_element_horizontal_margin"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
+        android:layout_toStartOf="@+id/fabv"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center"
         android:text="@string/endStageButton"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dip"
+        android:contentDescription="@string/chat_fab"
+        android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dip"
+        android:layout_toStartOf="@+id/fabc"
+        android:contentDescription="@string/chat_fab"
+        android:src="@drawable/ic_baseline_videocam_24"
+        app:backgroundTint="@color/yellow" />
 
 </RelativeLayout>

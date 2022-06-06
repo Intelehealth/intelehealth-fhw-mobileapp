@@ -13,15 +13,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.partogram.PartogramConstants;
 import org.intelehealth.app.partogram.model.ParamInfo;
 import org.intelehealth.app.partogram.model.PartogramItemData;
-import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,7 +118,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
         } else {
-            if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Initial")) {
+            /*if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Initial")) {
                 String[] initials = new SessionManager(mContext).getChwname().split(" ");
                 String name = "";
                 if (initials.length >= 2) {
@@ -127,7 +128,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(name.toUpperCase());
                 dataEditText.setText(name.toUpperCase());
-            }
+            }*/
         }
 
 
@@ -162,6 +163,15 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Temperature(C)")) {
+                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                        //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                        Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
+                        dataEditText.requestFocus();
+                        return;
+                    }
+                }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
             }
         });

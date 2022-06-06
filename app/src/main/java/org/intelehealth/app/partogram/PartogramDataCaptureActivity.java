@@ -160,14 +160,16 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 if (mItemList.get(i).getParamInfoList().get(j).getCapturedValue() != null
                         && !mItemList.get(i).getParamInfoList().get(j).getCapturedValue().isEmpty()) {
 
-                    ObsDTO obsDTOData = new ObsDTO();
-                    obsDTOData.setCreator(new SessionManager(this).getCreatorID());
-                    obsDTOData.setEncounteruuid(mEncounterUUID);
-                    obsDTOData.setConceptuuid(mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
-                    obsDTOData.setValue(mItemList.get(i).getParamInfoList().get(j).getCapturedValue());
-                    obsDTOData.setComment(PartogramAlertEngine.getAlertName(mItemList.get(i).getParamInfoList().get(j)));
-                    obsDTOList.add(obsDTOData);
-                    count++;
+                    if (!mItemList.get(i).getParamInfoList().get(j).getParamName().equalsIgnoreCase("Initial")) {
+                        ObsDTO obsDTOData = new ObsDTO();
+                        obsDTOData.setCreator(new SessionManager(this).getCreatorID());
+                        obsDTOData.setEncounteruuid(mEncounterUUID);
+                        obsDTOData.setConceptuuid(mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
+                        obsDTOData.setValue(mItemList.get(i).getParamInfoList().get(j).getCapturedValue());
+                        obsDTOData.setComment(PartogramAlertEngine.getAlertName(mItemList.get(i).getParamInfoList().get(j)));
+                        obsDTOList.add(obsDTOData);
+                        count++;
+                    }
                 }
             }
         }

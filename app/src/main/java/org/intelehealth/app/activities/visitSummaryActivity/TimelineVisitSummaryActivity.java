@@ -12,23 +12,34 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.epartogramActivity.Epartogram;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.partogram.PartogramDataCaptureActivity;
 import org.intelehealth.app.utilities.NotificationReceiver;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +67,61 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
         //  triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
+        FloatingActionButton fabc = findViewById(R.id.fabc);
+        fabc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+                Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, ChatActivity.class);
+                chatIntent.putExtra("patientName", patientName);
+                chatIntent.putExtra("visitUuid", visitUuid);
+                chatIntent.putExtra("patientUuid", patientUuid);
+                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+                chatIntent.putExtra("isForVideo", false);
+                if (rtcConnectionDTO != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+                }
+                startActivity(chatIntent);
+            }
+        });
+        FloatingActionButton fabv = findViewById(R.id.fabv);
+        fabv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+                Intent in = new Intent(TimelineVisitSummaryActivity.this, CompleteActivity.class);
+                String roomId = visitUuid;
+                String doctorName = "";
+                String nurseId = encounterDTO.getProvideruuid();
+                in.putExtra("roomId", roomId);
+                in.putExtra("isInComingRequest", false);
+                in.putExtra("doctorname", doctorName);
+                in.putExtra("nurseId", nurseId);
+                in.putExtra("startNewCall", true);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                    startActivity(in);
+                }
+            }
+        });
 
     }
 
