@@ -112,6 +112,7 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -581,7 +582,12 @@ public class HomeActivity extends AppCompatActivity {
             for (int j = 0; j < activePatientModels.size(); j++) {
                 encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter.
                 encounterUUID = encounterDTO.getUuid();
-                // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
+
+                int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
+                if(issubmitted == 1) { // not yet filled
+                    activePatientModels.get(j).setObsExistsFlag(true);
+                }
+
                 String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
                 if (latestEncounterName.toLowerCase().contains("stage2")) {
                     activePatientModels.get(j).setStageName("Stage-2");
@@ -626,7 +632,6 @@ public class HomeActivity extends AppCompatActivity {
                 activePatientModels.get(j).setAlertFlagTotal(count);
             }
             // #-- Alert logic -- end
-
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
@@ -1179,6 +1184,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        super.onResume();
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -1187,8 +1193,7 @@ public class HomeActivity extends AppCompatActivity {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
 
-
-        super.onResume();
+        mActivePatientAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -1197,6 +1202,7 @@ public class HomeActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         showBadge();
+        mActivePatientAdapter.notifyDataSetChanged();
     }
 
     private void showBadge() {
@@ -1678,7 +1684,7 @@ public class HomeActivity extends AppCompatActivity {
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate DESC  limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {

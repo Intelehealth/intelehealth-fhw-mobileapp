@@ -17,6 +17,7 @@ public class ActivePatientModel {
     String gender;
     int alertFlagTotal;
     private String stageName;
+    private boolean obsExistsFlag;
 
     public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
         this.uuid = uuid;
@@ -142,5 +143,13 @@ public class ActivePatientModel {
 
     public void setStageName(String stageName) {
         this.stageName = stageName;
+    }
+
+    public boolean getObsExistsFlag() {
+        return obsExistsFlag;
+    }
+
+    public void setObsExistsFlag(boolean obsExistsFlag) {
+        this.obsExistsFlag = obsExistsFlag;
     }
 }

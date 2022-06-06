@@ -12,11 +12,17 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
@@ -27,8 +33,12 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -128,6 +138,43 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         }
         // alert -> end
 
+        if(activePatientModel.getObsExistsFlag()) {
+            Animation anim = new AlphaAnimation(1.0f, 0.2f);
+            anim.setDuration(1500); // more no means slow eg. 0 = fast blink && 1500 = slow blink.
+            anim.setRepeatMode(Animation.INFINITE);
+            anim.setRepeatCount(Animation.INFINITE);
+            holder.cardView_todaysVisit.startAnimation(anim);
+        }
+
+
+//            // indicator for next interval
+//            String latestencounterTime = activePatientModel.getLatestencounterTime();
+//            Calendar cal = Calendar.getInstance();
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//            SimpleDateFormat sdf_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+//            try {
+//                cal.setTime(sdf.parse(latestencounterTime));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//                try {
+//                    cal.setTime(sdf_.parse(latestencounterTime));
+//                } catch (ParseException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//
+//            if (cal.equals(Calendar.getInstance())) {
+//           /* Animation anim = new AlphaAnimation(0.0f, 1.0f);
+//            anim.setDuration(50); //You can manage the blinking time with this parameter
+//            anim.setStartOffset(20);
+//            anim.setRepeatMode(Animation.REVERSE);
+//            anim.setRepeatCount(Animation.INFINITE);
+//            holder.cardView_todaysVisit.startAnimation(anim);*/
+//                Toast.makeText(context, "Time to Visit: " + activePatientModel.getFirst_name() + " " +
+//                        activePatientModel.getLast_name(), Toast.LENGTH_SHORT).show();
+//            }
+
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +185,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 String patientSelection = "uuid = ?";
                 String[] patientArgs = {patientUuid};
                 String[] patientColumns = {"first_name", "middle_name", "last_name", "gender",
-                        "date_of_birth",};
+                        "date_of_birth"};
                 SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
