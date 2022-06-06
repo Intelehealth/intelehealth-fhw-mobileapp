@@ -323,7 +323,7 @@
         <!-- </receiver> -->
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" /> <!-- Firebase Realdb -->
+            android:value="true" />
         <receiver
             android:name=".services.firebase_services.CallRTCNotifyReceiver"
             android:exported="false">
