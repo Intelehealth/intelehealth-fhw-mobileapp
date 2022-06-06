@@ -327,6 +327,7 @@ public class HomeActivity extends AppCompatActivity {
             requestPermission();
         }
 
+        Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
         showProgressbar();
 
         HeartBitApi();
@@ -1008,6 +1009,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public void onAttachedToWindow() {
         Window window = getWindow();

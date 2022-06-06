@@ -1185,7 +1185,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:text="Speciality"
+                    android:text="@string/speciality_str"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 

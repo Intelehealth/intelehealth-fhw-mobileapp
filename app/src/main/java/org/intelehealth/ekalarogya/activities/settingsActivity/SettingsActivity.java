@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.settingsActivity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,13 +30,17 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.common.api.Api;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.appCompatPreferenceActivity.AppCompatPreferenceActivity;
@@ -45,9 +50,11 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 
+import retrofit2.http.Header;
+
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean admin_password = false;
-
+    Menu menu;
     //Locale myLocale;
     /**
      * A preference value change listener that updates the preference's summary
@@ -223,8 +230,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.menu_option_settings);
+
         sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+        setTitle(R.string.menu_option_settings);
         setupActionBar();
     }
 
@@ -400,6 +417,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (language != null) {
                 setLocale(language);
             }
+
         }
 
         public void saveLocale(String lang) {
@@ -413,7 +431,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             SessionManager sessionManager = null;
             sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
             sessionManager.setCurrentLang(lang);
-
         }
 
         @Override
@@ -421,7 +438,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_languages);
             setHasOptionsMenu(true);
-
 
             bindPreferenceSummaryToValue(findPreference("hindiLang"));
             // bindPreferenceSummaryToValue(findPreference("bengaliLang"));
@@ -448,7 +464,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                             : null);
                             setLocale(stringValue);
                             loadLocale();
+                            lang_prefer.setTitle(getString(R.string.current_language));
+
+                            getActivity().setTitle(getString(R.string.languages));
                             //Intent refresh = new Intent(this, HomeActivity.class);
+                           /* Header header = new Header();
+                            header.title = getString(R.string.languages);
+                            header.fragment = LanguagePreferenceFragment.class.getName();*/
+
                             return true;
                         }
                     } catch (Exception ex) {
@@ -464,17 +487,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 startActivity(new Intent(getActivity(), HomeActivity.class));
                 return true;
             }
-
             return super.onOptionsItemSelected(item);
         }
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        // Create your menu...
+        this.menu = menu;
+        return true;
     }
 
 }

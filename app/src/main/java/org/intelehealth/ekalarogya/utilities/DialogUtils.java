@@ -38,7 +38,7 @@ public class DialogUtils {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setPositiveButton(ok,
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.button_ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 

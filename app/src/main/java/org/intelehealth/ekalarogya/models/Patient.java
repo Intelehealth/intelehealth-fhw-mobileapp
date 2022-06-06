@@ -35,6 +35,76 @@ public class Patient {
     private String hectars_land;
     private String emergency;
     private String vaccination;
+    private String maritalStatus;
+    private String bpChecked;
+    private String sugarLevelChecked;
+    private String hbChecked;
+    private String bmiChecked;
+    private String headOfHousehold;
+    private String religion;
+    private String numberOfSmartphones;
+    private String numberOfFeaturePhones;
+    private String numberOfEarningMembers;
+    private String waterSupplyStatus;
+    private String waterSupplyHoursPerDay;
+    private String waterSupplyDaysPerWeek;
+    private String electricityStatus;
+    private String loadSheddingHoursPerDay;
+    private String loadSheddingDaysPerWeek;
+    private String averageAnnualHouseholdIncome;
+    private String averageExpenditureOnHealth;
+    private String averageExpenditureOnEducation;
+    private String ayushmanCardStatus;
+    private String mgnregaCardStatus;
+    private String rationCardStatus;
+    private String cookingFuel;
+    private String householdLighting;
+    private String openDefecationStatus;
+    private String reasonForOpenDefecation;
+    private String handWashOccasion;
+    private String foodPreparedInTwentyFourHours;
+    private String hohRelationship;
+    private String relationWithHead;
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getBpChecked() {
+        return bpChecked;
+    }
+
+    public void setBpChecked(String bpChecked) {
+        this.bpChecked = bpChecked;
+    }
+
+    public String getSugarLevelChecked() {
+        return sugarLevelChecked;
+    }
+
+    public void setSugarLevelChecked(String sugarLevelChecked) {
+        this.sugarLevelChecked = sugarLevelChecked;
+    }
+
+    public String getHbChecked() {
+        return hbChecked;
+    }
+
+    public void setHbChecked(String hbChecked) {
+        this.hbChecked = hbChecked;
+    }
+
+    public String getBmiChecked() {
+        return bmiChecked;
+    }
+
+    public void setBmiChecked(String bmiChecked) {
+        this.bmiChecked = bmiChecked;
+    }
 
     public String getUuid() {
         return uuid;
@@ -306,5 +376,205 @@ public class Patient {
 
     public void setVaccination(String vaccination) {
         this.vaccination = vaccination;
+    }
+
+    public String getHeadOfHousehold() {
+        return headOfHousehold;
+    }
+
+    public void setHeadOfHousehold(String headOfHousehold) {
+        this.headOfHousehold = headOfHousehold;
+    }
+
+    public String getReligion() {
+        return religion;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
+
+    public String getNumberOfSmartphones() {
+        return numberOfSmartphones;
+    }
+
+    public void setNumberOfSmartphones(String numberOfSmartphones) {
+        this.numberOfSmartphones = numberOfSmartphones;
+    }
+
+    public String getNumberOfFeaturePhones() {
+        return numberOfFeaturePhones;
+    }
+
+    public void setNumberOfFeaturePhones(String numberOfFeaturePhones) {
+        this.numberOfFeaturePhones = numberOfFeaturePhones;
+    }
+
+    public String getNumberOfEarningMembers() {
+        return numberOfEarningMembers;
+    }
+
+    public void setNumberOfEarningMembers(String numberOfEarningMembers) {
+        this.numberOfEarningMembers = numberOfEarningMembers;
+    }
+
+    public String getWaterSupplyStatus() {
+        return waterSupplyStatus;
+    }
+
+    public void setWaterSupplyStatus(String waterSupplyStatus) {
+        this.waterSupplyStatus = waterSupplyStatus;
+    }
+
+    public String getWaterSupplyHoursPerDay() {
+        return waterSupplyHoursPerDay;
+    }
+
+    public void setWaterSupplyHoursPerDay(String waterSupplyHoursPerDay) {
+        this.waterSupplyHoursPerDay = waterSupplyHoursPerDay;
+    }
+
+    public String getWaterSupplyDaysPerWeek() {
+        return waterSupplyDaysPerWeek;
+    }
+
+    public void setWaterSupplyDaysPerWeek(String waterSupplyDaysPerWeek) {
+        this.waterSupplyDaysPerWeek = waterSupplyDaysPerWeek;
+    }
+
+    public String getElectricityStatus() {
+        return electricityStatus;
+    }
+
+    public void setElectricityStatus(String electricityStatus) {
+        this.electricityStatus = electricityStatus;
+    }
+
+    public String getLoadSheddingHoursPerDay() {
+        return loadSheddingHoursPerDay;
+    }
+
+    public void setLoadSheddingHoursPerDay(String loadSheddingHoursPerDay) {
+        this.loadSheddingHoursPerDay = loadSheddingHoursPerDay;
+    }
+
+    public String getLoadSheddingDaysPerWeek() {
+        return loadSheddingDaysPerWeek;
+    }
+
+    public void setLoadSheddingDaysPerWeek(String loadSheddingDaysPerWeek) {
+        this.loadSheddingDaysPerWeek = loadSheddingDaysPerWeek;
+    }
+
+    public String getAverageAnnualHouseholdIncome() {
+        return averageAnnualHouseholdIncome;
+    }
+
+    public void setAverageAnnualHouseholdIncome(String averageAnnualHouseholdIncome) {
+        this.averageAnnualHouseholdIncome = averageAnnualHouseholdIncome;
+    }
+
+    public String getAverageExpenditureOnHealth() {
+        return averageExpenditureOnHealth;
+    }
+
+    public void setAverageExpenditureOnHealth(String averageExpenditureOnHealth) {
+        this.averageExpenditureOnHealth = averageExpenditureOnHealth;
+    }
+
+    public String getAverageExpenditureOnEducation() {
+        return averageExpenditureOnEducation;
+    }
+
+    public void setAverageExpenditureOnEducation(String averageExpenditureOnEducation) {
+        this.averageExpenditureOnEducation = averageExpenditureOnEducation;
+    }
+
+    public String getAyushmanCardStatus() {
+        return ayushmanCardStatus;
+    }
+
+    public void setAyushmanCardStatus(String ayushmanCardStatus) {
+        this.ayushmanCardStatus = ayushmanCardStatus;
+    }
+
+    public String getMgnregaCardStatus() {
+        return mgnregaCardStatus;
+    }
+
+    public void setMgnregaCardStatus(String mgnregaCardStatus) {
+        this.mgnregaCardStatus = mgnregaCardStatus;
+    }
+
+    public String getRationCardStatus() {
+        return rationCardStatus;
+    }
+
+    public void setRationCardStatus(String rationCardStatus) {
+        this.rationCardStatus = rationCardStatus;
+    }
+
+    public String getCookingFuel() {
+        return cookingFuel;
+    }
+
+    public void setCookingFuel(String cookingFuel) {
+        this.cookingFuel = cookingFuel;
+    }
+
+    public String getHouseholdLighting() {
+        return householdLighting;
+    }
+
+    public void setHouseholdLighting(String householdLighting) {
+        this.householdLighting = householdLighting;
+    }
+
+    public String getOpenDefecationStatus() {
+        return openDefecationStatus;
+    }
+
+    public void setOpenDefecationStatus(String openDefecationStatus) {
+        this.openDefecationStatus = openDefecationStatus;
+    }
+
+    public String getReasonForOpenDefecation() {
+        return reasonForOpenDefecation;
+    }
+
+    public void setReasonForOpenDefecation(String reasonForOpenDefecation) {
+        this.reasonForOpenDefecation = reasonForOpenDefecation;
+    }
+
+    public String getHandWashOccasion() {
+        return handWashOccasion;
+    }
+
+    public void setHandWashOccasion(String handWashOccasion) {
+        this.handWashOccasion = handWashOccasion;
+    }
+
+    public String getFoodPreparedInTwentyFourHours() {
+        return foodPreparedInTwentyFourHours;
+    }
+
+    public void setFoodPreparedInTwentyFourHours(String foodPreparedInTwentyFourHours) {
+        this.foodPreparedInTwentyFourHours = foodPreparedInTwentyFourHours;
+    }
+
+    public String getHohRelationship() {
+        return hohRelationship;
+    }
+
+    public void setHohRelationship(String hohRelationship) {
+        this.hohRelationship = hohRelationship;
+    }
+
+    public String getRelationWithHead() {
+        return relationWithHead;
+    }
+
+    public void setRelationWithHead(String relationWithHead) {
+        this.relationWithHead = relationWithHead;
     }
 }

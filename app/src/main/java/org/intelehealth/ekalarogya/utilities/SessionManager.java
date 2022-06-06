@@ -57,6 +57,16 @@ public class SessionManager {
     private static final String SANCHNAME = "SANCHNAME";
     private static final String VILLAGENAME = "VILLAGENAME";
 
+    private static final String SUB_CENTRE_DISTANCE = "SUB_CENTRE_DISTANCE";
+    private static final String PRIMARY_HEALTH_CENTRE_DISTANCE = "PRIMARY_HEALTH_CENTRE_DISTANCE";
+    private static final String COMMUNITY_HEALTH_CENTRE_DISTANCE = "COMMUNITY_HEALTH_CENTRE_DISTANCE";
+    private static final String DISTRICT_HOSPITAL_DISTANCE = "DISTRICT_HOSPITAL_DISTANCE";
+    private static final String MEDICAL_STORE_DISTANCE = "MEDICAL_STORE_DISTANCE";
+    private static final String PATHOLOGICAL_LAB_DISTANCE = "PATHOLOGICAL_LAB_DISTANCE";
+    private static final String PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE";
+    private static final String PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE";
+    private static final String JAL_JEEVAN_YOJANA_SCHEME = "JAL_JEEVAN_YOJANA_SCHEME";
+
     private static final String USERDETAILS = "USERDETAILS";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
@@ -534,5 +544,86 @@ public class SessionManager {
 
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
+
+    public String getSubCentreDistance() {
+        return pref.getString(SUB_CENTRE_DISTANCE, "");
+    }
+
+    public void setSubCentreDistance(String subCentreDistance) {
+        editor.putString(SUB_CENTRE_DISTANCE, subCentreDistance);
+        editor.commit();
+    }
+
+    public String getPrimaryHealthCentreDistance() {
+        return pref.getString(PRIMARY_HEALTH_CENTRE_DISTANCE, "");
+    }
+
+    public void setPrimaryHealthCentreDistance(String primaryHealthCentreDistance) {
+        editor.putString(PRIMARY_HEALTH_CENTRE_DISTANCE, primaryHealthCentreDistance);
+        editor.commit();
+    }
+
+    public String getCommunityHealthCentreDistance() {
+        return pref.getString(COMMUNITY_HEALTH_CENTRE_DISTANCE, "");
+    }
+
+    public void setCommunityHealthCentreDistance(String communityHealthCentreDistance) {
+        editor.putString(COMMUNITY_HEALTH_CENTRE_DISTANCE, communityHealthCentreDistance);
+        editor.commit();
+    }
+
+    public String getDistrictHospitalDistance() {
+        return pref.getString(DISTRICT_HOSPITAL_DISTANCE, "");
+    }
+
+    public void setDistrictHospitalDistance(String districtHospitalDistance) {
+        editor.putString(DISTRICT_HOSPITAL_DISTANCE, districtHospitalDistance);
+        editor.commit();
+    }
+
+    public String getMedicalStoreDistance() {
+        return pref.getString(MEDICAL_STORE_DISTANCE, "");
+    }
+
+    public void setMedicalStoreDistance(String medicalStoreDistance) {
+        editor.putString(MEDICAL_STORE_DISTANCE, medicalStoreDistance);
+        editor.commit();
+    }
+
+    public String getPathologicalLabDistance() {
+        return pref.getString(PATHOLOGICAL_LAB_DISTANCE, "");
+    }
+
+    public void setPathologicalLabDistance(String pathologicalLabDistance) {
+        editor.putString(PATHOLOGICAL_LAB_DISTANCE, pathologicalLabDistance);
+        editor.commit();
+    }
+
+    public String getPrivateClinicWithMbbsDoctorDistance() {
+        return pref.getString(PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE, "");
+    }
+
+    public void setPrivateClinicWithMbbsDoctorDistance(String privateClinicWithMbbsDoctorDistance) {
+        editor.putString(PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE, privateClinicWithMbbsDoctorDistance);
+        editor.commit();
+    }
+
+    public String getPrivateClinicWithAlternateDoctorDistance() {
+        return pref.getString(PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE, "");
+    }
+
+    public void setPrivateClinicWithAlternateDoctorDistance(String privateClinicWithAlternateDoctorDistance) {
+        editor.putString(PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE, privateClinicWithAlternateDoctorDistance);
+        editor.commit();
+    }
+
+    public String getJalJeevanYojanaScheme() {
+        return pref.getString(JAL_JEEVAN_YOJANA_SCHEME, "");
+    }
+
+    public void setJalJeevanYojanaScheme(String jalJeevanYojanaScheme) {
+        editor.putString(JAL_JEEVAN_YOJANA_SCHEME, jalJeevanYojanaScheme);
+        editor.commit();
     }
 }

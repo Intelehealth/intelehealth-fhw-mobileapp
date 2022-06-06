@@ -541,8 +541,8 @@
                         <TableRow
                             android:id="@+id/tableRow_Caste"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -647,9 +647,9 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_familymember"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_height="wrap_content"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -796,8 +796,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="10dp"
-                android:elevation="5dp"
                 android:layout_marginTop="16dp"
+                android:elevation="5dp"
                 android:fontFamily="@font/lato_bold"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="@string/button_sevika_advice" />
@@ -809,11 +809,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="10dp"
-                android:elevation="5dp"
                 android:layout_marginTop="16dp"
+                android:elevation="5dp"
                 android:fontFamily="@font/lato_bold"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="@string/button_new_visit" />
+
+            <Button
+                android:id="@+id/button_household_survey"
+                style="@style/SelectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="16dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/lato_bold"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/start_household_survey"
+                android:visibility="gone" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_previous_visits"
@@ -852,8 +866,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:visibility="invisible"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
 
                             <ImageButton
                                 style="@style/SelectableItemBackground"
@@ -884,14 +898,13 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:includeFontPadding="false"
-                            android:visibility="gone"
-                            android:textSize="@dimen/card_title_text_size" />
+                            android:textSize="@dimen/card_title_text_size"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
 
                 </LinearLayout>
-
 
 
             </androidx.cardview.widget.CardView>

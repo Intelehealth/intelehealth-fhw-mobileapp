@@ -550,5 +550,48 @@ public class PatientsDAO {
         return gender;
     }
 
+    public boolean surveyUpdatePatientToDB(String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+        boolean isCreated = true;
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereClause = "Uuid=?";
+        db.beginTransaction();
+        try {
 
+            Logger.logD("create", "create has to happen");
+            values.put("uuid", uuid);
+            /*values.put("openmrs_id", patientDTO.getOpenmrs_id());
+            values.put("first_name", patientDTO.getFirst_name());
+            values.put("middle_name", patientDTO.getMiddle_name());
+            values.put("last_name", patientDTO.getLast_name());
+            values.put("phone_number", patientDTO.getPhone_number());
+            values.put("address1", patientDTO.getAddress1());
+            values.put("address2", patientDTO.getAddress2());
+            values.put("country", patientDTO.getCountry());
+            values.put("date_of_birth", patientDTO.getDate_of_birth());
+            values.put("gender", patientDTO.getGender());
+            values.put("postal_code", patientDTO.getPostal_code());
+            values.put("city_village", patientDTO.getCity_village());
+            values.put("state_province", patientDTO.getState_province());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("patient_photo", patientDTO.getPatient_photo());*/
+            values.put("dead", false);
+            values.put("sync", false);
+
+            insertPatientAttributes(patientAttributesDTOS, db);
+            Logger.logD("pulldata", "datadumper" + values);
+
+            createdRecordsCount1 = db.update("tbl_patient", values, whereClause, new String[]{uuid});
+            db.setTransactionSuccessful();
+            Logger.logD("created records", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isCreated;
+    }
 }

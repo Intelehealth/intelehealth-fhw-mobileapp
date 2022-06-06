@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:paddingStart="15sp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/household_cooking_fuel_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/what_type_of_fuel_does_your_household_mainly_use_for_cooking"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/household_cooking_fuel_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_cooking_fuel_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/electricity_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/electricity"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/lpg_natural_gas_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/lpg_natural_gas"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/biogas_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/biogas_checkbox"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/kerosene_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/kerosene"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/coal_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/coal_lignite"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/charcoal_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/charcoal"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/wood_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/wood"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/straw_shrubs_grass_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/straw_shrubs_grass"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/agricultural_crop_waste_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/agricultural_crop_waste"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/dung_cakes_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/dung_cakes"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/main_source_of_lighting_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_cooking_fuel_checkbox_linear_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/what_is_the_main_source_of_lighting_in_this_household"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/main_source_of_lighting_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_source_of_lighting_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/lantern_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/lantern"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/kerosene_lamp_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/kerosene_lamp"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/candle_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/candle"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/electric_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/electricity"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/lpg_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/lpg"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/solar_energy_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/solar_energy"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/none_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/none"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/defecated_in_open_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_source_of_lighting_checkbox_linear_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/open_defecation_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/defecated_in_open_text_view"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/open_defecation_yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_medium"
+                    android:text="@string/survey_yes"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/open_defecation_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_medium"
+                    android:text="@string/survey_no"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/reason_for_open_defecation_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/open_defecation_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/what_was_the_main_reason_due_to_which_you_had_to_relieve_yourself_in_the_open"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/reason_for_open_defecation_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/reason_for_open_defecation_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/no_water_available_in_the_toilet_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/no_water_available_in_the_toilet"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/no_electricity_available_in_the_toilet_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/no_electricity_available_in_the_toilet"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/toilet_is_often_occupied_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/toilet_is_often_occupied_by_other_members"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/problem_in_toilet_plumbing_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/problem_in_toilet_plumbing"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/hand_wash_occasion_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/reason_for_open_defecation_checkbox_linear_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/hand_wash_occasion_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hand_wash_occasion_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/no_soap_available_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/no_soap_available_in_the_household"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/soap_not_used_for_washing_hands_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/soap_available_in_the_household_but_did_not_use_it_to_wash_hands"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/before_cooking_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/before_cooking"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/after_handling_food_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/after_handling_food"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/before_eating_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/before_eating"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/after_using_toilet_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/after_using_toilet"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/food_cooked_in_twenty_four_hours_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hand_wash_occasion_linear_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/food_cooked_in_twenty_four_hours_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/food_cooked_in_twenty_four_hours_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/starch_staple_food_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/starch_staple_food"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/beans_and_peas_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/beans_and_peas"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/nuts_and_cheese_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/nuts_and_cheese"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/dairy_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/dairy"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/eggs_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/eggs"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flesh_food_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/flesh_food"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/any_vegetables_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/any_vegetables"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/food_cooked_in_twenty_four_hours_linear_layout"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/custom_button"
+                android:fontFamily="@font/lato_bold"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
