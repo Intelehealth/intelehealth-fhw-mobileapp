@@ -69,7 +69,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientAdapter;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -88,6 +90,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
@@ -344,8 +347,20 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.tvPatientsMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
-                startActivity(intent);
+                //Loads the config file values and check for the boolean value of privacy key.
+                ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
+                if (configUtils.privacy_notice()) {
+                    Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
+                    startActivity(intent);
+                } else {
+                    //Clear HouseHold UUID from Session for new registration
+                    //  sessionManager.setHouseholdUuid("");
+                    Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
+                    startActivity(intent);
+                }
+
+//                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
+//                startActivity(intent);
             }
         });
 
