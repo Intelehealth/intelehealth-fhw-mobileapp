@@ -42,6 +42,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     ObsDAO obsDAO;
     ObsDTO obsDTO;
     SessionManager sessionManager;
+    private static final int HOURLY = 0;
+    private static final int HALF_HOUR = 1;
+    private static final int FIFTEEN_MIN = 2;
 
     public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList, SessionManager sessionManager) {
         this.context = context;
@@ -238,15 +241,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     i1.putExtra("visitUuid", visitUuid);
                     i1.putExtra("encounterUuid", encounterDTOList.get(getAdapterPosition()).getUuid());
                     i1.putExtra("type", getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY);
-//                    i1.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
-//                    i1.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                     context.startActivity(i1);
                 }
             });
         }
     }
 
-    private static final int HOURLY = 0;
-    private static final int HALF_HOUR = 1;
-    private static final int FIFTEEN_MIN = 2;
 }
