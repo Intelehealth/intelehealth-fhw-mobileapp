@@ -112,7 +112,6 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -584,7 +583,7 @@ public class HomeActivity extends AppCompatActivity {
                 encounterUUID = encounterDTO.getUuid();
 
                 int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
-                if(issubmitted == 1) { // not yet filled
+                if (issubmitted == 1) { // not yet filled
                     activePatientModels.get(j).setObsExistsFlag(true);
                 }
 
@@ -1193,7 +1192,8 @@ public class HomeActivity extends AppCompatActivity {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
 
-        mActivePatientAdapter.notifyDataSetChanged();
+        if (mActivePatientAdapter != null)
+            mActivePatientAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -1202,7 +1202,8 @@ public class HomeActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         showBadge();
-        mActivePatientAdapter.notifyDataSetChanged();
+        if (mActivePatientAdapter != null)
+            mActivePatientAdapter.notifyDataSetChanged();
     }
 
     private void showBadge() {

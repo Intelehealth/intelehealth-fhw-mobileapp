@@ -529,9 +529,6 @@ public class CompleteActivity extends AppCompatActivity {
                             Log.d(TAG, "connectToSignallingServer: receiving candidates");
                             IceCandidate candidate = new IceCandidate(message.getString("id"), message.getInt("label"), message.getString("candidate"));
                             peerConnection.addIceCandidate(candidate);
-                            if (!isInitiator && !isStarted) {
-                                maybeStart();
-                            }
                         }
                         /*else if (message === 'bye' && isStarted) {
                         handleRemoteHangup();
@@ -596,7 +593,7 @@ public class CompleteActivity extends AppCompatActivity {
         peerConnection.createOffer(new SimpleSdpObserver() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
-                Log.d(TAG, "onCreateSuccess: ");
+                Log.d(TAG, "createOffer onCreateSuccess:()");
                 peerConnection.setLocalDescription(new SimpleSdpObserver(), sessionDescription);
                 JSONObject message = new JSONObject();
                 try {
@@ -608,6 +605,7 @@ public class CompleteActivity extends AppCompatActivity {
                 }
             }
         }, sdpMediaConstraints);
+        startStreamingVideo();
     }
 
     private void sendMessage(Object message) {

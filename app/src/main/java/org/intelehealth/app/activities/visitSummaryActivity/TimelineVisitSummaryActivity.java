@@ -1,11 +1,5 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -22,6 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +33,6 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.partogram.PartogramDataCaptureActivity;
 import org.intelehealth.app.utilities.NotificationReceiver;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.apprtc.ChatActivity;
@@ -138,6 +137,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             case R.id.epartogramView:
                 showEpartogram();
                 break;
+            case android.R.id.home:
+                finish();
+                break;
         }
 
         return true;
@@ -196,7 +198,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
 
         setTitle(patientName);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
         String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
@@ -354,7 +356,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-         // calendar.add(Calendar.MINUTE, 2); // Testing
+        // calendar.add(Calendar.MINUTE, 2); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
