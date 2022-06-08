@@ -1,5 +1,7 @@
 package org.intelehealth.msfarogyabharat.activities.patientDetailActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +35,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,6 +58,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.models.SendCallData;
+import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -171,6 +176,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView tvNoFamilyMember;
     TextView phoneView;
     String privacy_value_selected;
+    String remark = "";
+
 
     ImageView ivPrescription;
     private String hasPrescription = "";
@@ -1538,11 +1545,143 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                storeCallResponse();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+    //This function will ask the user that whether the call was success or not, based on the answer, the other dialog will show up.
+    private void storeCallResponse() {
+        final int[] checkedItems = {0};
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+        alertDialogBuilder.setMessage(getString(R.string.able_to_connect));
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String[] items = {getString(R.string.reschedule_call)};
+                showOptionDialog(items,checkedItems, true);
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String[] items = {getString(R.string.not_valid_number), getString(R.string.not_reachable), getString(R.string.not_picked_up)};
+                showOptionDialog(items,checkedItems, false);
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void showOptionDialog(String[] items, int[] checkedItems, boolean success) {
+        final String[] selectedItem = {items[0]};
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+        alertDialog.setTitle(getString(R.string.select_call_output));
+        alertDialog.setSingleChoiceItems(items, checkedItems[0], new DialogInterface.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem[0] = items[which];
+            }
+        });
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Not required for MSF as the app is available only in english language.
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+//                    selectedItem[0] = org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_en_call_reason(selectedItem[0]);
+
+                dialogInterface.dismiss();
+                showRemarkDialog(success, selectedItem[0]);
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
+    }
+
+    private void showRemarkDialog(boolean success, String selectedItem) {
+        remark = "Not Applicable";
+        MaterialAlertDialogBuilder remarkDialog = new MaterialAlertDialogBuilder(this);
+        // AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.dialog_remark, null);
+        remarkDialog.setTitle(getString(R.string.additional_remarks));
+        remarkDialog.setView(promptsView);
+        remarkDialog.setPositiveButton(getString(R.string.exit_survey_submit), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Dialog d = (Dialog) dialog;
+                EditText remarkET = d.findViewById(R.id.remarksET);
+                if(!remark.equals(""))
+                    remark = remarkET.getText().toString(); // variable to collect user input
+                if(!success) {
+                    storeCallData("Unable to reach patient", selectedItem, remark); //these strings has to be sent in same format and in english only
+                    onBackPressed();
+                }
+                else {
+                    storeCallData("Able to reach patient", selectedItem, remark); //these strings has to be sent in same format and in english only
+
+                }
+            }
+        });
+        remarkDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+                if(!success) {
+                    storeCallData("Unable to reach patient", selectedItem, "Not Applicable"); //these strings has to be sent in same format and in english only
+                    onBackPressed();
+                }
+                else {
+                    storeCallData("Able to reach patient", selectedItem, "Not Applicable"); //these strings has to be sent in same format and in english only
+                }
+            }
+        });
+        AlertDialog dialog = remarkDialog.show();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private void storeCallData(String callStatus, String callAction, String remark) {
+
+        //get system date; Format need to be same as per Satyadeep's request.
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String callDate = currentDate.format(todayDate) + " 00:00";
+
+        //populate the body for
+        SendCallData sendCallData = new SendCallData();
+        sendCallData.state = patient_new.getState_province();
+        sendCallData.district = patient_new.getCity_village();
+        sendCallData.callStatus = callStatus;
+        sendCallData.callAction = callAction;
+        sendCallData.callDate = callDate;
+        sendCallData.remarks = remark;
+        sendCallData.callNumber = sessionManager.getProviderPhoneno();
+        sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+        String sendDataUrl = urlModifiers.sendCallData();
+        apiInterface.callPatientData(sendDataUrl,sendCallData).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(PatientDetailActivity.this, getString(R.string.data_stored_successfully), Toast.LENGTH_LONG).show();
+                System.out.println(call);
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+            }
+        });
     }
 }
 

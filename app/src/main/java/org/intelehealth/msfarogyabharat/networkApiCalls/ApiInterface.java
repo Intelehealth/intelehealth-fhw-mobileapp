@@ -2,11 +2,14 @@ package org.intelehealth.msfarogyabharat.networkApiCalls;
 
 
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
+import org.intelehealth.msfarogyabharat.models.DailyPerformanceModel;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
 import org.intelehealth.msfarogyabharat.models.Location;
+import org.intelehealth.msfarogyabharat.models.MissedCallModel;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.msfarogyabharat.models.Results;
+import org.intelehealth.msfarogyabharat.models.SendCallData;
 import org.intelehealth.msfarogyabharat.models.WelcomeSms;
 import org.intelehealth.msfarogyabharat.models.dto.ResponseDTO;
 import org.intelehealth.msfarogyabharat.models.loginModel.LoginModel;
@@ -120,4 +123,14 @@ public interface ApiInterface {
                                @Field("type") String type,
                                @Field("template_id") String template_id,
                                @Field("body") String body);
+
+    @POST
+    Call<ResponseBody> callPatientData(@Url String url, @Body SendCallData sendCallData);
+
+    @GET
+    Single<MissedCallModel> MISSED_CALL(@Url String url, @Header("Authorization") String authHeader);
+
+    @GET
+    Single<DailyPerformanceModel> DAILY_PERFORMANCE(@Url String url, @Header("Authorization") String authHeader);
+
 }

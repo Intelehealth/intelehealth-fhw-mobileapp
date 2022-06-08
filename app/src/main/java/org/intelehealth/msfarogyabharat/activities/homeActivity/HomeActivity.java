@@ -42,6 +42,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.missedCallActivity.MissedCallActivity;
+import org.intelehealth.msfarogyabharat.activities.myCases.MyCasesActivity;
 import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.msfarogyabharat.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
@@ -104,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SyncUtils syncUtils = new SyncUtils();
    // CardView c1, c2, c3, c4, c5, c6;
-   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
+   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c8, cvMissedCall;
     private String key = null;
     private String licenseUrl = null;
 
@@ -117,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge;;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, myCases_textView, missedCallRecordingTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +163,8 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c8 = findViewById(R.id.cardview_my_cases);
+        cvMissedCall = findViewById(R.id.cardview_missedCallRecordings);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -219,6 +223,22 @@ public class HomeActivity extends AppCompatActivity {
         });
 */
 
+
+        cvMissedCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MissedCallActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        c8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MyCasesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         c1_doctor.setOnClickListener(new View.OnClickListener() {
             @Override

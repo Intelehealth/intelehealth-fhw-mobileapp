@@ -724,7 +724,7 @@
     <string name="due_on">Due Date:</string>
     <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
-    
+
     //New Dialogs (MHM-102,103)
     <string name="bmi_dialog_heading">Kindly read this to caller!</string>
     <string name="bmi_dialog">•Reduce weight to control diabetes; Excess weight complicates Diabetes; Stay Lean &amp; Stay Active
@@ -743,4 +743,26 @@ sugar, potato, tapioca, mango, banana, refined cereals like maida, suji, biscuit
 bread
 \n•Salt intake should be low</string>
     <string name="weight_lower_limit">Weight cannot be 0kg</string>
+
+    //New Tech Strings
+    <string name="not_reachable">Not reachable</string>
+    <string name="not_picked_up">Patient Did Not Pick Up</string>
+    <string name="able_to_connect">Were you able to connect with patient?</string>
+    <string name="not_valid_number">Not a valid number</string>
+    <string name="select_call_output">Select Call Output</string>
+    <string name="data_stored_successfully">Data Stored Successfully!</string>
+    <string name="missed_calls">Missed Calls</string>
+    <string name="no_calls">No outgoing missed calls present.</string>
+    <string name="daily_performance">Daily Performance Report</string>
+    <string name="total_call_made">Total Calls Made:</string>
+    <string name="able_to_reach">Able to reach:</string>
+    <string name="unable_to_reach">Unable to reach:</string>
+    <string name="additional_remarks">Any additional remarks?</string>
+    <string name="enter_remarks">Enter remarks</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="reschedule_call">Reschedule the call</string>
+    <string name="my_cases">My Cases</string>
+    <string name="no_cases">No cases assigned to you.</string>
+
 </resources>
