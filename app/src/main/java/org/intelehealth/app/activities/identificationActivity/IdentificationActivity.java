@@ -1158,6 +1158,8 @@ public class IdentificationActivity extends AppCompatActivity {
         //DOB is set using an AlertDialog
         // Locale.setDefault(Locale.ENGLISH);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -10);
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -1166,7 +1168,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setError(null);
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+              //  mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 // Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
@@ -1236,7 +1239,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+       // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1322,11 +1326,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 endText.setText(getString(R.string.identification_screen_picker_months));
 
 
-                yearPicker.setMinValue(0);
+                yearPicker.setMinValue(10);
                 yearPicker.setMaxValue(100);
                 monthPicker.setMinValue(0);
                 monthPicker.setMaxValue(12);
-
                 dayPicker.setMinValue(0);
                 dayPicker.setMaxValue(31);
 
