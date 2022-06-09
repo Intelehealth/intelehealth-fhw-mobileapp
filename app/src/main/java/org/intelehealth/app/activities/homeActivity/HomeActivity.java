@@ -618,15 +618,20 @@ public class HomeActivity extends AppCompatActivity {
                 // alert logic - start
                 if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
                     obsDTOList = obsDAO.obsCommentList(encounterUUID);
+                    if(obsDTOList != null) {
                     for (int i = 0; i < obsDTOList.size(); i++) {
-                        if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {
-                            r_count++;
-                        } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("Y")) {
-                            y_count++;
-                        } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("G")) {
-                            g_count++;
+                        if(obsDTOList.get(i).getComment() != null) {
+                            if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {
+                                r_count++;
+                            } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("Y")) {
+                                y_count++;
+                            } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("G")) {
+                                g_count++;
+                            }
                         }
-                    } // TODO: uncomment - done
+                    }
+                }
+                // TODO: uncomment - done
 
                     // testing - start // TODO: remove line - done
                    /* r_count = 40;
@@ -781,7 +786,7 @@ public class HomeActivity extends AppCompatActivity {
                         IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
                     }*/
                 }
-            });
+        });
         }
 
 
