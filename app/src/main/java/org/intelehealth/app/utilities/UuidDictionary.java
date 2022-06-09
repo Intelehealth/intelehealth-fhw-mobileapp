@@ -110,4 +110,7 @@ public class UuidDictionary {
     // MISSED ENCOUNTER _ OBS
     public static final String MISSED_ENCOUNTER = "35c3afdd-bb96-4b61-afb9-22a5fc2d088e";
 
+    // BIRTH OUTCOME
+    public static final String BIRTH_OUTCOME = "23601d71-50e6-483f-968d-aeef3031346d";
+
 }

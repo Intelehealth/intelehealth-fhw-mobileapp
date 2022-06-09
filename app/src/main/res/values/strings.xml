@@ -851,6 +851,8 @@
     <string name="title_activity_epartogram">Epartogram</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="live_birth">Live Birth</string>
+    <string name="still_birth">Still Birth</string>
 
 
 </resources>

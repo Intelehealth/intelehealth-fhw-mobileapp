@@ -162,7 +162,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (position % 2 == 0) { // Even
                         calendar.add(Calendar.HOUR, 1);
                         calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                        //  calendar.add(Calendar.MINUTE, 2); // Testing
+                         // calendar.add(Calendar.MINUTE, 2); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else { // Odd
                         calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min

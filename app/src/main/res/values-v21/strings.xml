@@ -18,4 +18,6 @@
     <string name="missed_interval"><u>Missed</u></string>
     <string name="submitted_interval"><u>Submitted</u></string>
     <string name="add_patient_txt">Add Patient</string>
+    <string name="live_birth">Live Birth</string>
+    <string name="still_birth">Still Birth</string>
 </resources>

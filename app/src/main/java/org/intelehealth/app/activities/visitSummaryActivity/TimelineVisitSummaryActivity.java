@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -28,13 +30,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.epartogramActivity.Epartogram;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationReceiver;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
@@ -57,6 +66,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     ArrayList<EncounterDTO> encounterListDTO;
     Button endStageButton;
     int stageNo = 0;
+    String value = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,16 +211,29 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
-        String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-        if (latestEncounterName.toLowerCase().contains("stage2")) {
-            stageNo = 2;
-            endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
-        } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-            stageNo = 1;
-            endStageButton.setText(context.getResources().getText(R.string.endStageButton));
-        } else {
-            stageNo = 0;
-            // do nothing
+        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+        boolean isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
+        // TODO: check for visit complete and if yes than disable the button.
+        if(isVCEPresent == false) { // false ie. not present
+            endStageButton.setEnabled(true);
+            endStageButton.setClickable(true);
+            endStageButton.setBackground(context.getResources().getDrawable(R.drawable.ic_rectangle_76));
+            if (latestEncounterName.toLowerCase().contains("stage2")) {
+                stageNo = 2;
+                endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
+            } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+                stageNo = 1;
+                endStageButton.setText(context.getResources().getText(R.string.endStageButton));
+            } else {
+                stageNo = 0;
+                // do nothing
+            }
+        }
+        else {
+            endStageButton.setEnabled(false);
+            endStageButton.setClickable(false);
+            endStageButton.setBackgroundColor(getResources().getColor(R.color.divider));
+            endStageButton.setTextColor(getResources().getColor(R.color.white));
         }
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
@@ -218,22 +241,35 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             if (stageNo == 1) {
                 cancelStage1_ConfirmationDialog(); // cancel and start stage 2
             } else if (stageNo == 2) {
-                // end visit on stage 2 ie. visit complete encoutner call....
+                // show dialog and add birth outcome
+                birthOutcomeSelectionDialog();
             }
-
         });
     }
 
-    // Timeline stage 1 end confirmation dialog
-    private void cancelStage1_ConfirmationDialog() {
+
+    private void birthOutcomeSelectionDialog() {
+        final CharSequence[] items = {getString(R.string.live_birth), getString(R.string.still_birth)};
+        value = "";
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
-        alertDialog.setTitle("Are you sure you want to End Stage 1?");
-        // alertDialog.setMessage("");
+        alertDialog.setTitle("Select Birth Outcome");
+        alertDialog.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+                value = String.valueOf(items[position]);
+            }
+        });
+
         alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
-                        cancelStage1_30minAlarm();
+                        Log.v("birthoutcome", "value: " + value);
+                        try {
+                            insertVisitComplete_BirthOutcomeObs(visitUuid, value);
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                            Log.e("birthoutcome", "insert vsiti complete: " + e);
+                        }
                         dialog.dismiss();
                     }
                 });
@@ -246,6 +282,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         });
 
         AlertDialog dialog = alertDialog.show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -254,7 +292,78 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    private void cancelStage1_30minAlarm() {
+    private void insertVisitComplete_BirthOutcomeObs(String visitUuid, String value) throws DAOException {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        ObsDAO obsDAO = new ObsDAO();
+        boolean isInserted = false;
+        String encounterUuid = "";
+        encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+
+        // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
+        isInserted = obsDAO.insert_BirthOutcomeObs(encounterUuid, sessionManager.getCreatorID(), value);
+        if(isInserted) {
+            cancelAlarm(); // cancel alarm so that again 15mins interval doesnt starts.
+            Intent intent = new Intent(context, HomeActivity.class);
+            startActivity(intent);
+            checkInternetAndUploadVisitCompleteEncounter();
+        }
+    }
+
+    private void checkInternetAndUploadVisitCompleteEncounter() {
+        if (NetworkConnection.isOnline(getApplication())) {
+            Toast.makeText(context, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+            SyncDAO syncDAO = new SyncDAO();
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
+                    //Do something after 100ms
+                    SyncUtils syncUtils = new SyncUtils();
+                    boolean isSynced = syncUtils.syncForeground("timeline");
+                }
+            }, 4000);
+        } else {
+            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Timeline stage 1 end confirmation dialog
+    private void cancelStage1_ConfirmationDialog() {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+        alertDialog.setTitle("Are you sure you want to End Stage 1?");
+        // alertDialog.setMessage("");
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
+                        cancelAlarm();
+                        // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
+                        triggerAlarm_Stage2_every15mins();
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = alertDialog.show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private void cancelAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
@@ -262,9 +371,6 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarms for different patients.
         alarmManager.cancel(pendingIntent);
-
-        // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
-        triggerAlarm_Stage2_every15mins();
     }
 
     // create a new encounter for the first interval so that a new card is populated for Stage1Hr1_1...
@@ -356,7 +462,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-        // calendar.add(Calendar.MINUTE, 2); // Testing
+       //  calendar.add(Calendar.MINUTE, 2); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);

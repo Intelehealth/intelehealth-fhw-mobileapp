@@ -159,7 +159,7 @@ public class SyncDAO {
                             }
 
                             if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
+                              //  triggerVisitNotification(listPatientUUID);
                             }
                         }
                     } else {
@@ -229,7 +229,10 @@ public class SyncDAO {
                             Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+                        }
+                        else if(fromActivity.equalsIgnoreCase("timeline")) {
+                            Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                        }else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
                         }
@@ -243,6 +246,9 @@ public class SyncDAO {
                             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
+                        }
+                        else if (fromActivity.equalsIgnoreCase("timeline")) {
+                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
                             Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                         }
@@ -274,7 +280,7 @@ public class SyncDAO {
                             }
 
                             if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
+                              //  triggerVisitNotification(listPatientUUID);
                             }
                         }
                     } else {

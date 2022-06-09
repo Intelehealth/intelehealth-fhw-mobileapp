@@ -163,7 +163,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
         Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
         Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
-        textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
+        if(textView != null)
+            textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
         alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));

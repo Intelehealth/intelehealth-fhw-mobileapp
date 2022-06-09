@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.BIRTH_OUTCOME;
 import static org.intelehealth.app.utilities.UuidDictionary.MISSED_ENCOUNTER;
 
 import android.content.ContentValues;
@@ -420,6 +421,38 @@ public class ObsDAO {
         idCursor.close();
 
         return isMissed;
+    }
+
+    public boolean insert_BirthOutcomeObs(String encounteruuid, String creatorID, String value) throws DAOException {
+        boolean isUpdated = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("uuid", UUID.randomUUID().toString());
+            values.put("encounteruuid", encounteruuid);
+            values.put("creator", creatorID);
+            values.put("conceptuuid", BIRTH_OUTCOME);
+            values.put("comment", "");
+            values.put("value", value);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "false");
+            db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            db.setTransactionSuccessful();
+            isUpdated = true;
+          //  Logger.logD("updated", "updatedrecords count" + insertedCount);
+        } catch (SQLException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isUpdated;
+
     }
 
 }

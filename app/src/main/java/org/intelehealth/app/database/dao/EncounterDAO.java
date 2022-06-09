@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.ContentValues;
@@ -240,7 +241,8 @@ public class EncounterDAO {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time DESC limit 1", new String[]{visitUUID});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time DESC limit 1",
+                new String[]{visitUUID});
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -392,6 +394,27 @@ public class EncounterDAO {
         return isUpdated;
     }
 
+    public boolean getVisitCompleteEncounterByVisitUUID(String visitUUID) {
+        boolean isPresent = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ?",
+                new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
+
+        if (idCursor.getCount() <= 0) { // No visit complete encounter is present ie. visit is not completed.
+            isPresent = false;
+        }
+        else { // that means visit complete enc is present ie. stage 2 is ended.
+            isPresent = true;
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return isPresent;
+    }
+
 
     public String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
         String encounterUuid = "";
@@ -429,6 +452,30 @@ public class EncounterDAO {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public String insert_VisitCompleteEncounterToDb(String visitUuid, String providerUUID) throws DAOException {
+        String encounteruuid = UUID.randomUUID().toString();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", encounteruuid);
+            values.put("visituuid", visitUuid);
+            values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
+            values.put("provider_uuid", providerUUID);
+            values.put("sync", "false");
+
+            db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return encounteruuid;
     }
 
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
