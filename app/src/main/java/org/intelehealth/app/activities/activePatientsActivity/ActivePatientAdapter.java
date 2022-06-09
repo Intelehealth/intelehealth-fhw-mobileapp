@@ -144,6 +144,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             anim.setRepeatMode(Animation.INFINITE);
             anim.setRepeatCount(Animation.INFINITE);
             holder.cardView_todaysVisit.startAnimation(anim);
+            holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
         }
 
 
