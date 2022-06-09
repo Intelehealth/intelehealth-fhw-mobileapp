@@ -41,6 +41,7 @@
     <dimen name="physical_exam_img_max_height">125dp</dimen>
 
     <dimen name="text_18sp">18sp</dimen>
+    <dimen name="text_24sp">24sp</dimen>
 
     <!--New Design-->
 

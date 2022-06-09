@@ -22,19 +22,20 @@
         android:background="@android:color/darker_gray" />
 
     <Button
-        android:id="@+id/endStageButton"  android:layout_toStartOf="@+id/fabv"
+        android:id="@+id/endStageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/body_element_horizontal_margin"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
+        android:layout_toStartOf="@+id/fabv"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center"
         android:text="End First Stage"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="23sp" />
+        android:textSize="@dimen/text_24sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabc"

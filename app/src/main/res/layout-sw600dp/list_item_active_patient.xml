@@ -27,14 +27,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-
                     android:orientation="vertical">
 
                     <TextView
@@ -45,7 +46,7 @@
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:textColor="@color/gray_7"
-                        android:textSize="@dimen/header_text_size"
+                        android:textSize="@dimen/text_24sp"
                         android:textStyle="bold"
                         tools:text="Patient Name" />
 
@@ -57,7 +58,7 @@
                         android:fontFamily="@font/lato_regular"
                         android:maxLines="1"
                         android:textColor="@color/gray_5"
-                        android:textSize="@dimen/content_text_size"
+                        android:textSize="18sp"
                         tools:text="10LAM-3" />
 
                     <TextView
@@ -68,7 +69,7 @@
                         android:fontFamily="@font/lato_regular"
                         android:maxLines="1"
                         android:textColor="@color/gray_5"
-                        android:textSize="@dimen/content_text_size"
+                        android:textSize="18sp"
                         tools:text="24 years (Male)" />
 
 
@@ -112,9 +113,10 @@
 
                 <ImageView
                     android:id="@+id/iv_prescription"
-                    android:layout_width="40dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/green_alert"
+                    android:layout_gravity="center_vertical"
                     android:tag="0" />
 
             </LinearLayout>
@@ -123,6 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/common_padding"
+                android:layout_marginStart="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -137,7 +140,7 @@
                     android:padding="@dimen/common_padding"
                     android:text="@string/visit_summary_patient_details"
                     android:textColor="@color/gray_7"
-                    android:textSize="@dimen/content_text_size"
+                    android:textSize="@dimen/text_18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -153,7 +156,7 @@
                     android:padding="@dimen/common_padding"
                     android:text="@string/action_end_visit"
                     android:textColor="@color/gray_7"
-                    android:textSize="@dimen/content_text_size"
+                    android:textSize="@dimen/text_18sp"
                     android:textStyle="bold" />
                 <TextView
                     android:id="@+id/tvStageName"
@@ -167,7 +170,7 @@
                     android:padding="@dimen/common_padding"
                     android:text="Stage-1"
                     android:textColor="@color/gray_7"
-                    android:textSize="@dimen/content_text_size"
+                    android:textSize="@dimen/text_18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

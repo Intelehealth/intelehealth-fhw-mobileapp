@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="Stage 1"
-        android:textSize="@dimen/text_18sp"
+        android:textSize="@dimen/text_24sp"
         android:layout_marginVertical="10dp"
         android:textAlignment="center"
         android:textColor="@color/gray_2"
@@ -33,7 +33,7 @@
         android:text="Stage 2"
         android:textAlignment="center"
         android:textColor="@color/gray_2"
-        android:textSize="@dimen/text_18sp"
+        android:textSize="@dimen/text_24sp"
         android:textStyle="bold"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -50,18 +50,19 @@
 
             <TextView
                 android:id="@+id/time1"
-                android:layout_width="70dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:gravity="center"  android:textSize="@dimen/content_text_size"
-                android:minWidth="@dimen/header_text_size"
-                android:text="06:00 AM" />
+                android:layout_marginStart="30dp"
+                android:gravity="center"
+                android:minWidth="@dimen/text_24sp"
+                android:text="06:00 AM"
+                android:textSize="@dimen/text_24sp" />
 
             <View
                 android:id="@+id/vl_1"
                 android:layout_width="2dp"
-                android:layout_height="90dp"
+                android:layout_height="130dp"
                 android:layout_above="@+id/vl_2"
                 android:layout_marginStart="31dp"
                 android:layout_toEndOf="@id/time1"
@@ -72,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="23dp"
+                android:layout_marginStart="24dp"
                 android:layout_toEndOf="@+id/time1"
                 android:src="@drawable/circle_indicator_timeline" />
 
@@ -107,6 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/click_to_enter"
+                        android:textSize="@dimen/text_24sp"
                         android:gravity="center"/>
 
                 </LinearLayout>
