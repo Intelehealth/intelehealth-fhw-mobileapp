@@ -383,6 +383,31 @@ public class VisitsDAO {
         return isUpdated;
     }
 
+    public String fetchVisitUUIDFromPatientUUID(String patientUUID) {
+        String visitUUID = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ",
+                new String[]{patientUUID});
+
+        if (cursor.getCount() > 0) { // ie. visit is created for this patient
+            while (cursor.moveToNext()) {
+                visitUUID = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        else { // ie. visit is not yet started ie. user has not clicked on Start new visit button.
+            visitUUID = "";
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+
+        return visitUUID;
+    }
+
+
     public String patientUuidByViistUuid(String visituuid) {
         String patientUuidByViistUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

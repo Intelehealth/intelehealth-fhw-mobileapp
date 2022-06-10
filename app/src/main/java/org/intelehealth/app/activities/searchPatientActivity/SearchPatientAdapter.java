@@ -16,6 +16,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
@@ -25,6 +27,9 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     List<PatientDTO> patients;
     Context context;
     LayoutInflater layoutInflater;
+    VisitsDAO visitsDAO = new VisitsDAO();
+    String visitUUID = "";
+    String patientfullName = "";
 
     public SearchPatientAdapter(List<PatientDTO> patients, Context context) {
         this.patients = patients;
@@ -44,6 +49,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         final PatientDTO patinet = patients.get(position);
         if (patinet != null) {
             //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
+            visitUUID = visitsDAO.fetchVisitUUIDFromPatientUUID(patinet.getUuid());
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
@@ -56,19 +62,40 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             holder.bodyTextView.setText(body);
+
+            // For Timeline Title...
+            if (patinet.getMiddlename() != null && !patinet.getMiddlename().equalsIgnoreCase("")
+                    && !patinet.getMiddlename().isEmpty()) {
+                patientfullName = patinet.getFirstname() + " " + patinet.getMiddlename() + " " + patinet.getLastname();
+            } else {
+                patientfullName = patinet.getFirstname() + " " + patinet.getLastname();
+            }
+            // end...
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("search adapter", "patientuuid" + patinet.getUuid());
-                String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getUuid());
-                intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
-                intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "search");
-                intent.putExtra("hasPrescription", "false");
-                context.startActivity(intent);
+
+                if(visitUUID != null && visitUUID.equalsIgnoreCase("")) { // visit is not yet created for this user.
+                    Log.d("search adapter", "patientuuid" + patinet.getUuid());
+                    String patientStatus = "returning";
+                    Intent intent = new Intent(context, PatientDetailActivity.class);
+                    intent.putExtra("patientUuid", patinet.getUuid());
+                    intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", "search");
+                    intent.putExtra("hasPrescription", "false");
+                    context.startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(context, TimelineVisitSummaryActivity.class);
+                    intent.putExtra("patientUuid", patinet.getUuid());
+                    intent.putExtra("visitUuid", visitUUID);
+                    intent.putExtra("name", patinet.getFirstname() + " " + patinet.getLastname());
+                    intent.putExtra("patientNameTimeline", patientfullName);
+                    intent.putExtra("tag", "exisiting");
+                    context.startActivity(intent);
+                }
             }
         });
     }

@@ -347,7 +347,7 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.tvPatientsMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Loads the config file values and check for the boolean value of privacy key.
+                /*//Loads the config file values and check for the boolean value of privacy key.
                 ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
                 if (configUtils.privacy_notice()) {
                     Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
@@ -357,10 +357,10 @@ public class HomeActivity extends AppCompatActivity {
                     //  sessionManager.setHouseholdUuid("");
                     Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
                     startActivity(intent);
-                }
+                }*/
 
-//                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
+                startActivity(intent);
             }
         });
 

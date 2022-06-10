@@ -396,14 +396,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("visitUuid", uuid);
-                // intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
-                intent2.putExtra("Stage1_Hr1_1_En", stage1Hr1_1_EncounterUuid);
-                // intent2.putExtra("Stage1_Hr1_2_En", stage1Hr1_2_EncounterUuid);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("patientNameTimeline", patientfullName);
-                intent2.putExtra("gender", mGender);
                 intent2.putExtra("tag", "new");
-                intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent2.putExtra("encounter_time", eDTO.getEncounterTime());
                 intent2.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
                 intent2.putExtra("providerID", sessionManager.getProviderID());
