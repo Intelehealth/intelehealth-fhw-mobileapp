@@ -210,7 +210,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_died));
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));
-        notes.add(getString(R.string.spinner_Tested_Negative_for_COVID_19));
+        notes.add(getString(R.string.spinner_followup_scheduled));
         notes.add(getString(R.string.spinner_not_aplicable));
 
         return notes;

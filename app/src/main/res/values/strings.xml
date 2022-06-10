@@ -376,6 +376,7 @@
     <string name="spinner_loss_followUp">Loss to Follow up</string>
     <string name="spinner_refuse_followUp">Refusing Follow up</string>
     <string name="spinner_Tested_Negative_for_COVID_19">Tested Negative for COVID-19</string>
+    <string name="spinner_followup_scheduled">Follow-Up Scheduled</string>
     <string name="spinner_not_aplicable">N/A</string>
     <string name="spinner_other">Other</string>
 
