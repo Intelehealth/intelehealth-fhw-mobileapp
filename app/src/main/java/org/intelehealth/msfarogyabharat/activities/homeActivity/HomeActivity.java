@@ -41,9 +41,11 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.msfarogyabharat.activities.dailyPerformance.DailyPerformanceActivity;
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.msfarogyabharat.activities.missedCallActivity.MissedCallActivity;
 import org.intelehealth.msfarogyabharat.activities.myCases.MyCasesActivity;
+import org.intelehealth.msfarogyabharat.activities.recordings.RecordingsActivity;
 import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.msfarogyabharat.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
@@ -448,6 +450,16 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.settingsOption:
                 settings();
                 return true;
+            case R.id.recordingsOption:
+                if (NetworkConnection.isOnline(context)) {
+                    RecordingsActivity.start(context);
+                } else {
+                    Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.dailyReportOption:
+                dailyPerformance();
+                return true;
             case R.id.updateProtocolsOption: {
 
 
@@ -673,6 +685,11 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+    public void dailyPerformance() {
+        Intent intent = new Intent(this, DailyPerformanceActivity.class);
+        startActivity(intent);
+    }
+
 
     /**
      * Logs out the user. It removes user account using AccountManager.

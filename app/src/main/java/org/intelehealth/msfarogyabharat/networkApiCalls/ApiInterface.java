@@ -1,6 +1,7 @@
 package org.intelehealth.msfarogyabharat.networkApiCalls;
 
 
+import org.intelehealth.msfarogyabharat.activities.recordings.RecordingResponse;
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
 import org.intelehealth.msfarogyabharat.models.DailyPerformanceModel;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
@@ -132,5 +133,9 @@ public interface ApiInterface {
 
     @GET
     Single<DailyPerformanceModel> DAILY_PERFORMANCE(@Url String url, @Header("Authorization") String authHeader);
+
+    @GET
+    Call<RecordingResponse> getRecordings(@Url String url,
+                                          @Header("Authorization") String authHeader);
 
 }

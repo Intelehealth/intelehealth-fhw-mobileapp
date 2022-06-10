@@ -118,7 +118,7 @@ public class MissedCallActivity extends AppCompatActivity {
         String encoded = sessionManager.getEncoded();
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.getMissedCallsUrl();
-        Single<MissedCallModel> missedCallRequest = AppConstants.apiInterface.MISSED_CALL(url, "Basic " + encoded);
+        Single<MissedCallModel> missedCallRequest = AppConstants.apiInterface.MISSED_CALL(url, "Basic bnVyc2UxOk51cnNlMTIz");
         missedCallRequest.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<MissedCallModel>() {
@@ -155,6 +155,8 @@ public class MissedCallActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        customProgressDialog.dismiss();
+                        errorTV.setVisibility(View.VISIBLE);
                         System.out.println(e);
 
                     }
@@ -183,7 +185,7 @@ public class MissedCallActivity extends AppCompatActivity {
     public List<PatientDTO> getAllPatientsFromDB(List<String> requiredNumList) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String query = "Select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_patient_attribute a, tbl_patient b where a.value in " +
-                "('" + StringUtils.convertUsingStringBuilder(requiredNumList) + "')  " + "AND a.patientuuid = b.uuid ORDER BY b.first_name";
+                "('" + StringUtils.convertUsingStringBuilder(requiredNumList) + "')  " + "AND a.patientuuid = b.uuid GROUP BY b.openmrs_id ORDER BY b.first_name";
         final Cursor searchCursor = db.rawQuery(query, null);
         try {
             if (searchCursor.moveToFirst()) {

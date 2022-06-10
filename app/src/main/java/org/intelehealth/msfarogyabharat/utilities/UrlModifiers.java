@@ -112,4 +112,10 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl() + "/";
         return BASE_URL + urlModifier;
     }
+
+    public String getRecordingListUrl(String number) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        return String.format("https://" + sessionManager.getServerUrl() + "/recordings/%s", number);
+    }
+
 }

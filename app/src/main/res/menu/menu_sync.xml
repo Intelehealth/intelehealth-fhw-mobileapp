@@ -8,4 +8,11 @@
         android:orderInCategory="1"
         android:title="@string/action_sync_all"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_calendar"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:orderInCategory="1"
+        android:title="Calendar"
+        app:showAsAction="always" />
 </menu>

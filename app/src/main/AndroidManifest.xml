@@ -37,11 +37,31 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.dailyPerformance.DailyPerformanceActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".activities.myCases.MyCasesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.missedCallActivity.MissedCallActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activities.recordings.RecordingsActivity"
+            android:configChanges="uiMode"
+            android:label="@string/call_recordings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.recordings.AudioPlayerActivity"
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_search_patient"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -176,7 +176,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView tvNoFamilyMember;
     TextView phoneView;
     String privacy_value_selected;
-    String remark = "";
+    String remark = "Field not required for MSF";
 
 
     ImageView ivPrescription;
@@ -1597,56 +1597,19 @@ public class PatientDetailActivity extends AppCompatActivity {
 //                    selectedItem[0] = org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_en_call_reason(selectedItem[0]);
 
                 dialogInterface.dismiss();
-                showRemarkDialog(success, selectedItem[0]);
+                if(!success) {
+                    storeCallData("Unable to reach patient", selectedItem[0], remark); //these strings has to be sent in same format and in english only
+                    onBackPressed();
+                }
+                else {
+                    storeCallData("Able to reach patient", selectedItem[0], remark); //these strings has to be sent in same format and in english only
+
+                }
             }
         });
         AlertDialog alert = alertDialog.create();
         alert.setCanceledOnTouchOutside(false);
         alert.show();
-    }
-
-    private void showRemarkDialog(boolean success, String selectedItem) {
-        remark = "Not Applicable";
-        MaterialAlertDialogBuilder remarkDialog = new MaterialAlertDialogBuilder(this);
-        // AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.dialog_remark, null);
-        remarkDialog.setTitle(getString(R.string.additional_remarks));
-        remarkDialog.setView(promptsView);
-        remarkDialog.setPositiveButton(getString(R.string.exit_survey_submit), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                Dialog d = (Dialog) dialog;
-                EditText remarkET = d.findViewById(R.id.remarksET);
-                if(!remark.equals(""))
-                    remark = remarkET.getText().toString(); // variable to collect user input
-                if(!success) {
-                    storeCallData("Unable to reach patient", selectedItem, remark); //these strings has to be sent in same format and in english only
-                    onBackPressed();
-                }
-                else {
-                    storeCallData("Able to reach patient", selectedItem, remark); //these strings has to be sent in same format and in english only
-
-                }
-            }
-        });
-        remarkDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.cancel();
-                if(!success) {
-                    storeCallData("Unable to reach patient", selectedItem, "Not Applicable"); //these strings has to be sent in same format and in english only
-                    onBackPressed();
-                }
-                else {
-                    storeCallData("Able to reach patient", selectedItem, "Not Applicable"); //these strings has to be sent in same format and in english only
-                }
-            }
-        });
-        AlertDialog dialog = remarkDialog.show();
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     private void storeCallData(String callStatus, String callAction, String remark) {

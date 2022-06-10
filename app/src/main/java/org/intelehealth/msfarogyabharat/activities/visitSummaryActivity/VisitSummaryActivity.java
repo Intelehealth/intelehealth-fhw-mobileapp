@@ -638,6 +638,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
+        if(items!=null) //According to ticket MHM-124 the two specialities are no longer required and need to be removed: By Nishita
+        {
+            if(items.contains("MSF MD")){
+                items.remove(items.indexOf("MSF MD"));
+            }
+            if(items.contains("Doctor not needed")){
+                items.remove(items.indexOf("Doctor not needed"));
+            }
+        }
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value

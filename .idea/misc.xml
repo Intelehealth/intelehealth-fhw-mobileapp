@@ -3,43 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android Projects/Intelehealth/Android-Mobile-Client/app/src/main/res/layout/activity_splash_activity.xml" value="0.25407608695652173" />
-        <entry key="..\:/Users/NISHITA GOYAL/OneDrive/Desktop/Android-Mobile-Client/app/src/main/res/layout/activity_prescription.xml" value="0.17346014492753623" />
-        <entry key="..\:/Users/NISHITA GOYAL/OneDrive/Desktop/Android-Mobile-Client/app/src/main/res/layout/content_visit_summary.xml" value="0.17346014492753623" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_active_patient.xml" value="0.1096757852077001" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.15" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/drawable/ic_baseline_call_missed_outgoing_24.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/drawable/ic_baseline_filter_alt_24.xml" value="0.1" />
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_daily_performance.xml" value="0.264" />
         <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_home.xml" value="0.264" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_identification.xml" value="0.45935727788279773" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_missed_call.xml" value="0.2391304347826087" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_my_cases.xml" value="0.25" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.4" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_search_patient.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_today_patient.xml" value="0.25" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/content_visit_summary.xml" value="0.2" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/dialog_mindmap_cred.xml" value="0.15260416666666668" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/dialog_remark.xml" value="0.264" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_home.xml" value="0.25" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_search.xml" value="0.25" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_sync.xml" value="0.25" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_today_patient.xml" value="0.15885416666666666" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/my_cases_filter.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/today_filter.xml" value="0.25" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_baseline_call_missed_outgoing_24.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_baseline_filter_alt_24.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_home.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_medical_advice.xml" value="0.264" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_missed_call.xml" value="0.13451086956521738" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_my_cases.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_search_patient.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/dialog_remark.xml" value="0.1" />
-        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/menu/my_cases_filter.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_my_cases.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_player.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/activity_recordings.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/dialog_remark.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/layout/list_item_recording.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_home.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/menu_sync.xml" value="0.2351851851851852" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Android-Mobile-Client/app/src/main/res/menu/my_cases_filter.xml" value="0.1" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_appointment_listing.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_home.xml" value="0.12158054711246201" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/activity_vitals.xml" value="0.12158054711246201" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/appointment_listing_view.xml" value="0.264" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/dialog_1_number_picker.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/dialog_subquestion.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/app/src/main/res/layout/list_dialog_complaint.xml" value="0.25" />
+        <entry key="..\:/Users/Nishita/Desktop/Intelehealth Studio/Intelehealth Android/webrtc/src/main/res/layout/activity_chat.xml" value="0.25" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
