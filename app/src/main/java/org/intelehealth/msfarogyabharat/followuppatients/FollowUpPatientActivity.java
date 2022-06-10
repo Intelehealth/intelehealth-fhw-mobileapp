@@ -124,15 +124,24 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         FollowUpModel model = new FollowUpModel();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 //        String newQuery = "SELECT v.enddate FROM tbl_patient a, tbl_visit b where a.uuid = b.patientuuid";
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') AND o.value is NOT NULL GROUP BY a.patientuuid";
 
 //        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate like '%Sep 12, 2021%' or v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
-        final Cursor searchCursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
                 try {
                     String visitStartDateFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate"));
-                    String visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                    String visitFollowup = "";
+                    if(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).contains(" Do you want us to follow-up? - Yes")){
+                        visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(68, 79);
+                        visitFollowup = visitFollowup.replaceAll("/","-");
+                        Date requiredFormat =  new SimpleDateFormat("dd-MMM-yyyy").parse( visitFollowup);
+                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                        visitFollowup = outputDateFormat.format(requiredFormat);
+                    }
+                    else
+                        visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
                     SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
                     Date startDate = sd1.parse(visitStartDateFollowup);
                     Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(visitFollowup);
@@ -212,7 +221,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                         } else {
                             // todo No need to added
                         }
-                    } else if (value > 0) {
+                    }
+                    else if (value > 0) {
 
                         if (days > 0 && days < 11 && days != 0) {
                             Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
@@ -257,7 +267,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 else {
 // todo No need to added
                                 }
-                            } else {
+                            }
+                            else {
                                 if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
                                     modelList.add(new FollowUpModel(
                                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
@@ -279,7 +290,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                             }
 
                         }
-                    } else {
+                    }
+                    else {
                         modelList.add(new FollowUpModel(
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),

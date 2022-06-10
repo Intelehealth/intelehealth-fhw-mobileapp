@@ -77,10 +77,8 @@ holder.dueDateTextView.setVisibility(View.GONE);
         }
         else{
             holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
-
             holder.dueDateTextView.setVisibility(View.VISIBLE);
         }
-
 //        if (!patinet.getVisitStartDate().equalsIgnoreCase("null")) {
 //
 //            String[] arrSplit_2 = patinet.getComment().split("-");
@@ -155,8 +153,6 @@ holder.dueDateTextView.setVisibility(View.GONE);
 //            holder.linearLayout.setVisibility(View.GONE);
 //            holder.dueDateTextView.setVisibility(View.GONE);
 //        }
-
-
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

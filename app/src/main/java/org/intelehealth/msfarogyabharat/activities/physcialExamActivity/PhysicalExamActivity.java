@@ -179,7 +179,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Thus the below condition is written.
         In the complaint Exam List gives the list of the chief complaints selected by the agent.
          */
-        if(complaintExamsList!=null && complaintExamsList.size()==1 && complaintExamsList.get(0).equalsIgnoreCase("Diabetes"))
+        if(complaintExamsList!=null && complaintExamsList.size()==1 && (complaintExamsList.get(0).equalsIgnoreCase("Diabetes") ||complaintExamsList.get(0).equalsIgnoreCase("Diabetes Follow-up")))
             mFileName = "physExam_1.json";
 
 
