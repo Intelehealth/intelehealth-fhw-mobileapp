@@ -147,6 +147,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
         }
 
+        if(activePatientModel.getBirthOutcomeValue() != null &&
+                !activePatientModel.getBirthOutcomeValue().equalsIgnoreCase("")) {
+            holder.btnEndVisit.setVisibility(View.VISIBLE);
+            holder.btnEndVisit.setText(activePatientModel.getBirthOutcomeValue());
+        }
+        else {
+            holder.btnEndVisit.setVisibility(View.GONE);
+        }
 
 //            // indicator for next interval
 //            String latestencounterTime = activePatientModel.getLatestencounterTime();
@@ -304,11 +312,11 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_yellow);
         }*/
         holder.btnVisitDetails.setBackgroundResource(R.drawable.round_corner_yellow);
-        holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
+      //  holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
 
-        holder.btnEndVisit.setEnabled(enableEndVisit);
+      //  holder.btnEndVisit.setEnabled(enableEndVisit);
         //if (enableEndVisit) {
-        if (activePatientModel.getEnddate() == null) {
+       /* if (activePatientModel.getEnddate() == null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             } else {
@@ -323,8 +331,9 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             }
 
             holder.btnEndVisit.setText(context.getString(R.string.visit_closed));
-        }
+        }*/
 
+/*
         holder.btnEndVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -335,6 +344,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                     actionListener.onEndVisitClicked(activePatientModel, "1".equals(holder.ivPriscription.getTag()));
             }
         });
+*/
         //}
     }
 

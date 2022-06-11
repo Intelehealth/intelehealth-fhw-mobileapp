@@ -212,9 +212,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
         String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-        boolean isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
+        String isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
         // TODO: check for visit complete and if yes than disable the button.
-        if(isVCEPresent == false) { // false ie. not present
+        if(isVCEPresent.equalsIgnoreCase("")) { // "" ie. not present
             endStageButton.setEnabled(true);
             endStageButton.setClickable(true);
             endStageButton.setBackground(context.getResources().getDrawable(R.drawable.ic_rectangle_76));

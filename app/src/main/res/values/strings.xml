@@ -853,6 +853,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="live_birth">Live Birth</string>
     <string name="still_birth">Still Birth</string>
+    <string name="action_birthoutcome">Birth Outcome</string>
 
 
 </resources>

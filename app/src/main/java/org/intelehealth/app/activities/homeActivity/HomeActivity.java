@@ -145,6 +145,7 @@ public class HomeActivity extends AppCompatActivity {
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
+    String encUUID_visitComplete = "";
 
     TextView lastSyncTextView, locationSetupTextView;
     TextView lastSyncAgo;
@@ -594,8 +595,16 @@ public class HomeActivity extends AppCompatActivity {
 
             // #-- Alert logic -- start
             for (int j = 0; j < activePatientModels.size(); j++) {
-                encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter.
+                encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter by visit uuid
+                encUUID_visitComplete = encounterDAO.getVisitCompleteEncounterByVisitUUID(activePatientModels.get(j).getUuid());
                 encounterUUID = encounterDTO.getUuid();
+
+                if(!encUUID_visitComplete.equalsIgnoreCase("")) {
+                    String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
+                    if(!birthoutcome.equalsIgnoreCase("")) {
+                        activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
+                    }
+                }
 
                 int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
                 if (issubmitted == 1) { // not yet filled
