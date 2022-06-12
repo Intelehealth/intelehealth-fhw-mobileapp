@@ -267,12 +267,24 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int type = 10;
+                    if(encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage1")) {
+                        type = getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
+                    }
+                    else if(encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
+                        type = FIFTEEN_MIN; // card clicked is 15mins.
+                    }
+                    else {
+                        // do nothing...
+                    }
+
+
                     Intent i1 = new Intent(context, PartogramDataCaptureActivity.class);
                     i1.putExtra("patientUuid", patientUuid);
                     i1.putExtra("name", patientName);
                     i1.putExtra("visitUuid", visitUuid);
                     i1.putExtra("encounterUuid", encounterDTOList.get(getAdapterPosition()).getUuid());
-                    i1.putExtra("type", getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY);
+                    i1.putExtra("type", type);
                     context.startActivity(i1);
                 }
             });

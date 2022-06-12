@@ -78,6 +78,9 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         } else if (mQueryFor == HALF_HOUR) {
             prepareDataForHalfHourly();
         }
+        else if(mQueryFor == FIFTEEN_MIN) {
+            prepareDataForFifteenMins();
+        }
 
         mSaveTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +153,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void saveObs() {
         // validation
@@ -249,13 +253,18 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
 
         }
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
+                (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(PartogramItemData partogramItemData) {
 
             }
         });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
+    }
+
+    private void prepareDataForFifteenMins() {
+        // TODO: Add logic here for 15mins section... @Lincoln
     }
 
     @Override
