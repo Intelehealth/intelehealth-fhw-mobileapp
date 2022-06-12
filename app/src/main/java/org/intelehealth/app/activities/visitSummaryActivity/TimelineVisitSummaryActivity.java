@@ -400,6 +400,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private void fetchAllEncountersFromVisitForTimelineScreen(String visitUuid) {
       //  encounterDAO = new EncounterDAO();
         encounterListDTO = encounterDAO.getEncountersByVisitUUID(visitUuid);
+        for (int i = 0; i < encounterListDTO.size(); i++) {
+            String name = encounterDAO.getEncounterTypeNameByUUID(encounterListDTO.get(i).getEncounterTypeUuid());
+            encounterListDTO.get(i).setEncounterTypeName(name);
+        }
         isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
 
         adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent);

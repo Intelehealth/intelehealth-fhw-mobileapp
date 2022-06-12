@@ -29,7 +29,7 @@ public class EncounterDTO {
     @SerializedName("privacynotice_value")
     @Expose
     private String privacynotice_value;
-
+    private String encounterTypeName;
 
 
     public String getUuid() {
@@ -94,5 +94,13 @@ public class EncounterDTO {
 
     public void setPrivacynotice_value(String privacynotice_value) {
         this.privacynotice_value = privacynotice_value;
+    }
+
+    public String getEncounterTypeName() {
+        return encounterTypeName;
+    }
+
+    public void setEncounterTypeName(String encounterTypeName) {
+        this.encounterTypeName = encounterTypeName;
     }
 }

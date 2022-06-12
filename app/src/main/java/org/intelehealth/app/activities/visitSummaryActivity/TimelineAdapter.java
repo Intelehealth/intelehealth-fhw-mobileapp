@@ -81,7 +81,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
-
                 // Stage 1
                 if (encounterDTOList.get(position).getEncounterTypeUuid()
                         .equalsIgnoreCase("ee560d18-34a1-4ad8-87c8-98aed99c663d")) {
@@ -114,16 +113,28 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(timeDateType);
 
-                    Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
-                    if (position % 2 == 0) { // Even
+                    Log.v("Timeline", "position&CardTime: " + position + " - " + calendar.getTime());
+                    if(!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+                    encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
+                        if (position % 2 == 0) { // Even
                        /* calendar.add(Calendar.HOUR, 1);
                         calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min*/
-                         calendar.add(Calendar.MINUTE, 2); // Testing
+                            calendar.add(Calendar.MINUTE, 2); // Testing
+                            Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+                        } else { // Odd
+                            // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                            calendar.add(Calendar.MINUTE, 1); // Testing
+                            Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+                        }
+                    } // end.
+                    else if(!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
+                       // calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+                        calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                    } else { // Odd
-                       // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                         calendar.add(Calendar.MINUTE, 1); // Testing
-                        Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+                    }
+                    else {
+                        // do nothing
                     }
 
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
@@ -163,15 +174,27 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     calendar.setTime(timeDateType);
 
                     Log.v("Timeline", "position&CardTime: " + position + "- " + calendar.getTime());
-                    if (position % 2 == 0) { // Even
+                    if(!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
+                        if (position % 2 == 0) { // Even
                         /*calendar.add(Calendar.HOUR, 1);
                         calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min*/
-                          calendar.add(Calendar.MINUTE, 2); // Testing
+                            calendar.add(Calendar.MINUTE, 2); // Testing
+                            Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
+                        } else { // Odd
+                            // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                            calendar.add(Calendar.MINUTE, 1); // Testing
+                            Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+                        }
+                    }
+                    else if(!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
+                            encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
+                        // calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+                        calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
-                    } else { // Odd
-                       // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                         calendar.add(Calendar.MINUTE, 1); // Testing
-                        Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
+                    }
+                    else {
+                        // do nothing
                     }
 
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
