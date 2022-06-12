@@ -45,11 +45,16 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     private static final int HOURLY = 0;
     private static final int HALF_HOUR = 1;
     private static final int FIFTEEN_MIN = 2;
+    String isVCEPresent = "";
+    int isMissed = 0;
+    int issubmitted = 0;
 
-    public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList, SessionManager sessionManager) {
+    public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList,
+                           SessionManager sessionManager, String isVCEPresent) {
         this.context = context;
         this.encounterDTOList = encounterDTOList;
         this.sessionManager = sessionManager;
+        this.isVCEPresent = isVCEPresent;
 
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -76,6 +81,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
+
                 // Stage 1
                 if (encounterDTOList.get(position).getEncounterTypeUuid()
                         .equalsIgnoreCase("ee560d18-34a1-4ad8-87c8-98aed99c663d")) {
@@ -99,8 +105,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
-                int isMissed = 0;
-                int issubmitted = 0;
+
                 // check for this enc any obs created if yes than show submitted...
                 obsDAO = new ObsDAO();
                 issubmitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
@@ -136,7 +141,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
                         } else if (isMissed == 2) {
-//                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
                         }
@@ -203,6 +207,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     holder.cardview.setEnabled(false);
                     holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                     holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+                }
+
+                if(!isVCEPresent.equalsIgnoreCase("")) { // If visit complete than disable all the cards.
+                    holder.cardview.setClickable(false);
+                    holder.cardview.setEnabled(false);
                 }
 
                 holder.timeTextview.setText(encounterTimeAmPmFormat);

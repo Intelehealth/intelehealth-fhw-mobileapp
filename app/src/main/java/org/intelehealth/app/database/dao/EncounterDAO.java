@@ -213,7 +213,8 @@ public class EncounterDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT DISTINCT uuid, visituuid, encounter_type_uuid, provider_uuid, encounter_time " +
-                "FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time", new String[]{visitUUID});
+                "FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time",
+                new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
         EncounterDTO encounterDTO = new EncounterDTO();
         ArrayList<EncounterDTO> encounterDTOList = new ArrayList<>();
 
@@ -225,7 +226,6 @@ public class EncounterDAO {
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
-              //  encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTOList.add(encounterDTO);
             }
         }
@@ -241,8 +241,9 @@ public class EncounterDAO {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' ORDER BY encounter_time DESC limit 1",
-                new String[]{visitUUID});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time DESC limit 1",
+                new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
+
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -257,6 +258,7 @@ public class EncounterDAO {
 
             }
         }
+
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -520,9 +522,9 @@ public class EncounterDAO {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ? ORDER BY encounter_time DESC LIMIT 1",
+        Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid != ? ORDER BY encounter_time DESC LIMIT 1",
       //  Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ?", // temp testing
-                new String[] {visitUuid});
+                new String[] {visitUuid, ENCOUNTER_VISIT_COMPLETE});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 latestEncounterTypeUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid"));

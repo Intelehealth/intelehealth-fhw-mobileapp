@@ -62,11 +62,12 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     ArrayList<String> timeList;
     String startVisitTime, patientUuid, visitUuid, whichScreenUserCameFromTag, providerID, Stage1_Hour1_1;
     SessionManager sessionManager;
-    EncounterDAO encounterDAO;
+    EncounterDAO encounterDAO = new EncounterDAO();
     ArrayList<EncounterDTO> encounterListDTO;
     Button endStageButton;
     int stageNo = 0;
     String value = "";
+    String isVCEPresent = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EncounterDAO encounterDAO = new EncounterDAO();
+               // EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
@@ -108,7 +109,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EncounterDAO encounterDAO = new EncounterDAO();
+              //  EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
@@ -212,7 +213,6 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
         String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-        String isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
         // TODO: check for visit complete and if yes than disable the button.
         if(isVCEPresent.equalsIgnoreCase("")) { // "" ie. not present
             endStageButton.setEnabled(true);
@@ -293,7 +293,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void insertVisitComplete_BirthOutcomeObs(String visitUuid, String value) throws DAOException {
-        EncounterDAO encounterDAO = new EncounterDAO();
+      //  EncounterDAO encounterDAO = new EncounterDAO();
         ObsDAO obsDAO = new ObsDAO();
         boolean isInserted = false;
         String encounterUuid = "";
@@ -398,10 +398,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     // fetch all encounters from encounter tbl local db for this particular visit and show on timeline...
     private void fetchAllEncountersFromVisitForTimelineScreen(String visitUuid) {
-        encounterDAO = new EncounterDAO();
+      //  encounterDAO = new EncounterDAO();
         encounterListDTO = encounterDAO.getEncountersByVisitUUID(visitUuid);
+        isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
 
-        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager);
+        adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent);
         recyclerView.setAdapter(adapter);
     }
 
