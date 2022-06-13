@@ -22,7 +22,11 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -465,6 +469,15 @@ public class EncounterDAO {
         }
     }
 
+    public String fiveMinutesAgo(String timeStamp) throws ParseException { // since server error : "The encounter datetime should be between the visit start and stop dates."
+
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
+    }
+
     public String insert_VisitCompleteEncounterToDb(String visitUuid, String providerUUID) throws DAOException {
         String encounteruuid = UUID.randomUUID().toString();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -473,14 +486,15 @@ public class EncounterDAO {
         try {
             values.put("uuid", encounteruuid);
             values.put("visituuid", visitUuid);
-            values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("encounter_time", (fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
             values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
             values.put("provider_uuid", providerUUID);
             values.put("sync", "false");
+            values.put("voided", 0);
 
             db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             db.setTransactionSuccessful();
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();

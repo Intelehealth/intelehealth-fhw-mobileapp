@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.epartogramActivity.Epartogram;
@@ -36,6 +37,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
@@ -298,6 +300,14 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         boolean isInserted = false;
         String encounterUuid = "";
         encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        ////
 
         // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
         isInserted = obsDAO.insert_BirthOutcomeObs(encounterUuid, sessionManager.getCreatorID(), value);
