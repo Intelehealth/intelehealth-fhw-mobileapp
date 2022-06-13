@@ -606,18 +606,22 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
 
-                int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
-                if (issubmitted == 1) { // not yet filled
-                    activePatientModels.get(j).setObsExistsFlag(true);
+                if(encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
+                    int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
+                    if (issubmitted == 1) { // not yet filled
+                        activePatientModels.get(j).setObsExistsFlag(true);
+                    }
                 }
 
-                String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-                if (latestEncounterName.toLowerCase().contains("stage2")) {
-                    activePatientModels.get(j).setStageName("Stage-2");
-                } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-                    activePatientModels.get(j).setStageName("Stage-1");
-                } else {
-                    activePatientModels.get(j).setStageName("");
+                if(encounterDTO.getEncounterTypeUuid() != null) {
+                    String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+                    if (latestEncounterName.toLowerCase().contains("stage2")) {
+                        activePatientModels.get(j).setStageName("Stage-2");
+                    } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+                        activePatientModels.get(j).setStageName("Stage-1");
+                    } else {
+                        activePatientModels.get(j).setStageName("");
+                    }
                 }
 
                 int red = 2, yellow = 1, green = 0;

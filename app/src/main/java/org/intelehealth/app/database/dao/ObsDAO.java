@@ -352,8 +352,8 @@ public class ObsDAO {
         int isMissed = 0;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
-                new String[]{encounterUuid, MISSED_ENCOUNTER});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
+                new String[]{encounterUuid});
 
         if (idCursor.getCount() <= 0) {
             // that means there is no obs for this enc which means that this encounter is missed...
@@ -374,9 +374,24 @@ public class ObsDAO {
             //end
         }
         else {
-            isMissed = 2; // submitted
-            // this means that this encounter is filled with obs ie. It was answered and then disabled.
+            // if missed enc is present in that case send ismissed = 1 ie. missed enc will be dispalyed on card else send submitted.
+            // this is done so as to avoid everytime replacig a new row in the db for missed enc as since earlier it was creating a new record
+            // everytime for missed enc.
+            String typeuuid = "";
+            while (idCursor.moveToNext()) {
+                typeuuid = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
+                if(!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase("35c3afdd-bb96-4b61-afb9-22a5fc2d088e")) {
+                    // ie. if typeuuid == MISSED_ENCOUNTER ie. missed enc already present than isMissed=1 else 2 ie. Submitted.
+                    isMissed = 3; // already missed is created so check if 1 than only sync the record.
+                }
+                else {
+                    isMissed = 2; // submitted
+                    // this means that this encounter is filled with obs ie. It was answered and then disabled.
+                }
+            }
+
         }
+
         idCursor.close();
 
         return isMissed;

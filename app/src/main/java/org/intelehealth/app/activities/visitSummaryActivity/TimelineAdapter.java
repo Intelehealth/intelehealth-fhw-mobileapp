@@ -18,6 +18,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.partogram.PartogramDataCaptureActivity;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.text.ParseException;
@@ -114,20 +115,20 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
                         if (position % 2 == 0) { // Even
-                       /* calendar.add(Calendar.HOUR, 1);
-                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min*/
-                            calendar.add(Calendar.MINUTE, 2); // Testing
+                        calendar.add(Calendar.HOUR, 1);
+                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                           // calendar.add(Calendar.MINUTE, 2); // Testing
                             Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                         } else { // Odd
-                            // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                            calendar.add(Calendar.MINUTE, 1); // Testing
+                             calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                           // calendar.add(Calendar.MINUTE, 1); // Testing
                             Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                         }
                     } // end.
                     else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                        // calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
-                        calendar.add(Calendar.MINUTE, 1); // Testing
+                         calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+                       // calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else {
                         // do nothing
@@ -144,10 +145,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
                          If no obs created than create Missed Enc obs for this disabled encounter. */
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if (isMissed == 1) {
+                        if (isMissed == 1 || isMissed == 3) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
-                        } else if (isMissed == 2) {
+                        }
+                        else if (isMissed == 2) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
                         }
@@ -173,19 +175,19 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
                         if (position % 2 == 0) { // Even
-                        /*calendar.add(Calendar.HOUR, 1);
-                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min*/
-                            calendar.add(Calendar.MINUTE, 2); // Testing
+                        calendar.add(Calendar.HOUR, 1);
+                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                          //  calendar.add(Calendar.MINUTE, 2); // Testing
                             Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                         } else { // Odd
-                            // calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                            calendar.add(Calendar.MINUTE, 1); // Testing
+                             calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                           // calendar.add(Calendar.MINUTE, 1); // Testing
                             Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                         }
                     } else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                        // calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
-                        calendar.add(Calendar.MINUTE, 1); // Testing
+                         calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+                       // calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else {
                         // do nothing
@@ -204,11 +206,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
                          If no obs created than create Missed Enc obs for this disabled encounter. */
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if (isMissed == 1) {
+                        if (isMissed == 1 || isMissed == 3) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
-                        } else if (isMissed == 2) {
-//                            holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.black_overlay));
+                        }
+                        else if (isMissed == 2) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
                         }
