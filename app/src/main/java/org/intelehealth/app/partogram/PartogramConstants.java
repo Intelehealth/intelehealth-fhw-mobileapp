@@ -39,6 +39,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No", "Woman declines"});
         paramInfo.setValues(new String[]{"Y", "N", "D"});
         paramInfo.setConceptUUID("5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -48,6 +49,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No", "Woman refuses to receive pain releif"});
         paramInfo.setValues(new String[]{"Y", "N", "D"});
         paramInfo.setConceptUUID("9d313f72-538f-11e6-9cfe-86f436325720");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -57,6 +59,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No", "Woman declines"});
         paramInfo.setValues(new String[]{"Y", "N", "D"});
         paramInfo.setConceptUUID("9d31451b-538f-11e6-9cfe-86f436325720");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -66,6 +69,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"supine", "Mobile"});
         paramInfo.setValues(new String[]{"SP", "MO"});
         paramInfo.setConceptUUID("9d3148b1-538f-11e6-9cfe-86f436325720");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[0], stringList);
@@ -202,6 +206,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"5", "6", "7", "8", "9", "10"});
         paramInfo.setValues(new String[]{"5", "6", "7", "8", "9", "10"});
         paramInfo.setConceptUUID("9d316ab5-538f-11e6-9cfe-86f436325720");
+        paramInfo.setFifteenMinField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -225,6 +230,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No"});
         paramInfo.setValues(new String[]{"Y", "N"});
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -234,6 +240,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No"});
         paramInfo.setValues(new String[]{"Y", "N"});
         paramInfo.setConceptUUID("c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -243,6 +250,7 @@ public class PartogramConstants {
         paramInfo.setOptions(new String[]{"Yes", "No"});
         paramInfo.setValues(new String[]{"Y", "N"});
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[4], stringList);//Medication
@@ -255,6 +263,7 @@ public class PartogramConstants {
         paramInfo.setParamName("Assessment");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("67a050c1-35e5-451c-a4ab-fff9d57b0db1");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
@@ -262,6 +271,7 @@ public class PartogramConstants {
         paramInfo.setParamName("Plan");
         paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();

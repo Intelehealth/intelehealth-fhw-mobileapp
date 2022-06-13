@@ -53,8 +53,11 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private static final int HOURLY = 0;
     private static final int HALF_HOUR = 1;
     private static final int FIFTEEN_MIN = 2;
+    private static final int STAGE_1 = 1;
+    private static final int STAGE_2 = 2;
     private int mQueryFor = HOURLY;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
+    private int mStageNumber = STAGE_1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +72,20 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         mEncounterUUID = getIntent().getStringExtra("encounterUuid");
         mPatientName = getIntent().getStringExtra("name");
         mPatientUuid = getIntent().getStringExtra("patientUuid");
+        mStageNumber = getIntent().getIntExtra("stage", STAGE_1);
+        mQueryFor = getIntent().getIntExtra("type", 0);
+
         Log.v("visitUuid", mVisitUUID);
         Log.v("EncounterUUID", mEncounterUUID);
-        mQueryFor = getIntent().getIntExtra("type", 0);
+        Log.v("StageNumber", String.valueOf(mStageNumber));
+        Log.v("QueryFor", String.valueOf(mQueryFor));
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         if (mQueryFor == HOURLY) {
             prepareDataForHourly();
         } else if (mQueryFor == HALF_HOUR) {
             prepareDataForHalfHourly();
-        }
-        else if(mQueryFor == FIFTEEN_MIN) {
+        } else if (mQueryFor == FIFTEEN_MIN) {
             prepareDataForFifteenMins();
         }
 
@@ -240,7 +247,9 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             String section = PartogramConstants.SECTION_LIST[i];
             List<ParamInfo> paramInfoList = new ArrayList<>();
             for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap().get(section).size(); j++) {
-                if (PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isHalfHourField()) {
+                if (mStageNumber == STAGE_1 && PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isHalfHourField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j));
+                } else if (mStageNumber == STAGE_2 && !PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isOnlyOneHourField()) {
                     paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j));
                 }
             }
@@ -255,16 +264,42 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         }
         PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
                 (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(PartogramItemData partogramItemData) {
+                    @Override
+                    public void onSelect(PartogramItemData partogramItemData) {
 
-            }
-        });
+                    }
+                });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
     private void prepareDataForFifteenMins() {
         // TODO: Add logic here for 15mins section... @Lincoln
+        mItemList.clear();
+        for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
+            String section = PartogramConstants.SECTION_LIST[i];
+            List<ParamInfo> paramInfoList = new ArrayList<>();
+            for (int j = 0; j < PartogramConstants.getSectionParamInfoMasterMap().get(section).size(); j++) {
+                if (PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j).isFifteenMinField()) {
+                    paramInfoList.add(PartogramConstants.getSectionParamInfoMasterMap().get(section).get(j));
+                }
+            }
+            if (!paramInfoList.isEmpty()) {
+                PartogramItemData partogramItemData = new PartogramItemData();
+                partogramItemData.setParamSectionName(section);
+                partogramItemData.setParamInfoList(paramInfoList);
+                mItemList.add(partogramItemData);
+            }
+
+
+        }
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
+                (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+                    @Override
+                    public void onSelect(PartogramItemData partogramItemData) {
+
+                    }
+                });
+        mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
     @Override

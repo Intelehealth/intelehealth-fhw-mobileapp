@@ -10,6 +10,7 @@ public class ParamInfo implements Serializable {
     private String[] values;
     private boolean isHalfHourField;
     private boolean isFifteenMinField;
+    private boolean isOnlyOneHourField;
     private String capturedValue;
     private String conceptUUID;
 
@@ -83,5 +84,13 @@ public class ParamInfo implements Serializable {
 
     public void setConceptUUID(String conceptUUID) {
         this.conceptUUID = conceptUUID;
+    }
+
+    public boolean isOnlyOneHourField() {
+        return isOnlyOneHourField;
+    }
+
+    public void setOnlyOneHourField(boolean onlyOneHourField) {
+        isOnlyOneHourField = onlyOneHourField;
     }
 }
