@@ -87,6 +87,7 @@
                 android:textSize="@dimen/header_text_size"
                 android:textStyle="bold" />
 
+<!--
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,6 +119,7 @@
                     android:textSize="@dimen/content_text_size"
                     tools:ignore="SpeakableTextPresentCheck" />
             </RelativeLayout>
+-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvActiveVisits"
@@ -126,6 +128,7 @@
                 android:paddingHorizontal="@dimen/content_horizontal_padding_1"
                 android:scrollbars="none"
                 tools:itemCount="10"
+                android:layout_marginTop="30dp"
                 tools:listitem="@layout/list_item_active_patient" />
 
             <TextView

@@ -6,8 +6,8 @@
         android:id="@+id/updateTimeItem"
         android:title="Last updated on 12pm"
         app:showAsAction="always" />
-    <group android:id="@+id/main_menu_group">
 
+    <group android:id="@+id/main_menu_group">
         <!--<item-->
         <!--android:id="@+id/syncOption"-->
         <!--android:title="@string/menu_option_sync"-->
