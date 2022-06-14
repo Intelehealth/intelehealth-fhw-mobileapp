@@ -910,6 +910,7 @@ public class HomeActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
         mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem);
+        setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         return super.onCreateOptionsMenu(menu);
 
     }
