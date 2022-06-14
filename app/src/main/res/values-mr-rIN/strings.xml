@@ -1117,11 +1117,11 @@
     <string name="miscarriage">गर्भपात</string>
     <string name="currently_pregnant">सध्या गर्भवती</string>
     <string name="is_the_child_alive">मूल जिवंत आहे का?</string>
-    <string name="what_was_the_year_of_pregnancy_outcome">गर्भधारणेचे वर्ष काय होते?</string>
+    <string name="what_was_the_year_of_pregnancy_outcome">गरोदरपणाच्या परिणामाचे वर्ष काय होते? (अ) गर्भवती महिलांसाठी, गर्भधारणेची तारीख नमूद करा ब) इतर पर्यायांच्या बाबतीत प्रसूती / डिलिव्हरी / गर्भपाताची तारीख नमूद करा)</string>
     <string name="how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने चालली?</string>
     <string name="how_many_months_have_you_been_pregnant">आपण किती महिने गर्भवती आहात?</string>
 
-    <string name="place_of_delivery">डिलिव्हरी/ प्रसुतीचे ठिकाण</string>
+    <string name="place_of_delivery">डडिलिव्हरी / प्रसुतीचे ठिकाण</string>
     <string name="place_of_delivery_home">घर</string>
     <string name="place_of_delivery_sub_center">SUB CENTER</string>
     <string name="place_of_delivery_chc_civil_hospital_at_block_level">PHC</string>
@@ -1129,7 +1129,7 @@
     <string name="place_of_delivery_private_clinic">खाजगी क्लिनिक</string>
     <string name="place_of_delivery_private_hospital">खाजगी रुग्णालय</string>
 
-    <string name="focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती/ डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण</string>
+    <string name="focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती / डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण</string>
     <string name="was_this_a_single_or_multiple_births">हे एक सिंगल / एकाधिक जन्म होते?</string>
     <string name="what_is_was_the_sex_of_name">%1$s लिंग काय आहे?</string>
     <string name="how_old_was_name_when_he_or_she_died">जेव्हा तो / ती मरण पावला तेव्हा किती वर्षांचा होता? जर \'1 पेक्षा कमी,\' चौकशी: किती महिने जुने %1$s होते?</string>
@@ -1235,8 +1235,8 @@
     <string name="txt_what_was_the_year_of_pregnancy_outcome">गरोदरपणाच्या परिणामाचे वर्ष काय होते ?(अ) गर्भवती महिलांसाठी, गर्भधारणेची तारीख नमूद करा ब) इतर पर्यायांच्या बाबतीत प्रसूती/ डिलिव्हरी/ गर्भपाताची तारीख नमूद करा)</string>
     <string name="txt_how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
-    <string name="txt_what_is_the_place_of_delivery">डिलिव्हरी/ प्रसुतीचे ठिकाण कुठे आहे ?</string>
-    <string name="txt_focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती/ डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण?</string>
+    <string name="txt_what_is_the_place_of_delivery">डिलिव्हरी / प्रसुतीचे ठिकाण कुठे आहे?</string>
+    <string name="txt_focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती / डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण</string>
     <string name="txt_was_this_a_single_multiple_births">हे एकच/एकाहून अधिक जन्म होते का?</string>
     <string name="txt_how_old_was_the_baby_when_he_she_died">बाळ/ती मरण पावले तेव्हा त्याचे वय किती होते?</string>
 
@@ -1253,7 +1253,7 @@
     <string name="txt_when_was_the_last_time_you_got_your_bp_checked">तुमची बीपी शेवटची कधी तपासली होती?*</string>
     <string name="what_is_your_education_status">तुमची शिक्षणाची स्थिती काय आहे?*</string>
     <string name="what_is_your_marital_status">तुमची वैवाहिक स्थिती काय आहे?*</string>
-    <string name="what_is_the_place_of_delivery">डिलिव्हरी/ प्रसुतीचे ठिकाण कुठे आहे?</string>
+    <string name="what_is_the_place_of_delivery">डिलिव्हरी / प्रसुतीचे ठिकाण कुठे आहे?</string>
 
 
     <string name="first_location_of_visit">भेट / संवादाचे पहिले स्थान</string>
@@ -1345,9 +1345,10 @@
     <string name="chat_fab">चॅट फॅब</string>
     <string name="enter_block_name_other">ब्लॉक नाव प्रविष्ट करा</string>
     <string name="enter_village_name_other">गावाचे नाव टाका</string>
+    <string name="error_login_title">लॉगिन मध्ये चूक</string>
 
     <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">दिलेल्या तारखेपूर्वी डिलिव्हरी/ प्रसूती झाली का ?/ (निर्धारित काळापूर्वी बाळाचा जन्म झाला का)</string>
-    <string name="what_was_the_name_of_the_facility">सुविधाकेंद्र कुठले होते ?</string>
+    <string name="what_was_the_name_of_the_facility">सुविधाकेंद्र कुठले होते?</string>
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">मागच्या २ वर्षात तुम्ही कितीवेळा गरोदर होता ?</string>
 
     <string name="what_is_the_type_of_delivery">डिलिव्हरी /प्रसूती कशी झाली?</string>

@@ -83,6 +83,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -131,7 +132,7 @@ public class SetupActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
 
-//    private BroadcastReceiver MyReceiver = null;
+    //    private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
     //    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
 //    boolean value = false;
@@ -234,8 +235,8 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        if(!mUrlField.getText().toString().trim().isEmpty() ||
-        !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
+        if (!mUrlField.getText().toString().trim().isEmpty() ||
+                !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
 
             isLocationFetched = false;
             mEmailView.setError(null);
@@ -256,8 +257,7 @@ public class SetupActivity extends AppCompatActivity {
                 }
             }
 
-        }
-        else {
+        } else {
 
         }
         mUrlField.addTextChangedListener(new TextWatcher() {
@@ -726,16 +726,14 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isOnline () {
+    public boolean isOnline() {
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
+        if (netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()) {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
             return false;
-        }
-        else
-        {
+        } else {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
             return true;
@@ -1522,7 +1520,7 @@ public class SetupActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
+                dialogUtils.showerrorDialog(SetupActivity.this, getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getString(R.string.generic_ok));
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
             }
@@ -1655,6 +1653,7 @@ public class SetupActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
+
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
