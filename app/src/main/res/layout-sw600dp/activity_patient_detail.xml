@@ -835,7 +835,7 @@
                 android:textSize="@dimen/text_24sp"
                 android:text="@string/button_new_visit" />
 
-<!--
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_previous_visits"
                 android:layout_width="match_parent"
@@ -916,7 +916,7 @@
 
 
             </androidx.cardview.widget.CardView>
--->
+
 
 
         </LinearLayout>
