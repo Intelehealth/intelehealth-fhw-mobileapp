@@ -687,16 +687,16 @@ public class SetupActivity extends AppCompatActivity {
 
         //spinner-end...
 
-        Location location = null;
+        Location location = new Location();
 
         //add state wise here...
 
-        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
+      /*  if (mDropdownLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
             Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
         } else {
             location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -712,12 +712,15 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            if (location != null) {
-                Log.i(TAG, location.getDisplay());
+          //  if (location != null) {
+             //   Log.i(TAG, "location:: " + location.getDisplay());
                 String urlString = mUrlField.getText().toString();
-                TestSetup(urlString, email, password, admin_password, location);
+            // as in ezazi we dont want to show locations dropdown so adding as static value.
+            location.setDisplay("Remote");
+            location.setUuid("eb374eaf-430e-465e-81df-fe94c2c515be");
+            TestSetup(urlString, email, password, admin_password, location);
                 Log.d(TAG, "attempting setup");
-            }
+        //    }
 
 //            if (village_name != null) {
 //                String urlString = mUrlField.getText().toString();
@@ -1377,7 +1380,7 @@ public class SetupActivity extends AppCompatActivity {
 //
 //    }
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
-
+        Log.i(TAG, "location:: " + location.getDisplay());
         ProgressDialog progress;
 
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
