@@ -210,8 +210,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
     List<String> districtList;
 
-
-
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
         starter.putExtra(EXTRA_MEDICAL_ADVICE, medicalAdvice);

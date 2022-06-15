@@ -1112,7 +1112,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (height.getValue().trim().equals("0")) {
                 heightView.setText("-");
             } else {
-                heightView.setText(height.getValue());
+                String heightVal=ConvertHeightIntoFeets(height.getValue());
+                heightView.setText(heightVal);
             }
         }
 
@@ -1155,7 +1156,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
-
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4149,5 +4149,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    public String ConvertHeightIntoFeets(String height){
+        int val=Integer.parseInt(height);
+        double centemeters=val/2.54;
+        int inche=(int)centemeters%12;
+        int feet=(int)centemeters/12;
+        String heightVal=feet+getString(R.string.table_height_feet)+" "+inche+getString(R.string.table_height_inche);
+        System.out.println("value of height="+val);
+        return heightVal;
+    }
 
 }

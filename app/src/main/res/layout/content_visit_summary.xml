@@ -148,8 +148,6 @@
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
-
-
         <!-- Vitals Card contains a TableView-->
 
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -207,7 +205,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
-                            android:text="@string/visit_summary_height_heading"
+                            android:text="@string/table_height_str"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView

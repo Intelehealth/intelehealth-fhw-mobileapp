@@ -611,4 +611,33 @@
         <item>Select Village</item>
     </string-array>
 
+    <string-array name="height_en">
+        <item>4ft 6in</item>
+        <item>4ft 7in</item>
+        <item>4ft 8in</item>
+        <item>4ft 9in</item>
+        <item>4ft 10in</item>
+        <item>4ft 11in</item>
+        <item>5ft 0in</item>
+        <item>5ft 1in</item>
+        <item>5ft 2in</item>
+        <item>5ft 3in</item>
+        <item>5ft 4in</item>
+        <item>5ft 5in</item>
+        <item>5ft 6in</item>
+        <item>5ft 7in</item>
+        <item>5ft 8in</item>
+        <item>5ft 9in</item>
+        <item>5ft 10in</item>
+        <item>5ft 11in</item>
+        <item>6ft 0in</item>
+        <item>6ft 1in</item>
+        <item>6ft 2in</item>
+        <item>6ft 3in</item>
+        <item>6ft 4in</item>
+        <item>6ft 5in</item>
+        <item>6ft 6in</item>
+
+    </string-array>
+
 </resources>
