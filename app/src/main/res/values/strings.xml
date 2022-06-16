@@ -147,6 +147,7 @@
     <string name="title_activity_vitals">Vitals</string>
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
+    <string name="table_height_str">Height(ft)</string>
     <string name="table_weight">Weight (kg)</string>
     <string name="table_bmi">BMI </string>
     <string name="table_pulse">Pulse (bpm)</string>
@@ -155,6 +156,8 @@
     <string name="table_bpdia">BP Dia</string>
     <string name="table_temp">Temperature (C)</string>
     <string name="table_spo">SpO2 (%)</string>
+    <string name="table_height_inche">in</string>
+    <string name="table_height_feet">ft</string>
 
     //Patient Search Screen
     <string name="search_hint">Type to search patient by name…</string>
@@ -350,6 +353,7 @@
     <!-- Vitals Screen Error-->
 
     <string name="weight_error">Weight should be between 1 and %1$s kg</string>
+    <string name="error_height_required">Please select patient height!</string>
     <string name="height_error">Height should be between 10 and %1$s cm</string>
     <string name="spo_error">SpO2 should be in between %1$s and %2$s</string>
     <string name="pulse_error">Pulse should be in between %1$s and %2$s</string>

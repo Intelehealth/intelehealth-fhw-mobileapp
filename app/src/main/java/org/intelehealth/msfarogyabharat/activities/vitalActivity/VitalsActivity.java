@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.rosemaryapp.amazingspinner.AmazingSpinner;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,9 +69,11 @@ public class VitalsActivity extends AppCompatActivity {
     private String encounterVitals;
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
-    String heightvalue;
-    String weightvalue;
+    String heightvalue="";
+    String weightvalue, heightVal;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
+    AmazingSpinner mheightSpinner;
+    ArrayAdapter heightAdapter;
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
@@ -104,12 +110,12 @@ public class VitalsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
 
         mHeight = findViewById(R.id.table_height);
+        mheightSpinner=findViewById(R.id.heightSpinner);
         mWeight = findViewById(R.id.table_weight);
         mPulse = findViewById(R.id.table_pulse);
         mBpSys = findViewById(R.id.table_bpsys);
@@ -119,11 +125,14 @@ public class VitalsActivity extends AppCompatActivity {
         mTemperatureTIL = findViewById(R.id.table_temp_til);
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
-
         mResp = findViewById(R.id.table_respiratory);
 
         mBMI.setEnabled(false);
 
+        String heightStr = "height_" + sessionManager.getAppLanguage();
+        int heightArray = getResources().getIdentifier(heightStr, "array", getApplicationContext().getPackageName());
+        heightAdapter = ArrayAdapter.createFromResource(this, heightArray, R.layout.height_spinner_item);
+        mheightSpinner.setAdapter(heightAdapter);
 
         //Check for license key and load the correct config file
         try {
@@ -138,9 +147,11 @@ public class VitalsActivity extends AppCompatActivity {
             }//Load the config file
             //Display the fields on the Vitals screen as per the config file
             if (obj.getBoolean("mHeight")) {
-                mHeight.setVisibility(View.VISIBLE);
+               // mHeight.setVisibility(View.VISIBLE);
+                mheightSpinner.setVisibility(View.VISIBLE);
             } else {
-                mHeight.setVisibility(View.GONE);
+               // mHeight.setVisibility(View.GONE);
+                mheightSpinner.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mWeight")) {
                 mWeight.setVisibility(View.VISIBLE);
@@ -240,6 +251,16 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
+        mheightSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mheightSpinner.setError(null);
+                flag_height = 1;
+                ConvertHeightIntoCm(heightAdapter.getItem(position).toString());
+                calculateBMI();
+            }
+        });
+
         mWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -276,7 +297,6 @@ public class VitalsActivity extends AppCompatActivity {
                 calculateBMI();
             }
         });
-
 
         mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -391,7 +411,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-
         mPulse.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -484,6 +503,11 @@ public class VitalsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mheightSpinner.getText().toString().trim().length()>0){
+                    flag_height = 1;
+                    ConvertHeightIntoCm(mheightSpinner.getText().toString().trim());
+                    calculateBMI();
+                }
                 if (mBMI.getText().toString() != null && !mBMI.getText().toString().trim().equals("")) {
                     if(Double.valueOf(mBMI.getText().toString())>25){
                         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
@@ -509,13 +533,34 @@ public class VitalsActivity extends AppCompatActivity {
         });
     }
 
+    public void ConvertHeightIntoCm(String height){
+        height=height.replaceAll(getString(R.string.table_height_feet),"").replaceAll(getString(R.string.table_height_inche),"");
+        String []heightArr=height.split(" ");
+        int feets=Integer.parseInt(heightArr[0])*12;
+        int inches=Integer.parseInt(heightArr[1]);
+        int val=(int)((feets+inches)*2.54)+1;
+        heightvalue=val+"";
+        System.out.println("value of height="+val);
+    }
+
+    public String ConvertHeightIntoFeets(String height){
+        int val=Integer.parseInt(height);
+        double centemeters=val/2.54;
+        int inche=(int)centemeters%12;
+        int feet=(int)centemeters/12;
+        String heightVal=feet+getString(R.string.table_height_feet)+" "+inche+getString(R.string.table_height_inche);
+        System.out.println("value of height="+val);
+        return heightVal;
+    }
+
     public void calculateBMI() {
         if (flag_height == 1 && flag_weight == 1 ||
-                (mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".") && (mWeight.getText().toString().trim().length() > 0 &&
+                (heightvalue.trim().length()>0/*mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/ && (mWeight.getText().toString().trim().length() > 0 &&
                         !mWeight.getText().toString().startsWith(".")))) {
             mBMI.getText().clear();
             double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
-            double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+           // double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+            double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
@@ -547,7 +592,6 @@ public class VitalsActivity extends AppCompatActivity {
         }
     }
 
-
     public void loadPrevious() {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -568,7 +612,13 @@ public class VitalsActivity extends AppCompatActivity {
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
-                mHeight.setText(value);
+                //mHeight.setText(value);
+                if(!value.equalsIgnoreCase("0")) {
+                    heightvalue=value;
+                    String height = ConvertHeightIntoFeets(value);
+                    int pos=heightAdapter.getPosition(height);
+                    mheightSpinner.setText(mheightSpinner.getAdapter().getItem(pos).toString(), false);
+                }
                 break;
             case UuidDictionary.WEIGHT: //Weight
                 mWeight.setText(value);
@@ -606,7 +656,8 @@ public class VitalsActivity extends AppCompatActivity {
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
         if (mBMI.getText().toString().equalsIgnoreCase("")) {
-            calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
+           // calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
+            calculateBMI_onEdit(heightvalue, mWeight.getText().toString());
         }
     }
 
@@ -630,7 +681,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
-        values.add(mHeight);
+        //values.add(mHeight);
         values.add(mWeight);
         values.add(mPulse);
         values.add(mBpSys);
@@ -641,7 +692,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
-            if (i == 0) {
+            /*if (i == 0) {
                 EditText et = values.get(i);
                 String abc = et.getText().toString().trim();
                 if (abc != null && !abc.isEmpty()) {
@@ -658,7 +709,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else if (i == 1) {
+            } else*/ if (i == 0) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
@@ -668,7 +719,12 @@ public class VitalsActivity extends AppCompatActivity {
                         focusView = et;
                         cancel = true;
                         break;
-                    } else {
+                    } else if(mheightSpinner.getText().toString().trim().length()<=0){
+                        mheightSpinner.setError(getString(R.string.error_height_required));
+                        focusView = mheightSpinner;
+                        cancel = true;
+                        return;
+                    }else{
                         cancel = false;
                     }
 //       }
@@ -676,7 +732,7 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
 
-            } else if (i == 2) {
+            } else if (i == 1) {
                 EditText et = values.get(i);
                 String abc2 = et.getText().toString().trim();
                 if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
@@ -694,7 +750,7 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
 
-            } else if (i == 3) {
+            } else if (i == 2) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -712,7 +768,7 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
 
-            } else if (i == 4) {
+            } else if (i == 3) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -730,7 +786,7 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
 
-            } else if (i == 5) {
+            } else if (i == 4) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -758,7 +814,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else if (i == 6) {
+            } else if (i == 5) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -801,9 +857,10 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         } else {
             try {
-                if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
-                    results.setHeight((mHeight.getText().toString()));
-                } else if (mHeight.getText().toString().equals("")) {
+                //if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
+                if (!heightvalue.equals("")) {
+                    results.setHeight(heightvalue/*(mHeight.getText().toString())*/);
+                } else if (/*mHeight.getText().toString()*/heightvalue.equals("")) {
                     results.setHeight("0");
                 }
                 if (mWeight.getText() != null) {

@@ -76,6 +76,7 @@
 
                             <EditText
                                 android:id="@+id/table_height"
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
@@ -88,6 +89,32 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp">
+
+                            <com.rosemaryapp.amazingspinner.AmazingSpinner
+                                style="@style/Widget.AppCompat.Spinner.DropDown"
+                                android:id="@+id/heightSpinner"
+                                android:popupBackground="@color/white"
+                                android:paddingTop="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:hint="@string/table_height_str"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/medium_gray"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
