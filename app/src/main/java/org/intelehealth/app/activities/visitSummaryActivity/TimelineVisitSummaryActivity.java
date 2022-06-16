@@ -312,7 +312,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
         isInserted = obsDAO.insert_BirthOutcomeObs(encounterUuid, sessionManager.getCreatorID(), value);
         if(isInserted) {
-            cancelAlarm(); // cancel alarm so that again 15mins interval doesnt starts.
+            cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
             Intent intent = new Intent(context, HomeActivity.class);
             startActivity(intent);
             checkInternetAndUploadVisit_Encounter();
@@ -348,7 +348,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
-                        cancelAlarm();
+                        cancelStage1_Alarm();
+                        // cancel's stage 2 alarm
                         // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
                         triggerAlarm_Stage2_every15mins();
                         dialog.dismiss();
@@ -373,7 +374,19 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    private void cancelAlarm() {
+    private void cancelStage2_Alarm() { // visituuid : 0 - 4
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 4)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // to set different alarms for different patients.
+        // vistiuuid: 0 - 4 index for stage 2
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+    }
+
+    private void cancelStage1_Alarm() { // visituuid : 0 - 6
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
@@ -448,7 +461,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 */
 
-    private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins.....
+    private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins..... // visituuid : 0 - 4
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
         //  calendar.add(Calendar.MINUTE, 1); // Testing
@@ -464,7 +477,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 4)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -474,7 +487,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins.....
+    private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins..... // visituuid : 0 - 6
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
        //  calendar.add(Calendar.MINUTE, 2); // Testing
