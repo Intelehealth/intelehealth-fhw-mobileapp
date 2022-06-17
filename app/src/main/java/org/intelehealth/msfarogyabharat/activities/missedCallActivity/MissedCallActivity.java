@@ -28,6 +28,7 @@ import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchP
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.models.MissedCallModel;
 import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
+import org.intelehealth.msfarogyabharat.utilities.Base64Utils;
 import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
@@ -115,10 +116,12 @@ public class MissedCallActivity extends AppCompatActivity {
 
         customProgressDialog.show();
         List<String> missedCallNumList = new ArrayList<>();
-        String encoded = sessionManager.getEncoded();
+        //String encoded = sessionManager.getEncoded();
+        Base64Utils base64Utils = new Base64Utils();
+        String encoded = base64Utils.encoded("nurse1", "Nurse123");
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.getMissedCallsUrl();
-        Single<MissedCallModel> missedCallRequest = AppConstants.apiInterface.MISSED_CALL(url, "Basic bnVyc2UxOk51cnNlMTIz");
+        Single<MissedCallModel> missedCallRequest = AppConstants.apiInterface.MISSED_CALL(url, "Basic "/*bnVyc2UxOk51cnNlMTIz"*/ + encoded);
         missedCallRequest.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<MissedCallModel>() {
@@ -214,9 +217,7 @@ public class MissedCallActivity extends AppCompatActivity {
         try {
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
-
                     phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-
                 }
             }
         } catch (SQLException s) {
@@ -231,6 +232,4 @@ public class MissedCallActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
     }
-
-
 }
