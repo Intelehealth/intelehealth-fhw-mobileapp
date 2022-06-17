@@ -113,8 +113,8 @@
 
                 <ImageView
                     android:id="@+id/iv_prescription"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/green_alert"
                     android:layout_gravity="center_vertical"
                     android:tag="0" />
