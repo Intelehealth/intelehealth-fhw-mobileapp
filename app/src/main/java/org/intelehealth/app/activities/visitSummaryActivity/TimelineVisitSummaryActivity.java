@@ -347,11 +347,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
-                        cancelStage1_Alarm();
-                        // cancel's stage 2 alarm
                         // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
-                        triggerAlarm_Stage2_every15mins();
+                        triggerAlarm_Stage2_every15mins(visitUuid);
+                        cancelStage1_Alarm(); // cancel's stage 1 alarm
+                        endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
                         dialog.dismiss();
                     }
                 });
@@ -374,26 +373,27 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    private void cancelStage2_Alarm() { // visituuid : 0 - 4
+    private void cancelStage2_Alarm() { // visituuid : 0 - 5
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 4)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarms for different patients.
         // vistiuuid: 0 - 4 index for stage 2
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }
 
-    private void cancelStage1_Alarm() { // visituuid : 0 - 6
+    private void cancelStage1_Alarm() { // visituuid : 2 - 7
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarms for different patients.
         alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
     }
 
     // create a new encounter for the first interval so that a new card is populated for Stage1Hr1_1...
@@ -461,10 +461,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 */
 
-    private void triggerAlarm_Stage2_every15mins() { // TODO: change 1min to 15mins..... // visituuid : 0 - 4
+    private void triggerAlarm_Stage2_every15mins(String visitUuid) { // TODO: change 1min to 15mins..... // visituuid : 0 - 5
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
-        //  calendar.add(Calendar.MINUTE, 1); // Testing
+         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+       //  calendar.add(Calendar.MINUTE, 1); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -477,7 +477,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 4)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -487,10 +487,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins..... // visituuid : 0 - 6
-        Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
+    private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins..... // visituuid : 2 - 7
+        Calendar calendar = Calendar.getInstance(); // current time and from there evey 30mins notifi will be triggered...
         calendar.add(Calendar.MINUTE, 30); // So that after 15mins this notifi is triggered and scheduled...
-       //  calendar.add(Calendar.MINUTE, 2); // Testing
+        // calendar.add(Calendar.MINUTE, 2); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -503,7 +503,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_30min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 6)), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {

@@ -188,7 +188,7 @@ public class EncounterDAO {
     public List<EncounterDTO> getAllEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+       // db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter", null);
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
@@ -205,9 +205,9 @@ public class EncounterDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+     //   db.setTransactionSuccessful();
+     //   db.endTransaction();
+      //  db.close();
 
         return encounterDTOList;
     }
@@ -215,7 +215,7 @@ public class EncounterDAO {
     public ArrayList<EncounterDTO> getEncountersByVisitUUID(String visitUUID) {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+      // db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT DISTINCT uuid, visituuid, encounter_type_uuid, provider_uuid, encounter_time " +
                 "FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time",
                 new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
@@ -234,9 +234,9 @@ public class EncounterDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+      //  db.setTransactionSuccessful();
+      //  db.endTransaction();
+      //  db.close();
 
         return encounterDTOList;
     }
@@ -244,7 +244,7 @@ public class EncounterDAO {
     public EncounterDTO getEncounterByVisitUUIDLimit1(String visitUUID) {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+       // db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time DESC limit 1",
                 new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
 
@@ -264,8 +264,8 @@ public class EncounterDAO {
         }
 
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+     //   db.setTransactionSuccessful();
+     //   db.endTransaction();
       //  db.close();
 
         return encounterDTO;
@@ -403,7 +403,7 @@ public class EncounterDAO {
     public String getVisitCompleteEncounterByVisitUUID(String visitUUID) {
         String isPresent = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+     //   db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ?",
                 new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
 
@@ -423,9 +423,9 @@ public class EncounterDAO {
             isPresent = true;
         }*/
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+     //   db.setTransactionSuccessful();
+    //    db.endTransaction();
+     //   db.close();
 
         return isPresent;
     }
@@ -434,7 +434,7 @@ public class EncounterDAO {
     public String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
         String encounterUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+     //   db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ? AND sync = ?",
                 new String[]{visitUUID, ENCOUNTER_VISIT_NOTE, "true"});
         if (idCursor.getCount() != 0) {
@@ -443,16 +443,16 @@ public class EncounterDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+     //   db.setTransactionSuccessful();
+     //   db.endTransaction();
+     //   db.close();
 
         return encounterUuid;
     }
 
     public void insertStartVisitNoteEncounterToDb(String encounter, String visitUuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+      //  db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
             values.put("uuid", encounter);
@@ -461,11 +461,11 @@ public class EncounterDAO {
             values.put("sync", "true");
 
             db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            db.setTransactionSuccessful();
+         //   db.setTransactionSuccessful();
         } catch (SQLException e) {
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+    //        db.endTransaction();
         }
     }
 
@@ -481,7 +481,7 @@ public class EncounterDAO {
     public String insert_VisitCompleteEncounterToDb(String visitUuid, String providerUUID) throws DAOException {
         String encounteruuid = UUID.randomUUID().toString();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+     //   db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
             values.put("uuid", encounteruuid);
@@ -493,11 +493,11 @@ public class EncounterDAO {
             values.put("voided", 0);
 
             db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            db.setTransactionSuccessful();
+    //        db.setTransactionSuccessful();
         } catch (SQLException | ParseException e) {
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+       //     db.endTransaction();
         }
 
         return encounteruuid;
@@ -505,7 +505,7 @@ public class EncounterDAO {
 
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+      //  db.beginTransaction();
 
         try {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
@@ -517,12 +517,12 @@ public class EncounterDAO {
                 return true;
             }
             idCursor.close();
-            db.setTransactionSuccessful();
+       //     db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+        //    db.endTransaction();
         }
 
         return false;
@@ -535,7 +535,7 @@ public class EncounterDAO {
         String encounterTypeUuid_Name = "";
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+    //    db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid != ? ORDER BY encounter_time DESC LIMIT 1",
       //  Cursor idCursor = db.rawQuery("SELECT encounter_type_uuid FROM tbl_encounter where visituuid = ?", // temp testing
                 new String[] {visitUuid, ENCOUNTER_VISIT_COMPLETE});
@@ -560,9 +560,9 @@ public class EncounterDAO {
             cursor.close();
         }
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+     //   db.setTransactionSuccessful();
+     //   db.endTransaction();
+     //   db.close();
 
         return encounterTypeUuid_Name;
     }

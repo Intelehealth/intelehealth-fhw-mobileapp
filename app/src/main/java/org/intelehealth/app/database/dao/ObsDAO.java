@@ -312,7 +312,7 @@ public class ObsDAO {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+      //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -327,13 +327,13 @@ public class ObsDAO {
             values.put("sync", "true");
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-            db.setTransactionSuccessful();
+     //       db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+     //       db.endTransaction();
         }
 
         return isUpdated;
@@ -471,7 +471,7 @@ public class ObsDAO {
     public boolean insert_BirthOutcomeObs(String encounteruuid, String creatorID, String value) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+      //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -486,14 +486,14 @@ public class ObsDAO {
             values.put("sync", "false");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-            db.setTransactionSuccessful();
+         //   db.setTransactionSuccessful();
             isUpdated = true;
           //  Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+         //   db.endTransaction();
         }
 
         return isUpdated;

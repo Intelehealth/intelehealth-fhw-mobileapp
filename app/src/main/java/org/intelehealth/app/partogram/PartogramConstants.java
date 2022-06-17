@@ -203,8 +203,8 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[3]);
         paramInfo.setParamName("Cervix Plot[X]");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"5", "6", "7", "8", "9", "10"});
-        paramInfo.setValues(new String[]{"5", "6", "7", "8", "9", "10"});
+        paramInfo.setOptions(new String[]{"10", "9", "8", "7", "6", "5"});
+        paramInfo.setValues(new String[]{"10", "9", "8", "7", "6", "5"});
         paramInfo.setConceptUUID("9d316ab5-538f-11e6-9cfe-86f436325720");
         paramInfo.setFifteenMinField(true);
         stringList.add(paramInfo);
@@ -213,8 +213,8 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[3]);
         paramInfo.setParamName("Descent Plot[O]");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"0", "1", "2", "3", "4", "5"});
-        paramInfo.setValues(new String[]{"0", "1", "2", "3", "4", "5"});
+        paramInfo.setOptions(new String[]{"5", "4", "3", "2", "1", "0"});
+        paramInfo.setValues(new String[]{"5", "4", "3", "2", "1", "0"});
         paramInfo.setConceptUUID("9d316d41-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
 
