@@ -11,6 +11,7 @@ import java.util.TreeMap;
 public class PartogramConstants {
     public static String DROPDOWN_SINGLE_SELECT_TYPE = "A";
     public static String DROPDOWN_MULTI_SELECT_TYPE = "B";
+    public static String AUTOCOMPLETE_SUGGESTION_EDITTEXT = "A1";
 
     public static String INPUT_TXT_TYPE = "C";
     public static String INPUT_TXT_2_CHR_TYPE = "D";
@@ -242,9 +243,9 @@ public class PartogramConstants {
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);
         paramInfo.setParamName("Medicine");
-        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"Yes", "No"});
-        paramInfo.setValues(new String[]{"Y", "N"});
+        paramInfo.setParamDateType(AUTOCOMPLETE_SUGGESTION_EDITTEXT);
+//        paramInfo.setOptions(new String[]{"Yes", "No"});
+//        paramInfo.setValues(new String[]{"Y", "N"});
         paramInfo.setConceptUUID("c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
