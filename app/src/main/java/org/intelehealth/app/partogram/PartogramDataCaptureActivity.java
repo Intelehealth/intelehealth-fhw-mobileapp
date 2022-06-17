@@ -230,9 +230,10 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             partogramItemData.setParamSectionName(section);
             partogramItemData.setParamInfoList(paramInfoList);
             mItemList.add(partogramItemData);
-
         }
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
+                (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(PartogramItemData partogramItemData) {
 

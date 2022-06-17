@@ -78,8 +78,12 @@ public class UrlModifiers {
         String endpoint = "obs/" + obsUuid;
 
         return BASE_URL + endpoint;
-
     }
 
+    public String getOxytocinUrl() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl() + ":3004/api/epartogram/configuration";
+        return BASE_URL;
+    }
 
 }

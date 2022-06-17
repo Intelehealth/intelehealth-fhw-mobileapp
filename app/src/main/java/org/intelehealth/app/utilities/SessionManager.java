@@ -51,6 +51,7 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
+    private static final String OXYTOCIN_VALUE = "OXYTOCIN_VALUE";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -454,4 +455,14 @@ public class SessionManager {
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
+
+    public String getOxytocinValue() {
+        return pref.getString(OXYTOCIN_VALUE, null);
+    }
+
+    public void setOxytocinValue(String oxytocinValue) {
+        editor.putString(OXYTOCIN_VALUE, oxytocinValue);
+        editor.commit();
+    }
+
 }

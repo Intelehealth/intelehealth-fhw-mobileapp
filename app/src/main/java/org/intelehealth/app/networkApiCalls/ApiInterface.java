@@ -6,6 +6,7 @@ import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.app.models.OxytocinResponseModel;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.loginModel.LoginModel;
@@ -130,5 +131,8 @@ public interface ApiInterface {
     Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
             @Url String url,
             @Header("Authorization") String authHeader);
+
+    @GET
+    Call<OxytocinResponseModel> GET_OXYTOCIN_UNIT(@Url String url);
 
 }

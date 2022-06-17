@@ -1,6 +1,8 @@
 package org.intelehealth.app.partogram;
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.partogram.model.ParamInfo;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ public class PartogramConstants {
     public static String INPUT_INT_3_DIG_TYPE = "G";
     public static String INPUT_DOUBLE_4_DIG_TYPE = "H";
 
+    private static SessionManager sessionManager = null;
 
     public static String[] SECTION_LIST = {
             "Supportive care",
@@ -30,6 +33,7 @@ public class PartogramConstants {
 
     public static TreeMap<String, List<ParamInfo>> getSectionParamInfoMasterMap() {
         TreeMap<String, List<ParamInfo>> sectionParamInfoMap = new TreeMap<>();
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         //Supportive care
         List<ParamInfo> stringList = new ArrayList<ParamInfo>();
         ParamInfo paramInfo = new ParamInfo();
@@ -225,13 +229,15 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);
-        paramInfo.setParamName("Oxytocin (U/L, drops/min)");
-        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"Yes", "No"});
-        paramInfo.setValues(new String[]{"Y", "N"});
+        if(sessionManager.getOxytocinValue() != null)
+            paramInfo.setParamName("Oxytocin (" + sessionManager.getOxytocinValue() + ")");
+        else
+            paramInfo.setParamName("Oxytocin (U/L, drops/min)");
+        paramInfo.setParamDateType(INPUT_INT_2_DIG_TYPE);
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
+
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);

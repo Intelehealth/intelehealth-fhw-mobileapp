@@ -67,6 +67,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.Location;
+import org.intelehealth.app.models.OxytocinResponseModel;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
@@ -90,6 +91,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SetupActivity extends AppCompatActivity {
@@ -145,7 +149,7 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         getSupportActionBar();
-        sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(SetupActivity.this);
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
 
@@ -1503,6 +1507,11 @@ public class SetupActivity extends AppCompatActivity {
                                             }
                                             progress.dismiss();
                                         }
+
+                                        // here call Oxytocin api and save the result in sessionmanager.
+                                        if(sessionManager.getOxytocinValue() == null) {
+                                            fetchOxytocinValueFromAPI();
+                                        }
                                     }
 
                                 }
@@ -1538,6 +1547,28 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void fetchOxytocinValueFromAPI() {
+        String url = urlModifiers.getOxytocinUrl();
+        Call<OxytocinResponseModel> call = AppConstants.apiInterface.GET_OXYTOCIN_UNIT(url);
+        call.enqueue(new Callback<OxytocinResponseModel>() {
+            @Override
+            public void onResponse(Call<OxytocinResponseModel> call, Response<OxytocinResponseModel> response) {
+                if(response.body() != null && response.body().getData() != null && response.isSuccessful()) {
+                    // ie. response is received successfully...
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+                            sessionManager.setOxytocinValue(response.body().getData().get(i).getValue());
+                        }
+                        Log.v(TAG, "oxytocin value: " + sessionManager.getOxytocinValue().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OxytocinResponseModel> call, Throwable t) {
+                Log.e(TAG, "oxytocin error: " + t.getMessage());
+            }
+        });
     }
 
     public String getSalt_DATA() {
