@@ -3581,25 +3581,47 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // loadSheddingHoursPerDay
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
-                String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
-                String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(loadSheddingHours);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if (binding.householdElectricityYes.isChecked()) {
 
-                // loadSheddingDaysPerWeek
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
-                String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
-                String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(loadSheddingDays);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                    // loadSheddingHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
+                    String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
+                    String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(loadSheddingHours);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // loadSheddingDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
+                    String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
+                    String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(loadSheddingDays);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                } else {
+
+                    // loadSheddingHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // loadSheddingDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                }
 
                 // runningWaterAvailability
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -3614,25 +3636,47 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // waterSupplyAvailabilityHoursPerDay
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
-                String[] runningWaterHoursArray = binding.runningWaterHoursEditText.getText().toString().split(" ");
-                String runningWaterHours = runningWaterHoursArray[0] + " " + getTimeStrings(runningWaterHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(runningWaterHours);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if (binding.waterSupplyYes.isChecked()) {
 
-                // waterSupplyAvailabilityDaysPerWeek
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
-                String[] runningWaterDaysArray = binding.runningWaterDaysEditText.getText().toString().split(" ");
-                String runningWaterDays = runningWaterDaysArray[0] + " " + getTimeStrings(runningWaterDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(runningWaterDays);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                    // waterSupplyAvailabilityHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
+                    String[] runningWaterHoursArray = binding.runningWaterHoursEditText.getText().toString().split(" ");
+                    String runningWaterHours = runningWaterHoursArray[0] + " " + getTimeStrings(runningWaterHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(runningWaterHours);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // waterSupplyAvailabilityDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
+                    String[] runningWaterDaysArray = binding.runningWaterDaysEditText.getText().toString().split(" ");
+                    String runningWaterDays = runningWaterDaysArray[0] + " " + getTimeStrings(runningWaterDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(runningWaterDays);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                } else {
+
+                    // waterSupplyAvailabilityHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // waterSupplyAvailabilityDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                }
 
                 //Main source of drinking water...
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -4976,25 +5020,47 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // loadSheddingHoursPerDay
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
-                String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
-                String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(loadSheddingHours);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if (binding.householdElectricityYes.isChecked()) {
 
-                // loadSheddingDaysPerWeek
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
-                String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
-                String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(loadSheddingDays);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                    // loadSheddingHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
+                    String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
+                    String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(loadSheddingHours);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // loadSheddingDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
+                    String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
+                    String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(loadSheddingDays);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                } else {
+
+                    // loadSheddingHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // loadSheddingDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                }
 
                 // runningWaterAvailability
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -5024,25 +5090,47 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 ));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                // waterSupplyAvailabilityHoursPerDay
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
-                String[] runningWaterHoursArray = binding.runningWaterHoursEditText.getText().toString().split(" ");
-                String runningWaterHours = runningWaterHoursArray[0] + " " + getTimeStrings(runningWaterHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(runningWaterHours);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if (binding.waterSupplyYes.isChecked()) {
 
-                // waterSupplyAvailabilityDaysPerWeek
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
-                String[] runningWaterDaysArray = binding.runningWaterDaysEditText.getText().toString().split(" ");
-                String runningWaterDays = runningWaterDaysArray[0] + " " + getTimeStrings(runningWaterDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
-                patientAttributesDTO.setValue(runningWaterDays);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                    // waterSupplyAvailabilityHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
+                    String[] runningWaterHoursArray = binding.runningWaterHoursEditText.getText().toString().split(" ");
+                    String runningWaterHours = runningWaterHoursArray[0] + " " + getTimeStrings(runningWaterHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(runningWaterHours);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // waterSupplyAvailabilityDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
+                    String[] runningWaterDaysArray = binding.runningWaterDaysEditText.getText().toString().split(" ");
+                    String runningWaterDays = runningWaterDaysArray[0] + " " + getTimeStrings(runningWaterDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    patientAttributesDTO.setValue(runningWaterDays);
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                } else {
+
+                    // waterSupplyAvailabilityHoursPerDay
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityHoursPerDay"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    // waterSupplyAvailabilityDaysPerWeek
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("waterSupplyAvailabilityDaysPerWeek"));
+                    patientAttributesDTO.setValue("-");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                }
 
                 //Main source of drinking water...
                 patientAttributesDTO = new PatientAttributesDTO();
