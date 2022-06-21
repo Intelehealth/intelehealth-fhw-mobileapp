@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/main_menu_group">
 
-        <!--<item-->
-        <!--android:id="@+id/syncOption"-->
-        <!--android:title="@string/menu_option_sync"-->
-        <!--android:orderInCategory="50" />-->
+        <item
+            android:id="@+id/bluetooth"
+            android:title="Bluetooth"
+            android:icon="@drawable/bluetooth"
+            app:showAsAction="always"/>
 
         <item
             android:id="@+id/draftSurvey"

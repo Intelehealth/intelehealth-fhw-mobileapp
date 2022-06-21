@@ -17,6 +17,7 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
 import com.parse.Parse;
 
 import org.intelehealth.app.BuildConfig;
@@ -30,7 +31,8 @@ import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+public class IntelehealthApplication extends MultiDexApplication implements
+        Application.ActivityLifecycleCallbacks {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -68,6 +70,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         sessionManager = new SessionManager(this);
         // keeping the base url in one singleton object for using in apprtc module
 
+        // Initialize
+        EzdxBT.initialize(getApplicationContext());
         configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
