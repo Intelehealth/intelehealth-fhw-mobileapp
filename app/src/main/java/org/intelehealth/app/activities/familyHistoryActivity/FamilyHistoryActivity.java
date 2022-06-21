@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.familyHistoryActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -133,7 +134,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_FamHist == null)
+            if (edit_FamHist == null)
                 new_result = getFamilyHistoryVisitData();
         }
 
@@ -222,11 +223,11 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
-           
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -238,7 +239,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         FloatingActionButton fab = findViewById(R.id.fab);
         family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         family_history_recyclerView.setLayoutManager(linearLayoutManager);
         family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -247,7 +248,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFabClick();
+                triggerConfirmation();
             }
         });
 
@@ -333,6 +334,22 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
         }
 
+    }
+
+    private void triggerConfirmation() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)));
+
+        // Handle positive button click
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, (dialog, which) -> {
+            dialog.dismiss();
+            onFabClick();
+        });
+
+        // Handle negative button click
+        alertDialogBuilder.setNegativeButton(R.string.generic_back, ((dialog, which) -> dialog.dismiss()));
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void onFabClick() {
@@ -481,15 +498,13 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     @Override
     public void fabClickedAtEnd() {
-        onFabClick();
-
+        triggerConfirmation();
     }
 
     @Override
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
-
 
 
     public void AnimateView(View v) {
