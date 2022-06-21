@@ -15,6 +15,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.msfarogyabharat.models.MyCasesModel;
 import org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class MyCasesAdapter extends RecyclerView.Adapter<MyCasesAdapter.MyCasesV
     @Override
     public MyCasesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.list_item_search, parent, false);
+        View row = inflater.inflate(R.layout.list_item_my_cases, parent, false);
         return new MyCasesAdapter.MyCasesViewHolder(row);
     }
 
@@ -53,6 +54,11 @@ public class MyCasesAdapter extends RecyclerView.Adapter<MyCasesAdapter.MyCasesV
                 holder.headTextView.setText(patient.getFirst_name() + " " + patient.getLast_name());
 
             holder.bodyTextView.setText(body);
+
+            if(patient.getNgo_name()!=null)
+                holder.ngoTextView.setText(patient.getNgo_name());
+            else
+                holder.ngoTextView.setVisibility(View.GONE);
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +85,14 @@ public class MyCasesAdapter extends RecyclerView.Adapter<MyCasesAdapter.MyCasesV
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
+        private TextView ngoTextView;
 
         public MyCasesViewHolder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
             linearLayout = itemView.findViewById(R.id.searchlinear);
+            ngoTextView = itemView.findViewById(R.id.list_item_ngo);
         }
     }
 }

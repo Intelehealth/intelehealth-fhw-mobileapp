@@ -55,6 +55,7 @@ import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -405,7 +406,53 @@ public class LoginActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onComplete() {
+                                    Gson gson1 = new Gson();
+                                    UrlModifiers urlModifiers = new UrlModifiers();
+                                    String url = urlModifiers.loginUrlProvider_phone(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                                    Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface
+                                            .LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                                    loginProviderModelObservable
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                                @Override
+                                                public void onNext(@NonNull LoginProviderModel loginProviderModel) {
+                                                    Log.d("loginmodell", "phonenu: "+ gson1.toJson(loginProviderModel));
+                                                    if(loginProviderModel.getResults().size() != 0) {
+                                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                                            //Here, we are getting only one results item...
 
+                                                            for (int j = 0; j < loginProviderModel.getResults()
+                                                                    .get(i).getAttributes().size(); j++) {
+                                                                //Here, we are getting two attributes: Phone & Whatsapp...
+
+                                                                if(loginProviderModel.getResults().get(i)
+                                                                        .getAttributes().get(j)
+                                                                        .getAttributeType().getUuid()
+                                                                        .equalsIgnoreCase("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37")) {
+                                                                    //This states that this uuidtype is of Phone no and not whatsapp...
+                                                                    sessionManager.setProviderPhoneNo(
+                                                                            loginProviderModel.getResults().get(i).getAttributes()
+                                                                                    .get(j).getValue());
+
+                                                                    Log.d("loginmodell", "sess_phoneno: "+
+                                                                            sessionManager.getProviderPhoneno());
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(@NonNull Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onComplete() {
+
+                                                }
+                                            });
                                 }
                             });
                 }

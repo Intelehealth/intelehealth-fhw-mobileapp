@@ -205,7 +205,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
     private ArrayList<String> getPatientNoteList() {
         ArrayList<String> notes = new ArrayList<>();
         notes.add(getString(R.string.spinner_select_reason));
-        notes.add(getString(R.string.spinner_recovered));
         notes.add(getString(R.string.spinner_referred));
         notes.add(getString(R.string.spinner_died));
         notes.add(getString(R.string.spinner_loss_followUp));

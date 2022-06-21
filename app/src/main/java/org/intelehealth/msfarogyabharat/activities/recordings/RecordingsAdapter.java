@@ -39,13 +39,13 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
         final Recording recording = patients.get(position);
         if (recording != null) {
             holder.headTextView.setText(recording.Caller);
-            if (!TextUtils.isEmpty(recording.language)) {
-                holder.bodyTextView.setText(recording.language);
-                holder.bodyTextView.setVisibility(View.VISIBLE);
-            }
-            else {
-                holder.bodyTextView.setVisibility(View.GONE);
-            }
+//            if (!TextUtils.isEmpty(recording.language)) {
+//                holder.bodyTextView.setText(recording.language);
+//                holder.bodyTextView.setVisibility(View.VISIBLE);
+//            }
+//            else {
+//                holder.bodyTextView.setVisibility(View.GONE);
+//            }
             if (!TextUtils.isEmpty(recording.time)) {
                 holder.timeTextView.setText(recording.time);
                 holder.timeTextView.setVisibility(View.VISIBLE);

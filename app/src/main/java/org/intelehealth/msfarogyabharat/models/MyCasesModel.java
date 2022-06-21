@@ -7,14 +7,16 @@ public class MyCasesModel {
     String last_name;
     String date_of_birth;
     String phone_number;
+    String ngo_name;
 
-    public MyCasesModel(String uuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number) {
+    public MyCasesModel(String uuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String ngo_name) {
         this.uuid = uuid;
         this.openmrs_id = openmrs_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
+        this.ngo_name = ngo_name;
     }
 
     public String getUuid() {
@@ -65,4 +67,11 @@ public class MyCasesModel {
         this.phone_number = phone_number;
     }
 
+    public String getNgo_name() {
+        return ngo_name;
+    }
+
+    public void setNgo_name(String ngo_name) {
+        this.ngo_name = ngo_name;
+    }
 }

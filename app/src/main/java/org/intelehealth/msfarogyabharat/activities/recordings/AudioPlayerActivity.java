@@ -3,6 +3,7 @@ package org.intelehealth.msfarogyabharat.activities.recordings;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,11 +95,21 @@ public class AudioPlayerActivity extends AppCompatActivity {
         try {
             mediaPlayer.reset();
             //set file path
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
-            mediaPlayer.setOnPreparedListener(mp -> {
-                mediaPlayer.start();
-                setAudioProgress();
-            });
+            mediaPlayer.start();
+            setAudioProgress();
+//            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                @Override
+//                public void onPrepared(MediaPlayer mediaPlayer) {
+//                    mediaPlayer.start();
+//                    setAudioProgress();
+//                }
+//            });
+//            mediaPlayer.setOnPreparedListener(mp -> {
+//                mediaPlayer.start();
+//                setAudioProgress();
+//            });
             mediaPlayer.prepareAsync();
             audio_name.setText(url);
         } catch (Exception e) {

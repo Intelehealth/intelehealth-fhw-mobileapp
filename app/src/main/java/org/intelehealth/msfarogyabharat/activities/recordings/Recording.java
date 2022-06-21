@@ -12,11 +12,7 @@ public class Recording {
     @Expose
     public String Caller;
 
-    @SerializedName("language")
-    @Expose
-    public String language;
-
-    @SerializedName("Time")
+    @SerializedName("CallStartTime")
     @Expose
     public String time;
 }

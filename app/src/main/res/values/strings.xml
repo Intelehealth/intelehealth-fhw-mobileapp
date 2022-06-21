@@ -486,6 +486,7 @@
     <string name="update_protocols">Update Protocols</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
+    <string name="filter_by_ngo">Filter by NGO</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -772,5 +773,6 @@ bread
     <string name="call_recordings">Call Recordings</string>
     <string name="message_no_data">No data</string>
     <string name="no_records_found">No records found</string>
+    <string name="filter_by">Filter By</string>
 
 </resources>

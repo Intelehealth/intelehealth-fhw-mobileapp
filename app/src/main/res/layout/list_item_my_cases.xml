@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/searchlinear"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -17,13 +17,12 @@
         app:cardCornerRadius="10dp"
         app:cardPreventCornerOverlap="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1.5pt"
             android:orientation="vertical"
             android:padding="10dp">
-
 
             <TextView
                 android:id="@+id/list_item_head"
@@ -31,39 +30,25 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
-                tools:text="1000000000"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/list_item_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/list_item_head"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lato_bold"
-                android:includeFontPadding="false"
-                android:visibility="gone"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:text="Hindi" />
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular" />
 
             <TextView
-                android:id="@+id/list_item_time"
+                android:id="@+id/list_item_ngo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/list_item_body"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lato_bold"
-                android:includeFontPadding="false"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                tools:text="22-09-2021 09:03:18" />
+                android:layout_marginTop="5dp"
+                android:textStyle="italic"
+                android:fontFamily="@font/lato_regular" />
 
-            <ImageView
-                android:layout_alignParentEnd="true"
-                app:srcCompat="@drawable/ic_play_circle_filled_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

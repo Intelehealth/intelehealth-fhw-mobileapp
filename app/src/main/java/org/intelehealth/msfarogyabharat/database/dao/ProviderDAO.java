@@ -120,7 +120,7 @@ public class ProviderDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            String query = "select distinct a.uuid,a.given_name,a.family_name, b.value from tbl_provider a, tbl_patient_attribute b where b.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND b.value = a.uuid";
+            String query = "select distinct a.uuid,a.given_name,a.family_name, b.value from tbl_provider a, tbl_patient_attribute b where b.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND b.value = a.uuid";
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
@@ -145,7 +145,7 @@ public class ProviderDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            String query = "select distinct a.uuid,a.given_name,a.family_name, b.value from tbl_provider a, tbl_patient_attribute b where b.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND b.value = a.uuid";
+            String query = "select distinct a.uuid,a.given_name,a.family_name, b.value from tbl_provider a, tbl_patient_attribute b where b.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND b.value = a.uuid";
             Cursor cursor = db.rawQuery(query, new String[]{});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
