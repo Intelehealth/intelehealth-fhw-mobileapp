@@ -136,7 +136,7 @@ public class MyCasesActivity extends AppCompatActivity {
 
     public List<MyCasesModel> getAllPatientsFromDB(String userUuid, int offset) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND c.value = ? GROUP BY c.patientuuid";
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND c.value = ? GROUP BY c.patientuuid ORDER BY b.first_name";
         final Cursor searchCursor = db.rawQuery(query,new String[]{userUuid} );
         if (searchCursor.moveToFirst()) {
             do {
@@ -348,7 +348,7 @@ public class MyCasesActivity extends AppCompatActivity {
 
     private List<MyCasesModel> doQueryWithProviders(List<String> providersUuids) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND c.value in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') GROUP BY c.patientuuid";
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND c.value in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') GROUP BY c.patientuuid ORDER BY b.first_name";
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
@@ -380,7 +380,7 @@ public class MyCasesActivity extends AppCompatActivity {
 
     private List<MyCasesModel> doQueryWithNGOs(List<String> selectedNGOs) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'a8e652d9-8ef5-48c8-8565-03a8e88886a2' AND c.value in ('" + StringUtils.convertUsingStringBuilder(selectedNGOs) + "') GROUP BY c.patientuuid";
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'a8e652d9-8ef5-48c8-8565-03a8e88886a2' AND c.value in ('" + StringUtils.convertUsingStringBuilder(selectedNGOs) + "') GROUP BY c.patientuuid ORDER BY b.first_name ";
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
