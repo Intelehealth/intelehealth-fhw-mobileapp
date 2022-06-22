@@ -27,11 +27,13 @@ public class BTAdapter extends RecyclerView.Adapter<BTAdapter.ViewHolder> {
     private List<BluetoothDevice> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context mContext;
 
     // data is passed into the constructor
     public BTAdapter(Context context, List<BluetoothDevice> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.mContext = context;
     }
 
     // inflates the row layout from xml when needed
@@ -68,7 +70,8 @@ public class BTAdapter extends RecyclerView.Adapter<BTAdapter.ViewHolder> {
             super(itemView);
             myTextView = itemView.findViewById(R.id.text_tv);
             status_imv = itemView.findViewById(R.id.status_imv);
-            status_imv.setVisibility(View.GONE);
+            status_imv.setImageDrawable(mContext.getResources()
+                    .getDrawable(R.drawable.user_online_green_indicator));
             itemView.setOnClickListener(this);
         }
 

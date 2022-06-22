@@ -9,6 +9,12 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
+import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothStatus;
+import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
+import com.healthcubed.ezdxlib.model.EzdxData;
+import com.healthcubed.ezdxlib.model.HCDeviceData;
+import com.healthcubed.ezdxlib.model.Status;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +25,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +54,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity {
+public class VitalsActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback{
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";
@@ -61,10 +69,15 @@ public class VitalsActivity extends AppCompatActivity {
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
+    public static final String  key = "VmtaYVUxZHJNVlpPVlZaWFZrWmFUMXBYZEZabFJsSnpWV3RLYTAxRVJrVlVWV2h2VkRKV2MxSlVSbFZXTTBKMVZGUkJNVlpXV2xWU2F6VlRVbFZaZWc9PQ==";
+
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
+            bloodGlucose_editText, haemoglobin_editText;
+    ImageButton bloodGlucose_Btn, haemoglobin_btn, bp_Btn;
+    BluetoothService bluetoothService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +109,7 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
+        EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
 
 //        Setting the title
@@ -109,14 +123,18 @@ public class VitalsActivity extends AppCompatActivity {
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
-
+        bp_Btn = findViewById(R.id.bp_Btn);
+        bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
+        bloodGlucose_Btn = findViewById(R.id.bloodGlucose_Btn);
+        haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
+        haemoglobin_btn = findViewById(R.id.haemoglobin_btn);
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
-
         mResp = findViewById(R.id.table_respiratory);
-
         mBMI.setEnabled(false);
 
+        bluetoothService = BluetoothService.getDefaultInstance();
+        bluetoothService.setOnEventCallback(this);
 
         //Check for license key and load the correct config file
         try {
@@ -226,6 +244,13 @@ public class VitalsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        bp_Btn.setOnClickListener(view -> EzdxBT.startAdultBloodPressure());
+
+        bloodGlucose_Btn.setOnClickListener(view -> EzdxBT.startBloodGlucose());
+
+        haemoglobin_btn.setOnClickListener(view -> EzdxBT.startHemoglobin());
+
 
         mWeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -464,7 +489,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        TextView fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1070,4 +1095,50 @@ public class VitalsActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
+    @Override
+    public void onEzdxData(EzdxData ezdxData) {
+        switch (ezdxData.getTestName()) {
+            case BLOOD_PRESSURE: {
+                if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                    mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
+                    mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
+
+                    EzdxBT.stopCurrentTest();
+                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
+                     ‘stopCurrentTest()’ method to stop the test.
+                     Otherwise callback will be called every second until stop is called.*/
+                }
+                break;
+            }
+            case BLOOD_GLUCOSE: {
+                if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                    bloodGlucose_editText.setText((int) ezdxData.getResult1());
+
+                    EzdxBT.stopCurrentTest();
+                }
+                break;
+            }
+            case HEMOGLOBIN: {
+                if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                    haemoglobin_editText.setText((int) ezdxData.getResult1());
+
+                    EzdxBT.stopCurrentTest();
+                }
+                break;
+            }
+            default:
+
+        }
+    }
+
+    @Override
+    public void onHCDeviceInfo(HCDeviceData hcDeviceData) {
+
+    }
+
+    @Override
+    public void onStatusChange(BluetoothStatus bluetoothStatus) {
+        if (!bluetoothStatus.equals(BluetoothStatus.CONNECTED))
+            Toast.makeText(this, "Please connect to Health cube device", Toast.LENGTH_SHORT).show();
+    }
 }
