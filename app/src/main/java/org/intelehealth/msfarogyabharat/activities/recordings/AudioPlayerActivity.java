@@ -97,19 +97,10 @@ public class AudioPlayerActivity extends AppCompatActivity {
             //set file path
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
-            mediaPlayer.start();
-            setAudioProgress();
-//            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mediaPlayer) {
-//                    mediaPlayer.start();
-//                    setAudioProgress();
-//                }
-//            });
-//            mediaPlayer.setOnPreparedListener(mp -> {
-//                mediaPlayer.start();
-//                setAudioProgress();
-//            });
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mediaPlayer.start();
+                setAudioProgress();
+            });
             mediaPlayer.prepareAsync();
             audio_name.setText(url);
         } catch (Exception e) {
