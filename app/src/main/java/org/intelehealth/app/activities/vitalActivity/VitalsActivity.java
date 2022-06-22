@@ -1,11 +1,13 @@
 package org.intelehealth.app.activities.vitalActivity;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -16,13 +18,18 @@ import com.healthcubed.ezdxlib.model.EzdxData;
 import com.healthcubed.ezdxlib.model.HCDeviceData;
 import com.healthcubed.ezdxlib.model.Status;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -32,6 +39,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.homeActivity.bluetooth.BTAdapter;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,6 +88,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             bloodGlucose_editText, haemoglobin_editText;
     ImageButton bloodGlucose_Btn, haemoglobin_btn, bp_Btn;
     BluetoothService bluetoothService;
+    AppCompatImageView imageView;
+    TextView textView;
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,11 +258,19 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
         });
 
-        bp_Btn.setOnClickListener(view -> EzdxBT.startAdultBloodPressure());
+        bp_Btn.setOnClickListener(view -> {
+            EzdxBT.startAdultBloodPressure();
+            showTestDialog();
+        });
 
-        bloodGlucose_Btn.setOnClickListener(view -> EzdxBT.startBloodGlucose());
+        bloodGlucose_Btn.setOnClickListener(view -> {EzdxBT.startBloodGlucose();
 
-        haemoglobin_btn.setOnClickListener(view -> EzdxBT.startHemoglobin());
+        });
+
+        haemoglobin_btn.setOnClickListener(view -> {EzdxBT.startHemoglobin();
+
+        });
+
 
 
         mWeight.addTextChangedListener(new TextWatcher() {
@@ -497,6 +518,25 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 validateTable();
             }
         });
+    }
+
+    private void showTestDialog() {
+        // show dialog
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        View layoutInflater = LayoutInflater.from(VitalsActivity.this)
+                .inflate(R.layout.welcome_slide1, null);
+        imageView = layoutInflater.findViewById(R.id.instructionImage);
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.blood_pressure));
+        textView = layoutInflater.findViewById(R.id.tv_intro_one);
+        textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+// <a href="https://www.flaticon.com/free-icons/blood-pressure" title="blood-pressure icons">Blood-pressure icons created by photo3idea_studio - Flaticon</a>
+        dialog.setView(layoutInflater);
+
+        alertDialog = dialog.create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     public void calculateBMI() {
@@ -1099,7 +1139,27 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     public void onEzdxData(EzdxData ezdxData) {
         switch (ezdxData.getTestName()) {
             case BLOOD_PRESSURE: {
+                if(ezdxData.getStatus().equals(Status.STARTED)) {
+                    if(alertDialog != null) {
+                        textView.setText("Test has started");
+                    }
+                }
+                if(ezdxData.getStatus().equals(Status.INITIALIZING)) {
+                    if(alertDialog != null) {
+                        textView.setText("Initializing ....");
+                    }
+                }
+                if(ezdxData.getStatus().equals(Status.ANALYSING)) {
+                    if(alertDialog != null) {
+                        textView.setText("Analysing ....");
+                    }
+                }
                 if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                    if(alertDialog != null) {
+                        alertDialog.dismiss();
+                    }
+
+                    Toast.makeText(this, "Test Completed", Toast.LENGTH_SHORT).show();
                     mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
                     mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
 
@@ -1138,7 +1198,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
     @Override
     public void onStatusChange(BluetoothStatus bluetoothStatus) {
-        if (!bluetoothStatus.equals(BluetoothStatus.CONNECTED))
-            Toast.makeText(this, "Please connect to Health cube device", Toast.LENGTH_SHORT).show();
+//        if (!bluetoothStatus.equals(BluetoothStatus.CONNECTED))
+//            Toast.makeText(this, "Please connect to Health cube device", Toast.LENGTH_SHORT).show();
     }
 }
