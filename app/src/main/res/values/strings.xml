@@ -1128,5 +1128,6 @@
     <string name="hundred_two_hundred_fifty_ml">100 – 250 ml</string>
     <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ml</string>
     <string name="more_than_five_hundred_ml">More than 500 ml</string>
+    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 
 </resources>

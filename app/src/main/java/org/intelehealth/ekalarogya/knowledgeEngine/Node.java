@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.knowledgeEngine;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -36,7 +37,9 @@ import com.bumptech.glide.request.target.Target;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
+import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,6 +90,8 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
+    private boolean isMultiChoice = false;
+    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
 
     //for Associated Complaints and medical history only
@@ -97,7 +102,7 @@ public class Node implements Serializable {
     private boolean rootNode;
 
     private boolean complaint;
-    private boolean required;
+    private boolean required = false;
     private boolean terminal;
     private boolean hasAssociations;
     private boolean aidAvailable;
@@ -149,8 +154,11 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
-            //this.id = jsonNode.getString("id");
-            this.validation = jsonNode.optString("validation");
+            this.id = jsonNode.getString("id");
+
+            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+
+            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");            this.validation = jsonNode.optString("validation");
 
             this.text = jsonNode.getString("text");
 
@@ -242,8 +250,9 @@ public class Node implements Serializable {
 
             this.choiceType = jsonNode.optString("choice-type");
 
-            this.required = false;
+//            this.required = false;
 
+            this.required = jsonNode.optBoolean("isRequired");
             this.positiveCondition = jsonNode.optString("pos-condition");
             this.negativeCondition = jsonNode.optString("neg-condition");
 
@@ -261,8 +270,9 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
-        //this.id = source.id;
-        this.text = source.text;
+        this.id = source.id;
+        this.isMultiChoice = source.isMultiChoice;
+        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;        this.text = source.text;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
         this.display_cebuno = source.display_cebuno;
@@ -323,6 +333,39 @@ public class Node implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
+                Node currentNode = node.getOption(position);
+                if (node.optionsList != null && !node.optionsList.isEmpty() && !node.isMultiChoice) {
+                    for (int i = 0; i < node.optionsList.size(); i++) {
+                        Node innerNode = node.optionsList.get(i);
+                        innerNode.setUnselected();
+                    }
+                    currentNode.setSelected(true);
+                }
+
+                if (node.optionsList != null && !node.optionsList.isEmpty() && node.isMultiChoice) {
+                    if(currentNode.isExcludedFromMultiChoice) {
+
+                        if(currentNode.isSelected()) {
+                            for (int i = 0; i < node.optionsList.size(); i++) {
+                                Node innerNode = node.optionsList.get(i);
+                                innerNode.setUnselected();
+                            }
+                            currentNode.setSelected(true);
+                        }
+                        else
+                            currentNode.setUnselected();
+
+                    }
+                    else
+                    {
+                        for (int i = 0; i < node.optionsList.size(); i++) {
+                            Node innerNode = node.optionsList.get(i);
+                            if(innerNode.isExcludedFromMultiChoice)
+                                innerNode.setUnselected();
+                        }
+                    }
+
+                }
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
                 }
@@ -645,6 +688,7 @@ public class Node implements Serializable {
                     }
                 }
 
+                node.setSelected(true);
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -668,7 +712,7 @@ public class Node implements Serializable {
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                 }
-                node.setSelected(false);
+//                node.setSelected(false);
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.cancel();
@@ -1289,7 +1333,7 @@ public class Node implements Serializable {
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
 
-                node.setSelected(false);
+//                node.setSelected(false);
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
             }
@@ -2629,6 +2673,20 @@ public class Node implements Serializable {
         }
     }
 
+    public boolean isMultiChoice() {
+        return isMultiChoice;
+    }
+    public void setMultiChoice(boolean multiChoice) {
+        isMultiChoice = multiChoice;
+    }
+
+    public boolean isExcludedFromMultiChoice() {
+        return isExcludedFromMultiChoice;
+    }
+    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
+        isExcludedFromMultiChoice = excludedFromMultiChoice;
+    }
+
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
 
         List<String> positiveAssociations = new ArrayList<>();
@@ -3247,6 +3305,79 @@ public class Node implements Serializable {
                     .replaceAll("Dec", "ડિસે");
         }
         return displayStr;
+    }
+
+    //Check to see if all required exams have been answered before moving on.
+    public AnswerResult checkAllRequiredAnswered(Context context) {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(context);
+        String locale = sessionManager.getCurrentLang();
+
+        AnswerResult answerResult = new AnswerResult();
+        answerResult.totalCount = optionsList.size();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(context.getResources().getString(R.string.answer_following_questions));
+        stringBuilder.append("\n");
+        for (int i = 0; i < optionsList.size(); i++) {
+            Node node = optionsList.get(i);
+            if (node.isRequired()) {
+                if (node.optionsList != null && !node.optionsList.isEmpty()) {
+                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))) {
+                        switch (locale) {
+                            case "en":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display);
+                                break;
+                            case "hi":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_hindi);
+                                break;
+                        }
+                        answerResult.result = false;
+                    }
+                } else {
+                    if (!node.isSelected()) {
+                        switch (locale) {
+                            case "en":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display);
+                                break;
+                            case "hi":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_hindi);
+                                break;
+                        }
+                        answerResult.result = false;
+                    }
+                }
+
+                Log.v(TAG, node.text);
+                Log.v(TAG, node.text);
+                Log.v(TAG, String.valueOf(node.isSelected()));
+            }
+        }
+        answerResult.requiredStrings = stringBuilder.toString();
+        return answerResult;
+    }
+
+    public boolean isNestedMandatoryOptionsAnswered(Node node) {
+        Log.v("isNestedMandatory", new Gson().toJson(node).toString());
+        boolean allAnswered = node.isSelected();
+        /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
+            if(!node.optionsList.get(0).isSelected()){
+                return  false;
+            }
+        }*/
+        if (node.optionsList != null && !node.optionsList.isEmpty()) {
+            for (int i = 0; i < node.optionsList.size(); i++) {
+                Node innerNode = node.optionsList.get(i);
+                if (innerNode.isRequired() && innerNode.isSelected() && innerNode.optionsList != null && !innerNode.optionsList.isEmpty()) {
+                    if (!isNestedMandatoryOptionsAnswered(innerNode)) {
+                        allAnswered = false;
+                        break;
+                    }
+                }
+            }
+
+        }
+        return allAnswered;
     }
 }
 

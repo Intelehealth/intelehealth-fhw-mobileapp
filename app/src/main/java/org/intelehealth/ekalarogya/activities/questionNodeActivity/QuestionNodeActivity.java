@@ -1,6 +1,7 @@
 package org.intelehealth.ekalarogya.activities.questionNodeActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 
+import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,11 +114,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     FloatingActionButton fab;
     RecyclerView question_recyclerView;
+    Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
+        context = QuestionNodeActivity.this;
+
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -276,6 +283,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
+            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+                    && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")) {
+                //code added to handle multiple and single option selection.
+                Node rootNode = currentNode.getOption(groupPosition);
+                if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+                Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
+                        question.isExcludedFromMultiChoice() && question.isSelected())) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (!childNode.getId().equals(question.getId())) {
+                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+            }
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
                     if (!filePath.exists()) {
@@ -306,6 +337,24 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
      */
     private void fabClick() {
         nodeComplete = true;
+
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(context);
+        if (!answerResult.result) {
+            // show alert dialog
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            Dialog alertDialog = alertDialogBuilder.show();
+            Log.v(TAG, answerResult.requiredStrings);
+            return;
+        }
+
 
         if (!complaintConfirmed) {
             questionsMissing();
