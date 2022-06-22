@@ -757,8 +757,8 @@ bread
     <string name="not_valid_number">Not a valid number</string>
     <string name="select_call_output">Select Call Output</string>
     <string name="data_stored_successfully">Data Stored Successfully!</string>
-    <string name="missed_calls">Missed Calls</string>
-    <string name="no_calls">No outgoing missed calls present.</string>
+    <string name="missed_calls">Unreached Calls</string>
+    <string name="no_calls">No outgoing unreached calls present.</string>
     <string name="daily_performance">Daily Performance Report</string>
     <string name="total_call_made">Total Calls Made:</string>
     <string name="able_to_reach">Able to reach:</string>
