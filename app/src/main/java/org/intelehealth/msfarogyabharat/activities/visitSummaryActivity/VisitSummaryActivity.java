@@ -638,13 +638,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
-        if(items!=null) //According to ticket MHM-124 the two specialities are no longer required and need to be removed: By Nishita
+        if(items!=null) //According to ticket MHM-124,129 the three specialities are no longer required and need to be removed: By Nishita
         {
             if(items.contains("MSF MD")){
                 items.remove(items.indexOf("MSF MD"));
             }
             if(items.contains("Doctor not needed")){
                 items.remove(items.indexOf("Doctor not needed"));
+            }
+            if(items.contains("All")){
+                items.remove(items.indexOf("All"));
             }
         }
         Log.d("specc", "spec: " + visitUuid);
