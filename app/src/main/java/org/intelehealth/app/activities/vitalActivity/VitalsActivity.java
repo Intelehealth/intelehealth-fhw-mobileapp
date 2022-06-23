@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.vitalActivity;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
 import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
+import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -87,7 +88,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
             bloodGlucose_editText, haemoglobin_editText;
-    ImageButton bloodGlucose_Btn, haemoglobin_btn, bp_Btn;
+    ImageButton bloodGlucose_Btn, haemoglobin_btn, bp_Btn, spo2_Btn;
     BluetoothService bluetoothService;
     AppCompatImageView imageView;
     TextView textView;
@@ -142,6 +143,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         bloodGlucose_Btn = findViewById(R.id.bloodGlucose_Btn);
         haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
         haemoglobin_btn = findViewById(R.id.haemoglobin_btn);
+        spo2_Btn = findViewById(R.id.spo2_Btn);
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
         mResp = findViewById(R.id.table_respiratory);
@@ -271,6 +273,11 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
         haemoglobin_btn.setOnClickListener(view -> { // Anaemia
             EzdxBT.startHemoglobin();
+            showTestDialog();
+        });
+
+        spo2_Btn.setOnClickListener(view -> {
+            EzdxBT.startPulseOximetry();
             showTestDialog();
         });
 
@@ -531,7 +538,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         imageView = layoutInflater.findViewById(R.id.instructionImage);
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.blood_pressure));
         textView = layoutInflater.findViewById(R.id.tv_intro_one);
-        textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        textView.setTextColor(getColor(R.color.colorPrimaryDark));
         dialog.setView(layoutInflater);
 
         dialog.setNegativeButton(R.string.STOP, new DialogInterface.OnClickListener() {
@@ -539,6 +546,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
                 EzdxBT.stopCurrentTest(); // stopping the test is necessary...
+                Toast.makeText(VitalsActivity.this, "Test Stopped", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -1157,12 +1165,16 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 fetchStatusOfTest(ezdxData, BLOOD_PRESSURE);
                 break;
             }
-            case BLOOD_GLUCOSE: { // Diabetes: <a href="https://www.flaticon.com/free-icons/diabetes" title="diabetes icons">Diabetes icons created by Freepik - Flaticon</a>
+            case BLOOD_GLUCOSE: { // <a href="https://www.flaticon.com/free-icons/diabetes" title="diabetes icons">Diabetes icons created by Freepik - Flaticon</a>
                 fetchStatusOfTest(ezdxData, BLOOD_GLUCOSE); // Diabetes
                 break;
             }
-            case HEMOGLOBIN: { // Anaemia: <a href="https://www.flaticon.com/free-icons/blood-test" title="blood test icons">Blood test icons created by Freepik - Flaticon</a>
+            case HEMOGLOBIN: { // <a href="https://www.flaticon.com/free-icons/blood-test" title="blood test icons">Blood test icons created by Freepik - Flaticon</a>
                 fetchStatusOfTest(ezdxData, HEMOGLOBIN); // Anaemia
+                break;
+            }
+            case PULSE_OXIMETER: { // <a href="https://www.flaticon.com/free-icons/pulse-oximeter" title="pulse oximeter icons">Pulse oximeter icons created by Freepik - Flaticon</a>
+                fetchStatusOfTest(ezdxData, PULSE_OXIMETER); // SPO2 and BPM:
                 break;
             }
             default:
@@ -1184,7 +1196,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
             haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
         }
+        else if(testName.equals(PULSE_OXIMETER)) { // SPO2 and BPM
+            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter));
+            mSpo2.setText(String.valueOf(ezdxData.getResult1()));
+            mPulse.setText(String.valueOf(ezdxData.getResult2()));
+        }
 
+        // Status reading...
         if(ezdxData.getStatus().equals(Status.STARTED)) {
             if(alertDialog != null) {
                 textView.setText("Test has started ....");
@@ -1198,21 +1216,37 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         if(ezdxData.getStatus().equals(Status.INSERT_TEST_STRIP)) {
             if(alertDialog != null) {
                 textView.setText("Insert Test Strip ....");
+                textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.INSERT_VALID_TEST_STRIP)) {
             if(alertDialog != null) {
                 textView.setText("Insert Valid Test Strip ....");
+                textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.STRIP_DETECTED_APPLY_BLOOD)) {
             if(alertDialog != null) {
                 textView.setText("Strip Detected Apply Blood ....");
+                textView.setTextColor(getColor(R.color.red3));
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.PLACE_FINGER_IN_THE_PROBE)) {
+            if(alertDialog != null) {
+                textView.setText("Place the Finger in the Probe ....");
+                textView.setTextColor(getColor(R.color.red3));
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.SENSOR_PROBE_NOT_CONNECTED)) {
+            if(alertDialog != null) {
+                textView.setText("Connect the Sensor Probe to the Device ....");
+                textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.ANALYSING)) {
             if(alertDialog != null) {
                 textView.setText("Analysing ....");
+                textView.setTextColor(getColor(R.color.colorPrimaryDark));
             }
         }
         if(ezdxData.getStatus().equals(Status.STOPPED)) {
