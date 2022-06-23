@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
+    <string name="medical_device_1">HealthCube 1</string>
+
 </resources>

@@ -1364,5 +1364,6 @@
     <string name="connected">Connected</string>
     <string name="please_enable_location">Please enable location to connect.</string>
     <string name="please_allow_permission_to_continue">Please Allow the permission to continue</string>
+    <string name="medical_device_1">HealthCube 1</string>
 
 </resources>

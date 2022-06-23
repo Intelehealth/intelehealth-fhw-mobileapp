@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.homeActivity.bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,9 @@ public class BTAdapter extends RecyclerView.Adapter<BTAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String name = mData.get(position).getName();
+        if(name.trim().equalsIgnoreCase("HCSE03012122100009"))
+            name = mContext.getString(R.string.medical_device_1);
+        Log.v("Blue", "Ble: " + name);
         holder.myTextView.setText(name);
     }
 
@@ -70,8 +74,7 @@ public class BTAdapter extends RecyclerView.Adapter<BTAdapter.ViewHolder> {
             super(itemView);
             myTextView = itemView.findViewById(R.id.text_tv);
             status_imv = itemView.findViewById(R.id.status_imv);
-            status_imv.setImageDrawable(mContext.getResources()
-                    .getDrawable(R.drawable.user_online_green_indicator));
+            status_imv.setImageDrawable(mContext.getDrawable(R.drawable.user_online_green_indicator));
             itemView.setOnClickListener(this);
         }
 
