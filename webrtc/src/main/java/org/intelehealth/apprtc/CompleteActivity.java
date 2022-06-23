@@ -18,6 +18,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -270,7 +271,7 @@ public class CompleteActivity extends AppCompatActivity {
             binding.callingLayout.setVisibility(View.GONE);
             if (socket != null) {
                 //socket.emit("create or join", mRoomId);
-                socket.emit("create_or_join_hw", mRoomJsonObject);
+                //socket.emit("create_or_join_hw", mRoomJsonObject);
 
             }
         }
@@ -402,8 +403,6 @@ public class CompleteActivity extends AppCompatActivity {
             initializePeerConnections();
 
             startStreamingVideo();
-
-
         }
     }
 
@@ -506,7 +505,6 @@ public class CompleteActivity extends AppCompatActivity {
                 }
             }).on("message", args -> {
                 Log.d(TAG, "connectToSignallingServer: got a message");
-            }).on("message", args -> {
                 try {
                     if (args[0] instanceof String) {
                         String message = (String) args[0];
@@ -524,11 +522,35 @@ public class CompleteActivity extends AppCompatActivity {
                             peerConnection.setRemoteDescription(new SimpleSdpObserver(), new SessionDescription(OFFER, message.getString("sdp")));
                             doAnswer();
                         } else if (message.getString("type").equals("answer") && isStarted) {
-                            peerConnection.setRemoteDescription(new SimpleSdpObserver(), new SessionDescription(ANSWER, message.getString("sdp")));
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        peerConnection.setRemoteDescription(new SimpleSdpObserver(), new SessionDescription(ANSWER, message.getString("sdp")));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, 1000);
                         } else if (message.getString("type").equals("candidate") && isStarted) {
                             Log.d(TAG, "connectToSignallingServer: receiving candidates");
-                            IceCandidate candidate = new IceCandidate(message.getString("id"), message.getInt("label"), message.getString("candidate"));
-                            peerConnection.addIceCandidate(candidate);
+                            //{"type":"candidate","candidate":{"candidate":"candidate:11 1 UDP 91953663 172.31.34.2 50457 typ relay raddr 172.31.34.2 rport 50457",
+                            // "sdpMid":"audio","sdpMLineIndex":0,"usernameFragment":"2353e29e"}}
+                            //IceCandidate candidate = new IceCandidate(message.getString("id"), message.getInt("label"), message.getString("candidate"));
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        IceCandidate candidate = new IceCandidate(message.getJSONObject("candidate").getString("sdpMid"),
+                                                message.getJSONObject("candidate").getInt("sdpMLineIndex"),
+                                                message.getJSONObject("candidate").getString("candidate"));
+                                        peerConnection.addIceCandidate(candidate);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, 1000);
+
                         }
                         /*else if (message === 'bye' && isStarted) {
                         handleRemoteHangup();
@@ -556,6 +578,7 @@ public class CompleteActivity extends AppCompatActivity {
 
 
     private void doAnswer() {
+        Log.v(TAG, "doAnswer()");
         peerConnection.createAnswer(new SimpleSdpObserver() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
@@ -674,7 +697,7 @@ public class CompleteActivity extends AppCompatActivity {
             peerConnection.removeStream(mediaStream);
             //mediaStream.dispose();
         }
-        mediaStream = factory.createLocalMediaStream("ARDAMS");
+        mediaStream = factory.createLocalMediaStream(VIDEO_TRACK_ID);
         mediaStream.addTrack(videoTrackFromCamera);
         mediaStream.addTrack(localAudioTrack);
         peerConnection.addStream(mediaStream);
@@ -717,12 +740,17 @@ public class CompleteActivity extends AppCompatActivity {
             public void onIceCandidate(IceCandidate iceCandidate) {
                 Log.d(TAG, "onIceCandidate: ");
                 JSONObject message = new JSONObject();
+                JSONObject candidate = new JSONObject();
 
                 try {
+                    candidate.put("type", "candidate");
+                    candidate.put("sdpMLineIndex", iceCandidate.sdpMLineIndex);
+                    candidate.put("sdpMid", iceCandidate.sdpMid);
+                    candidate.put("candidate", iceCandidate.sdp);
+                    //candidate.put("usernameFragment", "123");
+
                     message.put("type", "candidate");
-                    message.put("label", iceCandidate.sdpMLineIndex);
-                    message.put("id", iceCandidate.sdpMid);
-                    message.put("candidate", iceCandidate.sdp);
+                    message.put("candidate", candidate);
 
                     Log.d(TAG, "onIceCandidate: sending candidate " + message);
                     sendMessage(message);
