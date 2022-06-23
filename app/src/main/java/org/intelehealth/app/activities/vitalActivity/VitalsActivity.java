@@ -1,14 +1,18 @@
 package org.intelehealth.app.activities.vitalActivity;
 
-import android.bluetooth.BluetoothDevice;
+import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
+import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
+import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
@@ -17,13 +21,12 @@ import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
 import com.healthcubed.ezdxlib.model.EzdxData;
 import com.healthcubed.ezdxlib.model.HCDeviceData;
 import com.healthcubed.ezdxlib.model.Status;
+import com.healthcubed.ezdxlib.model.TestName;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,8 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.homeActivity.bluetooth.BTAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -263,12 +264,14 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             showTestDialog();
         });
 
-        bloodGlucose_Btn.setOnClickListener(view -> {EzdxBT.startBloodGlucose();
-
+        bloodGlucose_Btn.setOnClickListener(view -> { // Diabetes
+            EzdxBT.startBloodGlucose();
+            showTestDialog();
         });
 
-        haemoglobin_btn.setOnClickListener(view -> {EzdxBT.startHemoglobin();
-
+        haemoglobin_btn.setOnClickListener(view -> { // Anaemia
+            EzdxBT.startHemoglobin();
+            showTestDialog();
         });
 
 
@@ -529,11 +532,23 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.blood_pressure));
         textView = layoutInflater.findViewById(R.id.tv_intro_one);
         textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-// <a href="https://www.flaticon.com/free-icons/blood-pressure" title="blood-pressure icons">Blood-pressure icons created by photo3idea_studio - Flaticon</a>
         dialog.setView(layoutInflater);
+
+        dialog.setNegativeButton(R.string.STOP, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                EzdxBT.stopCurrentTest(); // stopping the test is necessary...
+            }
+        });
 
         alertDialog = dialog.create();
         alertDialog.show();
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
         alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
@@ -1138,56 +1153,81 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     @Override
     public void onEzdxData(EzdxData ezdxData) {
         switch (ezdxData.getTestName()) {
-            case BLOOD_PRESSURE: {
-                if(ezdxData.getStatus().equals(Status.STARTED)) {
-                    if(alertDialog != null) {
-                        textView.setText("Test has started");
-                    }
-                }
-                if(ezdxData.getStatus().equals(Status.INITIALIZING)) {
-                    if(alertDialog != null) {
-                        textView.setText("Initializing ....");
-                    }
-                }
-                if(ezdxData.getStatus().equals(Status.ANALYSING)) {
-                    if(alertDialog != null) {
-                        textView.setText("Analysing ....");
-                    }
-                }
-                if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                    if(alertDialog != null) {
-                        alertDialog.dismiss();
-                    }
-
-                    Toast.makeText(this, "Test Completed", Toast.LENGTH_SHORT).show();
-                    mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
-                    mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
-
-                    EzdxBT.stopCurrentTest();
-                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
-                     ‘stopCurrentTest()’ method to stop the test.
-                     Otherwise callback will be called every second until stop is called.*/
-                }
+            case BLOOD_PRESSURE: { // <a href="https://www.flaticon.com/free-icons/blood-pressure" title="blood-pressure icons">Blood-pressure icons created by photo3idea_studio - Flaticon</a>
+                fetchStatusOfTest(ezdxData, BLOOD_PRESSURE);
                 break;
             }
-            case BLOOD_GLUCOSE: {
-                if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                    bloodGlucose_editText.setText((int) ezdxData.getResult1());
-
-                    EzdxBT.stopCurrentTest();
-                }
+            case BLOOD_GLUCOSE: { // Diabetes: <a href="https://www.flaticon.com/free-icons/diabetes" title="diabetes icons">Diabetes icons created by Freepik - Flaticon</a>
+                fetchStatusOfTest(ezdxData, BLOOD_GLUCOSE); // Diabetes
                 break;
             }
-            case HEMOGLOBIN: {
-                if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                    haemoglobin_editText.setText((int) ezdxData.getResult1());
-
-                    EzdxBT.stopCurrentTest();
-                }
+            case HEMOGLOBIN: { // Anaemia: <a href="https://www.flaticon.com/free-icons/blood-test" title="blood test icons">Blood test icons created by Freepik - Flaticon</a>
+                fetchStatusOfTest(ezdxData, HEMOGLOBIN); // Anaemia
                 break;
             }
             default:
 
+        }
+    }
+
+    private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
+        if(testName.equals(BLOOD_PRESSURE)) {
+            imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
+            mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
+            mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
+        }
+        else if(testName.equals(BLOOD_GLUCOSE)) { // Diabetes
+            imageView.setImageDrawable(getDrawable(R.drawable.glucose_meter));
+            bloodGlucose_editText.setText(String.valueOf(ezdxData.getResult1()));
+        }
+        else if(testName.equals(HEMOGLOBIN)) { // Anaemia
+            imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
+            haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
+        }
+
+        if(ezdxData.getStatus().equals(Status.STARTED)) {
+            if(alertDialog != null) {
+                textView.setText("Test has started ....");
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.INITIALIZING)) {
+            if(alertDialog != null) {
+                textView.setText("Initializing ....");
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.INSERT_TEST_STRIP)) {
+            if(alertDialog != null) {
+                textView.setText("Insert Test Strip ....");
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.INSERT_VALID_TEST_STRIP)) {
+            if(alertDialog != null) {
+                textView.setText("Insert Valid Test Strip ....");
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.STRIP_DETECTED_APPLY_BLOOD)) {
+            if(alertDialog != null) {
+                textView.setText("Strip Detected Apply Blood ....");
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.ANALYSING)) {
+            if(alertDialog != null) {
+                textView.setText("Analysing ....");
+            }
+        }
+        if(ezdxData.getStatus().equals(Status.STOPPED)) {
+            Toast.makeText(this, "Test Stopped", Toast.LENGTH_SHORT).show();
+        }
+
+        if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+            if(alertDialog != null) {
+                alertDialog.dismiss();
+            }
+            Toast.makeText(this, "Test Completed", Toast.LENGTH_SHORT).show();
+            EzdxBT.stopCurrentTest();
+                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
+                     ‘stopCurrentTest()’ method to stop the test.
+                     Otherwise callback will be called every second until stop is called.*/
         }
     }
 

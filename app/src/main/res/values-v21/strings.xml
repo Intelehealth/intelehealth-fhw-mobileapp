@@ -2,5 +2,6 @@
 <resources>
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
     <string name="medical_device_1">HealthCube 1</string>
+    <string name="STOP">Stop</string>
 
 </resources>
