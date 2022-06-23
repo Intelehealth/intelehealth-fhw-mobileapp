@@ -60,7 +60,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     ArrayList<String> listPatientUUID;
     SessionManager sessionManager;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context,
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels,List<ActivePatientModel> filteractivePatient, Context context,
                                 ArrayList<String> _listPatientUUID, SessionManager sessionManager) {
         this.activePatientModels = activePatientModels;
         this.context = context;
@@ -82,7 +82,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     @Override
     public void onBindViewHolder(ActivePatientViewHolder holder, int position) {
-        final ActivePatientModel activePatientModel = activePatientModels.get(position);
+        final ActivePatientModel activePatientModel = filteractivePatient.get(position);
+//        final ActivePatientModel filteractivePatient=filteractivePatient.get(position);
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
             header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
@@ -357,7 +358,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     @Override
     public int getItemCount() {
-        return activePatientModels.size();
+        return filteractivePatient.size();
     }
 
     public class ActivePatientViewHolder extends RecyclerView.ViewHolder {
@@ -427,7 +428,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         this.actionListener = actionListener;
     }
 
-    //Filter for search patient
     public Filter getFilter(){
         return new Filter() {
             @Override
@@ -441,7 +441,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 else {
                     List<ActivePatientModel> listfiltered=new ArrayList<>();
                     for (ActivePatientModel row :activePatientModels){
-                        if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase())){
+                        if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase()) || row.getLast_name().toLowerCase().contains(Key.toLowerCase())) {
                             listfiltered.add(row);
                         }
                     }

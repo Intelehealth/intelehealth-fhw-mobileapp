@@ -67,6 +67,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private ActivePatientAdapter mActivePatientAdapter;
+    private List<ActivePatientModel> filteractivePatient;
 
     public static long getActiveVisitsCount(SQLiteDatabase db) {
         int count =0;
@@ -149,7 +150,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = doQuery(offset);
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID, sessionManager);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, filteractivePatient,ActivePatientActivity.this, listPatientUUID, sessionManager);
             recyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override
@@ -624,7 +625,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, sessionManager);
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, filteractivePatient,ActivePatientActivity.this, listPatientUUID, sessionManager);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
             /*recyclerView.addItemDecoration(new

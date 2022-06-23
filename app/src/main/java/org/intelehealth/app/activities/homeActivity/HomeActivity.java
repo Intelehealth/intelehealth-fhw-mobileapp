@@ -383,7 +383,6 @@ public class HomeActivity extends AppCompatActivity {
                  
             }
         });
-        etvSearchVisit=findViewById(R.id.etvSearchVisit);
 
         etvSearchVisit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -632,6 +631,7 @@ public class HomeActivity extends AppCompatActivity {
             findViewById(R.id.tvEmpty).setVisibility(View.GONE);
             mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = doQuery(offset);
+            List<ActivePatientModel> filteractivePatient = doQuery(offset);
 
             // #-- Alert logic -- start
             for (int j = 0; j < activePatientModels.size(); j++) {
@@ -704,7 +704,7 @@ public class HomeActivity extends AppCompatActivity {
                 activePatientModels.get(j).setAlertFlagTotal(count);
             }
             // #-- Alert logic -- end
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID, sessionManager);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels,filteractivePatient ,HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override
