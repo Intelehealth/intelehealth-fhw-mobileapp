@@ -835,5 +835,6 @@
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
+    <string name="app_version_string">App Version - %1$s</string>
     <!--Appointment END-->
 </resources>

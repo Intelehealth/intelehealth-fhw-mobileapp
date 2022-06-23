@@ -67,6 +67,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
@@ -133,7 +134,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean hasLicense = false;
     int i = 5;
 
-    TextView lastSyncTextView, locationSetupTextView;
+    TextView lastSyncTextView, locationSetupTextView, appVersionTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
@@ -293,6 +294,7 @@ public class HomeActivity extends AppCompatActivity {
         locationSetupTextView = findViewById(R.id.locationTV);
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
+        appVersionTextView = findViewById(R.id.app_version_text_view);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 //        c1 = findViewById(R.id.cardview_newpat);
         c2 = findViewById(R.id.cardview_find_patient);
@@ -417,6 +419,8 @@ public class HomeActivity extends AppCompatActivity {
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 ////            lastSyncAgo.setText(CalculateAgoTime());
 //        }
+
+        appVersionTextView.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
 
         syncAnimator = ObjectAnimator.ofFloat(ivSync, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);

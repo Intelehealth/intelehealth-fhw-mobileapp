@@ -649,5 +649,6 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">প্ৰটোকলটো তাৰ পিছত ডাউনলোড কৰা উপলব্ধ। প্ৰটোকল ডাউনলোড পুনৰ সত্য কৰিবলৈ \'হয়\' টিপক। ডেমো প্ৰটোকলৰ সৈতে ধাৰাবাহিকতালৈ \'নহয়\' টিপক।</string>
+    <string name="app_version_string">App Version - %1$s</string>
 
 </resources>
