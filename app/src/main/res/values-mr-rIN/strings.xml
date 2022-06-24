@@ -1359,12 +1359,12 @@
     <string name="within_ten_km">10 किमी च्या आत</string>
     <string name="draft_survey_title">सर्वे पूर्ण करा</string>
     <string name="add_pregnancy_outcome">गर्भधारणेचा परिणाम जोडा</string>
-    <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
-    <string name="connecting_please_wait">Connecting please wait</string>
-    <string name="connected">Connected</string>
-    <string name="please_enable_location">Please enable location to connect.</string>
-    <string name="please_allow_permission_to_continue">Please Allow the permission to continue</string>
-    <string name="medical_device_1">HealthCube 1</string>
-    <string name="STOP">Stop</string>
+    <string name="choose_bluetooth_device">ब्लूटूथ डिव्हाइस निवडा</string>
+    <string name="connecting_please_wait">कनेक्ट करत आहे कृपया प्रतीक्षा करा</string>
+    <string name="connected">जोडलेले</string>
+    <string name="please_enable_location">कृपया कनेक्ट करण्यासाठी स्थान सक्षम करा</string>
+    <string name="please_allow_permission_to_continue">कृपया सुरू ठेवण्यासाठी परवानगी द्या</string>
+    <string name="medical_device_1">हेल्थक्यूब १</string>
+    <string name="STOP">थांबा</string>
 
 </resources>
