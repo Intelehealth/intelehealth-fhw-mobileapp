@@ -206,6 +206,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
     ObsDTO bldglucose = new ObsDTO();
+    ObsDTO bldglucose_fasting = new ObsDTO();
     ObsDTO hemoGlobin = new ObsDTO();
 
     String diagnosisReturned = "";
@@ -243,6 +244,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorName;
     TextView mCHWname;
     TextView glucose;
+    TextView glucoseFasting;
     TextView hemoglobin;
     //    //    Respiratory added by mahiti dev team
     TextView respiratory;
@@ -1160,6 +1162,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
         glucose = findViewById(R.id.textView_glucose_value);
+        glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
@@ -1256,6 +1259,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (bldglucose.getValue() != null)
             glucose.setText(bldglucose.getValue());
+        if (bldglucose_fasting.getValue() != null)
+            glucoseFasting.setText(bldglucose_fasting.getValue());
         if (hemoGlobin.getValue() != null)
             hemoglobin.setText(hemoGlobin.getValue());
 
@@ -3493,6 +3498,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
             {
                 bldglucose.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            {
+                bldglucose_fasting.setValue(value);
                 break;
             }
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin

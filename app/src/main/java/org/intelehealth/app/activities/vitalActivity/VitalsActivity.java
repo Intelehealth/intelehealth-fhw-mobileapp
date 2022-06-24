@@ -88,12 +88,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
-            bloodGlucose_editText, haemoglobin_editText;
-    ImageButton bloodGlucose_Btn, haemoglobin_btn, bp_Btn, spo2_Btn;
+            bloodGlucose_editText,bloodGlucose_editText_fasting, haemoglobin_editText;
+    ImageButton bloodGlucose_Btn, bloodGlucose_Btn_Fasting, haemoglobin_btn, bp_Btn, spo2_Btn;
     BluetoothService bluetoothService;
     AppCompatImageView imageView;
     TextView textView;
     AlertDialog alertDialog;
+    int btnClick = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +142,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         mSpo2 = findViewById(R.id.table_spo2);
         bp_Btn = findViewById(R.id.bp_Btn);
         bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
+        bloodGlucose_editText_fasting = findViewById(R.id.bloodGlucose_editText_fasting);
         bloodGlucose_Btn = findViewById(R.id.bloodGlucose_Btn);
+        bloodGlucose_Btn_Fasting = findViewById(R.id.bloodGlucose_Btn_fasting);
         haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
         haemoglobin_btn = findViewById(R.id.haemoglobin_btn);
         spo2_Btn = findViewById(R.id.spo2_Btn);
@@ -267,10 +270,20 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             showTestDialog();
         });
 
-        bloodGlucose_Btn.setOnClickListener(view -> { // Diabetes
-            EzdxBT.startBloodGlucose();
+        bloodGlucose_Btn.setOnClickListener(view -> { // Diabetes // Non-Fasting
+            Status status = EzdxBT.startBloodGlucose();
+            Log.v("Details", "gluc_nonfast: " + status.toString());
             showTestDialog();
+            btnClick = 1;
         });
+
+        bloodGlucose_Btn_Fasting.setOnClickListener(view -> { // Diabetes // Fasting
+            Status status = EzdxBT.startBloodGlucose();
+            Log.v("Details", "gluc_fast: " + status.toString());
+            showTestDialog();
+            btnClick = 2;
+        });
+
 
         haemoglobin_btn.setOnClickListener(view -> { // Anaemia
             EzdxBT.startHemoglobin();
@@ -657,8 +670,11 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             case UuidDictionary.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose // Non-Fasting
                 bloodGlucose_editText.setText(value);
+                break;
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
+                bloodGlucose_editText_fasting.setText(value);
                 break;
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
                 haemoglobin_editText.setText(value);
@@ -705,6 +721,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         values.add(mResp);
         values.add(mSpo2);
         values.add(bloodGlucose_editText);
+        values.add(bloodGlucose_editText_fasting);
         values.add(haemoglobin_editText);
 
         // Check to see if values were inputted.
@@ -905,6 +922,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 if (bloodGlucose_editText.getText() != null) {
                     results.setBloodglucose((bloodGlucose_editText.getText().toString()));
                 }
+                if (bloodGlucose_editText_fasting.getText() != null) {
+                    results.setBloodglucoseFasting((bloodGlucose_editText_fasting.getText().toString()));
+                }
                 if (haemoglobin_editText.getText() != null) {
                     results.setHemoglobin((haemoglobin_editText.getText().toString()));
                 }
@@ -1002,6 +1022,15 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucose());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Glucose - Fasting
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodglucoseFasting());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_ID));
                 obsDAO.updateObs(obsDTO);
 
                 // Hemoglobin
@@ -1150,6 +1179,18 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
 
+            // Glucose - Fasting
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodglucoseFasting());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
             // Hemoglobin
             obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
@@ -1239,21 +1280,34 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
         if(testName.equals(BLOOD_PRESSURE)) {
             imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
-            mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
-            mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)){
+                mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
+                mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
+            }
         }
         else if(testName.equals(BLOOD_GLUCOSE)) { // Diabetes
             imageView.setImageDrawable(getDrawable(R.drawable.glucose_meter));
-            bloodGlucose_editText.setText(String.valueOf(ezdxData.getResult1()));
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                if (btnClick != 0) {
+                    if (btnClick == 1)
+                        bloodGlucose_editText.setText(String.valueOf(ezdxData.getResult1()));
+                    else if (btnClick == 2)
+                        bloodGlucose_editText_fasting.setText(String.valueOf(ezdxData.getResult1()));
+                }
+                btnClick = 0;
+            }
         }
         else if(testName.equals(HEMOGLOBIN)) { // Anaemia
             imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
-            haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED))
+                haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
         }
         else if(testName.equals(PULSE_OXIMETER)) { // SPO2 and BPM
             imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter));
-            mSpo2.setText(String.valueOf(ezdxData.getResult1()));
-            mPulse.setText(String.valueOf(ezdxData.getResult2()));
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                mSpo2.setText(String.valueOf(ezdxData.getResult1()));
+                mPulse.setText(String.valueOf(ezdxData.getResult2()));
+            }
         }
 
         // Status reading...

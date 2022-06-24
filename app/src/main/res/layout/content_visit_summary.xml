@@ -402,20 +402,39 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
-                    <!--Glucose-->
+                    <!--Glucose (Non-Fasting)-->
                     <TableRow>
-
                         <TextView
                             android:id="@+id/textView_glucose"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="Blood Glucose"
+                            android:text="Blood Glucose (Non-Fasting)"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_glucose_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <!--Glucose (Fasting)-->
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/textView_glucose_fasting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Blood Glucose (Fasting)"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_glucose_value_fasting"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -446,6 +465,7 @@
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
 
         <!--C/O Card contains text-->
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"

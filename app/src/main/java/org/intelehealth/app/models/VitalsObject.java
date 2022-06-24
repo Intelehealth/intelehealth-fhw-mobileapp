@@ -13,6 +13,7 @@ public class VitalsObject {
     private String spo2;
     private String resp;
     private String bloodglucose;
+    private String bloodglucoseFasting;
     private String hemoglobin;
 
     public String getPatientUuid() {
@@ -109,5 +110,13 @@ public class VitalsObject {
 
     public void setHemoglobin(String hemoglobin) {
         this.hemoglobin = hemoglobin;
+    }
+
+    public String getBloodglucoseFasting() {
+        return bloodglucoseFasting;
+    }
+
+    public void setBloodglucoseFasting(String bloodglucoseFasting) {
+        this.bloodglucoseFasting = bloodglucoseFasting;
     }
 }
