@@ -1360,4 +1360,10 @@
     <string name="draft_survey_title">सर्वे पूर्ण करा</string>
     <string name="add_pregnancy_outcome">गर्भधारणेचा परिणाम जोडा</string>
 
+    <string name="first_name">पहिले नाव</string>
+    <string name="last_name">आडनाव</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="household_no">घर क्रमांक</string>
+    <string name="open_mrs_id">OpenMRS ID</string>
+
 </resources>

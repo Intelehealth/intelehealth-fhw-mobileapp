@@ -12,6 +12,7 @@ import androidx.work.PeriodicWorkRequest;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.syncModule.LastSyncWork;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
@@ -82,7 +83,6 @@ public class AppConstants {
                     .build();
 
 
-
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
             new OneTimeWorkRequest.Builder(VisitSummaryWork.class)
@@ -107,17 +107,18 @@ public class AppConstants {
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
-
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
 
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF;
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
 
-    }public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+    }
+
+    public static String getFirebaseRTDBRootRefForDeviceInfo() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
 }

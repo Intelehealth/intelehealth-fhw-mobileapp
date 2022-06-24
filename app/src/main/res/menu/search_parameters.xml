@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="all">
+
+        <item
+            android:id="@+id/first_name_parameter"
+            android:title="@string/first_name" />
+
+        <item
+            android:id="@+id/last_name_parameter"
+            android:title="@string/last_name" />
+
+        <item
+            android:id="@+id/phone_number_parameter"
+            android:title="@string/phone_number" />
+
+        <item
+            android:id="@+id/household_number_parameter"
+            android:title="@string/household_no" />
+
+        <item
+            android:id="@+id/open_mrs_id_parameter"
+            android:title="@string/open_mrs_id" />
+
+    </group>
+
+</menu>
