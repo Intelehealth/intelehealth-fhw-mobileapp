@@ -39,6 +39,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +60,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.database.dao.SyncDAO;
 import org.intelehealth.msfarogyabharat.models.SendCallData;
+import org.intelehealth.msfarogyabharat.models.dto.PatientAttributesDTO;
+import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
 import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -177,8 +182,12 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView phoneView;
     String privacy_value_selected;
     String remark = "Field not required for MSF";
-
-
+    RadioButton mIncoming;
+    RadioButton mOutgoing;
+    String mCallType = "";
+    RadioGroup callRadioGrp;
+    Button saveButton;
+    PatientDTO patientdto = new PatientDTO();
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
@@ -321,6 +330,28 @@ public class PatientDetailActivity extends AppCompatActivity {
             //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         }
 
+        callRadioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                saveButton.setText(getResources().getString(R.string.button_save));
+                if(i==R.id.identification_incoming) {
+                    mCallType = "Incoming";
+                }
+                else if(i==R.id.identification_outgoing){
+                    mCallType = "Outgoing";
+                }
+                saveButton.setEnabled(true);
+                saveButton.setClickable(true);
+                saveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storeData();
+            }
+        });
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -440,6 +471,34 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void storeData() {
+
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid("8e48443f-c7aa-47b9-95b2-35e6d3e663d1");
+        patientAttributesDTO.setValue(mCallType);
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+
+        try {
+            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patient_new, patientUuid, patientAttributesDTOList);
+            if (NetworkConnection.isOnline(getApplication())) {
+                SyncDAO syncDAO = new SyncDAO();
+                boolean ispush = syncDAO.pushDataApi();
+                if(ispush)
+                {
+                    saveButton.setText(getResources().getString(R.string.saved));
+                    saveButton.setTextColor(getResources().getColor(R.color.scale_5));
+                }
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendWelcomeSms(String phoneNumber) {
@@ -575,6 +634,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
+                if (name.equalsIgnoreCase("CALL_TYPE")) {
+                    patient_new.setCallType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
                if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -600,6 +663,14 @@ public class PatientDetailActivity extends AppCompatActivity {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
+
+        saveButton = findViewById(R.id.saveButton);
+        saveButton.setEnabled(false);
+        saveButton.setClickable(false);
+        saveButton.setTextColor(getResources().getColor(R.color.divider));
+        mIncoming = findViewById(R.id.identification_incoming);
+        mOutgoing = findViewById(R.id.identification_outgoing);
+        callRadioGrp = findViewById(R.id.radioGrp_callType);
 
         photoView = findViewById(R.id.imageView_patient);
 
@@ -803,6 +874,24 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+
+        if(patient_new.getCallType()!=null) {
+            mCallType = patient_new.getCallType();
+            if (patient_new.getCallType().equals("Outgoing")) {
+                mOutgoing.setChecked(true);
+                if (mIncoming.isChecked())
+                    mIncoming.setChecked(false);
+            } else {
+                mIncoming.setChecked(true);
+                if (mOutgoing.isChecked())
+                    mOutgoing.setChecked(false);
+            }
+        }
+        else {
+            mIncoming.setChecked(false);
+            mOutgoing.setChecked(false);
+        }
+
         callerRelation.setText(patient_new.getSdw());
         helplineInfo.setText(patient_new.getCaste());
         phoneType.setText(patient_new.getEconomic_status());

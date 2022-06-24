@@ -126,7 +126,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar dob = Calendar.getInstance();
     Patient patient1 = new Patient();
     private String patientUuid = "";
-    private String mGender;
+    private String mGender, mCallType;
     String patientID_edit;
     private int mDOBYear;
     private int mDOBMonth;
@@ -153,6 +153,8 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton mIncoming;
+    RadioButton mOutgoing;
     EditText mRelationship;
       EditText mOccupation;
     EditText countryText;
@@ -296,6 +298,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        mIncoming = findViewById(R.id.identification_incoming);
+        mOutgoing = findViewById(R.id.identification_outgoing);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -1032,12 +1036,34 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "yes");
             }
 
+            if(patient1.getCallType()!=null) {
+                if (patient1.getCallType().equals("Outgoing")) {
+                    mOutgoing.setChecked(true);
+                    if (mIncoming.isChecked())
+                        mIncoming.setChecked(false);
+                } else {
+                    mIncoming.setChecked(true);
+                    if (mOutgoing.isChecked())
+                        mOutgoing.setChecked(false);
+                }
+            }
+            else {
+                mIncoming.setChecked(false);
+                mOutgoing.setChecked(false);
+            }
         }
         if (mGenderM.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
         }
+
+        if (mIncoming.isChecked()) {
+            mCallType = "Incoming";
+        } else {
+            mCallType = "Outgoing";
+        }
+
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
@@ -1485,6 +1511,20 @@ public class IdentificationActivity extends AppCompatActivity {
                 onRadioButtonClicked(v);
             }
         });
+
+        mIncoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        mOutgoing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
 /*
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1815,6 +1855,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
+            case R.id.identification_incoming:
+                if (checked)
+                    mCallType = "Incoming";
+                break;
+            case R.id.identification_outgoing:
+                if (checked)
+                    mCallType = "Outgoing";
+                break;
         }
     }
 
@@ -1900,6 +1948,10 @@ public class IdentificationActivity extends AppCompatActivity {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                if (name.equalsIgnoreCase("CALL_TYPE")) {
+                    patient1.setCallType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -2144,7 +2196,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                  && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -2206,6 +2258,24 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
+            if (!mIncoming.isChecked() && !mOutgoing.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_call_type);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+            }
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
@@ -2525,6 +2595,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(helplineInfo);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid("8e48443f-c7aa-47b9-95b2-35e6d3e663d1");
+            patientAttributesDTO.setValue(mCallType);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3007,7 +3084,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -3068,6 +3145,24 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
+            if (!mIncoming.isChecked() && !mOutgoing.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_call_type);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                return;
+            }
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
@@ -3400,6 +3495,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid("8e48443f-c7aa-47b9-95b2-35e6d3e663d1");
+            patientAttributesDTO.setValue(mCallType);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();

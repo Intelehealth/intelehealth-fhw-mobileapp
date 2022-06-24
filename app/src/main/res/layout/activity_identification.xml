@@ -648,10 +648,55 @@
                         android:orientation="vertical"
                         android:padding="10dp">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/type_of_call"
+                            android:textSize="16sp" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGrp_callType"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <RadioButton
+                                android:id="@+id/identification_incoming"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/ic_baseline_call_received_24"
+                                android:drawableLeft="@drawable/ic_baseline_call_received_24"
+                                android:drawablePadding="10dp"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/incoming"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/identification_outgoing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/ic_baseline_call_made_24"
+                                android:drawableLeft="@drawable/ic_baseline_call_made_24"
+                                android:drawablePadding="10dp"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/outgoing"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </RadioGroup>
+
+                        <Space
+                            android:layout_width="20dp"
+                            android:layout_height="10dp" />
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-
 
                             <EditText
                                 android:id="@+id/identification_occupation"

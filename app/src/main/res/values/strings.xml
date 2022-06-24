@@ -774,5 +774,10 @@ bread
     <string name="message_no_data">No data</string>
     <string name="no_records_found">No records found</string>
     <string name="filter_by">Filter By</string>
+    <string name="incoming">Incoming</string>
+    <string name="outgoing">Outgoing</string>
+    <string name="type_of_call">What type of call it is?*</string>
+    <string name="select_call_type">Please select type of call.</string>
+    <string name="saved">Saved!</string>
 
 </resources>
