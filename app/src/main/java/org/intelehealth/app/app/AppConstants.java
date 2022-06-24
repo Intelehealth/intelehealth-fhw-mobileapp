@@ -67,6 +67,9 @@ public class AppConstants {
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;
 
+    // HealthCube Key
+    public static final String  key = "VmtaYVUxZHJNVlpPVlZaWFZrWmFUMXBYZEZabFJsSnpWV3RLYTAxRVJrVlVWV2h2VkRKV2MxSlVSbFZXTTBKMVZGUkJNVlpXV2xWU2F6VlRVbFZaZWc9PQ==";
+
 
     public static int REPEAT_INTERVAL = 15;
     public static Constraints MY_CONSTRAINTS = new Constraints.Builder()

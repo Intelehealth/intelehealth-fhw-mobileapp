@@ -1430,6 +1430,13 @@
     <string name="please_allow_permission_to_continue">Please Allow the permission to continue</string>
     <string name="medical_device_1">HealthCube 1</string>
     <string name="STOP">Stop</string>
+    <string name="devices">Devices</string>
+    <string name="healthcube_device_info">HealthCube Device Info</string>
+    <string name="blood_glucose_calibration">Blood Glucose Calibration</string>
+    <string name="hemoglobin_calibration">Hemoglobin Calibration</string>
+    <string name="healthcube">HealthCube</string>
+    <string name="thermalprinter_device_info">Device Info</string>
+    <string name="thermal_printer">Thermal Printer</string>
 
 
 </resources>

@@ -71,6 +71,7 @@ import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothStatus;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.devicesActivity.DevicesActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.homeActivity.bluetooth.BTAdapter;
 import org.intelehealth.app.activities.householdSurvey.DraftSurveyActivity;
@@ -594,9 +595,17 @@ public class HomeActivity extends AppCompatActivity implements
                 draftSurvey();
                 return true;
 
+            case R.id.devicesOption:
+            {
+                Intent intent = new Intent(this, DevicesActivity.class);
+                startActivity(intent);
+                return true;
+            }
+
             case R.id.settingsOption:
                 settings();
                 return true;
+
             case R.id.updateProtocolsOption: {
 
 

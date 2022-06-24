@@ -5,6 +5,8 @@ import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
 import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
 import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
 
+import static org.intelehealth.app.app.AppConstants.key;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -66,7 +68,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback{
+public class VitalsActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";
@@ -81,7 +83,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
-    public static final String  key = "VmtaYVUxZHJNVlpPVlZaWFZrWmFUMXBYZEZabFJsSnpWV3RLYTAxRVJrVlVWV2h2VkRKV2MxSlVSbFZXTTBKMVZGUkJNVlpXV2xWU2F6VlRVbFZaZWc9PQ==";
 
 
     VitalsObject results = new VitalsObject();
@@ -536,7 +537,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         View layoutInflater = LayoutInflater.from(VitalsActivity.this)
                 .inflate(R.layout.welcome_slide1, null);
         imageView = layoutInflater.findViewById(R.id.instructionImage);
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.blood_pressure));
+        imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
         textView = layoutInflater.findViewById(R.id.tv_intro_one);
         textView.setTextColor(getColor(R.color.colorPrimaryDark));
         dialog.setView(layoutInflater);
