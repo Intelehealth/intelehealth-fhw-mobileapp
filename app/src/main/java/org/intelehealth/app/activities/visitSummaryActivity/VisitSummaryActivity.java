@@ -205,6 +205,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
+    ObsDTO bldglucose = new ObsDTO();
+    ObsDTO hemoGlobin = new ObsDTO();
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -240,6 +242,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
+    TextView glucose;
+    TextView hemoglobin;
     //    //    Respiratory added by mahiti dev team
     TextView respiratory;
     TextView respiratoryText;
@@ -1155,6 +1159,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
+        glucose = findViewById(R.id.textView_glucose_value);
+        hemoglobin = findViewById(R.id.textView_hemoglobin_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1247,6 +1253,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+
+        if (bldglucose.getValue() != null)
+            glucose.setText(bldglucose.getValue());
+        if (hemoGlobin.getValue() != null)
+            hemoglobin.setText(hemoGlobin.getValue());
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -3477,6 +3488,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case UuidDictionary.SPO2: //SpO2
             {
                 spO2.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+            {
+                bldglucose.setValue(value);
+                break;
+            }
+            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
+            {
+                hemoGlobin.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {

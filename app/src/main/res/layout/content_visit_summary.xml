@@ -402,6 +402,47 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
+                    <!--Glucose-->
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_glucose"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Blood Glucose"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_glucose_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <!--Hemoglobin-->
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/textView_hemoglobin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Hemoglobin"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_hemoglobin_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

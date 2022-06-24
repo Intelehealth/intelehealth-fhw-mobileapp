@@ -657,6 +657,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             case UuidDictionary.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
+            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
+                bloodGlucose_editText.setText(value);
+                break;
+            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
+                haemoglobin_editText.setText(value);
+                break;
             default:
                 break;
 
@@ -698,6 +704,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
+        values.add(bloodGlucose_editText);
+        values.add(haemoglobin_editText);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -894,7 +902,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 if (mSpo2.getText() != null) {
                     results.setSpo2((mSpo2.getText().toString()));
                 }
-
+                if (bloodGlucose_editText.getText() != null) {
+                    results.setBloodglucose((bloodGlucose_editText.getText().toString()));
+                }
+                if (haemoglobin_editText.getText() != null) {
+                    results.setHemoglobin((haemoglobin_editText.getText().toString()));
+                }
 
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -980,8 +993,26 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
-
                 obsDAO.updateObs(obsDTO);
+
+                // Glucose
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodglucose());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // Hemoglobin
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getHemoglobin());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_ID));
+                obsDAO.updateObs(obsDTO);
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1043,7 +1074,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getPulse());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1055,7 +1085,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getBpsys());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1103,12 +1132,36 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getSpo2());
-
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
+
+            // Glucose
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBloodglucose());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Hemoglobin
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getHemoglobin());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 
             intent.putExtra("patientUuid", patientUuid);
