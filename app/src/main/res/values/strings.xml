@@ -1426,7 +1426,7 @@
     <string name="draft_survey_title">Draft Survey</string>
     <string name="add_pregnancy_outcome">Add Pregnancy Outcome</string>
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
-    <string name="connecting_please_wait">Connecting please wait</string>
+    <string name="connecting_please_wait">Connecting please wait ...</string>
     <string name="connected">Connected</string>
     <string name="please_enable_location">Please enable location to connect.</string>
     <string name="please_allow_permission_to_continue">Please Allow the permission to continue</string>
@@ -1440,6 +1440,22 @@
     <string name="thermalprinter_device_info">Device Info</string>
     <string name="thermal_printer">Thermal Printer</string>
     <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="calibration_not_required">Calibration Not Required. Test can be directly performed.</string>
+    <string name="connect_bluetooth">Connect Bluetooth</string>
+    <string name="test_stopped">Test Stopped</string>
+    <string name="calibration_started_successfully">Calibration Started Successfully ....</string>
+    <string name="initializing">Initializing ....</string>
+    <string name="insert_calibration_strip">Insert Calibration Strip ....</string>
+    <string name="calibration_stopped_successfully">Calibration Stopped Successfully</string>
+    <string name="calibration_completed_successfully">Calibration Completed Successfully</string>
+    <string name="test_has_started">Test has started ....</string>
+    <string name="insert_test_strip">Insert Test Strip ....</string>
+    <string name="insert_valid_test_strip">Insert Valid Test Strip ....</string>
+    <string name="strip_detected_apply_blood">Strip Detected Apply Blood ....</string>
+    <string name="place_finger_in_probe">Place the Finger in the Probe ....</string>
+    <string name="connect_sensor_probe_to_device">Connect the Sensor Probe to the Device ....</string>
+    <string name="analysing">Analysing ....</string>
+    <string name="test_completed">Test Completed</string>
 
 
 </resources>

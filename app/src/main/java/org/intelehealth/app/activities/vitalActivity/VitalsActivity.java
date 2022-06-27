@@ -655,7 +655,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
                 EzdxBT.stopCurrentTest(); // stopping the test is necessary...
-                Toast.makeText(VitalsActivity.this, "Test Stopped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VitalsActivity.this,getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -1466,59 +1466,59 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         // Status reading...
         if(ezdxData.getStatus().equals(Status.STARTED)) {
             if(alertDialog != null) {
-                textView.setText("Test has started ....");
+                textView.setText(R.string.test_has_started);
             }
         }
         if(ezdxData.getStatus().equals(Status.INITIALIZING)) {
             if(alertDialog != null) {
-                textView.setText("Initializing ....");
+                textView.setText(R.string.initializing);
             }
         }
         if(ezdxData.getStatus().equals(Status.INSERT_TEST_STRIP)) {
             if(alertDialog != null) {
-                textView.setText("Insert Test Strip ....");
+                textView.setText(R.string.insert_test_strip);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.INSERT_VALID_TEST_STRIP)) {
             if(alertDialog != null) {
-                textView.setText("Insert Valid Test Strip ....");
+                textView.setText(R.string.insert_valid_test_strip);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.STRIP_DETECTED_APPLY_BLOOD)) {
             if(alertDialog != null) {
-                textView.setText("Strip Detected Apply Blood ....");
+                textView.setText(R.string.strip_detected_apply_blood);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.PLACE_FINGER_IN_THE_PROBE)) {
             if(alertDialog != null) {
-                textView.setText("Place the Finger in the Probe ....");
+                textView.setText(R.string.place_finger_in_probe);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.SENSOR_PROBE_NOT_CONNECTED)) {
             if(alertDialog != null) {
-                textView.setText("Connect the Sensor Probe to the Device ....");
+                textView.setText(R.string.connect_sensor_probe_to_device);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.ANALYSING)) {
             if(alertDialog != null) {
-                textView.setText("Analysing ....");
+                textView.setText(R.string.analysing);
                 textView.setTextColor(getColor(R.color.colorPrimaryDark));
             }
         }
         if(ezdxData.getStatus().equals(Status.STOPPED)) {
-            Toast.makeText(this, "Test Stopped", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.test_stopped, Toast.LENGTH_SHORT).show();
         }
 
         if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
             if(alertDialog != null) {
                 alertDialog.dismiss();
             }
-            Toast.makeText(this, "Test Completed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.test_completed), Toast.LENGTH_SHORT).show();
             EzdxBT.stopCurrentTest();
                     /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
                      ‘stopCurrentTest()’ method to stop the test.

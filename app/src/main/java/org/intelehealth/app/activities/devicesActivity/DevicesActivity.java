@@ -104,10 +104,10 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                         Status status = EzdxBT.startBloodGlucoseCalibration();
                         Log.v("Details", "Deta: " + status.toString());
                         if (status.equals(Status.CALIBRATION_NOT_REQUIRED)) {
-                            Toast.makeText(context, "Calibration Not Required. Test can be directly performed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.calibration_not_required), Toast.LENGTH_SHORT).show();
                         }
                         else if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
-                            Toast.makeText(context, "Connect Bluetooth", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
                         }
                         else {
                             showTestDialog();
@@ -120,7 +120,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                             .equalsIgnoreCase(getString(R.string.hemoglobin_calibration))) {
                         Status status = EzdxBT.startHemoglobinCalibration();
                         if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
-                            Toast.makeText(context, "Connect Bluetooth", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
                         }
                         else {
                             showTestDialog();
@@ -150,7 +150,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
                 EzdxBT.stopCurrentTest(); // stopping the test is necessary...
-                Toast.makeText(context, "Test Stopped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -176,22 +176,22 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
         // Status reading...
         if(ezdxData.getStatus().equals(Status.STARTED)) {
             if(alertDialog != null) {
-                textView.setText("Calibration Started Successfully ....");
+                textView.setText(R.string.calibration_started_successfully);
             }
         }
         if(ezdxData.getStatus().equals(Status.INITIALIZING)) {
             if(alertDialog != null) {
-                textView.setText("Initializing ....");
+                textView.setText(R.string.initializing);
             }
         }
         if(ezdxData.getStatus().equals(Status.INSERT_CALIBRATION_STRIP)) {
             if(alertDialog != null) {
-                textView.setText("Insert Calibration Strip ....");
+                textView.setText(R.string.insert_calibration_strip);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
         if(ezdxData.getStatus().equals(Status.STOPPED)) {
-            Toast.makeText(this, "Calibration Stopped Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.calibration_stopped_successfully, Toast.LENGTH_SHORT).show();
             textView.setTextColor(getColor(R.color.red3));
         }
 
@@ -199,7 +199,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
             if(alertDialog != null) {
                 alertDialog.dismiss();
             }
-            Toast.makeText(this, "Calibration Completed Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.calibration_completed_successfully, Toast.LENGTH_SHORT).show();
             EzdxBT.stopCurrentTest();
                     /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
                      ‘stopCurrentTest()’ method to stop the test.
