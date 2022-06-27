@@ -8,6 +8,7 @@ import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN_CALIBRATION;
 import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
 
 import static org.intelehealth.app.app.AppConstants.key;
+import static org.intelehealth.app.utilities.DialogUtils.showInfoDialog;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +61,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
     AlertDialog alertDialog;
     Context context;
     BluetoothService bluetoothService;
+    HCDeviceData hcDeviceData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,22 +81,22 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
 
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
             @Override
             public boolean onChildClick(ExpandableListView expandableListView,
                                         View view, int groupPosition, int childPosition, long id) {
 
-             /*   Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();*/
+                // Health cube info
+                if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                        .equalsIgnoreCase(getString(R.string.healthcube_device_info))) {
 
-                // HealthCube
-//                if(expandableListTitle.get(groupPosition)
-//                        .equalsIgnoreCase(getString(R.string.healthcube))) {
+                    if(hcDeviceData != null) {
+                        try {
+                            showInfoDialog(DevicesActivity.this, hcDeviceData.toString(), getString(R.string.healthcube_device_info));
+                        } catch (Exception e) {
+                        }
+                    }
+                }
 
                     // Blood Glucose Calibration
                     if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
@@ -224,7 +226,9 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
 
     @Override
     public void onHCDeviceInfo(HCDeviceData hcDeviceData) {
-
+        if(hcDeviceData != null) {
+            this.hcDeviceData = hcDeviceData;
+        }
     }
 
     @Override
