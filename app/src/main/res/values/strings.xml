@@ -372,6 +372,8 @@
     <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
+    <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
+    <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
 
     <string name="not_provided">Not provided</string>
 
@@ -1437,6 +1439,7 @@
     <string name="healthcube">HealthCube</string>
     <string name="thermalprinter_device_info">Device Info</string>
     <string name="thermal_printer">Thermal Printer</string>
+    <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
 
 
 </resources>

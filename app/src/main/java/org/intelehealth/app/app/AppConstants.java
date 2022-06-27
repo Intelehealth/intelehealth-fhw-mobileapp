@@ -37,19 +37,29 @@ public class AppConstants {
 
 
     //App vitals constants
-    public static final String MAXIMUM_BP_SYS = "250";
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
     public static int APP_VERSION_CODE = 26;
     public static final String MINIMUM_BP_SYS = "50";
-    public static final String MAXIMUM_BP_DSYS = "150";
-    public static final String MINIMUM_BP_DSYS = "30";
+    public static final String MAXIMUM_BP_SYS = "240";
+    public static final String MINIMUM_BP_DSYS = "35";
+    public static final String MAXIMUM_BP_DSYS = "140";
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
     public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
     public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
+
+    public static final String MINIMUM_GLUCOSE_NON_FASTING = "60";
+    public static final String MAXIMUM_GLUCOSE_NON_FASTING = "600";
+
+    public static final String MINIMUM_GLUCOSE_FASTING = "30";
+    public static final String MAXIMUM_GLUCOSE_FASTING = "300";
+
+    public static final String MINIMUM_HEMOGLOBIN = "4";
+    public static final String MAXIMUM_HEMOGLOBIN = "18";
+
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "1";
     public static final String MAXIMUM_RESPIRATORY = "80";
