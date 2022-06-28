@@ -1364,6 +1364,6 @@
     <string name="last_name">आडनाव</string>
     <string name="phone_number">फ़ोन नंबर</string>
     <string name="household_no">घर क्रमांक</string>
-    <string name="open_mrs_id">OpenMRS ID</string>
+    <string name="open_mrs_id">ओपन MRS आयडी</string>
 
 </resources>
