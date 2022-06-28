@@ -1361,7 +1361,8 @@
     <string name="add_pregnancy_outcome">गर्भधारणेचा परिणाम जोडा</string>
     <string name="choose_bluetooth_device">ब्लूटूथ डिव्हाइस निवडा</string>
     <string name="connecting_please_wait">कनेक्ट करत आहे कृपया प्रतीक्षा करा ...</string>
-    <string name="connected">जोडलेले</string>
+    <string name="connected">हेल्थक्यूब जोडलेले</string>
+    <string name="disconnected">हेल्थक्यूब डिस्कनेक्ट केले</string>
     <string name="please_enable_location">कृपया कनेक्ट करण्यासाठी स्थान सक्षम करा</string>
     <string name="please_allow_permission_to_continue">कृपया सुरू ठेवण्यासाठी परवानगी द्या</string>
     <string name="medical_device_1">हेल्थक्यूब १</string>
@@ -1378,7 +1379,7 @@
     <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपवास) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="hemoglobin_validation">हिमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
     <string name="calibration_not_required">कॅलिब्रेशन आवश्यक नाही. चाचणी थेट केली जाऊ शकते</string>
-    <string name="connect_bluetooth">Connect Bluetooth</string>
+    <string name="connect_bluetooth">ब्लूटूथ कनेक्ट करा</string>
     <string name="test_stopped">चाचणी थांबली</string>
     <string name="calibration_started_successfully">कॅलिब्रेशन यशस्वीरित्या सुरू झाले ....</string>
     <string name="initializing">आरंभ करत आहे ....</string>
