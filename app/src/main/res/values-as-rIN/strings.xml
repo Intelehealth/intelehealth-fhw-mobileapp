@@ -56,6 +56,7 @@
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুৰুষ</string>
     <string name="identification_screen_checkbox_female">মহিলা</string>
+    <string name="identification_screen_checkbox_other">অন্যান্য</string>
     <string name="identification_screen_prompt_birthday">জন্ম তাৰিখ*</string>
     <string name="identification_screen_prompt_age">বয়স: *</string>
     <string name="identification_screen_prompt_time">সময়:</string>

@@ -42,6 +42,7 @@
     <string name="identification_screen_prompt_gender" translatable="false">లింగం *</string>
     <string name="identification_screen_checkbox_male">పురుషుడు</string>
     <string name="identification_screen_checkbox_female">స్త్రీ</string>
+    <string name="identification_screen_checkbox_other">ఇతర</string>
     <string name="identification_screen_prompt_birthday">పుట్టిన తేది*</string>
     <string name="identification_screen_prompt_age">వయస్సు:</string>
     <string name="identification_screen_prompt_time">సమయం:</string>

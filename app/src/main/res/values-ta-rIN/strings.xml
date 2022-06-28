@@ -58,6 +58,7 @@
     <string name="identification_screen_prompt_gender" translatable="false">பாலினம்*</string>
     <string name="identification_screen_checkbox_male">ஆண்</string>
     <string name="identification_screen_checkbox_female">பெண்</string>
+    <string name="identification_screen_checkbox_other">மற்றவை</string>
     <string name="identification_screen_prompt_birthday">பிறந்த தேதி*</string>
     <string name="identification_screen_prompt_age">வயது:</string>
     <string name="identification_screen_prompt_time">நேரம்:</string>

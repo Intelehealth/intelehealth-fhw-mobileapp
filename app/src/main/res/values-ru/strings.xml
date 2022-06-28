@@ -88,6 +88,7 @@
     <string name="identification_screen_prompt_gender" translatable="false">Пол *</string>
     <string name="identification_screen_checkbox_male">Мужской</string>
     <string name="identification_screen_checkbox_female">Женский</string>
+    <string name="identification_screen_checkbox_other">других</string>
     <string name="identification_screen_prompt_birthday">Дата рождения*</string>
     <string name="identification_screen_prompt_age">Возраст:</string>
     <string name="identification_screen_prompt_city">Село/Город</string>
