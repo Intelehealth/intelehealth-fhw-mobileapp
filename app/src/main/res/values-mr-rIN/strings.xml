@@ -1394,5 +1394,10 @@
     <string name="connect_sensor_probe_to_device">सेन्सर प्रोबला डिव्हाइसशी कनेक्ट करा ....</string>
     <string name="analysing">विश्लेषण करत आहे ....</string>
     <string name="test_completed">चाचणी पूर्ण झाली</string>
+    <string name="diagnostics">निदान</string>
+    <string name="uric_acid">युरिक ऍसिड</string>
+    <string name="total_cholestrol">एकूण कोलेस्ट्रॉल</string>
+    <string name="uric_acid_calibration">यूरिक ऍसिड कॅलिब्रेशन</string>
+    <string name="total_cholesterol_calibration">एकूण कोलेस्ट्रॉल कॅलिब्रेशन</string>
 
 </resources>

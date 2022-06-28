@@ -2,8 +2,10 @@ package org.intelehealth.app.activities.vitalActivity;
 
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
+import static com.healthcubed.ezdxlib.model.TestName.CHOLESTEROL;
 import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
 import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
+import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
 
 import static org.intelehealth.app.app.AppConstants.key;
 
@@ -88,8 +90,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
-            bloodGlucose_editText,bloodGlucose_editText_fasting, haemoglobin_editText;
-    ImageButton bloodGlucose_Btn, bloodGlucose_Btn_Fasting, haemoglobin_btn, bp_Btn, spo2_Btn;
+            bloodGlucose_editText,bloodGlucose_editText_fasting, haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
+    ImageButton bloodGlucose_Btn, bloodGlucose_Btn_Fasting, haemoglobin_btn, bp_Btn, spo2_Btn,
+    uricAcid_btn, cholesterol_btn;
     BluetoothService bluetoothService;
     AppCompatImageView imageView;
     TextView textView;
@@ -141,11 +144,15 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
         bp_Btn = findViewById(R.id.bp_Btn);
+        uricAcid_btn = findViewById(R.id.uricAcid_btn);
+        cholesterol_btn = findViewById(R.id.totalCholestrol_btn);
         bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
         bloodGlucose_editText_fasting = findViewById(R.id.bloodGlucose_editText_fasting);
         bloodGlucose_Btn = findViewById(R.id.bloodGlucose_Btn);
         bloodGlucose_Btn_Fasting = findViewById(R.id.bloodGlucose_Btn_fasting);
         haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
+        uricAcid_editText = findViewById(R.id.uricAcid_editText);
+        totalCholestrol_editText = findViewById(R.id.totalCholestrol_editText);
         haemoglobin_btn = findViewById(R.id.haemoglobin_btn);
         spo2_Btn = findViewById(R.id.spo2_Btn);
         mBMI = findViewById(R.id.table_bmi);
@@ -284,7 +291,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             btnClick = 2;
         });
 
-
         haemoglobin_btn.setOnClickListener(view -> { // Anaemia
             EzdxBT.startHemoglobin();
             showTestDialog();
@@ -292,6 +298,16 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
         spo2_Btn.setOnClickListener(view -> {
             EzdxBT.startPulseOximetry();
+            showTestDialog();
+        });
+
+        uricAcid_btn.setOnClickListener(view -> {
+            EzdxBT.startUricAcid();
+            showTestDialog();
+        });
+
+        cholesterol_btn.setOnClickListener(view -> {
+            EzdxBT.startCholestrol();
             showTestDialog();
         });
 
@@ -628,7 +644,71 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 }
             }
         });
+
+        // Uric Acid
+        uricAcid_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_URIC_ACID) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_URIC_ACID)) {
+                        uricAcid_editText.setError(getString(R.string.uric_acid_validation,
+                                AppConstants.MINIMUM_URIC_ACID, AppConstants.MAXIMUM_URIC_ACID));
+                    } else {
+                        uricAcid_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (uricAcid_editText.getText().toString().startsWith(".")) {
+                    uricAcid_editText.setText("");
+                } else {
+
+                }
+            }
+        });
         //end
+
+        // Total Cholesterol
+        totalCholestrol_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TOTAL_CHOLSTEROL) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TOTAL_CHOLSTEROL)) {
+                        totalCholestrol_editText.setError(getString(R.string.total_cholesterol_validation,
+                                AppConstants.MINIMUM_TOTAL_CHOLSTEROL, AppConstants.MAXIMUM_TOTAL_CHOLSTEROL));
+                    } else {
+                        totalCholestrol_editText.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (totalCholestrol_editText.getText().toString().startsWith(".")) {
+                    totalCholestrol_editText.setText("");
+                } else {
+
+                }
+            }
+        });
+        //end
+
         TextView fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -771,8 +851,11 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
                 bloodGlucose_editText_fasting.setText(value);
                 break;
-            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
-                haemoglobin_editText.setText(value);
+            case UuidDictionary.URIC_ACID_ID: // Uric Acid
+                uricAcid_editText.setText(value);
+                break;
+            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholesterol
+                totalCholestrol_editText.setText(value);
                 break;
             default:
                 break;
@@ -818,6 +901,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         values.add(bloodGlucose_editText);
         values.add(bloodGlucose_editText_fasting);
         values.add(haemoglobin_editText);
+        values.add(uricAcid_editText);
+        values.add(totalCholestrol_editText);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -1029,6 +1114,46 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                     cancel = false;
                 }
             }
+
+            // uric acid
+            else if (i == 11) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_URIC_ACID)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_URIC_ACID))) {
+                        et.setError(getString(R.string.uric_acid_validation,
+                                AppConstants.MINIMUM_URIC_ACID, AppConstants.MAXIMUM_URIC_ACID));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // total cholesterol
+            else if (i == 12) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TOTAL_CHOLSTEROL)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TOTAL_CHOLSTEROL))) {
+                        et.setError(getString(R.string.total_cholesterol_validation,
+                                AppConstants.MINIMUM_TOTAL_CHOLSTEROL, AppConstants.MAXIMUM_TOTAL_CHOLSTEROL));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
         }
 
         if (cancel) {
@@ -1080,6 +1205,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 }
                 if (haemoglobin_editText.getText() != null) {
                     results.setHemoglobin((haemoglobin_editText.getText().toString()));
+                }
+                if (uricAcid_editText.getText() != null) {
+                    results.setUricAcid((uricAcid_editText.getText().toString()));
+                }
+                if (totalCholestrol_editText.getText() != null) {
+                    results.setTotlaCholesterol((totalCholestrol_editText.getText().toString()));
                 }
 
             } catch (NumberFormatException e) {
@@ -1425,6 +1556,14 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 fetchStatusOfTest(ezdxData, PULSE_OXIMETER); // SPO2 and BPM:
                 break;
             }
+            case URIC_ACID: { // <a href="https://www.flaticon.com/free-icons/pulse-oximeter" title="pulse oximeter icons">Pulse oximeter icons created by Freepik - Flaticon</a>
+                fetchStatusOfTest(ezdxData, URIC_ACID); // URIC_ACID:
+                break;
+            }
+            case CHOLESTEROL: { // <a href="https://www.flaticon.com/free-icons/pulse-oximeter" title="pulse oximeter icons">Pulse oximeter icons created by Freepik - Flaticon</a>
+                fetchStatusOfTest(ezdxData, CHOLESTEROL); // CHOLESTEROL:
+                break;
+            }
             default:
 
         }
@@ -1433,7 +1572,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
         if(testName.equals(BLOOD_PRESSURE)) {
             imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
-            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)){
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
                 mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
                 mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
             }
@@ -1450,7 +1589,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 btnClick = 0;
             }
         }
-        else if(testName.equals(HEMOGLOBIN)) { // Anaemia
+        else if(testName.equals(HEMOGLOBIN)) { // HEMOGLOBIN Anaemia
             imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
             if(ezdxData.getStatus().equals(Status.TEST_COMPLETED))
                 haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
@@ -1460,6 +1599,18 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
                 mSpo2.setText(String.valueOf(ezdxData.getResult1()));
                 mPulse.setText(String.valueOf(ezdxData.getResult2()));
+            }
+        }
+        else if(testName.equals(URIC_ACID)) { // Uric acid
+            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter)); // TODO: add new image here
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                uricAcid_editText.setText(String.valueOf(ezdxData.getResult1()));
+            }
+        }
+        else if(testName.equals(CHOLESTEROL)) { // Cholesterol
+            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter)); // TODO: add new image here
+            if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+                totalCholestrol_editText.setText(String.valueOf(ezdxData.getResult1()));
             }
         }
 

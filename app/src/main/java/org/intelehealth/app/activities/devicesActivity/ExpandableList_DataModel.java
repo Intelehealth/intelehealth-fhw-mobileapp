@@ -26,6 +26,8 @@ public class ExpandableList_DataModel {
         healthcubeDevice.add(context.getString(R.string.healthcube_device_info));
         healthcubeDevice.add(context.getString(R.string.blood_glucose_calibration));
         healthcubeDevice.add(context.getString(R.string.hemoglobin_calibration));
+        healthcubeDevice.add(context.getString(R.string.uric_acid_calibration));
+        healthcubeDevice.add(context.getString(R.string.total_cholesterol_calibration));
         hashMap.put(context.getString(R.string.healthcube), healthcubeDevice);
 
         List<String> thermalPrinterDevice = new ArrayList<String>();

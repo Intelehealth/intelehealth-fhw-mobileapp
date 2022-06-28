@@ -3,9 +3,11 @@ package org.intelehealth.app.activities.devicesActivity;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE_CALIBRATION;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
+import static com.healthcubed.ezdxlib.model.TestName.CHOLESTEROL_CALIBRATION;
 import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
 import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN_CALIBRATION;
 import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
+import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID_CALIBRATION;
 
 import static org.intelehealth.app.app.AppConstants.key;
 import static org.intelehealth.app.utilities.DialogUtils.showInfoDialog;
@@ -126,8 +128,30 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                             showTestDialog();
                         }
                     }
-             //   }
 
+                // Uric Acid Calibration
+                if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                        .equalsIgnoreCase(getString(R.string.uric_acid_calibration))) {
+                    Status status = EzdxBT.startUricAcidCalibration();
+                    if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
+                        Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        showTestDialog();
+                    }
+                }
+
+                // Total Cholesterol Calibration
+                if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                        .equalsIgnoreCase(getString(R.string.total_cholesterol_calibration))) {
+                    Status status = EzdxBT.startCholestrolCalibration();
+                    if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
+                        Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        showTestDialog();
+                    }
+                }
 
                 return false;
             }
@@ -170,8 +194,11 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
         if(testName.equals(BLOOD_GLUCOSE_CALIBRATION))
             imageView.setImageDrawable(getDrawable(R.drawable.glucose_calibration));
 
-        else if(testName.equals(HEMOGLOBIN_CALIBRATION))
+        else if(testName.equals(HEMOGLOBIN_CALIBRATION) ||
+                testName.equals(URIC_ACID_CALIBRATION) ||
+                testName.equals(CHOLESTEROL_CALIBRATION)) {
             imageView.setImageDrawable(getDrawable(R.drawable.hemoglobin_calibration));
+        }
 
         // Status reading...
         if(ezdxData.getStatus().equals(Status.STARTED)) {

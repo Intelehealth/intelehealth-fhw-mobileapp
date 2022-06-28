@@ -146,7 +146,7 @@
 
 
     //Table Exam Screen
-    <string name="title_activity_vitals">Vitals</string>
+    <string name="title_activity_vitals">Vitals &amp; Diagnostics</string>
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
     <string name="table_weight">Weight (kg)</string>
@@ -1441,6 +1441,8 @@
     <string name="thermalprinter_device_info">Device Info</string>
     <string name="thermal_printer">Thermal Printer</string>
     <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="uric_acid_validation">Uric Acid should be in between %1$s and %2$s</string>
+    <string name="total_cholesterol_validation">Total Cholesterol should be in between %1$s and %2$s</string>
     <string name="calibration_not_required">Calibration Not Required. Test can be directly performed.</string>
     <string name="connect_bluetooth">Connect Bluetooth</string>
     <string name="test_stopped">Test Stopped</string>
@@ -1457,6 +1459,11 @@
     <string name="connect_sensor_probe_to_device">Connect the Sensor Probe to the Device ....</string>
     <string name="analysing">Analysing ....</string>
     <string name="test_completed">Test Completed</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="uric_acid">Uric Acid</string>
+    <string name="total_cholestrol">Total Cholesterol</string>
+    <string name="uric_acid_calibration">Uric Acid Calibration</string>
+    <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
 
 
 </resources>

@@ -208,6 +208,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO bldglucose = new ObsDTO();
     ObsDTO bldglucose_fasting = new ObsDTO();
     ObsDTO hemoGlobin = new ObsDTO();
+    ObsDTO uricAcid = new ObsDTO();
+    ObsDTO totalCholesterol = new ObsDTO();
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -218,6 +220,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String followUpDate = "";
 
     ImageButton editVitals;
+    ImageButton editDiagnostics;
     ImageButton editComplaint;
     ImageButton editPhysical;
     ImageButton editFamHist;
@@ -246,6 +249,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView glucose;
     TextView glucoseFasting;
     TextView hemoglobin;
+    TextView uricAcid_textview;
+    TextView totalCholesterol_textview;
     //    //    Respiratory added by mahiti dev team
     TextView respiratory;
     TextView respiratoryText;
@@ -828,6 +833,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        editDiagnostics = findViewById(R.id.imagebutton_edit_diagnostics);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
@@ -864,6 +870,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
+            editDiagnostics.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
@@ -1164,6 +1171,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         glucose = findViewById(R.id.textView_glucose_value);
         glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
+        uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
+        totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1263,9 +1272,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
             glucoseFasting.setText(bldglucose_fasting.getValue());
         if (hemoGlobin.getValue() != null)
             hemoglobin.setText(hemoGlobin.getValue());
+        if (uricAcid.getValue() != null)
+            uricAcid_textview.setText(uricAcid.getValue());
+        if (totalCholesterol.getValue() != null)
+            totalCholesterol_textview.setText(totalCholesterol.getValue());
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+            }
+        });
+
+        editDiagnostics.setOnClickListener(new View.OnClickListener() { // Edit Diagnostics
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
@@ -3506,6 +3535,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
+            {
+                hemoGlobin.setValue(value);
+                break;
+            }
+            case UuidDictionary.URIC_ACID_ID: // Uric Acid
             {
                 hemoGlobin.setValue(value);
                 break;

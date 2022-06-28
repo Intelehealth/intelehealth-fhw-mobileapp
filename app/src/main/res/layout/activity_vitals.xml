@@ -28,7 +28,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="io.intelehealth.client.activities.vitals_activity.VitalsActivity"
-        tools:showIn="@layout/activity_vitals">
+        tools:showIn="@layout/activity_vitals"
+        >
 
 
         <ScrollView
@@ -239,7 +240,7 @@
                         android:padding="10dp">
 
                         <TextView
-                            android:id="@+id/textview_bp"
+                            android:id="@+id/textview_vitals"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
@@ -529,134 +530,248 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
-                        <!--Blood Glucose (Non-Fasting) -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginVertical="5dp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="4"
-                            android:id="@+id/bloodGlucose"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp">
-
-                            <EditText
-                                android:id="@+id/bloodGlucose_editText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="Blood Glucose (Non-Fasting)"
-                                android:imeOptions="actionUnspecified"
-                                android:includeFontPadding="false"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                            <ImageButton
-                                android:id="@+id/bloodGlucose_Btn"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_margin="10dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_add_24dp"
-                                android:background="@drawable/circle"
-                                android:backgroundTint="@color/colorAccent"/>
-                        </LinearLayout>
-
-                        <!--Blood Glucose (Fasting)-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginVertical="5dp">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_weight="4"
-                                android:id="@+id/bloodGlucose_fasting"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="10dp">
-
-                                <EditText
-                                    android:id="@+id/bloodGlucose_editText_fasting"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:hint="Blood Glucose (Fasting)"
-                                    android:imeOptions="actionUnspecified"
-                                    android:includeFontPadding="false"
-                                    android:inputType="numberDecimal"
-                                    android:maxLines="1"
-                                    android:singleLine="true"
-                                    android:tag="@string/tag_optional"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <ImageButton
-                                android:id="@+id/bloodGlucose_Btn_fasting"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_margin="10dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_add_24dp"
-                                android:background="@drawable/circle"
-                                android:backgroundTint="@color/colorAccent"/>
-                        </LinearLayout>
-
-
-                        <!--Haemoglobin Test-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginVertical="5dp">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_weight="4"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/haemoglobin"
-                                android:layout_marginEnd="10dp">
-
-                                <EditText
-                                    android:id="@+id/haemoglobin_editText"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:hint="Haemoglobin"
-                                    android:imeOptions="actionUnspecified"
-                                    android:includeFontPadding="false"
-                                    android:inputType="numberDecimal"
-                                    android:maxLines="1"
-                                    android:singleLine="true"
-                                    android:tag="@string/tag_optional"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <ImageButton
-                                android:id="@+id/haemoglobin_btn"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_margin="10dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_add_24dp"
-                                android:background="@drawable/circle"
-                                android:backgroundTint="@color/colorAccent"/>
-                        </LinearLayout>
-
-
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
+                <!--Diagnostics-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10sp"
+                app:cardElevation="3dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textview_diagnostics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/lato_bold"
+                    android:includeFontPadding="false"
+                    android:tag="@string/tag_optional"
+                    android:text="@string/diagnostics"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="@dimen/card_content_text_size" />
+
+                <!--Blood Glucose (Non-Fasting) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:id="@+id/bloodGlucose"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp">
+
+                        <EditText
+                            android:id="@+id/bloodGlucose_editText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="Blood Glucose (Non-Fasting)"
+                            android:imeOptions="actionUnspecified"
+                            android:includeFontPadding="false"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:tag="@string/tag_optional"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/bloodGlucose_Btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_24dp"
+                        android:background="@drawable/circle"
+                        android:backgroundTint="@color/colorAccent"/>
+                </LinearLayout>
+
+                <!--Blood Glucose (Fasting)-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:id="@+id/bloodGlucose_fasting"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp">
+
+                        <EditText
+                            android:id="@+id/bloodGlucose_editText_fasting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="Blood Glucose (Fasting)"
+                            android:imeOptions="actionUnspecified"
+                            android:includeFontPadding="false"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:tag="@string/tag_optional"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/bloodGlucose_Btn_fasting"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_24dp"
+                        android:background="@drawable/circle"
+                        android:backgroundTint="@color/colorAccent"/>
+                </LinearLayout>
+
+
+                <!--Haemoglobin Test-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/haemoglobin"
+                        android:layout_marginEnd="10dp">
+
+                        <EditText
+                            android:id="@+id/haemoglobin_editText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="Haemoglobin"
+                            android:imeOptions="actionUnspecified"
+                            android:includeFontPadding="false"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:tag="@string/tag_optional"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/haemoglobin_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_24dp"
+                        android:background="@drawable/circle"
+                        android:backgroundTint="@color/colorAccent"/>
+                </LinearLayout>
+
+                <!--UricAcid Test-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/uricAcid"
+                        android:layout_marginEnd="10dp">
+
+                        <EditText
+                            android:id="@+id/uricAcid_editText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/uric_acid"
+                            android:imeOptions="actionUnspecified"
+                            android:includeFontPadding="false"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:tag="@string/tag_optional"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/uricAcid_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_24dp"
+                        android:background="@drawable/circle"
+                        android:backgroundTint="@color/colorAccent"/>
+                </LinearLayout>
+
+                <!--Total Cholestrol-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/totalCholestrol"
+                        android:layout_marginEnd="10dp">
+
+                        <EditText
+                            android:id="@+id/totalCholestrol_editText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:hint="@string/total_cholestrol"
+                            android:imeOptions="actionUnspecified"
+                            android:includeFontPadding="false"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:tag="@string/tag_optional"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/totalCholestrol_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_24dp"
+                        android:background="@drawable/circle"
+                        android:backgroundTint="@color/colorAccent"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/fab"

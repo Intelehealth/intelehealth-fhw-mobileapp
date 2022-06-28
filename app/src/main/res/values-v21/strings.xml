@@ -28,5 +28,10 @@
     <string name="connect_sensor_probe_to_device">Connect the Sensor Probe to the Device ....</string>
     <string name="analysing">Analysing ....</string>
     <string name="test_completed">Test Completed</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="uric_acid">Uric Acid</string>
+    <string name="total_cholestrol">Total Cholestrol</string>
+    <string name="uric_acid_calibration">Uric Acid Calibration</string>
+    <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
 
 </resources>

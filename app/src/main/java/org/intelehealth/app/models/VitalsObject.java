@@ -15,6 +15,8 @@ public class VitalsObject {
     private String bloodglucose;
     private String bloodglucoseFasting;
     private String hemoglobin;
+    private String uricAcid;
+    private String totlaCholesterol;
 
     public String getPatientUuid() {
         return patientUuid;
@@ -118,5 +120,21 @@ public class VitalsObject {
 
     public void setBloodglucoseFasting(String bloodglucoseFasting) {
         this.bloodglucoseFasting = bloodglucoseFasting;
+    }
+
+    public String getUricAcid() {
+        return uricAcid;
+    }
+
+    public void setUricAcid(String uricAcid) {
+        this.uricAcid = uricAcid;
+    }
+
+    public String getTotlaCholesterol() {
+        return totlaCholesterol;
+    }
+
+    public void setTotlaCholesterol(String totlaCholesterol) {
+        this.totlaCholesterol = totlaCholesterol;
     }
 }

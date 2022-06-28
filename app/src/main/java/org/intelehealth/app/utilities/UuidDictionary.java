@@ -21,6 +21,8 @@ public class UuidDictionary {
     public static final String BLOOD_GLUCOSE_ID = "8df25ddf-ff39-4fa3-bd13-5dfbec8cb5ee";
     public static final String BLOOD_GLUCOSE_FASTING_ID = "2dc7b9dd-825c-4061-a289-c939f758b10e";
     public static final String HEMOGLOBIN_ID = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";
+    public static final String URIC_ACID_ID = "366e11ae-f6a2-4c27-8285-5bc496f9dfb4";
+    public static final String TOTAL_CHOLESTEROL_ID = "24914ddd-b97a-400e-a7e1-171ec8fb77d0";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
