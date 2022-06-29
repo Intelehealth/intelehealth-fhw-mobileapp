@@ -851,6 +851,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
                 bloodGlucose_editText_fasting.setText(value);
                 break;
+            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
+                haemoglobin_editText.setText(value);
+                break;
             case UuidDictionary.URIC_ACID_ID: // Uric Acid
                 uricAcid_editText.setText(value);
                 break;
@@ -1326,6 +1329,25 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_ID));
                 obsDAO.updateObs(obsDTO);
 
+                // Uric Acid
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.URIC_ACID_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getUricAcid());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.URIC_ACID_ID));
+                obsDAO.updateObs(obsDTO);
+
+                // total cholesterol
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL_ID);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getTotlaCholesterol());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TOTAL_CHOLESTEROL_ID));
+                obsDAO.updateObs(obsDTO);
+
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1481,6 +1503,30 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getHemoglobin());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // Uric Acid Test
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.URIC_ACID_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getUricAcid());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            // total cholesterol Test
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL_ID);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getTotlaCholesterol());
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {

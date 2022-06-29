@@ -3541,7 +3541,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case UuidDictionary.URIC_ACID_ID: // Uric Acid
             {
-                hemoGlobin.setValue(value);
+                uricAcid.setValue(value);
+                break;
+            }
+            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholestrol
+            {
+                totalCholesterol.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
