@@ -157,7 +157,7 @@
     <string name="table_bpsys">बीपी सिस</string>
     <string name="table_bpdia">बीपी डाय</string>
     <string name="table_temp">तापमान (सी)</string>
-    <string name="table_spo">एसपीओ 2 (%)</string>
+    <string name="table_spo2">SpO2 (%)</string>
 
     //Patient Search Screen
     <string name="search_hint">नावानुसार रूग्ण शोधण्यासाठी टाइप करा…</string>
@@ -1399,5 +1399,8 @@
     <string name="total_cholestrol">एकूण कोलेस्ट्रॉल</string>
     <string name="uric_acid_calibration">यूरिक ऍसिड कॅलिब्रेशन</string>
     <string name="total_cholesterol_calibration">एकूण कोलेस्ट्रॉल कॅलिब्रेशन</string>
+    <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज (नॉन-उपवास)</string>
+    <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपवास)</string>
+    <string name="haemoglobin">हिमोग्लोबिन</string>
 
 </resources>

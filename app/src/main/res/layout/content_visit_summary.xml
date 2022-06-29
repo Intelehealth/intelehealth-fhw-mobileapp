@@ -460,7 +460,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="Blood Glucose (Non-Fasting)"
+                            android:text="@string/blood_glucose_non_fasting"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -480,7 +480,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="Blood Glucose (Fasting)"
+                            android:text="@string/blood_glucose_fasting"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -500,7 +500,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="Hemoglobin"
+                            android:text="@string/haemoglobin"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
