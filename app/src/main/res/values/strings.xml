@@ -38,6 +38,7 @@
     <string name="db_patient_id1" translatable="false">patient_identifier1</string>
     <string name="db_patient_id2" translatable="false">patient_identifier2</string>
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
+    <string name="db_open_mrs_id" translatable="false">openmrs_id</string>
 
     //Login Screen
     <!--    <string name="title_activity_login">Intelehealth</string>-->
@@ -1425,6 +1426,7 @@
     <string name="please_add_pregnancy_outcome">Please add Pregnancy Outcome</string>
     <string name="draft_survey_title">Draft Survey</string>
     <string name="add_pregnancy_outcome">Add Pregnancy Outcome</string>
+
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
     <string name="connecting_please_wait">Connecting please wait ...</string>
     <string name="connected">HealthCube Connected</string>
@@ -1468,5 +1470,10 @@
     <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
     <string name="haemoglobin">Haemoglobin</string>
 
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="household_no">Household No.</string>
+    <string name="open_mrs_id">OpenMRS ID</string>
 
 </resources>

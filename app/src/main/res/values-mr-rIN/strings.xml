@@ -1403,4 +1403,10 @@
     <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपवास)</string>
     <string name="haemoglobin">हिमोग्लोबिन</string>
 
+    <string name="first_name">पहिले नाव</string>
+    <string name="last_name">आडनाव</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="household_no">घर क्रमांक</string>
+    <string name="open_mrs_id">ओपन MRS आयडी</string>
+
 </resources>

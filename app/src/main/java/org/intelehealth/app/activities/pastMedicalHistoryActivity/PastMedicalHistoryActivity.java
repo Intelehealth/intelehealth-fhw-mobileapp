@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.pastMedicalHistoryActivity;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -147,7 +148,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_PatHist == null)
+            if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
         }
 
@@ -233,10 +234,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-            
+
         }
-
-
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -250,9 +249,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -262,7 +261,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fabClick();
+                triggerConfirmation();
             }
 
         });
@@ -291,10 +290,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
 
@@ -359,6 +357,30 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     }
 
+
+    // Method to trigger confirmation dialog
+    private void triggerConfirmation() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)
+                .replace("Hours", "तास")
+                .replace("Years", "वर्षे")
+                .replace("Days", "दिवस")
+                .replace("Weeks", "आठवडे")
+                .replace("Months", "महिने")
+        ));
+
+
+        // Handle positive button click
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, (dialog, which) -> {
+            dialog.dismiss();
+            fabClick();
+        });
+
+        // Handle negative button click
+        alertDialogBuilder.setNegativeButton(R.string.generic_back, ((dialog, which) -> dialog.dismiss()));
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
 
     private void fabClick() {
         //If nothing is selected, there is nothing to put into the database.
@@ -521,15 +543,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     @Override
     public void fabClickedAtEnd() {
         // patientHistoryMap = node;
-        fabClick();
+        triggerConfirmation();
     }
 
     @Override
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
-
-
 
 
     public void AnimateView(View v) {
@@ -570,7 +590,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
@@ -582,7 +603,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             result = ""; // if medical history does not exist
-        }    db.close();    return result;
+        }
+        db.close();
+        return result;
     }
 }
 
