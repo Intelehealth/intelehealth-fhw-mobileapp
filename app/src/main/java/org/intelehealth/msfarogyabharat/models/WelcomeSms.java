@@ -9,7 +9,7 @@ public class WelcomeSms {
     public WelcomeSms(String to) {
         this.apiKey = AppConstants.SMS_API_KEY;
         this.to = to;
-        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18003094144.";
+        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline. If you are feeling stressed, or anxious, our Counsellors are here to support you. Please call on our toll-free no. 18001203710 - Powered by Intelehealth. Link to diet plan - https://msf-arogyabharat.intelehealth.org/intelehealth/index.html#/l/wc";
         this.type = "TXN";
         this.sender = "TIFDOC";
         this.source = "API";
