@@ -1650,7 +1650,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                String[] items = {getString(R.string.reschedule_call)};
+                String[] items = {getString(R.string.patient_counselled), getString(R.string.patient_denied_counselling), getString(R.string.medical_advice_provided),getString(R.string.reschedule_call) };
                 showOptionDialog(items,checkedItems, true);
             }
         });

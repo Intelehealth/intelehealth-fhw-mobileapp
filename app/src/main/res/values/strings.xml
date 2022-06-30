@@ -779,5 +779,9 @@ bread
     <string name="type_of_call">What type of call it is?*</string>
     <string name="select_call_type">Please select type of call.</string>
     <string name="saved">Saved!</string>
+    <string name="patient_counselled">Patient Counselled</string>
+    <string name="patient_denied_counselling">Patient denied counselling</string>
+    <string name="medical_advice_provided">Medical advice provided</string>
+
 
 </resources>
