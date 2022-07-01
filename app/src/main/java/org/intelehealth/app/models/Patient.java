@@ -160,6 +160,8 @@ public class Patient {
     }
 
     public String getEconomic_status() {
+        if (economic_status == null)
+            return "";
         return economic_status;
     }
 
