@@ -203,6 +203,8 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         });
         new_patient = findViewById(R.id.new_patient);
+
+
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);

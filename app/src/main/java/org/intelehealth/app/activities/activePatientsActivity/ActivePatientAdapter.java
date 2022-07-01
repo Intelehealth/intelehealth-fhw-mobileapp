@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,17 +54,19 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     private OnActionListener actionListener;
     public List<ActivePatientModel> activePatientModels;
+    public List<ActivePatientModel> filteractivePatient;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
     SessionManager sessionManager;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context,
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels,List<ActivePatientModel> filteractivePatient, Context context,
                                 ArrayList<String> _listPatientUUID, SessionManager sessionManager) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.sessionManager = sessionManager;
+        this.filteractivePatient=filteractivePatient;
     }
 
     @Override
@@ -79,7 +82,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     @Override
     public void onBindViewHolder(ActivePatientViewHolder holder, int position) {
-        final ActivePatientModel activePatientModel = activePatientModels.get(position);
+        final ActivePatientModel activePatientModel = filteractivePatient.get(position);
+//        final ActivePatientModel filteractivePatient=filteractivePatient.get(position);
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
             header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
@@ -126,10 +130,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         // alert -> start
         int count = activePatientModel.getAlertFlagTotal();
-        if (count > 22) {
+        if (count > 30) {
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.red_alert));
-        } else if (count >= 15 && count <= 22) {
+        } else if (count >= 15 && count <= 30) {
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.yellow_alert));
         } else if (count < 15) {
@@ -138,21 +142,20 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         }
         // alert -> end
 
-        if(activePatientModel.getObsExistsFlag()) {
+        if (activePatientModel.getObsExistsFlag()) {
             Animation anim = new AlphaAnimation(1.0f, 0.2f);
             anim.setDuration(1500); // more no means slow eg. 0 = fast blink && 1500 = slow blink.
             anim.setRepeatMode(Animation.INFINITE);
             anim.setRepeatCount(Animation.INFINITE);
             holder.cardView_todaysVisit.startAnimation(anim);
-            holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
+             holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
         }
 
-        if(activePatientModel.getBirthOutcomeValue() != null &&
+        if (activePatientModel.getBirthOutcomeValue() != null &&
                 !activePatientModel.getBirthOutcomeValue().equalsIgnoreCase("")) {
             holder.btnEndVisit.setVisibility(View.VISIBLE);
             holder.btnEndVisit.setText(activePatientModel.getBirthOutcomeValue());
-        }
-        else {
+        } else {
             holder.btnEndVisit.setVisibility(View.GONE);
         }
 
@@ -312,9 +315,9 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_yellow);
         }*/
         holder.btnVisitDetails.setBackgroundResource(R.drawable.round_corner_yellow);
-      //  holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
+        //  holder.btnEndVisit.setBackgroundResource(R.drawable.round_corner_red);
 
-      //  holder.btnEndVisit.setEnabled(enableEndVisit);
+        //  holder.btnEndVisit.setEnabled(enableEndVisit);
         //if (enableEndVisit) {
        /* if (activePatientModel.getEnddate() == null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -355,7 +358,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     @Override
     public int getItemCount() {
-        return activePatientModels.size();
+        return filteractivePatient.size();
     }
 
     public class ActivePatientViewHolder extends RecyclerView.ViewHolder {
@@ -423,5 +426,38 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     public void setActionListener(OnActionListener actionListener) {
         this.actionListener = actionListener;
+    }
+
+    public Filter getFilter(){
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String Key=charSequence.toString();
+                if (Key.isEmpty()){
+                    filteractivePatient=activePatientModels;
+
+                }
+                else {
+                    List<ActivePatientModel> listfiltered=new ArrayList<>();
+                    for (ActivePatientModel row :activePatientModels){
+                        if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase()) || row.getLast_name().toLowerCase().contains(Key.toLowerCase())) {
+                            listfiltered.add(row);
+                        }
+                    }
+                    filteractivePatient=listfiltered;
+                }
+                FilterResults filterResults=new FilterResults();
+                filterResults.values=filteractivePatient;
+                return filterResults;
+
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteractivePatient=(List<ActivePatientModel>)filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

@@ -178,7 +178,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         } else {
 
             if (paramDateType.equalsIgnoreCase(PartogramConstants.INPUT_DOUBLE_4_DIG_TYPE)) {
-                dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+                //added tempareture 3 digits
+                dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(3)});
             } else if (paramDateType.equalsIgnoreCase(PartogramConstants.INPUT_INT_1_DIG_TYPE)) {
                 dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
                 dataEditText.setInputType(InputType.TYPE_CLASS_NUMBER);

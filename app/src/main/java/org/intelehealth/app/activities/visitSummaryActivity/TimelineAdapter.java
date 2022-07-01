@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.R.drawable.*;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +48,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     private static final int HOURLY = 0;
     private static final int HALF_HOUR = 1;
     private static final int FIFTEEN_MIN = 2;
+    ImageView iv_prescription;
     String isVCEPresent = "";
     int isMissed = 0;
     int issubmitted = 0;
@@ -188,6 +192,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
                          calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
                        // calendar.add(Calendar.MINUTE, 1); // Testing
+
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else {
                         // do nothing

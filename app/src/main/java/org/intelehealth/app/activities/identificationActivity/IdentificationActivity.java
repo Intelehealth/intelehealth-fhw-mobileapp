@@ -171,6 +171,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
 
+    String OtherEditText;
+
 
     /*New*/
     private EditText mTotalBirthEditText, mTotalMiscarriageEditText;
@@ -266,6 +268,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
         mAdmissionTimeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,7 +282,8 @@ public class IdentificationActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                mAdmissionTimeString = hourOfDay + ":" + minute;
+                                boolean isPM = (hourOfDay >= 12);
+                                mAdmissionTimeString = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
                                 mAdmissionTimeTextView.setText(mAdmissionTimeString);
                             }
                         }, hour, minute, false);
@@ -335,7 +339,8 @@ public class IdentificationActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                mActiveLaborDiagnosedTime = hourOfDay + ":" + minute;
+                                boolean isPM = (hourOfDay >= 12);
+                                mActiveLaborDiagnosedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
                                 mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
                             }
                         }, hour, minute, false);
@@ -379,8 +384,10 @@ public class IdentificationActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                mMembraneRupturedTime = hourOfDay + ":" + minute;
+                                boolean isPM = (hourOfDay >= 12);
+                                mMembraneRupturedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
                                 mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
+
                             }
                         }, hour, minute, false);
                 timePickerDialog.show();
@@ -456,11 +463,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (checkedId == R.id.rbMaternity) {
                     mHospitalMaternityString = "Maternity";
                 } else {
-                    mHospitalMaternityString = "";
+                    mHospitalMaternityString = " ";
                     mOthersEditText.setVisibility(View.VISIBLE);
+//                    mOthersEditText.setText(mHospitalMaternityString);
                 }
-
-
             }
         });
         /*end*/
@@ -1036,7 +1042,11 @@ public class IdentificationActivity extends AppCompatActivity {
                         if (patientID_edit != null)
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         else
-                            mState.setSelection(stateAdapter.getPosition(state));
+
+                            //for default state select state
+                            mState.setSelection(0);
+//                            mState.setSelection(stateAdapter.getPosition(state));
+
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,

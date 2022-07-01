@@ -37,8 +37,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.SearchRecentSuggestions;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -73,6 +76,7 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
+import org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -150,6 +154,10 @@ public class HomeActivity extends AppCompatActivity {
     TextView lastSyncTextView, locationSetupTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
+
+    EditText etvSearchVisit;
+    ImageView ivFilterAction;
+    CharSequence search="";
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
@@ -364,6 +372,37 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        //Search pateint code
+        etvSearchVisit=findViewById(R.id.etvSearchVisit);
+        ivFilterAction=findViewById(R.id.ivFilterAction);
+        ivFilterAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 
+            }
+        });
+
+        etvSearchVisit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mActivePatientAdapter.getFilter().filter(charSequence);
+                search=charSequence;
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+
 
         findViewById(R.id.tvHelpMenu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -592,6 +631,7 @@ public class HomeActivity extends AppCompatActivity {
             findViewById(R.id.tvEmpty).setVisibility(View.GONE);
             mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = doQuery(offset);
+            List<ActivePatientModel> filteractivePatient = doQuery(offset);
 
             // #-- Alert logic -- start
             for (int j = 0; j < activePatientModels.size(); j++) {
@@ -664,7 +704,7 @@ public class HomeActivity extends AppCompatActivity {
                 activePatientModels.get(j).setAlertFlagTotal(count);
             }
             // #-- Alert logic -- end
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, HomeActivity.this, listPatientUUID, sessionManager);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels,filteractivePatient ,HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override
