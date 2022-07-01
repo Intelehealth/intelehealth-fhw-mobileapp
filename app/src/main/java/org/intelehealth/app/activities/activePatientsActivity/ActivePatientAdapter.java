@@ -130,10 +130,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         // alert -> start
         int count = activePatientModel.getAlertFlagTotal();
-        if (count > 22) {
+        if (count > 30) {
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.red_alert));
-        } else if (count >= 15 && count <= 22) {
+        } else if (count >= 15 && count <= 30) {
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.yellow_alert));
         } else if (count < 15) {
@@ -148,7 +148,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             anim.setRepeatMode(Animation.INFINITE);
             anim.setRepeatCount(Animation.INFINITE);
             holder.cardView_todaysVisit.startAnimation(anim);
-            holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
+             holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.blinkCardColor));
         }
 
         if (activePatientModel.getBirthOutcomeValue() != null &&

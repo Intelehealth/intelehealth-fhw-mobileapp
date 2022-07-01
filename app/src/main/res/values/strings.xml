@@ -854,6 +854,7 @@
     <string name="live_birth">Live Birth</string>
     <string name="still_birth">Still Birth</string>
     <string name="action_birthoutcome">Birth Outcome</string>
+    <string name="endedStage1Button">First Stage Ended</string>
 
 
 </resources>

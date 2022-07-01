@@ -228,7 +228,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 endStageButton.setText(context.getResources().getText(R.string.endStageButton));
             } else {
                 stageNo = 0;
-                // do nothing
+                // do not hing
             }
         }
         else {
@@ -241,7 +241,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
             if (stageNo == 1) {
-                cancelStage1_ConfirmationDialog(); // cancel and start stage 2
+                cancelStage1_ConfirmationDialog();// cancel and start stage 2
             } else if (stageNo == 2) {
                 // show dialog and add birth outcome
                 birthOutcomeSelectionDialog();
@@ -354,6 +354,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+
+
 
         alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
@@ -472,7 +474,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("providerID", providerID);
-        intent.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
+        intent.putExtra("Stage2_Hour1_1", "Stage1_Hour1_1");
+//        intent.putExtra("Stage2_Hour1_1","Stage2_Hour1_1");
 
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
