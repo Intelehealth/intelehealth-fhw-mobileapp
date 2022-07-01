@@ -29,6 +29,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.v("NotificationReceiver", "onReceive");
 
 //        NotificationUtils notificationUtils = new NotificationUtils();
 //        notificationUtils.createTimelineNotification(context, intent);

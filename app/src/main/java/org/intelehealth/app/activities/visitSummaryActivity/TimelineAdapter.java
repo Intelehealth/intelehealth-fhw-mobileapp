@@ -119,19 +119,19 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
                         if (position % 2 == 0) { // Even
-                        calendar.add(Calendar.HOUR, 1);
+                        //calendar.add(Calendar.HOUR, 1);
                         calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
                            // calendar.add(Calendar.MINUTE, 2); // Testing
                             Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                         } else { // Odd
-                             calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                             calendar.add(Calendar.MINUTE, 10); // Add 30min + 10min
                            // calendar.add(Calendar.MINUTE, 1); // Testing
                             Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                         }
                     } // end.
                     else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                         calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+                         calendar.add(Calendar.MINUTE, 5); // Add 15min + 5min since Stage 2
                        // calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else {
@@ -141,6 +141,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
+                        holder.summary_textview.setText(context.getResources().getString(R.string.click_to_enter));
+                        holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.black));
                     } else {
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);
@@ -270,13 +272,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 public void onClick(View view) {
                     int type = 10;
                     int stage = 1;
+                    String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");
                     if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage1")) {
-                        type = getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
-                        stage = 1;
+                        //type = getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
+                        type = Integer.parseInt(name[2]) == 2 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
                     } else if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
                         stage = 2;
                         //type = FIFTEEN_MIN; // card clicked is 15mins.
-                        String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");
                         //Stage2_Hour1_1
                         if (Integer.parseInt(name[2]) == 1) {
                             type = HOURLY;
@@ -285,8 +287,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         } else {
                             type = FIFTEEN_MIN;
                         }
-                    } else {
-                        // do nothing...
                     }
 
 

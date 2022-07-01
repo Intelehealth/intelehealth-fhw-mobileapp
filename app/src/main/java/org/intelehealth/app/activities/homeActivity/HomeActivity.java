@@ -15,7 +15,9 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -72,9 +74,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientAdapter;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
-import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
@@ -94,7 +94,6 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
@@ -119,6 +118,7 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -622,6 +622,16 @@ public class HomeActivity extends AppCompatActivity {
 
         showProgressbar();*/
 
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                12345, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        // to set different alarams for different patients.
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),
+                    30 * 1000, pendingIntent);
+        }
     }
 
     private void loadVisits() {
@@ -639,21 +649,21 @@ public class HomeActivity extends AppCompatActivity {
                 encUUID_visitComplete = encounterDAO.getVisitCompleteEncounterByVisitUUID(activePatientModels.get(j).getUuid());
                 encounterUUID = encounterDTO.getUuid();
 
-                if(!encUUID_visitComplete.equalsIgnoreCase("")) {
+                if (!encUUID_visitComplete.equalsIgnoreCase("")) {
                     String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
-                    if(!birthoutcome.equalsIgnoreCase("")) {
+                    if (!birthoutcome.equalsIgnoreCase("")) {
                         activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
                     }
                 }
 
-                if(encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
+                if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
                     int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
                     if (issubmitted == 1) { // not yet filled
                         activePatientModels.get(j).setObsExistsFlag(true);
                     }
                 }
 
-                if(encounterDTO.getEncounterTypeUuid() != null) {
+                if (encounterDTO.getEncounterTypeUuid() != null) {
                     String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
                     if (latestEncounterName.toLowerCase().contains("stage2")) {
                         activePatientModels.get(j).setStageName("Stage-2");
@@ -671,20 +681,20 @@ public class HomeActivity extends AppCompatActivity {
                 // alert logic - start
                 if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
                     obsDTOList = obsDAO.obsCommentList(encounterUUID);
-                    if(obsDTOList != null) {
-                    for (int i = 0; i < obsDTOList.size(); i++) {
-                        if(obsDTOList.get(i).getComment() != null) {
-                            if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {
-                                r_count++;
-                            } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("Y")) {
-                                y_count++;
-                            } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("G")) {
-                                g_count++;
+                    if (obsDTOList != null) {
+                        for (int i = 0; i < obsDTOList.size(); i++) {
+                            if (obsDTOList.get(i).getComment() != null) {
+                                if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("R")) {
+                                    r_count++;
+                                } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("Y")) {
+                                    y_count++;
+                                } else if (obsDTOList.get(i).getComment().trim().equalsIgnoreCase("G")) {
+                                    g_count++;
+                                }
                             }
                         }
                     }
-                }
-                // TODO: uncomment - done
+                    // TODO: uncomment - done
 
                     // testing - start // TODO: remove line - done
                    /* r_count = 40;
@@ -839,7 +849,7 @@ public class HomeActivity extends AppCompatActivity {
                         IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
                     }*/
                 }
-        });
+            });
         }
 
 
@@ -1276,6 +1286,7 @@ public class HomeActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         showBadge();
+        requestPermission();
         if (mActivePatientAdapter != null)
             mActivePatientAdapter.notifyDataSetChanged();
     }

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
@@ -23,15 +24,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.partogram.PartogramCounterJob;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -67,6 +69,7 @@ public class CallListenerBackgroundService extends Service {
         Intent intent = new Intent(CallListenerBackgroundService.this, RestartServiceReceiver.class);
         intent.setAction("org.intelehealth.app.RTC_SERVICE_START");
         sendBroadcast(intent);
+        cancelCounterJob();
     }
 
     @Nullable
@@ -95,9 +98,9 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-//        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        startForeground(ONGOING_NOTIFICATION_ID, notification);
         //do heavy work on a background thread
-
+        startCounterJob();
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
         DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
@@ -188,5 +191,29 @@ public class CallListenerBackgroundService extends Service {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
+    }
+
+    private PartogramCounterJob mPartogramCounterJob;
+
+    private void startCounterJob() {
+        cancelCounterJob();
+        Calendar calendar = Calendar.getInstance();
+        int sec = calendar.get(Calendar.SECOND);
+        if(sec <=30) {
+            mPartogramCounterJob = new PartogramCounterJob(2592000000L, 60 * 1000);
+            mPartogramCounterJob.start();
+        }else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPartogramCounterJob = new PartogramCounterJob(2592000000L, 60 * 1000);
+                    mPartogramCounterJob.start();
+                }
+            }, (60 - sec + 1) * 1000);
+        }
+    }
+
+    private void cancelCounterJob() {
+        if (mPartogramCounterJob != null) mPartogramCounterJob.cancel();
     }
 }

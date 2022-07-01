@@ -2,12 +2,15 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -39,7 +42,6 @@ import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
-import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -53,7 +55,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.UUID;
 
 public class TimelineVisitSummaryActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -71,6 +76,26 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     String value = "";
     String isVCEPresent = "";
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+        }
+    };
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mMessageReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mMessageReceiver,new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +108,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // EncounterDAO encounterDAO = new EncounterDAO();
+                // EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
@@ -111,7 +136,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  EncounterDAO encounterDAO = new EncounterDAO();
+                //  EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
@@ -170,7 +195,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
         endStageButton = findViewById(R.id.endStageButton);
-        LinearLayoutManager linearLayout = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this,  LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;
         intent = this.getIntent(); // The intent was passed to the activity
@@ -216,7 +241,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
         String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
         // TODO: check for visit complete and if yes than disable the button.
-        if(isVCEPresent.equalsIgnoreCase("")) { // "" ie. not present
+        if (isVCEPresent.equalsIgnoreCase("")) { // "" ie. not present
             endStageButton.setEnabled(true);
             endStageButton.setClickable(true);
             endStageButton.setBackground(context.getResources().getDrawable(R.drawable.ic_rectangle_76));
@@ -230,8 +255,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 stageNo = 0;
                 // do not hing
             }
-        }
-        else {
+        } else {
             endStageButton.setEnabled(false);
             endStageButton.setClickable(false);
             endStageButton.setBackgroundColor(getResources().getColor(R.color.divider));
@@ -247,6 +271,40 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 birthOutcomeSelectionDialog();
             }
         });
+        mCountDownTimer.start();
+    }
+
+    private CountDownTimer mCountDownTimer = new CountDownTimer(24 * 60 * 60 * 1000, 60 * 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+    };
+
+    private static void createNewEncounter(String visit_UUID, String nextEncounterTypeName) {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setVisituuid(visit_UUID);
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(nextEncounterTypeName));
+        encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value("true");
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -295,7 +353,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void insertVisitComplete_BirthOutcomeObs(String visitUuid, String value) throws DAOException {
-      //  EncounterDAO encounterDAO = new EncounterDAO();
+        //  EncounterDAO encounterDAO = new EncounterDAO();
         ObsDAO obsDAO = new ObsDAO();
         boolean isInserted = false;
         String encounterUuid = "";
@@ -311,7 +369,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
         isInserted = obsDAO.insert_BirthOutcomeObs(encounterUuid, sessionManager.getCreatorID(), value);
-        if(isInserted) {
+        if (isInserted) {
             cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
             Intent intent = new Intent(context, HomeActivity.class);
             startActivity(intent);
@@ -328,7 +386,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
+                    //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
                     //Do something after 100ms
                     SyncUtils syncUtils = new SyncUtils();
                     boolean isSynced = syncUtils.syncForeground("timeline");
@@ -348,8 +406,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
-                        triggerAlarm_Stage2_every15mins(visitUuid);
-                        cancelStage1_Alarm(); // cancel's stage 1 alarm
+                        //triggerAlarm_Stage2_every15mins(visitUuid);
+                        //cancelStage1_Alarm(); // cancel's stage 1 alarm
+                        createNewEncounter(visitUuid, "Stage2_Hour1_1");
+                        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
                         endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
                         dialog.dismiss();
                     }
@@ -421,9 +481,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 */
 
+    private int mLastCount = 0;
+
     // fetch all encounters from encounter tbl local db for this particular visit and show on timeline...
     private void fetchAllEncountersFromVisitForTimelineScreen(String visitUuid) {
-      //  encounterDAO = new EncounterDAO();
+        //  encounterDAO = new EncounterDAO();
         encounterListDTO = encounterDAO.getEncountersByVisitUUID(visitUuid);
         for (int i = 0; i < encounterListDTO.size(); i++) {
             String name = encounterDAO.getEncounterTypeNameByUUID(encounterListDTO.get(i).getEncounterTypeUuid());
@@ -432,7 +494,12 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
 
         adapter = new TimelineAdapter(context, intent, encounterListDTO, sessionManager, isVCEPresent);
+        Collections.reverse(encounterListDTO);
         recyclerView.setAdapter(adapter);
+       /* if (encounterListDTO.size() != mLastCount) {
+            mLastCount = encounterListDTO.size();
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+        }*/
     }
 
 /*
@@ -465,8 +532,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     private void triggerAlarm_Stage2_every15mins(String visitUuid) { // TODO: change 1min to 15mins..... // visituuid : 0 - 5
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-         calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
-       //  calendar.add(Calendar.MINUTE, 1); // Testing
+        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+        //  calendar.add(Calendar.MINUTE, 1); // Testing
 
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra("patientNameTimeline", patientName);
@@ -483,11 +550,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // to set different alarams for different patients.
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    /*60000*/AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-        }
+                    AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        }*/
     }
 
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins..... // visituuid : 2 - 7
@@ -508,11 +575,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                 Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    /*120000*/AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
-        }
+                    AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
+        }*/
     }
 
     @Override
@@ -527,5 +594,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+        }
+    }
 }

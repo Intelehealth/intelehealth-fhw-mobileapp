@@ -476,4 +476,30 @@ public class VisitsDAO {
         return isDownloaded;
     }
 
+    public List<VisitDTO> getAllActiveVisits() {
+        List<VisitDTO> visitDTOList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
+        VisitDTO visitDTO = new VisitDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                visitDTO = new VisitDTO();
+                visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
+                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
+                visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
+                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+                visitDTOList.add(visitDTO);
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        // db.close();
+        return visitDTOList;
+    }
+
 }
