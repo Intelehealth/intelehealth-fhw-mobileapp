@@ -49,6 +49,7 @@ public class CardGenerationEngine {
                 String visitUid = visitDTOList.get(i).getUuid();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUid);
                 String latestEncounterTime = encounterDTO.getEncounterTime(); //eg. 2022-06-30T19:58:05.935+0530
+                if(latestEncounterTime==null) continue;
                 String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid()); //eg. Stage1_Hour1_1
 
                 SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
