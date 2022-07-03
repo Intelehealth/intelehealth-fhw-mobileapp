@@ -79,9 +79,6 @@ public class SearchPatientActivity extends AppCompatActivity {
     LinearLayoutManager reLayoutManager;
     boolean isFirstNameSelected = false, isLastNameSelected = false, isPhoneNumberSelected = false, isHouseholdNumberSelected = false, isOpenMRSIdSelected = false;
 
-    String patientTableQuery = "SELECT * FROM tbl_patient WHERE";
-    String patientAttributeTableQuery = "SELECT * FROM tbl_patient_attribute WHERE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

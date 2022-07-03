@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -43,13 +45,16 @@ public class DraftSurveyActivity extends AppCompatActivity {
     private PatientsDAO patientsDAO;
     private SessionManager sessionManager = null;
     SQLiteDatabase db;
+    private final int i = 5, LIMIT = 10, OFFSET = 0;
+    private ProgressDialog mSyncProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draft_survey);
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
-        db=AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -79,28 +84,37 @@ public class DraftSurveyActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(draftSurveyAdapter);
 
 
+
         Executors.newSingleThreadExecutor().execute(() -> {
+            // start progress dialog on main thread
+            runOnUiThread(() -> {
+                mSyncProgressDialog = new ProgressDialog(DraftSurveyActivity.this, R.style.AlertDialogStyle);
+                mSyncProgressDialog.setTitle(R.string.loading);
+                mSyncProgressDialog.setCancelable(false);
+                mSyncProgressDialog.setProgress(i);
+                mSyncProgressDialog.show();
+            });
+
             // todo: background tasks
             db.beginTransaction();
             try {
-            patientUUIDList = fetchUniquePatientUuidFromAttributes(); // Eg: 53
-            for (int i = 0; i < patientUUIDList.size(); i++) {
-                fetchValueAttrFromPatAttrTbl(patientUUIDList.get(i)); // Eg. 40 this patientuuids should be less here
-            }
-            db.setTransactionSuccessful();
-        }
-            catch (DAOException e) {
-            e.printStackTrace();
-        }
-            finally {
+                patientUUIDList = fetchUniquePatientUuidFromAttributes(); // Eg: 53
+                for (int i = 0; i < patientUUIDList.size(); i++) {
+                    fetchValueAttrFromPatAttrTbl(patientUUIDList.get(i)); // Eg. 40 this patientuuids should be less here
+                }
+                db.setTransactionSuccessful();
+            } catch (DAOException e) {
+                e.printStackTrace();
+            } finally {
                 db.endTransaction();
             }
+
+            // hide progress dialog after background tasks are complete on the main thread
             runOnUiThread(() -> {
                 // todo: update your ui / view in activity
                 draftSurveyAdapter = new SearchPatientAdapter(patientDTOList, context);
-        recyclerView.setAdapter(draftSurveyAdapter);
-
-
+                recyclerView.setAdapter(draftSurveyAdapter);
+                mSyncProgressDialog.hide();
             });
         });
 
