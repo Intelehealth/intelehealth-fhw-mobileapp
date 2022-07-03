@@ -362,6 +362,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)
+                .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
                 .replace("Hours", "तास")
                 .replace("Years", "वर्षे")
                 .replace("Days", "दिवस")

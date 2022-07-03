@@ -34,6 +34,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.utilities.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +50,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
@@ -78,7 +80,8 @@ public class Node implements Serializable {
 
     private String display_telugu;
     private String display_kannada;
-    private String display_malyalam;;
+    private String display_malyalam;
+    ;
     private String display_marathi;
     private String display_assamese;
     private String language;
@@ -865,9 +868,9 @@ public class Node implements Serializable {
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
                             || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
                             (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
                             || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
@@ -935,34 +938,40 @@ public class Node implements Serializable {
 
     public static void askDate(final Node node, final Activity context, final QuestionsAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
+        AtomicReference<String> dateString = new AtomicReference<>("");
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTimeInMillis(0);
-                        cal.set(year, monthOfYear, dayOfMonth);
-                        Date date = cal.getTime();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
-                        String dateString = simpleDateFormat.format(date);
+                (view, year, monthOfYear, dayOfMonth) -> {
 
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(year, monthOfYear, dayOfMonth);
+                    Date date = cal.getTime();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                    dateString.set(simpleDateFormat.format(date));
 
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", dateString));
-                        } else {
-                            node.addLanguage(" " + dateString);
-                            node.setText(node.getLanguage());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        node.setSelected(true);
-                        adapter.notifyDataSetChanged();
-                        //TODO:: Check if the language is actually what is intended to be displayed
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dateString.get()));
+                    } else {
+                        node.addLanguage(" " + dateString);
+                        node.setText(node.getLanguage());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
+                    node.setSelected(true);
+                    adapter.notifyDataSetChanged();
+
+                    //TODO:: Check if the language is actually what is intended to be displayed
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+
+        datePickerDialog.setOnCancelListener(dialog -> {
+            Logger.logD("String", dateString.get());
+            dateString.set("");
+            node.setLanguage(dateString.get());
+        });
+
         datePickerDialog.show();
     }
 
@@ -2205,6 +2214,7 @@ public class Node implements Serializable {
     public void setDisplay_assamese(String display_assamese) {
         this.display_assamese = display_assamese;
     }
+
     public String getDisplay_malyalam() {
         return display_malyalam;
     }
@@ -2439,7 +2449,7 @@ public class Node implements Serializable {
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))|| (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
