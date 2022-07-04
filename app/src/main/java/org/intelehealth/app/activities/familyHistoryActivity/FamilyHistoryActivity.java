@@ -338,7 +338,39 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)));
+
+        // Depending on the app language, our alert dialog text will be translated
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)
+                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
+                    .replace("Patient reports -", "रुग्ण अहवाल-")
+                    .replace("Patient denies -", "रुग्ण नकार देतो-")
+                    .replace("Hours", "तास")
+                    .replace("Days", "दिवस")
+                    .replace("Weeks", "आठवडे")
+                    .replace("Months", "महिने")
+                    .replace("Years", "वर्षे")
+                    .replace("times per hour", "प्रति तास")
+                    .replace("time per day", "दररोज वेळा")
+                    .replace("times per week", "आठवड्यातून काही वेळा")
+                    .replace("times per month", "दरमहा वेळा")
+                    .replace("times per year", "दरवर्षी वेळा")
+                    .replace("Jan", "जानेवारी")
+                    .replace("Feb", "फेब्रुवारी")
+                    .replace("Mar", "मार्च")
+                    .replace("Apr", "एप्रिल")
+                    .replace("May", "मे")
+                    .replace("Jun", "जून")
+                    .replace("Jul", "जुलै")
+                    .replace("Aug", "ऑगस्ट")
+                    .replace("Sept", "सप्टेंबर")
+                    .replace("Oct", "ऑक्टोबर")
+                    .replace("Nov", "नोव्हेंबर")
+                    .replace("Dec", "डिसेंबर")));
+        } else {
+            // Else case handles the English language
+            alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)));
+        }
 
         // Handle positive button click
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, (dialog, which) -> {
