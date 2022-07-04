@@ -50,6 +50,10 @@ public class BTAdapter extends RecyclerView.Adapter<BTAdapter.ViewHolder> {
         String name = mData.get(position).getName();
         if(name.trim().equalsIgnoreCase("HCSE03012122100009"))
             name = mContext.getString(R.string.medical_device_1);
+        else if(name.trim().equalsIgnoreCase("HCSE03012122100017"))
+            name = mContext.getString(R.string.medical_device_2);
+        else if(name.trim().equalsIgnoreCase("HCSE03012122100039"))
+            name = mContext.getString(R.string.medical_device_3);
         Log.v("Blue", "Ble: " + name);
         holder.myTextView.setText(name);
     }
