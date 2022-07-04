@@ -263,25 +263,36 @@ public class SearchPatientActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         item.setChecked(!item.isChecked());
 
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
         if (item.getItemId() == R.id.first_name_parameter) {
             isFirstNameSelected = item.isChecked();
+            return true;
         }
 
         if (item.getItemId() == R.id.last_name_parameter) {
             isLastNameSelected = item.isChecked();
+            return true;
         }
 
         if (item.getItemId() == R.id.phone_number_parameter) {
             isPhoneNumberSelected = item.isChecked();
+            return true;
         }
 
         if (item.getItemId() == R.id.household_number_parameter) {
             isHouseholdNumberSelected = item.isChecked();
+            return true;
         }
 
         if (item.getItemId() == R.id.open_mrs_id_parameter) {
             isOpenMRSIdSelected = item.isChecked();
+            return true;
         }
+
         return true;
     }
 
