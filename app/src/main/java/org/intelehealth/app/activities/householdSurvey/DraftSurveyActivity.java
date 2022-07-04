@@ -84,7 +84,6 @@ public class DraftSurveyActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(draftSurveyAdapter);
 
 
-
         Executors.newSingleThreadExecutor().execute(() -> {
             // start progress dialog on main thread
             runOnUiThread(() -> {
@@ -100,6 +99,8 @@ public class DraftSurveyActivity extends AppCompatActivity {
             try {
                 patientUUIDList = fetchUniquePatientUuidFromAttributes(); // Eg: 53
                 for (int i = 0; i < patientUUIDList.size(); i++) {
+                    if (isFinishing())
+                        break;
                     fetchValueAttrFromPatAttrTbl(patientUUIDList.get(i)); // Eg. 40 this patientuuids should be less here
                 }
                 db.setTransactionSuccessful();
