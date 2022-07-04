@@ -1464,8 +1464,11 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     private void showBluetoothDeviceChooseDialog() {
-        if(mService != null)
+        if(mService != null) {
             mService.disconnect();
+            if(mService.getStatus().equals(BluetoothStatus.CONNECTED))
+                Toast.makeText(this, R.string.disconnected, Toast.LENGTH_SHORT).show();
+        }
 
         // init BT adapter and service
         mService.setOnScanCallback(this);
