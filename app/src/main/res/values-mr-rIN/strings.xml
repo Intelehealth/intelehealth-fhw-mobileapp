@@ -1366,6 +1366,8 @@
     <string name="please_enable_location">कृपया कनेक्ट करण्यासाठी स्थान सक्षम करा</string>
     <string name="please_allow_permission_to_continue">कृपया सुरू ठेवण्यासाठी परवानगी द्या</string>
     <string name="medical_device_1">हेल्थक्यूब १</string>
+    <string name="medical_device_2">हेल्थक्यूब २</string>
+    <string name="medical_device_3">हेल्थक्यूब ३</string>
     <string name="STOP">थांबा</string>
     <string name="devices">उपकरणे</string>
     <string name="app_version_string">अॅप आवृत्ती - %1$s</string>

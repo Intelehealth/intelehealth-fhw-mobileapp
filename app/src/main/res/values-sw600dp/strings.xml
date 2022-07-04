@@ -6,6 +6,8 @@
     <string name="please_enable_location">Please enable location to connect.</string>
     <string name="please_allow_permission_to_continue">Please Allow the permission to continue</string>
     <string name="medical_device_1">HealthCube 1</string>
+    <string name="medical_device_2">HealthCube 2</string>
+    <string name="medical_device_3">HealthCube 3</string>
     <string name="STOP">Stop</string>
     <string name="devices">Devices</string>
     <string name="healthcube_device_info">HealthCube Device Info</string>
