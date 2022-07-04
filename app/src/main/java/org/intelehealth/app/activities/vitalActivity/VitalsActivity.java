@@ -1598,15 +1598,15 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 fetchStatusOfTest(ezdxData, HEMOGLOBIN); // Anaemia
                 break;
             }
-            case PULSE_OXIMETER: { // <a href="https://www.flaticon.com/free-icons/pulse-oximeter" title="pulse oximeter icons">Pulse oximeter icons created by Freepik - Flaticon</a>
+            case PULSE_OXIMETER: { // <a href="https://www.flaticon.com/free-icons/oximeter" title="oximeter icons">Oximeter icons created by Kalashnyk - Flaticon</a>
                 fetchStatusOfTest(ezdxData, PULSE_OXIMETER); // SPO2 and BPM:
                 break;
             }
-            case URIC_ACID: { // <a href="https://www.flaticon.com/free-icons/pulse-oximeter" title="pulse oximeter icons">Pulse oximeter icons created by Freepik - Flaticon</a>
+            case URIC_ACID: { // <a href="https://www.flaticon.com/free-icons/urine-analysis" title="urine analysis icons">Urine analysis icons created by surang - Flaticon</a>
                 fetchStatusOfTest(ezdxData, URIC_ACID); // URIC_ACID:
                 break;
             }
-            case CHOLESTEROL: { // <a href="https://www.flaticon.com/free-icons/pulse-oximeter" title="pulse oximeter icons">Pulse oximeter icons created by Freepik - Flaticon</a>
+            case CHOLESTEROL: { // <a href="https://www.flaticon.com/free-icons/cholesterol" title="cholesterol icons">Cholesterol icons created by Linector - Flaticon</a>
                 fetchStatusOfTest(ezdxData, CHOLESTEROL); // CHOLESTEROL:
                 break;
             }
@@ -1635,7 +1635,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 btnClick = 0;
             }
         }
-        else if(testName.equals(HEMOGLOBIN)) { // HEMOGLOBIN Anaemia
+        else if(testName.equals(HEMOGLOBIN)) { // HEMOGLOBIN (Anaemia)
             imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
             if(ezdxData.getStatus().equals(Status.TEST_COMPLETED))
                 haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
@@ -1648,13 +1648,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
         }
         else if(testName.equals(URIC_ACID)) { // Uric acid
-            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter)); // TODO: add new image here
+            imageView.setImageDrawable(getDrawable(R.drawable.urine_sample));
             if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
                 uricAcid_editText.setText(String.valueOf(ezdxData.getResult1()));
             }
         }
         else if(testName.equals(CHOLESTEROL)) { // Cholesterol
-            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter)); // TODO: add new image here
+            imageView.setImageDrawable(getDrawable(R.drawable.cholesterol));
             if(ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
                 totalCholestrol_editText.setText(String.valueOf(ezdxData.getResult1()));
             }
