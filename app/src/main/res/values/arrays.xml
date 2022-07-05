@@ -2328,4 +2328,15 @@
         <item>@string/cesarean_section_c_section</item>
     </string-array>
 
+    <!-- Thermal Printer -->
+<!--
+    <string-array name="font_type_esc">
+        <item>@string/spin_default_esc_font</item>
+        <item>Font-A</item>
+        <item>Font-B</item>
+        <item>Font-C</item>
+        <item>Font-D</item>
+    </string-array>
+-->
+
 </resources>

@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -43,11 +44,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
+
+        <activity
+            android:name=".activities.textprintactivity.TextPrintESCActivity"
+            android:label="@string/view_print"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.devicesActivity.DevicesActivity"
+            android:exported="false"
             android:label="@string/devices"
-            android:parentActivityName=".activities.homeActivity.HomeActivity"
-            android:exported="false" />
+            android:parentActivityName=".activities.homeActivity.HomeActivity" />
         <activity
             android:name=".activities.householdSurvey.DraftSurveyActivity"
             android:exported="false"

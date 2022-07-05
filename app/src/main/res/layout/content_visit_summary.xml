@@ -1538,6 +1538,50 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <!--Thermal Printer-->
+     <!--   <TextView
+            android:id="@+id/tv_device_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray2"
+            android:gravity="center"
+            android:padding="10dp"
+            android:tag="-1"
+            android:text="@string/please_connect"
+            android:textSize="18sp" />
+
+        <ProgressBar
+            android:id="@+id/pb_connect"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_disConnect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="@string/disconnect" />
+
+            <Button
+                android:id="@+id/btn_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/connect" />
+        </LinearLayout>-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

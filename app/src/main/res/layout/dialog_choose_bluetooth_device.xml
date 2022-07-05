@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/basic_item_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="16dp"
+        android:text="@string/choose_bluetooth_device"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_title" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/paired_devices"
+            android:textSize="@dimen/text_size_normal" />
+
+        <Button
+            android:id="@+id/btn_hide"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hide_↑↑↑"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <View style="@style/BaseLine" />
+
+    <ListView
+        android:id="@+id/lv_dialog_choose_bluetooth_device_paired_devices"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:divider="@color/stroke_gray_color"
+        android:dividerHeight="1dp" />
+
+    <TextView
+        android:id="@+id/tv_dialog_choose_bluetooth_device_paired_devices_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/tip_have_no_paired_device"
+        android:textColor="@color/hint_text_color"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+    <View style="@style/BaseLine" />
+
+    <View
+        style="@style/BaseLine"
+        android:layout_marginTop="2dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_dialog_choose_bluetooth_device_search_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg_rounded_stroke"
+            android:clickable="true"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:text="@string/search_device"
+            android:textSize="@dimen/text_size_normal" />
+
+        <ProgressBar
+            android:id="@+id/pb_dialog_choose_bluetooth_device_progress_bar"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!--
+        <View style="@style/BaseLine" />
+    -->
+
+    <ListView
+        android:id="@+id/lv_dialog_choose_bluetooth_device_found_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/stroke_gray_color"
+        android:visibility="gone"
+        android:dividerHeight="1dp" />
+
+    <TextView
+        android:id="@+id/tv_dialog_choose_bluetooth_device_found_devices_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/tip_have_no_found_bluetooth_device"
+        android:textColor="@color/hint_text_color"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+
+</LinearLayout>
