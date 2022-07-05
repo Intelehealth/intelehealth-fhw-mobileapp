@@ -361,14 +361,19 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // Method to trigger confirmation dialog
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)
-                .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
-                .replace("Hours", "तास")
-                .replace("Years", "वर्षे")
-                .replace("Days", "दिवस")
-                .replace("Weeks", "आठवडे")
-                .replace("Months", "महिने")
-        ));
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)
+                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
+                    .replace("Hours", "तास")
+                    .replace("Years", "वर्षे")
+                    .replace("Days", "दिवस")
+                    .replace("Weeks", "आठवडे")
+                    .replace("Months", "महिने")
+            ));
+        } else {
+            alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)));
+        }
 
 
         // Handle positive button click
