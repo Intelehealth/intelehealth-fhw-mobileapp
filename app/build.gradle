@@ -15,7 +15,7 @@ android {
         enabled = true
     }
     defaultConfig {
-        applicationId "org.intelehealth.app"
+        applicationId "org.intelehealth.ezazi"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 56

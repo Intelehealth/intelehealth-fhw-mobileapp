@@ -269,11 +269,7 @@ public class CompleteActivity extends AppCompatActivity {
 
         } else {
             binding.callingLayout.setVisibility(View.GONE);
-            if (socket != null) {
-                //socket.emit("create or join", mRoomId);
-                //socket.emit("create_or_join_hw", mRoomJsonObject);
 
-            }
         }
     }
 
@@ -441,7 +437,8 @@ public class CompleteActivity extends AppCompatActivity {
             socket.on(EVENT_CONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: connect");
                 //socket.emit("create or join", "foo");
-                socket.emit("create_or_join_hw", mRoomJsonObject);
+                if (!mIsInComingRequest)
+                    socket.emit("create_or_join_hw", mRoomJsonObject);
 
 
             }).on("ipaddr", args -> {
