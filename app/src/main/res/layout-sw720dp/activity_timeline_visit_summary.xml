@@ -64,4 +64,18 @@
         android:src="@drawable/ic_baseline_videocam_24"
         app:backgroundTint="@color/yellow" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/outcomeTV"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/lato_bold"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/body_element_horizontal_margin"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="40dp"/>
+
 </RelativeLayout>

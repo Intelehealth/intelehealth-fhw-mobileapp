@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,16 +50,19 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationReceiver;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -75,6 +81,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     int stageNo = 0;
     String value = "";
     String isVCEPresent = "";
+    FloatingActionButton fabc, fabv;
+    private SQLiteDatabase db;
+    TextView outcomeTV;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -104,7 +113,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
         //  triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
-        FloatingActionButton fabc = findViewById(R.id.fabc);
+
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +141,6 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 startActivity(chatIntent);
             }
         });
-        FloatingActionButton fabv = findViewById(R.id.fabv);
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,6 +200,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        fabv = findViewById(R.id.fabv);
+        outcomeTV = findViewById(R.id.outcomeTV);
+        fabc = findViewById(R.id.fabc);
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
         endStageButton = findViewById(R.id.endStageButton);
@@ -255,11 +267,16 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 stageNo = 0;
                 // do not hing
             }
-        } else {
-            endStageButton.setEnabled(false);
-            endStageButton.setClickable(false);
-            endStageButton.setBackgroundColor(getResources().getColor(R.color.divider));
-            endStageButton.setTextColor(getResources().getColor(R.color.white));
+        }
+        else {
+            String outcome = fetchOutcome(isVCEPresent);
+            endStageButton.setVisibility(View.INVISIBLE);
+            if(!outcome.equalsIgnoreCase("")) {
+                outcomeTV.setVisibility(View.VISIBLE);
+                outcomeTV.setText("Outcome: " + outcome);
+            }
+            fabc.setVisibility(View.GONE);
+            fabv.setVisibility(View.GONE);
         }
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
@@ -305,6 +322,25 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private String fetchOutcome(String encounterID) {
+        String outcome = "";
+        String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid = ?";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterID, UuidDictionary.BIRTH_OUTCOME});
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    outcome = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+        return outcome;
     }
 
 
