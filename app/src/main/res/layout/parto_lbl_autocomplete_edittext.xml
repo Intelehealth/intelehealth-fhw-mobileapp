@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/round_corner_gray_stroke_light"
         android:gravity="center_vertical"
-        android:hint="Enter Value"
+        android:hint="Enter Value:"
         android:inputType="numberDecimal"
         android:padding="@dimen/common_padding"
         android:textColor="@color/gray_4"
