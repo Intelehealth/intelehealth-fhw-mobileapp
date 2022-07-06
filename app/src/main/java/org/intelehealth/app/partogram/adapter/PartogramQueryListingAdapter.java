@@ -200,12 +200,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().trim().isEmpty() && mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Temperature(C)")) {
+                if (!s.toString().trim().isEmpty()  && mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Temperature(C)")) {
                     if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
                             Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
                         //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
@@ -213,6 +208,15 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         dataEditText.requestFocus();
                         return;
                     }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (dataEditText.getText().toString().endsWith(".")){
+                    dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+                }
+                else{
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
             }
@@ -256,4 +260,3 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     }
 }
-

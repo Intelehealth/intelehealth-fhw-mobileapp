@@ -524,6 +524,10 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        return age_float;
 //    }
 
+
+
+
+
     public void setDisplay(String dataString) {
 
         String patientSelection = "uuid = ?";
@@ -621,6 +625,21 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
+
+        //unique Ezazi registration number
+        TextView textView_UER_No=findViewById(R.id.textView_UER_No);
+
+
+
+//        Log.d("country_vijay", patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2));
+//        String RegNo= patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2);
+//        Log.d("RegNo_vijay", RegNo);
+//        textView_UER_No.setText(RegNo);
+//        if (patient_new.getCity_village() !=null && patient_new.getState_province() !=null){
+//            Log.d("country_vijay", patient_new.getCity_village().substring(0,2));
+//            Log.d("state_vijay", patient_new.getState_province().substring(0,2));
+//
+//        }
 
 
         if (!sessionManager.getLicenseKey().isEmpty()) {
