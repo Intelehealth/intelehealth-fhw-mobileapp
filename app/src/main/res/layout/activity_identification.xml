@@ -719,7 +719,41 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <Space
+                            android:layout_width="20dp"
+                            android:layout_height="10dp" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/select_ngo"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/ngo_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/other_ngo_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:hint="@string/txt_others"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
 
                         <Space
                             android:layout_width="20dp"
@@ -770,7 +804,8 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/card_content_sub_text_size"
                             android:hint="@string/txt_others"
-                            android:visibility="gone"/>
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <View
                             android:layout_width="match_parent"

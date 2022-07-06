@@ -36,12 +36,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DailyPerformanceActivity extends AppCompatActivity {
 
-    TextView totalCallTV, ableReachTV, unableReachTV, rescheduleCallTV, notPickUpTV, notReachTV, notValidNoTV;
+    TextView totalCallTV, ableReachTV, unableReachTV, rescheduleCallTV, notPickUpTV, notReachTV, notValidNoTV, patientDeniedTV, patientCounselledTV, adviceProvidedTV;
     SessionManager sessionManager;
     String providerPhoneNum;
     String encoded = "", url = "", todayDate_string="";
     UrlModifiers urlModifiers = new UrlModifiers();
-    int count_able_reach,count_unable_reach, count_reschedule_call, count_not_valid, count_not_pickUp, count_not_reachable = 0;
+    int count_able_reach,count_unable_reach, count_reschedule_call, count_not_valid, count_not_pickUp, count_not_reachable, count_counselled, count_denied_counselled, count_adviced = 0;
     Context context;
     Toolbar mToolbar;
     CustomProgressDialog customProgressDialog;
@@ -70,6 +70,7 @@ public class DailyPerformanceActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DailyPerformanceModel dailyPerformanceModel) {
                         count_able_reach = 0; count_unable_reach = 0; count_reschedule_call = 0;
+                        count_counselled = 0; count_denied_counselled = 0; count_adviced = 0;
                         count_not_valid = 0; count_not_pickUp = 0; count_not_reachable = 0;
                         if(dailyPerformanceModel!=null && dailyPerformanceModel.getData()!=null) {
                             for(int i=0;i<dailyPerformanceModel.getData().size();i++)
@@ -78,6 +79,12 @@ public class DailyPerformanceActivity extends AppCompatActivity {
                                     if (dailyPerformanceModel.getData().get(i).getActionIfCompleted() != null && !dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("")) {
                                         if (dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("Reschedule the call"))
                                             count_reschedule_call = dailyPerformanceModel.getData().get(i).getCount();
+                                        else if (dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("Patient Counselled"))
+                                            count_counselled = dailyPerformanceModel.getData().get(i).getCount();
+                                        else if (dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("Patient denied counselling"))
+                                            count_denied_counselled = dailyPerformanceModel.getData().get(i).getCount();
+                                        else if (dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("Medical advice provided"))
+                                            count_adviced = dailyPerformanceModel.getData().get(i).getCount();
                                         else if (dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("Not a valid number"))
                                             count_not_valid = dailyPerformanceModel.getData().get(i).getCount();
                                         else if (dailyPerformanceModel.getData().get(i).getActionIfCompleted().equals("Patient Did Not Pick Up"))
@@ -105,6 +112,9 @@ public class DailyPerformanceActivity extends AppCompatActivity {
         ableReachTV = findViewById(R.id.able_to_reach_TV);
         unableReachTV = findViewById(R.id.unable_to_reach_TV);
         rescheduleCallTV = findViewById(R.id.rescheduleCallTV);
+        patientDeniedTV = findViewById(R.id.deniedCounsellingTV);
+        patientCounselledTV = findViewById(R.id.patientCounselledTV);
+        adviceProvidedTV = findViewById(R.id.adviceProvidedTV);
         notPickUpTV = findViewById(R.id.not_pickup_TV);
         notReachTV = findViewById(R.id.not_reach_TV);
         notValidNoTV = findViewById(R.id.not_valid_number_TV);
@@ -143,6 +153,9 @@ public class DailyPerformanceActivity extends AppCompatActivity {
         unableReachTV.setText(getString(R.string.unable_to_reach) + " " + String.valueOf(count_unable_reach));
         notPickUpTV.setText(getString(R.string.not_picked_up) + ": " + String.valueOf(count_not_pickUp));
         rescheduleCallTV.setText(getString(R.string.reschedule_call) + ": " + String.valueOf(count_reschedule_call));
+        patientCounselledTV.setText(getString(R.string.patient_counselled) + ": " + String.valueOf(count_reschedule_call));
+        patientDeniedTV.setText(getString(R.string.patient_denied_counselling) + ": " + String.valueOf(count_reschedule_call));
+        adviceProvidedTV.setText(getString(R.string.medical_advice_provided) + ": " + String.valueOf(count_reschedule_call));
         notValidNoTV.setText(getString(R.string.not_valid_number) + ": " + String.valueOf(count_not_valid));
         notReachTV.setText(getString(R.string.not_reachable) + ": " + String.valueOf(count_not_reachable));
         customProgressDialog.dismiss();

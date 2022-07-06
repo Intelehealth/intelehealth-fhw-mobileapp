@@ -1,38 +1,49 @@
 package org.intelehealth.msfarogyabharat.activities.medicaladvice;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
 import org.intelehealth.msfarogyabharat.database.dao.ObsDAO;
 import org.intelehealth.msfarogyabharat.database.dao.VisitAttributeListDAO;
 import org.intelehealth.msfarogyabharat.database.dao.VisitsDAO;
 import org.intelehealth.msfarogyabharat.knowledgeEngine.Node;
+import org.intelehealth.msfarogyabharat.models.SendCallData;
 import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
 import org.intelehealth.msfarogyabharat.models.dto.ObsDTO;
 import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
+import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
 import org.intelehealth.msfarogyabharat.syncModule.SyncUtils;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
+import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
@@ -44,6 +55,11 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
 public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
@@ -51,7 +67,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     String patientUuid;
     Context context;
-
+    SQLiteDatabase db;
     Intent i_privacy;
     String privacy_value;
     CustomProgressDialog cpd;
@@ -68,6 +84,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
@@ -281,6 +298,8 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         }
 
         endVisit(visitUuid, patientUuid, endDate);
+
+
     }
 
     private void endVisit(String visitUuid, String patientUuid, String endTime) {
@@ -296,8 +315,72 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
         /*setResult(RESULT_OK);
         finish();*/
-        Intent intent = new Intent(context, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+
+        showCallOverDialog();
+    }
+
+    private void showCallOverDialog() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.call_over);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SimpleDateFormat startFormat = new SimpleDateFormat("dd-MM-yyyy' 'HH:mm", Locale.ENGLISH);
+                Calendar today = Calendar.getInstance();
+                today.add(Calendar.MINUTE, -1);
+                today.set(Calendar.MILLISECOND, 0);
+                Date todayDate1 = today.getTime();
+                String callEndTime = startFormat.format(todayDate1);
+                sendCallData(callEndTime);
+
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void sendCallData(String callEndTime) {
+        SendCallData model = new SendCallData();
+        Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_ivr_call_details LIMIT 1",
+                null);
+        if (searchCursor.moveToFirst()) {
+            do {
+                model.setState(searchCursor.getString(searchCursor.getColumnIndexOrThrow("state")));
+                model.setDistrict(searchCursor.getString(searchCursor.getColumnIndexOrThrow("district")));
+                model.setFacility(searchCursor.getString(searchCursor.getColumnIndexOrThrow("facilityName")));
+                model.setCallDate(searchCursor.getString(searchCursor.getColumnIndexOrThrow("dateOfCalls")));
+                model.setCallStatus(searchCursor.getString(searchCursor.getColumnIndexOrThrow("status")));
+                model.setCallAction(searchCursor.getString(searchCursor.getColumnIndexOrThrow("actionIfCompleted")));
+                model.setCallNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("callNumber")));
+                model.setRemarks(searchCursor.getString(searchCursor.getColumnIndexOrThrow("remarks")));
+                model.setCallStartTime(searchCursor.getString(searchCursor.getColumnIndexOrThrow("callStartTime")));
+                model.setCallEndTime(callEndTime);
+            } while (searchCursor.moveToNext());
+        }
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+        String sendDataUrl = urlModifiers.sendCallData();
+        apiInterface.callPatientData(sendDataUrl,model).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(MedicalAdviceExistingPatientsActivity.this, "Information stored successfully!", Toast.LENGTH_SHORT).show();
+                System.out.println(call);
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+            }
+        });
     }
 }

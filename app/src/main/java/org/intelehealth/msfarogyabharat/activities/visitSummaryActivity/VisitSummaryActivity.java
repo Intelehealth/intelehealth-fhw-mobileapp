@@ -79,6 +79,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.msfarogyabharat.models.SendCallData;
+import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
+import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
+import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -130,6 +135,11 @@ import org.intelehealth.msfarogyabharat.activities.physcialExamActivity.Physical
 import org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -898,7 +908,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
@@ -1025,7 +1034,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } else {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
-                } else {
+                    showCallOverDialog();
+                }
+                else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
                     t.setError(getResources().getString(R.string.please_select_specialization));
                     t.setTextColor(Color.RED);
@@ -1048,7 +1059,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }
-
             }
         });
 
@@ -1666,6 +1676,67 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag.setChecked(false);
             }
         }
+    }
+
+    private void showCallOverDialog() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.call_over);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SimpleDateFormat startFormat = new SimpleDateFormat("dd-MM-yyyy' 'HH:mm", Locale.ENGLISH);
+                Calendar today = Calendar.getInstance();
+                today.add(Calendar.MINUTE, -1);
+                today.set(Calendar.MILLISECOND, 0);
+                Date todayDate1 = today.getTime();
+                String callEndTime = startFormat.format(todayDate1);
+                sendCallData(callEndTime);
+            }
+        });
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void sendCallData(String callEndTime) {
+        SendCallData model = new SendCallData();
+        Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_ivr_call_details LIMIT 1",
+                null);
+        if (searchCursor.moveToFirst()) {
+            do {
+                model.setState(searchCursor.getString(searchCursor.getColumnIndexOrThrow("state")));
+                model.setDistrict(searchCursor.getString(searchCursor.getColumnIndexOrThrow("district")));
+                model.setFacility(searchCursor.getString(searchCursor.getColumnIndexOrThrow("facilityName")));
+                model.setCallDate(searchCursor.getString(searchCursor.getColumnIndexOrThrow("dateOfCalls")));
+                model.setCallStatus(searchCursor.getString(searchCursor.getColumnIndexOrThrow("status")));
+                model.setCallAction(searchCursor.getString(searchCursor.getColumnIndexOrThrow("actionIfCompleted")));
+                model.setCallNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("callNumber")));
+                model.setRemarks(searchCursor.getString(searchCursor.getColumnIndexOrThrow("remarks")));
+                model.setCallStartTime(searchCursor.getString(searchCursor.getColumnIndexOrThrow("callStartTime")));
+                model.setCallEndTime(callEndTime);
+            } while (searchCursor.moveToNext());
+        }
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+        String sendDataUrl = urlModifiers.sendCallData();
+        apiInterface.callPatientData(sendDataUrl,model).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(VisitSummaryActivity.this, "Information stored successfully!", Toast.LENGTH_SHORT).show();
+                System.out.println(call);
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+            }
+        });
     }
 
     private String applyBoldTag(String input) {

@@ -77,6 +77,51 @@
             android:layout_marginBottom="10dp"
             android:background="?android:attr/listDivider" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/patient_counselled"
+            android:textSize="18sp"
+            android:fontFamily="@font/lato_bold"
+            android:id="@+id/patientCounselledTV"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/patient_denied_counselling"
+            android:textSize="18sp"
+            android:fontFamily="@font/lato_bold"
+            android:id="@+id/deniedCounsellingTV"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/medical_advice_provided"
+            android:textSize="18sp"
+            android:fontFamily="@font/lato_bold"
+            android:id="@+id/adviceProvidedTV"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />

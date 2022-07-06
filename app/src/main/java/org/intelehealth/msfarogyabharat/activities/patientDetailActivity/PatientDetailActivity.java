@@ -60,6 +60,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.database.dao.SendCallDataDAO;
 import org.intelehealth.msfarogyabharat.database.dao.SyncDAO;
 import org.intelehealth.msfarogyabharat.models.SendCallData;
 import org.intelehealth.msfarogyabharat.models.dto.PatientAttributesDTO;
@@ -71,6 +72,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -194,6 +196,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     float float_ageYear_Month;
     private boolean isMedicalAdvice;
     private boolean MedicalAdvice = false;
+    String callStatus = "Incoming";
+    String callAction = "Incoming";
+    String callStartTime = "Incoming";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,6 +361,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(callAction.equalsIgnoreCase("Incoming") && callStatus.equalsIgnoreCase("Incoming") && callStartTime.equalsIgnoreCase("Incoming"))
+                    storeCallData(callStatus, callAction, remark);
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
                 SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -466,6 +474,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(callAction.equalsIgnoreCase("Incoming") && callStatus.equalsIgnoreCase("Incoming") && callStartTime.equalsIgnoreCase("Incoming"))
+                        storeCallData(callStatus, callAction, remark);
                     MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
                 }
             });
@@ -1035,6 +1045,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         calling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SimpleDateFormat startFormat = new SimpleDateFormat("dd-MM-yyyy' 'HH:mm", Locale.ENGLISH);
+                Calendar today = Calendar.getInstance();
+                today.add(Calendar.MINUTE, -1);
+                today.set(Calendar.MILLISECOND, 0);
+                Date todayDate1 = today.getTime();
+                callStartTime = startFormat.format(todayDate1);
+
                 /*Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
                 intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
                 startActivity(intent);*/
@@ -1687,11 +1705,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 dialogInterface.dismiss();
                 if(!success) {
-                    storeCallData("Unable to reach patient", selectedItem[0], remark); //these strings has to be sent in same format and in english only
+                    callStatus = "Unable to reach patient";
+                    callAction = selectedItem[0];
+                    storeCallData(callStatus, callAction, remark); //these strings has to be sent in same format and in english only
                     onBackPressed();
                 }
                 else {
-                    storeCallData("Able to reach patient", selectedItem[0], remark); //these strings has to be sent in same format and in english only
+                    callStatus = "Able to reach patient";
+                    callAction = selectedItem[0];
+                    storeCallData(callStatus, callAction, remark); //these strings has to be sent in same format and in english only
 
                 }
             }
@@ -1709,6 +1731,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String callDate = currentDate.format(todayDate) + " 00:00";
 
         //populate the body for
+        SendCallDataDAO sendCallDataDAO = new SendCallDataDAO();
         SendCallData sendCallData = new SendCallData();
         sendCallData.state = patient_new.getState_province();
         sendCallData.district = patient_new.getCity_village();
@@ -1717,23 +1740,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         sendCallData.callDate = callDate;
         sendCallData.remarks = remark;
         sendCallData.callNumber = sessionManager.getProviderPhoneno();
+        sendCallData.callStartTime = callStartTime;
         sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
-        UrlModifiers urlModifiers = new UrlModifiers();
-        ApiInterface apiInterface = AppConstants.apiInterface;
-        String sendDataUrl = urlModifiers.sendCallData();
-        apiInterface.callPatientData(sendDataUrl,sendCallData).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(PatientDetailActivity.this, getString(R.string.data_stored_successfully), Toast.LENGTH_LONG).show();
-                System.out.println(call);
-                System.out.println(response);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
-            }
-        });
+        try {
+            sendCallDataDAO.insertCallData(sendCallData);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

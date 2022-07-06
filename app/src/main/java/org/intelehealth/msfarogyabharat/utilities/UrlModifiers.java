@@ -94,7 +94,7 @@ public class UrlModifiers {
     public String sendCallData()
     {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String urlModifier = "imocalls";
+        String urlModifier = "imocalls2";
         String BASE_URL = "https://" + sessionManager.getServerUrl() + "/";
         return BASE_URL + urlModifier;
     }

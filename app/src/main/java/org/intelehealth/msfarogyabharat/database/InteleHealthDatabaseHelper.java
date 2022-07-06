@@ -214,6 +214,20 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public static final String CREATE_SEND_CALL_DATA = "CREATE TABLE IF NOT EXISTS tbl_ivr_call_details(" +
+            "id INTEGER DEFAULT 1 PRIMARY KEY," +
+            "state TEXT," +
+            "district TEXT," +
+            "facilityName TEXT," +
+            "dateOfCalls TEXT," +
+            "status TEXT," +
+            "actionIfCompleted TEXT," +
+            "callNumber TEXT," +
+            "remarks TEXT," +
+            "callStartTime TEXT," +
+            "callEndTime TEXT" +
+            ")";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_PATIENT_MAIN);
@@ -229,6 +243,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
+        db.execSQL(CREATE_SEND_CALL_DATA);
         uuidInsert(db);
         database = db;
 
