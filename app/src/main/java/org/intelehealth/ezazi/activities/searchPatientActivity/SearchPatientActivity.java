@@ -132,7 +132,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                 String text = toolbarET.getText().toString();
                 if(text!=null || !text.isEmpty() || text.equalsIgnoreCase(" "))
                 {
-                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions
+                            (SearchPatientActivity.this,
                             SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
                     suggestions.clearHistory();
                     query = text;

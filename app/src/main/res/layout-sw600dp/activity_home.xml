@@ -88,7 +88,6 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-<!--
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,6 +101,7 @@
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/round_corner_primary"
                     android:padding="@dimen/common_padding"
+                    android:visibility="gone"
                     android:src="@drawable/ic_baseline_filter_alt_24" />
 
                 <EditText
@@ -119,7 +119,6 @@
                     android:textSize="@dimen/text_24sp"
                     tools:ignore="SpeakableTextPresentCheck" />
             </RelativeLayout>
--->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvActiveVisits"
