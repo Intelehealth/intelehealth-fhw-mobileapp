@@ -650,6 +650,7 @@ public class HomeActivity extends AppCompatActivity {
                     String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
                     if (!birthoutcome.equalsIgnoreCase("")) {
                         activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
+                        filteractivePatient.get(j).setBirthOutcomeValue(birthoutcome);
                     }
                 }
 
@@ -657,6 +658,7 @@ public class HomeActivity extends AppCompatActivity {
                     int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
                     if (issubmitted == 1) { // not yet filled
                         activePatientModels.get(j).setObsExistsFlag(true);
+                        filteractivePatient.get(j).setObsExistsFlag(true);
                     }
                 }
 
@@ -664,10 +666,13 @@ public class HomeActivity extends AppCompatActivity {
                     String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
                     if (latestEncounterName.toLowerCase().contains("stage2")) {
                         activePatientModels.get(j).setStageName("Stage-2");
+                        filteractivePatient.get(j).setStageName("Stage-2");
                     } else if (latestEncounterName.toLowerCase().contains("stage1")) {
                         activePatientModels.get(j).setStageName("Stage-1");
+                        filteractivePatient.get(j).setStageName("Stage-1");
                     } else {
                         activePatientModels.get(j).setStageName("");
+                        filteractivePatient.get(j).setStageName("");
                     }
                 }
 
@@ -709,6 +714,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 // set count of total to this visit to which it belongs to...
                 activePatientModels.get(j).setAlertFlagTotal(count);
+                filteractivePatient.get(j).setAlertFlagTotal(count);
             }
             // #-- Alert logic -- end
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, filteractivePatient, HomeActivity.this, listPatientUUID, sessionManager);
