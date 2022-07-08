@@ -731,7 +731,7 @@ public class HomeActivity extends AppCompatActivity {
                             filteractivePatient.get(j).setVisibilityOrder(4);
                         }
                     }
-                    
+
                 }
 
             }

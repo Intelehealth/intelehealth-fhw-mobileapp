@@ -706,7 +706,9 @@
         <item>metformin 500mg + tab glimeperide 1mg Glimepiride Tablet 2 mg</item>
         <item>Metformin Hydrochloride Tablets 500 mg TAB</item>
         <item>GLIPIZIDE 5MG</item>
-        <item>Альбендазол 400 мг</item>
+
+        <!--Russian-->
+      <!--  <item>Альбендазол 400 мг</item>
         <item>Амлодипин в таблетках 5 мг</item>
         <item>Амоксициллин в капсулах 500 мг</item>
         <item>Амоксициллин в капсулах 250 мг</item>
@@ -805,7 +807,7 @@
         <item>метформин 500 мг + таблетка глимеперид 2 мг таб</item>
         <item>метформин 500 мг + таблетка глимеперид 1 мг Глимепирид таблетка 2 мг</item>
         <item>Таблетки метформина гидрохлорида 500 мг ТАБ</item>
-        <item>ГЛИПИЗИД 5МГ</item>
+        <item>ГЛИПИЗИД 5МГ</item>-->
 
         <!-- This below part not sure from where it was added and by whom - Prajwal -->
         <item>Tab Paracetamol 500mg</item>
