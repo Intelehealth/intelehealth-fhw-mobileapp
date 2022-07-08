@@ -1406,7 +1406,7 @@
         <item>Other disease of hard tissue of teeth</item>
         <item>Infection of teeth or gums</item>
         <!-- Russian Translations -->
-        <item>Малярия</item>
+  <!--      <item>Малярия</item>
         <item>ЗАХВАТ</item>
         <item>Судороги</item>
         <item>Отек</item>
@@ -1611,7 +1611,7 @@
         <item>Гингивит и заболевания пародонта</item>
         <item>Заболевание пульпы и периапикальных тканей</item>
         <item>Другое заболевание твердых тканей зубов</item>
-        <item>Заражение зубов или десен</item>
+        <item>Заражение зубов или десен</item>-->
     </string-array>
 
 </resources>
