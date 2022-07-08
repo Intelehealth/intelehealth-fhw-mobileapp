@@ -174,7 +174,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+
 import com.rt.printerlibrary.factory.printer.ThermalPrinterFactory;
+
 import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 
 import retrofit2.Call;
@@ -643,7 +645,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         .putExtra("patientName", patientName)
                         .putExtra("appointmentId", mAppointmentId)
                         .putExtra("openMrsId", patient.getOpenmrs_id())
-                        .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
+                        .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
                 );
 
 
@@ -741,7 +743,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
-                    editText.setText(patient.getPhone_number());
+
+                    if (patient != null && patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("-")) {
+                        editText.setText(patient.getPhone_number());
+                    }
+
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                             (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     editText.setLayoutParams(layoutParams);
@@ -1168,19 +1174,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
-        {
-            if(gender_tv.equalsIgnoreCase("M"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            }
-            else if(gender_tv.equalsIgnoreCase("F"))
-            {
+            } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            }
-            else
-            {
+            } else {
                 genderView.setText(gender_tv);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1191,39 +1190,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
-        {
-            if(gender_tv.equalsIgnoreCase("M"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            }
-            else if(gender_tv.equalsIgnoreCase("F"))
-            {
+            } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            }
-            else
-            {
+            } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
-        {
-            if(gender_tv.equalsIgnoreCase("M"))
-            {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            }
-            else if(gender_tv.equalsIgnoreCase("F"))
-            {
+            } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            }
-            else
-            {
+            } else {
                 genderView.setText(gender_tv);
             }
-        }
-        else
-        {
+        } else {
             genderView.setText(gender_tv);
         }
 
@@ -2035,6 +2018,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return resultVal;
 
     }
+
     private String showVisitID() {
 
         if (visitUUID != null && !visitUUID.isEmpty()) {
@@ -4167,16 +4151,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
     }*/
 
-  /*  @Override
-    public void printerReadMsgCallback(PrinterInterface printerInterface, byte[] bytes) {
+    /*  @Override
+      public void printerReadMsgCallback(PrinterInterface printerInterface, byte[] bytes) {
 
-    }
+      }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+      @Override
+      public void onPointerCaptureChanged(boolean hasCapture) {
 
-    }
-*/
+      }
+  */
     public class NetworkChangeReceiver extends BroadcastReceiver {
 
         @Override
@@ -4624,7 +4608,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
-    private  int mAppointmentId = 0;
+    private int mAppointmentId = 0;
     private TextView mDoctorAppointmentBookingTextView;
     private TextView mCancelAppointmentBookingTextView;
     private TextView mInfoAppointmentBookingTextView;
@@ -4641,9 +4625,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
-                        if(response==null || response.body() == null) return;
+                        if (response == null || response.body() == null) return;
                         mAppointmentDetailsResponse = response.body();
-                        if(!mAppointmentDetailsResponse.isStatus()){
+                        if (!mAppointmentDetailsResponse.isStatus()) {
                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
                         if (mAppointmentDetailsResponse.getData() == null) {
@@ -4716,9 +4700,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 .enqueue(new Callback<CancelResponse>() {
                                     @Override
                                     public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
-                                        if(response.body() == null) return;
+                                        if (response.body() == null) return;
                                         CancelResponse cancelResponse = response.body();
-                                        if(cancelResponse.isStatus()) {
+                                        if (cancelResponse.isStatus()) {
                                             AppointmentDAO appointmentDAO = new AppointmentDAO();
                                             //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
                                             //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
@@ -4727,7 +4711,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
                                             getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
-                                        }else{
+                                        } else {
                                             Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
 
                                         }
@@ -4756,7 +4740,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SCHEDULE_LISTING_INTENT){
+        if (requestCode == SCHEDULE_LISTING_INTENT) {
             getAppointmentDetails(visitUuid);
         }
     }
@@ -4773,8 +4757,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             intent_esc.putExtra("font-family", objClsDoctorDetails.getFontOfSign());
             intent_esc.putExtra("drSign-text", objClsDoctorDetails.getTextOfSign());
             startActivity(intent_esc);
-        }
-        else {
+        } else {
             Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.no_presc_available), Toast.LENGTH_SHORT).show();
             //  Toast.makeText(VisitSummaryActivity.this, "No Prescription Available", Toast.LENGTH_SHORT).show();
         }
@@ -4811,7 +4794,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                             doctrRegistartionNum;
 
-            Log.e("precs", "htmlpresc_doctor: "+ Html.fromHtml(doctorDetailStr).toString());
+            Log.e("precs", "htmlpresc_doctor: " + Html.fromHtml(doctorDetailStr).toString());
 
 //                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
 //                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
@@ -4825,7 +4808,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
 
-            /*"</div>"*/;
+            /*"</div>"*/
+            ;
 
         }
         return doctorDetailStr;

@@ -19,8 +19,11 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
@@ -29,6 +32,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.StringUtils;
 
 
@@ -42,6 +46,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     interface OnActionListener {
         void onEndVisitClicked(TodayPatientModel todayPatientModel, boolean hasPrescription);
     }
+
     private OnActionListener actionListener;
     List<TodayPatientModel> todayPatientModelList;
     Context context;
@@ -52,6 +57,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+        for (int i = 0; i < todayPatientModelList.size(); i++) {
+            Logger.logD("XYZCES", todayPatientModelList.get(i).getUuid());
+        }
     }
 
     @Override
@@ -79,7 +87,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 //        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, todayPatientModel.getGender()) + ")</b>");
 
-        if (todayPatientModel.getSync().equalsIgnoreCase("0")){
+        if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -112,33 +120,39 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "";
+                String end_date = "", dob = "", mGender = "", patientName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
                         mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
                         patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
                                 idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
-                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
+                        dob = idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
                     } while (idCursor.moveToNext());
                 }
                 idCursor.close();
 
-                String visitSelection = "patientuuid = ?";
-                String[] visitArgs = {patientUuid};
-                String[] visitColumns = {"uuid, startdate", "enddate"};
-                String visitOrderBy = "startdate";
-                Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+//                String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(new Date());
+//                String visitSelection = "patientuuid = ? AND startdate LIKE '%" + currentDate + "T%'";
+//                String[] visitArgs = {patientUuid};
+//                String[] visitColumns = {"uuid, startdate", "enddate"};
+//                String visitOrderBy = "startdate";
+//                Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+//
+//                if (visitCursor != null && visitCursor.getCount() >= 1) {
+//                    if (visitCursor.moveToFirst()) {
+//                        do {
+//                            end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+//                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+//                        } while (visitCursor.moveToNext());
+//                    }
+//                }
+//
+//                if (visitCursor != null)
+//                    visitCursor.close();
 
-                if (visitCursor.getCount() >= 1) {
-                    if (visitCursor.moveToLast() && visitCursor != null) {
-                        do {
-                            end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
-                        } while (visitCursor.moveToPrevious());
-                    }
-                }
-                visitCursor.close();
+                visit_id = todayPatientModelList.get(position).getUuid();
+                end_date = todayPatientModelList.get(position).getEnddate();
 
                 String encounterlocalAdultintial = "";
                 String encountervitalsLocal = null;
@@ -158,7 +172,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         }
                     } while (encounterCursor.moveToNext());
                 }
-                encounterCursor.close();
+
+                if (encounterCursor != null)
+                    encounterCursor.close();
 
                 Boolean past_visit = false;
                 if (end_date == null || end_date.isEmpty()) {
@@ -167,7 +183,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                     past_visit = true;
                 }
 
-                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
+                float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dob);
 
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
