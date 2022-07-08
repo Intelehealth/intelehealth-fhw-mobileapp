@@ -49,7 +49,6 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         final PatientDTO patinet = patients.get(position);
         if (patinet != null) {
             //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
-            visitUUID = visitsDAO.fetchVisitUUIDFromPatientUUID(patinet.getUuid());
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
@@ -63,18 +62,20 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
 
             holder.bodyTextView.setText(body);
 
-            // For Timeline Title...
-            if (patinet.getMiddlename() != null && !patinet.getMiddlename().equalsIgnoreCase("")
-                    && !patinet.getMiddlename().isEmpty()) {
-                patientfullName = patinet.getFirstname() + " " + patinet.getMiddlename() + " " + patinet.getLastname();
-            } else {
-                patientfullName = patinet.getFirstname() + " " + patinet.getLastname();
-            }
-            // end...
         }
+
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                visitUUID = visitsDAO.fetchVisitUUIDFromPatientUUID(patinet.getUuid());
+                // For Timeline Title...
+                if (patinet.getMiddlename() != null && !patinet.getMiddlename().equalsIgnoreCase("")
+                        && !patinet.getMiddlename().isEmpty()) {
+                    patientfullName = patinet.getFirstname() + " " + patinet.getMiddlename() + " " + patinet.getLastname();
+                } else {
+                    patientfullName = patinet.getFirstname() + " " + patinet.getLastname();
+                }
+                // end...
 
                 if(visitUUID != null && visitUUID.equalsIgnoreCase("")) { // visit is not yet created for this user.
                     Log.d("search adapter", "patientuuid" + patinet.getUuid());
