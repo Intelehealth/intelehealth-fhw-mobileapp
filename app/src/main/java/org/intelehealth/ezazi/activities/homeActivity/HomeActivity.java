@@ -117,6 +117,8 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -646,7 +648,7 @@ public class HomeActivity extends AppCompatActivity {
                 encUUID_visitComplete = encounterDAO.getVisitCompleteEncounterByVisitUUID(activePatientModels.get(j).getUuid());
                 encounterUUID = encounterDTO.getUuid();
 
-                if (!encUUID_visitComplete.equalsIgnoreCase("")) {
+                if (!encUUID_visitComplete.equalsIgnoreCase("")) { // birthoutcome
                     String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
                     if (!birthoutcome.equalsIgnoreCase("")) {
                         activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
@@ -654,13 +656,6 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
 
-                if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
-                    int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
-                    if (issubmitted == 1) { // not yet filled
-                        activePatientModels.get(j).setObsExistsFlag(true);
-                        filteractivePatient.get(j).setObsExistsFlag(true);
-                    }
-                }
 
                 if (encounterDTO.getEncounterTypeUuid() != null) {
                     String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
@@ -711,12 +706,56 @@ public class HomeActivity extends AppCompatActivity {
 
                     count = red + yellow + green;
 
+                    // set count of total to this visit to which it belongs to...
+                    activePatientModels.get(j).setAlertFlagTotal(count);
+                    filteractivePatient.get(j).setAlertFlagTotal(count);
+
+                    if (count > 22) { // Red
+                        activePatientModels.get(j).setVisibilityOrder(3);
+                        filteractivePatient.get(j).setVisibilityOrder(3);
+                    } else if (count >= 15 && count <= 22) { // Yellow
+                        activePatientModels.get(j).setVisibilityOrder(2);
+                        filteractivePatient.get(j).setVisibilityOrder(2);
+                    } else if (count < 15) { // Green
+                        activePatientModels.get(j).setVisibilityOrder(1);
+                        filteractivePatient.get(j).setVisibilityOrder(1);
+                    }
+
+                    if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) { // blinking part
+                        int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
+                        if (issubmitted == 1) { // not yet filled
+                            activePatientModels.get(j).setObsExistsFlag(true);
+                            filteractivePatient.get(j).setObsExistsFlag(true);
+
+                            activePatientModels.get(j).setVisibilityOrder(4);
+                            filteractivePatient.get(j).setVisibilityOrder(4);
+                        }
+                    }
+                    
                 }
-                // set count of total to this visit to which it belongs to...
-                activePatientModels.get(j).setAlertFlagTotal(count);
-                filteractivePatient.get(j).setAlertFlagTotal(count);
+
             }
+
             // #-- Alert logic -- end
+            Collections.sort(activePatientModels, new Comparator<ActivePatientModel>() {
+                @Override
+                public int compare(ActivePatientModel t1, ActivePatientModel t2) {
+                    Integer i1 = t1.getVisibilityOrder();
+                    Integer i2 = t2.getVisibilityOrder();
+                    return  i2.compareTo(i1) ;
+                }
+            });
+
+            // #-- Alert logic -- end
+            Collections.sort(filteractivePatient, new Comparator<ActivePatientModel>() {
+                @Override
+                public int compare(ActivePatientModel t1, ActivePatientModel t2) {
+                    Integer i1 = t1.getVisibilityOrder();
+                    Integer i2 = t2.getVisibilityOrder();
+                    return  i2.compareTo(i1) ;
+                }
+            });
+
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, filteractivePatient, HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {

@@ -16,12 +16,16 @@ public class ActivePatientModel {
     String sync;
     String gender;
     int alertFlagTotal;
+    int visibilityOrder;
     private String stageName;
     private boolean obsExistsFlag;
     String birthOutcomeValue;
 
 
-    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
+    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate,
+                              String openmrs_id, String first_name, String middle_name,
+                              String last_name, String date_of_birth, String phone_number,
+                              String sync) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -162,5 +166,19 @@ public class ActivePatientModel {
     public void
     setBirthOutcomeValue(String birthOutcomeValue) {
         this.birthOutcomeValue = birthOutcomeValue;
+    }
+
+    public int getVisibilityOrder() {
+        return visibilityOrder;
+    }
+
+    /*
+    * 1 - Green
+    * 2 - Yellow
+    * 3 - Red
+    * 4 - Blink so that blink always is show above. now through desc order
+    * */
+    public void setVisibilityOrder(int visibilityOrder) {
+        this.visibilityOrder = visibilityOrder;
     }
 }
