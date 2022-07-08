@@ -39,6 +39,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.helpline.activities.followuppatients.FollowUpPatientActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,11 +95,11 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView lastSyncTextView;
     TextView lastSyncAgo;
-    Button manualSyncButton;
+    CardView manualSyncButton;
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6 ,c7;
     private String key = null;
     private String licenseUrl = null;
 
@@ -153,6 +154,7 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7 = findViewById(R.id.btnFollowUp);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -170,11 +172,14 @@ public class HomeActivity extends AppCompatActivity {
         videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
         videoLibrary_textview.setText(R.string.video_library);
 
+
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
         // manualSyncButton.setText(R.string.sync_now);
-        manualSyncButton.setText(R.string.refresh);
+        lastSyncTextView.setText(R.string.refresh);
+
+        //follow up
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -235,6 +240,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 videoLibrary();
+            }
+        });
+
+        c7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(HomeActivity.this,FollowUpPatientActivity.class);
+                startActivity(intent);
             }
         });
 

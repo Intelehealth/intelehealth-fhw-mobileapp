@@ -683,4 +683,6 @@
     <string name="setup_internet_available">A strong Internet connection is required for setup.</string>
     <string name="setup_internet_not_available">You are not connected to the Internet.</string>
     <string name="generic_info">Info!</string>
+    <string name="title_follow_up">Follow Up Visits</string>
+    <string name="due_on">Due Date:</string>
 </resources>
