@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Prajwal Maruti Waingankar on 04-05-2022, 19:14
@@ -103,33 +104,34 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 SimpleDateFormat longTimeFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 String encounterTimeAmPmFormat = "";
-
+                Calendar encounterTimeCalendar = Calendar.getInstance();
                 // check for this enc any obs created if yes than show submitted...
                 obsDAO = new ObsDAO();
                 issubmitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                 try {
-                    Date timeDateType = longTimeFormat.parse(time);
+                    Date timeDateType = time.contains("T") && time.contains("+") ? longTimeFormat.parse(time) : longTimeFormat_.parse(time);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(timeDateType);
+                    encounterTimeCalendar.setTime(timeDateType);
 
                     Log.v("Timeline", "position&CardTime: " + position + " - " + calendar.getTime());
                     if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
                         if (position % 2 == 0) { // Even
-                        //calendar.add(Calendar.HOUR, 1);
-                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                           // calendar.add(Calendar.MINUTE, 2); // Testing
+                            //calendar.add(Calendar.HOUR, 1);
+                            calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                            // calendar.add(Calendar.MINUTE, 2); // Testing
                             Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                         } else { // Odd
-                             calendar.add(Calendar.MINUTE, 10); // Add 30min + 10min
-                           // calendar.add(Calendar.MINUTE, 1); // Testing
+                            calendar.add(Calendar.MINUTE, 10); // Add 30min + 10min
+                            // calendar.add(Calendar.MINUTE, 1); // Testing
                             Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                         }
                     } // end.
                     else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                         calendar.add(Calendar.MINUTE, 5); // Add 15min + 5min since Stage 2
-                       // calendar.add(Calendar.MINUTE, 1); // Testing
+                        calendar.add(Calendar.MINUTE, 5); // Add 15min + 5min since Stage 2
+                        // calendar.add(Calendar.MINUTE, 1); // Testing
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else {
                         // do nothing
@@ -138,8 +140,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
-                        holder.summary_textview.setText(context.getResources().getString(R.string.click_to_enter));
-                        holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.black));
+                        holder.summary_textview.setText("Pending!");
+                        holder.summaryNoteTextview.setText("Tap here to collect the history data!");
+                        holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_orange_dark));
+                        holder.ivEdit.setVisibility(View.GONE);
                     } else {
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);
@@ -149,12 +153,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                          If no obs created than create Missed Enc obs for this disabled encounter. */
                         isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                         if (isMissed == 1 || isMissed == 3) {
+                            holder.summaryNoteTextview.setText("You have missed to collect the history data.");
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
-                        }
-                        else if (isMissed == 2) {
+                            holder.ivEdit.setVisibility(View.GONE);
+                        } else if (isMissed == 2) {
+                            holder.summaryNoteTextview.setText("You have submitted the history data.");
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+
+
+                            holder.ivEdit.setVisibility(View.VISIBLE);
+
                         }
                     }
 
@@ -178,19 +188,19 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage1")) { // start
                         if (position % 2 == 0) { // Even
-                        calendar.add(Calendar.HOUR, 1);
-                        calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
-                          //  calendar.add(Calendar.MINUTE, 2); // Testing
+                            calendar.add(Calendar.HOUR, 1);
+                            calendar.add(Calendar.MINUTE, 20); // Add 1hr + 20min
+                            //  calendar.add(Calendar.MINUTE, 2); // Testing
                             Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                         } else { // Odd
-                             calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
-                           // calendar.add(Calendar.MINUTE, 1); // Testing
+                            calendar.add(Calendar.MINUTE, 40); // Add 30min + 10min
+                            // calendar.add(Calendar.MINUTE, 1); // Testing
                             Log.v("Timeline", "calendarTime 30min: " + calendar.getTime().toString());
                         }
                     } else if (!encounterDTOList.get(position).getEncounterTypeName().equalsIgnoreCase("") &&
                             encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                         calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
-                       // calendar.add(Calendar.MINUTE, 1); // Testing
+                        calendar.add(Calendar.MINUTE, 20); // Add 15min + 5min since Stage 2
+                        // calendar.add(Calendar.MINUTE, 1); // Testing
 
                         Log.v("Timeline", "calendarTime 1Hr: " + calendar.getTime().toString());
                     } else {
@@ -201,6 +211,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
                         //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
+                        holder.ivEdit.setVisibility(View.GONE);
                     } else {
                         holder.cardview.setClickable(false);
                         holder.cardview.setEnabled(false);
@@ -213,10 +224,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         if (isMissed == 1 || isMissed == 3) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
-                        }
-                        else if (isMissed == 2) {
+                            holder.ivEdit.setVisibility(View.GONE);
+                        } else if (isMissed == 2) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+                            holder.ivEdit.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -228,8 +240,23 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
                     holder.cardview.setClickable(false);
                     holder.cardview.setEnabled(false);
+                    holder.summaryNoteTextview.setText("You have submitted the history data.");
                     holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                     holder.summary_textview.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+                    holder.ivEdit.setVisibility(View.VISIBLE);
+                    Log.v("timeline", "minutes enc time: " + time);
+                    Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
+                    long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
+
+                    long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                    Log.v("timeline", "minutes : " + minutes);
+                    int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+                    if (minutes <= limit) {
+                        holder.ivEdit.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.ivEdit.setVisibility(View.GONE);
+                    }
                 }
 
                 if (!isVCEPresent.equalsIgnoreCase("")) { // If visit complete than disable all the cards.
@@ -250,12 +277,17 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     public class TimelineViewHolder extends RecyclerView.ViewHolder {
         CardView cardview;
-        TextView timeTextview, summary_textview, stage1start, stage2start;
+        TextView timeTextview, summary_textview, stage1start, stage2start, summaryNoteTextview;
         FrameLayout frame1, frame2, frame3, frame4;
+        ImageView ivEdit;
         int index;
 
         public TimelineViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            summaryNoteTextview = itemView.findViewById(R.id.summary_note_textview);
+            ivEdit = itemView.findViewById(R.id.ivEdit);
+            ivEdit.setVisibility(View.GONE);
 
             cardview = itemView.findViewById(R.id.cardview_parent);
             timeTextview = itemView.findViewById(R.id.time1);
@@ -263,40 +295,50 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             stage2start = itemView.findViewById(R.id.stage2start);
             summary_textview = itemView.findViewById(R.id.summary_textview);
             frame1 = itemView.findViewById(R.id.frame1);
-
+            ivEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nextIntent(true);
+                }
+            });
             cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int type = 10;
-                    int stage = 1;
-                    String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");
-                    if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage1")) {
-                        //type = getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
-                        type = Integer.parseInt(name[2]) == 2 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
-                    } else if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
-                        stage = 2;
-                        //type = FIFTEEN_MIN; // card clicked is 15mins.
-                        //Stage2_Hour1_1
-                        if (Integer.parseInt(name[2]) == 1) {
-                            type = HOURLY;
-                        } else if (Integer.parseInt(name[2]) == 3) {
-                            type = HALF_HOUR;
-                        } else {
-                            type = FIFTEEN_MIN;
-                        }
-                    }
-
-
-                    Intent i1 = new Intent(context, PartogramDataCaptureActivity.class);
-                    i1.putExtra("patientUuid", patientUuid);
-                    i1.putExtra("name", patientName);
-                    i1.putExtra("visitUuid", visitUuid);
-                    i1.putExtra("encounterUuid", encounterDTOList.get(getAdapterPosition()).getUuid());
-                    i1.putExtra("type", type);
-                    i1.putExtra("stage", stage);
-                    context.startActivity(i1);
+                    nextIntent(false);
                 }
             });
+        }
+
+        void nextIntent(boolean isEditMode) {
+            int type = 10;
+            int stage = 1;
+            String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");
+            if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage1")) {
+                //type = getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
+                type = Integer.parseInt(name[2]) == 2 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
+            } else if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
+                stage = 2;
+                //type = FIFTEEN_MIN; // card clicked is 15mins.
+                //Stage2_Hour1_1
+                if (Integer.parseInt(name[2]) == 1) {
+                    type = HOURLY;
+                } else if (Integer.parseInt(name[2]) == 3) {
+                    type = HALF_HOUR;
+                } else {
+                    type = FIFTEEN_MIN;
+                }
+            }
+
+
+            Intent i1 = new Intent(context, PartogramDataCaptureActivity.class);
+            i1.putExtra("patientUuid", patientUuid);
+            i1.putExtra("name", patientName);
+            i1.putExtra("visitUuid", visitUuid);
+            i1.putExtra("encounterUuid", encounterDTOList.get(getAdapterPosition()).getUuid());
+            i1.putExtra("type", type);
+            i1.putExtra("stage", stage);
+            i1.putExtra("isEditMode", isEditMode);
+            context.startActivity(i1);
         }
     }
 

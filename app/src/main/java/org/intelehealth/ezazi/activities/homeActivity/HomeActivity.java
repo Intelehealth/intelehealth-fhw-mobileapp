@@ -209,7 +209,7 @@ public class HomeActivity extends AppCompatActivity {
     private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
-            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+            Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
             Bundle remoteMessage = getIntent().getExtras();
             try {
                 if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
@@ -264,7 +264,7 @@ public class HomeActivity extends AppCompatActivity {
                                 Log.v(TAG, "Current time - " + new Date());
                                 Log.v(TAG, "Notification time - " + ourDate);
                                 Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 10) {
+                                if (seconds >= 30) {
                                     isOldNotification = true;
                                 }
                             } catch (ParseException e) {
@@ -742,7 +742,7 @@ public class HomeActivity extends AppCompatActivity {
                 public int compare(ActivePatientModel t1, ActivePatientModel t2) {
                     Integer i1 = t1.getVisibilityOrder();
                     Integer i2 = t2.getVisibilityOrder();
-                    return  i2.compareTo(i1) ;
+                    return i2.compareTo(i1);
                 }
             });
 
@@ -752,7 +752,7 @@ public class HomeActivity extends AppCompatActivity {
                 public int compare(ActivePatientModel t1, ActivePatientModel t2) {
                     Integer i1 = t1.getVisibilityOrder();
                     Integer i2 = t2.getVisibilityOrder();
-                    return  i2.compareTo(i1) ;
+                    return i2.compareTo(i1);
                 }
             });
 
@@ -1320,6 +1320,8 @@ public class HomeActivity extends AppCompatActivity {
 
         if (mActivePatientAdapter != null)
             mActivePatientAdapter.notifyDataSetChanged();
+
+        registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
     }
 
     @Override
@@ -2016,4 +2018,20 @@ public class HomeActivity extends AppCompatActivity {
             syncUtils.initialSync("home");
         }
     }
+
+    private BroadcastReceiver mCardMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+          recreate();
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mCardMessageReceiver);
+    }
+
+
 }

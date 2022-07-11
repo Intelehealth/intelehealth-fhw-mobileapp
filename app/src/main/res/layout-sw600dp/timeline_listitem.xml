@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,14 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginVertical="10dp"
         android:gravity="center"
         android:text="Stage 1"
-        android:textSize="@dimen/text_24sp"
-        android:layout_marginVertical="10dp"
         android:textAlignment="center"
         android:textColor="@color/gray_2"
-        android:visibility="gone"
+        android:textSize="@dimen/text_24sp"
         android:textStyle="bold"
+        android:visibility="gone"
         tools:visibility="visible" />
 
     <TextView
@@ -62,7 +61,7 @@
             <View
                 android:id="@+id/vl_1"
                 android:layout_width="2dp"
-                android:layout_height="130dp"
+                android:layout_height="160dp"
                 android:layout_above="@+id/vl_2"
                 android:layout_marginStart="31dp"
                 android:layout_toEndOf="@id/time1"
@@ -97,21 +96,40 @@
                 app:cardPreventCornerOverlap="true"
                 app:contentPadding="10dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:padding="2dp">
 
                     <TextView
-                        android:id="@+id/summary_textview"
+                        android:id="@+id/summary_note_textview"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/click_to_enter"
-                        android:textSize="@dimen/text_24sp"
-                        android:gravity="center"/>
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/ivEdit"
+                        android:text="Tap here to collect the history!"
+                        android:textColor="@color/gray_4"
+                        android:textSize="@dimen/content_text_size" />
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/summary_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/summary_note_textview"
+                        android:gravity="center"
+                        android:text="@string/click_to_enter"
+                        android:textSize="@dimen/header_text_size"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/ic_baseline_lens_24_green"
+                        android:padding="8dip"
+                        android:src="@drawable/ic_mode_edit_white_48px" />
+                </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
 
@@ -152,9 +170,9 @@
                 android:id="@+id/circle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/time2"
-                android:layout_marginStart="15dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/time2"
                 android:src="@drawable/circle_indicator_timeline" />
 
 
@@ -231,9 +249,9 @@
                 android:id="@+id/circle3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/time3"
-                android:layout_marginStart="15dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/time3"
                 android:src="@drawable/circle_indicator_timeline" />
 
             <View

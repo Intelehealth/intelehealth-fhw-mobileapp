@@ -18,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.Epartogram;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
@@ -34,8 +37,6 @@ import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,6 +59,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private int mQueryFor = HOURLY;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private int mStageNumber = STAGE_1;
+    private boolean mIsEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,11 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         mPatientUuid = getIntent().getStringExtra("patientUuid");
         mStageNumber = getIntent().getIntExtra("stage", STAGE_1);
         mQueryFor = getIntent().getIntExtra("type", 0);
+        mIsEditMode = getIntent().getBooleanExtra("isEditMode", false);
+        if (mIsEditMode) {
+            getSupportActionBar().setTitle("Edit : History Collection");
+            mSaveTextView.setText("Update");
+        }
 
         Log.v("visitUuid", mVisitUUID);
         Log.v("EncounterUUID", mEncounterUUID);
@@ -199,7 +206,21 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             ObsDAO obsDAO = new ObsDAO();
             VisitsDAO visitsDAO = new VisitsDAO();
             try {
-                obsDAO.insertObsToDb(obsDTOList);
+                if (mIsEditMode) {
+                    for (int i = 0; i < mObsDTOList.size(); i++) {
+                        ObsDTO obsDTOData = mObsDTOList.get(i);
+                        for (int j = 0; j < obsDTOList.size(); j++) {
+                            if (obsDTOData.getConceptuuid().equals(obsDTOList.get(j).getConceptuuid())) {
+                                obsDTOData.setComment(obsDTOList.get(j).getComment());
+                                obsDTOData.setValue(obsDTOList.get(j).getValue());
+                                obsDAO.updateObs(obsDTOData);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    obsDAO.insertObsToDb(obsDTOList);
+                }
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
                 //visitsDAO.updateVisitSync(mVisitUUID, "false");
 
@@ -221,6 +242,27 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         }
     }
 
+    private List<ObsDTO> mObsDTOList = new ArrayList<>();
+
+    private void setEditData() {
+        if (mIsEditMode) {
+            mObsDTOList = new ObsDAO().getOBSByEncounterUUID(mEncounterUUID);
+            for (int i = 0; i < mObsDTOList.size(); i++) {
+                ObsDTO obsDTO = mObsDTOList.get(i);
+                for (int j = 0; j < mItemList.size(); j++) {
+                    for (int k = 0; k < mItemList.get(j).getParamInfoList().size(); k++) {
+                        if (obsDTO.getConceptuuid().equals(mItemList.get(j).getParamInfoList().get(k).getConceptUUID())) {
+                            mItemList.get(j).getParamInfoList().get(k).setCapturedValue(obsDTO.getValue());
+                            break;
+                        }
+                    }
+
+                }
+            }
+            Log.v("partogram", new Gson().toJson(mItemList));
+        }
+    }
+
     private void prepareDataForHourly() {
         mItemList.clear();
         for (int i = 0; i < PartogramConstants.SECTION_LIST.length; i++) {
@@ -232,13 +274,15 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             mItemList.add(partogramItemData);
         }
 
+        setEditData();
+
         PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
                 (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(PartogramItemData partogramItemData) {
+                    @Override
+                    public void onSelect(PartogramItemData partogramItemData) {
 
-            }
-        });
+                    }
+                });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
@@ -263,6 +307,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
 
         }
+        setEditData();
         PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
                 (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
                     @Override
@@ -293,6 +338,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
 
         }
+        setEditData();
         PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
                 (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
                     @Override

@@ -4,14 +4,18 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
@@ -47,9 +51,11 @@ public class CardGenerationEngine {
             Log.v(TAG, "visitDTOList count - " + visitDTOList.size());
             for (int i = 0; i < visitDTOList.size(); i++) {
                 String visitUid = visitDTOList.get(i).getUuid();
+                Log.v(TAG, "visitUid - " + new Gson().toJson(visitDTOList.get(i)));
+                Log.v(TAG, "visitUid - " + visitUid);
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUid);
                 String latestEncounterTime = encounterDTO.getEncounterTime(); //eg. 2022-06-30T19:58:05.935+0530
-                if(latestEncounterTime==null) continue;
+                if (latestEncounterTime == null) continue;
                 String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid()); //eg. Stage1_Hour1_1
 
                 SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -64,6 +70,7 @@ public class CardGenerationEngine {
                 now.setTime(new Date());
                 now.set(Calendar.SECOND, 0);
                 now.set(Calendar.MILLISECOND, 0);
+
 
                 Log.v(TAG, "latestEncounterTime - " + latestEncounterTime);
                 Log.v(TAG, "latestEncounterName - " + latestEncounterName);
@@ -108,8 +115,16 @@ public class CardGenerationEngine {
     }
 
     private static void playSound() {
+
         try {
-            MediaPlayer.create(IntelehealthApplication.getAppContext(), R.raw.al_1).start();
+            MediaPlayer mediaPlayer = MediaPlayer.create(IntelehealthApplication.getAppContext(), R.raw.al_1);
+            mediaPlayer.start();
+            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,15 +144,22 @@ public class CardGenerationEngine {
         encounterDTO.setPrivacynotice_value("true");
 
         try {
-            encounterDAO.createEncountersToDB(encounterDTO);
+            boolean status = encounterDAO.createEncountersToDB(encounterDTO);
+            if (status) {
+                Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
+
+                sendNotification("Alert!", "Time to collect the History data!", null);
+                int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                    playSound();
+                }
+
+            }
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
-        IntelehealthApplication.getAppContext().sendBroadcast(intent);
 
-        sendNotification("Alert!", "Time to collect the History data!", null);
-        playSound();
     }
 
     private static String getNextEncounterTypeName(String encounterTypeName) {
@@ -191,7 +213,6 @@ public class CardGenerationEngine {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
-                .setSound(null)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 

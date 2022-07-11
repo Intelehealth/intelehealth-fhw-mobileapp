@@ -237,6 +237,29 @@ public class ObsDAO {
         return obsDTOList;
     }
 
+    public List<ObsDTO> getOBSByEncounterUUID(String encounteruuid) {
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //take All obs except image obs
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?",
+                new String[]{encounteruuid});
+        ObsDTO obsDTO = new ObsDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTOList.add(obsDTO);
+            }
+        }
+        idCursor.close();
+
+        return obsDTOList;
+    }
+
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

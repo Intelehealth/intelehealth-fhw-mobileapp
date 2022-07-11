@@ -125,7 +125,7 @@ public class CallListenerBackgroundService extends Service {
                 }*/
                     if (value == null) return;
                     String device_token = String.valueOf(value.get("device_token"));
-                    if (!device_token.equals(refreshedFCMTokenID)) return;
+                   // if (!device_token.equals(refreshedFCMTokenID)) return;  // commented for ezazi only
                     Bundle bundle = new Bundle();
                     bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
                     bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
@@ -152,7 +152,7 @@ public class CallListenerBackgroundService extends Service {
                                 Log.v(TAG, "Current time - " + new Date());
                                 Log.v(TAG, "Notification time - " + ourDate);
                                 Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 10) {
+                                if (seconds >= 30) {
                                     isOldNotification = true;
                                 }
                             } catch (ParseException e) {

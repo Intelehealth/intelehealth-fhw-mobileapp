@@ -148,8 +148,8 @@ public class CompleteActivity extends AppCompatActivity {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
-                    //socket.emit("create or join", mRoomId);
-                    socket.emit("create_or_join_hw", mRoomJsonObject);
+                    socket.emit("create or join", mRoomId); // incoming
+                    //socket.emit("create_or_join_hw", mRoomJsonObject); // outgoing
                     initializeSurfaceViews();
 
                     initializePeerConnectionFactory();
@@ -167,8 +167,8 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (socket != null) {
-                    //socket.emit("create or join", mRoomId);
-                    socket.emit("create_or_join_hw", mRoomId);
+                    socket.emit("create or join", mRoomId);
+                    //socket.emit("create_or_join_hw", mRoomId);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -390,15 +390,18 @@ public class CompleteActivity extends AppCompatActivity {
         if (checkAndRequestPermissions()) {
             connectToSignallingServer();
 
-            initializeSurfaceViews();
+            if (!mIsInComingRequest) {
 
-            initializePeerConnectionFactory();
+                initializeSurfaceViews();
 
-            createVideoTrackFromCameraAndShowIt();
+                initializePeerConnectionFactory();
 
-            initializePeerConnections();
+                createVideoTrackFromCameraAndShowIt();
 
-            startStreamingVideo();
+                initializePeerConnections();
+
+                startStreamingVideo();
+            }
         }
     }
 
@@ -480,21 +483,27 @@ public class CompleteActivity extends AppCompatActivity {
                     }
                 });
 
+
             }).on("ready", args -> {
+
                 for (Object arg : args) {
                     Log.d(TAG, "ready - " + arg);
                 }
                 Log.d(TAG, "connectToSignallingServer: ready");
-                isChannelReady = true;
-                maybeStart();
-                //
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(CompleteActivity.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
-                        binding.statusTv.setVisibility(View.GONE);
-                    }
-                });
+                if (mIsInComingRequest) {
+                    //socket.emit("ready");
+                } else {
+                    isChannelReady = true;
+                    maybeStart();
+                    //
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CompleteActivity.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
+                            binding.statusTv.setVisibility(View.GONE);
+                        }
+                    });
+                }
 
             }).on("log", args -> {
                 for (Object arg : args) {
@@ -505,6 +514,7 @@ public class CompleteActivity extends AppCompatActivity {
                 try {
                     if (args[0] instanceof String) {
                         String message = (String) args[0];
+                        Log.d(TAG, "connectToSignallingServer: got String message " + message);
                         if (message.equals("got user media")) {
                             maybeStart();
                         }
@@ -596,9 +606,9 @@ public class CompleteActivity extends AppCompatActivity {
         Log.d(TAG, "maybeStart: " + isStarted + " " + isChannelReady);
         if (!isStarted && isChannelReady) {
             isStarted = true;
-            if (isInitiator) {
+           // if (isInitiator) {
                 doCall();
-            }
+            //}
         }
     }
 
@@ -736,23 +746,40 @@ public class CompleteActivity extends AppCompatActivity {
             @Override
             public void onIceCandidate(IceCandidate iceCandidate) {
                 Log.d(TAG, "onIceCandidate: ");
-                JSONObject message = new JSONObject();
-                JSONObject candidate = new JSONObject();
+                if (mIsInComingRequest) {
+                    JSONObject message = new JSONObject();
 
-                try {
-                    candidate.put("type", "candidate");
-                    candidate.put("sdpMLineIndex", iceCandidate.sdpMLineIndex);
-                    candidate.put("sdpMid", iceCandidate.sdpMid);
-                    candidate.put("candidate", iceCandidate.sdp);
-                    //candidate.put("usernameFragment", "123");
+                    try {
+                        message.put("type", "candidate");
+                        message.put("label", iceCandidate.sdpMLineIndex);
+                        message.put("id", iceCandidate.sdpMid);
+                        message.put("candidate", iceCandidate.sdp);
 
-                    message.put("type", "candidate");
-                    message.put("candidate", candidate);
+                        Log.d(TAG, "onIceCandidate: sending candidate " + message);
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
 
-                    Log.d(TAG, "onIceCandidate: sending candidate " + message);
-                    sendMessage(message);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    JSONObject message = new JSONObject();
+                    JSONObject candidate = new JSONObject();
+
+                    try {
+                        candidate.put("type", "candidate");
+                        candidate.put("sdpMLineIndex", iceCandidate.sdpMLineIndex);
+                        candidate.put("sdpMid", iceCandidate.sdpMid);
+                        candidate.put("candidate", iceCandidate.sdp);
+                        //candidate.put("usernameFragment", "123");
+
+                        message.put("type", "candidate");
+                        message.put("candidate", candidate);
+
+                        Log.d(TAG, "onIceCandidate: sending candidate " + message);
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
