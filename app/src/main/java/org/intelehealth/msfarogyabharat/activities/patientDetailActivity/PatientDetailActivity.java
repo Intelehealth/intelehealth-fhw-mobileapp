@@ -1,6 +1,7 @@
 package org.intelehealth.msfarogyabharat.activities.patientDetailActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -516,6 +517,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if(((Activity) context).isFinishing())
+            return;
 
         if (TextUtils.isEmpty(phoneNumber))
             return;
