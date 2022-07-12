@@ -21,4 +21,5 @@
     <string name="live_birth">Live Birth</string>
     <string name="still_birth">Still Birth</string>
     <string name="action_birthoutcome">Birth Outcome</string>
+    <string name="this_option_available_tablet_device">This option is available on a Tablet device</string>
 </resources>

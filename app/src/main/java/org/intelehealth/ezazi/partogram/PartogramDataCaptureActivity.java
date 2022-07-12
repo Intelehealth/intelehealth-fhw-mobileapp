@@ -60,6 +60,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private int mStageNumber = STAGE_1;
     private boolean mIsEditMode = false;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         mStageNumber = getIntent().getIntExtra("stage", STAGE_1);
         mQueryFor = getIntent().getIntExtra("type", 0);
         mIsEditMode = getIntent().getBooleanExtra("isEditMode", false);
+        context = PartogramDataCaptureActivity.this;
         if (mIsEditMode) {
             getSupportActionBar().setTitle("Edit : History Collection");
             mSaveTextView.setText("Update");
@@ -104,10 +106,18 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         });
 
         mEpartogramTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Epartogram.class);
-            intent.putExtra("patientuuid", mPatientUuid);
-            intent.putExtra("visituuid", mVisitUUID);
-            startActivity(intent);
+            int dpi = context.getResources().getConfiguration().densityDpi;
+            Log.i("Timeline", "Screen size in DP: " + dpi);
+            if(dpi > 600) {
+                Intent intent = new Intent(this, Epartogram.class);
+                intent.putExtra("patientuuid", mPatientUuid);
+                intent.putExtra("visituuid", mVisitUUID);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(context, R.string.this_option_available_tablet_device, Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         FloatingActionButton fabc = findViewById(R.id.fabc);

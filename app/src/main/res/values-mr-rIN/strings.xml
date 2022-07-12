@@ -815,5 +815,6 @@
     <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
     <string name="click_to_enter">Click to Enter</string>
     <string name="add_patient_txt">Add Patient</string>
+    <string name="this_option_available_tablet_device">This option is available on a Tablet device</string>
 
 </resources>

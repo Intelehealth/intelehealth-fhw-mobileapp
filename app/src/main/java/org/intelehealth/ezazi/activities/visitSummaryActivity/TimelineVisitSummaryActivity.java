@@ -189,11 +189,19 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void showEpartogram() {
-        // Call webview here...
-        Intent intent = new Intent(context, Epartogram.class);
-        intent.putExtra("patientuuid", patientUuid);
-        intent.putExtra("visituuid", visitUuid);
-        startActivity(intent);
+        int dpi = context.getResources().getConfiguration().densityDpi;
+        Log.i("Timeline", "Screen size in DP: " + dpi);
+        if(dpi > 600) {
+            // Call webview here...
+            Intent intent = new Intent(context, Epartogram.class);
+            intent.putExtra("patientuuid", patientUuid);
+            intent.putExtra("visituuid", visitUuid);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(context, R.string.this_option_available_tablet_device, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void initUI() {
