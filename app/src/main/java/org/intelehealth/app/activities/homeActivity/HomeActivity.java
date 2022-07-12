@@ -345,8 +345,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+917005308163";
                 String message =
-                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                        getString(R.string.hello_my_name_is) +""+ sessionManager.getChwname() + " " +
+                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance)+sessionManager.getMindMapServerUrl()+" "+getString(R.string.and)+""+sessionManager.getLocationName()+"\"";
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(
