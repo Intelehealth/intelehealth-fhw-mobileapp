@@ -155,9 +155,14 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
+            textView.setSingleLine(false);
             Log.v(TAG, new_result);
-            textView.setText(Html.fromHtml(new_result));
 
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                textView.setText(Html.fromHtml(getUpdateTranslations(new_result)));
+            } else {
+                textView.setText(Html.fromHtml(new_result));
+            }
 
 //            alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -574,6 +579,26 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             v.startAnimation(bottomUp);
         }
 
+    }
+
+    private String getUpdateTranslations(String text) {
+        text = text
+                .replace("High BP", "उच्च रक्तदाब")
+                .replace("Heart Disease", "हृदयरोग")
+                .replace("Stroke", "अर्धांगवायू")
+                .replace("Diabetes", "मधुमेह")
+                .replace("Asthma", "दमा")
+                .replace("Tuberculosis", "क्षयरोग")
+                .replace("Jaundice", "काविळ")
+                .replace("Cancer", "कर्करोग")
+                .replace("Other", "इतर")
+                .replace("Mother", "आई")
+                .replace("Father", "वडील")
+                .replace("Sister", "बहीण")
+                .replace("Brother", "भाऊ")
+                .replace("Do you have a family history of any of the following?", "तुमच्या कुटुंबात खालीलपैकी कोणत्याही आजाराचा इतिहास आहे का?");
+
+        return text;
     }
 }
 
