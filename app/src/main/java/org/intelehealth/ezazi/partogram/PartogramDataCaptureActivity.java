@@ -124,7 +124,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             float smallestWidth = Math.min(widthDp, heightDp);
             Log.v("epartog", "smallest width: " + smallestWidth);
 
-            if (smallestWidth >= 720) {
+            if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
                 //Device is a 8" tablet
                 // Call webview here...
                 Intent intent = new Intent(this, Epartogram.class);

@@ -213,7 +213,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Log.v("epartog", "Device Size: " + diagonalInches);
 */
 
-        if (smallestWidth >= 720) {
+        if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
             //Device is a 8" tablet
             // Call webview here...
             Intent intent = new Intent(context, Epartogram.class);
