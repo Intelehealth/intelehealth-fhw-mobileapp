@@ -815,7 +815,7 @@
     <string name="hospital_matermnity_val_txt">Please select hospital/maternity</string>
     <string name="click_to_enter">Click to Enter</string>
     <string name="add_patient_txt">Add Patient</string>
-    <string name="this_option_available_tablet_device">डिव्हाइस 8-इंच पेक्षा कमी आहे प्रणाली एपर्टोग्राम दर्शवू नये</string>
+    <string name="this_option_available_tablet_device">एपर्टोग्राम पाहण्यासाठी कृपया 8 इंच किंवा अधिक टॅबलेट वापरा</string>
     <string name="title_activity_epartogram">एपर्टोग्राम</string>
 
 </resources>
