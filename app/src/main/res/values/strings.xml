@@ -856,7 +856,7 @@
     <string name="action_birthoutcome">Birth Outcome</string>
     <string name="endedStage1Button">First Stage Ended</string>
     <string name="unique_Ezazi_registration_number">UER No</string>
-    <string name="this_option_available_tablet_device">This option is available on a Tablet device</string>
+    <string name="this_option_available_tablet_device">The device is less than an 8-inch system should not show the epartogram</string>
 
 
 </resources>

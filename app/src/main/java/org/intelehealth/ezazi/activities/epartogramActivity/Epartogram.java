@@ -65,6 +65,7 @@ public class Epartogram extends AppCompatActivity {
 
         customProgressDialog.show();
         webView.loadUrl(URL + patientUuid + "/" + visitUuid);
+        Log.v("epartog", "webviewUrl: " + URL + patientUuid + "/" + visitUuid);
         
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
