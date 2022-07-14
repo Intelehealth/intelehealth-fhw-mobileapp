@@ -666,7 +666,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_relationship"
@@ -744,7 +745,6 @@
                                     android:drawablePadding="10dp"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:imeOptions="actionUnspecified"

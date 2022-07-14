@@ -280,7 +280,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void getLocationFromServer(String url) {
-        ApiClient.changeApiBaseUrl(url);
+        ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
@@ -306,7 +306,11 @@ public class IntroActivity extends AppCompatActivity {
                         @Override
                         public void onError(Throwable e) {
                             progress.dismiss();
-                            Toast.makeText(IntroActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                                Toast.makeText(context, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(IntroActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override

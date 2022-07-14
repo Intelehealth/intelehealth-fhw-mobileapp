@@ -89,6 +89,16 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                 specialityTextView.setText("सामान्य चिकित्सक");
             }
         }
+        if (sessionManager.getAppLanguage().equals("gu")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("જનરલ ફિઝિશિયન");
+            }
+        }
+        if (sessionManager.getAppLanguage().equals("as")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("সাধাৰণ চিকিৎসক");
+            }
+        }
 
         rvSlots = findViewById(R.id.rvSlots);
         rvSlots.setLayoutManager(new GridLayoutManager(this, 3));

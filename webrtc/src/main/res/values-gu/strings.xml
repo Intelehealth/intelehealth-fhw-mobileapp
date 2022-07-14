@@ -48,5 +48,6 @@
     <string name="call_end_aler_txt">શું તમે વિડિઓ કૉલ સમાપ્ત કરવા માંગો છો?</string>
     <string name="yes">હા</string>
     <string name="no">ના</string>
-
+    <string name="type_text_here_str">લખાણ અંહિ લખો ...</string>
+    <string name="disconneted_alert_str">જોડાણ તૂટી ગયુ!</string>
 </resources>

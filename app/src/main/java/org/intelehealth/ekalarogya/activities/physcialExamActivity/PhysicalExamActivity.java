@@ -1,5 +1,6 @@
 package org.intelehealth.ekalarogya.activities.physcialExamActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -39,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
+import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -300,60 +301,74 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     @Override
     public void fabClickedAtEnd() {
 
-        complaintConfirmed = physicalExamMap.areRequiredAnswered();
+         AnswerResult answerResult = physicalExamMap.checkAllRequiredAnsweredPhy(PhysicalExamActivity.this);
+        if (!answerResult.result) {
+            // show alert dialog
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
 
-        if (complaintConfirmed) {
-
-            physicalString = physicalExamMap.generateFindings();
-
-            List<String> imagePathList = physicalExamMap.getImagePathList();
-
-            if (imagePathList != null) {
-                for (String imagePath : imagePathList) {
-                    updateImageDatabase();
                 }
-            }
+            });
+            Dialog alertDialog = alertDialogBuilder.show();
+            Log.v(TAG, answerResult.requiredStrings);
+            return;
+        }else {
+            complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
-            if (intentTag != null && intentTag.equals("edit")) {
-                updateDatabase(physicalString);
-                Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
-                intent.putExtra("patientUuid", patientUuid);
-                intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("encounterUuidVitals", encounterVitals);
-                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                intent.putExtra("state", state);
-                intent.putExtra("name", patientName);
-                intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                intent.putExtra("tag", intentTag);
-                intent.putExtra("hasPrescription", "false");
+            if (complaintConfirmed) {
 
-                for (String exams : selectedExamsList) {
-                    Log.i(TAG, "onClick:++ " + exams);
+                physicalString = physicalExamMap.generateFindings();
+                List<String> imagePathList = physicalExamMap.getImagePathList();
+                if (imagePathList != null) {
+                    for (String imagePath : imagePathList) {
+                        updateImageDatabase();
+                    }
                 }
-                // intent.putStringArrayListExtra("exams", selectedExamsList);
-                startActivity(intent);
+
+                if (intentTag != null && intentTag.equals("edit")) {
+                    updateDatabase(physicalString);
+                    Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent.putExtra("tag", intentTag);
+                    intent.putExtra("hasPrescription", "false");
+
+                    for (String exams : selectedExamsList) {
+                        Log.i(TAG, "onClick:++ " + exams);
+                    }
+                    // intent.putStringArrayListExtra("exams", selectedExamsList);
+                    startActivity(intent);
+                } else {
+                    boolean obsId = insertDb(physicalString);
+                    Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
+                    intent1.putExtra("patientUuid", patientUuid);
+                    intent1.putExtra("visitUuid", visitUuid);
+                    intent1.putExtra("encounterUuidVitals", encounterVitals);
+                    intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent1.putExtra("state", state);
+                    intent1.putExtra("name", patientName);
+                    intent1.putExtra("tag", intentTag);
+                    intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent1.putExtra("hasPrescription", "false");
+                    // intent1.putStringArrayListExtra("exams", selectedExamsList);
+                    startActivity(intent1);
+                }
+
             } else {
-                boolean obsId = insertDb(physicalString);
-                Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
-                intent1.putExtra("patientUuid", patientUuid);
-                intent1.putExtra("visitUuid", visitUuid);
-                intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                intent1.putExtra("state", state);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", intentTag);
-                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                intent1.putExtra("hasPrescription", "false");
-                // intent1.putStringArrayListExtra("exams", selectedExamsList);
-                startActivity(intent1);
+                questionsMissing();
             }
-
-        } else {
-            questionsMissing();
         }
-
     }
 
     @Override

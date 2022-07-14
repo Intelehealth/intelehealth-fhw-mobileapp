@@ -83,7 +83,7 @@
     <string name="identification_screen_prompt_last_name">Last name *</string>
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">Address line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone number</string>
+    <string name="identification_screen_prompt_phone_number">Phone number *</string>
     <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
@@ -1130,4 +1130,6 @@
     <string name="more_than_five_hundred_ml">More than 500 ml</string>
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 
+    <string name="dr_specility_generalphysician">General Physician</string>
+    <string name="update_hw_profile">Updated Succussfully</string>
 </resources>

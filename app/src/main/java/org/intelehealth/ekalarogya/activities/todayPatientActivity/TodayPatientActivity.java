@@ -148,7 +148,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     private void doQuery() {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(cDate);
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b  " +
                 "WHERE a.patientuuid = b.uuid " +
@@ -290,7 +290,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     private void doQueryWithProviders(List<String> providersuuids) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(cDate);
         String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid " +

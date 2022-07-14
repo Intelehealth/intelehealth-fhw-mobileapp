@@ -82,7 +82,7 @@
     <string name="identification_screen_prompt_last_name">उपनाम *</string>
     <string name="identification_screen_prompt_address">पता पंक्ति 1</string>
     <string name="identification_screen_prompt_address2">पता पंक्ति 2</string>
-    <string name="identification_screen_prompt_phone_number">फ़ोन नंबर</string>
+    <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
     <string name="admin_password_dialog_heading">व्यवस्थापक पासवर्ड दर्ज करें</string>
     <string name="identification_screen_prompt_gender">लिंग *</string>
     <string name="identification_screen_checkbox_male">पुरुष </string>
@@ -898,8 +898,8 @@
     <string name="unprotected_well">असुरक्षित कुआं</string>
     <string name="protected_spring">संरक्षित झरना</string>
     <string name="unprotected_spring">असुरक्षित झरना</string>
-    <string name="rainwater">वर्षा जल ट्रक</string>
-    <string name="tanker_truck">टैंकर</string>
+    <string name="rainwater">वर्षा जल</string>
+    <string name="tanker_truck">टैंकर ट्रक</string>
     <string name="cart_with_small_tank">टैंकर छोटे टैंक के साथ</string>
     <string name="surface_water">सतही जल</string>
     <string name="common_hand_pump">सामान्य हैंड पंप</string>
@@ -1135,4 +1135,7 @@
     <string name="two_hundred_fifty_five_hundred_ml">250 – 500 ml</string>
     <string name="more_than_five_hundred_ml">500 ml से अधिक</string>
 
+    <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उनका उत्तर दें।</string>
+    <string name="dr_specility_generalphysician">सामान्य चिकित्सक</string>
+    <string name="update_hw_profile">सफलतापूर्वक अपडेट किया गया</string>
 </resources>

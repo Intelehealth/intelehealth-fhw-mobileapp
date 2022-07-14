@@ -77,9 +77,9 @@
     <string name="identification_screen_prompt_first_name">પ્રથમ નામ *</string>
     <string name="identification_screen_prompt_middle_name">પિતાનું નામ</string>
     <string name="identification_screen_prompt_last_name">છેલ્લું નામ *</string>
-    <string name="identification_screen_prompt_address">એડ્રેસ લાઇન 1</string>
+    <string name="identification_screen_prompt_address">સરનામાની લાઇન નં 1</string>
     <string name="identification_screen_prompt_address2">સરનામાની લાઇન નં 2</string>
-    <string name="identification_screen_prompt_phone_number">ફોન નંબર</string>
+    <string name="identification_screen_prompt_phone_number">ફોન નંબર *</string>
     <string name="admin_password_dialog_heading" translatable="false">એડમિન પાસવર્ડ દાખલ કરો</string>
     <string name="identification_screen_prompt_gender" translatable="false">જાતિ *</string>
     <string name="identification_screen_checkbox_male">પુરુષ</string>
@@ -150,7 +150,7 @@
     <string name="table_pulse" translatable="false">પલ્સ (bpm)</string>
     <string name="table_bp" translatable="false">મહત્વપૂર્ણ સંકેતો</string>
     <string name="table_bpsys" translatable="false">બીપી Sys</string>
-    <string name="table_bpdia" translatable="false">બીપી દિયા</string>
+    <string name="table_bpdia" translatable="false">બીપી Dia</string>
     <string name="table_temp" translatable="false">તાપમાન (C)</string>
     <string name="table_spo2" translatable="false">SpO2 (%)</string>
     <string name="weight_loss_alert_msg">તમારી ઊંચાઈ પ્રમાણે તમારું વજન ઓછું છે.</string>
@@ -225,7 +225,7 @@
     <string name="title_activity_patient_detail" translatable="false">દર્દીની વિગતો</string>
     <string name="header_medical_history" translatable="false">ઇતિહાસ</string>
     <string name="button_new_visit" translatable="false">ડૉક્ટરની નવી સલાહ શરૂ કરો</string>
-    <string name="button_sevika_advice" translatable="false">નવી સલાહ સેવિકા શરૂ કરો</string>
+    <string name="button_sevika_advice" translatable="false">નવી સેવિકા સલાહ શરૂ કરો</string>
     <string name="header_previous_visits" translatable="false">અગાઉની મુલાકાતો</string>
     <string name="header_patient_history" translatable="false">તબીબી ઇતિહાસ</string>
     <string name="header_family_history" translatable="false">પારિવારિક ઇતિહાસ</string>
@@ -353,7 +353,7 @@
     <string name="hide_text">છુપાવો</string>
     <string name="show_text">બતાવો</string>
 
-    <string name="new_patient">નવા દર્દી</string>
+    <string name="new_patient">નવા લાભાર્થી</string>
     <string name="find_patient">દર્દીઓ શોધો</string>
     <string name="video_library">વિડિઓ લાઇબ્રેરી</string>
 
@@ -633,7 +633,7 @@
     <string name="share">શેર કરો</string>
     <string name="please_enter_mobile_number">કૃપા કરીને મોબાઇલ નંબર દાખલ કરો</string>
     <string name="download_prescription_first_before_sharing">શેર કરતા પહેલા પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરો</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*હું (સેવિકા) પુષ્ટિ કરું છું કે મેં ગોપનીયતા સૂચના વાંચી છે અને દર્દીને સંમતિ આપી છે.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*હું (સેવિકા) પુષ્ટિ કરું છું કે મેં ગોપનીયતા સૂચના વાંચી છે અને દર્દીએ સંમતિ આપી છે.</string>
     <string name="enter_10_digits">10 અંકો દાખલ કરો</string>
     <string name="please_read_out_privacy_consent_first">કૃપા કરીને પહેલા ગોપનીયતા સંમતિ વાંચો.</string>
     <string name="view_print">જુઓ/પ્રિન્ટ કરો</string>
@@ -724,7 +724,7 @@
     <string name="setup_select_dropdown_state_msg">ડ્રોપડાઉનમાંથી રાજ્ય પસંદ કરો</string>
     <string name="setup_select_district_str">જિલ્લો પસંદ કરો</string>
     <string name="setup_select_dropdown_district_msg">ડ્રોપડાઉનમાંથી જિલ્લો પસંદ કરો</string>
-    <string name="setup_select_sanch_str">સાંચ પસંદ કરો</string>
+    <string name="setup_select_sanch_str">સંચ પસંદ કરો</string>
     <string name="setup_select_dropdown_sanch_msg">ડ્રોપડાઉનમાંથી સાંચ પસંદ કરો</string>
     <string name="setup_select_village_str">ગામ પસંદ કરો</string>
     <string name="setup_select_dropdown_village_msg">ડ્રોપડાઉનમાંથી ગામ પસંદ કરો</string>
@@ -854,23 +854,23 @@
     <string name="within_5_minutes">5 મિનિટની અંદર</string>
     <string name="five_fifteen_minutes">5 – 15 મિનિટ</string>
     <string name="fifteen_thirty_minutes">15 – 30 મિનિટ</string>
-    <string name="more_than_thirty_minutes">30 મિનિટથી વધુ</string>
+    <string name="more_than_thirty_minutes">30 મિનિટ થી વધુ</string>
     <string name="within_1_km">1 કિમીની અંદર</string>
     <string name="one_three_km">1–3 કિમી</string>
     <string name="three_five_km">3–5 કિમી</string>
-    <string name="more_than_five_km">5 કિમીની અંદર</string>
+    <string name="more_than_five_km">5 કીમી થી વધુ</string>
     <string name="distance_to_nearest_primary_health_centers">નજીકના પ્રાથમિક આરોગ્ય કેન્દ્રથી દૂરી(કિલોમીટર)*</string>
     <string name="distance_to_nearest_community_health_centre_in_walking_time">નજીકના સાર્વજનિક દવાખાનાથી દૂરી*</string>
     <string name="within_3_km">3 કિમીની અંદર</string>
     <string name="three_six_km">3–6 કિમી</string>
-    <string name="more_than_10km">10કિમીથી વધુ</string>
+    <string name="more_than_10km">10 કિમી થી વધુ</string>
     <string name="distance_to_nearest_district_hospital">નજીકના જિલ્લા દવાખાનાથી દૂરી*</string>
     <string name="six_ten_km">6–10 કિમી</string>
     <string name="within_5_km">5 કિમીની અંદર</string>
     <string name="five_ten_km">5–10 કિમી</string>
     <string name="ten_twenty_km">10–20 કિમી</string>
     <string name="twenty_thirty_km">20–30 કિમી </string>
-    <string name="more_than_thirty_km">30 કિમીથી વધુ</string>
+    <string name="more_than_thirty_km">30 કિમી થી વધુ</string>
     <string name="distance_to_the_nearest_medical_store">નજીકના મેડિકલ સ્ટોરથી દૂરી*</string>
     <string name="distance_to_the_nearest_pathological_lab">નજીકના પેથોલોજિકલ લેબથી દૂરી*</string>
     <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">નજીકના ખાનગી દવાખાનાથી દૂરી (MBBS ડોક્ટર હોય એવા)*</string>
@@ -912,7 +912,7 @@
     <string name="piped_into_yard_plot">પાઈપ ટુ યાર્ડ/પ્લોટ</string>
     <string name="public_tap_standpipe">પબ્લિક ટેપ/સ્ટેન્ડપાઈપ</string>
     <string name="tube_well_borehole">ટ્યુબ વેલ/બોરહોલ</string>
-    <string name="protected_well_checkbox">સારી રીતે સુરક્ષિત</string>
+    <string name="protected_well_checkbox">સંરક્ષિત કૂવો</string>
     <string name="unprotected_well">અસુરક્ષિત કૂવો</string>
     <string name="protected_spring">સુરક્ષિત ઝરણું</string>
     <string name="unprotected_spring">અસુરક્ષિત ઝરણું</string>
@@ -1005,7 +1005,7 @@
 
     <!--    Education -->
     <string name="cannot_read_and_write">વાંચી કે લખી શકતા નથી</string>
-    <string name="can_read_and_write">વાંચી અને લખી શકે છે </string>
+    <string name="can_read_and_write">વાંચી અને લખી શકે છે</string>
     <string name="primary_education_till_class_five">પ્રાથમિક શિક્ષા(ધોરણ 5 સુધી)</string>
     <string name="middle_school_sixth_eighth">મિડલ સ્કૂલ (6ઠ્ઠી-8મી)</string>
     <string name="passed_secondary_school">માધ્યમિક શાળા(10 બોર્ડ ) પાસ</string>
@@ -1014,24 +1014,24 @@
     <string name="postgraduate">અનુસ્નાતક</string>
 
     <!--    Occupation -->
-    <string name="salaried_government_job">પગારવાળી સરકારી નોકરી </string>
-    <string name="salaried_private_job">પગારવાળી ખાનગી નોકરી </string>
-    <string name="petty_business_shop_owner">નાનો ધંધો/દુકાનના માલિક </string>
+    <string name="salaried_government_job">પગારવાળી સરકારી નોકરી</string>
+    <string name="salaried_private_job">પગારવાળી ખાનગી નોકરી</string>
+    <string name="petty_business_shop_owner">નાનો ધંધો/દુકાનના માલિક</string>
     <string name="technician_craftsman_other_skilled_work">ટેક્નીસિયન/સિલ્પકાર/અન્ય કુશળ કારીગર (ડ્રાઇવર, સુથાર વગેરે)</string>
-    <string name="agricultural_farmer">ખેતી </string>
-    <string name="tenant_farmer_agricultural_daily_wage_worker">ભાડોકી ખેતી/ ખેત મજૂર </string>
+    <string name="agricultural_farmer">ખેતી</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ભાડોકી ખેતી/ ખેત મજૂર</string>
     <string name="daily_wage_worker_unskilled_workers">દહાડી મજૂર( અકુશળ કારીગર )</string>
-    <string name="household_work">ઘરનું કામ </string>
+    <string name="household_work">ઘરનું કામ</string>
     <string name="student">વિદ્યાર્થી</string>
-    <string name="unemployed">બેરોજગાર </string>
+    <string name="unemployed">બેરોજગાર</string>
     <string name="retired_with_pension">સેવા નિવૃત (પેન્સન સાથે)</string>
     <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
     <string name="not_applicable">લાગુ પડતું નથી</string>
 
     <!--    Smartphones strings -->
     <string name="shared">શેર કરેલ</string>
-    <string name="owns_smartphone">સ્માર્ટફોન છે </string>
-    <string name="owns_feature_phone">સાદો ફોન છે </string>
+    <string name="owns_smartphone">સ્માર્ટફોન છે</string>
+    <string name="owns_feature_phone">સાદો ફોન છે</string>
 
     <!--    Check Strings -->
     <string name="when_was_the_last_time_you_got_your_bp_checked">શું પરિવારની પાસે બેન્ક ખાતું છે?*</string>
@@ -1128,5 +1128,7 @@
     <string name="does_this_household_have_ration_card">શું આ પરિવાર પાસે રાશન કાર્ડ છે?*</string>
 
     <string name="third_dose">ତୃତୀୟ ଦୋଜ</string>
-
+    <string name="answer_following_questions">ફરજિયાત પ્રશ્નો નીચે મુજબ છે, કૃપા કરીને તેમના જવાબ આપો.</string>
+    <string name="dr_specility_generalphysician">જનરલ ફિઝિશિયન</string>
+    <string name="update_hw_profile">સફળતાપૂર્વક અપડેટ કર્યું</string>
 </resources>

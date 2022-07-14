@@ -98,7 +98,7 @@ public class FirstScreenFragment extends Fragment {
             }
             try {
                 insertData();
-            } catch (DAOException exception) {
+            } catch ( DAOException exception ) {
                 exception.printStackTrace();
             }
         });
@@ -346,7 +346,7 @@ public class FirstScreenFragment extends Fragment {
             do {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
-                } catch (DAOException e) {
+                } catch ( DAOException e ) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
@@ -471,7 +471,7 @@ public class FirstScreenFragment extends Fragment {
                 religionAdapter = ArrayAdapter.createFromResource(requireContext(), religionId, android.R.layout.simple_spinner_dropdown_item);
             }
             binding.religionDropDown.setAdapter(religionAdapter);
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             Logger.logE("FirstScreenFragment", "#648", e);
         }
     }

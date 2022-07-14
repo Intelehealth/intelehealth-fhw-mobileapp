@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"ସାମାଜିକ ସ୍ବସ୍ଥ୍ୟ ଗ୍ରାହକ "</string>
+    <string name="app_name">"ଏକଲ ଆରୋଗ୍ୟ ( ସାମାଜିକ ସ୍ଵାସ୍ଥ୍ୟ ଗ୍ରାହକ )"</string>
     <string name="generic_the_flipping_word_next">ପରବତ୍ତର୍ତ୍ତୀ</string>
-    <string name="button_ok">ଓକେ</string>
+    <string name="button_ok">ଠିକ୍ ଅଛି</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
     <string name="action_home">ଘର</string>
     <string name="action_print">ଛାପିବା</string>
     <string name="action_search">ଖୋଜିବା</string>
-    <string name="action_settings">ସେଟିଙ୍ଗ</string>
-    <string name="action_sign_in">ଲଗନ୍ନ କରନ୍ତୁ</string>
+    <string name="action_settings">ସେଟିଂ କରିବା ( ଯୋଜନା )</string>
+    <string name="action_sign_in">ଲଗିନ୍ ( ସଂଲଗ୍ନ ) କରନ୍ତୁ</string>
     <string name="action_sign_in_short">ଖୋଲିବା</string>
     <string name="action_sms">ଏସ୍.ଏମ. ଏସ୍</string>
-    <string name="action_sync_all">ସମନ୍ବତି ପନ୍ଥା</string>
+    <string name="action_sync_all">ତଥ୍ୟ ରିଫ୍ରେସ କରିବା</string>
     <string name="admin_authentication_not_possible">ପ୍ରମାଣ କରିବାରେ ଅସମର୍ଥ</string>
-    <string name="admin_password_dialog_heading">ନୁଶାସିତ ପ୍ରବେଶ ସଙ୍କେତକୁ ଏ୍ଣ୍ଟଣର କରିବା</string>
-    <string name="alert_none_found">ନାମଅନୁସାରେ କେହି ରୋଗୀ ନ ମିଳିଲେ ଅାପଣଙ୍କ ନାମ ଠିକ୍ରେ ଲେଖି ଅଛନ୍ତି କି?</string>
+    <string name="admin_password_dialog_heading">ଆଡମିନ ପାସୱାର୍ଡ ଏଣ୍ଟର କର</string>
+    <string name="alert_none_found">ୟୁଜର ନେମ୍ ଓ ପାସ ୱାର୍ଡ ଚେକ୍ ( ଠିକ୍ ) କରନ୍ତୁ?</string>
     <string name="button_active_pt">କ୍ରିୟାଶୀଳ ରୋଗୀ</string>
-    <string name="button_allow">ନୁଗତି ଦେବା</string>
-    <string name="button_cancel">ବନ୍ଦ କରିବା</string>
+    <string name="button_allow">ଅନୁମତି ଦେବାା</string>
+    <string name="button_cancel">ରଦ୍ଧ କରିବା</string>
     <string name="button_delete">ଉଡ଼େଇନେବା</string>
     <string name="button_deny">ମନା କରିବା</string>
     <string name="button_diagnostic_tests">ରୋଗ ନିର୍ଣ୍ଣୟ ସମ୍ବନ୍ଧିୟ ପରୀକ୍ଷା</string>
-    <string name="button_find_pt">ରୋଗୀକୁ ଦେଖିବା</string>
+    <string name="button_find_pt">ସକ୍ରିୟ ରୋଗୀ</string>
     <string name="button_new_pt">ନୂତନ ରୋଗୀ</string>
     <string name="button_history">ରୋଗୀ ଇତିିହାସ</string>
     <string name="button_new_visit">ଡାକ୍ତରଙ୍କ ନୂତନ ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
     <string name="button_sevika_advice">ସେବାିକା ନୂତନ ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
     <string name="button_save">ସେଭ୍</string>
-    <string name="camera_dialog_default">ଦୟାକରି ଭଲ ଦିଶୁଥିବା ଫଟୋକୁ ଦସ୍ତାବଦ କର ଯଦି ଦସ୍ତାବିଦ ଫଟୋ ଭଲ ନାହିଁ ବା ସ୍ପଷ୍ଟ ନାହିଁ ତେବେ ପୁନର୍ବାର ସ୍ପଷ୍ଟ ଫଟୋ ଉଠାଆ</string>
-    <string name="complaint_category_selected">ରୟନିତ ଅଭିଯୋଗକାରୀ :</string>
+    <string name="camera_dialog_default">ଦୟାକରି ଭଲ ଦିଶୁଥିବା ଫଟୋ ନିଅ , ଯଦି ଭଲ ନାହିଁ କି ସ୍ପଷ୍ଟ ନାହିଁ, ତେବେ ପୁନର୍ବାର / ଆଉ ଥରେ ଫଟୋ ନିଅ</string>
+    <string name="complaint_category_selected">ବିଭାଗ ସବୁ ଚୟନ କରନ୍ତୁ :</string>
     <string name="complaint_change_selected">"ସଂଶୋଧିତ "</string>
-    <string name="complaint_complaint_selected">ଭିଯୋଗଗୁଡ଼ିକ :</string>
-    <string name="complaint_dialog_title">ଭିଯୋଗ ଗୁଡ଼ିକ</string>
-    <string name="complaint_required">"ଭିଯୋଗ ଚୟନ ହେବା ଉଚିତ୍ "</string>
-    <string name="device_id">"ଡ଼ିଭାଇସ୍ ଅାଇଡ଼ "</string>
+    <string name="complaint_complaint_selected">ଅଭିଯୋଗ ସବୁ ଚୟନ କରନ୍ତୁ :</string>
+    <string name="complaint_dialog_title">ଅଭିଯୋଗ ଚୟନ କରନ୍ତୁ</string>
+    <string name="complaint_required">"ଅଭିଯୋଗ ଚୟନ ହେବା ଦରକାର ପ୍ରଶନସନାର୍ଗତବିଧ"</string>
+    <string name="device_id">ଡିଭାଇସ୍ ଆଇ ଡି</string>
     <string name="downloading_protocols">ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋଡ଼ କରିବା</string>
     <string name="downloading">ଡ଼ାଉନ ଲୋଡ଼ିଙ୍ଗ...</string>
-    <string name="enter_license_key">"ଲାଇସେନ୍ସ ନମ୍ବର ନେବା "</string>
+    <string name="enter_license_key">"ଲାଇସେନ୍ସ କି ( ଏଣ୍ଟର ) ପ୍ରବେଶ କରନ୍ତୁ "</string>
     <string name="error_downloading_protocols">ଭୂଲ ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋର୍ଡ଼ କରିବା</string>
-    <string name="error_field_required">ଏହି କ୍ଷେତ୍ର ଅାବଶ୍ଯକ ଅଟେ (ଏହି କ୍ଷେତ୍ରର ଅାବଶ୍ଯତା ଅଛି)</string>
-    <string name="error_incorrect_password">ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ଭୁଲ ଅଟେ</string>
+    <string name="error_field_required">ଏହି କ୍ଷେତ୍ର ଆବଶ୍ୟକ ଅଟେ</string>
+    <string name="error_incorrect_password">ଦୟାକରି ୟୁଜର ନେମ୍ ଓ ପାସ ୱାର୍ଡ ଚେକ୍ କରନ୍ତୁ</string>
     <string name="error_invalid_password">"ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ବହୁତ ଛୋଟ ଅଟେ "</string>
     <string name="error_invalid_email">"ଏହି ବ୍ଯବହାରକାରୀର ନାମ ଅମାନ୍ଯ ଅଟେ "</string>
-    <string name="error_location_not_fetched">ସ୍ଥାନ ପ୍ରାପ୍ତ କରିବାପାଇଁ</string>
-    <string name="error_location_not_selected">"ଦୟାକରି ଡ଼୍ରପଡ଼ାଉନ ସ୍ଥାନରୁ ଏକ ମୂଲ୍ଯ ବାଛିବା "</string>
+    <string name="error_location_not_fetched">ସ୍ଥାନ ପ୍ରାପ୍ତ ପାଇଁ ଅକ୍ଷମ</string>
+    <string name="error_location_not_selected">ଦୟାକରି ଡ୍ରପ ଡାଉନ୍ ସ୍ଥାନରୁ ଏକ ମୂଲ୍ୟ ବାଛନ୍ତୁ</string>
     <string name="error_network">"ତ୍ରୃଟିଯୁକ୍ତ ନେଟ୍ଓ୍ୱାର୍କ "</string>
     <string name="error_no_data">ଦୟାକରି ପରିଦର୍ଶନ ବନ୍ଦ କରିବା ପୂର୍ବରୁ ପ୍ରଥମ ଡାଉନଲୋଡ କରନ୍ତ</string>
     <string name="error_phone_number">ଫୋନ ନମ୍ବର ଖାଲି ରହିବ ନାହିଁ</string>
-    <string name="error_sms">ଏସ୍.ଏମ. ଏସ୍ ଫେଲ ହେଲେ ପଦବୀର ଚେଷ୍ଟାର କର</string>
+    <string name="error_sms">ଏସ ଏମ ଏସ ଫେଲ ହେଲେ ଆଉ ଥରେ ଚେଷ୍ଟା କର </string>
     <string name="find_patient">ରୋଗୀକୁ ଦେଖିବା</string>
-    <string name="flash_auto">"ପ୍ଳାଂସ ଅଟେ "</string>
-    <string name="flash_off">"ପ୍ଳାଂସ ଅଫ "</string>
+    <string name="flash_auto">"ଅଟୋ ଫ୍ଲାସ "</string>
+    <string name="flash_off">"ଡିଲିତ୍ / ଉଡ଼ାଇ ଦେବା "</string>
     <string name="flash_on">"ପ୍ଳାଂସ ଅନ୍ "</string>
-    <string name="generic_cancel">"ବନ୍ଦ କରିବା "</string>
+    <string name="generic_cancel">ନାକଚ କରିବା</string>
     <string name="generic_coming_soon">ଶୀଘ୍ର ଅାସୁଛି</string>
     <string name="generic_erase_redo">ଲିଭାଅ ଏବଂ ଏବଂ ପୁନଃର୍ବାର କର</string>
     <string name="generic_manual_entry">ହାତଦ୍ୱାରା ପ୍ରବେଶ</string>
-    <string name="generic_ok">ଓକେ</string>
+    <string name="generic_ok">ଠିକ୍ ଅଛି</string>
     <string name="generic_warning">ଚେତାବନି</string>
     <string name="header_family_history">ପରିବାର ଇତିହାସ</string>
     <string name="header_medical_history">ଇତିହାସ</string>
     <string name="header_patient_detail">"ରୋଗୀ ସୂଚନା "</string>
-    <string name="header_patient_history">"ଚିକସତ୍ା ଇଚ୍ଛିହାସ "</string>
+    <string name="header_patient_history">"ଚିକିତ୍ସ। ଇତିହାସ "</string>
     <string name="header_previous_visits">"ପୁରାତନ ଯାତ୍ରା "</string>
     <string name="hint_optional">ଇଚ୍ଛାଧିନ</string>
-    <string name="id_number">"ରଡ଼ି ସଂଖ୍ଯା "</string>
+    <string name="id_number">"ଆଇଡି ନମ୍ବର "</string>
     <string name="identification_screen_checkbox_female">ମହିଳା</string>
     <string name="identification_screen_checkbox_male">ପୁରୁଷ</string>
     <string name="identification_screen_dialog_age">ଦୟାକରି ବୟସକୁ ବର୍ଷରେ ପ୍ରବେଶ କରାନ୍ତୁ</string>
-    <string name="identification_screen_dialog_error_dob">"ଭୁଲ: ଅାଜି ପରର ତାରିଖ ପାଇଁ ଜନ୍ମତିଥି ସେଟ ୍ଅଛି "</string>
-    <string name="identification_screen_error_data_fields">ସେବକକୁ ଅପଲୋର୍ଡ଼ କରିବା</string>
+    <string name="identification_screen_dialog_error_dob">"ଆଜି ପରର ତାରିଖ ପାଇଁ ଜନ୍ମ ତିଥି ସେଟ୍ ଅଛି "</string>
+    <string name="identification_screen_error_data_fields">ଭୁଲ , ଡାଟାଫିଲ୍ଡ ଠିକ୍ ରୂପେ ଫର୍ମାଟ ନ ହେବା</string>
     <string name="identification_screen_prompt_address">ଠିକଣା</string>
     <string name="identification_screen_prompt_age">ବୟସ*</string>
     <string name="identification_screen_prompt_time">ସମୟ:</string>
@@ -78,44 +78,44 @@
     <string name="identification_screen_prompt_city">ଗ୍ରାମ/ସହର/ନଗର *</string>
     <string name="identification_screen_prompt_caste">ଜାତି ଚୟନ</string>
     <string name="identification_screen_prompt_address2">ଠିକଣା ରେଖା 2</string>
-    <string name="identification_screen_prompt_economic_status">ଚୟନ</string>
-    <string name="identification_screen_prompt_education">ଶିକ୍ଷା ଚୟନ</string>
+    <string name="identification_screen_prompt_economic_status">ଅର୍ଥନୈତିକ ଅବସ୍ଥା</string>
+    <string name="identification_screen_prompt_education">ଶିକ୍ଷା ସ୍ତର</string>
     <string name="identification_screen_prompt_gender">ଲିଙ୍ଗ *</string>
     <string name="identification_screen_prompt_first_name">ପ୍ରଥମ ନାମ *</string>
     <string name="identification_screen_prompt_last_name">ଶେଷ ନାମ *</string>
     <string name="identification_screen_prompt_middle_name">ମଧ୍ୟମ ନାମ</string>
-    <string name="identification_screen_prompt_phone_number">"ଫୋନ୍ ନମ୍ବର "</string>
+    <string name="identification_screen_prompt_phone_number">"ଫୋନ୍ ନମ୍ବର *"</string>
     <string name="identification_screen_prompt_occupation">ବୃତ୍ତି</string>
     <string name="identification_screen_prompt_relationship">"ପୁଅ/ଟିଅ / ସ୍ତ୍ରୀର "</string>
     <string name="identification_screen_prompt_postal_code">"ପୋଷ୍ଟାଲ କୋଡ଼୍ "</string>
     <string name="identification_screen_prompt_state">ରାଜ୍ଯ *</string>
-    <string name="identification_screen_snack_patient_created">"ରୋଗୀ ନିର୍ମାଣ "</string>
+    <string name="identification_screen_snack_patient_created">"ରୋଗୀ ଚୟନ ସର୍ଭରରେ ଅପଲୋଡ଼ କରିବା "</string>
     <string name="logging_in">"ଲଗିଙ୍ଗ୍ ଇନ କରିବା "</string>
-    <string name="login_location_select">"ସତ୍ର ସ୍ଥାନ "</string>
+    <string name="login_location_select">"ସ୍ଥାନ ବାଛିବା / ସିଲେକ୍ଟ କରିବା "</string>
     <string name="menu_option_end_of_day">ଦିନର ଶେଷ</string>
     <string name="menu_option_logout">"ଲଗ ଅାଉଟ୍ କରିବା "</string>
-    <string name="menu_option_settings">"ସେଟିଙ୍ଗ "</string>
-    <string name="menu_option_sync">ସମନ୍ବତି ପନ୍ଥା</string>
+    <string name="menu_option_settings">ସେଟିଂ କରିବା ( ଯୋଜନା )</string>
+    <string name="menu_option_sync">ତଥ୍ୟ ରିଫ୍ରେସ୍ କରିବା</string>
     <string name="menu_option_hw_profile" translatable="false">ଉପଯୋଗକର୍ତ୍ତା ପ୍ରୋଫାଇଲ୍</string>
 
     <string name="new_patient">ନୂତନ ରୋଗୀ</string>
-    <string name="offline_authentication_not_possible">ଫଲାଇନ୍ ପ୍ରମାଣକରିବାରେ ଅସମର୍ଥ</string>
-    <string name="offline_credentials_unavailable">"ନ୍ ଲଗିନ୍ ଉପଲବ୍ଧ ନାହିଁ "</string>
-    <string name="offline_user_does_not_match">"ଉପଯୋଗୀକର୍ଣ୍ଣ ମେଳକ ନ ହେବା "</string>
+    <string name="offline_authentication_not_possible">ଅପଲାଇନ ପ୍ରମାଣ କରିବାରେ ଅସମର୍ଥ</string>
+    <string name="offline_credentials_unavailable">"ଅପ୍ଲାଇନ ଲଗିନ ଉପଲବ୍ଧ ନାହିଁ "</string>
+    <string name="offline_user_does_not_match">"ଉପଯୋଗ କର୍ତ୍ତା ମେଳକ ନାହିଁ / ମ୍ୟାଚ୍ କରୁନି "</string>
     <string name="patient">"ରୋଗୀ "</string>
     <string name="patient_images">"ରୋଗୀ ପ୍ରୋଫାଇଲ ଛବି "</string>
     <string name="patient_update">"ରୋଗୀ ଅପଡ଼େଟ୍ କରିବା "</string>
     <string name="permission_camera_denied">କ୍ଯାମେରା ଅନୁଗତିକୁ ଅସ୍ବୀକାର କରି ଦିଅାଯାଇଥିଲା ଦୟାକରି କ୍ଯାମେରା ନେବାପାଇଁ ବିଚାର କରାଯାଉ</string>
     <string name="permission_camera_never_askagain">ପରେ କେବେବି କ୍ଯାମେରା ପାଇଁ ପୁନର୍ବାର ପଚାରିବା ଅନୁଚିତ</string>
     <string name="permission_camera_rationale">"କ୍ଯାମେରା ପୂର୍ବାବଲୋକନ ଦେଖିଥିବାପାଇଁ ଅନୁମତିରେ ଅାବଶ୍ଯକତା ଅଟେ "</string>
-    <string name="permission_sms_denied">"ଏସ.ଏମ.ଏସ ଅନମତିକୁ ମନାକରାଗଲା ଦୟାକରି ଅାବେଦନ ପାଇଁ ଏସ.ଏମ.ଏସ୍ ପଠାଥିବାପାଇଁ ଅନୁମତି ଦେବାକୁ ବିଚାର କରାଯାଉ "</string>
-    <string name="permission_sms_never_askagain">"ପୁର୍ନର୍ବାର ଏସ.ଏମ.ଏସ ଅନୁଗତି ପାଇଁ ନପଚାରିବାକୁ ଏସ୍.ଏମ.ଏସ୍ ଅନୁମତିକୁ ବାରଣ କରାଗଲା "</string>
+    <string name="permission_sms_denied">"କ୍ୟାମେରା ଅନୁମତି ମନା କରିଦିଆଗଲା.  କ୍ୟାମେରା ପାଇଁ ଦୟା ପୂର୍ବକ ଏହାକୁ ଅନୁମତି ଦିଅନ୍ତୁ "</string>
+    <string name="permission_sms_never_askagain">"କ୍ୟାମେରା ଅନୁମତି ମନା କରାଗଲା , ପୁନର୍ବାର ପଚାରନ୍ତୁ ନାହିଁ। "</string>
     <string name="permission_sms_rationale">ଏସ.ଏମ.ଏସ ଅନୁମତି ପ୍ରଦାନ କରିବା</string>
-    <string name="picture_taken">"ଚାବି ଦେବା "</string>
+    <string name="picture_taken">"ଛବି ନିଆଗଲା "</string>
     <string name="please_wait_progress">"ଦୟାକରି ଅପେକ୍ଷା କରୁନ୍ତ "</string>
     <string name="pref_default_display_name">ଜନ୍ ସ୍କିଥ୍</string>
-    <string name="pref_header_data_sync">ଡ଼ାଟା ଏବଂ ମିଙ୍କ୍</string>
-    <string name="pref_header_general">ସାମାନ୍ଯ</string>
+    <string name="pref_header_data_sync">ଡାଟା ଓ ରେଫ୍ରେଶ</string>
+    <string name="pref_header_general">ସାଧାରଣ</string>
     <string name="pref_header_notifications">ବିଜ୍ଞପ୍ତିଗୁଡିକ |</string>
     <string name="pref_ringtone_silent">ନିରବ</string>
     <string name="pref_title_display_name">"ନାମ ପ୍ରଦର୍ଶନ "</string>
@@ -130,29 +130,29 @@
     <string name="prompt_email">ବ୍ଯବହାର ନାମ</string>
     <string name="prompt_licensekey">"ଲାଇସେନ୍ସ କୀ "</string>
     <string name="prompt_password">ଗୁପ୍ତ ଶଦ୍ଦ/ସଙ୍କେତ ଶଦ୍ଦ</string>
-    <string name="question_area_picker">ଦୟାକରି କ୍ଷେତ୍ର ଏ୍ଣଟର କରନ୍ତୁ (ପ୍ରସ୍ଥ ଙ୍ଘ ଲମ୍ବ)</string>
+    <string name="question_area_picker">ଦୟାକରି କ୍ଷେତ୍ର ଏଣ୍ଟର କରନ୍ତୁ ( ଲମ୍ବ ଓ ପ୍ରସ୍ଥ )</string>
     <string name="question_date_picker">ଦୟାକରି ତାରିଖ ବାଛନ୍ତୁ ଚୟନ କରନ୍ତୁ</string>
     <string name="question_duration_picker">ଦୟାକରି ଅବଧି ପ୍ରବେଶ କରାନ୍ତୁ</string>
     <string name="question_frequency_picker">ଦୟାକରି କେତେଥର ଏଣଟର କରନ୍ତୁ</string>
     <string name="question_location_picker">ଦୟାକରି ସ୍ଥାନ ଚୟନ କରନ୍ତୁ</string>
     <string name="question_number_picker">ଦୟାକରି ନମ୍ବର ଲେଖନ୍ତୁ</string>
-    <string name="question_range_picker">ଦୟାକରି ଏକ ଶ୍ରେଣୀ ଏଣଟର କରନ୍ତୁ</string>
-    <string name="question_text_input">ଦୟାକରି ପାଠ ଏଣଟର କରନ୍ତୁ</string>
+    <string name="question_range_picker">ଦୟାକରି ପରିସର ଏଣ୍ଟର କରନ୍ତୁ</string>
+    <string name="question_text_input">ଦୟାକରି ପରୀକ୍ଷା ଏଣ୍ଟର କରନ୍ତୁ</string>
     <string name="row_address">ଠିକଣା</string>
     <string name="row_age">ବୟସ</string>
     <string name="row_dob">ଜନ୍ମତିଥି</string>
-    <string name="row_open_visit">ଯାତ୍ରା କୁ ଖୋଲିବା ପାଇଁ କ୍ଳିକ୍ରେ</string>
+    <string name="row_open_visit">ପରିଦର୍ଶନ ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ</string>
     <string name="row_phone_number">ଫୋନ୍ ନମ୍ବର</string>
-    <string name="search_hint">"ଖୋଜା ହୋଇତ୍ଥିବା ରୋଗୀଙ୍କୁ ନାମାନୁସାରେ ପାଇପ୍ କର "</string>
+    <string name="search_hint">"ନାମ ଅନୁସାରେ ରୋଗୀ ଖୋଜିବା ପାଇଁ ଲେଖନ୍ତୁ "</string>
     <string name="setup_download_mindmap">ମାଇଣ୍ଡ ମ୍ଯାଗ୍ ଡ଼ାଉନ୍ ଲୋଡ଼ କରିବା</string>
     <string name="setup_internet">"ସେଟ୍ଅପ ପାଇଁ ଏକ ମଜବୁତ ଇଣଟରନେଟ୍ କନେକସନର ଅାବଶ୍ଯକତା "</string>
     <string name="setup_use_demo_mindmap">"ଡ଼େମୋ ମାଇଣ୍ଡ ମ୍ଯାପ ବ୍ଯବହାର କରିବା "</string>
     <string name="sms_success">ଏସ.ଏମ୍. ଏସ ପଠାଅ!</string>
     <string name="string_no_hist">ରୋଗୀର କୌଣସି ଇତିହାସ ନାହିଁ</string>
-    <string name="switch_camera">କ୍ଯାମେରା ଚିପ୍</string>
-    <string name="switch_flash">ଫ୍ଳାସ କୁ ଟିପ୍</string>
-    <string name="sync_error">ପିଲୋଡ଼୍ ଭୂଲ: ଏପରି କୌଣସି ସ୍ଥିତି ନାହିଁ</string>
-    <string name="table_bmi">"ବିଏମଅାଇ "</string>
+    <string name="switch_camera">କ୍ୟାମେରା ବନ୍ଦ କରିବା</string>
+    <string name="switch_flash">ଫ୍ଲାସ ବନ୍ଦ କରିବା</string>
+    <string name="sync_error">ଭୁଲ , ଏପରି କୌଣସି ସ୍ଥିତି ନାହିଁ</string>
+    <string name="table_bmi">"ବବି ଏମ୍ଆଇ "</string>
     <string name="table_bp">"ମହତ୍ତ୍ୱପୂର୍ଣ୍ଣ ସଙ୍କେତ "</string>
     <string name="table_bpsys">ସିଷ୍ଟୋଲିକ୍ ପ୍ରେସର</string>
     <string name="table_bpdia">ଡ଼ାୟାଷ୍ଟୋଲିକ ପ୍ରେସର</string>
@@ -163,71 +163,71 @@
     <string name="table_spo2">ଏସପିଓ2(%)</string>
     <string name="table_hw">ଶରୀର ମାପ</string>
     <string name="tag_optional">ଇଚ୍ଛାଧିନ</string>
-    <string name="title_activity_additional_documents">ତିରକ୍ତ ଡ଼କୁ୍ଯମେଣ୍ଟସ୍ (ଦସ୍ତାବିଦ୍)</string>
-    <string name="title_activity_complaint_node">" ଚୟନ କରିବା"</string>
-    <string name="title_activity_complaint_questions">ସମସ୍ତ ପ୍ରଶ୍ନର ଉତ୍ତର</string>
-    <string name="title_activity_complaint_select">ଭିଯୋଗ ଗୁଡ଼ିକ</string>
+    <string name="title_activity_additional_documents">ଅତିରିକ୍ତ ଡକୁମେଣ୍ଟ ( ଦସ୍ତାବିଜ୍ )</string>
+    <string name="title_activity_complaint_node">" ଅଭିଯୋଗ ଚୟନ କରନ୍ତୁ"</string>
+    <string name="title_activity_complaint_questions">ସବୁ ପ୍ରଶ୍ନର ଉତ୍ତର ଦିଅନ୍ତୁ</string>
+    <string name="title_activity_complaint_select">ପରିଦର୍ଶନର କାରଣ</string>
     <string name="title_activity_diagnostic_tests_list">ନିଦାନ ପରୀକ୍ଷଣ ବାଛିବା</string>
     <string name="title_activity_camera">କ୍ଯାମେରା</string>
     <string name="title_activity_family_history">ପରିବାର ଇତିହାସ</string>
     <string name="title_activity_get_patient_history">ରୋଗୀ ଇତିିହାସ</string>
     <string name="title_activity_identification">ନୂତନ ରୋଗୀମାନଙ୍କୁ ଯୋଡ଼ିବା</string>
-    <string name="title_activity_login">ବୃଦ୍ଧି ସମ୍ବନ୍ଧୀୟ ସ୍ବାସ୍ଥ୍ୟ</string>
-    <string name="title_activity_patient_detail">ରୋଗୀ ବିବରଣୀ</string>
-    <string name="title_activity_patient_history">ତୀତ ପୁରୁଣା ଚିକିସତ୍ା ଇଚ୍ଛିହାସ</string>
+    <string name="title_activity_login">ଏକଲ ଆରୋଗ୍ୟ</string>
+    <string name="title_activity_patient_detail">ପରିଦର୍ଶନ ତଥ୍ୟ ( ବିବରଣୀ )</string>
+    <string name="title_activity_patient_history">ଅତୀତ ଚିକିତ୍ସ। ଇତହାସ</string>
     <string name="title_activity_patient_summary">ଯାତ୍ରା ସାରାଂଶ</string>
     <string name="title_activity_physical_exam">ଶାରୀରିକ ପରୀକ୍ଷା</string>
     <string name="title_activity_search_patient">ରୋଗୀ ଖୋଜିବା</string>
-    <string name="title_activity_settings">ସେଟିଙ୍ଗ</string>
+    <string name="title_activity_settings">ସେଟିଂ କରିବା ( ଯୋଜନା )</string>
     <string name="title_activity_video_library">ଭିଡ଼ିଓ ଲାଇବ୍ରେରୀ</string>
     <string name="title_activity_vitals">ପ୍ରଧାନ (ମହୂତ୍ତପର୍ଣ୍ଣ)</string>
     <string name="title_home_screen">ଘର</string>
 
-    <string name="toast_crash">ବେଦ ତ୍ରଟି କୁ ମୁକାବିଲା କରିବାକୁ ପଡ଼େ; ରିପୋର୍ଟ ପଠାଗଲା</string>
-    <string name="uploading">ପ୍ ଲୋଡ଼ିଙ୍ଗ</string>
-    <string name="url_invalid">ନିଜର ୟୁଅାରଏଲ୍ କୁ ଯାଞ୍ଚ କରନ୍ତୁ</string>
-    <string name="video_library">ନିଜର ୟୁଅାରଏଲ୍ କୁ ଯାଞ୍ଚ କରନ୍ତୁ</string>
+    <string name="toast_crash">ପ୍ରୟୋଗ ତ୍ରୁଟି , ମୁକାବିଲା କରିବା , ରିପୋର୍ଟ ପଠାଗଲା</string>
+    <string name="uploading">ଅପ୍ଲୋଡିଂ</string>
+    <string name="url_invalid">ଆପଣଙ୍କ ୟୁଆରଏଲ ଯାଞ୍ଚ କରନ୍ତୁ</string>
+    <string name="video_library">ଭିଡିଓ ଗନ୍ତାଘର</string>
     <string name="visit">ଯାତ୍ରା କରିବା</string>
-    <string name="visit_images">ଚାବି ଅାଡ଼ିକୁ ଯାଆ</string>
-    <string name="visit_summary_additional_comments">ତିରକ୍ତ ଟିପଣୀ</string>
-    <string name="visit_summary_advice">ଚିକିସତ୍ା ଉପଦେଶ</string>
+    <string name="visit_images">ଛବିକୁ ଦେଖ / ଛବି ଆଡକୁ ଯାଆନ୍ତୁ</string>
+    <string name="visit_summary_additional_comments">ଅତିରିକ୍ତ ଟିପ୍ପଣୀ</string>
+    <string name="visit_summary_advice">ଚିକିତ୍ସ। ଅନ୍ତର୍ଗତ ଉପଦେଶ</string>
     <string name="visit_summary_bmi">ବିଏମଅାଇ</string>
-    <string name="visit_summary_button_download">ଡ଼ାକ୍ତରଙ୍କଠାରୁ ଡ଼ାଉନଲୋଡ଼କର</string>
+    <string name="visit_summary_button_download">ଡାଉନଲୋଡ୍</string>
     <string name="visit_summary_diagnosis">"ନିଦାନ "</string>
     <string name="visit_summary_doctor_details">ଡ଼ାକ୍ତର ବିବରଣୀ</string>
     <string name="visit_summary_rx">ନିର୍ଦ୍ଧାରିତ ଔଷଧ</string>
     <string name="visit_summary_tests_prescribed">ପରୀକ୍ଷା ରେଫରାଲ</string>
     <string name="visit_summary_heading_name">ନାମ</string>
-    <string name="visit_summary_heading_id">ଇଙ୍ଗ଼ି</string>
+    <string name="visit_summary_heading_id">ଆଇଡି</string>
     <string name="visit_summary_height_heading">ଉଚ୍ଚତା (ସେ.ମି)</string>
     <string name="visit_summary_on_examination">ପରୀକ୍ଷଣରେ</string>
     <string name="visit_summary_family_history">ପରିବାର ଇତିହାସ</string>
     <string name="visit_summary_previous_reports">ପୁରୁଣା ରିପୋଟ</string>
     <string name="visit_summary_vitals_heading">ପ୍ରଧାନ (ମହୂତ୍ତପର୍ଣ୍ଣ)</string>
     <string name="visit_summary_vitals">ପ୍ରଧାନ (ମହୂତ୍ତପର୍ଣ୍ଣ)</string>
-    <string name="visit_summary_temperature">ତାପମାତ୍ରା (ଏଫ)</string>
-    <string name="visit_summary_pulseox">ଏସପିଓ ଦୁଇ (%)</string>
+    <string name="visit_summary_temperature">ତାପମାତ୍ରା ( C )</string>
+    <string name="visit_summary_pulseox">ଏସ ପି ଓ 2%</string>
     <string name="visit_summary_pulse">ପଲ୍ସସ</string>
     <string name="visit_summary_patient_details">ରୋଗୀ ବିବରଣୀ</string>
     <string name="visit_summary_weight">ଓଜନ (କି.ଗ୍ରା)</string>
     <string name="visit_update">ଯାତ୍ରା ଅପ୍ଡ଼େଟ୍ କରିବା</string>
-    <string name="visit_summary_medical_history">ଚିକସତ୍ା ଇଚ୍ଛିହାସ</string>
-    <string name="visit_summary_edit_vitals">ପଣ ପ୍ରମୂଖ ସ୍କନିରୁ ପ୍ରମୂଖ କରିପାରିବେ</string>
+    <string name="visit_summary_medical_history">ଚିକିତ୍ସ। ଗତ ଇତିହାସ</string>
+    <string name="visit_summary_edit_vitals">ଆପଣ ପ୍ରମୁଖ ସ୍କ୍ରିନରୁ ପ୍ରମୁଖ ତଥ୍ୟ ପୁନଃ ଚୟନ କରିପାରିବେ</string>
     <string name="generic_yes">"ହଁ "</string>
-    <string name="generic_no">"ନା "</string>
+    <string name="generic_no">"ନା"</string>
     <string name="hint_required">ଜରୁରୀ </string>
     <string name="generic_back">ପଛକୁ ଯାନ୍ତୁ </string>
     <string name="generic_update">"ଅପଡେଟ "</string>
-    <string name="generic_deleted">ଦିଲେଟେଡ</string>
-    <string name="permission_rationale">"ଇ ମେଲ ପାଇଁ 'କଂଟକେଟ' ର ଅନୁମତି ଦରକାର "</string>
-    <string name="identification_screen_dialog_error_gender">"ଏରର: ଲିଙ୍ଗ ବାଛନ୍ତୁ "</string>
+    <string name="generic_deleted">କାଟିଦେବ।</string>
+    <string name="permission_rationale">ଇମେଲ ପାଇଁ କଣ୍ଟାକ୍ଟ ର ଅନୁମତି ଦରକାର</string>
+    <string name="identification_screen_dialog_error_gender">"ଲିଙ୍ଗ ସିଲେକ୍ଟ ହୋଇନାହିଁ "</string>
     <string name="question_answer_all">"ଆପଣ ସବୁ ପ୍ରଶ୍ନର ଉତ୍ତର ଦେଇଛନ୍ତି କି? "</string>
     <string name="question_answer_all_phy_exam">ଦୟାକରି ସବୁ ସାଧାରଣ ପରୀକ୍ଷା ପ୍ରଶ୍ନର ଉତ୍ତର ଦିୟ</string>
     <string name="visit_summary_hw_on_duty">"ଆରୋଗ୍ୟ ସଂଯୋଜିକା କାମରେ ଅଛି "</string>
     <string name="visit_summary_bp">ରକ୍ତଚାପ</string>
     <string name="wash_hands">"ହାଥ ଧୋଇବା ପାଇଁ ମନେରଖ "</string>
-    <string name="pref_title_social_recommendations">"ସାମାଜିକ ଉପାୟ କୋ ଚଲାଅ "</string>
-    <string name="pref_description_social_recommendations">"ଆପଣଂକ ମେସେଜ ମାଧ୍ୟମ ରେ ବ୍ୟକ୍ତି ମାନକ ପାଖରେ ପହଂଚିବା ପାଇଁ ଉପାୟ "</string>
+    <string name="pref_title_social_recommendations">"ସାମାଜିକ ଉପୟକୁ ସକ୍ଷମ କର "</string>
+    <string name="pref_description_social_recommendations">"ଲୋକଙ୍କୁ ଯୋଗାଯୋଗ ନିମନ୍ତେ ସୁପାରିସ କରିବା "</string>
     <string name="sync_stopped">"ବନ୍ଦ ହେଇ ଗଲା  "</string>
     <string name="sync_in_progress">କାମ ଚାଲୁ ଅଛି</string>
     <string name="question_update_details">"ଆପଣ ଡିଟେଲସ ଅପଡେଟ କରିବା ପାଇଁ ଚାହୁଁଛନ୍ତି କି "</string>
@@ -237,25 +237,25 @@
     <string name="error_no_camera">କ୍ୟାମେରା ଲଗା ଯାଇ ନାହିଁ</string>
     <string name="error_delete">"ଲିଭାଇ ବାରେ ଭୂଲ ହଉଚି "</string>
     <string name="error_no_file">ଏହି ଡିରେକ୍ତରୀ ରେ କୋଣସି ଫାଇଲି ନାହିଁ</string>
-    <string name="error_offline_login">"ଇଣ୍ଟେର୍ନେଟ ବିନା ଲଗିଂ ହାଇପାରିବ ନାହିଁ  "</string>
-    <string name="invalidate_offline_login">"ଇଣ୍ଟେର୍ନେଟ ବିନା ଲଗିଂ ବୈଧ୍ୟ ହେବ ନାହିଁ  "</string>
+    <string name="error_offline_login">"ଅପ୍ ଲାଇନ ଲଗିଂ ଫେଲ୍ ଅଛି  "</string>
+    <string name="invalidate_offline_login">"ଅପ ଲାଇନ ଲଗୀଙ୍ଗ ବୈଧ ନୁହେଁ  "</string>
     <string name="patient_not_registered">"ରୋଗୀ ରେଜିଷ୍ଟ୍ରି ହେଇ ନାହିଁ "</string>
     <string name="visit_summary_follow_up_reminder">ଦୟାକରି ରୋଗୀକୁ ତାହାର ଅନୁବର୍ତ୍ତୀ ତାରିଖ ବିଷୟରେ ଜଣାନ୍ତ:</string>
     <string name="exit_survey_label">ଆପଣଙ୍କ ଅନୁଭବ କେମିତି  ହେଲା?</string>
-    <string name="exit_survey_prompt">ଆପଣଙ୍କ ଅନୁଭବ ଲେଖ</string>
+    <string name="exit_survey_prompt">ଆପଣଙ୍କ ଅନୁଭବ ଏଠାରେ ଲେଖନ୍ତୁ</string>
     <string name="exit_survey_skip">ଆଗକୁ ବଢ</string>
-    <string name="exit_survey_submit">ସବମିଟ କରନ୍ତ</string>
+    <string name="exit_survey_submit">ସବମିଟ/ ଦାଖଲ କରନ୍ତୁ</string>
     <string name="visit_summary_upload_reminder">ସାକ୍ଷାତକାର ବନ୍ଦ କରିବା ପୂର୍ବରୁ ଅପଲୋଡ଼ କରନ୍ତ</string>
     <string name="db_backup_complete">"ଡାଟାବେସ ବାକଅପ  ସରିଲା "</string>
     <string name="db_restore_complete">"ଡାଟାବେସ ରୀଷ୍ଟୋର୍   ସରିଲା "</string>
     <string name="cloud_upload_header">"ଡାଟାବେସ କଲାଉଡ଼ ରେ ଅପଲୋଡ ହେଉଚି  "</string>
     <string name="no_network">"ଇଣ୍ଟେର୍ନେଟ ଉପଲବ୍ଧ ନାହିଁ "</string>
     <string name="local_backup_restore">"ଲୋକଲ ବାକଅପ  ରୁ  ରୀଷ୍ଟୋର୍ ହେଉଚି  "</string>
-    <string name="cloud_restore_header">କଲାଉଡ଼ ରୁ  ରୀଷ୍ଟୋର୍</string>
+    <string name="cloud_restore_header">କ୍ଲାଉଡ୍ ( ଜଳଦ ) ରୁ ଉଦ୍ଧାର କର</string>
     <string name="restore_data">ଡାଟା ରୀଷ୍ଟୋର୍ ହେଉଚି</string>
-    <string name="error_existing_data">ଡାଟାବେସ ରୁ  ଡାଟା ଡାଉନଲୋଡ ହେଉଚି</string>
-    <string name="cloud_download_data">କଲାଉଡ଼ ରୁ  ଡାଉନଲୋଡ ହେଉଚି</string>
-    <string name="force_restore_header">କଲାଉଡ଼ ରୁ ରୀଷ୍ଟୋର୍ ହେଉଚି</string>
+    <string name="error_existing_data">ଡାଟାବେସ ରେ ତଥ୍ୟ ଅଛି , ରିଷ୍ଟୋର ( ଉଦ୍ଧାର) ହୋଇ ପାରୁ ନାହିଁ</string>
+    <string name="cloud_download_data">କ୍ଲାଉଡ୍ ରୁ ଡାଉନଲୋଡ୍ ହେଉଛି</string>
+    <string name="force_restore_header">କ୍ଲାଉଡ୍ ରୁ ତଥ୍ୟ ରିଷ୍ଟୋର ( ଉଦ୍ଧାର ) ହେଉଛି</string>
     <string name="database_upload">"ଡାଟାବେସ ଅପଲୋଡ "</string>
     <string name="database_uploading">"ଡାଟାବେସ ଅପଲୋଡ ହେଉଚି  "</string>
     <string name="database_upload_complete">"ଡାଟାବେସ ଅପଲୋଡ ସରିଲା "</string>
@@ -267,17 +267,17 @@
     <string name="image_downloading_service_complete_title">"ଛବି ଡାଟା ଡାଉନଲୋଡ ସରିଲା "</string>
     <string name="image_downloading_service_complete_message">"ସମସ୍ତ ଛବି ଡାଟା ଡାଉନଲୋଡ ସରିଲା "</string>
     <string name="image_downloading_service_process_message">"ଡାଉନଲୋଡ ସରିଲା "</string>
-    <string name="error_img_unavailable">"ଛବି ନାହିଁ "</string>
+    <string name="error_img_unavailable">"ଛବି ଉପଲବ୍ଧ ନାହିଁ "</string>
     <string name="error_img_download_failed">ଛବି ଡାଉନଲୋଡ ହେଲା ନାହିଁ</string>
     <string name="db_backup_unavailable">ଡାଟାବେସ ବାକଅପ ନାହିଁ</string>
-    <string name="db_file_write_error">ବାକଅପ ହେଲା ନାହିଁ</string>
+    <string name="db_file_write_error">ବ୍ୟାକପ୍ ଫାଇଲ ଭୁଲ ଅଟେ</string>
     <string name="user_logged_in">"ଲଗନ ହେଇ ସାରିଛି "</string>
-    <string name="user_logged_out">"ସରବର ରୁ ଲଗ ଆଉଟ ହେଲା "</string>
-    <string name="user_login_check_success">ଲଗନ ସଫଳ  ହେଲା</string>
+    <string name="user_logged_out">"ଲଗ୍ ଇନ୍ ହୋଇ ସାରିଛି , ଦୟାକରି ଅନ୍ୟଠୁ ଲଗ୍ ଆଉଟ୍ କର "</string>
+    <string name="user_login_check_success">ଲଗ୍ ଇନ୍ ସଫଳ ଅଛି</string>
     <string name="user_login_error">ଅନ୍ୟ  ଉସର ସାମାନ୍ୟ ସ୍ଥାନ ରୁ ଲଗନ ଅଛନ୍ତି . ଆଡମିନ କୁ ଯୋଗାଯୋଗ କର</string>
     <string name="user_server_unreachable">"ଫୋନ  ଅଫଲାଇନ ଅଛି | ସରବର ରେ ଲଗନ ହେଇ ପାରିବ ନାହିଁ "</string>
 
-    <string name="patient_name">ରୋଗୀଙ୍କ ନାମ</string>
+    <string name="patient_name">ରୋଗୀର ନାମ</string>
     <string name="economic_status">"ଆର୍ଥିକ ସ୍ଥିତି "</string>
     <string name="education_level">"ଶିକ୍ଷା ସ୍ତର "</string>
     <string name="caste">"ଜାତି "</string>
@@ -297,23 +297,23 @@
     <string name="planet_name">ଗ୍ରହ ନାମ</string>
     <string name="ok">"ଠିକ୍ ଅଛି "</string>
     <string name="cancel">"ରଦ୍ଦ କରନ୍ତୁ "</string>
-    <string name="unable_to_end">"ପରିଦର୍ଶନ ସମାପ୍ତ  "</string>
-    <string name="upload_before_end_visit_active">"କରିବାରେ ଅକ୍ଷମ । ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରିବାର ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପରିଦର୍ଶନକୁ ଅପଲୋଡ୍ କରନ୍ତୁ । "</string>
+    <string name="unable_to_end">"ସମାପ୍ତ ପାଇଁ ଅକ୍ଷମ "</string>
+    <string name="upload_before_end_visit_active">"ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରିବା ( ଚେଷ୍ଟା କରିବା ) ପୂର୍ବରୁ ଦୟାକରି ପରିଦର୍ଶନ କୁ ଅପ୍ଲୋଡ କରନ୍ତୁ "</string>
     <string name="active">"ସକ୍ରିୟ "</string>
     <string name="closed">"ବନ୍ଦ "</string>
     <string name="syncInProgress">ସମକାଳୀନକରଣ ପ୍ରକ୍ରିୟା ଜାରି ଅଛି</string>
     <string name="sync_notif_title">"ସମକାଳୀନ କରନ୍ତୁ "</string>
-    <string name="sync_background_completed">ପଷ୍ଠୃ ଭାଗ ସମକାଳୀନ କ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଡ</string>
-    <string name="sync_not_available">ସମକାଳୀନ କ୍ରିୟା ଉପଲବ୍ଧ ନୁସହ</string>
+    <string name="sync_background_completed">ଅନ୍ତରାଳ ସମକାଳୀନ କ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଣ</string>
+    <string name="sync_not_available">ସମକାଳୀନ କ୍ରିୟା ଉପଲବ୍ଧ ନାହିଁ</string>
     <string name="please_connect_to_internet">"ଦୟାକରିଏକ ଇଣ୍ଟରସନଟ୍ କସନକ୍ସନ୍ ସହ ସାଂସଯାଗ କରନ୍ତୁ! "</string>
-    <string name="image_upload">ଛବିଅପସଲାଡ</string>
+    <string name="image_upload">ଛବି ଅପଲୋଡ</string>
     <string name="sure_to_exit">"ପ୍ରସ୍ଥାନ ପାଇଁ ଆପଣ ନିଶ୍ଚିତ କି? "</string>
     <string name="update_patient_identification">"ରୋଗୀଙ୍କ ଅପଡେଟ୍ "</string>
     <string name="are_you_want_go_back">"ପଛକୁ ଫେରିବା ପାଇଁ ଆପଣ ନିଶ୍ଚିତ କି? "</string>
     <string name="error">"ତ୍ରୁଟି "</string>
     <string name="no_prior_visits">"କୌଣସି ପୂର୍ବବର୍ତ୍ତୀ ପରିଦର୍ଶନ ନାହିଁ "</string>
     <string name="end_visit_notif">"ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରନ୍ତୁ "</string>
-    <string name="visit_ended_notif">"ପରିଦର୍ଶନ ସମାପ୍ତ  "</string>
+    <string name="visit_ended_notif">"ପରିଦର୍ଶନ ସମାପ୍ତ ହେଲା "</string>
     <string name="this_question_only_one_answer">"ଏହି ପ୍ରଶ୍ନର କେବଳ ଗୋଟିଏ ହିଁ ଉତ୍ତର ହୋଇପାରେ । "</string>
     <string name="uploading_to_doctor_notif">ଡାକ୍ତରଙ୍କ ନିକଟକୁ ଅପଲୋଡ୍ କରାଯାଉଛି ।</string>
     <string name="upload_completed">ଅପଲୋଡ୍ ସମ୍ପୂର୍ଣ୍ଣ</string>
@@ -332,7 +332,7 @@
     <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
     <string name="languages">ଭାଷା</string>
     <string name="current_language">ପ୍ରଚଳିତ ଭାଷା</string>
-    <string name="cant_login_user" translatable="false">ଲଗ୍ ଇନ୍ କରିପାରୁନାହାନ୍ତି?</string>
+    <string name="cant_login_user" translatable="false">ଲଗ୍ ଇନ୍ ହୋଇପାରିବ ନାହିଁ</string>
 
     <string name="today_visits">ଆଜିର ରୋଗୀ</string>
     <string name="active_visits">ଦେଖିଥିବା ରୋଗୀ</string>
@@ -364,9 +364,9 @@
     <string name="visit_summary_follow_up_date" translatable="false">ପରବର୍ତ୍ତୀ ଯାଞ୍ଚ ତାରିଖ</string>
     <string name="success_offline_login" translatable="false">"ଅଫଲାଇନ୍ ଲଗ୍ ଇନ୍ ସଫଳ"</string>
 
-    <string name="end_visit_msg">ଆପଣ ସିଅର କୀ ଭିଜିଟ୍ କୁ ବନ୍ଦ</string>
+    <string name="end_visit_msg">ଆପଣ ନିଶ୍ଚିନ୍ତ କି ଭିଜିଟ କୁ ବନ୍ଦ୍ କରିବା ପାଇଁ</string>
     <string name="prescription_not_downloaded_check_internet">ପ୍ରେସକୂଶନ୍ ଡାଉଁଲଡ ହଉନାହିଁ, ଦୟାକରି ନିଜ ଇଟଂରନେଟ୍ ସଂଯୋଗ ଯାଂଚ କରନ୍ତୁ ଓ ପୁନବାର ଚେଷ୍ଟା କରନ୍ତୁ</string>
-    <string name="privacy_reject_toast">ରୋଗୀର ସହମତି ବିନା ନାଁ ଲେଖାଇବା</string>
+    <string name="privacy_reject_toast">ଆପଣ ରୋଗୀର ସହମତି ବିନା ତାର ନାମ ପଞ୍ଜିକରଣ କରିପାରିବେ ନାହିଁ</string>
     <string name="not_answered">ଉତର ଦଉ ନାହାନ୍ତି</string>
     <string name="who_is_this_napplication_for">ଏହିଆପିଲସକଶନ୍ କାହା ପାଇଁ?</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
@@ -375,123 +375,123 @@
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">ନମସ୍କାର\n\n ମୁଁ ଆୟୁ, ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକକାରୀ | ଚାଲ ଆରମ୍ଭ କରିବା!</string>
     <string name="Ayu_name">ଆୟୁ</string>
     <string name="active_tag_patientDetail">" ସକ୍ରିୟ"</string>
-    <string name="associated_symptoms_patientDetail">ସମ୍ମିଳତି ଲେଣ</string>
-    <string name="device_ID">ଉପକରଣ ମୁଁଡି:</string>
+    <string name="associated_symptoms_patientDetail">ସମ୍ମିଳିତ ଲକ୍ଷଣ ସବୁ</string>
+    <string name="device_ID">ଡିଭାଇସ୍ ଆଇଡି:</string>
     <string name="enter_valid_license_url">ବୈଧ ଥିବା ୟୁ ଆର୍ ଏଲ୍ ଲେଖନ୍ତୁ</string>
     <string name="please_enter_url_and_key">ଦୟାକରି ୟୁ ଆର୍ ଏଲ ଏଵଂ କି ଲେଖନ୍ତୁ</string>
     <string name="please_enter_valid_license_key">ଦୟାକରି ଏକ ଭ।ଲିଡ ବୈଧ କି ଲେଖନ୍ତୁ</string>
     <string name="permission_denied">ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ\n</string>
     <string name="reject_permission_results"><![CDATA[ଯଦି ଆପଣ ଅନୁମତି ପ୍ରତ୍ୟାଖ୍ୟାନ କରନ୍ତି, ଆପଣ ଏହି ସେବା ବ୍ୟବହାର କରିପାରିବେ ନାହିଁ\n\nଦୟାକରି ରେ ଅନୁମତି ଟର୍ନ୍ ଅନ୍ କରନ୍ତୁ [ସେଟିଂ] > [ଅନୁମତି]]]></string>
     <string name="current_time"><![CDATA[\"ସାମ୍ପ୍ରତିକ ସମୟ => \"]]></string>
-    <string name="dr_email">ଇସମଲ୍</string>
-    <string name="_visit_summary">ପରିଦଶଡନ ସାରାାଂଶ</string>
-    <string name="patient_id_">"ସରାଗୀଙ୍କ ଆଇର୍:ି "</string>
-    <string name="patient_name_title">ସରାଗୀଙ୍କ ନାମ:</string>
-    <string name="patient_DOB">ସରାଗୀଙ୍କ ଜନମତାରିଖ:</string>
-    <string name="email_link" translatable="false">ନଜିର ପାସୱାର୍ଡରିସସଟ୍ କରିବା ପାଇଁଦୟାକରିସିଷ୍ଟମ୍ ଆର୍ମିନସିେଟରଙ୍କ ସହତି ସମ୍ପକଡକରନ୍ତୁକମିବା support@intelehealth.io ସର ଏକ ଇସମଲ୍ ପଠାନ</string>
-    <string name="contact_whatsapp">"ନଜିର ପାସୱାର୍ଡରିସସଟ୍ କରିବା ପାଇଁଦୟାକରିସିଷ୍ଟମ୍ ଆର୍ମିନସିେଟରଙ୍କ ସହତି ସମ୍ପକଡକରନ୍ତୁ "</string>
-    <string name="identification_screen_required_fields" translatable="false">"ଦୟାକରିଦରକାରୀ ସେତ୍ରଗୁଡ଼କିୁପୂରଣ କରନ୍ତୁ "</string>
-    <string name="identification_screen_error_dob" translatable="false">"ସବଧୈ ଜନମତାରିଖ ପ୍ରସବଶ କରନ୍ତୁ "</string>
-    <string name="identification_screen_error_age" translatable="false">"ସବଧୈ ବୟସ ପ୍ରସବଶ କରନ୍ତୁ "</string>
+    <string name="dr_email">ଇ ମେଲ୍</string>
+    <string name="_visit_summary">ପରିଦର୍ଶନ ର ସାରାଂଶ</string>
+    <string name="patient_id_">"ରୋଗୀଙ୍କ ଆଇଡି: "</string>
+    <string name="patient_name_title">ରୋଗୀଙ୍କ ନାମ:</string>
+    <string name="patient_DOB">ରୋଗୀଙ୍କ ଜନ୍ମ ତାରିଖ:</string>
+    <string name="email_link" translatable="false">ନିଜର ପାସୱାର୍ଡ ରିସେଟ କରିବା ନିମନ୍ତେ ନିଜର ସିଷ୍ଟମ ଆଡମିନିଷ୍ଟେଟର ଙ୍କ ସହ ସମ୍ପର୍କ କରନ୍ତୁ ଅଥବା support@intelehealth.io କୁ ଇ-ମେଲ କରନ୍ତୁ</string>
+    <string name="contact_whatsapp">"ନିଜର ପାସ ୱାର୍ଡ ରିସେଟ୍ କରିବା ପାଇଁ ସିଷ୍ଟମ ପ୍ରଶାସକ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ "</string>
+    <string name="identification_screen_required_fields" translatable="false">"ଦୟାକରି ଦରକାରୀ କ୍ଷେତ୍ର ସବୁ ପୂରଣ କରନ୍ତୁ "</string>
+    <string name="identification_screen_error_dob" translatable="false">"ବୈଧ ଜନ୍ମ ତାରିଖ ପୁରଣ କରନ୍ତୁ "</string>
+    <string name="identification_screen_error_age" translatable="false">"ବୈଧ ବୟସ ପୁରଣ କରନ୍ତୁ "</string>
     <string name="identification_screen_text_years" translatable="false">ବର୍ଡ</string>
     <string name="identification_screen_text_months" translatable="false">ମାସ</string>
     <string name="identification_screen_picker_years" translatable="false">"ବର୍ଡ "</string>
     <string name="identification_screen_picker_hours" translatable="false">ଘଣ୍ଟା</string>
     <string name="identification_screen_picker_months" translatable="false">ମାସ</string>
     <string name="identification_screen_picker_minute" translatable="false">ମିନିଟ୍</string>
-    <string name="title_activity_question_node" translatable="false">ପ୍ରଶନସନାର୍ଗତବିଧ</string>
+    <string name="title_activity_question_node" translatable="false">ପ୍ରଶ୍ନ , ତନ୍ତୁ / ଗଣ୍ଠିଗତ ଗତିବିଧି</string>
 
-    <string name="title_activity_setup" translatable="false">ବନିୟାସ</string>
-    <string name="error_login_str" translatable="false">ତ୍ରୁଟି ଲଗଇନ୍</string>
-    <string name="enter_url_str" translatable="false">Url ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="title_activity_setup" translatable="false">ସେଟ୍ ଅପ୍</string>
+    <string name="error_login_str" translatable="false">ଭୁଲ ଲଗ୍ ଇନ୍</string>
+    <string name="enter_url_str" translatable="false">ୟୁ ଆର୍ ଏଲ ଏଣ୍ଟର ( ପ୍ରବେଶ ) କରନ୍ତୁ</string>
 
-    <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
-    <string name="show_text">"ସଦଖନ୍ତୁ "</string>
+    <string name="sync_complete" translatable="false">ସମ୍ପୂ ର୍ଣ ହେବା</string>
+    <string name="show_text">"ଦେଖାନ୍ତୁ "</string>
     <string name="hide_text">"ଲୁଚାନ୍ତୁ "</string>
-    <string name="error_no_sd" translatable="false">ମୋବାଇଲ୍ ର ଏସ ଡି କାରଡ୍ମାଧ୍ୟମରେ ଏହା ଚାଲି ପାରିବ</string>
+    <string name="error_no_sd" translatable="false">ମୋବାଇଲ ର ଏସ ଡି କାର୍ଡ ମଧ୍ୟରେ ଏହା ଚାଲି ପାରିବ</string>
     <string name="error_admin_password" translatable="false">"ଭୁଲ୍ ଆର୍ମିନ୍ ପାସୱାର୍ଡ "</string>
-    <string name="patient_upload_error" translatable="false">"ସରାଗୀ ଅପସଲାଡ୍ ସହାଇନାହାନ୍ତି "</string>
-    <string name="exit_survey_toast">ଦାଖଲ କରିବା ପୂବଡରୁଦୟାକରିଏକ ସ୍ମାଇଲିଚୟନ କରନ୍ତୁ</string>
-    <string name="no_data" translatable="false">"ବୟାକଅପ୍ ପାଇଁସକୌଣସିତଥ୍ୟ ନାହ!ିଁ "</string>
-    <string name="local_backup_failed" translatable="false">ସ୍ଥାନୀୟ ବୟାକଅପ୍ ଉପଲବ୍ଧ ନାହ</string>
+    <string name="patient_upload_error" translatable="false">"ରୋଗୀ ଅପଲୋଡ଼ ହୋଇ ନାହିଁ "</string>
+    <string name="exit_survey_toast">ଦାଖଲ କରିବା ପୂର୍ବରୁ ସ୍ମିତ ହାସ୍ୟରେ / ଭଲ ମନରେ କରନ୍ତୁ</string>
+    <string name="no_data" translatable="false">"ବ୍ୟାକପ ଡାଟା କିଛି ନାହିଁ "</string>
+    <string name="local_backup_failed" translatable="false">ସ୍ଥାନୀୟ ଵ୍ୟାକପ ଡାଟା କିଛି ନାହିଁ</string>
     <string name="user_logged_in_other_device" translatable="false">ପୂବଡରୁଲଗ୍ ଇନ୍ କରିସାରିଛନ୍ତି। ଦୟାକରିଅନୟ ର୍ଭିାଇସ୍ ରୁଲଗ୍ ଆଉଟ୍ କରନ୍ତୁ।</string>
-    <string name="title_activity_splash_acticity" translatable="false">ସ୍ପ୍ଲାଶଗତବିଧ</string>
-    <string name="title_activity_home" translatable="false">ସହାମଗତବିଧ</string>
-    <string name="title_activity_sync" translatable="false">"ଗତବିଧିିସିଙ୍କ୍ "</string>
-    <string name="title_activity_visit_summary" translatable="false">ପରିଦଶଡନସାରାାଂଶଗତବିଧ</string>
-    <string name="title_activity_past_medical_history" translatable="false">ଅତୀତଚକିତ୍ସିାଇତହିାସଗତବିଧିି</string>
-    <string name="title_activity_patient_survey" translatable="false">ସରାଗୀସସବଡେଣଗତବିଧିି</string>
-    <string name="enter_password">ନଜିର ପାସୱାର୍ଡପ୍ରସବଶ କରନ</string>
-    <string name="enter_username">ନଜିର ୟୁଜରସନମ୍ ପ୍ରସବଶ କରନ୍ତୁ</string>
-    <string name="enter_server_url">ସଭଡର ୟୁଆରଏଲ୍ ପ୍ରସବଶ କରନ</string>
-    <string name="invalid_url">"ଅସବଧୈ ୟୁଆରଏଲ୍ "</string>
+    <string name="title_activity_splash_acticity" translatable="false">ଅତଳ ଗତିବିଧି ( ସ୍ପ୍ଲାସ  ଗତିବିଧି )</string>
+    <string name="title_activity_home" translatable="false">ଘରୋଇ ଗତିବିଧି</string>
+    <string name="title_activity_sync" translatable="false">"ଗତିବିଧି ରିଫ୍ରେଶ୍ ( ସତେଜ ) କରିବା "</string>
+    <string name="title_activity_visit_summary" translatable="false">ପରିଦର୍ଶନ ଗତିବିଧି ସାରାଂଶ</string>
+    <string name="title_activity_past_medical_history" translatable="false">ଅତୀତ ଚିକିତ୍ସା ଇତିହାସ ଗତିବିଧି</string>
+    <string name="title_activity_patient_survey" translatable="false">ରୋଗୀ ସର୍ବେକ୍ଷଣ ଗତିବିଧି</string>
+    <string name="enter_password">ନିଜର ପାସ ୱାର୍ଡ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="enter_username">ନିଜର ୟୁଜର ନେମ୍ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="enter_server_url">ସର୍ଭର ୟୁ ଆର୍ ଏଲ ( ଏଣ୍ଟର୍ ) ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="invalid_url">"ଅବୈଧ / ଅଚଳ ୟୁ ଆର୍ ଏଲ "</string>
     <string name="months">ମାସ</string>
-    <string name="please_wait_till_sync_is_completed">ସମକାଳୀନ କ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଡସହବା ପଯଡୟନ୍ତ ଅସପୋ କରନ</string>
+    <string name="please_wait_till_sync_is_completed">ସମକାଳୀନ କ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଣ ହେବା ପର୍ଯ୍ୟନ୍ତ ଅପେକ୍ଷା କରନ୍ତୁ</string>
     <string name="son_daughter_wife_of">ଙ୍କ ପୁତ୍ର/କନୟା/ପତ୍ନୀ</string>
-    <string name="occupation">ସପସା</string>
+    <string name="occupation">ବ୍ୟବସାୟ</string>
     <string name="which_server_would_you_like_to_connect_to">ଆପଣ ସକଉଁସଭଡରକୁସାଂସଯାଗ କରିବାକୁଚାହୁଁଛନ୍ତି?</string>
-    <string name="enter_url">ୟୁଆରଏଲ୍ ପ୍ରସବଶ କରନ</string>
-    <string name="choose_a_location_to_login">ଲଗ୍ ଇନ୍ ପାଇଁଏକ ସ୍ଥାନ ବାଛନ</string>
-    <string name="choose_an_option_for_protocols">ସପ୍ରାସଟାକଲ୍ ପାଇଁଏକ ବକିଳ୍ପ ବାଛନ</string>
-    <string name="please_enter_your_username_and_password">ଦୟାକରିନଜିର ୟୁଜରସନମ୍ ଓ ପାସୱାର୍ଡପ୍ରସବଶ କରନ</string>
-    <string name="android_id">ଆଣ୍ଡ୍ରଏଡ୍ ଆଇର୍:ି</string>
-    <string name="doctor">ର୍ାକ୍ତରଙ୍କ ବବିରଣୀ</string>
-    <string name="server_url">ସଭଡର ୟୁଆରଏଲ</string>
-    <string name="please_wait">ଦୟାକରିଅସପୋ କରନ୍ତୁ…</string>
-    <string name="patient_data_upload">ସରାଗୀଙ୍କ ତଥ୍ୟ ଅପସଲାଡ</string>
-    <string name="patient_image_download_notifi">ସରାଗୀଙ୍କ ଛବିର୍ାଉନସଲାଡ</string>
-    <string name="image_upload_failed">ଛବିଅପସଲାଡ୍ ବଫି ଳ</string>
-    <string name="sure_to_logout">ଲଗ୍ ଆଉଟ୍ କରିସବ ସବାଲିନଶ୍ଚିିତ କ?</string>
-    <string name="lastsync_normal">ସଶର୍ ସମକାଳୀନକରଣ</string>
-    <string name="image_download_complete_notifi">ଙ୍କ ଛବିର୍ାଉନସଲାଡ୍ ସମ୍ପୂର୍ଣ୍ଡସହାଇଛି।</string>
-    <string name="visit_data_upload">"ପରିଦଶଡନ ତଥ୍ୟ ଅପସଲାଡ୍ "</string>
-    <string name="uploading_visit_data_notif">ପରିଦଶଡନ ତଥ୍ୟ ଅପସଲାଡ୍ ସହଉଛ</string>
-    <string name="uploaded_visit_data_notif">ପରିଦଶଡନ ତଥ୍ୟ ଅପସଲାଡ୍ ସହାଇଯାଇଛ</string>
-    <string name="failed_to_upload">ଅପସଲାଡ୍ କରିବାସର ବଫି ଳ</string>
-    <string name="check_your_connectivity">ନଜିର ସାଂସଯାଗ ଯାଞ୍ଚ କରନ</string>
-    <string name="download_from_doctor">ର୍ାକ୍ତରଙ୍କ ବବିରଣୀ</string>
-    <string name="prescription_downloaded">ର୍ାକ୍ତରଙ୍କଠାରୁର୍ାଉନସଲାଡ୍ କରନ</string>
-    <string name="visit_data_failed">ପରିଦଶଡନ ତଥ୍ୟ ବଫି ଳ</string>
-    <string name="patient_data_failed">ସରାଗୀ ତଥ୍ୟ ବଫି ଳ</string>
-    <string name="new_update_available">ନୂଆ ଅପସର୍ଟ୍ ଉପଲବ</string>
-    <string name="update_app_note">ନୂଆ ସବଶୈଷ୍ଟି ୟ ସହତି ନୂଆ ସାଂସ୍କରଣ ଉପଲବ୍ଧ, ଦୟାକରିଆପ</string>
-    <string name="update">ଅପସର୍ଟ୍</string>
-    <string name="what_is_the_reason_for_your_visit">ଆପଣଙ୍କ ପରିଦଶଡନର କାରଣ କ’ଣ?</string>
-    <string name="swipe_down_to_return">ପୂବଡବର୍ତ୍ଡୀ ପାଇଁତଳକୁ/ ପରବର୍ତ୍ଡୀ ପାଇଁଉପରକୁସ୍ୱାଇପ୍ କରନ</string>
-    <string name="swipe_up">ପରବର୍ତ୍ଡୀ ପାଇଁଉପରକୁସ୍ୱାଇପ୍ କରନ</string>
+    <string name="enter_url">ୟୁ ଆର୍ ଏଲ ( ଏଣ୍ଟର ) ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="choose_a_location_to_login">ଲଗ୍ ଇନ୍ ପାଇଁ ଗୋଟିଏ ସ୍ଥାନ ବାଛନ୍ତୁ / ଚୟନ କରନ୍ତୁ</string>
+    <string name="choose_an_option_for_protocols">ପ୍ରୋଟୋକଲ ପାଇଁ ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ</string>
+    <string name="please_enter_your_username_and_password">ଦୟାକରି ଆପଣଙ୍କର ୟୁଜର ନେମ୍ ଓ ପାସ ୱାର୍ଡ ( ଏଣ୍ଟର ) ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="android_id">ଆଣ୍ଡ୍ରଏଡ ଆଇଡି</string>
+    <string name="doctor">ଡାକ୍ତରଙ୍କ ସବିଶେଷ ତଥ୍ୟ</string>
+    <string name="server_url">ସର୍ଭର ୟୁ ଆର୍ ଏଲ</string>
+    <string name="please_wait">ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ…</string>
+    <string name="patient_data_upload">ରୋଗୀର ଡାଟା ଅପଲୋଡ଼</string>
+    <string name="patient_image_download_notifi">ରୋଗୀର ଛବି ଡାଉନଲୋଡ୍</string>
+    <string name="image_upload_failed">ଛବି ଅପଲୋଡ଼ ବିଫଳ</string>
+    <string name="sure_to_logout">ଲଗ୍ ଆଉଟ୍ କରିବା ପାଇଁ ଆପଣ ନିଶ୍ଚିନ୍ତ କି ?</string>
+    <string name="lastsync_normal">ଶେଷ ସମକାଳୀନ କରଣ</string>
+    <string name="image_download_complete_notifi">ଙଛବିର ଡାଉନଲୋଡ୍ ସମ୍ପୂର୍ଣ୍ଣ ହୋଇଛି</string>
+    <string name="visit_data_upload">"ପରିଦର୍ଶନ ତଥ୍ୟ ଅପଲୋଡ଼ "</string>
+    <string name="uploading_visit_data_notif">ପରିଦର୍ଶନ ତଥ୍ୟ ଅପଲୋଡ଼ ହୋଇଯାଇଛି</string>
+    <string name="uploaded_visit_data_notif">ପରିଦର୍ଶନ ତଥ୍ୟ ଅପଲୋଡ଼ ହେଲା</string>
+    <string name="failed_to_upload">ଅପଲୋଡ଼ କରିବାରେ ଅସମର୍ଥ / ବିଫଳ</string>
+    <string name="check_your_connectivity">ନିଜର ସଂଯୋଜକକୁ ଯାଞ୍ଚ କରନ୍ତୁ</string>
+    <string name="download_from_doctor">ଡାକ୍ତରଙ୍କ ଠାରୁ ଡାଉନଲୋଡ୍ ହେବା</string>
+    <string name="prescription_downloaded">ପ୍ରେଷ୍କ୍ରିପସନ୍( ଡାକ୍ତର ଚିଠା ) ଡାଉନଲୋଡ୍ ହେଲା</string>
+    <string name="visit_data_failed">ପରିଦର୍ଶନ ତଥ୍ୟ ବିଫଳ</string>
+    <string name="patient_data_failed">ରୋଗୀର ତଥ୍ୟ ବିଫଳ</string>
+    <string name="new_update_available">ନୂଆ ଅପଡେଟ ଉପଲବ୍ଧି ଅଛି</string>
+    <string name="update_app_note">ନୂତନ ବୟାନ ( ଭର୍ସନ ) ଉପଲବ୍ଧ ଅଛି ନୂଆ ଲକ୍ଷଣ ସହିତ</string>
+    <string name="update">ଅପଡେଟ ( ଅଧୁନାତନ କରିବା )</string>
+    <string name="what_is_the_reason_for_your_visit">ଆପଣଙ୍କ ପରିଦର୍ଶନର କାରଣ କ’ଣ?</string>
+    <string name="swipe_down_to_return">ପୂବଡବର୍ତ୍ଡୀ ପାଇଁତଳକୁ/ ପରବର୍ତ୍ତୀ ପାଇଁ ଉପରକୁ ସ୍ୱାଇପ କରନ୍ତୁ</string>
+    <string name="swipe_up">ପରବର୍ତ୍ତୀ ପାଇଁ ଉପରକୁ ସ୍ୱାଇପ କରନ୍ତୁ</string>
     <string name="swipe_down">ପୂବଡବର୍ତ୍ଡୀ ପାଇଁତଳକୁସ୍ୱାଇପ୍ କରନ</string>
-    <string name="have_symptom">ଆପଣଙ୍କଠାସର ଏହିଲେଣ ଅଛିକ?</string>
+    <string name="have_symptom">ଆପଣଙ୍କ ଠାରେ ଏ ଲକ୍ଷଣ ଅଛି କି ?</string>
     <string name="personal_information">ବୟକ୍ତିଗତ ସୂଚନା</string>
     <string name="address_details">ଠକିଣାର ବବିରଣୀ</string>
-    <string name="txt_others">ଅନୟାନୟ</string>
-    <string name="do_you_need_help_please_contact_us">ସହାୟତା ଆବଶୟକ କରୁଛନ୍ତ? ି ଦୟାକରିଆମ ସହ ସମ୍ପକଡକରନ୍ତୁ!</string>
-    <string name="whatsapp_helpline">ହବାଟସଆପ୍ ସହଲପଲାଇନ</string>
+    <string name="txt_others">ଅନ୍ୟାନ୍ୟ</string>
+    <string name="do_you_need_help_please_contact_us">ସହାୟତା ଆବଶ୍ୟକ କରୁଛନ୍ତି କି ? ଦୟାକରି ଆମ ସହିତ ସମ୍ପର୍କ କରନ୍ତୁ!</string>
+    <string name="whatsapp_helpline">ହ୍ୱାଟସ ଆପ ହେଲ୍ପ ଲାଇନ</string>
     <string name="skip">ଛାଡ଼ନ୍ତୁ</string>
     <string name="start">ଆରମ୍ଭ</string>
-    <string name="custom_setup">ବସିଶର୍ ବନିୟାସ</string>
-    <string name="demo_version">ସର୍ସମା ସାଂସ୍କରଣ</string>
+    <string name="custom_setup">ସେଟପ ( ବ୍ୟବସ୍ଥା )</string>
+    <string name="demo_version">ଡେମୋ ବୟାନ ( ଡେମୋ ଭର୍ସନ )</string>
     <string name="Whatsapp_Help_Cardview">ସହାୟତା</string>
-    <string name="sample_text">"ନମୁନା ସଲଖା "</string>
+    <string name="sample_text">"ନମୁନା ପରୀକ୍ଷା "</string>
     <string name="active_defaultTag">ସକ୍ରିୟ</string>
-    <string name="since_when_have_you_had_this_symptom">ଏହିଲେଣ ଆପଣଙ୍କଠାସର ସକସବଠାରୁସଦଖାସଦଉଛ?</string>
-    <string name="hello_my_name_is">"ନମସ୍କାର, ସମା ନାମ ସହଉଛି "</string>
-    <string name="i_need_assistance">ଏବାଂ ମଁୁକଛିିସହାୟତା ଆବଶୟକ କରନ୍ତୁ।</string>
-    <string name="economic_values_missing">ଆଥ୍କି ମୂଲୟାଙ୍କଗୁଡ଼କି ଅନୁପସ୍ଥିତ</string>
-    <string name="education_values_missing">ଶେି ା ମୂଲୟାଙ୍କଗୁଡ଼କି ଅନୁପସ୍ଥିତ</string>
-    <string name="intelehealth_a_telemedicine_platform">"ଇସଣ୍ଟଲିସହଲଥ୍ ସହଉଛିଏକ ସଟଲିଔର୍ଧି ଆପିଲସକଶନ୍ ଯାହା ଗ୍ରାମୀଣ ଓ ଦୁଗଡମ ଅଞ୍ଚଳର ସ୍ୱାସ୍ଥୟକମଡୀଙ୍କୁଦୂରାନ୍ତ ର୍ାକ୍ତରଙ୍କ ସହ ସାଂଯୁକ୍ତ କରିଥ୍ାଏ, ଯାହାଦ୍ୱାରା ସସମାସନ ନଜି ସରାଗୀମାନଙ୍କୁ ଉଚ୍ଚମାନର ସ୍ୱାସ୍ଥୟସସବା ସଯାଗାଇପାରନ୍ତି। "</string>
-    <string name="intelehealth_name">ଇସଣ୍ଟଲିସହଲଥ୍</string>
-    <string name="close_button">ବନ୍ଦ କରନ</string>
+    <string name="since_when_have_you_had_this_symptom">ଏହି ଲକ୍ଷଣ ଆପଣଙ୍କ ଠାରେ କେବେ ଠାରୁ ଦେଖା ଦେଇଛି ?</string>
+    <string name="hello_my_name_is">"ନମସ୍କାର , ମୋର ନାମ ହେଉଛି "</string>
+    <string name="i_need_assistance">" ଏଵଂ ମୁଁ କିଛି ସହାୟତା ଆବଶ୍ୟକ କରୁଛି"</string>
+    <string name="economic_values_missing">ଆର୍ଥିକ ମୂଲ୍ୟାଙ୍କନ ଗୁଡ଼ିକ ଅନୁପସ୍ଥିତ</string>
+    <string name="education_values_missing">ଶିକ୍ଷା ମୂଲ୍ୟାଙ୍କନ ଗୁଡ଼ିକ ଅନୁପସ୍ଥିତ</string>
+    <string name="intelehealth_a_telemedicine_platform">"ଏକଲ ଆରୋଗ୍ୟ ଏକ ଟେଲି ମେଡ଼ିସିନ ଆପ୍ଲିକେସନ ଯାହା ଗ୍ରାମୀଣ ଓ ଦୁର୍ଗମ ଅଞ୍ଚଳର ସ୍ବାସ୍ଥ୍ୟ କର୍ମୀ ଓ ଡାକ୍ତର ଙ୍କ ସହିତ ସଂଯୁକ୍ତ କରିଥାଏ , ଏହାଦ୍ବାରା ସେମାନେ ନିଜ ରୋଗୀ ମାନଙ୍କୁ ଉଚ୍ଚମାନର ସ୍ବାସ୍ଥ୍ୟ ସେବା ଯୋଗାଇ ପାରନ୍ତି "</string>
+    <string name="intelehealth_name">ଏକଲ ଆରୋଗ୍ୟ</string>
+    <string name="close_button">ବନ୍ଦ କରିବା</string>
     <string name="temperature_F">ତାପମାତ୍ରା (F):</string>
     <string name="temperature_C">ତାପମାତ୍ରା(C):</string>
     <string name="no_history_family_found">ପରିବାରସର ଅସୁସ୍ଥତାଗୁଡ଼କିର ଇତହିାସ ପ୍ରଦାନ କରାଯାଇନାହିଁ।</string>
-    <string name="no_history_patient_illness_found">ସରାଗୀଙ୍କ ଅସୁସ୍ଥତାଗୁଡ଼କିର ଇତହିାସ ପ୍ରଦାନ କରାଯାଇନାହିଁ।</string>
+    <string name="no_history_patient_illness_found">ରୋଗୀଙ୍କ ଅସୁସ୍ଥତା ଗୁଡ଼ିକର ତାଲିକା ( ଇତିହାସ ) ପ୍ରଦାନ କରାଯାଇ ନାହିଁ</string>
     <string name="dr_registration_no">ପଞ୍ଜୀକରଣ ନାଂ.:</string>
-    <string name="dr_phone_number">ସଫାନ୍ ନମବର:</string>
-    <string name="error_non_decimal_no_added">ତୁଟ: ିଅଣ-ଦଶମିକ ସାଂଖୟା ପ୍ରସବଶ କରାଯାଇଛ</string>
-    <string name="download_protocols">ସପ୍ରାସଟାକଲ୍ ର୍ାଉନସଲାଡ୍ ସହଉଛ</string>
-    <string name="mindmap_internect_connection">"ମାଇଣ୍ଡମୟାପ୍ ର୍ାଉନସଲାଡ୍ କରିବା ପାଇଁଇଣ୍ଟରସନଟ୍ ସାଂସଯାଗ ଆବଶୟକ ଅସଟ, ଦୟାକରିନଜିର ଇଣ୍ଟରସନଟ୍ ଚାଲୁକରନ୍ତୁ "</string>
-    <string name="days">ଦନି</string>
-    <string name="contact">ସଯାଗାସଯାଗ</string>
+    <string name="dr_phone_number">ଫୋନ୍ ନମ୍ୱର୍:</string>
+    <string name="error_non_decimal_no_added">ଭୁଲ / ତ୍ରୁଟି - ଅଣ ଦଶମିକ ସଂଖ୍ୟା ପ୍ରବେଶ କରାଯାଇଛି</string>
+    <string name="download_protocols">ପ୍ରୋଟୋକଲ ଡାଉନ୍ଲୋଡ ହେଉଛି</string>
+    <string name="mindmap_internect_connection">"ମାଇଣ୍ଡ ମ୍ୟାପ ଡାଉନ୍ ଲୋଡ କରିବା ପାଇଁ ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଆବଶ୍ୟକ ଅଟେ , ଦୟାକରି ଇଣ୍ଟରନେଟ ଚାଲୁ ରଖନ୍ତୁ "</string>
+    <string name="days">ଦିନ</string>
+    <string name="contact">ଯୋଗାଯୋଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
     <string name="whatsapp_presc_toast">ଫାଇଲ ଏକ୍ସପ୍ଲୋରରୁ ପ୍ରେସସ୍କ୍ରିପସନ ପିଡ଼ିଫ ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ  / ଏକଲ ଆରୋଗ୍ୟ - ପୀଡ଼ିଫ</string>
     <string name="enter_mobile_number_to_share_prescription">ଯେଉଁ ମୋବାଇଲ୍ ନମ୍ବରକୁ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ବାଣ୍ଟିବାକୁ ଚାହୁଁଛନ୍ତି ତାହା ପ୍ରବେଶ କରନ୍ତୁ |</string>
@@ -500,18 +500,19 @@
     <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପଢନ୍ତୁ</string>
     <string name="download_prescription_first_before_sharing">ଅଂଶୀଦାର କରିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
     <string name="share">ଅଂଶୀଦାର କରନ୍ତୁ</string>
+    <string name="please_enter_mobile_number">ଦୟାକରି ଏକ ମୋବାଇଲ୍ ନମ୍ବର ଏଣ୍ଟର / ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="view_print">ଦର୍ଶନ / ମୁଦ୍ରଣ</string>
     <string name="refresh">ସତେଜ</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଇଣ୍ଟେଲିହେଲଥ ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ | "</string>
     <string name="and_enter_your_patient_id">" ଏଵଂ ଆପଣଙ୍କର ରୋଗୀ ଆଇଡି ଲେଖନ୍ତୁ / ପ୍ରବେଶ କରନ୍ତୁ - "</string>
     <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
-    <string name="no_family_member_registered">କ ପରିବାର ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି |</string>
+    <string name="no_family_member_registered">କୌଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକରଣ ହୋଇନାହାନ୍ତି</string>
     <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ - "</string>
     <string name="gender">ଲିଙ୍ଗ</string>
     <string name="are_you_head_of_the_family">ଆପଣ ପରିବାରର ମୁଖ୍ୟ କି?*</string>
     <string name="what_is_your_occupation">ତୁମର ଜୀବିକା କଣ?*</string>
     <string name="do_you_have_a_bank_account">ଆପଣଙ୍କର ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟ ଅଛି କି?*</string>
-    <string name="what_kind_of_mobile_phone_do_you_personally_own">ଆପଣ ବ୍ୟକ୍ତିଗତ ଭାବରେ କେଉଁ ପ୍ରକାରର ମୋବାଇଲ୍ ଫୋନ୍ କରନ୍ତି?*</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">ଆପଣ ବ୍ୟକ୍ତିଗତ ଭାବରେ କେଉଁ ପ୍ରକାରର ମୋବାଇଲ୍ ଫୋନ ବ୍ୟବହାର କରନ୍ତି?*</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାର ସଦସ୍ୟ ୱାଟସଆପବ୍ୟବହାର କରନ୍ତି କି ?</string>
     <string name="total_number_of_members_in_the_household">ଘରର ମୋଟ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା*</string>
     <string name="enter_number">ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
@@ -524,7 +525,7 @@
     <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">ଗତ ଦୁଇ ସପ୍ତାହ ମଧ୍ୟରେ, ଏହି ଉତ୍ସରୁ ଜଳ ଅତି କମରେ ଗୋଟିଏ ଦିନ ପାଇଁ ଉପଲବ୍ଧ ନଥିଲା କି?*</string>
     <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟ ମାନେ ସାଧାରତଃ କେଉଁ ପ୍ରକାରର ଶୌଚାଳୟ ସୁବିଧା ବ୍ୟବହାର କରନ୍ତି ?*</string>
     <string name="select_the_structure_of_house">ଘରର ଗଠନ ଚୟନ କରନ୍ତୁ*</string>
-    <string name="how_much_hectars_of_cultivable_land_your_family_owns">ଆପଣଙ୍କ ପରିବାରର କେତେ ହେକ୍ଟର ଚାଷ ଜମି ଅଛି?*</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">ଆପଣଙ୍କ ପରିବାର ର କେତେ ଏକର ଚାଷ ଜମି ଅଛି?*</string>
     <string name="enter_answer">ଉତ୍ତର ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="enter_occupation">ବୃତ୍ତି ପ୍ରବେଶ କରନ୍ତୁ</string>
     <string name="select">ଚୟନ କରନ୍ତୁ</string>
@@ -535,11 +536,11 @@
     <string name="Years">ବର୍ଷଗୁଡିକ</string>
     <string name="image_saved">ପ୍ରତିଛବି ସଫଳତାର ସହିତ ସଞ୍ଚୟ ହୋଇଛି |</string>
     <string name="emergency_confirmation">ଆପଣ ଏହି ପରିଦର୍ଶନକୁ ଜରୁରୀକାଳୀନ ପରିସ୍ଥିତି ଭାବରେ ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
-    <string name="per_Hour">ପ୍ରତି ଘଣ୍ଟା</string>
-    <string name="per_Day">ପ୍ରତିଦିନ</string>
+    <string name="per_Hour">ଘଣ୍ଟା ପ୍ରତି / ଘଣ୍ଟାରେ</string>
+    <string name="per_Day">ଦିନ ପ୍ରତି / ଦିନରେ</string>
     <string name="per_Week">ପ୍ରତି ସପ୍ତାହ</string>
     <string name="per_Month">ପ୍ରତି ମାସରେ |</string>
-    <string name="per_Year">ପ୍ରତିବର୍ଷ</string>
+    <string name="per_Year">ବର୍ଷ ପ୍ରତି/ ବର୍ଷରେ</string>
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
     <string name="have_you_taken_a_covid_vaccine">ଆପଣ ଏକ କୋଭିଡ୍ ଟିକା ନେଇଛନ୍ତି କି?*</string>
     <string name="select_option_vaccination_dialog">ଟୀକାକରଣ ପାଇଁ ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ</string>
@@ -554,7 +555,7 @@
     <string name="setup_select_village_str">ଗାଁ ଚୟନ କରନ୍ତୁ</string>
     <string name="setup_select_dropdown_village_msg">ଡ୍ରପଡାଉନ୍ ରୁ ଗାଁ ଚୟନ କରନ୍ତୁ</string>
 
-    <string name="visit_closed">ବନ୍ଦ ପରିଦର୍ଶନ କରନ୍ତୁ</string>
+    <string name="visit_closed">ପରିଦର୍ଶନ ବନ୍ଦ ହେଲା / ହୋଇଛି</string>
     <string name="gender_male">ପୁରୁଷ</string>
     <string name="gender_female">ମହିଳା</string>
     <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି ...</string>
@@ -574,9 +575,9 @@
     <string name="start_newadvice_confirmation_msg">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏକ ସେଭିକା ପରାମର୍ଶ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
 
     //----------hw profile strings--------------------
-    <string name="hw_totalpatient_str" translatable="false">ସୃଷ୍ଟି ହୋଇଥିବା ପରିଦର୍ଶନ କରନ୍ତୁ</string>
-    <string name="hw_completeconsultation_str" translatable="false">ସଂପୂର୍ଣ୍ଣ ପରାମର୍ଶ</string>
-    <string name="hw_visitprogress_str" translatable="false">ପ୍ରୋଗ୍ରାମରେ ପରିଦର୍ଶନ କରନ୍ତୁ</string>
+    <string name="hw_totalpatient_str" translatable="false">ସୃଷ୍ଟି ହୋଇଥିବା \n ପରିଦର୍ଶନ କରନ୍ତୁ</string>
+    <string name="hw_completeconsultation_str" translatable="false">ସଂପୂର୍ଣ୍ଣ \n ପରାମର୍ଶ</string>
+    <string name="hw_visitprogress_str" translatable="false">ପରିଦର୍ଶନ \n ଅଗ୍ରଗତିୁ</string>
     <string name="hw_personal_info_str" translatable="false">ବ୍ୟକ୍ତିଗତ ସୁଚ଼ନା</string>
     <string name="hw_state_str" translatable="false">ରାଜ୍ୟ</string>
     <string name="hw_mobile_str" translatable="false">ମୋବାଇଲ୍</string>
@@ -584,11 +585,11 @@
     <string name="hw_email_str" translatable="false">ଇମେଲ୍ କରନ୍ତୁ</string>
 
     //-------vital updated fields-------------
-    <string name="blood_grp">ରକ୍ତ ଗୋଷ୍ଠୀ: </string>
-    <string name="visit_summary_hemoglobin" translatable="false">ଏଚଜିବ</string>
+    <string name="blood_grp">ବ୍ଲଡ ଗ୍ରୁପ: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">ଏଚ୍ ଜି ବି</string>
     <string name="visit_summary_sugar" translatable="false">ଚିନି ସ୍ତର (ରାଣ୍ଡମ)</string>
     <string name="visit_summary_sugarfast" translatable="false">ଚିନି ସ୍ତର (ଉପବାସ / ଭୋଜନ ପରେ)</string>
-    <string name="visit_summary_blood" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
+    <string name="visit_summary_blood" translatable="false">ବ୍ଲଡ଼ ଗ୍ରୁପ</string>
     <string name="hemoglobin_error" translatable="false">ହେମୋଗ୍ଲୋବିନ %1$s ରୁ%2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ</string>
     <string name="sugar_error" translatable="false">ଚିନି ସ୍ତର %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ</string>
     <string name="blood_error" translatable="false">ଦୟାକରି ରକ୍ତ ଗୋଷ୍ଠୀ ଚୟନ କରନ୍ତୁ</string>
@@ -596,7 +597,7 @@
     <string name="table_sugar_aftermeal" translatable="false">ଚିନି (ଭୋଜନପରେ)</string>
 
     <string name="table_hemoglobin" translatable="false">ହେମୋଗ୍ଲୋବିନ୍</string>
-    <string name="table_bld_grp" translatable="false">ରକ୍ତ ଗୋଷ୍ଠୀ</string>
+    <string name="table_bld_grp" translatable="false">ବ୍ଲଡ଼ ଗ୍ରୁପ</string>
     <string name="table_sugar_level" translatable="false">ସୁଗର ଲିଭେଲ (ସ୍ତର) - (ରାଣ୍ଡାମ)</string>
 
     <string name="weight_loss_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ କମ୍ |</string>
@@ -617,22 +618,22 @@
     <string name="vital_alert_sugar_aftermeal_button">ଭୋଜନ ପରେ ତୁମର ଚିନି ସାଧାରଣ ନୁହେଁ |</string>
     <string name="vital_alert_required_field_button">ଦାଖଲ କରିବା ପାଇଁ ଅତିକମରେ ଗୋଟେ ଏଣ୍ଟ୍ରି ଦରକାର</string>
 
-    <string name="warning_app_update">ଦୟାକରି ଆପକୁ ନୂତନତମ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ</string>
+    <string name="warning_app_update">ଦୟାକରି ଆପ କୁ ନୂତନ ସଂସ୍କରଣକୁ ଅପଡେଟ କରନ୍ତୁୁ</string>
 
     <string name="identification_screen_prompt_village">ଗାଁ *</string>
     <string name="failed_initial_synced">ସତେଜ ବିଫଳ ହେଲେ ଆପଣଙ୍କର ଇଣ୍ଟର୍ନେଟ୍ ସଂଯୋଗ କୁ ଯାଞ୍ଚ କରନ୍ତୁ । ଦୟାକରି ଆପ କୁ ଆଉ ଥରେ ଷ୍ଟାର୍ଟ କରନ୍ତୁ</string>
 
     <!--APPOINTMENT Module strings START -->
-    <string name="book_appointment">ବୁକ୍ ନିଯୁକ୍ତି |</string>
-    <string name="reschedule_appointment">ପୁନକାର୍ଯ୍ୟସୂଚୀ ନିଯୁକ୍ତି</string>
+    <string name="book_appointment">ସାକ୍ଷାତ ପାଇଁ / ନିମନ୍ତେ ବନ୍ଦୋବସ୍ତ କରନ୍ତୁ</string>
+    <string name="reschedule_appointment">ସାକ୍ଷାତ ପାଇଁ ପୁନଃ ବନ୍ଦୋବସ୍ତ କରନ୍ତୁ</string>
     <string name="appointment_booking_confirmation_txt">ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
     <string name="appointment_booking_cancel_confirmation_txt">ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି?</string>
     <string name="cancel_appointment">ନିଯୁକ୍ତି ବାତିଲ୍ କରନ୍ତୁ |</string>
     <string name="slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନାହିଁ!</string>
     <string name="appointment_empty_message">ଆପଣଙ୍କର କିଛି ନିଯୁକ୍ତି ନାହିଁ!</string>
     <string name="appointment_listing_title">ନିଯୁକ୍ତି ତାଲିକା |</string>
-    <string name="appointment_booking_title">ନିଯୁକ୍ତି ବୁକିଂ |</string>
-    <string name="appointment_for">ପାଇଁ ନିଯୁକ୍ତି</string>
+    <string name="appointment_booking_title">ନିଯୁକ୍ତି ପାଇଁ ବୁକିଂ କରନ୍ତୁ</string>
+    <string name="appointment_for">ନିଯୁକ୍ତି ପାଇଁ</string>
     <string name="please_select_appointment_slot">ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଚୟନ କରନ୍ତୁ |</string>
     <string name="please_select_speciality">ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ!</string>
     <string name="speciality_str">ବିଶେଷତା</string>
@@ -642,7 +643,7 @@
     <string name="appointment_booked">ନିଯୁକ୍ତି ବୁକ୍ ହୋଇଛି |</string>
     <string name="minutes_txt">ମିନିଟ୍ |</string>
     <string name="booked_txt">ବୁକ୍ ହୋଇଛି |</string>
-    <string name="cancelled_txt">ବାତିଲ</string>
+    <string name="cancelled_txt">ବାତିଲ ହେଲା</string>
     <string name="please_upload_visit">ନିଯୁକ୍ତି ବୁକିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଭ୍ରମଣ ଅପଲୋଡ୍ କରନ୍ତୁ |</string>
     <string name="appointment_booked_successfully">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବୁକ୍ ହୋଇଛି!</string>
     <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକିଂ ବିଫଳ ହେଲା!</string>
@@ -685,9 +686,9 @@
     <string name="primary_source_of_income">ଆୟର ମୂଳ ଉତ୍ସ</string>
     <string name="sale_of_cereal_production">ଡାଲି ଜାତୀୟ ଶସ୍ୟ ଉତ୍ପାଦନ ଓ ବିକ୍ରୟ ( ଗହମ, ମକା, ବାର୍ଲି) ନଗଦ ଫସଲ (କପା, ଆଖୁ, ଜଟ୦ କିମ୍ବା ପନିପରିବା ଏଂ ଫଳ ବିକ୍ରୟ</string>
     <string name="sale_of_animals_or_animal_products">ପଶୁ/ପଶୁ ଦ୍ରବ୍ୟ ବିକ୍ରୟ</string>
-    <string name="agricultural_wage_labor_employed_for_farm_work">କୃଷି କାର୍ଯ୍ୟରେ ନିୟୋଜିତ</string>
+    <string name="agricultural_wage_labor_employed_for_farm_work">କୃଷି କାର୍ଯ୍ୟରେ ନିୟୋଜିତ ଶ୍ରମିକ</string>
     <string name="salaried_worker_fixed_monthly_salary">ଦରମା ଶ୍ରମିକ ( ସ୍ଥିର ମାସିକ ଦରମା) ସରକାରୀ, ବେସରକାରୀ ଇଚ୍ଛ୍ୟାଦି</string>
-    <string name="self_employed_non_agricultural_petty_business">ଆତ୍ମନିର୍ଭରଶୀଳ (ଅଣଳୃଷି/୪ୁଦ୍ର ବ୍ୟବସାୟ)</string>
+    <string name="self_employed_non_agricultural_petty_business">ଆତ୍ମନିର୍ଭରଶୀଳ ( ଅଣ କୃଷି ଭିତ୍ତିକ ବ୍ୟବସାୟୀ)</string>
     <string name="daily_labor_unskilled_work_agricultural_non_agricultural">ଦିନ ମୁରୀଆ(ଅଣ ଶିକ୍ଷିତ କାର୍ଯ୍ୟ-କୃଷି/ଅଣକୃଷି)</string>
     <string name="nrega">ଏନ.ଆର.ଇ.ଜି.ଏରେ ଶ୍ରମିକ</string>
     <string name="seasonal_labor">ଋତୁ କାଳୀନ ଶ୍ରମିକ</string>
@@ -699,7 +700,7 @@
     <string name="survey_yes">ହଁ</string>
     <string name="survey_no">ନା</string>
     <string name="does_the_house_have_electricity">ଘରେ ବିଦ୍ୟୁତ ଅଛି କି?</string>
-    <string name="no_of_hours_per_day">ଦୈନିକ କେତେ ଘଣ୍ଟଂଟା</string>
+    <string name="no_of_hours_per_day">ଦିନକୁ କେତେ ଘଣ୍ଟା</string>
     <string name="no_of_days_per_week">ସପ୍ତାହକୁ କେତେ ଦିନ</string>
     <string name="load_shedding">ଲୋଡ୍ ଶେଡିଙ୍ଗ୍</string>
     <string name="is_there_a_toilet_in_the_house">ଘରେ ଶୌଚାଚାଳୟ ଅଛି କି?</string>
@@ -715,7 +716,7 @@
     <string name="units">ଜମି ପରିମାଣର ଏକକ</string>
     <string name="bigha">ବଡ</string>
     <string name="acre">ଏକର</string>
-    <string name="gunta">ଗୁଣ୍ଟା |</string>
+    <string name="gunta">ଗୁଣ୍ଠ</string>
     <string name="hectare">ହେକ୍ଟର</string>
     <string name="average_annual_household_income">ହାରାହାରି ବାର୍ଷିକ ଘରୋଇ ଆୟ</string>
     <string name="zero_thirty_thousand">0 – 30,000</string>
@@ -734,11 +735,11 @@
 
     <!--    SURVEY SCREEN - 4 -->
     <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">ଏହି ଘରର କୌଣସି ସଦସ୍ୟଙ୍କର ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟ କିମ୍ବା ପୋଷ୍ଟ ଅଫିସ୍ ଆକାଉଣ୍ଟ ଅଛି କି?</string>
-    <string name="do_not_know">ଜାଣ ନାହିଁ ଜ୍ଝ</string>
+    <string name="do_not_know">ଜାଣେନାହିଁ</string>
     <string name="does_this_household_have_a_bpl_card_coupon">ଏହି ଘରର BPL କାର୍ଡ / କୁପନ୍ ଅଛି କି?</string>
     <string name="yes_card_seen">ହଁ, କାର୍ଡ ଦେଖାଗଲା</string>
-    <string name="yes_card_not_seen">ହଁ, କାର୍ଡ</string>
-    <string name="no_card">କ ଉ ଣସି କାର୍ଡ</string>
+    <string name="yes_card_not_seen">ହଁ , କାର୍ଡ ନାହିଁ</string>
+    <string name="no_card">କୌଣସି କାର୍ଡ ନାହିଁ</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">ଏହି ଘରର ଏକ ଅର୍ନ୍ତୋଦୟ କାର୍ଡ / କୁପନ୍ ଅଛି କି?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">ଏହି ଘରର ଏକ ରାଷ୍ଟ୍ରିୟ  ବିମା ଯୋଜନା (RSBY) କାର୍ଡ ଅଛି କି?</string>
     <string name="does_this_household_have_a_mgnrega_card_coupon">ଏହି ଘରର MGNREGA କାର୍ଡ ଅଛି କି?*</string>
@@ -749,13 +750,13 @@
     <string name="lpg_natural_gas">ଏଲ.ପି.ଜି / ପ୍ରାକୃତିକ ଗ୍ୟାସ</string>
     <string name="biogas_checkbox">ବାୟୋଗ୍ୟାସ</string>
     <string name="kerosene">କିରୋସିନ</string>
-    <string name="coal_lignite">କୋଇଲା/ଲିଗ</string>
+    <string name="coal_lignite">କୋଇଲା ବା ଅଙ୍ଗାର</string>
     <string name="wood">କାଠ </string>
     <string name="charcoal">ଅଙ୍ଗାର</string>
     <string name="straw_shrubs_grass">ନଡା/ଘାସ</string>
     <string name="agricultural_crop_waste">କୃଷି ବର୍ଜବସ୍ତୁ</string>
     <string name="dung_cakes">ଖତର ଘସି</string>
-    <string name="other_specify">ଅନ୍ୟାନ୍ୟ</string>
+    <string name="other_specify">ଅନ୍ୟାନ୍ୟ ( ବର୍ଣ୍ଣନା କର )</string>
     <string name="what_is_the_main_source_of_lighting_in_this_household">ଏହି ଘରେ ଆଲୋକର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?</string>
     <string name="lantern">ଲଣ୍ଠନ</string>
     <string name="kerosene_lamp">କିରୋସିନ ଲ୍ୟାମ୍ପ</string>
@@ -771,7 +772,7 @@
     <string name="tube_well_borehole">ନଳକୁପ/ ବୋର ୱେଲ </string>
     <string name="protected_well_checkbox">ସୁରକ୍ଷିତ କୂଅ</string>
     <string name="unprotected_well">ଅସୁରକ୍ଷିତ ପୂଅ</string>
-    <string name="protected_spring">ସୁରକ୍ଷିତ ଝରଣା</string>
+    <string name="protected_spring">ଅସୁରକ୍ଷିତ କୁଅ</string>
     <string name="unprotected_spring">ଅସୁରକ୍ଷିତ ଝରଣା</string>
     <string name="rainwater">ବର୍ଷାପାଣି</string>
     <string name="tanker_truck">ଟ୍ୟାଙ୍କର ପାଣି</string>
@@ -780,20 +781,20 @@
     <string name="common_hand_pump">ସାଧାରଣ ହାତ ପମ୍ପ</string>
     <string name="hand_pump_at_home">ଘରେ ଥିବା ହାତ ପମ୍ପ</string>
     <string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">ତୁମ ଘରୁ ଜଳ ଉତ୍ସ ପର୍ଯ୍ୟନ୍ତ ଚାଲିବା ପାଇଁ କେତେ ସମୟ ଲାଗେ?</string>
-    <string name="number_of_minutes">ମିନିଟ୍‌</string>
+    <string name="number_of_minutes">କେତେ ମିନିଟ୍</string>
     <string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">ଏହାକୁ ପିଇବାକୁ ଅଧିକ ନିରାପଦ କରିବା ପାଇଁ ଆପଣ ନିଜ ଜଳକୁ କି ପ୍ରକାରେ ବ୍ୟବହାର କରନ୍ତି?</string>
     <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">ଏହାକୁ ପିଇବାକୁ ନିରାପଦ କରିବା ପାଇଁ ଆପଣ ସାଧାରଣତ ପାଣିରେ କ’ଣ କରନ୍ତି?</string>
     <string name="boil">ଫୁଟାପାଣି</string>
-    <string name="use_alum">ଆଲମ ବ୍ୟବହାର</string>
+    <string name="use_alum">ଫିଟିକିରି ବ୍ୟବହାର</string>
     <string name="add_bleach_chlorine_tablets_drops">ବ୍ଲିଚିଙ୍ଗ/କ୍ଲୋରାଇନ ପକାନ୍ତି</string>
     <string name="strain_through_a_cloth">କପଡାରେ ଛାଣନ୍ତି</string>
     <string name="use_water_filter_ceramic_sand_composite_etc">ୱାଟର ଫିଲଟର ବ୍ୟବହାର</string>
-    <string name="use_electronic_purifier">ବିଦ୍ୟୁତ ବିଶୋଧନକାରୀ ଯନ୍ତ୍ର </string>
+    <string name="use_electronic_purifier">ବିଦ୍ୟୁତ ବିଶୋଧନକାରୀ ଯନ୍ତ୍ର</string>
     <string name="let_it_stand_and_settle">ଏହାକୁ ଛିଡ଼ା ହେବାକୁ ଦିଅନ୍ତୁ ଏଵଂ ସ୍ଥିର / ବ୍ୟବସ୍ଥା କରନ୍ତୁ</string>
     <string name="flush_to_piped_sewer_system">ପାଇପ ପାଇଖାନା ସିଷ୍ଟମକୁ ଫ୍ଲାଶ କରି</string>
     <string name="flush_to_septic_tank">ସେଫଯିକ ଟ୍ୟାଙ୍କକୁ ଫ୍ଲାଶ କରିବା</string>
     <string name="flush_to_pit_latrine">ପିଟ୍ ଲାଟ୍ରିନକୁ ଫ୍ଲାଶ କରି</string>
-    <string name="flush_to_somewhere_else">ଅନ୍ୟତ୍ର ଶୌଚ କ୍ରିୟା କରନ୍ତୁ</string>
+    <string name="flush_to_somewhere_else">ଅନ୍ୟତ୍ର ଶୌଚକ୍ରିୟା କରିବା</string>
     <string name="flush_dont_know_where">ଶୌଚ କ୍ରିୟା କେଉଁଠାରେ ହେବ ଜାଣିନି</string>
     <string name="ventilated_improved_pit_biogas_latrine">ବାୟୁ ଚଳ ପ୍ରଚଳ ଉନ୍ନତ ଗର୍ତ୍ତ ( ଭି ଆଇ ପି ) ବାୟୋଗସ ପାଇଖାନା</string>
     <string name="pit_latrine_with_slab">ଗାତ ଯୁକ୍ତ ପାଇଖାନା ଘୋଡନି ସହିତ</string>
@@ -807,7 +808,7 @@
     <string name="no_electricity_available_in_the_toilet">ବିଦ୍ୟୁତ ପାଇଖାନରେ ନାହିଁ</string>
     <string name="toilet_is_often_occupied_by_other_members">ପାଇଖାନା ଅନ୍ୟ ସଦସ୍ୟଙ୍କ ଦ୍ୱାରା ବ୍ୟବହୃତ ହେଉଥିଲା</string>
     <string name="problem_in_toilet_plumbing">ପାଇଖାନା ପମ୍ପର ଅସୁବିଧା</string>
-    <string name="other_reasons_specify">ଅନ୍ୟାନ୍ୟ</string>
+    <string name="other_reasons_specify">ଅନ୍ୟାନ୍ୟ କରଣ ସବୁ ( ଦର୍ଶାଅ )</string>
     <string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">ଗତକାଲି ଠାରୁ କେଉଁ ସମୟରେ ଆପଣ ସାବୁନରେ ହାତ ଧୋଇଥିଲେ?</string>
     <string name="no_soap_available_in_the_household">ଗୃହରେ ସାବୁନ ନାହିଁ</string>
     <string name="soap_available_in_the_household_but_did_not_use_it_to_wash_hands">ଗୃହରେ ସାବୁନ ଉବଲବ୍ଧ କିନ୍ତୁ ହାତଧୋଇବାରେ ବ୍ୟବହାର କରାଯାଇନାହିଁ</string>
@@ -819,7 +820,7 @@
     <string name="starch_staple_food">ଷ୍ଟାର୍ ଷ୍ଟପ୍ ଫୁଡ୍ (ଚାଉଳ, ରୋଟି, ରୁଟି, ଚାପିତ ଚାଉଳ, ମୁରି, ଆଳୁ, ମିଠା ଆଳୁ, ଆର୍ବି, କାସାଭା, କଦଳୀ, ଅନ୍ୟ କ କ୍ସକ୍ଟକ୍ଟଗ୍ଧଗ୍ଦ ଣସି ମୂଳ ଏବଂ କଦଳୀ, ନୁଡୁଲ୍ସ, ପାସ୍ତା ଜ୍ଝ)</string>
     <string name="beans_and_peas">ବିନ୍ସ ଏବଂ ମଟର (ବିନ୍ସ, ମଟର, ମୁଙ୍ଗ ଡାଲ, ଚାନା ଡାଲ, ଆରାହର ଡାଲ, ଉରାଡ ଡାଲ, କିଡନୀ ଡାଲି, ମ୍ୟାଟର ଡାଲ, ଅନ୍ୟ ଡାଲି ଏବଂ ସୋୟାବିନ୍, ଦେଖାଯାଏ, ସୋରିଷ ଜ୍ଝ)</string>
     <string name="nuts_and_cheese">ବାଦାମ ଏବଂ ବିହନ (ଗ୍ରାଉଣ୍ଡନାଟ୍, ଆପ୍ରିକ୍ଟ, ବାଦାମ, ପିସ୍ତା, ନଡ଼ିଆ, ସେସମ୍ ମଞ୍ଜି, ଲଟା ମଞ୍ଜି, ଜ୍ୟାକଫ୍ରୁଟ୍ ମଞ୍ଜି, କାଜୁ ବାଦାମ, ଆଲୁଅ, ସୋରିଷ ମଞ୍ଜି, ସୂର‌୍ୟ୍ୟମୁଖୀ ମଞ୍ଜି, କଖାରୁ ମଞ୍ଜି ଜ୍ଝ)</string>
-    <string name="dairy">ଡାଇରୀ</string>
+    <string name="dairy">( ଡାଇରୀ ) - ଦୁଧ / କ୍ଷୀର ରୁ ତିଆରି ଦ୍ରବ୍ୟର ପ୍ରକ୍ରିୟା କରଣ ( କ୍ଷୀର - ଗାଈ ବା ଛେଳି ବା ମଇଁଷି, କ୍ଷୀର ଗୁଣ୍ଡ ଇତ୍ୟାଦି )</string>
     <string name="eggs">ଅଣ୍ଡା</string>
     <string name="flesh_food">ମାଂସ ଜାତୀୟ ଖାଦ୍ୟ (ମାଂସ, ଚିକେନ୍, ମାଛ ଇତ୍ୟାଦି ଜ୍ଝ)</string>
     <string name="any_vegetables">ଯେ କୌଣସି ପନିପରିବା</string>
@@ -835,7 +836,7 @@
     <string name="three_five_km">3 – 5 କିମି</string>
     <string name="more_than_five_km">5 କିଲୋମିଟରରୁ ଅଧିକ |</string>
     <string name="distance_to_nearest_primary_health_centers">ନିକଟସ୍ଥ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା (କିମିରେ)*</string>
-    <string name="distance_to_nearest_community_health_centre_in_walking_time">ନିକଟସ୍ଥ ସମ୍ପ୍ରଦାୟ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା*</string>
+    <string name="distance_to_nearest_community_health_centre_in_walking_time">ନିକଟତମ ଗୋଷ୍ଠୀ ସ୍ବାସ୍ଥ୍ୟ କେନ୍ଦ୍ର କୁ ଦୂରତା*</string>
     <string name="within_3_km">3 କିଲୋମିଟର ମଧ୍ୟରେ</string>
     <string name="three_six_km">3 – 6 କିମି</string>
     <string name="more_than_10km">10 କିଲୋମିଟରରୁ ଅଧିକ</string>
@@ -856,20 +857,20 @@
     <string name="start_household_survey">ଘରୋଇ ସର୍ବେକ୍ଷଣ ଆରମ୍ଭ କରନ୍ତୁ</string>
     <string name="submit">ଦାଖଲ କରନ୍ତୁ</string>
 
-    <string name="what_is_your_relationship_with_the_head_of_household">ଘରର ମୁଖ୍ୟଙ୍କଙ୍କ ସହିତ ସମ୍ପର୍କ କ’ଣ?*</string>
+    <string name="what_is_your_relationship_with_the_head_of_household">ଘରର ମୁଖ୍ୟଙ୍କ ସହିତ ତୁମର ସମ୍ପର୍କ କଣ ?*</string>
 
     <string name="spouse">ପତି</string>
     <string name="son_daughter">ପୁଅ / ଝିଅ</string>
     <string name="son_daughter_in_law">ପୁତ୍ର / ବୋହୂ</string>
-    <string name="grandchild">ନାତି / କାତୁଣୀ</string>
+    <string name="grandchild">ବଡ଼ ପୁଅ</string>
     <string name="father_mother">ପିତା / ମାତା</string>
     <string name="father_mother_in_law">ପିତା / ଶାଶୁ</string>
     <string name="brother_sister">ଭାଇ / ଭଉଣୀ</string>
     <string name="brother_sister_in_law">ଭାଉଜ / ବୋହୂ</string>
-    <string name="niece_nephew">ଜ୍ୱାଇଁ / ଜ୍ୱାଇଁ</string>
+    <string name="niece_nephew">ଜ୍ବାଇଁ/ ପୁତୁରା / ଭଣଜା</string>
     <string name="grandparent_grandparent_in_law">ଜେଜେ ବାପା / ଜେଜେ ମା</string>
-    <string name="other_relative">ଅନ୍ୟ ସମ୍ପର୍କ</string>
-    <string name="adopted_foster_stepchild">ଗ୍ରହଣ / ପୁଷ୍ଟିକର / ଷ୍ଟେପଚିଲ୍ଡ</string>
+    <string name="other_relative">ଅନ୍ୟ ସମ୍ପ ର୍କୀୟ</string>
+    <string name="adopted_foster_stepchild">ଗ୍ରହଣ ବା ପୋଷ୍ୟ ପୁତ୍ର / ସାବତ ପୁଅ</string>
     <string name="domestic_servant">ଘରୋଇ ଚାକର</string>
     <string name="other_not_related">କୌଣସି ସମ୍ପର୍କ ନାହିଁ</string>
     <string name="not_stated">ସ୍ଥିର ନୁହେଁ</string>
@@ -881,7 +882,7 @@
     <string name="divorced">ଛାଡପତ୍ର</string>
     <string name="separated">ପୃଥକ ରହିବା</string>
     <string name="deserted">ପରିତ୍ୟକ୍ତ</string>
-    <string name="never_married">କେବେବି ବିବାହ କରିବେ ନାହିଁ</string>
+    <string name="never_married">କେବେବି ବିବାହ କରି ନାହାନ୍ତି</string>
 
     <string name="cannot_read_and_write">ପଢିବା ଏବଂ ଲେଖିବା ଜାଣେନାହିଁ</string>
     <string name="can_read_and_write">ପଢିପାରେ ଏବଂ ଲେଖିପାରେ</string>
@@ -897,17 +898,17 @@
     <string name="petty_business_shop_owner">କ୍ଷୁଦ୍ର ବ୍ୟବସାୟୀ(ଦୋକାନୀ)</string>
     <string name="technician_craftsman_other_skilled_work">କୁଶଳୀ (ବଢେଇ, ଗାଡି ଚାଳକ ଇଚ୍ଛ୍ୟାଦି)</string>
     <string name="agricultural_farmer">କୃଷକ</string>
-    <string name="tenant_farmer_agricultural_daily_wage_worker">ଭାଗଚାଷୀ</string>
-    <string name="daily_wage_worker_unskilled_workers">ଚାଷ ଜମି ଶ୍ରମିକ</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ପ୍ରଜା / ଭାଗ ଚାଷୀ / ଦୈନିକ ଚାଷୀ ମଜୁରିଆ</string>
+    <string name="daily_wage_worker_unskilled_workers">ଦୈନିକ ମଜୁରିଆ ( ଅଣ କୁଶଳୀ ଶ୍ରମିକ )</string>
     <string name="household_work">ଗୃହକାର୍ଯ୍ୟ</string>
     <string name="student">ଛାତ୍ର / ଛାତ୍ରୀ(ଅଣସଂରକ୍ଷିତ)</string>
     <string name="unemployed">ବେକାରୀ</string>
     <string name="retired_with_pension">ଚାକିରୀରୁ ଅବସର(ପେନସନ ଗ୍ରହୀତା)</string>
-    <string name="retired_without_pension">ଦିନ ମଜୁରୀ</string>
+    <string name="retired_without_pension">ଅବସର ପ୍ରାପ୍ତ ( ଅବସର କାଳୀନ ଭତ୍ତା ବିହୀନ )</string>
 
     <string name="shared">ଅଂଶିଦାର</string>
-    <string name="owns_smartphone">ନିଜର ନାହିଁ</string>
-    <string name="owns_feature_phone">ନିଜର ଅଛି</string>
+    <string name="owns_smartphone">ନିଜର ସ୍ମାର୍ଟ ଫୋନ୍ ଅଛି</string>
+    <string name="owns_feature_phone">ନିଜର ସାଧାରଣ ଫୋନ ଅଛି</string>
     <string name="when_was_the_last_time_you_got_your_bp_checked">ଶେଷ ଥର ପାଇଁ ଯେତେବେଳେ ତୁମର ବିପି ଯାଞ୍ଚ ହେଲା?*</string>
     <string name="when_was_the_last_time_you_got_your_sugar_level_checked">ଶେଷ ଥର ଯେତେବେଳେ ତୁମର ଚିନି ସ୍ତର ଯାଞ୍ଚ ହେଲା*</string>
     <string name="when_was_the_last_time_you_got_your_hb_level_checked">ଶେଷ ଥର କେତେବେଳେ ତୁମର ଏଚ୍.ପି. ସ୍ତର ପରୀକ୍ଷା କରାଗଲା?*</string>
@@ -926,7 +927,7 @@
     <string name="diabetes">ମଧୁମେହ*</string>
     <string name="arthritis">ଆର୍ଥ୍ରାଇଟିସ୍*</string>
     <string name="anaemia">ରକ୍ତହୀନତା*</string>
-    <string name="any_surgeries">ଯେକ ଇଦ୍ଭଚ୍ଚ ଣସି ଅସ୍ତ୍ରୋପଚାର*</string>
+    <string name="any_surgeries">କୌଣସି ଅସ୍ତ୍ରୋପଚାର*</string>
     <string name="reason_for_surgery_specify_the_reason">ଅସ୍ତ୍ରୋପଚାରର କାରଣ (କାରଣ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ)*</string>
 
     <string name="smoking_status">ଗୃହରେ ଧୂମପାନ ସ୍ଥିତି ଜ୍ଝ*</string>
@@ -954,8 +955,8 @@
     <string name="delete_dialog_button">ଡିଲିଟ ( ବିଲୋପ ) କର</string>
 
     <string name="all_fields_are_mandatory">ସବୁ ସୁଚନା ଦେବା ଭଲ ହେବ (ବଧ୍ୟାତା ଅଟେ)</string>
-    <string name="please_fill_up_all_required_fields">ଦୟାକରି ସବୁ ପୂରଣ କରନ୍ତୁ</string>
-    <string name="medical_history_cannot_be_empty">ଚିକିସ୍ଥ୍ୟଗତ ଇତିହାସ ପୂରଣ ନ ହେବା ଉଚିତ</string>
+    <string name="please_fill_up_all_required_fields">ଦୟାକରି ସବୁ ଦରକାରୀ କ୍ଷେତ୍ର ( ଫିଲ୍ଡ ) ପୂରଣ କରନ୍ତୁ</string>
+    <string name="medical_history_cannot_be_empty">ଚିକିତ୍ସା ଗତ ଇତିହାସ ଖାଲି ( ଶୂନ୍ୟ ) ନ ରହିବା ଦରକାର</string>
     <string name="smoking_history_cannot_be_empty">ତମାଖୁ (ବିଡି, ସିଗାରେଟ) ବ୍ୟବହାର ନ ହେବା ଉଚିତ୍</string>
     <string name="alcohol_consumption_history_cannot_be_empty">ମଦ୍ୟପାନ ବ୍ୟବହାର ନ ହେବା ଉଚିତ୍</string>
 
@@ -1018,4 +1019,7 @@
     <string name="chat_fab">ଚାଟ୍ ଫାବ୍ |</string>
     <string name="notification_title">ପ୍ରକୃତ ସମୟ ସିଙ୍କ୍ ଅନ୍ ଅଛି |</string>
 
+    <string name="answer_following_questions">ନିମ୍ନଲିଖିତ ବାଧ୍ୟତାମୂଳକ ପ୍ରଶ୍ନଗୁଡିକ, ଦୟାକରି ସେଗୁଡିକର ଉତ୍ତର ଦିଅନ୍ତୁ।</string>
+    <string name="dr_specility_generalphysician">ସାଧାରଣ ଚିକିତ୍ସକ</string>
+    <string name="update_hw_profile">ସଫଳତାର ସହ ଅପଡେଟ୍ ହୋଇଛି</string>
 </resources>

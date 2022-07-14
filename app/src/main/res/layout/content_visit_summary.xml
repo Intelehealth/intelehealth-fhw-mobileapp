@@ -1207,7 +1207,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="25dp"
                     android:focusable="false"
-                    android:text="General Physician"
+                    android:text="@string/dr_specility_generalphysician"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:visibility="visible" />

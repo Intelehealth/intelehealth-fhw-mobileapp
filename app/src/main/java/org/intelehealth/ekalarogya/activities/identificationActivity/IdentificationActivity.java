@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.identificationActivity;
 import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
@@ -17,10 +18,16 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.getTimeStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getWhatsAppStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.hohRelationship;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.setSelectedCheckboxes;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_as_caste_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_as_economic_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_as_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_gu_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.switch_or_education_edit;
 
@@ -509,11 +516,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //            } else {
 //                mOccupation.setVisibility(View.GONE);
 //            }
-            /*if (obj.getBoolean("casteLayout")) {
+            if (obj.getBoolean("casteLayout")) {
                 casteLayout.setVisibility(View.VISIBLE);
             } else {
                 casteLayout.setVisibility(View.GONE);
-            }*/
+            }
+
             if (obj.getBoolean("educationLayout")) {
                 educationLayout.setVisibility(View.VISIBLE);
             } else {
@@ -1177,6 +1185,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String education = switch_gu_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String education = switch_as_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
 //                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1215,28 +1226,34 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String economic = switch_gu_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String economic = switch_as_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-//            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
-//                mCaste.setSelection(0);
-//            } else {
-//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                    String caste = switch_hi_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-//                    String caste = switch_or_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-//                    String caste = switch_gu_caste_edit(patient1.getCaste());
-//                    mCaste.setSelection(casteAdapter.getPosition(caste));
-//                } else {
-//                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
-//                }
-//            }
+            if (patient1.getCaste()==null || patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
+                mCaste.setSelection(0);
+            } else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String caste = switch_hi_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String caste = switch_or_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    String caste = switch_gu_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String caste = switch_as_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                } else {
+                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                }
+            }
 
             //Houselhold Head...
             if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
@@ -1251,15 +1268,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
                 String occupation_Transl = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     occupation_Transl = StringUtils.switch_hi_occupation_edit(patient1.getOccupation());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     occupation_Transl = StringUtils.switch_or_occupation_edit(patient1.getOccupation());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     occupation_Transl = StringUtils.switch_gu_occupation_edit(patient1.getOccupation());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    occupation_Transl = StringUtils.switch_as_occupation_edit(patient1.getOccupation());
                 } else {
                     occupation_Transl = patient1.getOccupation();
-                }
+                }*/
 
                 occupation_Transl = getOccupationString(patient1.getOccupation(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
                 int spinner_position = occupation_adapt.getPosition(occupation_Transl);
@@ -1275,6 +1294,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------------change gujrati language---------------
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[વર્ણન કરો]"));
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                        //-------------change assamese language---------------
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("[বৰ্ণনা কৰা]"));
                     } else {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
                     }
@@ -1299,6 +1321,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     bankacc_Transl = StringUtils.switch_gu_bankaccount_edit(patient1.getBank_account());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    bankacc_Transl = StringUtils.switch_as_bankaccount_edit(patient1.getBank_account());
                 } else {
                     bankacc_Transl = patient1.getBank_account();
                 }
@@ -1308,15 +1332,17 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
             if (patient1.getMobile_type() != null && !patient1.getMobile_type().equalsIgnoreCase("")) {
                 String mobile_Transl = "";
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     mobile_Transl = StringUtils.switch_or_mobiletype_edit(patient1.getMobile_type());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     mobile_Transl = StringUtils.switch_gu_mobiletype_edit(patient1.getMobile_type());
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    mobile_Transl = StringUtils.switch_as_mobiletype_edit(patient1.getMobile_type());
                 } else {
                     mobile_Transl = patient1.getMobile_type();
-                }
+                }*/
 
                 mobile_Transl = getMobilePhoneOwnership(patient1.getMobile_type(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
                 int spinner_position = mobile_adapt.getPosition(mobile_Transl);
@@ -1401,6 +1427,26 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                             radioNo.setChecked(false);
                         } else {
                             vaccination_Transl = StringUtils.switch_or_vaccination_edit(patient1.getVaccination());
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
+                    }
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        } else {
+                            vaccination_Transl = StringUtils.switch_as_vaccination_edit(patient1.getVaccination());
                             framelayout_vaccination.setVisibility(View.VISIBLE);
                             int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
                             spinner_vaccination.setSelection(spinner_position);
@@ -1553,15 +1599,19 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
                         !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getWaterSupplyHoursPerDay().split(" ");
-                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                    binding.runningWaterHoursEditText.setText(time);
+                   if(timeArray.length==2) {
+                       String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                       binding.runningWaterHoursEditText.setText(time);
+                   }
                 }
 
                 if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
                         !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getWaterSupplyDaysPerWeek().split(" ");
-                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                    binding.runningWaterDaysEditText.setText(time);
+                    if(timeArray.length==2) {
+                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                        binding.runningWaterDaysEditText.setText(time);
+                    }
                 }
 
                 if (patient1.getElectricityStatus() != null && !patient1.getElectricityStatus().equalsIgnoreCase("")) {
@@ -1571,15 +1621,19 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
                         && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getLoadSheddingHoursPerDay().split(" ");
-                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                    binding.loadSheddingHoursEditText.setText(time);
+                    if(timeArray.length==2) {
+                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                        binding.loadSheddingHoursEditText.setText(time);
+                    }
                 }
 
                 if (patient1.getLoadSheddingDaysPerWeek() != null && !patient1.getLoadSheddingDaysPerWeek().equalsIgnoreCase("")
                         && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getLoadSheddingDaysPerWeek().split(" ");
-                    String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                    binding.loadSheddingDaysEditText.setText(time);
+                    if(timeArray.length==2) {
+                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                        binding.loadSheddingDaysEditText.setText(time);
+                    }
                 }
 
                 if (patient1.getAverageAnnualHouseholdIncome() != null && !patient1.getAverageAnnualHouseholdIncome().equalsIgnoreCase("")) {
@@ -1633,6 +1687,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         wateravail_Transl = StringUtils.switch_or_wateravail_edit(patient1.getWater_availability());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         wateravail_Transl = StringUtils.switch_gu_wateravail_edit(patient1.getWater_availability());
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                        wateravail_Transl = StringUtils.switch_as_wateravail_edit(patient1.getWater_availability());
                     } else {
                         wateravail_Transl = patient1.getWater_availability();
                     }
@@ -1650,6 +1706,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         toiletfacility_Transl = StringUtils.switch_gu_toiletfacil_edit(patient1.getToilet_facility());
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                        toiletfacility_Transl = StringUtils.switch_as_toiletfacil_edit(patient1.getToilet_facility());
                     } else {
                         toiletfacility_Transl = patient1.getToilet_facility();
                     }
@@ -1670,6 +1728,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                             //-------replace with gujrati
                             toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("અન્ય [દાખલ કરો]"));
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                            //-------replace with assamese
+                            toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("অন্যান্য [প্ৰৱেশ কৰা]"));
                         } else {
                             toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                         }
@@ -1689,6 +1750,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         housestruct_Transl = StringUtils.switch_gu_housestructure_edit(patient1.getStructure_house());
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                        housestruct_Transl = StringUtils.switch_as_housestructure_edit(patient1.getStructure_house());
                     } else {
                         housestruct_Transl = patient1.getStructure_house();
                     }
@@ -1959,6 +2022,9 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Gujrati...
+                mDOB.setText(dob_text);
+            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String dob_text = en__as_dob(dob); //to show text of English into assamese...
                 mDOB.setText(dob_text);
             } else {
                 mDOB.setText(dob);
@@ -2672,7 +2738,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !villageText.getText().toString().equals("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
+                && !mPhoneNum.getText().toString().equals("") && !villageText.getText().toString().equals("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("")
                 && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
@@ -2693,6 +2759,10 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
+            }
+
+             if (mPhoneNum.getText().toString().equals("")) {
+                mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
             /*if (mCity.getText().toString().equals("")) {
@@ -2732,7 +2802,6 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         } else {
             countryText.setError(null);
         }
-
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
@@ -3235,12 +3304,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) { //no value has been edited...ie. DOB/Age is not selected...
-                String dob = StringUtils.hi_or_gu_en_noEdit
+                String dob = StringUtils.hi_or_gu_as_en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or_gu_en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_gu_as_en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
 
@@ -3261,12 +3330,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3717,7 +3786,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
                     // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(time_water_checkbox.getText().toString())); //hi to en and vice-versa...
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu_As(time_water_checkbox.getText().toString())); //hi to en and vice-versa...
                     Log.d("HOH", "time to bring water:create " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -4069,7 +4138,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         if (mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
-                mPhoneNum.setError("Enter 10 digits");
+                mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
             }
         }
@@ -4110,7 +4179,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !villageText.getText().toString().equalsIgnoreCase("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
+                && !mPhoneNum.getText().toString().equals("") && !villageText.getText().toString().equalsIgnoreCase("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
@@ -4131,6 +4200,10 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if (mPhoneNum.getText().toString().equals("")) {
+                mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
             /*if (mCity.getText().toString().equals("")) {
@@ -4676,12 +4749,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_gu_en_noEdit
+                String dob = StringUtils.hi_or_gu_as_en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or_gu_en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_gu_as_en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
                 dob_array[1] = dob_month_split.replace(dob_month_split, dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
@@ -4700,12 +4773,13 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
 //            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-//            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+//
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -5171,7 +5245,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
                     // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu(time_water_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Or_Gu_As(time_water_checkbox.getText().toString()));
                     Log.d("HOH", "time to bring water_edit: " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -5466,6 +5540,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveMedicalHistoryData(MedicalHistory medicalHistory) {
+        medicalHistoryList.clear();
         medicalHistoryList.add(medicalHistory);
         medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
@@ -5477,6 +5552,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveMedicalHistoryDataAtPosition(MedicalHistory medicalHistory, int position) {
+        medicalHistoryList.clear();
         medicalHistoryList.set(position, medicalHistory);
         medicalHistoryAdapter = new MedicalHistoryAdapter(medicalHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         medicalHistoryViewPager.setAdapter(medicalHistoryAdapter);
@@ -5488,6 +5564,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveSmokingHistory(SmokingHistory smokingHistory) {
+        smokingHistoryList.clear();
         smokingHistoryList.add(smokingHistory);
         smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
@@ -5498,6 +5575,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
     @Override
     public void saveSmokingHistoryAtPosition(SmokingHistory smokingHistory, int position) {
+        smokingHistoryList.clear();
         smokingHistoryList.set(position, smokingHistory);
         smokingHistoryAdapter = new SmokingHistoryAdapter(smokingHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         smokingHistoryViewPager.setAdapter(smokingHistoryAdapter);
@@ -5509,6 +5587,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     @Override
     public void saveAlcoholConsumptionData(AlcoholConsumptionHistory
                                                    alcoholConsumptionHistory) {
+        alcoholConsumptionHistoryList.clear();
         alcoholConsumptionHistoryList.add(alcoholConsumptionHistory);
         alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);
@@ -5520,6 +5599,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
     @Override
     public void saveAlcoholConsumptionDataAtPosition(AlcoholConsumptionHistory
                                                              alcoholConsumptionHistory, int position) {
+        alcoholConsumptionHistoryList.clear();
         alcoholConsumptionHistoryList.set(position, alcoholConsumptionHistory);
         alcoholConsumptionHistoryAdapter = new AlcoholConsumptionHistoryAdapter(alcoholConsumptionHistoryList, sessionManager.getAppLanguage(), this, updatedContext, this);
         alcoholViewPager.setAdapter(alcoholConsumptionHistoryAdapter);

@@ -27,7 +27,6 @@ import java.util.Locale;
 
 public class ChooseLanguageActivity extends AppCompatActivity {
 
-
     Button SaveButton;
     ImageView BackImage;
 
@@ -120,6 +119,12 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("name", "ગુજરાતી");
             jsonObject.put("code", "gu");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("gu"));
+            itemList.add(jsonObject);
+
+            jsonObject = new JSONObject();
+            jsonObject.put("name", "অসমীয়া");
+            jsonObject.put("code", "as");
+            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("as"));
             itemList.add(jsonObject);
 
            /* jsonObject = new JSONObject();

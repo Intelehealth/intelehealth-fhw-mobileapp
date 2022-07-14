@@ -18,12 +18,12 @@
     <string name="camera2_texture_only_error">କ୍ୟାମେରା 2 କେବଳ ଟେକ୍ସଚରକୁ କ୍ୟାପଚର କରିବାକୁ ସମର୍ଥନ କରେ | କ୍ୟାମେରା 2 କୁ ଅକ୍ଷମ କରନ୍ତୁ କିମ୍ବା ବିକଳ୍ପଗୁଡ଼ିକରେ ଟେକ୍ସଚରକୁ କ୍ୟାପଚର କରିବାକୁ ସକ୍ଷମ କରନ୍ତୁ |</string>
     <string name="ok">ଠିକ୍ ଅଛି</string>
     <string name="switch_camera">ଆଗ / ପଛ କ୍ୟାମେରା ସୁଇଚ୍ କରନ୍ତୁ |</string>
-    <string name="capture_format_change_text">କ୍ୟାପଚର୍ ଫର୍ମାଟ୍ ପରିବର୍ତ୍ତନ କରିବାକୁ ସ୍ଲାଇଡ୍ |</string>
+    <string name="capture_format_change_text">ଫର୍ମାଟ କୁ ଧରିବା ( ପରିବର୍ତ୍ତନ କରିବା ) ପାଇଁ ସ୍ଲାଇଡ୍- ( ଖସାଅ - ବଦଳାଅ )</string>
     <string name="muted">ନିରବ |</string>
     <string name="toggle_debug">ତ୍ରୁଟି ନିବାରଣ ଦୃଶ୍ୟ ଟୋଗଲ୍ କରନ୍ତୁ |</string>
     <string name="toggle_mic">ମାଇକ୍ରୋଫୋନ୍ ଟୋଗଲ୍ କରନ୍ତୁ / ବନ୍ଦ କରନ୍ତୁ |</string>
     <string name="action_settings">ସେଟିଂସମୂହ</string>
-    <string name="action_loopback">ଲୁପବ୍ୟାକ୍ ସଂଯୋଗ |</string>
+    <string name="action_loopback">ପାଶ୍ଚାତ ଭାଗ ସଂଯୋଗୀ କରଣ</string>
     <string name="connect_description">କୋଠରୀ ସହିତ ସଂଯୋଗ କରନ୍ତୁ |</string>
     <string name="add_favorite_description">ପ୍ରିୟ ଯୋଡନ୍ତୁ |</string>
     <string name="format_description">%1$dx%2$d @ %3$d fps</string>
@@ -51,4 +51,6 @@
     <string name="call_end_aler_txt">ଆପଣ ଭିଡିଓ କଲ୍ ଶେଷ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="yes">ହଁ</string>
     <string name="no">ନା</string>
+    <string name="type_text_here_str">ଏଠାରେ ଟେକ୍ସଟ୍ ଟାଇପ୍ କରନ୍ତୁ ...</string>
+    <string name="disconneted_alert_str">ବିଚ୍ଛିନ୍ନ ହୋଇଛି!</string>
 </resources>

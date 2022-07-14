@@ -6,6 +6,7 @@
         <item>English</item>
         <item>ଓଡିଆ</item>
         <item>ગુજરાતી</item>
+        <item>অসমীয়া</item>
         <!--<item>Cebuano</item>-->
     </string-array>
 
@@ -14,6 +15,7 @@
         <item>en</item>
         <item>or</item>
         <item>gu</item>
+        <item>as</item>
         <!--        <item>cb</item>-->
     </string-array>
 
@@ -38,12 +40,18 @@
         <item>ତୃତୀୟ ଦୋଜ</item>
     </string-array>
 
-    //-----replace with gujrati
     <string-array name="vaccination_spinner_gu">
         <item>પસંદ કરો</item>
         <item>પ્રથમ ડોઝ</item>
         <item>બીજી માત્રા</item>
         <item>ત્રીજો ડોઝ</item>
+    </string-array>
+
+    <string-array name="vaccination_spinner_as">
+        <item>চয়ন কৰা</item>
+        <item>প্ৰথম ড’জ</item>
+        <item>দ্বিতীয় ড’জ</item>
+        <item>তৃতীয় ড’জ</item>
     </string-array>
 
     <string-array name="speciality_values">
@@ -178,13 +186,25 @@
         <item>@string/postgraduate</item>
     </string-array>
 
-    <string-array name="caste_en">
-        <item>Select</item>
-        <item>General</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
+    <string-array name="education_as">
+        <item>@string/select</item>
+        <item>@string/cannot_read_and_write</item>
+        <item>@string/can_read_and_write</item>
+        <item>@string/primary_education_till_class_five</item>
+        <item>@string/middle_school_sixth_eighth</item>
+        <item>@string/passed_secondary_school</item>
+        <item>@string/passed_senior_secondary_school</item>
+        <item>@string/graduate</item>
+        <item>@string/postgraduate</item>
+    </string-array>
+
+    <string-array name="caste_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ଜେନେରାଲ୍</item>
+        <item>ଅନ୍ୟ ପଛୁଆ</item>
+        <item>କାର୍ଯ୍ୟସୂଚୀ</item>
+        <item>ଅନୁସୂଚିତ ଜନଜାତି</item>
+        <item>ଅନ୍ୟମାନେ</item>
     </string-array>
 
     <string-array name="caste_hi">
@@ -205,7 +225,16 @@
         <item>અન્ય</item>
     </string-array>
 
-    <string-array name="caste_or">
+    <string-array name="caste_as">
+        <item>চয়ন কৰা</item>
+        <item>সাধাৰণ</item>
+        <item>অ’বিচি</item>
+        <item>অনুসুচিত জাতিৰ</item>
+        <item>অনুসুচিত জনজাতিৰ</item>
+        <item>আন কিছুমান</item>
+    </string-array>
+
+    <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
         <item>OBC</item>
@@ -242,6 +271,12 @@
         <item>પસંદ કરો</item>
         <item>એપીએલ</item>
         <item>બીપીએલ</item>
+    </string-array>
+
+    <string-array name="economic_as">
+        <item>চয়ন কৰা</item>
+        <item>এ পি এল</item>
+        <item>বি পি এল</item>
     </string-array>
 
     <string-array name="states_india">
@@ -597,6 +632,23 @@
         <item>@string/not_applicable</item>
     </string-array>
 
+    <string-array name="occupation_spinner_as">
+        <item>@string/select</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/not_applicable</item>
+    </string-array>
+
     <!--    <string-array name="occupation_spinner_gu">-->
     <!--        <item>પસંદ કરો</item>-->
     <!--        <item>જવાબ આપવાનો ઇનકાર કર્યો</item>-->
@@ -644,6 +696,13 @@
         <item>હા</item>
         <item>ના</item>
         <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
+    </string-array>
+
+    <string-array name="bank_account_spinner_as">
+        <item>চয়ন কৰা</item>
+        <item>হয়</item>
+        <item>নহয়</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
     </string-array>
 
     <string-array name="mobilephone_spinner_en">
@@ -696,6 +755,14 @@
         <item>@string/shared_feature_phone</item>
     </string-array>
 
+    <string-array name="mobilephone_spinner_as">
+        <item>@string/select</item>
+        <item>@string/none</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
+    </string-array>
     <!--    <string-array name="mobilephone_spinner_gu">-->
     <!--        <item>પસંદ કરો</item>-->
     <!--        <item>મૂળભૂત ફોન</item>-->
@@ -725,6 +792,13 @@
     </string-array>
 
     <string-array name="familymember_whatsapp_gu">
+        <item>@string/select</item>
+        <item>@string/yes_family_member</item>
+        <item>@string/yes_personal</item>
+        <item>@string/survey_no</item>
+    </string-array>
+
+    <string-array name="familymember_whatsapp_as">
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
         <item>@string/yes_personal</item>
@@ -761,7 +835,7 @@
         <item>ବିରକ୍ତିକର</item>
         <item>ନଦୀ / ପୋଖରୀ</item>
         <item>ଟ୍ୟାଙ୍କର୍ ପାଣି</item>
-        <item>ଅନ୍ୟ କ .ଣସି</item>
+        <item>ଅନ୍ୟ କୌଣସି</item>
     </string-array>
 
     <string-array name="sourcewater_spinner_gu">
@@ -773,6 +847,17 @@
         <item>નદીઓ/તળાવ</item>
         <item>ટેન્કરનું પાણી</item>
         <item>કોઇ પણ બીજુ</item>
+    </string-array>
+
+    <string-array name="sourcewater_spinner_as">
+        <item>চয়ন কৰা</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
+        <item>চাপাকল/হেণ্ড পাম্প</item>
+        <item>ওৱেলছ</item>
+        <item>বিৰক্তিকৰ</item>
+        <item>নদী/পুখুৰী</item>
+        <item>টেংকাৰৰ পানী</item>
+        <item>আন যিকোনো</item>
     </string-array>
 
     <string-array name="howtomake_water_safe_en">
@@ -827,6 +912,19 @@
         <item>અન્ય[દાખલ કરો]</item>
     </string-array>
 
+    <string-array name="howtomake_water_safe_as">
+        <item>চয়ন কৰা</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
+        <item>একো নাই</item>
+        <item>উতলোৱা</item>
+        <item>এলুম</item>
+        <item>ব্লিচ/ক্ল’ৰিন টেবলেট দিব</item>
+        <item>কাপোৰৰ মাজেৰে চেকি লওক</item>
+        <item>পানীৰ ফিল্টাৰ(চিৰামিক/বালি/কম্পোজিট)ইত্যাদি ব্যৱহাৰ কৰক</item>
+        <item>ইলেক্ট্ৰনিক ফিল্টাৰ ব্যৱহাৰ কৰক</item>
+        <item>অন্যান্য[লিখক]</item>
+    </string-array>
+
     <string-array name="water_availability_spinner_en">
         <item>Select</item>
         <item>Yes</item>
@@ -847,7 +945,7 @@
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>ହଁ</item>
         <item>ନା</item>
-        <item>ଜାଣ ନାହିଁ</item>
+        <item>ଜାଣିନାହିଁ / ଜାଣେନାହିଁ</item>
         <item>ଉତ୍ତର ଦେବାକୁ ମନା କରିଦେଲେ</item>
     </string-array>
 
@@ -857,6 +955,14 @@
         <item>ના</item>
         <item>ખબર નથી</item>
         <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
+    </string-array>
+
+    <string-array name="water_availability_spinner_as">
+        <item>চয়ন কৰা</item>
+        <item>হয়</item>
+        <item>নহয়</item>
+        <item>নাজানো</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
     </string-array>
 
     <string-array name="toiletFacility_spinner_en">
@@ -895,6 +1001,15 @@
         <item>જવાબ આપવાનો ઇનકાર કર્યો</item>
     </string-array>
 
+    <string-array name="toiletFacility_spinner_as">
+        <item>চয়ন কৰা</item>
+        <item>কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে</item>
+        <item>নিজা শৌচাগাৰ</item>
+        <item>কমিউনিটি টয়লেট</item>
+        <item>আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট</item>
+        <item>উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</item>
+    </string-array>
+
     <string-array name="structure_house_en">
         <item>Select</item>
         <item>Kutcha House</item>
@@ -918,9 +1033,16 @@
 
     <string-array name="structure_house_gu">
         <item>પસંદ કરો</item>
-        <item>કચ્છ હાઉસ</item>
-        <item>પક્કા હાઉસ</item>
+        <item>કાચું ઘર</item>
+        <item>પાકું ઘર</item>
         <item>બેઘર</item>
+    </string-array>
+
+    <string-array name="structure_house_as">
+        <item>চয়ন কৰা</item>
+        <item>কেচাঁ ঘৰ</item>
+        <item>পকী ঘৰ</item>
+        <item>গৃহহীন</item>
     </string-array>
 
     <string-array name="location_district">
@@ -983,6 +1105,18 @@
         <item>O-</item>
     </string-array>
 
+    <string-array name="blood_group_as">
+        <item>অনুগ্ৰহ কৰি নিৰ্বাচন কৰক</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
+
     <string-array name="religion_en">
         <item>@string/select</item>
         <item>@string/hindu</item>
@@ -1032,6 +1166,18 @@
         <item>@string/no_religion</item>
     </string-array>
 
+    <string-array name="religion_as">
+        <item>@string/select</item>
+        <item>@string/hindu</item>
+        <item>@string/muslim</item>
+        <item>@string/christian</item>
+        <item>@string/sikh</item>
+        <item>@string/buddhist_neo_buddhist</item>
+        <item>@string/jain</item>
+        <item>@string/parsi_zoroastrian</item>
+        <item>@string/no_religion</item>
+    </string-array>
+
     <string-array name="survey_caste_en">
         <item>@string/select</item>
         <item>@string/schedule_caste</item>
@@ -1057,6 +1203,14 @@
     </string-array>
 
     <string-array name="survey_caste_gu">
+        <item>@string/select</item>
+        <item>@string/schedule_caste</item>
+        <item>@string/schedule_tribe</item>
+        <item>@string/survey_other_backward_caste</item>
+        <item>@string/survey_general</item>
+    </string-array>
+
+    <string-array name="survey_caste_as">
         <item>@string/select</item>
         <item>@string/schedule_caste</item>
         <item>@string/schedule_tribe</item>
@@ -1140,6 +1294,25 @@
         <item>@string/not_stated</item>
     </string-array>
 
+    <string-array name="hoh_relationship_as">
+        <item>@string/select</item>
+        <item>@string/spouse</item>
+        <item>@string/son_daughter</item>
+        <item>@string/grandchild</item>
+        <item>@string/father_mother</item>
+        <item>@string/father_mother_in_law</item>
+        <item>@string/brother_sister</item>
+        <item>@string/brother_sister_in_law</item>
+        <item>@string/niece_nephew</item>
+        <item>@string/grandparent_grandparent_in_law</item>
+        <item>@string/other_relative</item>
+        <item>@string/adopted_foster_stepchild</item>
+        <item>@string/domestic_servant</item>
+        <item>@string/other_not_related</item>
+        <item>@string/other_specify</item>
+        <item>@string/not_stated</item>
+    </string-array>
+
     <string-array name="marital_status_en">
         <item>@string/select</item>
         <item>@string/currently_married</item>
@@ -1182,6 +1355,16 @@
         <item>@string/deserted</item>
     </string-array>
 
+    <string-array name="marital_status_as">
+        <item>@string/select</item>
+        <item>@string/currently_married</item>
+        <item>@string/married_gauna_not_performed</item>
+        <item>@string/never_married</item>
+        <item>@string/widowed</item>
+        <item>@string/divorced</item>
+        <item>@string/separated</item>
+    </string-array>
+
     <string-array name="test_status_en">
         <item>@string/select</item>
         <item>@string/never_checked</item>
@@ -1222,6 +1405,16 @@
         <item>@string/more_than_six_months</item>
     </string-array>
 
+    <string-array name="test_status_as">
+        <item>@string/select</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
+        <item>@string/between_one_month_to_three_months_ago</item>
+        <item>@string/between_three_months_to_six_months_ago</item>
+        <item>@string/more_than_six_months</item>
+    </string-array>
+
     <string-array name="land_units_en">
         <item>@string/select</item>
         <item>@string/bigha</item>
@@ -1247,6 +1440,14 @@
     </string-array>
 
     <string-array name="land_units_gu">
+        <item>@string/select</item>
+        <item>@string/bigha</item>
+        <item>@string/gunta</item>
+        <item>@string/acre</item>
+        <item>@string/hectare</item>
+    </string-array>
+
+    <string-array name="land_units_as">
         <item>@string/select</item>
         <item>@string/bigha</item>
         <item>@string/gunta</item>

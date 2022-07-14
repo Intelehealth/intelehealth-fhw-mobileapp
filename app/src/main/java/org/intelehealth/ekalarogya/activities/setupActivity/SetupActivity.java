@@ -49,8 +49,10 @@ import com.parse.Parse;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -859,8 +861,10 @@ public class SetupActivity extends AppCompatActivity {
         customProgressDialog.show();
         value = false;
         String encoded = "";
-        ApiClient.changeApiBaseUrl(url);
+
+        ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+
         encoded = base64Utils.encoded("sysnurse", "IHNurse#1");
 
         try {
@@ -983,7 +987,11 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
-                            Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
                             customProgressDialog.dismiss();
                         }
 
@@ -1010,7 +1018,7 @@ public class SetupActivity extends AppCompatActivity {
      */
     private boolean getLocationFromServer(String url) {
         customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url);
+        ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
 
         try {
@@ -1063,7 +1071,11 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
-                            Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
                             customProgressDialog.dismiss();
                         }
 
@@ -1521,7 +1533,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private void getMindmapDownloadURL(String url) {
         customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url);
+        ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
@@ -1550,7 +1562,11 @@ public class SetupActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
                             Log.e("MindMapURL", " " + e);
-                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                            }
                         }
 
                         @Override

@@ -285,7 +285,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
-                    && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")) {
+                    && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
+                    && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
@@ -424,7 +426,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("[Describe]","");
                     }
 
-                    insertion=Node.dateformate_hi_or_gu_en(insertion,sessionManager);
+                    insertion=Node.dateformate_hi_or_gu_as_en(insertion,sessionManager);
 
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
@@ -449,7 +451,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 .replaceAll("Other [Describe]","")
                                 .replaceAll("[Describe]","");
                     }
-                    insertion=Node.dateformate_hi_or_gu_en(insertion,sessionManager);
+                    insertion=Node.dateformate_hi_or_gu_as_en(insertion,sessionManager);
 
                     insertDb(insertion);
                     Intent intent = new Intent
@@ -596,7 +598,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))) {
+                    .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
+                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
@@ -643,14 +647,16 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
                 assoSympObj.put("display-gu", "તમે નીચેનાં લક્ષણ(લક્ષણો) છે?");
+                assoSympObj.put("display-as", "আপোনাৰ তলত দিয়া লক্ষণ(সমূহ) আছেনে?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
-                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
+                finalAssoSympObj.put("display-or", "ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
                 finalAssoSympObj.put("display-gu", "સંકળાયેલ લક્ષણો");
+                finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -663,7 +669,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             assoSympNode.getOptionsList().get(0).setTerminal(false);
 
             currentNode = assoSympNode;
-
 
             mgender = PatientsDAO.fetch_gender(patientUuid);
 
@@ -705,7 +710,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "प्रति घंटे बार").replace("time per day", "प्रति दिन का समय")
                     .replace("times per week", "प्रति सप्ताह बार").replace("times per month", "प्रति माह बार")
                     .replace("times per year", "प्रति वर्ष बार");
-            currentNodeVal=Node.dateformat_en_hi_or_gu(currentNodeVal,sessionManager);
+            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
             Log.d("tag", currentNodeVal);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
@@ -721,7 +726,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ");
-            currentNodeVal=Node.dateformat_en_hi_or_gu(currentNodeVal,sessionManager);
+            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         }else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             String currentNodeVal = currentNode.formQuestionAnswer(0);
@@ -735,7 +740,21 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "કલાક દીઠ વખત").replace("time per day", "દિવસ દીઠ વખત")
                     .replace("times per week", "સપ્તાહ દીઠ વખત").replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "દર વર્ષે વખત");
-            currentNodeVal=Node.dateformat_en_hi_or_gu(currentNodeVal,sessionManager);
+            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            String currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal= currentNodeVal
+                    .replace("Question not answered", "પপ্ৰশ্নৰ উত্তৰ নাই")
+                    .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
+                    .replace("Patient denies -", "ৰোগীৰ ৰিপৰ্ট -")
+                    .replace("Hours", "ঘণ্টা").replace("Days", "দিনবোৰ")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাহবোৰ")
+                    .replace("Years", "বছৰবোৰ")
+                    .replace("times per hour", "প্ৰতি ঘণ্টাত বাৰকৈ").replace("time per day", "প্ৰতিদিনে সময়")
+                    .replace("times per week", "প্ৰতি সপ্তাহত বাৰকৈ").replace("times per month", "প্ৰতিমাহে বাৰ")
+                    .replace("times per year", "বছৰি বাৰকৈ");
+            currentNodeVal=Node.dateformat_en_hi_or_gu_as(currentNodeVal,sessionManager);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
@@ -759,7 +778,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         //alertDialog.show();
     }
-
 
     private ArrayList<String> parseExams(Node node) {
         ArrayList<String> examList = new ArrayList<>();
@@ -835,6 +853,4 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClicked(null, groupPos, childPos);
     }
-
-
 }

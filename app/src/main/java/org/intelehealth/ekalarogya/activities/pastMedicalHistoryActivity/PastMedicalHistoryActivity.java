@@ -1,6 +1,7 @@
 package org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -38,6 +39,7 @@ import android.widget.TextView;
 
 
 import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -102,7 +104,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory, patientHistoryHindi, patientHistoryOdiya,patientHistoryGujrati;
+    String patientHistory, patientHistoryHindi, patientHistoryOdiya,patientHistoryGujrati,patientHistoryAssamese;
     String phistory = "";
 
     boolean flag = false;
@@ -357,85 +359,64 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     private void fabClick() {
         //If nothing is selected, there is nothing to put into the database.
-        patientHistory="";
-        patientHistoryHindi="";
-        patientHistoryOdiya="";
-        patientHistoryGujrati="";
-        List<String> imagePathList = patientHistoryMap.getImagePathList();
 
-        if (imagePathList != null) {
-            for (String imagePath : imagePathList) {
-                updateImageDatabase(imagePath);
-            }
-        }
+        AnswerResult answerResult = patientHistoryMap.checkAllRequiredAnswered(PastMedicalHistoryActivity.this);
+        if (!answerResult.result) {
+            // show alert dialog
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
 
-        if (intentTag != null && intentTag.equals("edit")) {
-            if (patientHistoryMap.anySubSelected()) {
-                patientHistory = patientHistoryMap.generateLanguage();
-                //String []arr=patientHistory.split(" - <br/>");
-                if(!patientHistory.isEmpty() && !patientHistory.endsWith(" - <br/>")) {
-                    if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
-                        patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
-                        ConfirmationDialog(patientHistory, patientHistoryHindi);
-                    }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
-                        patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
-                        ConfirmationDialog(patientHistory, patientHistoryOdiya);
-                    }else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
-                        patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
-                        ConfirmationDialog(patientHistory, patientHistoryGujrati);
-                    } else {
-                        ConfirmationDialog(patientHistory, patientHistory);
-                    }
                 }
-                //updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+            });
+            Dialog alertDialog = alertDialogBuilder.show();
+            Log.v(TAG, answerResult.requiredStrings);
+            return;
+        }else {
+            patientHistory = "";
+            patientHistoryHindi = "";
+            patientHistoryOdiya = "";
+            patientHistoryGujrati = "";
+            patientHistoryAssamese = "";
+            List<String> imagePathList = patientHistoryMap.getImagePathList();
+
+            if (imagePathList != null) {
+                for (String imagePath : imagePathList) {
+                    updateImageDatabase(imagePath);
+                }
             }
 
-            if(patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
-                patientHistory="";
-                updateDatabase(patientHistory);
-                Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
-                intent.putExtra("patientUuid", patientUuid);
-                intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("encounterUuidVitals", encounterVitals);
-                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                intent.putExtra("state", state);
-                intent.putExtra("name", patientName);
-                intent.putExtra("tag", intentTag);
-                intent.putExtra("hasPrescription", "false");
-                startActivity(intent);
-            }
-        } else {
-            //if(patientHistoryMap.anySubSelected()){
-            patientHistory = patientHistoryMap.generateLanguage();
-            if(patientHistory!=null && !patientHistory.isEmpty() && !patientHistory.endsWith(" - <br/>")) {
-                if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
-                    patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
-                    ConfirmationDialog(patientHistory, patientHistoryHindi);
-                }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
-                    patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
-                    ConfirmationDialog(patientHistory, patientHistoryOdiya);
-                }else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
-                    patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
-                    ConfirmationDialog(patientHistory, patientHistoryGujrati);
-                } else {
-                    ConfirmationDialog(patientHistory, patientHistory);
-                }
-            }else {
-                if (patientHistory==null || patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
-                    patientHistory="";
-                    if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                        phistory = phistory + patientHistory; // only PMH updated
-                        sessionManager.setReturning(true);
-                        phistory=Node.dateformate_hi_or_gu_en(phistory,sessionManager);
-                        insertDb(phistory);
-                        // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
-                    } else  // new patient, directly insert into database
-                    {
-                        patientHistory=Node.dateformate_hi_or_gu_en(patientHistory,sessionManager);
-                        insertDb(patientHistory);
+            if (intentTag != null && intentTag.equals("edit")) {
+                if (patientHistoryMap.anySubSelected()) {
+                    patientHistory = patientHistoryMap.generateLanguage();
+                    //String []arr=patientHistory.split(" - <br/>");
+                    if (!patientHistory.isEmpty() && !patientHistory.endsWith(" - <br/>")) {
+                        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
+                            patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+                            ConfirmationDialog(patientHistory, patientHistoryHindi);
+                        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                            patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
+                            ConfirmationDialog(patientHistory, patientHistoryOdiya);
+                        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+                            patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
+                            ConfirmationDialog(patientHistory, patientHistoryGujrati);
+                        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
+                            patientHistoryAssamese = patientHistoryMap.generateLanguage("as");
+                            ConfirmationDialog(patientHistory, patientHistoryAssamese);
+                        } else {
+                            ConfirmationDialog(patientHistory, patientHistory);
+                        }
                     }
-                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                    //updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+                }
+
+                if (patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
+                    patientHistory = "";
+                    updateDatabase(patientHistory);
+                    Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -443,10 +424,56 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
-                    //intent.putStringArrayListExtra("exams", physicalExams);
+                    intent.putExtra("hasPrescription", "false");
                     startActivity(intent);
+                }
+            } else {
+                //if(patientHistoryMap.anySubSelected()){
+                patientHistory = patientHistoryMap.generateLanguage();
+                if (patientHistory != null && !patientHistory.isEmpty() && !patientHistory.endsWith(" - <br/>")) {
+                    if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
+                        patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+                        ConfirmationDialog(patientHistory, patientHistoryHindi);
+                    } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+                        patientHistoryOdiya = patientHistoryMap.generateLanguage("or");
+                        ConfirmationDialog(patientHistory, patientHistoryOdiya);
+                    } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+                        patientHistoryGujrati = patientHistoryMap.generateLanguage("gu");
+                        ConfirmationDialog(patientHistory, patientHistoryGujrati);
+                    } else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
+                        patientHistoryAssamese = patientHistoryMap.generateLanguage("as");
+                        ConfirmationDialog(patientHistory, patientHistoryAssamese);
+                    } else {
+                        ConfirmationDialog(patientHistory, patientHistory);
+                    }
+                } else {
+                    if (patientHistory == null || patientHistory.isEmpty() || patientHistory.endsWith(" - <br/>")) {
+                        patientHistory = "";
+                        if (flag == true) { // only if OK clicked, collect this new info (old patient)
+                            phistory = phistory + patientHistory; // only PMH updated
+                            sessionManager.setReturning(true);
+                            phistory = Node.dateformate_hi_or_gu_as_en(phistory, sessionManager);
+                            insertDb(phistory);
+                            // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                        } else  // new patient, directly insert into database
+                        {
+                            patientHistory = Node.dateformate_hi_or_gu_as_en(patientHistory, sessionManager);
+                            insertDb(patientHistory);
+                        }
+                        Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("tag", intentTag);
+                        //intent.putStringArrayListExtra("exams", physicalExams);
+                        startActivity(intent);
+                    }
                 }
             }
         }
@@ -463,9 +490,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             displayStr.replaceAll("[Describe]","");
         }
 
-        displayStr=Node.dateformat_en_hi_or_gu(displayStr,sessionManager);
-        patHist=Node.dateformate_hi_or_gu_en(patHist,sessionManager);
-        phistory=Node.dateformate_hi_or_gu_en(phistory,sessionManager);
+        displayStr=Node.dateformat_en_hi_or_gu_as(displayStr,sessionManager);
+        patHist=Node.dateformate_hi_or_gu_as_en(patHist,sessionManager);
+        phistory=Node.dateformate_hi_or_gu_as_en(phistory,sessionManager);
         String finalPatHist = patHist;
 
         alertDialogBuilder.setMessage(Html.fromHtml(displayStr));

@@ -7,7 +7,9 @@ import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.ekalarogya.models.Results;
+import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.UserInfoUpdateModel;
 import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
@@ -23,6 +25,7 @@ import org.json.JSONObject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,6 +35,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -123,8 +127,8 @@ public interface ApiInterface {
                                                                   @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
 
     @Headers({"Accept: application/json"})
-    @POST
-    Single<ResponseBody> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
-                                                        @Header("Authorization") String authHeader,
-                                                        @Body JSONObject obj);
+    @PUT
+    Single<UserInfoUpdateModel> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
+                                                                 @Header("Authorization") String authHeader,
+                                                                 @Body JSONObject obj);
 }

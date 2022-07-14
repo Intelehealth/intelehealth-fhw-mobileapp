@@ -519,10 +519,8 @@ public class CompleteActivity extends AppCompatActivity {
             }).on(EVENT_DISCONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: disconnect");
                 runOnUiThread(new Runnable() {
-                    @Override
                     public void run() {
-                        Toast.makeText(CompleteActivity.this, "Disconnected!", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(CompleteActivity.this, getString(R.string.disconneted_alert_str), Toast.LENGTH_SHORT).show();
                     }
                 });
                 finish();

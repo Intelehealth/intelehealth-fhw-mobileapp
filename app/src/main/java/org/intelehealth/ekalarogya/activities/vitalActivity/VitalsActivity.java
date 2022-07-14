@@ -46,7 +46,11 @@ import org.intelehealth.ekalarogya.syncModule.SyncUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -658,8 +662,9 @@ public class VitalsActivity extends AppCompatActivity {
             double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
             double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
             double bmi_value = numerator / denominator;
-            DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value));
+            //DecimalFormat df = new DecimalFormat("0.00");
+            //mBMI.setText(df.format(bmi_value));
+            mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
@@ -678,8 +683,9 @@ public class VitalsActivity extends AppCompatActivity {
             double numerator = Double.parseDouble(weight) * 10000;
             double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
             double bmi_value = numerator / denominator;
-            DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value));
+            //DecimalFormat df = new DecimalFormat("0.00");
+            //mBMI.setText(df.format(bmi_value));
+            mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else {
@@ -759,7 +765,7 @@ public class VitalsActivity extends AppCompatActivity {
                 break;
 
             case UuidDictionary.BLOODGROUP: //blood
-                if (value.isEmpty() || value.length() == 0) {
+                if (value==null || value.isEmpty() || value.length() == 0) {
                     mBlood_Spinner.setSelection(0);
                 } else {
                     String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
@@ -1578,14 +1584,22 @@ public class VitalsActivity extends AppCompatActivity {
     private String ConvertFtoC(String temperature) {
 
         if (temperature != null && temperature.length() > 0) {
-            String result = "";
+            /*String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
             Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-            DecimalFormat dtime = new DecimalFormat("#.##");
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ENGLISH);
+            DecimalFormat dtime = new DecimalFormat("#.##",symbols);
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.valueOf(cTemp);
-            return result;
+
+            return result;*/
+            String resultVal;
+            NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+            double a = Double.parseDouble(temperature);
+            double b = ((a - 32) * 5 / 9);
+            resultVal = nf.format(b);
+            return resultVal;
         }
         return "";
 
@@ -1593,15 +1607,23 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String convertCtoF(String temperature) {
 
-        String result = "";
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
+        /*String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;
 
-        DecimalFormat dtime = new DecimalFormat("#.##");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        DecimalFormat dtime = new DecimalFormat("#.##",symbols);
         b = Double.parseDouble(dtime.format(b));
-
         result = String.valueOf(b);
-        return result;
+        return result;*/
 
     }
 

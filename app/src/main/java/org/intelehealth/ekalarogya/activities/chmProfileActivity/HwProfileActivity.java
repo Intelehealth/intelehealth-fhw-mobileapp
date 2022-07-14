@@ -10,6 +10,7 @@ import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwPersonalInformationModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.UserInfoUpdateModel;
 import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
@@ -53,6 +54,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class HwProfileActivity extends AppCompatActivity {
@@ -104,12 +106,7 @@ public class HwProfileActivity extends AppCompatActivity {
         hw_email_value = (EditText) findViewById(R.id.hw_email_value);
 
         save_hw_detail=(TextView)findViewById(R.id.save_hw_detail);
-        save_hw_detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                  updateHwDetail();
-            }
-        });
+
     }
 
     @Override
@@ -146,7 +143,7 @@ public class HwProfileActivity extends AppCompatActivity {
                 .subscribe(new DisposableObserver<MainProfileModel>() {
                     @Override
                     public void onNext(MainProfileModel mainProfileModel1) {
-                        System.out.println(mainProfileModel1.toString() + "");
+                        String response =mainProfileModel1.toString();
                         if (mainProfileModel1 != null && mainProfileModel1.getStatus() == true) {
                             Gson gson = new Gson();
                             String userprofile = gson.toJson(mainProfileModel1);
@@ -221,6 +218,16 @@ public class HwProfileActivity extends AppCompatActivity {
                 hw_email_value.setFocusableInTouchMode(true);
 
                 save_hw_detail.setVisibility(View.VISIBLE);
+                save_hw_detail.setClickable(true);
+                save_hw_detail.setEnabled(true);
+                save_hw_detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateHwDetail();
+                    }
+                });
+
+                hw_profile_image.setClickable(true);
                 hw_profile_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -248,7 +255,6 @@ public class HwProfileActivity extends AppCompatActivity {
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                     startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-
                 } else if (item == 1) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
@@ -479,15 +485,18 @@ public class HwProfileActivity extends AppCompatActivity {
         //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
         String encoded = sessionManager.getEncoded();
-        Single<ResponseBody> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Bearer " + encoded, obj);
+
+        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    .subscribe(new DisposableSingleObserver<UserInfoUpdateModel>() {
                     @Override
-                    public void onSuccess(ResponseBody responseBody) {
+                    public void onSuccess(UserInfoUpdateModel responseBody) {
                         Logger.logD(TAG, "success" + responseBody.toString());
-                        save_hw_detail.setText("Saved!");
-                        save_hw_detail.setEnabled(false);
+                        Gson gson=new Gson();
+                        String response= gson.toJson(responseBody);
+                        Toast.makeText(HwProfileActivity.this,getString(R.string.update_hw_profile),Toast.LENGTH_SHORT).show();
+                        setEnabledProfile();
                     }
 
                     @Override
@@ -495,5 +504,33 @@ public class HwProfileActivity extends AppCompatActivity {
                         Logger.logD(TAG, "Onerror " + e.getMessage());
                     }
                 });
+    }
+
+    public void setEnabledProfile(){
+        hw_gender_value.setClickable(false);
+        hw_gender_value.setFocusable(false);
+        hw_gender_value.setCursorVisible(false);
+        hw_gender_value.setFocusableInTouchMode(false);
+
+        hw_mobile_value.setClickable(false);
+        hw_mobile_value.setFocusable(false);
+        hw_mobile_value.setCursorVisible(false);
+        hw_mobile_value.setFocusableInTouchMode(false);
+
+        hw_whatsapp_value.setClickable(false);
+        hw_whatsapp_value.setFocusable(false);
+        hw_whatsapp_value.setCursorVisible(false);
+        hw_whatsapp_value.setFocusableInTouchMode(false);
+
+        hw_email_value.setClickable(false);
+        hw_email_value.setFocusable(false);
+        hw_email_value.setCursorVisible(false);
+        hw_email_value.setFocusableInTouchMode(false);
+
+        save_hw_detail.setVisibility(View.GONE);
+        save_hw_detail.setClickable(false);
+        save_hw_detail.setEnabled(false);
+
+        hw_profile_image.setClickable(false);
     }
 }
