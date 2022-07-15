@@ -75,6 +75,17 @@
 
     </string-array>
 
+    //values for "ngo knowledge" spinner
+    <string-array name="ngo_knowledge">
+        <item>Select</item>
+        <item>Ummeed Foundation</item>
+        <item>Khidmat</item>
+        <item>Hamdard</item>
+        <item>Human Solidarity Foundation</item>
+        <item>Other</item>
+
+    </string-array>
+
     //values for "type of mobile device" spinner
     <string-array name="mobile_phone_type">
         <item>Select</item>

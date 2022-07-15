@@ -126,7 +126,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar dob = Calendar.getInstance();
     Patient patient1 = new Patient();
     private String patientUuid = "";
-    private String mGender;
+    private String mGender, mCallType;
     String patientID_edit;
     private int mDOBYear;
     private int mDOBMonth;
@@ -153,6 +153,8 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton mIncoming;
+    RadioButton mOutgoing;
     EditText mRelationship;
       EditText mOccupation;
     EditText countryText;
@@ -169,7 +171,7 @@ public class IdentificationActivity extends AppCompatActivity {
     LinearLayout countryStateLayout;
     Spinner mCaste;
     Spinner mEducation;
-    Spinner mCallerRelation, mPhoneType, mHelplineKnowledge;
+    Spinner mCallerRelation, mPhoneType, mHelplineKnowledge, mNGOKnowledge;
     Spinner mEconomicStatus;
     ImageView mImageView;
     String uuid = "";
@@ -182,6 +184,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String intentTag1 = "";
     String intentTag2 = "";
     String helplineInfo = "";
+    String ngoInfo = "";
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
@@ -206,7 +209,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
-    private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther;
+    private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther, ngoInfoOther;
 
     List<String> districtList;
 
@@ -261,6 +264,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mPhoneNum = findViewById(R.id.identification_phone_number);
 
         helplineInfoOther = findViewById(R.id.other_helplineInfo_edittext);
+        ngoInfoOther = findViewById(R.id.other_ngo_edittext);
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -296,6 +300,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        mIncoming = findViewById(R.id.identification_incoming);
+        mOutgoing = findViewById(R.id.identification_outgoing);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -305,6 +311,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCaste = findViewById(R.id.spinner_caste1);
         mCallerRelation = findViewById(R.id.relationship_spinner);
         mHelplineKnowledge = findViewById(R.id.spinner_caste);
+        mNGOKnowledge = findViewById(R.id.ngo_spinner);
         mPhoneType = findViewById(R.id.spinner_economic_status);
         mEducation = findViewById(R.id.spinner_education);
         mEconomicStatus = findViewById(R.id.spinner_economic_status1);
@@ -591,6 +598,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.helpline_knowledge, R.layout.custom_spinner);
         helplineKnowledgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mHelplineKnowledge.setAdapter(helplineKnowledgeAdapter);
+
+        ArrayAdapter<CharSequence> ngoKnowledgeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.ngo_knowledge, R.layout.custom_spinner);
+        ngoKnowledgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mNGOKnowledge.setAdapter(ngoKnowledgeAdapter);
 
         ArrayAdapter<CharSequence> phoneTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.mobile_phone_type, R.layout.custom_spinner);
@@ -1032,12 +1044,34 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "yes");
             }
 
+            if(patient1.getCallType()!=null) {
+                if (patient1.getCallType().equals("Outgoing")) {
+                    mOutgoing.setChecked(true);
+                    if (mIncoming.isChecked())
+                        mIncoming.setChecked(false);
+                } else {
+                    mIncoming.setChecked(true);
+                    if (mOutgoing.isChecked())
+                        mOutgoing.setChecked(false);
+                }
+            }
+            else {
+                mIncoming.setChecked(false);
+                mOutgoing.setChecked(false);
+            }
         }
         if (mGenderM.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
         }
+
+        if (mIncoming.isChecked()) {
+            mCallType = "Incoming";
+        } else {
+            mCallType = "Outgoing";
+        }
+
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
@@ -1048,6 +1082,16 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             else
                 mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+
+
+            if(ngoKnowledgeAdapter.getPosition(patient1.getReferredNGO())==-1)
+            {
+                mNGOKnowledge.setSelection(ngoKnowledgeAdapter.getPosition("Other"));
+                ngoInfoOther.setText(patient1.getReferredNGO());
+            }
+            else
+                mNGOKnowledge.setSelection(ngoKnowledgeAdapter.getPosition(patient1.getReferredNGO()));
+
             mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
             mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
 
@@ -1331,6 +1375,30 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+
+        mNGOKnowledge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedNGOOption = parent.getItemAtPosition(position).toString();
+                if(selectedNGOOption.equalsIgnoreCase("Other"))
+                {
+                    ngoInfoOther.setVisibility(View.VISIBLE);
+                    ngoInfoOther.setFocusable(true);
+                }
+                else
+                {
+                    ngoInfoOther.setText("");
+                    ngoInfoOther.setError(null);
+                    ngoInfoOther.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         autocompleteState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1480,6 +1548,20 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         mGenderM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        mIncoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        mOutgoing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
@@ -1815,6 +1897,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
+            case R.id.identification_incoming:
+                if (checked)
+                    mCallType = "Incoming";
+                break;
+            case R.id.identification_outgoing:
+                if (checked)
+                    mCallType = "Outgoing";
+                break;
         }
     }
 
@@ -1900,6 +1990,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                if (name.equalsIgnoreCase("CALL_TYPE")) {
+                    patient1.setCallType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Referred_NGO")) {
+                    patient1.setReferredNGO(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -2144,7 +2242,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                  && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -2206,6 +2304,24 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
+            if (!mIncoming.isChecked() && !mOutgoing.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_call_type);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+            }
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
@@ -2259,6 +2375,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (mNGOKnowledge.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView)mNGOKnowledge.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mNGOKnowledge;
+            cancel = true;
+            return;
+        }
+
         if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
         {
             if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
@@ -2270,6 +2396,19 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             helplineInfoOther.setError(null);
         }
+        }
+
+        if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+        {
+            if(ngoInfoOther.getText().toString().equalsIgnoreCase(""))
+            {
+                ngoInfoOther.setError(getString(R.string.error_field_required));
+                focusView = ngoInfoOther;
+                cancel = true;
+                return;
+            } else {
+                ngoInfoOther.setError(null);
+            }
         }
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
@@ -2509,6 +2648,11 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
+            if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                ngoInfo = ngoInfoOther.getText().toString();
+            else
+                ngoInfo = mNGOKnowledge.getSelectedItem().toString();
+
             // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
@@ -2525,6 +2669,20 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(helplineInfo);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid("3b88ddcb-2ce7-44b2-b831-a0f54dad9f95");
+            patientAttributesDTO.setValue(ngoInfo);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid("8e48443f-c7aa-47b9-95b2-35e6d3e663d1");
+            patientAttributesDTO.setValue(mCallType);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3007,7 +3165,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                && !countryText.getText().toString().equals("") && !mOccupation.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && (mGenderF.isChecked() || mGenderM.isChecked()) && (mIncoming.isChecked() || mOutgoing.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -3068,6 +3226,24 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
+            if (!mIncoming.isChecked() && !mOutgoing.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_call_type);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                return;
+            }
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
@@ -3121,6 +3297,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (mNGOKnowledge.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView)mNGOKnowledge.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mNGOKnowledge;
+            cancel = true;
+            return;
+        }
+
         if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
         {
             if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
@@ -3134,6 +3320,18 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+        {
+            if(ngoInfoOther.getText().toString().equalsIgnoreCase(""))
+            {
+                ngoInfoOther.setError(getString(R.string.error_field_required));
+                focusView = ngoInfoOther;
+                cancel = true;
+                return;
+            } else {
+                ngoInfoOther.setError(null);
+            }
+        }
 
 
 
@@ -3378,6 +3576,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
 
+            if(mNGOKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                ngoInfo = ngoInfoOther.getText().toString();
+            else
+                ngoInfo = mNGOKnowledge.getSelectedItem().toString();
+
+
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -3387,6 +3591,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
+
+
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3395,11 +3601,27 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(helplineInfo);
             patientAttributesDTOList.add(patientAttributesDTO);
 
+
+            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid("3b88ddcb-2ce7-44b2-b831-a0f54dad9f95");
+            patientAttributesDTO.setValue(ngoInfo);
+            patientAttributesDTOList.add(patientAttributesDTO);
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid("8e48443f-c7aa-47b9-95b2-35e6d3e663d1");
+            patientAttributesDTO.setValue(mCallType);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
