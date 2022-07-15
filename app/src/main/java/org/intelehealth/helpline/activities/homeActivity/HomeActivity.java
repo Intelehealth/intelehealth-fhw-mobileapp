@@ -292,6 +292,9 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
+        TextView location = findViewById(R.id.locationTV);
+        location.setText(String.format("%s%s", location.getText(), sessionManager.getLocationName()));
+
         showProgressbar();
     }
 
