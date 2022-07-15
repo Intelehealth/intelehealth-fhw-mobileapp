@@ -64,6 +64,7 @@ import org.intelehealth.helpline.app.AppConstants;
 import org.intelehealth.helpline.app.IntelehealthApplication;
 import org.intelehealth.helpline.models.DownloadMindMapRes;
 import org.intelehealth.helpline.models.Location;
+import org.intelehealth.helpline.models.Results;
 import org.intelehealth.helpline.models.loginModel.LoginModel;
 import org.intelehealth.helpline.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.helpline.models.statewise_location.ChildLocation;
@@ -296,7 +297,7 @@ public class SetupActivity extends AppCompatActivity {
                                 village_name = entry;
                             }
                         }
-                      //  value = getLocationFromServer_District(base_url, state_uuid, "state");
+                        //  value = getLocationFromServer_District(base_url, state_uuid, "state");
                         state_count = parent.getSelectedItemPosition();
                     }
                 } else if (state_count == parent.getSelectedItemPosition()) {
@@ -309,7 +310,7 @@ public class SetupActivity extends AppCompatActivity {
                                 village_name = entry;
                             }
                         }
-                      //  value = getLocationFromServer_District(base_url, state_uuid, "state");
+                        //  value = getLocationFromServer_District(base_url, state_uuid, "state");
                     }
                 } else {
                     // Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
@@ -324,7 +325,7 @@ public class SetupActivity extends AppCompatActivity {
                                 village_name = entry;
                             }
                         }
-                      //  value = getLocationFromServer_District(base_url, state_uuid, "state");
+                        //  value = getLocationFromServer_District(base_url, state_uuid, "state");
                     }
                 }
 
@@ -681,7 +682,7 @@ public class SetupActivity extends AppCompatActivity {
             //state based login...
             if(!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) {
                 String urlString = mUrlField.getText().toString();
-              //  TestSetup(urlString, email, password, admin_password, village_name);
+                //  TestSetup(urlString, email, password, admin_password, village_name);
                 TestSetup(urlString, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
@@ -899,44 +900,44 @@ public class SetupActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
 
         try {
-            Observable<State> stateObservable = apiService.STATE_OBSERVABLE();
-            stateObservable
+            Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
+            resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<State>() {
+                    .subscribe(new DisposableObserver<Results<Location>>() {
                         @Override
-                        public void onNext(@NonNull State state) {
-                            if (state.getResults() != null) {
-                                customProgressDialog.dismiss();
-                                List<String> state_locations = getLocation(state.getResults());
-                                LocationArrayAdapter locationArrayAdapter =
-                                        new LocationArrayAdapter(SetupActivity.this, state_locations);
-
+                        public void onNext(Results<Location> locationResults) {
+                            customProgressDialog.dismiss();
+                            if (locationResults.getResults() != null) {
+                                Results<Location> locationList = locationResults;
+                                mLocations = locationList.getResults();
+                                List<String> items = getLocationStringList(locationList.getResults());
+                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                                spinner_state.setAdapter(adapter);
                                 spinner_state.setEnabled(true);
                                 spinner_state.setAlpha(1);
-                                spinner_state.setAdapter(locationArrayAdapter);
                                 isLocationFetched = true;
 
                                 hashMap1 = new HashMap<>();
-                                for (int i = 0; i < state.getResults().size(); i++) {
-                                    hashMap1.put(state.getResults().get(i).getUuid(),
-                                            state.getResults().get(i).getDisplay());
+                                for (int i = 0; i < mLocations.size(); i++) {
+                                    hashMap1.put(mLocations.get(i).getUuid(),
+                                            mLocations.get(i).getDisplay());
                                 }
 
                                 value = true;
                             } else {
-                                customProgressDialog.dismiss();
-                                value = false;
                                 isLocationFetched = false;
-                                Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
+                                value = false;
+                                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
-                        public void onError(@NonNull Throwable e) {
-                            value = false;
-                            Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        public void onError(Throwable e) {
                             customProgressDialog.dismiss();
+                            isLocationFetched = false;
+                            value = false;
+                            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
