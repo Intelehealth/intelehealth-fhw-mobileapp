@@ -18,7 +18,7 @@
     <string name="action_home">मुख्यपृष्ठ</string>
     <string name="action_settings">सेटिंग्ज</string>
     <string name="generic_warning">महत्वाची सूचना</string>
-    <string name="generic_update">अद्यतनित करा</string>
+    <string name="generic_update">अपडेट करा</string>
     <string name="generic_deleted">हटविले</string>
 
 
@@ -148,12 +148,12 @@
 
     //Table Exam Screen
     <string name="title_activity_vitals">महत्वपूर्ण</string>
-    <string name="table_hw">शरीर मोजमाप</string>
+    <string name="table_hw">शरीराची मोजमापं</string>
     <string name="table_height">उंची (सेमी)</string>
     <string name="table_weight">वजन (किलो)</string>
     <string name="table_bmi">बीएमआय</string>
     <string name="table_pulse">नाडी (बीपीएम)</string>
-    <string name="table_bp">महत्वाच्या चिन्हे</string>
+    <string name="table_bp">महत्वाची मोजमापं / चिन्हं</string>
     <string name="table_bpsys">बीपी सिस</string>
     <string name="table_bpdia">बीपी डाय</string>
     <string name="table_temp">तापमान (सी)</string>
@@ -503,7 +503,7 @@
     <string name="sure_to_exit">आपली खात्री आहे की आपण बाहेर पडू इच्छिता?</string>
     <string name="sure_to_logout">आपली खात्री आहे की आपण लॉगआउट करू इच्छिता?</string>
     <string name="lastsync_normal">शेवटचे रीफ्रेश</string>
-    <string name="update_patient_identification">रुग्ण अद्यतनित करा</string>
+    <string name="update_patient_identification">पेशंट अपडेट करा</string>
     <string name="are_you_want_go_back">आपली खात्री आहे की आपण परत जाऊ इच्छिता?</string>
     <string name="error">त्रुटी</string>
     <string name="patient_data_upload">रुग्ण डेटा अपलोड</string>
@@ -555,8 +555,8 @@
     <string name="privacy_reject_toast">आपण संमतीशिवाय रुग्णाची नोंदणी करू शकत नाही</string>
     <string name="not_answered">उत्तर दिले नाही</string>
     <string name="new_update_available">नवीन अद्यतन उपलब्ध</string>
-    <string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अद्यतनित करा</string>
-    <string name="update">अद्यतनित करा</string>
+    <string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अपडेट करा</string>
+    <string name="update">\अपडेट करा</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा"</string>
 
     <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा -"</string>
@@ -1377,8 +1377,8 @@
     <string name="healthcube">हेल्थक्यूब</string>
     <string name="thermalprinter_device_info">डिव्हाइस माहिती</string>
     <string name="thermal_printer">थर्मल प्रिंटर</string>
-    <string name="glucose_non_fasting_validation">रक्तातील ग्लुकोज (नॉन-फास्टिंग) दरम्यान असावे %1$s आणि %2$s</string>
-    <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपवास) दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="glucose_non_fasting_validation">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपाशीपोटी) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="hemoglobin_validation">हिमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
     <string name="calibration_not_required">कॅलिब्रेशन आवश्यक नाही. चाचणी थेट केली जाऊ शकते</string>
     <string name="connect_bluetooth">ब्लूटूथ कनेक्ट करा</string>
@@ -1401,8 +1401,8 @@
     <string name="total_cholestrol">एकूण कोलेस्ट्रॉल</string>
     <string name="uric_acid_calibration">यूरिक ऍसिड कॅलिब्रेशन</string>
     <string name="total_cholesterol_calibration">एकूण कोलेस्ट्रॉल कॅलिब्रेशन</string>
-    <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज (नॉन-उपवास)</string>
-    <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपवास)</string>
+    <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
+    <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपाशीपोटी)</string>
     <string name="haemoglobin">हिमोग्लोबिन</string>
 
     <string name="first_name">पहिले नाव</string>
