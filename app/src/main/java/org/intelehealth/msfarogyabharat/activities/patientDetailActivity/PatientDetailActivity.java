@@ -1712,7 +1712,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     callStatus = "Unable to reach patient";
                     callAction = selectedItem[0];
                     storeCallData(callStatus, callAction, remark); //these strings has to be sent in same format and in english only
-                    onBackPressed();
                 }
                 else {
                     callStatus = "Able to reach patient";
@@ -1746,10 +1745,41 @@ public class PatientDetailActivity extends AppCompatActivity {
         sendCallData.callNumber = sessionManager.getProviderPhoneno();
         sendCallData.callStartTime = callStartTime;
         sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
-        try {
-            sendCallDataDAO.insertCallData(sendCallData);
-        } catch (DAOException e) {
-            e.printStackTrace();
+
+        if(callAction.equalsIgnoreCase("Patient Counselled") || callAction.equalsIgnoreCase("Medical advice provided")) {
+            //if the patient asks for counselling then it means that the data needs to be pushed to the imocalls api after uploading visit so thus we are storing info temporarily in a separate table.
+            try {
+                sendCallDataDAO.insertCallData(sendCallData);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            SimpleDateFormat startFormat = new SimpleDateFormat("dd-MM-yyyy' 'HH:mm", Locale.ENGLISH);
+            Calendar today = Calendar.getInstance();
+            today.add(Calendar.MINUTE, -1);
+            today.set(Calendar.MILLISECOND, 0);
+            Date todayDate1 = today.getTime();
+            String callEndTime = startFormat.format(todayDate1);
+            sendCallData.callEndTime = callEndTime;
+            UrlModifiers urlModifiers = new UrlModifiers();
+            ApiInterface apiInterface = AppConstants.apiInterface;
+            String sendDataUrl = urlModifiers.sendCallData();
+            apiInterface.callPatientData(sendDataUrl,sendCallData).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Toast.makeText(PatientDetailActivity.this, getString(R.string.data_stored_successfully), Toast.LENGTH_LONG).show();
+                    System.out.println(call);
+                    System.out.println(response);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                }
+            });
+            onBackPressed();
         }
     }
 }
