@@ -37,6 +37,13 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
+        <activity android:name="org.intelehealth.helpline.activities.followuppatients.FollowUpPatientActivity"
+            android:label="@string/title_follow_up"
+            android:screenOrientation="portrait"
+            android:configChanges="uiMode"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
         <activity
             android:name="org.intelehealth.helpline.activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:label="@string/title_activity_privacy_notice"
