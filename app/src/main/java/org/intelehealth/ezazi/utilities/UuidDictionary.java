@@ -113,4 +113,9 @@ public class UuidDictionary {
     // BIRTH OUTCOME
     public static final String BIRTH_OUTCOME = "23601d71-50e6-483f-968d-aeef3031346d";
 
+    // Refer Obs
+    public static final String REFER_TYPE = "9414cc17-1f97-4a27-8066-17591c11e513";
+    public static final String REFER_HOSPITAL = "0092c193-8025-4ede-8aab-8a2db731da51";
+    public static final String REFER_DR_NAME = "d9625aed-c5ee-4d5c-92b1-ee3782e31ef3";
+    public static final String REFER_NOTE = "9965063f-ec0c-4a58-bfba-5ca4ac53129c";
 }

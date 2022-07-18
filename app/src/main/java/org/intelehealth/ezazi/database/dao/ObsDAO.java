@@ -491,7 +491,7 @@ public class ObsDAO {
         return isMissed;
     }
 
-    public boolean insert_BirthOutcomeObs(String encounteruuid, String creatorID, String value) throws DAOException {
+    public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
       //  db.beginTransaction();
@@ -501,7 +501,7 @@ public class ObsDAO {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", encounteruuid);
             values.put("creator", creatorID);
-            values.put("conceptuuid", BIRTH_OUTCOME);
+            values.put("conceptuuid", conceptId);
             values.put("comment", "");
             values.put("value", value);
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());

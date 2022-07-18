@@ -817,5 +817,17 @@
     <string name="add_patient_txt">Add Patient</string>
     <string name="this_option_available_tablet_device">एपर्टोग्राम पाहण्यासाठी कृपया 8 इंच किंवा अधिक टॅबलेट वापरा</string>
     <string name="title_activity_epartogram">एपर्टोग्राम</string>
+    <string name="move_to_stage2">स्टेज २ वर जा</string>
+    <string name="refer_to_other_hospital">इतर हॉस्पिटलचा संदर्भ घ्या</string>
+    <string name="self_discharge_medical_advice">वैद्यकीय सल्ल्याविरूद्ध स्वत: ची डिस्चार्ज</string>
+    <string name="select_an_option">एक पर्याय निवडा</string>
+    <string name="self_discharge_successful">सेल्फ डिस्चार्ज यशस्वी</string>
+    <string name="please_select_an_option">कृपया एक पर्याय निवडा</string>
+    <string name="refer_hospital_name">रुग्णालयाचे नाव पहा</string>
+    <string name="refer_doctor_name">डॉक्टरांचे नाव पहा</string>
+    <string name="refer_note">नोंद</string>
+    <string name="refer_section">विभाग पहा</string>
+    <string name="refer_data_submitted_successfully">डेटा यशस्वीरित्या सबमिट केला</string>
+    <string name="select_birth_outcome">जन्म परिणाम निवडा</string>
 
 </resources>
