@@ -136,6 +136,8 @@ public class HomeActivity extends AppCompatActivity {
     TextView lastSyncTextView, locationSetupTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
+
+    EditText text,url;
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
@@ -289,6 +291,7 @@ public class HomeActivity extends AppCompatActivity {
         checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
+
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         locationSetupTextView = findViewById(R.id.locationTV);
         lastSyncAgo = findViewById(R.id.lastsyncago);
@@ -576,13 +579,12 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (NetworkConnection.isOnline(this)) {
 
-                    if (!sessionManager.getLicenseKey().isEmpty()) {
-
+                    /*if (!sessionManager.getLicenseKey().isEmpty()) {
                         String licenseUrl = sessionManager.getMindMapServerUrl();
                         String licenseKey = sessionManager.getLicenseKey();
                         getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
 
-                    } else {
+                    } else { */
 //                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
 //                        // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
 //                        LayoutInflater li = LayoutInflater.from(this);
@@ -633,6 +635,18 @@ public class HomeActivity extends AppCompatActivity {
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                        text = promptsView.findViewById(R.id.licensekey);
+                        url = promptsView.findViewById(R.id.licenseurl);
+
+                        if (!sessionManager.getLicenseKey().isEmpty()) {
+
+                            text.setText(sessionManager.getLicenseKey());
+                            url.setText(sessionManager.getMindMapServerUrl());
+
+                        } else {
+                            url.setText("");
+                            text.setText("");
+                        }
 
                         dialog.setTitle(getString(R.string.enter_license_key))
                                 .setView(promptsView)
@@ -643,6 +657,7 @@ public class HomeActivity extends AppCompatActivity {
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
                         alertDialog.show();
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+
 
                         // Get the alert dialog buttons reference
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -655,8 +670,9 @@ public class HomeActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
+
+                                /* text = promptsView.findViewById(R.id.licensekey);
+                                 url = promptsView.findViewById(R.id.licenseurl);*/
 
                                 url.setError(null);
                                 text.setError(null);
@@ -700,6 +716,8 @@ public class HomeActivity extends AppCompatActivity {
 
                                             sessionManager.setMindMapServerUrl(licenseUrl);
 
+                                            sessionManager.setLicenseKey(key);
+
                                             if (keyVerified(key)) {
                                                 getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
                                                 alertDialog.dismiss();
@@ -727,8 +745,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-
-                    }
+//                      }
 
                 } else {
                     Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
