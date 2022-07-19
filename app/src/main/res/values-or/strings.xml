@@ -94,7 +94,7 @@
     <string name="login_location_select">"ସ୍ଥାନ ବାଛିବା / ସିଲେକ୍ଟ କରିବା "</string>
     <string name="menu_option_end_of_day">ଦିନର ଶେଷ</string>
     <string name="menu_option_logout">"ଲଗ ଅାଉଟ୍ କରିବା "</string>
-    <string name="menu_option_settings">ସେଟିଂ କରିବା ( ଯୋଜନା )</string>
+    <string name="menu_option_settings">ସେଟିଂ ( ଯୋଜନା ) କରିବା</string>
     <string name="menu_option_sync">ତଥ୍ୟ ରିଫ୍ରେସ୍ କରିବା</string>
     <string name="menu_option_hw_profile" translatable="false">ଉପଯୋଗକର୍ତ୍ତା ପ୍ରୋଫାଇଲ୍</string>
 
@@ -335,7 +335,7 @@
     <string name="cant_login_user" translatable="false">ଲଗ୍ ଇନ୍ ହୋଇପାରିବ ନାହିଁ</string>
 
     <string name="today_visits">ଆଜିର ରୋଗୀ</string>
-    <string name="active_visits">ଦେଖିଥିବା ରୋଗୀ</string>
+    <string name="active_visits">ସକ୍ରିୟ ପରିଦର୍ଶନ</string>
     <string name="unable_to_get_proper_response">ପ୍ରୋଟୋକଲ୍ ଡାଉନଲୋଡିଂ ସମୟରେ ଏକ ସମସ୍ୟା ଦେଖାଦେଇଛି, ଦୟାକରି ସିଷ୍ଟମ୍ ଏଡମିନିଷ୍ଟ୍ରେଟରଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ</string>
     <string name="protocols_downloaded_successfully">ପ୍ରୋଟୋକଲ୍ ସଫଳତାର ସହ ଡାଉନଲୋଡ୍ ହେଲା!</string>
     <string name="no_protocols_found">କୌଣସି ପ୍ରୋଟୋକଲ୍ ମିଳିଲା ନାହିଁ</string>

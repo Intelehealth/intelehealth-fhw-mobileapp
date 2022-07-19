@@ -486,7 +486,7 @@ public class HwProfileActivity extends AppCompatActivity {
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
         String encoded = sessionManager.getEncoded();
 
-        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
+        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Bearer " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<UserInfoUpdateModel>() {

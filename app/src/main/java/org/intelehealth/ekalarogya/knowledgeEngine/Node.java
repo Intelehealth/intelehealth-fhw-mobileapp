@@ -1402,9 +1402,10 @@ public class Node implements Serializable {
         });
         datePickerDialog.setTitle(R.string.question_date_picker);
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-        if (node.validation.equals("MAX_TODAY")) {
+        /*if (node.validation.equals("MAX_TODAY")) {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-        }
+        }*/
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
         datePickerDialog.setCanceledOnTouchOutside(false);
         datePickerDialog.setCancelable(false);
         datePickerDialog.show();
@@ -2055,10 +2056,10 @@ public class Node implements Serializable {
             }
         });
         datePickerDialog.setTitle(R.string.question_date_picker);
-
-        if (node.validation.equals("MAX_TODAY")) {
+        /*if (node.validation.equals("MAX_TODAY")) {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-        }
+        }*/
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
         datePickerDialog.show();
     }
 

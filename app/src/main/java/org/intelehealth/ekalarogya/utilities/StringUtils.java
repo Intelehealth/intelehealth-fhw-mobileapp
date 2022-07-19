@@ -3825,10 +3825,16 @@ public final class StringUtils {
             if (context.getString(R.string.salaried_government_job).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.salaried_government_job);
             }
-            // Translate string Salaried Private Job to English
-            if (context.getString(R.string.salaried_private_job).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.salaried_private_job);
+            // Translate string Petty Business or Shop Owner to English
+            if (context.getString(R.string.petty_business_shop_owner).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.petty_business_shop_owner);
             }
+
+            // Translate string Technician or Craftsman or Other Skilled Work to English
+            if (context.getString(R.string.technician_craftsman_other_skilled_work).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.technician_craftsman_other_skilled_work);
+            }
+
             // Translate string Technician or Craftsman or Other Skilled Work to English
             if (context.getString(R.string.technician_craftsman_other_skilled_work).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.technician_craftsman_other_skilled_work);
@@ -3841,6 +3847,7 @@ public final class StringUtils {
             if (context.getString(R.string.tenant_farmer_agricultural_daily_wage_worker).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.tenant_farmer_agricultural_daily_wage_worker);
             }
+
             // Translate string Daily Wage Worker to English
             if (context.getString(R.string.daily_wage_worker_unskilled_workers).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.daily_wage_worker_unskilled_workers);
@@ -3864,6 +3871,11 @@ public final class StringUtils {
             // Translate string Retired Without Pension to English
             if (context.getString(R.string.retired_without_pension).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.retired_without_pension);
+            }
+
+            // Translate string Not Applicable to English
+            if (context.getString(R.string.not_applicable).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.not_applicable);
             }
         }
         return text;
@@ -4231,6 +4243,27 @@ public final class StringUtils {
             if (context.getString(R.string.occasionally_once_a_month_or_less).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.occasionally_once_a_month_or_less);
             }
+
+            // Translate string 0 - 50 ml to English
+            if (context.getString(R.string.zero_fifty_ml).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.zero_fifty_ml);
+            }
+
+            // Translate string 50 - 100 ml to English
+            if (context.getString(R.string.fifty_hundred_ml).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.fifty_hundred_ml);
+            }
+
+            // Translate string 100 - 250 ml to English
+            if (context.getString(R.string.hundred_two_hundred_fifty_ml).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.hundred_two_hundred_fifty_ml);
+            }
+
+            // Translate string 250 - 500 ml to English
+            if (context.getString(R.string.two_hundred_fifty_five_hundred_ml).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.two_hundred_fifty_five_hundred_ml);
+            }
+
             // Translate string More than 500 ml to English
             if (context.getString(R.string.more_than_five_hundred_ml).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_five_hundred_ml);
@@ -4331,8 +4364,8 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.yes_family_member);
             }
             // Translate string Yes (Personal) to English
-            if (context.getString(R.string.yes_family_member).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.yes_family_member);
+            if (context.getString(R.string.yes_personal).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.yes_personal);
             }
             // Translate string No to English
             if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {

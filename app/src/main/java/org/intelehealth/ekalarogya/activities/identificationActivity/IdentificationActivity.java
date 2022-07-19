@@ -2995,7 +2995,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_member_edittext.getText().toString().isEmpty()) {
-                no_of_member_edittext.setError(getString(R.string.select));
+                no_of_member_edittext.setError(getString(R.string.enter_number));
                 // no_of_member_edittext.setTextColor(Color.RED);
                 focusView = no_of_member_edittext;
                 cancel = true;
@@ -3004,7 +3004,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             if (no_of_staying_members_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_staying_members_edittext.getText().toString().isEmpty()) {
-                no_of_staying_members_edittext.setError(getString(R.string.select));
+                no_of_staying_members_edittext.setError(getString(R.string.enter_number));
                 // no_of_staying_members_edittext.setTextColor(Color.RED);
                 focusView = no_of_staying_members_edittext;
                 cancel = true;
@@ -3020,7 +3020,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Validation for number of smartphones field
             if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
-                binding.numberOfSmartphonesEditText.setText(getString(R.string.enter_number));
+                binding.numberOfSmartphonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfSmartphonesEditText;
                 cancel = true;
                 return;
@@ -3028,7 +3028,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Validation for number of feature phones field
             if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
-                binding.numberOfFeaturePhonesEditText.setText(getString(R.string.enter_number));
+                binding.numberOfFeaturePhonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfFeaturePhonesEditText;
                 cancel = true;
                 return;
@@ -3036,7 +3036,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Validation for number of earning members field
             if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
-                binding.noOfEarningMembersEditText.setText(getString(R.string.enter_number));
+                binding.noOfEarningMembersEditText.setError(getString(R.string.enter_number));
                 focusView = binding.noOfEarningMembersEditText;
                 cancel = true;
                 return;
@@ -4463,7 +4463,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Validation for number of smartphones field
             if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
-                binding.numberOfSmartphonesEditText.setText(getString(R.string.enter_number));
+                binding.numberOfSmartphonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfSmartphonesEditText;
                 cancel = true;
                 return;
@@ -4471,7 +4471,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Validation for number of feature phones field
             if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
-                binding.numberOfFeaturePhonesEditText.setText(getString(R.string.enter_number));
+                binding.numberOfFeaturePhonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfFeaturePhonesEditText;
                 cancel = true;
                 return;
@@ -4479,7 +4479,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Validation for number of earning members field
             if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
-                binding.noOfEarningMembersEditText.setText(getString(R.string.enter_number));
+                binding.noOfEarningMembersEditText.setError(getString(R.string.enter_number));
                 focusView = binding.noOfEarningMembersEditText;
                 cancel = true;
                 return;

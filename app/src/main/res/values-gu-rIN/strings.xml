@@ -565,7 +565,7 @@
     <string name="new_update_available">નવું અપડેટ ઉપલબ્ધ છે</string>
     <string name="update_app_note">નવું સંસ્કરણ નવી સુવિધાઓ સાથે ઉપલબ્ધ છે કૃપા કરીને એપ્લિકેશનને અપડેટ કરો</string>
     <string name="update">અપડેટ કરો</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"હેલો, Intelehealth નો ઉપયોગ કરવા બદલ આભાર. તમારું પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરવા કૃપા કરીને અહીં ક્લિક કરો"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"હેલો, Intelehealth નો ઉપયોગ કરવા બદલ આભાર. તમારું પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરવા કૃપા કરીને અહીં ક્લિક કરો "</string>
     <string name="and_enter_your_patient_id">" અને તમારું પેશન્ટ ID દાખલ કરો -"</string>
 
     <!--New Ayu Related Changes-->
@@ -933,7 +933,7 @@
     <string name="strain_through_a_cloth">કાપડ દ્વારા તાણ</string>
     <string name="use_water_filter_ceramic_sand_composite_etc">વોટર ફિલ્ટરનો ઉપયોગ કરો (સિરામિક/રેતી/કમ્પોઝિટ/ઇટીસી.)</string>
     <string name="use_electronic_purifier">ઈલેક્ટ્રોનિક પ્યુરીફાયરનો ઉપયોગ કરો</string>
-    <string name="let_it_stand_and_settle">મુકી રાખો  અને સ્થિર થવા દો</string>
+    <string name="let_it_stand_and_settle">મુકી રાખો અને સ્થિર થવા દો</string>
     <string name="flush_to_piped_sewer_system">પાઇપ્ડ ગટર સિસ્ટમ માટે ફ્લશ</string>
     <string name="flush_to_septic_tank">સેપ્ટિક ટાંકીમાં ફ્લશ</string>
     <string name="flush_to_pit_latrine">પીટ લેટ્રીન માટે ફ્લશ</string>
