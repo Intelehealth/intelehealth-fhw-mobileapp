@@ -35,4 +35,6 @@
     <string name="refer_section">Refer Section</string>
     <string name="refer_data_submitted_successfully">Refer data submitted successfully</string>
     <string name="select_birth_outcome">Select Birth Outcome</string>
+    <string name="primary_doct_val_txt">Please select primary Doctor</string>
+    <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
 </resources>

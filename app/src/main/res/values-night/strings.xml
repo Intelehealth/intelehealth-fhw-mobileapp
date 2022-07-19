@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="primary_doct_val_txt">Please select primary Doctor</string>
+    <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
+</resources>

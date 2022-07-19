@@ -684,5 +684,7 @@
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="click_to_enter">Click to Enter</string>
     <string name="add_patient_txt">Add Patient</string>
+    <string name="primary_doct_val_txt">Please select primary Doctor</string>
+    <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
 
 </resources>

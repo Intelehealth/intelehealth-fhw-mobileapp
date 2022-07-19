@@ -117,6 +117,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     private String mRoomId = "foo";
     private String mDoctorName = "Doctor";
+    private String mDoctorUUID = "Doctor";
     private String mNurseId = "Doctor";
     private boolean mIsInComingRequest = false;
     private Ringtone mRingtone;
@@ -135,9 +136,12 @@ public class CompleteActivity extends AppCompatActivity {
             mDoctorName = getIntent().getStringExtra("doctorname");
         if (getIntent().hasExtra("nurseId"))
             mNurseId = getIntent().getStringExtra("nurseId");
+        if (getIntent().hasExtra("doctorUUID"))
+            mDoctorUUID = getIntent().getStringExtra("doctorUUID");
 
         try {
             mRoomJsonObject.put("room", mRoomId);
+            mRoomJsonObject.put("connectToDrId", mDoctorUUID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -440,6 +444,7 @@ public class CompleteActivity extends AppCompatActivity {
             socket.on(EVENT_CONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: connect");
                 //socket.emit("create or join", "foo");
+                Log.v("RoomJsonObject", mRoomJsonObject.toString());
                 if (!mIsInComingRequest)
                     socket.emit("create_or_join_hw", mRoomJsonObject);
 
@@ -606,8 +611,8 @@ public class CompleteActivity extends AppCompatActivity {
         Log.d(TAG, "maybeStart: " + isStarted + " " + isChannelReady);
         if (!isStarted && isChannelReady) {
             isStarted = true;
-           // if (isInitiator) {
-                doCall();
+            // if (isInitiator) {
+            doCall();
             //}
         }
     }

@@ -176,6 +176,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "identifier TEXT," +
             "given_name TEXT," +
             "family_name TEXT," +
+            "role TEXT," +
+            "useruuid TEXT," +
             "voided TEXT DEFAULT '0'," +
             "modified_date TEXT," +
             "sync TEXT DEFAULT 'false' " +

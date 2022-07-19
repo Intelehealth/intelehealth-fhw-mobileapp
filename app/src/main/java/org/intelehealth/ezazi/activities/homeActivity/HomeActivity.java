@@ -713,10 +713,10 @@ public class HomeActivity extends AppCompatActivity {
                     if (count > 22) { // Red
                         activePatientModels.get(j).setVisibilityOrder(3);
                         filteractivePatient.get(j).setVisibilityOrder(3);
-                    } else if (count >= 15 && count <= 22) { // Yellow
+                    } else if (count >= 15) { // Yellow
                         activePatientModels.get(j).setVisibilityOrder(2);
                         filteractivePatient.get(j).setVisibilityOrder(2);
-                    } else if (count < 15) { // Green
+                    } else { // Green
                         activePatientModels.get(j).setVisibilityOrder(1);
                         filteractivePatient.get(j).setVisibilityOrder(1);
                     }

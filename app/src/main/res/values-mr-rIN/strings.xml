@@ -829,5 +829,7 @@
     <string name="refer_section">विभाग पहा</string>
     <string name="refer_data_submitted_successfully">डेटा यशस्वीरित्या सबमिट केला</string>
     <string name="select_birth_outcome">जन्म परिणाम निवडा</string>
+    <string name="primary_doct_val_txt">Please select primary Doctor</string>
+    <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
 
 </resources>

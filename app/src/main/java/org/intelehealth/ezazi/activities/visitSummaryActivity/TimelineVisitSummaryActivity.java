@@ -37,19 +37,24 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.Epartogram;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
+import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -57,8 +62,6 @@ import org.intelehealth.ezazi.utilities.NotificationReceiver;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,6 +101,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
         }
     };
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -107,7 +111,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mMessageReceiver,new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
+        registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
 
     }
 
@@ -123,6 +127,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 // EncounterDAO encounterDAO = new EncounterDAO();
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
@@ -150,26 +156,61 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //  EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent in = new Intent(TimelineVisitSummaryActivity.this, CompleteActivity.class);
-                String roomId = patientUuid;
-                String doctorName = "";
-                String nurseId = encounterDTO.getProvideruuid();
-                in.putExtra("roomId", roomId);
-                in.putExtra("isInComingRequest", false);
-                in.putExtra("doctorname", doctorName);
-                in.putExtra("nurseId", nurseId);
-                in.putExtra("startNewCall", true);
+                try {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                if (callState == TelephonyManager.CALL_STATE_IDLE) {
-                    startActivity(in);
+                    // show the patient primary & secondary doctor
+                    PatientsDAO patientsDAO = new PatientsDAO();
+                    List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
+                    String[] doctNames = new String[2];
+                    String[] doctUUIDs = new String[2];
+                    for (int i = 0; i < patientAttributes.size(); i++) {
+                        String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
+                        if (name.equalsIgnoreCase("PrimaryDoctor")) {
+                            doctUUIDs[0] = patientAttributes.get(i).getValue().split("@#@")[0];
+                            doctNames[0] = patientAttributes.get(i).getValue().split("@#@")[1];
+                        }
+                        if (name.equalsIgnoreCase("SecondaryDoctor")) {
+                            doctUUIDs[1] = patientAttributes.get(i).getValue().split("@#@")[0];
+                            doctNames[1] = patientAttributes.get(i).getValue().split("@#@")[1];
+                        }
+                    }
+
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(TimelineVisitSummaryActivity.this);
+
+                    builder.setTitle("Select Doctor")
+                            .setItems(doctNames, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //  EncounterDAO encounterDAO = new EncounterDAO();
+                                    EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+                                    RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                                    RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+                                    Intent in = new Intent(TimelineVisitSummaryActivity.this, CompleteActivity.class);
+                                    String roomId = patientUuid;
+                                    String doctorName = doctNames[which];
+                                    String nurseId = encounterDTO.getProvideruuid();
+                                    in.putExtra("roomId", roomId);
+                                    in.putExtra("isInComingRequest", false);
+                                    in.putExtra("doctorname", doctorName);
+                                    in.putExtra("nurseId", nurseId);
+                                    in.putExtra("startNewCall", true);
+                                    in.putExtra("doctorUUID", doctUUIDs[which]);
+
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    }
+                                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                                        startActivity(in);
+                                    }
+                                }
+                            });
+                    builder.create().show();
+
+
+                } catch (DAOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -227,8 +268,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             intent.putExtra("patientuuid", patientUuid);
             intent.putExtra("visituuid", visitUuid);
             startActivity(intent);
-        }
-        else {
+        } else {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(TimelineVisitSummaryActivity.this, "",
                     context.getString(R.string.this_option_available_tablet_device) /*+ ": " + dpi*/, context.getString(R.string.ok));
@@ -244,7 +284,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         timeList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview_timeline);
         endStageButton = findViewById(R.id.endStageButton);
-        LinearLayoutManager linearLayout = new LinearLayoutManager(this,  LinearLayoutManager.VERTICAL, true);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;
         intent = this.getIntent(); // The intent was passed to the activity
@@ -304,11 +344,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 stageNo = 0;
                 // do not hing
             }
-        }
-        else {
+        } else {
             String outcome = fetchOutcome(isVCEPresent);
             endStageButton.setVisibility(View.INVISIBLE);
-            if(!outcome.equalsIgnoreCase("")) {
+            if (!outcome.equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
                 outcomeTV.setText("Outcome: " + outcome);
             }
@@ -320,7 +359,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         endStageButton.setOnClickListener(v -> {
             if (stageNo == 1) {
                 singleSelectionDialog_stage1();
-               // cancelStage1_ConfirmationDialog();// cancel and start stage 2
+                // cancelStage1_ConfirmationDialog();// cancel and start stage 2
             } else if (stageNo == 2) {
                 // show dialog and add birth outcome also show extra options like: Refer to other hospital & Self Discharge
                 birthOutcomeSelectionDialog();
@@ -361,13 +400,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, HomeActivity.class);
                         startActivity(intent);
                         checkInternetAndUploadVisit_Encounter();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
-                }
-                else
+                } else
                     Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
 
             }
@@ -426,8 +463,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, HomeActivity.class);
                     startActivity(intent);
                     checkInternetAndUploadVisit_Encounter();
-                }
-                else {
+                } else {
                     Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
@@ -495,8 +531,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             do {
                 try {
                     outcome = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -526,7 +561,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         boolean isInserted = false;
-                        if(positionStage == 0 || positionStage == 1) { // Birth Outcome
+                        if (positionStage == 0 || positionStage == 1) { // Birth Outcome
                             Log.v("birthoutcome", "value: " + value);
                             try {
                                 isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
@@ -534,8 +569,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                                 e.printStackTrace();
                                 Log.e("birthoutcome", "insert vsiti complete: " + e);
                             }
-                        }
-                        else if (positionStage == 2) // refer other hospital // call visit complete enc.
+                        } else if (positionStage == 2) // refer other hospital // call visit complete enc.
                             referOtherHospitalDialog(valueStage);
                         else if (positionStage == 3) { // self discharge // call visit complete enc.
                             try {
@@ -543,8 +577,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }
-                        }
-                        else
+                        } else
                             Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
 
 
@@ -578,7 +611,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
 
     private boolean insertVisitCompleteEncounterAndObs_ReferHospital(String visitUuid, String referType,
-                                                    String hospitalName, String doctorName, String note) throws DAOException {
+                                                                     String hospitalName, String doctorName, String note) throws DAOException {
         boolean isInserted = false;
         String encounterUuid = "";
         encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
@@ -588,7 +621,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         ////
         // Now get this encounteruuid and create refer obs table.
-        if(!encounterUuid.equalsIgnoreCase("") && !encounterUuid.isEmpty()) {
+        if (!encounterUuid.equalsIgnoreCase("") && !encounterUuid.isEmpty()) {
             ObsDAO obsDAO = new ObsDAO();
             ObsDTO obsDTO;
             List<ObsDTO> obsDTOList = new ArrayList<>();
@@ -689,7 +722,6 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
 
 
         alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
