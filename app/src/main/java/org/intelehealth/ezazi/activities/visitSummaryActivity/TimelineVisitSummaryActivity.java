@@ -391,7 +391,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                     referOtherHospitalDialog(valueStage);
                 else if (positionStage == 2) { // self discharge // call visit complete enc.
                     try {
-                        isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
+                        isInserted = insertVisitComplete_Obs(visitUuid, valueStage, UuidDictionary.REFER_TYPE);
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }
