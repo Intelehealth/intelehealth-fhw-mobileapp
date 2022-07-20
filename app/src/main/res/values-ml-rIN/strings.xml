@@ -59,6 +59,7 @@
     <string name="identification_screen_dialog_error_gender">ലിംഗഭേദം തിരഞ്ഞെടുത്തിട്ടില്ല</string>
     <string name="identification_screen_checkbox_male">" പുരുഷൻ"</string>
     <string name="identification_screen_checkbox_female">" സ്ത്രീ"</string>
+    <string name="identification_screen_checkbox_other">മറ്റുള്ളവ</string>
     <string name="identification_screen_prompt_birthday">ജനനത്തീയതി*</string>
     <string name="identification_screen_prompt_age">" പ്രായം:*"</string>
     <string name="identification_screen_prompt_time">" സമയം:"</string>

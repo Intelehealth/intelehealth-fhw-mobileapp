@@ -170,6 +170,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton mGenderO;
     EditText mRelationship;
     EditText mOccupation;
     EditText countryText;
@@ -281,6 +282,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        mGenderO = findViewById(R.id.identification_gender_other);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -385,16 +387,25 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPostal.setVisibility(View.GONE);
             }
 
+
             if (obj.getBoolean("mGenderM")) {
                 mGenderM.setVisibility(View.VISIBLE);
             } else {
                 mGenderM.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mGenderF")) {
                 mGenderF.setVisibility(View.VISIBLE);
             } else {
                 mGenderF.setVisibility(View.GONE);
             }
+            if (obj.getBoolean("mGenderO")) {
+                mGenderO.setVisibility(View.VISIBLE);
+            } else {
+                mGenderO.setVisibility(View.GONE);
+            }
+
+
             if (obj.getBoolean("mRelationship")) {
                 mRelationship.setVisibility(View.VISIBLE);
             } else {
@@ -533,19 +544,31 @@ public class IdentificationActivity extends AppCompatActivity {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
+                if (mGenderO.isChecked())
+                    mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
-            } else {
+            } else if (patient1.getGender().equals("F")) {
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
+                if (mGenderO.isChecked())
+                    mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
+            } else {
+                mGenderO.setChecked(true);
+                if (mGenderM.isChecked())
+                    mGenderM.setChecked(false);
+                if (mGenderF.isChecked())
+                    mGenderF.setChecked(false);
             }
 
         }
         if (mGenderM.isChecked()) {
             mGender = "M";
-        } else {
+        } else if (mGenderF.isChecked()) {
             mGender = "F";
+        } else {
+            mGender = "O";
         }
         if (patientID_edit != null) {
             // setting country according database
@@ -574,19 +597,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String education = switch_as_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String education = switch_gu_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String education = switch_ta_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String education = switch_bn_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }
-                else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String education = switch_ml_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -620,13 +640,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                     String economic = switch_te_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String economic = switch_mr_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String economic = switch_as_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String economic = switch_ml_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -635,19 +655,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String economic = switch_ru_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String economic = switch_gu_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String economic = switch_bn_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String economic = switch_ta_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }
-                else {
+                } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
@@ -676,25 +693,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String caste = switch_ml_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String caste = switch_kn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String caste = switch_ru_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String caste = switch_gu_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String caste = switch_bn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String caste = switch_ta_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }
-                else {
+                } else {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
                 }
 
@@ -788,46 +802,46 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     }*/
 
-                        if (country.matches("India")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_india, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
-                            // setting state according database when user clicks edit details
+                    if (country.matches("India")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_india, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                        // setting state according database when user clicks edit details
 
-                            if (patientID_edit != null)
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            else
-                                mState.setSelection(stateAdapter.getPosition(state));
+                        if (patientID_edit != null)
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        else
+                            mState.setSelection(stateAdapter.getPosition(state));
 
-                        } else if (country.matches("United States")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_us, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
+                    } else if (country.matches("United States")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_us, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
 
-                            if (patientID_edit != null) {
+                        if (patientID_edit != null) {
 
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            }
-                        } else if (country.matches("Philippines")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_philippines, R.layout.custom_spinner);
-                            stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
-
-                            if (patientID_edit != null) {
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            } else {
-                                mState.setSelection(stateAdapter.getPosition("Bukidnon"));
-                            }
-
-                        } else {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.state_error, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
+                    } else if (country.matches("Philippines")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_philippines, R.layout.custom_spinner);
+                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+
+                        if (patientID_edit != null) {
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        } else {
+                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
+                        }
+
+                    } else {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.state_error, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                    }
                 }
 
             }
@@ -888,6 +902,12 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         mGenderM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+        mGenderO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
@@ -957,16 +977,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String dob_text = en__as_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
                 } else {
@@ -1018,13 +1038,13 @@ public class IdentificationActivity extends AppCompatActivity {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 String dob_text = en__te_dob(dob); //to show text of English into Telugu...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String dob_text = en__mr_dob(dob); //to show text of English into marathi...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into assame...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1169,7 +1189,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
                         mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -1178,22 +1198,22 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String dob_text = en__te_dob(dobString); //to show text of English into telugu...
                         mDOB.setText(dob_text);
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
                         mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String dob_text = en__as_dob(dobString); //to show text of English into assame...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String dob_text = en__ml_dob(dobString);
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
                         mDOB.setText(dob_text);
                     } else {
@@ -1312,6 +1332,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (checked)
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
+                break;
+            case R.id.identification_gender_other:
+                if (checked)
+                    mGender = "Other";
+                Log.v(TAG, "gender: " + mGender);
                 break;
         }
     }
@@ -1564,7 +1589,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1589,7 +1614,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setError(getString(R.string.error_field_required));
             }
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -1892,7 +1917,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1917,7 +1942,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setError(getString(R.string.error_field_required));
             }
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);

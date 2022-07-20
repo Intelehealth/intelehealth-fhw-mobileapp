@@ -86,6 +86,7 @@
     <string name="identification_screen_prompt_gender">લિંગ*</string>
     <string name="identification_screen_checkbox_male">પુરૂષ</string>
     <string name="identification_screen_checkbox_female">સ્ત્રી</string>
+    <string name="identification_screen_checkbox_other">અન્ય</string>
     <string name="identification_screen_prompt_birthday">જન્મતારીખ*</string>
     <string name="identification_screen_prompt_age">વય(ઉમર)</string>
     <string name="identification_screen_prompt_city">શહેર ગામ*</string>

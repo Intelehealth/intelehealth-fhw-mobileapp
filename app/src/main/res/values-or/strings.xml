@@ -66,6 +66,7 @@
     <string name="hint_optional">ଇଚ୍ଛାଧିନ</string>
     <string name="id_number">"ରଡ଼ି ସଂଖ୍ଯା "</string>
     <string name="identification_screen_checkbox_female">ମହିଳା</string>
+    <string name="identification_screen_checkbox_other">ଅନ୍ୟାନ୍ୟ</string>
     <string name="identification_screen_checkbox_male">ପୁରୁଷ</string>
     <string name="identification_screen_dialog_age">ଦୟାକରି ବୟସକୁ ବର୍ଷରେ ପ୍ରବେଶ କରାନ୍ତୁ</string>
     <string name="identification_screen_dialog_error_dob">"ଭୁଲ: ଅାଜି ପରର ତାରିଖ ପାଇଁ ଜନ୍ମତିଥି ସେଟ ୍ଅଛି "</string>

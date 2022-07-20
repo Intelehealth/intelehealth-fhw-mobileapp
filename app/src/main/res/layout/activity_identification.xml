@@ -205,8 +205,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="8dp">
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp">
 
                             <RadioButton
                                 android:id="@+id/identification_gender_male"
@@ -215,7 +215,6 @@
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/male_icon"
                                 android:drawableLeft="@drawable/male_icon"
-                                android:drawablePadding="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/identification_screen_checkbox_male"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -227,9 +226,19 @@
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/female_icon"
                                 android:drawableLeft="@drawable/female_icon"
-                                android:drawablePadding="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/identification_screen_checkbox_female"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/identification_gender_other"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/female_icon"
+                                android:drawableLeft="@drawable/female_icon"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/identification_screen_checkbox_other"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </RadioGroup>
