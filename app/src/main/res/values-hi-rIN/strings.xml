@@ -826,4 +826,5 @@
     <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करने में असमर्थ हैं। प्रोटोकॉल डाउनलोड का पुन: प्रयास करने के लिए \'हां\' दबाएं। डेमो प्रोटोकॉल के साथ जारी रखने के लिए \'नहीं\' दबाएं।</string>
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
+    <string name="app_version_string">App Version - %1$s</string>
 </resources>
