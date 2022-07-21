@@ -138,8 +138,6 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView lastSyncAgo;
     CardView manualSyncButton;
-
-    EditText text,url;
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
