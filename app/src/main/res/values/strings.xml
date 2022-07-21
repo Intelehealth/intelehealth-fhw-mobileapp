@@ -591,6 +591,8 @@
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
     <string name="hello_my_name_is">"Hello, my name is \"</string>
     <string name="i_need_assistance">\" and I need some assistance, Here are my details \"</string>
+    <string name="hello_my_name_is1">"Hello, my name is \"</string>
+    <string name="i_need_assistance1">\" and I need some assistance, Here are my details \"</string>
     <string name="please_help">\" and I am not able to login, please help.</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
