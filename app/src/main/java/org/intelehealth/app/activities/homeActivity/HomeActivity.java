@@ -134,7 +134,12 @@ public class HomeActivity extends AppCompatActivity {
     private boolean hasLicense = false;
     int i = 5;
 
+<<<<<<< HEAD
     TextView lastSyncTextView, locationSetupTextView, appVersionTextView;
+=======
+    TextView lastSyncTextView, locationSetupTextView;
+    EditText text, url;
+>>>>>>> IDA-113-change-whatsapp-message-for-help-in-home-screen
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
@@ -347,8 +352,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+917005308163";
                 String message =
-                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                        getString(R.string.hello_my_name_is1) +""+ sessionManager.getChwname() + " "
+                                +/*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance1)
+                                +sessionManager.getMindMapServerUrl()
+                                +" "+getString(R.string.and)
+                                +""+ sessionManager.getLocationName()+"\"";
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(
@@ -585,6 +593,8 @@ public class HomeActivity extends AppCompatActivity {
                         String licenseUrl = sessionManager.getMindMapServerUrl();
                         String licenseKey = sessionManager.getLicenseKey();
                         getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
+                        text.setText(licenseUrl);
+                        url.setText(licenseKey);
 
                     } else {
 //                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -638,6 +648,8 @@ public class HomeActivity extends AppCompatActivity {
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
 
+
+
                         dialog.setTitle(getString(R.string.enter_license_key))
                                 .setView(promptsView)
                                 .setPositiveButton(getString(R.string.button_ok), null)
@@ -659,8 +671,8 @@ public class HomeActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
+                                 text = promptsView.findViewById(R.id.licensekey);
+                                 url = promptsView.findViewById(R.id.licenseurl);
 
                                 url.setError(null);
                                 text.setError(null);
