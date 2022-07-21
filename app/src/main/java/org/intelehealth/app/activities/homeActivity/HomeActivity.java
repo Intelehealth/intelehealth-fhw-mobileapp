@@ -133,13 +133,9 @@ public class HomeActivity extends AppCompatActivity {
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
-
-<<<<<<< HEAD
     TextView lastSyncTextView, locationSetupTextView, appVersionTextView;
-=======
-    TextView lastSyncTextView, locationSetupTextView;
     EditText text, url;
->>>>>>> IDA-113-change-whatsapp-message-for-help-in-home-screen
+
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
