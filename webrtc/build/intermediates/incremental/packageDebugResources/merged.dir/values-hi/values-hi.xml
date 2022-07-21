@@ -16,6 +16,7 @@
     <string name="connecting">कनेक्ट हो रहा है...</string>
     <string name="connecting_to">को जोड़ रहा: %1$s</string>
     <string name="disconnect_call">कॉल डिस्कनेक्ट करें</string>
+    <string name="disconneted_alert_str">डिस्कनेक्ट!</string>
     <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
     <string name="empty_message_txt">कृपया अपना संदेश लिखें!</string>
@@ -41,6 +42,7 @@
     <string name="switch_camera">फ्रंट/बैक कैमरा स्विच करें</string>
     <string name="toggle_debug">डीबग दृश्य टॉगल करें</string>
     <string name="toggle_mic">माइक्रोफ़ोन चालू/बंद टॉगल करें</string>
+    <string name="type_text_here_str">संदेश यहाँ लिखें ...</string>
     <string name="video_call">वीडियो कॉल</string>
     <string name="video_off_lbl">वीडियो बंद!</string>
     <string name="video_on_lbl">वीडियो चालू!</string>
