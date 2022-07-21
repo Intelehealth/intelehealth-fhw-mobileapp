@@ -103,8 +103,8 @@
                                             android:imeOptions="actionUnspecified"
                                             android:includeFontPadding="false"
                                             android:inputType="numberDecimal"
-                                            android:maxLines="1"
                                             android:maxLength="5"
+                                            android:maxLines="1"
                                             android:singleLine="true"
                                             android:tag="@string/tag_optional"
                                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -135,8 +135,8 @@
                                             android:imeOptions="actionUnspecified"
                                             android:includeFontPadding="false"
                                             android:inputType="numberDecimal"
-                                            android:maxLines="1"
                                             android:maxLength="5"
+                                            android:maxLines="1"
                                             android:singleLine="true"
                                             android:tag="@string/tag_optional"
                                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -285,8 +285,8 @@
                                             android:imeOptions="actionUnspecified"
                                             android:includeFontPadding="false"
                                             android:inputType="numberDecimal"
-                                            android:maxLines="1"
                                             android:maxLength="5"
+                                            android:maxLines="1"
                                             android:singleLine="true"
                                             android:tag="@string/tag_optional"
                                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -317,8 +317,8 @@
                                             android:imeOptions="actionUnspecified"
                                             android:includeFontPadding="false"
                                             android:inputType="numberDecimal"
-                                            android:maxLines="1"
                                             android:maxLength="5"
+                                            android:maxLines="1"
                                             android:singleLine="true"
                                             android:tag="@string/tag_optional"
                                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -374,8 +374,8 @@
                                             android:imeOptions="actionUnspecified"
                                             android:includeFontPadding="false"
                                             android:inputType="numberDecimal"
-                                            android:maxLines="1"
                                             android:maxLength="5"
+                                            android:maxLines="1"
                                             android:singleLine="true"
                                             android:tag="@string/tag_optional"
                                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -407,8 +407,8 @@
                                             android:imeOptions="actionUnspecified"
                                             android:includeFontPadding="false"
                                             android:inputType="numberDecimal"
-                                            android:maxLines="1"
                                             android:maxLength="5"
+                                            android:maxLines="1"
                                             android:singleLine="true"
                                             android:tag="@string/tag_optional"
                                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -485,8 +485,8 @@
                                 android:imeOptions="actionUnspecified"
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
+                                android:maxLength="5"
                                 android:maxLines="1"
-                                android:maxLength="3"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -574,7 +574,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="5dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/bloodGlucose"
@@ -592,8 +594,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
                                     android:inputType="numberDecimal"
-                                    android:maxLines="1"
                                     android:maxLength="4"
+                                    android:maxLines="1"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
                                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -602,6 +604,90 @@
 
                             <ImageButton
                                 android:id="@+id/bloodGlucose_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+                        <!-- Blood Glucose (Random)-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bloodGlucoseRandom"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
+
+                                <EditText
+                                    android:id="@+id/bloodGlucoseRandom_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/blood_glucose_random"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="3"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/bloodGlucoseRandom_Btn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/ic_add_24dp" />
+                        </LinearLayout>
+
+                        <!-- Blood Glucose (Random)-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bloodGlucosePostPrandial"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="4">
+
+                                <EditText
+                                    android:id="@+id/bloodGlucosePostPrandial_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:hint="@string/blood_glucose_post_prandial"
+                                    android:imeOptions="actionUnspecified"
+                                    android:includeFontPadding="false"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="3"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:tag="@string/tag_optional"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/bloodGlucosePostPrandial_Btn"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -634,8 +720,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
                                     android:inputType="numberDecimal"
+                                    android:maxLength="5"
                                     android:maxLines="1"
-                                    android:maxLength="4"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
                                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -677,8 +763,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
                                     android:inputType="numberDecimal"
+                                    android:maxLength="5"
                                     android:maxLines="1"
-                                    android:maxLength="3"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
                                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -719,8 +805,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
                                     android:inputType="numberDecimal"
+                                    android:maxLength="5"
                                     android:maxLines="1"
-                                    android:maxLength="3"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
                                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -761,8 +847,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:includeFontPadding="false"
                                     android:inputType="numberDecimal"
+                                    android:maxLength="5"
                                     android:maxLines="1"
-                                    android:maxLength="4"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
                                     android:textSize="@dimen/card_content_sub_text_size" />

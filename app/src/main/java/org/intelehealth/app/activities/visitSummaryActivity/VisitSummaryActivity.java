@@ -232,6 +232,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
     ObsDTO bldglucose = new ObsDTO();
+    ObsDTO bldglucose_random = new ObsDTO();
+    ObsDTO bldglucose_post_prandial = new ObsDTO();
     ObsDTO bldglucose_fasting = new ObsDTO();
     ObsDTO hemoGlobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
@@ -273,6 +275,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView mDoctorName;
     TextView mCHWname;
     TextView glucose;
+    TextView glucoseRandom;
+    TextView glucosePostPrandial;
     TextView glucoseFasting;
     TextView hemoglobin;
     TextView uricAcid_textview;
@@ -1217,6 +1221,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
         glucose = findViewById(R.id.textView_glucose_value);
+        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
+        glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
         glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
         hemoglobin = findViewById(R.id.textView_hemoglobin_value);
         uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
@@ -1316,6 +1322,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (bldglucose.getValue() != null)
             glucose.setText(bldglucose.getValue());
+        if (bldglucose_random.getValue() != null)
+            glucoseRandom.setText(bldglucose_random.getValue());
+        if (bldglucose_post_prandial.getValue() != null)
+            glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
         if (bldglucose_fasting.getValue() != null)
             glucoseFasting.setText(bldglucose_fasting.getValue());
         if (hemoGlobin.getValue() != null)
@@ -3678,6 +3688,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
             {
                 bldglucose.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
+            {
+                bldglucose_random.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
+            {
+                bldglucose_post_prandial.setValue(value);
                 break;
             }
             case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose

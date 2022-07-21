@@ -151,11 +151,11 @@
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
     <string name="table_weight">Weight (kg)</string>
-    <string name="table_bmi">BMI </string>
+    <string name="table_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
     <string name="table_pulse">Pulse (bpm)</string>
     <string name="table_bp">Vital Signs</string>
-    <string name="table_bpsys">BP Sys</string>
-    <string name="table_bpdia">BP Dia</string>
+    <string name="table_bpsys">BP Sys (mmHg)</string>
+    <string name="table_bpdia">BP Dia (mmHg)</string>
     <string name="table_temp">Temperature (C)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
@@ -177,7 +177,7 @@
     <string name="visit_summary_vitals_heading">Vitals</string>
     <string name="visit_summary_height_heading">Height (cm)</string>
     <string name="visit_summary_weight">Weight (kg)</string>
-    <string name="visit_summary_bmi">BMI</string>
+    <string name="visit_summary_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
     <string name="visit_summary_bp">BP</string>
     <string name="visit_summary_pulse">Pulse</string>
     <string name="visit_summary_previous_reports">Previous Reports</string>
@@ -446,7 +446,7 @@
 
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
-    <string name="temperature_f">Temperature (F)</string>
+    <string name="temperature_f">Temperature (℉)</string>
     <string name="sync_now">Refresh Now</string>
     <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
@@ -478,7 +478,7 @@
     <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
     <string name="please_enter_your_username_and_password">Please enter your username and password</string>
     <string name="android_id">Android Id:</string>
-    <string name="respiratory_rate">Respiratory Rate</string>
+    <string name="respiratory_rate">Respiratory Rate (per minute)</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor Details</string>
     <string name="health_worker">Health worker</string>
@@ -1468,8 +1468,10 @@
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
     <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
+    <string name="blood_glucose_random">Blood Glucose (Random)</string>
+    <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
     <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
-    <string name="haemoglobin">Haemoglobin</string>
+    <string name="haemoglobin">Haemoglobin (mg/dL)</string>
 
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>

@@ -172,8 +172,7 @@
 
 
         <!-- Vitals Card contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_vitals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -407,8 +406,7 @@
         </androidx.cardview.widget.CardView>
 
         <!--Diagnostics-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_diagnostics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -453,7 +451,10 @@
                     android:padding="@dimen/padding_card">
 
                     <!--Glucose (Non-Fasting)-->
-                    <TableRow>
+                    <TableRow
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
                         <TextView
                             android:id="@+id/textView_glucose"
                             android:layout_width="match_parent"
@@ -472,8 +473,49 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_glucose_random"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/blood_glucose_random"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_glucose_random_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_glucose_post_prandial"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/blood_glucose_post_prandial"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_glucose_post_prandial_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
                     <!--Glucose (Fasting)-->
                     <TableRow>
+
                         <TextView
                             android:id="@+id/textView_glucose_fasting"
                             android:layout_width="match_parent"
@@ -494,6 +536,7 @@
 
                     <!--Hemoglobin-->
                     <TableRow>
+
                         <TextView
                             android:id="@+id/textView_hemoglobin"
                             android:layout_width="match_parent"
@@ -514,6 +557,7 @@
 
                     <!--Uric Acid-->
                     <TableRow>
+
                         <TextView
                             android:id="@+id/textView_uricAcid"
                             android:layout_width="match_parent"
@@ -534,6 +578,7 @@
 
                     <!-- Total Cholestrol -->
                     <TableRow>
+
                         <TextView
                             android:id="@+id/textView_total_cholestrol"
                             android:layout_width="match_parent"
@@ -1539,48 +1584,48 @@
         </androidx.cardview.widget.CardView>
 
         <!--Thermal Printer-->
-     <!--   <TextView
-            android:id="@+id/tv_device_selected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/gray2"
-            android:gravity="center"
-            android:padding="10dp"
-            android:tag="-1"
-            android:text="@string/please_connect"
-            android:textSize="18sp" />
+        <!--   <TextView
+               android:id="@+id/tv_device_selected"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="14dp"
+               android:layout_marginRight="14dp"
+               android:layout_marginTop="10dp"
+               android:background="@color/gray2"
+               android:gravity="center"
+               android:padding="10dp"
+               android:tag="-1"
+               android:text="@string/please_connect"
+               android:textSize="18sp" />
 
-        <ProgressBar
-            android:id="@+id/pb_connect"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
+           <ProgressBar
+               android:id="@+id/pb_connect"
+               android:layout_width="32dp"
+               android:layout_height="32dp"
+               android:layout_gravity="center_horizontal"
+               android:visibility="gone"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btn_disConnect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:text="@string/disconnect" />
+               <Button
+                   android:id="@+id/btn_disConnect"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_margin="10dp"
+                   android:layout_weight="1"
+                   android:enabled="false"
+                   android:text="@string/disconnect" />
 
-            <Button
-                android:id="@+id/btn_connect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:text="@string/connect" />
-        </LinearLayout>-->
+               <Button
+                   android:id="@+id/btn_connect"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_margin="10dp"
+                   android:layout_weight="1"
+                   android:text="@string/connect" />
+           </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1589,8 +1634,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <androidx.cardview.widget.CardView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/card_print"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -1679,13 +1723,13 @@
             style="@style/SelectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/lato_bold"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:text="@string/startVisitNote"
-            android:layout_marginVertical="16dp"
             android:onClick="signAndSubmit"
+            android:text="@string/startVisitNote"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20sp" />

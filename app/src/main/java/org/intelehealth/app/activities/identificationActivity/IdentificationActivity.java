@@ -632,7 +632,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 //            mCountry.setSelection(countryAdapter.getPosition(StringUtils.getValue(StringUtils.mSwitch_hi_en_te_Country_edit(patient1.getCountry(),sessionManager.getAppLanguage()))));
 
 
-            if (patient1 != null && patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+            if (patient1 != null && patient1.getEducation_level() != null && patient1.getEducation_level().equalsIgnoreCase(getString(R.string.not_provided)))
                 mEducation.setSelection(0);
 //            else
 //                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);

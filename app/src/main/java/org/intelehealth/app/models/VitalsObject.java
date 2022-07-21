@@ -14,6 +14,8 @@ public class VitalsObject {
     private String resp;
     private String bloodglucose;
     private String bloodglucoseFasting;
+    private String bloodGlucoseRandom;
+    private String bloodGlucosePostPrandial;
     private String hemoglobin;
     private String uricAcid;
     private String totlaCholesterol;
@@ -112,6 +114,22 @@ public class VitalsObject {
 
     public void setHemoglobin(String hemoglobin) {
         this.hemoglobin = hemoglobin;
+    }
+
+    public String getBloodGlucoseRandom() {
+        return bloodGlucoseRandom;
+    }
+
+    public void setBloodGlucoseRandom(String bloodGlucoseRandom) {
+        this.bloodGlucoseRandom = bloodGlucoseRandom;
+    }
+
+    public String getBloodGlucosePostPrandial() {
+        return bloodGlucosePostPrandial;
+    }
+
+    public void setBloodGlucosePostPrandial(String bloodGlucosePostPrandial) {
+        this.bloodGlucosePostPrandial = bloodGlucosePostPrandial;
     }
 
     public String getBloodglucoseFasting() {
