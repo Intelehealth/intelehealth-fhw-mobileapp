@@ -433,7 +433,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         if (patientID_edit == null) {
             mAddress1.setText(mAddress1Value);
-            mPostal.setText(mPostalValue);
+
+            if (!mPostalValue.equalsIgnoreCase("-"))
+                mPostal.setText(mPostalValue);
 
             // block
             try {
@@ -535,8 +537,9 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         } else {
             mAddress1.setText(patient1.getAddress1());
 //        mAddress2.setText(patient1.getAddress2());
-            mPostal.setText(patient1.getPostal_code());
 
+            if (!patient1.getPostal_code().equalsIgnoreCase("-"))
+                mPostal.setText(patient1.getPostal_code());
         }
 //        mRelationship.setText(patient1.getSdw());
 //        mOccupation.setText(patient1.getOccupation());
@@ -2492,15 +2495,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             mAddress1.setError(null);
         }
 
-        if (mPostal.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
-            mPostal.setError(getString(R.string.error_field_required));
-            focusView = mPostal;
-            cancel = true;
-            return;
-        } else {
-            mPostal.setError(null);
-        }
-
 //        if (mCountry.getSelectedItemPosition() == 0) {
 //            countryText.setError(getString(R.string.error_field_required));
 //            focusView = countryText;
@@ -3807,15 +3801,6 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         } else {
             mAddress1.setError(null);
-        }
-
-        if (mPostal.getText().toString().isEmpty() || mAddress1.getText().toString().equalsIgnoreCase("")) {
-            mPostal.setError(getString(R.string.error_field_required));
-            focusView = mPostal;
-            cancel = true;
-            return;
-        } else {
-            mPostal.setError(null);
         }
 
         if (spinner_block.getSelectedItemPosition() == 0) {
