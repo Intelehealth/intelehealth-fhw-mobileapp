@@ -1455,4 +1455,6 @@
     <string name="_main_connected_fail">connect fail</string>
     <string name="_main_disconnect">" disconnected"</string>
     <string name="printing">Printing...</string>
+    <string name="visit_confirmation">तुम्हाला ही भेट नक्की सुरू करायची आहे का?</string>
+
 </resources>
