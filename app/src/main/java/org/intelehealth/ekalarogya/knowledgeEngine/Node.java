@@ -1466,6 +1466,9 @@ public class Node implements Serializable {
             case "duration":
                 askDuration(questionNode, context, adapter);
                 break;
+            case "timeduration":
+                askTimeDuration(questionNode, context, adapter);
+                break;
             case "range":
                 askRange(questionNode, context, adapter);
                 break;
@@ -1794,7 +1797,115 @@ public class Node implements Serializable {
                 unit_text = hi_en(units[unitPicker.getValue()]);//for Hindi
                 unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
                 unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
-                unit_text = as_en(units[unitPicker.getValue()]);//for Gujrati
+                unit_text = as_en(units[unitPicker.getValue()]);//for Assamese
+
+                String durationString = quantityPicker.getValue() + " " + unit_text;
+
+                if (quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                } else {
+                    if (node.isRequired()) {
+                        node.setSelected(false);
+                    } else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                    }
+                }
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+
+                /*if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }*/
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = durationDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    public static void askTimeDuration(final Node node, Activity context, final QuestionsAdapter adapter) {
+        final MaterialAlertDialogBuilder durationDialog = new MaterialAlertDialogBuilder(context);
+        durationDialog.setTitle(R.string.question_duration_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
+        durationDialog.setView(convertView);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
+        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
+        middleText.setVisibility(View.GONE);
+        final String[] units = new String[]{
+                context.getString(R.string.Minute)}; //supports Hindi Translations as well...
+
+        unitPicker.setDisplayedValues(units);
+        quantityPicker.setMinValue(0);
+        quantityPicker.setMaxValue(60);
+        unitPicker.setMinValue(0);
+        //unitPicker.setMaxValue(4);
+
+        EditText input = findInput(quantityPicker);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable.toString().length() != 0) {
+                    Integer value = Integer.parseInt(editable.toString());
+                    if (value >= quantityPicker.getMinValue())
+                        quantityPicker.setValue(value);
+                }
+            }
+        };
+
+        input.addTextChangedListener(textWatcher);
+        durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                quantityPicker.setValue(quantityPicker.getValue());
+                unitPicker.setValue(unitPicker.getValue());
+
+                //translate back to English from Hindi if present...
+                String unit_text = "";
+                unit_text = hi_en(units[unitPicker.getValue()]);//for Hindi
+                unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
+                unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
+                unit_text = as_en(units[unitPicker.getValue()]);//for Assamese
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1862,6 +1973,10 @@ public class Node implements Serializable {
     private static String hi_en(String unit) {
 
         switch (unit) {
+            case "मिनट":
+                unit = "Minutes";
+                break;
+
             case "घंटे":
                 unit = "Hours";
                 break;
@@ -1891,6 +2006,10 @@ public class Node implements Serializable {
 
     private static String or_en(String unit) {
         switch (unit) {
+            case "ମିନିଟ୍ |":
+                unit = "Minutes";
+                break;
+
             case "ଘଣ୍ଟା":
                 unit = "Hours";
                 break;
@@ -1920,6 +2039,11 @@ public class Node implements Serializable {
 
     private static String gu_en(String unit) {
         switch (unit) {
+
+            case "મિનિટ":
+                unit = "Minutes";
+                break;
+
             case "કલાકો":
                 unit = "Hours";
                 break;
@@ -1949,6 +2073,11 @@ public class Node implements Serializable {
 
     private static String as_en(String unit) {
         switch (unit) {
+
+            case "মিনিটবোৰ":
+                unit = "Minutes";
+                break;
+
             case "ঘণ্টা":
                 unit = "Hours";
                 break;
@@ -2135,6 +2264,9 @@ public class Node implements Serializable {
                 break;
             case "duration":
                 subAskDuration(questionNode, context, adapter);
+                break;
+            case "timeduration":
+                subAskTimeDuration(questionNode, context, adapter);
                 break;
             case "range":
                 subAskRange(questionNode, context, adapter);
@@ -2371,6 +2503,114 @@ public class Node implements Serializable {
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
                 unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
+
+                String durationString = quantityPicker.getValue() + " " + unit_text;
+
+                if (quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                } else {
+                    if (node.isRequired()) {
+                        node.setSelected(false);
+                    } else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                    }
+                }
+                //adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+
+               /* if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }*/
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = durationDialog.show();
+        dialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    public static void subAskTimeDuration(final Node node, Activity context, final CustomArrayAdapter adapter) {
+        final MaterialAlertDialogBuilder durationDialog = new MaterialAlertDialogBuilder(context);
+        durationDialog.setTitle(R.string.question_duration_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
+        durationDialog.setView(convertView);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
+        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
+        middleText.setVisibility(View.GONE);
+        // final String[] units = context.getResources().getStringArray(R.array.duration_units);
+        final String[] units = new String[]{
+                context.getString(R.string.Minute)}; //supports Hindi Translations as well...
+
+        unitPicker.setDisplayedValues(units);
+        quantityPicker.setMinValue(0);
+        quantityPicker.setMaxValue(60);
+        unitPicker.setMinValue(0);
+        //unitPicker.setMaxValue(4);
+
+        EditText input = findInput(quantityPicker);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable.toString().length() != 0) {
+                    Integer value = Integer.parseInt(editable.toString());
+                    if (value >= quantityPicker.getMinValue())
+                        quantityPicker.setValue(value);
+                }
+            }
+        };
+
+        input.addTextChangedListener(textWatcher);
+
+        durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                quantityPicker.setValue(quantityPicker.getValue());
+                unitPicker.setValue(unitPicker.getValue());
+                //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //translate back to English from Hindi if present...
+                String unit_text = "";
+                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+                unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
+                unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
+                unit_text = as_en(units[unitPicker.getValue()]);//for Assamese
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -3287,7 +3527,8 @@ public class Node implements Serializable {
 
     static public String dateformate_hi_or_gu_as_en(String displayStr, SessionManager sessionManager) {
         if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
-            displayStr = displayStr.replaceAll("Hours", "घंटे")
+            displayStr = displayStr.replaceAll("मिनट", "Minutes")
+                    .replaceAll("घंटे", "Hours")
                     .replaceAll("दिन", "Days")
                     .replaceAll("हफ्तों", "Weeks")
                     .replaceAll("महीने", "Months")
@@ -3306,7 +3547,8 @@ public class Node implements Serializable {
                     .replaceAll("नव", "Nov")
                     .replaceAll("दिस", "Dec");
         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
-            displayStr = displayStr.replaceAll("ଘଣ୍ଟା", "Hours")
+            displayStr = displayStr.replaceAll("ମିନିଟ୍ |", "Minutes")
+                    .replaceAll("ଘଣ୍ଟା", "Hours")
                     .replaceAll("ଦିନଗୁଡିକ", "Days")
                     .replaceAll("ସପ୍ତାହଗୁଡିକ", "Weeks")
                     .replaceAll("ମାସଗୁଡିକ", "Months")
@@ -3325,7 +3567,8 @@ public class Node implements Serializable {
                     .replaceAll("ନଭେମ୍ବର", "Nov")
                     .replaceAll("ଡିସେମ୍ବର", "Dec");
         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
-            displayStr = displayStr.replaceAll("કલાકો", "Hours")
+            displayStr = displayStr.replaceAll("મિનિટ", "Minutes")
+                    .replaceAll("કલાકો", "Hours")
                     .replaceAll("દિવસ", "Days")
                     .replaceAll("અઠવાડિયા", "Weeks")
                     .replaceAll("મહિનાઓ", "Months")
@@ -3344,7 +3587,8 @@ public class Node implements Serializable {
                     .replaceAll("નવે", "Nov")
                     .replaceAll("ડિસે", "Dec");
         }else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
-            displayStr = displayStr.replaceAll("ঘণ্টা", "Hours")
+            displayStr = displayStr.replaceAll("মিনিটবোৰ", "Minutes")
+                    .replaceAll("ঘণ্টা", "Hours")
                     .replaceAll("দিনবোৰ", "Days")
                     .replaceAll("সপ্তাহ", "Weeks")
                     .replaceAll("মাহবোৰ", "Months")
@@ -3369,7 +3613,8 @@ public class Node implements Serializable {
     static public String dateformat_en_hi_or_gu_as(String displayStr,SessionManager sessionManager) {
         if (sessionManager.getCurrentLang().equalsIgnoreCase("hi"))
         {
-            displayStr=displayStr.replaceAll("Hours","घंटे")
+            displayStr=displayStr.replaceAll("Minutes","मिनट")
+                    .replaceAll("Hours","घंटे")
                     .replaceAll("Days","दिन")
                     .replaceAll("Weeks","हफ्तों")
                     .replaceAll("Months","महीने")
@@ -3389,7 +3634,8 @@ public class Node implements Serializable {
                     .replaceAll("Dec","दिस");
         }else if (sessionManager.getCurrentLang().equalsIgnoreCase("or"))
         {
-            displayStr=displayStr.replaceAll("Hours","ଘଣ୍ଟା")
+            displayStr=displayStr.replaceAll("Minutes","ମିନିଟ୍ |")
+                    .replaceAll("Hours","ଘଣ୍ଟା")
                     .replaceAll("Days","ଦିନଗୁଡିକ")
                     .replaceAll("Weeks","ସପ୍ତାହଗୁଡିକ")
                     .replaceAll("Months","ମାସଗୁଡିକ")
@@ -3408,7 +3654,8 @@ public class Node implements Serializable {
                     .replaceAll("Nov","ନଭେମ୍ବର")
                     .replaceAll("Dec","ଡିସେମ୍ବର");
         }else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
-            displayStr = displayStr.replaceAll("Hours", "કલાકો")
+            displayStr = displayStr.replaceAll("Minutes","મિનિટ")
+                    .replaceAll("Hours", "કલાકો")
                     .replaceAll("Days", "દિવસ")
                     .replaceAll("Weeks", "અઠવાડિયા")
                     .replaceAll("Months", "મહિનાઓ")
@@ -3427,7 +3674,8 @@ public class Node implements Serializable {
                     .replaceAll("Nov", "નવે")
                     .replaceAll("Dec", "ડિસે");
         }else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
-            displayStr = displayStr.replaceAll("Hours", "ঘণ্টা")
+            displayStr = displayStr.replaceAll("Minutes","মিনিটবোৰ")
+                    .replaceAll("Hours", "ঘণ্টা")
                     .replaceAll("Days", "দিনবোৰ")
                     .replaceAll("Weeks", "সপ্তাহ")
                     .replaceAll("Months", "মাহবোৰ")
