@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp">
+
+    <EditText
+        android:id="@+id/birth_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Birth Weight"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"/>
+
+    <EditText
+        android:id="@+id/apgar_1min"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Apgar at 1 min"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"/>
+
+    <EditText
+        android:id="@+id/apgar_5min"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Apgar at 5 min"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"/>
+
+    <EditText
+        android:id="@+id/sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Sex of baby"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"/>
+
+    <EditText
+        android:id="@+id/baby_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Baby Status"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"/>
+
+    <EditText
+        android:id="@+id/mother_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Mother Status"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"/>
+
+</LinearLayout>

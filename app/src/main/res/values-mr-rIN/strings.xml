@@ -829,7 +829,14 @@
     <string name="refer_section">विभाग पहा</string>
     <string name="refer_data_submitted_successfully">डेटा यशस्वीरित्या सबमिट केला</string>
     <string name="select_birth_outcome">जन्म परिणाम निवडा</string>
-    <string name="primary_doct_val_txt">Please select primary Doctor</string>
-    <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
+    <string name="primary_doct_val_txt">कृपया प्राथमिक डॉक्टर निवडा</string>
+    <string name="seconday_doct_val_txt">कृपया दुय्यम डॉक्टर निवडा</string>
+    <string name="birth_weight">जन्माचे वजन</string>
+    <string name="apgar_1min">अपगर १ मिनिटात</string>
+    <string name="apgar_5min">अपगर ५ मिनिटात</string>
+    <string name="sex">लिंग</string>
+    <string name="baby_status">बाळाची स्थिती</string>
+    <string name="mother_status">आईची स्थिती</string>
+    <string name="additional_information">अतिरिक्त माहिती</string>
 
 </resources>

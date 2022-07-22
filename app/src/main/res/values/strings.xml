@@ -871,6 +871,13 @@
     <string name="select_birth_outcome">Select Birth Outcome</string>
     <string name="primary_doct_val_txt">Please select primary Doctor</string>
     <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
+    <string name="birth_weight">Birth Weight</string>
+    <string name="apgar_1min">Apgar at 1min</string>
+    <string name="apgar_5min">Apgar at 5min</string>
+    <string name="sex">Sex</string>
+    <string name="baby_status">Baby Status</string>
+    <string name="mother_status">Mother Status</string>
+    <string name="additional_information">Additional Information</string>
 
 
 </resources>

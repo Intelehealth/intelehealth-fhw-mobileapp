@@ -93,6 +93,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     String valueStage = "";
     int positionStage = -1;
     public static final String TAG = "TimelineVisitSummary";
+    boolean isAdded = false;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -561,19 +562,23 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         boolean isInserted = false;
-                        if (positionStage == 0 || positionStage == 1) { // Birth Outcome
+                        // Birth Outcome
+                        if (positionStage == 0 || positionStage == 1) {
                             Log.v("birthoutcome", "value: " + value);
-                            try {
+                            isInserted = stage2_captureAdditionalData(value);
+/*                            try {
                                 isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
                             } catch (DAOException e) {
                                 e.printStackTrace();
-                                Log.e("birthoutcome", "insert vsiti complete: " + e);
-                            }
-                        } else if (positionStage == 2) // refer other hospital // call visit complete enc.
+                                Log.e("birthoutcome", "insert visit complete: " + e);
+                            }*/
+                        }
+                        else if (positionStage == 2) // refer other hospital // call visit complete enc.
                             referOtherHospitalDialog(valueStage);
                         else if (positionStage == 3) { // self discharge // call visit complete enc.
                             try {
-                                isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
+                                isInserted = insertVisitComplete_Obs(visitUuid,
+                                        context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }
@@ -609,6 +614,84 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
+    private boolean insertStage2_AdditionalData(String visitUuid, String birthoutcome, String birthWeight, String apgar_1min, String apgar_5min,
+                                                String sex, String baby_status, String mother_status) throws DAOException {
+
+        boolean isInserted = false;
+        String encounterUuid = "";
+        encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+
+        VisitsDAO visitsDAO = new VisitsDAO();
+        visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+
+        ////
+        // Now get this encounteruuid and create refer obs table.
+        if (!encounterUuid.equalsIgnoreCase("") && !encounterUuid.isEmpty()) {
+            ObsDAO obsDAO = new ObsDAO();
+            ObsDTO obsDTO;
+            List<ObsDTO> obsDTOList = new ArrayList<>();
+
+            // *. Birth Outcome
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(birthoutcome);
+            obsDTO.setConceptuuid(UuidDictionary.BIRTH_OUTCOME);
+            obsDTOList.add(obsDTO);
+
+            // 1. Birth Weight
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(birthWeight);
+            obsDTO.setConceptuuid(UuidDictionary.BIRTH_WEIGHT);
+            obsDTOList.add(obsDTO);
+
+            // 2. Apgar 1 min
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(apgar_1min);
+            obsDTO.setConceptuuid(UuidDictionary.APGAR_1_MIN);
+            obsDTOList.add(obsDTO);
+
+            // 3. Apgar 5min
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(apgar_5min);
+            obsDTO.setConceptuuid(UuidDictionary.APGAR_5_MIN);
+            obsDTOList.add(obsDTO);
+
+            // 4. Sex
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(sex);
+            obsDTO.setConceptuuid(UuidDictionary.SEX);
+            obsDTOList.add(obsDTO);
+
+            // 5. Baby Status
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(baby_status);
+            obsDTO.setConceptuuid(UuidDictionary.BABY_STATUS);
+            obsDTOList.add(obsDTO);
+
+            // 6. Mother Status
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(mother_status);
+            obsDTO.setConceptuuid(UuidDictionary.MOTHER_STATUS);
+            obsDTOList.add(obsDTO);
+
+            isInserted = obsDAO.insertObsToDb(obsDTOList);
+        }
+
+        return isInserted;
+    }
 
     private boolean insertVisitCompleteEncounterAndObs_ReferHospital(String visitUuid, String referType,
                                                                      String hospitalName, String doctorName, String note) throws DAOException {
@@ -663,6 +746,61 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         return isInserted;
     }
+
+    private boolean stage2_captureAdditionalData(String value) {
+        isAdded = false;
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+        String referOptions[] = {getString(R.string.birth_weight), getString(R.string.apgar_1min),
+                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_stage2_additional_data, null);
+        dialogBuilder.setView(view);
+        dialogBuilder.setTitle(R.string.additional_information);
+        EditText birth_weight = view.findViewById(R.id.birth_weight);
+        EditText apgar_1min = view.findViewById(R.id.apgar_1min);
+        EditText apgar_5min = view.findViewById(R.id.apgar_5min);
+        EditText sex = view.findViewById(R.id.sex);
+        EditText baby_status = view.findViewById(R.id.baby_status);
+        EditText mother_status = view.findViewById(R.id.mother_status);
+
+        dialogBuilder.setPositiveButton(context.getString(R.string.submit), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String birthW = birth_weight.getText().toString(),
+                        apgar1min = apgar_1min.getText().toString(),
+                        apgar5min = apgar_5min.getText().toString(),
+                        sexValue = sex.getText().toString(),
+                        babyStatus = baby_status.getText().toString(),
+                        motherStatus = mother_status.getText().toString();
+
+                // call visitcompleteenc and add obs for additional values entered...
+                try {
+                    isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        dialogBuilder.setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = dialogBuilder.show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+        return isAdded;
+    }
+
 
     private boolean insertVisitComplete_Obs(String visitUuid, String value, String conceptId) throws DAOException {
         //  EncounterDAO encounterDAO = new EncounterDAO();
