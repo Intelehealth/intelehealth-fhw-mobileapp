@@ -10,7 +10,10 @@ import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwPersonalInformationModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.UserAttributeModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.UserDataModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.UserInfoUpdateModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.UserPersonModel;
 import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.ekalarogya.utilities.Base64Utils;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
@@ -18,7 +21,6 @@ import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
-import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -28,7 +30,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.service.autofill.UserData;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,7 +56,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class HwProfileActivity extends AppCompatActivity {
@@ -184,13 +185,13 @@ public class HwProfileActivity extends AppCompatActivity {
 
             case R.id.hw_profile_image_edit:
 
-//                hw_designation_value.setClickable(true);
-//                hw_designation_value.setFocusable(true);
-//                hw_designation_value.setCursorVisible(true);
-//                hw_designation_value.setFocusableInTouchMode(true);
-//                hw_designation_value.requestFocus();
-//                hw_designation_value.setSelection(hw_designation_value.getText().length());
-//
+                hw_designation_value.setClickable(true);
+                hw_designation_value.setFocusable(true);
+                hw_designation_value.setCursorVisible(true);
+                hw_designation_value.setFocusableInTouchMode(true);
+                hw_designation_value.requestFocus();
+                hw_designation_value.setSelection(hw_designation_value.getText().length());
+
 //                hw_aboutme_value.setClickable(true);
 //                hw_aboutme_value.setFocusable(true);
 //                hw_aboutme_value.setCursorVisible(true);
@@ -439,41 +440,39 @@ public class HwProfileActivity extends AppCompatActivity {
         }*/
         try{
             if(mainProfileModel!=null){
-                JSONObject obj=new JSONObject();
                 HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
+                UserAttributeModel userAttributeModel = new UserAttributeModel();
                 if(hwProfileModel!=null) {
                     if (!hw_designation_value.getText().toString().equalsIgnoreCase(hwProfileModel.getDesignation())){
-                        obj.put("qualification",hw_designation_value.getText().toString().trim());
+                        userAttributeModel.setQualification(hw_designation_value.getText().toString().trim());
                     }
 
                     if (!hw_aboutme_value.getText().toString().equalsIgnoreCase(hwProfileModel.getAboutMe())){
-                        obj.put("aboutMe",hw_aboutme_value.getText().toString().trim());
+                        userAttributeModel.setAboutMe(hw_aboutme_value.getText().toString());
                     }
 
                     HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
 
                     if(personalInformationModel!=null) {
                         if (!hw_gender_value.getText().toString().equalsIgnoreCase(personalInformationModel.getGender())){
-                            obj.put("gender",hw_gender_value.getText().toString().trim());
+                            userAttributeModel.setGender(hw_gender_value.getText().toString().trim());
                         }
 
                         if (!hw_mobile_value.getText().toString().equalsIgnoreCase(personalInformationModel.getMobile())){
-                            obj.put("phoneNumber",hw_mobile_value.getText().toString().trim());
+                            userAttributeModel.setPhoneNumber(hw_mobile_value.getText().toString().trim());
                         }
 
                         if (!hw_whatsapp_value.getText().toString().equalsIgnoreCase(personalInformationModel.getWhatsApp())){
-                            obj.put("whatsapp",hw_whatsapp_value.getText().toString().trim());
+                            userAttributeModel.setWhatsapp(hw_whatsapp_value.getText().toString().trim());
                         }
 
                         if (!hw_email_value.getText().toString().equalsIgnoreCase(personalInformationModel.getEmail())){
-                            obj.put("emailId",hw_email_value.getText().toString().trim());
+                            userAttributeModel.setEmailId(hw_email_value.getText().toString().trim());
                         }
 
                     }
-                    if(obj!=null) {
-                        Log.d("Nishita Data", obj.toString());
-                        updateOnSever(obj);
-                    }
+                    if(userAttributeModel!=null)
+                        updateOnSever(userAttributeModel);
                 }
             }
         }catch (Exception e){
@@ -481,12 +480,12 @@ public class HwProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void updateOnSever(JSONObject obj){
+    public void updateOnSever(UserAttributeModel obj){
         //https://afitraining.ekalarogya.org:3004/api/user/profile/a4ac4fee-538f-11e6-9cfe-86f436325720
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/profile/"+sessionManager.getCreatorID();
         String encoded = sessionManager.getEncoded();
 
-        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Bearer " + encoded, obj);
+        Single<UserInfoUpdateModel> hwUpdateApiCallObservable = AppConstants.apiInterface.HwUpdateInfo_API_CALL_OBSERVABLE(url, "Basic " + encoded, obj);
         hwUpdateApiCallObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<UserInfoUpdateModel>() {

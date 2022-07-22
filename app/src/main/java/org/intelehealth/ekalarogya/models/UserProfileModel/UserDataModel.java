@@ -14,7 +14,7 @@ public class UserDataModel {
 
     @SerializedName("attributes")
     @Expose
-    private UserAtteributModel userAtteributModel;
+    private UserAttributeModel userAttributeModel;
 
     public String getUuid() {
         return uuid;
@@ -24,12 +24,12 @@ public class UserDataModel {
         this.uuid = uuid;
     }
 
-    public UserAtteributModel getUserAtteributModel() {
-        return userAtteributModel;
+    public UserAttributeModel getUserAtteributModel() {
+        return userAttributeModel;
     }
 
-    public void setUserAtteributModel(UserAtteributModel userAtteributModel) {
-        this.userAtteributModel = userAtteributModel;
+    public void setUserAtteributModel(UserAttributeModel userAttributeModel) {
+        this.userAttributeModel = userAttributeModel;
     }
 
     public UserPersonModel getUserDataModel() {

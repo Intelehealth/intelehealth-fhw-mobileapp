@@ -195,6 +195,7 @@ string connect_description
 string connecting
 string connecting_to
 string disconnect_call
+string disconneted_alert_str
 string dummy_text
 string dummy_text_1
 string empty_message_txt
@@ -216,6 +217,7 @@ string start_txt_chat_now
 string switch_camera
 string toggle_debug
 string toggle_mic
+string type_text_here_str
 string video_call
 string video_off_lbl
 string video_on_lbl

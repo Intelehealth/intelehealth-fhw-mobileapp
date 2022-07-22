@@ -14,7 +14,7 @@ public class UserInfoUpdateModel {
 
     @SerializedName("data")
     @Expose
-    private UserDataModel userDataModel;;
+    private UserDataModel userDataModel;
 
     public boolean getStatus() {
         return status;

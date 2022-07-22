@@ -9,8 +9,8 @@ import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.ekalarogya.models.Results;
-import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.UserAttributeModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.UserInfoUpdateModel;
 import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
@@ -22,17 +22,14 @@ import org.intelehealth.ekalarogya.models.pushResponseApiCall.PushResponseApiCal
 import org.intelehealth.ekalarogya.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.models.statewise_location.State;
-import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -133,5 +130,5 @@ public interface ApiInterface {
     @PUT
     Single<UserInfoUpdateModel> HwUpdateInfo_API_CALL_OBSERVABLE(@Url String url,
                                                                  @Header("Authorization") String authHeader,
-                                                                 @Body JSONObject obj);
+                                                                 @Body UserAttributeModel obj);
 }
