@@ -1132,4 +1132,7 @@
     <string name="answer_following_questions">ફરજિયાત પ્રશ્નો નીચે મુજબ છે, કૃપા કરીને તેમના જવાબ આપો.</string>
     <string name="dr_specility_generalphysician">જનરલ ફિઝિશિયન</string>
     <string name="update_hw_profile">સફળતાપૂર્વક અપડેટ કર્યું</string>
+
+    <string name="enter_valid_email">માન્ય ઇમેઇલ સરનામું દાખલ કરો</string>
+    <string name="enter_valid_gender">લિંગ પુરુષ અથવા સ્ત્રી દાખલ કરો</string>
 </resources>

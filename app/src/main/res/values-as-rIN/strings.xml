@@ -1111,4 +1111,7 @@
     <string name="answer_following_questions">নিম্নলিখিতবোৰ বাধ্যতামূলক প্ৰশ্ন, অনুগ্ৰহ কৰি সেইবোৰৰ উত্তৰ দিয়ক।</string>
     <string name="dr_specility_generalphysician">সাধাৰণ চিকিৎসক</string>
     <string name="update_hw_profile">সফলতাৰে আপডেট কৰা হৈছে</string>
+
+    <string name="enter_valid_email">বৈধ ইমেইল ঠিকনা দিয়ক</string>
+    <string name="enter_valid_gender">লিংগ পুৰুষ বা মহিলা প্ৰৱেশ কৰক</string>
 </resources>

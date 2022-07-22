@@ -1133,4 +1133,7 @@
 
     <string name="dr_specility_generalphysician">General Physician</string>
     <string name="update_hw_profile">Updated Succussfully</string>
+
+    <string name="enter_valid_email">Enter valid email address</string>
+    <string name="enter_valid_gender">Enter gender male or female</string>
 </resources>

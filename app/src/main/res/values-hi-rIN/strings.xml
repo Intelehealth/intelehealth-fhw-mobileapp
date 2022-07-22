@@ -1139,4 +1139,7 @@
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उनका उत्तर दें।</string>
     <string name="dr_specility_generalphysician">सामान्य चिकित्सक</string>
     <string name="update_hw_profile">सफलतापूर्वक अपडेट किया गया</string>
+
+    <string name="enter_valid_email">वैध ईमेल पता दर्ज करें</string>
+    <string name="enter_valid_gender">लिंग दर्ज करें पुरुष या महिला</string>
 </resources>

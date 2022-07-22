@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.activities.chmProfileActivity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
@@ -27,10 +28,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.service.autofill.UserData;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +56,8 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.io.File;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -64,7 +73,7 @@ public class HwProfileActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     String mCurrentPhotoPath;
 
-    EditText hw_designation_value, hw_aboutme_value, hw_gender_value, hw_mobile_value,hw_whatsapp_value,
+    EditText hw_designation_value, hw_aboutme_value, hw_gender_value, hw_mobile_value, hw_whatsapp_value,
             hw_email_value;
     TextView hw_name_value, total_patregistered_value, total_visitprogress_value,
             total_consultaion_value, hw_state_value, save_hw_detail;
@@ -106,7 +115,7 @@ public class HwProfileActivity extends AppCompatActivity {
         hw_whatsapp_value = (EditText) findViewById(R.id.hw_whatsapp_value);
         hw_email_value = (EditText) findViewById(R.id.hw_email_value);
 
-        save_hw_detail=(TextView)findViewById(R.id.save_hw_detail);
+        save_hw_detail = (TextView) findViewById(R.id.save_hw_detail);
 
     }
 
@@ -144,7 +153,7 @@ public class HwProfileActivity extends AppCompatActivity {
                 .subscribe(new DisposableObserver<MainProfileModel>() {
                     @Override
                     public void onNext(MainProfileModel mainProfileModel1) {
-                        String response =mainProfileModel1.toString();
+                        String response = mainProfileModel1.toString();
                         if (mainProfileModel1 != null && mainProfileModel1.getStatus() == true) {
                             Gson gson = new Gson();
                             String userprofile = gson.toJson(mainProfileModel1);
@@ -224,7 +233,11 @@ public class HwProfileActivity extends AppCompatActivity {
                 save_hw_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        updateHwDetail();
+                        if (NetworkConnection.isOnline(HwProfileActivity.this)) {
+                            CheckValidation();
+                        } else {
+                            Toast.makeText(HwProfileActivity.this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -277,9 +290,9 @@ public class HwProfileActivity extends AppCompatActivity {
             HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
             hw_name_value.setText(hwProfileModel.getUserName());
             hw_designation_value.setText(hwProfileModel.getDesignation());
-            if(!hwProfileModel.getAboutMe().isEmpty() && hwProfileModel.getAboutMe()!=null) {
+            if (!hwProfileModel.getAboutMe().isEmpty() && hwProfileModel.getAboutMe() != null) {
                 hw_aboutme_value.setText(hwProfileModel.getAboutMe());
-            }else{
+            } else {
                 hw_aboutme_value.setVisibility(View.GONE);
             }
 
@@ -416,9 +429,75 @@ public class HwProfileActivity extends AppCompatActivity {
                                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true)
                                 .into(hw_profile_image);
-                        }
+                    }
 
                 });
+    }
+
+    public void CheckValidation() {
+        int errorColor;
+        final int version = Build.VERSION.SDK_INT;
+        if (version >= 23) {
+
+            errorColor = ContextCompat.getColor(getApplicationContext(), R.color.white);
+        } else {
+            errorColor = getResources().getColor(R.color.white);
+        }
+
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColor);
+
+        if(hw_gender_value.getText().toString().trim().length()>0){
+            if(!hw_gender_value.getText().toString().trim().equalsIgnoreCase("Male") &&
+                !hw_gender_value.getText().toString().trim().equalsIgnoreCase("Female")){
+                hw_gender_value.requestFocus();
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.enter_valid_gender));
+                spannableStringBuilder.setSpan(foregroundColorSpan, 0, getString(R.string.enter_valid_gender).length(), 0);
+                hw_gender_value.setError(spannableStringBuilder);
+                return;
+            }
+        }
+
+        if (hw_mobile_value.getText().toString().trim().length() > 0) {
+            if (hw_mobile_value.getText().toString().trim().length() < 10) {
+                hw_mobile_value.requestFocus();
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.enter_10_digits));
+                spannableStringBuilder.setSpan(foregroundColorSpan, 0, getString(R.string.enter_10_digits).length(), 0);
+                hw_mobile_value.setError(spannableStringBuilder);
+                return;
+            }
+        }
+
+        if (hw_whatsapp_value.getText().toString().trim().length() > 0) {
+            if (hw_whatsapp_value.getText().toString().trim().length() < 10) {
+                hw_whatsapp_value.requestFocus();
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.enter_10_digits));
+                spannableStringBuilder.setSpan(foregroundColorSpan, 0, getString(R.string.enter_10_digits).length(), 0);
+                hw_whatsapp_value.setError(spannableStringBuilder);
+                return;
+            }
+        }
+
+        if (hw_email_value.getText().toString().trim().length() > 0) {
+            if (!emailValidation(hw_email_value.getText().toString().trim())) {
+                hw_email_value.requestFocus();
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.enter_valid_email));
+                spannableStringBuilder.setSpan(foregroundColorSpan, 0, getString(R.string.enter_valid_email).length(), 0);
+                hw_email_value.setError(spannableStringBuilder);
+                return;
+            }
+        }
+
+        updateHwDetail();
+    }
+
+    public boolean emailValidation(String email)
+    {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void updateHwDetail(){
