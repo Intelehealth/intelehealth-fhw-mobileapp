@@ -1442,7 +1442,7 @@
     <string name="hemoglobin_calibration">Hemoglobin Calibration</string>
     <string name="healthcube">HealthCube</string>
     <string name="thermalprinter_device_info">Device Info</string>
-    <string name="thermal_printer">Thermal Printer</string>
+    <string name="thermal_printer">Printer</string>
     <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="uric_acid_validation">Uric Acid should be in between %1$s and %2$s</string>
     <string name="total_cholesterol_validation">Total Cholesterol should be in between %1$s and %2$s</string>

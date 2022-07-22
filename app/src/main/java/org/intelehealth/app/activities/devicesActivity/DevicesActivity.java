@@ -53,7 +53,7 @@ import java.util.List;
  * Github: prajwalmw
  */
 
-public class DevicesActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback{
+public class DevicesActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
@@ -69,7 +69,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
-
+        setTitle(getString(R.string.devices));
         context = DevicesActivity.this;
         EzdxBT.authenticate(key); // Authenticate Key before starting the test.
         bluetoothService = BluetoothService.getDefaultInstance();
@@ -89,10 +89,10 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                                         View view, int groupPosition, int childPosition, long id) {
 
                 // Health cube info
-                if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.healthcube_device_info))) {
 
-                    if(hcDeviceData != null) {
+                    if (hcDeviceData != null) {
                         try {
                             showInfoDialog(DevicesActivity.this, hcDeviceData.toString(), getString(R.string.healthcube_device_info));
                         } catch (Exception e) {
@@ -100,55 +100,50 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                     }
                 }
 
-                    // Blood Glucose Calibration
-                    if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
-                            .equalsIgnoreCase(getString(R.string.blood_glucose_calibration))) {
-                        Status status = EzdxBT.startBloodGlucoseCalibration();
-                        Log.v("Details", "Deta: " + status.toString());
-                        if (status.equals(Status.CALIBRATION_NOT_REQUIRED)) {
-                            Toast.makeText(context, getString(R.string.calibration_not_required), Toast.LENGTH_SHORT).show();
-                        }
-                        else if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
-                            Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            showTestDialog();
-                        }
-
+                // Blood Glucose Calibration
+                if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                        .equalsIgnoreCase(getString(R.string.blood_glucose_calibration))) {
+                    Status status = EzdxBT.startBloodGlucoseCalibration();
+                    Log.v("Details", "Deta: " + status.toString());
+                    if (status.equals(Status.CALIBRATION_NOT_REQUIRED)) {
+                        Toast.makeText(context, getString(R.string.calibration_not_required), Toast.LENGTH_SHORT).show();
+                    } else if (status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
+                        Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
+                    } else {
+                        showTestDialog();
                     }
 
-                    // Blood Glucose Calibration
-                    if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
-                            .equalsIgnoreCase(getString(R.string.hemoglobin_calibration))) {
-                        Status status = EzdxBT.startHemoglobinCalibration();
-                        if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
-                            Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            showTestDialog();
-                        }
+                }
+
+                // Blood Glucose Calibration
+                if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                        .equalsIgnoreCase(getString(R.string.hemoglobin_calibration))) {
+                    Status status = EzdxBT.startHemoglobinCalibration();
+                    if (status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
+                        Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
+                    } else {
+                        showTestDialog();
                     }
+                }
 
                 // Uric Acid Calibration
-                if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.uric_acid_calibration))) {
                     Status status = EzdxBT.startUricAcidCalibration();
-                    if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
+                    if (status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
                         Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         showTestDialog();
                     }
                 }
 
                 // Total Cholesterol Calibration
-                if(expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
+                if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.total_cholesterol_calibration))) {
                     Status status = EzdxBT.startCholestrolCalibration();
-                    if(status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
+                    if (status.equals(Status.BLUETOOTH_NOT_CONNECTED)) {
                         Toast.makeText(context, getString(R.string.connect_bluetooth), Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         showTestDialog();
                     }
                 }
@@ -191,39 +186,39 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
     }
 
     private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
-        if(testName.equals(BLOOD_GLUCOSE_CALIBRATION))
+        if (testName.equals(BLOOD_GLUCOSE_CALIBRATION))
             imageView.setImageDrawable(getDrawable(R.drawable.glucose_calibration));
 
-        else if(testName.equals(HEMOGLOBIN_CALIBRATION) ||
+        else if (testName.equals(HEMOGLOBIN_CALIBRATION) ||
                 testName.equals(URIC_ACID_CALIBRATION) ||
                 testName.equals(CHOLESTEROL_CALIBRATION)) {
             imageView.setImageDrawable(getDrawable(R.drawable.hemoglobin_calibration));
         }
 
         // Status reading...
-        if(ezdxData.getStatus().equals(Status.STARTED)) {
-            if(alertDialog != null) {
+        if (ezdxData.getStatus().equals(Status.STARTED)) {
+            if (alertDialog != null) {
                 textView.setText(R.string.calibration_started_successfully);
             }
         }
-        if(ezdxData.getStatus().equals(Status.INITIALIZING)) {
-            if(alertDialog != null) {
+        if (ezdxData.getStatus().equals(Status.INITIALIZING)) {
+            if (alertDialog != null) {
                 textView.setText(R.string.initializing);
             }
         }
-        if(ezdxData.getStatus().equals(Status.INSERT_CALIBRATION_STRIP)) {
-            if(alertDialog != null) {
+        if (ezdxData.getStatus().equals(Status.INSERT_CALIBRATION_STRIP)) {
+            if (alertDialog != null) {
                 textView.setText(R.string.insert_calibration_strip);
                 textView.setTextColor(getColor(R.color.red3));
             }
         }
-        if(ezdxData.getStatus().equals(Status.STOPPED)) {
+        if (ezdxData.getStatus().equals(Status.STOPPED)) {
             Toast.makeText(this, R.string.calibration_stopped_successfully, Toast.LENGTH_SHORT).show();
             textView.setTextColor(getColor(R.color.red3));
         }
 
         if (ezdxData.getStatus().equals(Status.CALIBRATION_COMPLETED)) {
-            if(alertDialog != null) {
+            if (alertDialog != null) {
                 alertDialog.dismiss();
             }
             Toast.makeText(this, R.string.calibration_completed_successfully, Toast.LENGTH_SHORT).show();
@@ -253,7 +248,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
 
     @Override
     public void onHCDeviceInfo(HCDeviceData hcDeviceData) {
-        if(hcDeviceData != null) {
+        if (hcDeviceData != null) {
             this.hcDeviceData = hcDeviceData;
         }
     }

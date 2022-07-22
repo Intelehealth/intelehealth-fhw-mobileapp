@@ -336,7 +336,7 @@
     <string name="error_sms">एसएमएस अयशस्वी, कृपया नंतर पुन्हा प्रयत्न करा!</string>
     <string name="sms_success">एसएमएस पाठविला!</string>
 
-    <string name="question_update_details">आपण तपशील अद्यतनित करू इच्छिता?</string>
+    <string name="question_update_details">आपण तपशील अपडेट करू इच्छिता?</string>
 
     <string name="backup_completed">बॅकअप पूर्ण!</string>
 
