@@ -3,10 +3,14 @@ package org.intelehealth.ekalarogya.models.UserProfileModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserAtteributModel {
+public class UserAttributeModel {
     @SerializedName("emailId")
     @Expose
     private String emailId;
+
+    @SerializedName("gender")
+    @Expose
+    private String gender;
 
     @SerializedName("timings")
     @Expose
@@ -68,7 +72,7 @@ public class UserAtteributModel {
         return aboutMe;
     }
 
-    public void setAboutMe(String gender) {
+    public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
     public String getTextOfSign() {
@@ -105,5 +109,13 @@ public class UserAtteributModel {
 
     public void setWhatsapp(String whatsapp) {
         this.whatsapp = whatsapp;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
