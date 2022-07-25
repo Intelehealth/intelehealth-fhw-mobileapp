@@ -404,6 +404,10 @@
                         android:clickable="false"
                         android:textColor="@color/font_black_0"
                         android:textStyle="bold"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:singleLine="true"
                         android:textSize="@dimen/card_content_normal_text_size" />
 
                     <!--<TextView
@@ -449,6 +453,10 @@
                         android:focusable="false"
                         android:clickable="false"
                         android:textColor="@color/font_black_0"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:singleLine="true"
                         android:textStyle="bold"
                         android:textSize="@dimen/card_content_normal_text_size" />
                     <!--<TextView

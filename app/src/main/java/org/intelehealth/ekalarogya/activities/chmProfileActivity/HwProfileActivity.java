@@ -224,6 +224,22 @@ public class HwProfileActivity extends AppCompatActivity {
                 save_hw_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        if (hw_mobile_value.getText().toString().trim().length() > 0) {
+                            if (hw_mobile_value.getText().toString().trim().length() < 10) {
+                                hw_mobile_value.requestFocus();
+                                hw_mobile_value.setError(getString(R.string.enter_10_digits));
+                                return;
+                            }
+                        }
+                        if (hw_whatsapp_value.getText().toString().trim().length() > 0) {
+                            if (hw_whatsapp_value.getText().toString().trim().length() < 10) {
+                                hw_whatsapp_value.requestFocus();
+                                hw_whatsapp_value.setError(getString(R.string.enter_10_digits));
+                                return;
+                            }
+                        }
+
                         updateHwDetail();
                     }
                 });
