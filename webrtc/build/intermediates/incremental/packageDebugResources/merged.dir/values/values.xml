@@ -202,6 +202,7 @@
     <string name="switch_camera">Switch front/back camera</string>
     <string name="toggle_debug">Toggle debug view</string>
     <string name="toggle_mic">Toggle microphone on/off</string>
+    <string name="type_text_here_str">Type text here ...</string>
     <string name="video_call">Video Call</string>
     <string name="video_off_lbl">Video Off!</string>
     <string name="video_on_lbl">Video On!</string>
@@ -210,7 +211,7 @@
     <string name="you">You</string>
     <string name="you_have_no_messages_start_sending_messages_now">You have no messages! Start sending messages now.</string>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

@@ -218,6 +218,7 @@ string start_txt_chat_now
 string switch_camera
 string toggle_debug
 string toggle_mic
+string type_text_here_str
 string video_call
 string video_off_lbl
 string video_on_lbl

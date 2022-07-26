@@ -288,7 +288,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
-                    && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")) {
+                    && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
+                    && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")
+
+            ) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
@@ -582,9 +586,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା") || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("জড়িত লক্ষণগুলি")))) {
-
+                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
+                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
                 assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
@@ -633,7 +639,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
                 assoSympObj.put("display-te", "మీకు ఈ క్రింది లక్షణం (లు) ఉన్నాయా?");
                 assoSympObj.put("display-mr", "तुम्हाला खालील लक्षणे आहेत का?");
-                assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
+                assoSympObj.put("display-as", "আপোনাৰ তলত দিয়া লক্ষণ(সমূহ) আছেনে?");
                 assoSympObj.put("display-ml", "നിങ്ങൾക്ക് ഇനിപ്പറയുന്ന രോഗലക്ഷണം ഉണ്ടോ?");
                 assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত লক্ষণগুলি রয়েছে?");
                 assoSympObj.put("display-ta", "பின்வரும் அறிகுறி (கள்) உங்களிடம் உள்ளதா?");
@@ -644,7 +650,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
                 finalAssoSympObj.put("display-ml", "ബന്ധപ്പെട്ട രോഗലക്ഷണങ്ങൾ");
-                finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
+                finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");
                 finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
                 finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
@@ -790,7 +796,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "প্ৰতি মাহে সময়")
                     .replace("times per year", "প্ৰতি বছৰে সময়")));
         }
-         //Malyalam Language Support...
+        //Malyalam Language Support...
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "ചോദ്യത്തിന് ഉത്തരം ലഭിച്ചില്ല")
@@ -836,7 +842,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 
-      //  alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        //  alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
