@@ -1023,4 +1023,7 @@
     <string name="answer_following_questions">ନିମ୍ନଲିଖିତ ବାଧ୍ୟତାମୂଳକ ପ୍ରଶ୍ନଗୁଡିକ, ଦୟାକରି ସେଗୁଡିକର ଉତ୍ତର ଦିଅନ୍ତୁ।</string>
     <string name="dr_specility_generalphysician">ସାଧାରଣ ଚିକିତ୍ସକ</string>
     <string name="update_hw_profile">ସଫଳତାର ସହ ଅପଡେଟ୍ ହୋଇଛି</string>
+
+    <string name="enter_valid_email">ସଠିକ୍ ଇମେଲ୍ ଠିକଣା ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="enter_valid_gender">ଲିଙ୍ଗ ପୁରୁଷ କିମ୍ବା ମହିଳା ପ୍ରବେଶ କରନ୍ତୁ |</string>
 </resources>
