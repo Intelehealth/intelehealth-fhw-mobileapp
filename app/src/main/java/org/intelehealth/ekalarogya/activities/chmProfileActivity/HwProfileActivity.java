@@ -238,23 +238,6 @@ public class HwProfileActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(HwProfileActivity.this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
                         }
-
-                        if (hw_mobile_value.getText().toString().trim().length() > 0) {
-                            if (hw_mobile_value.getText().toString().trim().length() < 10) {
-                                hw_mobile_value.requestFocus();
-                                hw_mobile_value.setError(getString(R.string.enter_10_digits));
-                                return;
-                            }
-                        }
-                        if (hw_whatsapp_value.getText().toString().trim().length() > 0) {
-                            if (hw_whatsapp_value.getText().toString().trim().length() < 10) {
-                                hw_whatsapp_value.requestFocus();
-                                hw_whatsapp_value.setError(getString(R.string.enter_10_digits));
-                                return;
-                            }
-                        }
-
-                        updateHwDetail();
                     }
                 });
 
