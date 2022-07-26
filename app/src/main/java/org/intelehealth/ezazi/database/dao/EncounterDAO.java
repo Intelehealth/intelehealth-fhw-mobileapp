@@ -484,13 +484,15 @@ public class EncounterDAO {
         }
     }
 
-    public String fiveMinutesAgo(String timeStamp) throws ParseException { // since server error : "The encounter datetime should be between the visit start and stop dates."
+    public String twoMinutesAgo(String timeStamp) throws ParseException {
+        // NOTE: Since server error -> "The encounter datetime should be between the visit start and stop dates."
 
-        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+//        long FIVE_MINS_IN_MILLIS = 2 * 60 * 1000;
+        long TWO_MINS_IN_MILLIS = 2 * 60 * 1000;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long time = df.parse(timeStamp).getTime();
 
-        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
+        return df.format(new Date(time - TWO_MINS_IN_MILLIS));
     }
 
     public String insert_VisitCompleteEncounterToDb(String visitUuid, String providerUUID) throws DAOException {
@@ -501,7 +503,7 @@ public class EncounterDAO {
         try {
             values.put("uuid", encounteruuid);
             values.put("visituuid", visitUuid);
-            values.put("encounter_time", (fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
+            values.put("encounter_time", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
             values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
             values.put("provider_uuid", providerUUID);
             values.put("sync", "false");

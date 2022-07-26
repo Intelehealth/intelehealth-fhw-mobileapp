@@ -125,13 +125,13 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         // alert -> start
         int count = activePatientModel.getAlertFlagTotal();
-        if (count > 22) {
+        if (count > 22) { // red
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.red_alert));
-        } else if (count >= 15 && count <= 22) {
+        } else if (count >= 15) { // yellow
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.yellow_alert));
-        } else if (count < 15) {
+        } else { // green
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
             holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.green_alert));
         }

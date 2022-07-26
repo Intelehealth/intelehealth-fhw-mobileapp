@@ -1304,6 +1304,49 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:text="Primary Doctor"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <TextView
+                            android:id="@+id/tvPrimaryDoctor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:drawableEnd="@drawable/ic_baseline_expand_more_24"
+                            android:gravity="center_vertical"
+                            android:hint="Select Primary Doctor"
+                            android:minHeight="@dimen/edit_box_min_height"
+                            android:padding="@dimen/common_padding"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/content_text_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:text="Secondary Doctor"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/header_text_size" />
+
+                        <TextView
+                            android:id="@+id/tvSecondaryDoctor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/common_padding"
+                            android:background="@drawable/round_corner_gray_stroke_light"
+                            android:drawableEnd="@drawable/ic_baseline_expand_more_24"
+                            android:gravity="center_vertical"
+                            android:hint="Select Secondary Doctor"
+                            android:minHeight="@dimen/edit_box_min_height"
+                            android:padding="@dimen/common_padding"
+                            android:textColor="@color/gray_6"
+                            android:textSize="@dimen/content_text_size" />
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>

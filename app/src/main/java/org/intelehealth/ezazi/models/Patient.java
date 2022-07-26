@@ -34,6 +34,9 @@ public class Patient {
     private String wifeDaughterOf;
     private String admissionDate;
     private String admissionTime;
+
+    private String primaryDoctor;
+    private String secondaryDoctor;
     /*end*/
 
     public String getUuid() {
@@ -282,5 +285,21 @@ public class Patient {
 
     public void setAlternateNo(String alternateNo) {
         this.alternateNo = alternateNo;
+    }
+
+    public String getSecondaryDoctor() {
+        return secondaryDoctor;
+    }
+
+    public void setSecondaryDoctor(String secondaryDoctor) {
+        this.secondaryDoctor = secondaryDoctor;
+    }
+
+    public String getPrimaryDoctor() {
+        return primaryDoctor;
+    }
+
+    public void setPrimaryDoctor(String primaryDoctor) {
+        this.primaryDoctor = primaryDoctor;
     }
 }

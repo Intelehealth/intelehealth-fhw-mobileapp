@@ -70,10 +70,12 @@ import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ImagesDAO;
 import org.intelehealth.ezazi.database.dao.ImagesPushDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
+import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
+import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -180,7 +182,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private RadioGroup mHospitalMaternityRadioGroup;
     private TextView mActiveLaborDiagnosedDateTextView, mActiveLaborDiagnosedTimeTextView;
     private TextView mMembraneRupturedDateTextView, mMembraneRupturedTimeTextView;
-    private TextView mRiskFactorsTextView;
+    private TextView mRiskFactorsTextView, mPrimaryDoctorTextView, mSecondaryDoctorTextView;
     private CheckBox mUnknownMembraneRupturedCheckBox;
 
     private EditText mOthersEditText, mAlternateNumberEditText, mWifeDaughterOfEditText;
@@ -192,7 +194,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private String mHospitalMaternityString = "";
     private String mActiveLaborDiagnosedDate = "", mActiveLaborDiagnosedTime = "";
     private String mMembraneRupturedDate = "", mMembraneRupturedTime = "";
-    private String mRiskFactorsString = "";
+    private String mRiskFactorsString = "", mPrimaryDoctorUUIDString = "", mSecondaryDoctorUUIDString = "";
     private List<String> mSelectedRiskFactorList = new ArrayList<String>();
 
     private String mAlternateNumberString = "", mWifeDaughterOfString = "";
@@ -201,6 +203,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
     private boolean mIsEditMode = false;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
+    private List<ProviderDTO> mProviderDoctorList = new ArrayList<ProviderDTO>();
+    private String[] mDoctorNames;
+    private List<String> mDoctorUUIDs = new ArrayList<>();
     /*end*/
 
 
@@ -228,6 +234,12 @@ public class IdentificationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*new*/
+        ProviderDAO providerDAO = new ProviderDAO();
+        try {
+            mProviderDoctorList = providerDAO.getDoctorList();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
         mOthersEditText = findViewById(R.id.identificationSc_etvOthersText);
         mAlternateNumberEditText = findViewById(R.id.identificationSc_etvalt_phone_number);
         mWifeDaughterOfEditText = findViewById(R.id.identificationSc_etvwife_daughter_of);
@@ -243,6 +255,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mMembraneRupturedDateTextView = findViewById(R.id.identificationSc_tvMembraneDate);
         mMembraneRupturedTimeTextView = findViewById(R.id.identificationSc_tvMembraneTime);
         mRiskFactorsTextView = findViewById(R.id.identificationSc_tvRiskFactors);
+        mPrimaryDoctorTextView = findViewById(R.id.tvPrimaryDoctor);
+        mSecondaryDoctorTextView = findViewById(R.id.tvSecondaryDoctor);
         mUnknownMembraneRupturedCheckBox = findViewById(R.id.identificationSc_cbUnknownMembrane);
 
         mAdmissionDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -445,6 +459,91 @@ public class IdentificationActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        mPrimaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ProviderDTO> providerDoctorList = new ArrayList<>();
+                for (int i = 0; i < mProviderDoctorList.size(); i++) {
+                    if (!mSecondaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
+                        providerDoctorList.add(mProviderDoctorList.get(i));
+                    }
+                }
+                mDoctorNames = new String[providerDoctorList.size()];
+                mDoctorUUIDs.clear();
+                int selectedId = 0;
+
+                for (int i = 0; i < providerDoctorList.size(); i++) {
+                    mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
+                    mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
+                    if (mPrimaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
+                        selectedId = i;
+                }
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(IdentificationActivity.this);
+
+                builder.setTitle("Select Primary Doctor")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setSingleChoiceItems(mDoctorNames, selectedId, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPrimaryDoctorUUIDString = mDoctorUUIDs.get(which);
+                                mPrimaryDoctorTextView.setText(mDoctorNames[which]);
+                            }
+                        });
+                builder.create().show();
+            }
+        });
+
+        mSecondaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mPrimaryDoctorUUIDString.isEmpty()) {
+                    Toast.makeText(context, "Please select the primary doctor", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<ProviderDTO> providerDoctorList = new ArrayList<>();
+                for (int i = 0; i < mProviderDoctorList.size(); i++) {
+                    if (!mPrimaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
+                        providerDoctorList.add(mProviderDoctorList.get(i));
+                    }
+                }
+                mDoctorNames = new String[providerDoctorList.size()];
+                mDoctorUUIDs.clear();
+                int selectedId = 0;
+                for (int i = 0; i < providerDoctorList.size(); i++) {
+                    mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
+                    mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
+                    if (mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
+                        selectedId = i;
+                }
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(IdentificationActivity.this);
+
+                builder.setTitle("Select Secondary Doctor")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setSingleChoiceItems(mDoctorNames, selectedId, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mSecondaryDoctorUUIDString = mDoctorUUIDs.get(which);
+                                mSecondaryDoctorTextView.setText(mDoctorNames[which]);
+                            }
+                        });
+                builder.create().show();
+            }
+        });
+
         mLaborOnsetRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -1180,7 +1279,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setError(null);
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-              //  mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                //  mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                 mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 // Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
@@ -1251,7 +1350,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-       // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1582,6 +1681,20 @@ public class IdentificationActivity extends AppCompatActivity {
                 mHospitalMaternityString = mOthersString;
             }
         });
+
+        //primaryDoctor
+        Log.v(TAG, "getPrimaryDoctor"+patient.getPrimaryDoctor());
+        Log.v(TAG, "getPrimaryDoctor"+patient.getPrimaryDoctor());
+        if (patient.getPrimaryDoctor() != null) {
+            mPrimaryDoctorUUIDString = patient.getPrimaryDoctor().split("@#@")[0];
+            mPrimaryDoctorTextView.setText(patient.getPrimaryDoctor().split("@#@")[1]);
+        }
+
+        //secondaryDoctor
+        if (patient.getPrimaryDoctor() != null) {
+            mSecondaryDoctorUUIDString = patient.getSecondaryDoctor().split("@#@")[0];
+            mSecondaryDoctorTextView.setText(patient.getSecondaryDoctor().split("@#@")[1]);
+        }
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1797,6 +1910,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("Hospital_Maternity")) {
                     patient1.setHospitalMaternity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PrimaryDoctor")) {
+                    patient1.setPrimaryDoctor(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }if (name.equalsIgnoreCase("SecondaryDoctor")) {
+                    patient1.setSecondaryDoctor(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 /*end*/
 
@@ -2089,6 +2207,14 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.hospital_matermnity_val_txt), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (mPrimaryDoctorUUIDString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.primary_doct_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }if (mSecondaryDoctorUUIDString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.seconday_doct_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
         /*end*/
         if (cancel) {
             focusView.requestFocus();
@@ -2225,6 +2351,22 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Hospital_Maternity"));
             patientAttributesDTO.setValue(StringUtils.getValue(mHospitalMaternityString));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //PrimaryDoctor
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryDoctor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString)+"@#@"+mPrimaryDoctorTextView.getText());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //SecondaryDoctor
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SecondaryDoctor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString)+"@#@"+mSecondaryDoctorTextView.getText());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             /*end*/
@@ -2565,6 +2707,14 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.hospital_matermnity_val_txt), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (mPrimaryDoctorUUIDString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.primary_doct_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }if (mSecondaryDoctorUUIDString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.seconday_doct_val_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
         /*end*/
 
         if (cancel) {
@@ -2740,6 +2890,23 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Hospital_Maternity"));
             patientAttributesDTO.setValue(StringUtils.getValue(mHospitalMaternityString));
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            //PrimaryDoctor
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryDoctor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString)+"@#@"+mPrimaryDoctorTextView.getText());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //SecondaryDoctor
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SecondaryDoctor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString)+"@#@"+mSecondaryDoctorTextView.getText());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
 
             /*end*/
 

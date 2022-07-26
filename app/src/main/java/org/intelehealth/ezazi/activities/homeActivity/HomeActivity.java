@@ -84,12 +84,16 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.PatientsDAO;
+import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.ActivePatientModel;
 import org.intelehealth.ezazi.models.CheckAppUpdateRes;
 import org.intelehealth.ezazi.models.DownloadMindMapRes;
+import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
@@ -190,6 +194,8 @@ public class HomeActivity extends AppCompatActivity {
     String encounterUUID = "";
     ObsDAO obsDAO = new ObsDAO();
     List<ObsDTO> obsDTOList = null;
+
+    private TextView mEndShiftTextView;
 
     /*eZazi End*/
 
@@ -328,6 +334,8 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         /*NEW*/
         mActiveVisitsRecyclerView = findViewById(R.id.rcv_ActiveVisits_homesc);
+        mEndShiftTextView = findViewById(R.id.tvEndShift);
+        //mActiveVisitsRecyclerView = findViewById(R.id.rcvActiveVisits);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mActiveVisitsRecyclerView.setLayoutManager(reLayoutManager);
         /*mActiveVisitsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -427,6 +435,58 @@ public class HomeActivity extends AppCompatActivity {
                     syncUtils.syncForeground("home");
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        mEndShiftTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
+                    Logger.logV(TAG, "myCreatorUUID - " + myCreatorUUID);
+                    final List<VisitDTO> visitDTOList = new VisitsDAO().getAllActiveVisitsForMe(myCreatorUUID);
+                    String[] patients = new String[visitDTOList.size()];
+                    for (int i = 0; i < visitDTOList.size(); i++) {
+                        String visitUid = visitDTOList.get(i).getUuid();
+                        String creatorUuid = visitDTOList.get(i).getCreatoruuid();
+                        Logger.logV(TAG, "visitUid - " + visitUid);
+                        Logger.logV(TAG, "creatorUuid - " + creatorUuid);
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(i).getPatientuuid());
+                        String patientNameString = patientNameInfo.getOpenMRSID() + "\n" + patientNameInfo.getName();
+                        Logger.logV(TAG, "patientNameString - " + patientNameString);
+                        patients[i] = patientNameString;
+                    }
+                    if (patients.length == 0) {
+                        Toast.makeText(context, getString(R.string.no_more_visits_to_assign), Toast.LENGTH_SHORT).show();
+                        showLogoutAlert();
+                        return;
+                    }
+                    List<String> visitUUIDList = new ArrayList<>();
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(HomeActivity.this);
+
+                    builder.setTitle("Select patients to assign any nurse!")
+                            .setPositiveButton("Proceed!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    showNurseAssignDialog(visitUUIDList);
+                                }
+                            })
+                            .setMultiChoiceItems(patients, null, new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                    if (isChecked) {
+                                        visitUUIDList.add(visitDTOList.get(which).getUuid());
+                                    } else {
+                                        visitUUIDList.remove(visitDTOList.get(which).getUuid());
+                                    }
+                                }
+                            });
+                    builder.create().show();
+                } catch (DAOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -633,6 +693,61 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private String mLastSelectedNurseUUID = "";
+    private boolean mPendingForLogout = false;
+
+    private void showNurseAssignDialog(List<String> visitUUIDList) {
+        try {
+            ProviderDAO providerDAO = new ProviderDAO();
+            String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
+            List<ProviderDTO> mProviderNurseList = providerDAO.getNurseList();
+            String[] nurseNames = new String[mProviderNurseList.size() - 1];
+            String[] nurseUUID = new String[mProviderNurseList.size() - 1];
+
+            int count = 0;
+            for (int i = 0; i < mProviderNurseList.size(); i++) {
+                if (!mProviderNurseList.get(i).getUserUuid().equals(myCreatorUUID)) {
+                    nurseNames[count] = mProviderNurseList.get(i).getGivenName() + " " + mProviderNurseList.get(i).getFamilyName();
+                    nurseUUID[count] = mProviderNurseList.get(i).getUserUuid();
+                    count++;
+                }
+
+            }
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(HomeActivity.this);
+
+            builder.setTitle("Select nurse to assign!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                for (int j = 0; j < visitUUIDList.size(); j++) {
+                                    visitsDAO.updateVisitCreator(visitUUIDList.get(j), mLastSelectedNurseUUID);
+                                }
+                                mPendingForLogout = true;
+                                findViewById(R.id.tvSyncMenu).performClick();
+                                Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
+
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    })
+                    .setSingleChoiceItems(nurseNames, 0, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mLastSelectedNurseUUID = nurseUUID[which];
+
+                        }
+                    });
+            builder.create().show();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadVisits() {
 
         if (sessionManager.isPullSyncFinished()) {
@@ -713,10 +828,10 @@ public class HomeActivity extends AppCompatActivity {
                     if (count > 22) { // Red
                         activePatientModels.get(j).setVisibilityOrder(3);
                         filteractivePatient.get(j).setVisibilityOrder(3);
-                    } else if (count >= 15 && count <= 22) { // Yellow
+                    } else if (count >= 15) { // Yellow
                         activePatientModels.get(j).setVisibilityOrder(2);
                         filteractivePatient.get(j).setVisibilityOrder(2);
-                    } else if (count < 15) { // Green
+                    } else { // Green
                         activePatientModels.get(j).setVisibilityOrder(1);
                         filteractivePatient.get(j).setVisibilityOrder(1);
                     }
@@ -1207,25 +1322,7 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.logoutOption_homesc:
 //                manageBackup(true, false);
-
-                MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-                alertdialogBuilder.setMessage(R.string.sure_to_logout);
-                alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        logout();
-                    }
-                });
-                alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-                AlertDialog alertDialog = alertdialogBuilder.create();
-                alertDialog.show();
-                Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive");
-                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negitive");
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                showLogoutAlert();
 
                 return true;
 
@@ -1256,6 +1353,26 @@ public class HomeActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showLogoutAlert() {
+
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.sure_to_logout);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                logout();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     /**
@@ -1308,6 +1425,10 @@ public class HomeActivity extends AppCompatActivity {
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        if (CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            context.stopService(serviceIntent);
+        }
     }
 
 
@@ -1613,6 +1734,11 @@ public class HomeActivity extends AppCompatActivity {
                 syncAnimator.cancel();
                 syncAnimator.end();
             }
+
+            if (mPendingForLogout) {
+                mPendingForLogout = false;
+                showLogoutAlert();
+            }
         }
     };
 
@@ -1637,6 +1763,7 @@ public class HomeActivity extends AppCompatActivity {
                 }, 10000);
             }
         }
+
 
     }
 
@@ -2027,7 +2154,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Extract data included in the Intent
-          recreate();
+            recreate();
         }
     };
 

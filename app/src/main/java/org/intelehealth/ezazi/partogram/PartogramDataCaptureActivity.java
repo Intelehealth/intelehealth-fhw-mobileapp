@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.Epartogram;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
@@ -35,6 +37,7 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -106,17 +109,46 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         });
 
         mEpartogramTextView.setOnClickListener(v -> {
-            int dpi = context.getResources().getConfiguration().densityDpi;
-            Log.i("Timeline", "Screen size in DP: " + dpi);
-            if(dpi > 600) {
+
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+            int widthPixels = metrics.widthPixels;
+            int heightPixels = metrics.heightPixels;
+
+            float scaleFactor = metrics.density;
+
+            float widthDp = widthPixels / scaleFactor;
+            float heightDp = heightPixels / scaleFactor;
+
+            float smallestWidth = Math.min(widthDp, heightDp);
+            Log.v("epartog", "smallest width: " + smallestWidth);
+
+            if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
+                //Device is a 8" tablet
+                // Call webview here...
                 Intent intent = new Intent(this, Epartogram.class);
                 intent.putExtra("patientuuid", mPatientUuid);
                 intent.putExtra("visituuid", mVisitUUID);
                 startActivity(intent);
             }
             else {
-                Toast.makeText(context, R.string.this_option_available_tablet_device, Toast.LENGTH_SHORT).show();
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(PartogramDataCaptureActivity.this, "",
+                        context.getString(R.string.this_option_available_tablet_device) /*+ ": " + dpi*/, context.getString(R.string.ok));
             }
+
+//            int dpi = context.getResources().getConfiguration().densityDpi;
+//            Log.i("Timeline", "Screen size in DP: " + dpi);
+//            if(dpi > 600) {
+//                Intent intent = new Intent(this, Epartogram.class);
+//                intent.putExtra("patientuuid", mPatientUuid);
+//                intent.putExtra("visituuid", mVisitUUID);
+//                startActivity(intent);
+//            }
+//            else {
+//                Toast.makeText(context, R.string.this_option_available_tablet_device, Toast.LENGTH_SHORT).show();
+//            }
 
         });
 

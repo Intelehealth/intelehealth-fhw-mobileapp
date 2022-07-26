@@ -113,4 +113,18 @@ public class UuidDictionary {
     // BIRTH OUTCOME
     public static final String BIRTH_OUTCOME = "23601d71-50e6-483f-968d-aeef3031346d";
 
+    // Refer Obs
+    public static final String REFER_TYPE = "9414cc17-1f97-4a27-8066-17591c11e513";
+    public static final String REFER_HOSPITAL = "0092c193-8025-4ede-8aab-8a2db731da51";
+    public static final String REFER_DR_NAME = "d9625aed-c5ee-4d5c-92b1-ee3782e31ef3";
+    public static final String REFER_NOTE = "9965063f-ec0c-4a58-bfba-5ca4ac53129c";
+
+    // Ending stage 2 capture additional advice
+    public static final String BIRTH_WEIGHT = "debdcf33-e565-466a-aca1-6d98a8441553";
+    public static final String APGAR_1_MIN = "8f218b75-2576-45a3-b6e6-1429dede71bd";
+    public static final String APGAR_5_MIN = "f3925225-f792-4a6e-b890-5f6fb3941c1d";
+    public static final String SEX = "7f6ceddb-3a9b-4917-b783-c174b95ea7d4";
+    public static final String BABY_STATUS = "4a1edd41-ffda-4da8-93e0-cc7af502b80e";
+    public static final String MOTHER_STATUS = "69a33fc0-8bc2-4828-80d2-7e55dedd89f3";
+
 }
