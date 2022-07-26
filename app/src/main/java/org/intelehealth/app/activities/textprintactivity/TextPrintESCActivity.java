@@ -1,23 +1,14 @@
 package org.intelehealth.app.activities.textprintactivity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,10 +16,8 @@ import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -38,6 +27,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
@@ -64,14 +57,12 @@ import com.rt.printerlibrary.setting.CommonSetting;
 import com.rt.printerlibrary.setting.TextSetting;
 import com.rt.printerlibrary.utils.BitmapConvertUtil;
 import com.rt.printerlibrary.utils.FuncUtils;
-import com.rt.printerlibrary.utils.PrintListener;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.utilities.BaseEnum;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.TimeRecordUtils;
 
 import java.io.IOException;
@@ -108,11 +99,13 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private PrinterFactory printerFactory;
     public static PrinterInterface curPrinterInterface = null;
     Toolbar mToolbar;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_print_escactivity);
+        sessionManager = new SessionManager(getBaseContext());
         initView();
         addListener();
         init();
@@ -219,7 +212,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         rtPrinter = printerFactory.create();
         PrinterObserverManager.getInstance().add(this);
 
-        if(curPrinterInterface != null) {
+        if (curPrinterInterface != null) {
             // to maintain the bluetooth pairing throughout the app.
             rtPrinter.setPrinterInterface(curPrinterInterface);
             tv_device_selected.setText(curPrinterInterface.getConfigObject().toString());
@@ -247,7 +240,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         Log.e("pres:", "prescFinall:" + intent.getStringExtra("sms_prescripton") + intent.getStringExtra("doctorDetails"));
 
         String fontFamilyFile = "";
-        if (font_family != null && font_family != null) {
+        if (font_family != null) {
             if (font_family.toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "fonts/Youthness.ttf";
             } else if (font_family.toLowerCase().equalsIgnoreCase("asem")) {
@@ -273,7 +266,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         drSign_textview.layout(0, 0, drSign_textview.getMeasuredWidth(), drSign_textview.getMeasuredHeight());
         mBitmap = drSign_textview.getDrawingCache();
 
-        pres_textview.setText(prescData);
+        pres_textview.setText(translatePrescription(prescData));
         drDetails_textview.setText(doctorDetails);
         Log.e("pres:", "prescFinal:" + pres_textview.getText().toString() + drSign_textview.getText().toString() +
                 drDetails_textview.getText().toString());
@@ -381,7 +374,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                     escCmd.append(escCmd.getLFCRCmd());
 
                     Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
-                    if(rtPrinter.getPrinterInterface() != null) {
+                    if (rtPrinter.getPrinterInterface() != null) {
                         // If without selecting Bluetooth user click Print button crash happens so added this condition.
                         rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
 
@@ -402,8 +395,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(TextPrintESCActivity.this, getResources().getString
                                 (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
                     }
@@ -692,11 +684,10 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             public void run() {
                 pb_connect.setVisibility(View.GONE);
                 // disconnect and connect button color change.
-                if(state == CommonEnum.CONNECT_STATE_SUCCESS) {
+                if (state == CommonEnum.CONNECT_STATE_SUCCESS) {
                     Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
                             + getString(R.string._main_connected), Toast.LENGTH_SHORT).show();
-                }
-                else if(state == CommonEnum.CONNECT_STATE_INTERRUPTED){
+                } else if (state == CommonEnum.CONNECT_STATE_INTERRUPTED) {
                     if (printerInterface != null && printerInterface.getConfigObject() != null) {
                         Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
                                         + getString(R.string._main_disconnect),
@@ -760,11 +751,104 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private String translatePrescription(String text) {
+        // Translate longer strings first and after that we should translate shorter strings.
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            text = text
+                    .replace("Twice daily before meals", "जेवण करण्यापूर्वी दिवसातून दोनदा")
+                    .replace("Twice daily after meals", "जेवणानंतर दिवसातून दोनदा")
+                    .replace("Twice daily with meals", "जेवणासह दिवसातून दोनदा")
+                    .replace("Once daily at bedtime", "दिवसातून एकदा झोपताना")
+                    .replace("Once daily in the morning", "दररोज सकाळी एकदा")
+                    .replace("Once daily in the evening", "दररोज संध्याकाळी एकदा")
+                    .replace("Thrice daily after meals", "जेवणानंतर दिवसातून तीन वेळा")
+                    .replace("Thrice daily with meals", "जेवणासह दिवसातून तीन वेळा")
+                    .replace("Thrice daily before meals", "जेवण करण्यापूर्वी दिवसातून तीन वेळा")
+                    .replace("Four times daily before meals and at bedtime", "जेवण करण्यापूर्वी आणि झोपेच्या वेळी दिवसातून चार वेळा")
+                    .replace("Four times daily after meals and at bedtime", "दिवसातून चार वेळा जेवणानंतर आणि झोपेच्या वेळी")
+                    .replace("Every two hours", "दर दोन तासांनी")
+                    .replace("Every 30 min", "दर ३० मिनिटांनी")
+                    .replace("Every four hours", "दर चार तासांनी")
+                    .replace("Every five hours", "दर पाच तासांनी")
+                    .replace("Every six hours", "दर सहा तासांनी")
+                    .replace("Every twelve hours", "दर बारा तासांनी")
+                    .replace("Every eight hours", "दर आठ (८) तासांनी")
+                    .replace("Every twenty-four hours", "दर चोवीस (२४) तासांनी")
+                    .replace("Every thirty-six hours", "दर छत्तीस (३६) तासांनी")
+                    .replace("Every forty-eight hours", "प्रत्येक अठ्ठेचाळीस (४८) तासांनी")
+                    .replace("Every seventy-two hours", "दर बहात्तर (७२) तासांनी")
+                    .replace("Every Monday Wednesday and Friday", "दर सोमवारी बुधवार आणि शुक्रवारी")
+                    .replace("HALF HR BEFORE BREAKFAST", "नाश्ता करण्यापूर्वी अर्धा तास आधी")
+                    .replace("15MIN BEFORE LUNCH", "दुपारच्या जेवणाच्या 15 मिनिटे आधी")
+                    .replace("HALF HR BEFORE DINNER", "रात्रीच्या जेवणाच्या अर्ध्या तास आधी")
+                    .replace("15MIN BEFORE DINNER", "रात्रीच्या जेवणापूर्वी १५ मिनिटे आधी")
+                    .replace("As and when required", "जेव्हा आवश्यक असेल तेव्हा")
+                    .replace("Continue until further consultation", "पुढील सल्लामसलत होईपर्यंत सुरू ठेवा")
+                    .replace("DO NOT SMOKE BIDIS OR CIGARETTES", "बिडी किंवा सिगारेट ओढू नका")
+                    .replace("DO NOT DRINK ALCOHOL", "दारू  पिऊ नका")
+                    .replace("DO NOT EAT STALE FOODS AND FERMENTED RICE", "शिळे अन्न आणि आंबवलेला भात/पदार्थ खाऊ नका")
+                    .replace("DO NOT EAT RAW ONION, TOMATO, LETTUCE, OR LENTIL", "कच्चा कांदा, टोमॅटो, लेट्यूस किंवा मसूर खाऊ नका")
+                    .replace("DO NOT SLEEP AT NOON", "दुपारच्या वेळी झोपू नका")
+                    .replace("DO NOT WALK BAREFOOT", "अनवाणी/ चप्पल- बूट शिवाय चालु नका")
+                    .replace("FOLLOW DIABETIC FOOD CHART", "डायबेटिस साठीचा आहार - पथ्य पाळा")
+                    .replace("DO NOT EAT RAW SALT", "कच्चे मीठ खाऊ नका")
+                    .replace("DO NOT BATH IN PONDS", "तलावात आंघोळ करू नका")
+                    .replace("DO NOT CHEW TOBACCO", "तंबाखू खाऊ  नका")
+                    .replace("EAT HOT MEALS", "गरम जेवण खा")
+                    .replace("EAT FOODS COOKED WITHOUT SALT", "मीठाशिवाय शिजवलेले पदार्थ खा")
+                    .replace("LOWER SODIUM INTAKE", "सोडियम सेवन कमी करा/ जेवणात मीठ कमी करा")
+                    .replace("STAY NEAT AND CLEAN", "नीटनेटके आणि स्वच्छ रहा")
+                    .replace("DO NOT CLOSE ALL THE DOORS AND WINDOWS WHILE SLEEPING", "झोपताना सर्व दरवाजे आणि खिडक्या बंद करू नका")
+                    .replace("DRINK LESS WATER", "पाणी कमी प्या")
+                    .replace("DRINK LOTS OF WATER", "भरपूर पाणी प्या")
+                    .replace("DRINK COOLED BOILED DRINKING WATER", "उकळून थंड केलेले पिण्याचे पाणी प्या")
+                    .replace("WEAR DRY CLOTHES AFTER BATH", "अंघोळीनंतर कोरडे कपडे घाला")
+                    .replace("DO NOT DO HEAVY WORK", "जड काम करू नका")
+                    .replace("DO NOT BRUSH YOUR TEETH WITH GURAKHU", "गुरुखुने दात घासू नका")
+                    .replace("EAT PLENTY OF GREEN LEAF VEGETABLES AND FRUITS", "भरपूर हिरव्या पालेभाज्या आणि फळे खा")
+                    .replace("AVOID OILY AND SPICY FOODS", "तेलकट आणि मसालेदार पदार्थ टाळा")
+                    .replace("EXERCISE DAILY", "रोज व्यायाम करा")
+                    .replace("REVIEW WITH DIAGNOSTIC REPORT", "निदानविषयक अहवालासह पुनरावलोकन")
+                    .replace("GURGLE WITH LUKEWARM SALINE WATER", "कोमट खारट पाण्याने गुळणे करा")
+                    .replace("DO NOT STUDY IN LOW LIGHT", "कमी प्रकाशात अभ्यास करू नका")
+                    .replace("Watch: Wash your hands regularly to protect yourself", "पहा: स्वतःचे संरक्षण करण्यासाठी आपले हात नियमितपणे धुवा")
+                    .replace("Watch: Responsible behavior may save you", "पहा: जबाबदार वागणूक तुम्हाला वाचवू शकते")
+                    .replace("Refer Patient", "पेशंटला रेफर करा")
+                    .replace("SERVICES OTHER", "इतर सेवा")
+                    .replace("OTHER SERVICES", "इतर सेवा")
+                    .replace("MEDICAL EXAMINATION, ROUTINE", "वैद्यकीय परीक्षा, दिनचर्या")
+                    .replace("ROUTINE, MEDICAL EXAMINATION", "दिनचर्या, वैद्यकीय परीक्षा")
+                    .replace("CLEAN AND DRESSING", "स्वच्छ करा आणि मलमपट्टी करा ")
+                    .replace("WOUND DRESSING", "जखमेच्या मलमपट्टी")
+                    .replace("CESAREAN SECTION", "सिझेरियन विभाग")
+                    .replace("C-SECTION", "C-SECTION सिझेरियन विभाग")
+                    .replace("FEMALE STERILIZATION", "महिला नसबंदी")
+                    .replace("HYSTERECTOMY", "गर्भपिशवी काढण्याची शस्त्रक्रिया /ओपेशन")
+            ;
+
+            text = text
+                    .replace("Twice daily", "दिवसातून दोनदा")
+                    .replace("Once daily", "दररोज एकदा")
+                    .replace("Thrice daily", "दिवसातून तीनदा")
+                    .replace("Four times daily", "दिवसातून चार वेळा")
+                    .replace("One time", "एकावेळी")
+                    .replace("AFTER BREAKFAST", "न्याहारी नंतर")
+                    .replace("AFTER LUNCH", "जेवणानंतर")
+                    .replace("EVENING", "संध्याकाळ")
+                    .replace("AFTER DINNER", "रात्रीच्या जेवणा नंतर")
+                    .replace("AT BEDTIME", "झोपण्याच्या वेळी")
+                    .replace("DO NOT EAT RAW ONION", "कच्चा कांदा खाऊ नका")
+                    .replace("DIET", "आहार")
+            ;
+        }
+
+        return text;
+    }
 }
