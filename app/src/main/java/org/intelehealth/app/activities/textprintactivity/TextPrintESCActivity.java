@@ -99,7 +99,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private PrinterFactory printerFactory;
     public static PrinterInterface curPrinterInterface = null;
     Toolbar mToolbar;
-    private SessionManager sessionManager;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
