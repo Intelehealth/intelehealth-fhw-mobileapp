@@ -838,5 +838,8 @@
     <string name="baby_status">बाळाची स्थिती</string>
     <string name="mother_status">आईची स्थिती</string>
     <string name="additional_information">अतिरिक्त माहिती</string>
+    <string name="end_shift">End Shift</string>
+    <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
+    <string name="patient_assigned_successfully">Patient assigned successfully!</string>
 
 </resources>

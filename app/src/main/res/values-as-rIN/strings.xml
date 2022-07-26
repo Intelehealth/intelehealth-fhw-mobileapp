@@ -658,5 +658,8 @@
     <string name="add_patient_txt">Add Patient</string>
     <string name="primary_doct_val_txt">Please select primary Doctor</string>
     <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
+    <string name="end_shift">End Shift</string>
+    <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
+    <string name="patient_assigned_successfully">Patient assigned successfully!</string>
 
 </resources>

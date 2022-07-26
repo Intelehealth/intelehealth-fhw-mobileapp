@@ -878,6 +878,9 @@
     <string name="baby_status">Baby Status</string>
     <string name="mother_status">Mother Status</string>
     <string name="additional_information">Additional Information</string>
+    <string name="end_shift">End Shift</string>
+    <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
+    <string name="patient_assigned_successfully">Patient assigned successfully!</string>
 
 
 </resources>

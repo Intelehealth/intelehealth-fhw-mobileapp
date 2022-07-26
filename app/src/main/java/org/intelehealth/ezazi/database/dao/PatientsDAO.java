@@ -299,6 +299,33 @@ public class PatientsDAO {
         return listPatientNames;
     }
 
+    public FamilyMemberRes getPatientNameInfo(String patientuuid) throws DAOException {
+
+        FamilyMemberRes familyMemberRes = new FamilyMemberRes();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+
+//                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+        }
+        return familyMemberRes;
+    }
+
     public String getAttributesName(String attributeuuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();

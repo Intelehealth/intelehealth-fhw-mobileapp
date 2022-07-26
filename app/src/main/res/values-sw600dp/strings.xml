@@ -37,6 +37,9 @@
     <string name="select_birth_outcome">Select Birth Outcome</string>
     <string name="primary_doct_val_txt">Please select primary Doctor</string>
     <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
+    <string name="end_shift">End Shift</string>
+    <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
+    <string name="patient_assigned_successfully">Patient assigned successfully!</string>
     <string name="birth_weight">Birth Weight</string>
     <string name="apgar_1min">Apgar at 1min</string>
     <string name="apgar_5min">Apgar at 5min</string>

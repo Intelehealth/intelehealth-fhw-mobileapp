@@ -78,15 +78,34 @@
 
             android:paddingVertical="@dimen/content_vertical_padding">
 
-            <TextView
-                android:id="@+id/tvActiveVisitLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <RelativeLayout
                 android:paddingHorizontal="@dimen/content_horizontal_padding"
-                android:text="@string/active_visits"
-                android:textColor="@color/gray_7"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvActiveVisitLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/active_visits"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/gray_7"
+                    android:textSize="@dimen/header_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/tvEndShift"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/end_shift"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:padding="@dimen/common_padding"
+                    android:background="@drawable/round_corner_primary"
+                    android:textSize="@dimen/header_text_size"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -108,7 +127,6 @@
                     android:id="@+id/etvSearchVisit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/body_element_horizontal_margin"
                     android:background="@drawable/round_corner_gray_stroke_light"
                     android:drawableStart="@drawable/ic_search_24dp"
                     android:drawablePadding="@dimen/drawable_padding"
