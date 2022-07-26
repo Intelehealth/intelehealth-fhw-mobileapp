@@ -17,7 +17,7 @@
         tools:showIn="@layout/activity_home">
 
         <LinearLayout
-            android:id="@+id/llFooterLayout"
+            android:id="@+id/ll_FooterLayout_homesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -27,7 +27,7 @@
             android:weightSum="3">
 
             <TextView
-                android:id="@+id/tvPatientsMenu"
+                android:id="@+id/tv_PatientsMenu_homesc"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -35,13 +35,14 @@
                 android:gravity="center"
                 android:padding="@dimen/common_padding"
                 android:text="@string/add_patient_txt"
+                android:contentDescription="@string/add_patient_txt"
                 android:textColor="@color/white"
                 android:textSize="@dimen/header_text_size_1"
                 android:textStyle="bold"
                 app:drawableTopCompat="@drawable/ic_baseline_person_24" />
 
             <TextView
-                android:id="@+id/tvHelpMenu"
+                android:id="@+id/tv_HelpMenu_homesc"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -49,13 +50,14 @@
                 android:gravity="center"
                 android:padding="@dimen/common_padding"
                 android:text="@string/Whatsapp_Help_Cardview"
+                android:contentDescription="@string/Whatsapp_Help_Cardview"
                 android:textColor="@color/white"
                 android:textSize="@dimen/header_text_size_1"
                 android:textStyle="bold"
                 app:drawableTopCompat="@drawable/ic_baseline_help_24" />
 
             <TextView
-                android:id="@+id/tvSyncMenu"
+                android:id="@+id/tv_SyncMenu_homesc"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -63,6 +65,7 @@
                 android:gravity="center"
                 android:padding="@dimen/common_padding"
                 android:text="@string/sync"
+                android:contentDescription="@string/sync"
                 android:textColor="@color/white"
                 android:textSize="@dimen/header_text_size_1"
                 android:textStyle="bold"
@@ -70,16 +73,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llBodyContent"
+            android:id="@+id/ll_BodyContent_homesc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/llFooterLayout"
+            android:layout_above="@+id/ll_FooterLayout_homesc"
             android:orientation="vertical"
 
             android:paddingVertical="@dimen/content_vertical_padding">
 
             <TextView
-                android:id="@+id/tvActiveVisitLabel"
+                android:id="@+id/tv_ActiveVisitLabel_homesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/content_horizontal_padding"
@@ -95,7 +98,7 @@
                 android:paddingHorizontal="@dimen/content_horizontal_padding">
 
                 <ImageView
-                    android:id="@+id/ivFilterAction"
+                    android:id="@+id/iv_FilterAction_homesc"
                     android:layout_width="@dimen/button_min_height"
                     android:layout_height="@dimen/button_min_height"
                     android:layout_alignParentEnd="true"
@@ -105,12 +108,13 @@
                     android:src="@drawable/ic_baseline_filter_alt_24" />
 
                 <EditText
-                    android:id="@+id/etvSearchVisit"
+                    android:id="@+id/etv_SearchVisit_homesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/body_element_horizontal_margin"
-                    android:layout_toStartOf="@+id/ivFilterAction"
+                    android:layout_toStartOf="@+id/iv_FilterAction_homesc"
                     android:background="@drawable/round_corner_gray_stroke_light"
+                    android:contentDescription="@string/search_visits_hint"
                     android:drawableStart="@drawable/ic_search_24dp"
                     android:drawablePadding="@dimen/drawable_padding"
                     android:hint="@string/search_visits_hint"
@@ -122,7 +126,7 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvActiveVisits"
+                android:id="@+id/rcv_ActiveVisits_homesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/content_horizontal_padding_1"
@@ -132,7 +136,7 @@
                 tools:listitem="@layout/list_item_active_patient" />
 
             <TextView
-                android:id="@+id/tvEmpty"
+                android:id="@+id/tv_Empty_homesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -155,7 +159,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_homesc"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/newPrimaryColor"

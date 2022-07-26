@@ -71,7 +71,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
-        recyclerView = findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.today_patient_recycler_view);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         if (sessionManager.isPullSyncFinished()) {
@@ -80,7 +80,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             firstQuery();
         }
 
-        findViewById(R.id.new_patient).setVisibility(View.GONE);
+        findViewById(R.id.new_patient_SearchPsc).setVisibility(View.GONE);
     }
 
     @Override

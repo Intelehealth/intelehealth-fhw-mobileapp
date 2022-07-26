@@ -8,12 +8,12 @@
         tools:context="com.myhexaville.androidwebrtc.com.shivam.androidwebrtc.tutorial.MediaStreamActivity">
 
         <FrameLayout
-            android:id="@+id/incoming_surface_view_frame"
+            android:id="@+id/incoming_surface_view_frame_vcallSc"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <org.webrtc.SurfaceViewRenderer
-                android:id="@+id/incoming_surface_view"
+                android:id="@+id/incoming_surface_view_vcallSc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -28,7 +28,7 @@
 
 
         <FrameLayout
-            android:id="@+id/self_surface_view_frame"
+            android:id="@+id/self_surface_view_frame_vcallSc"
             android:layout_width="156dip"
             android:layout_height="156dip"
             android:layout_alignParentEnd="true"
@@ -37,7 +37,7 @@
             android:background="@color/colorPrimaryDark">
 
             <org.webrtc.SurfaceViewRenderer
-                android:id="@+id/self_surface_view"
+                android:id="@+id/self_surface_view_vcallSc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -64,7 +64,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/audio_imv"
+                    android:id="@+id/audio_imv_vcallSc"
                     android:layout_width="64dip"
                     android:layout_height="64dip"
                     android:layout_centerInParent="true"
@@ -81,7 +81,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/call_end_imv"
+                    android:id="@+id/call_end_imv_vcallSc"
                     android:layout_width="64dip"
                     android:layout_height="64dip"
                     android:layout_centerInParent="true"
@@ -98,7 +98,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/video_imv"
+                    android:id="@+id/video_imv_vcallSc"
                     android:layout_width="64dip"
                     android:layout_height="64dip"
                     android:layout_centerInParent="true"
@@ -115,7 +115,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/flip_imv"
+                    android:id="@+id/flip_imv_vcallSc"
                     android:layout_width="64dip"
                     android:layout_height="64dip"
                     android:layout_centerInParent="true"
@@ -129,7 +129,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/status_tv"
+            android:id="@+id/status_tv_vcallSc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -138,7 +138,7 @@
             android:textStyle="bold" />
 
         <RelativeLayout
-            android:id="@+id/calling_layout"
+            android:id="@+id/calling_layout_vcallSc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -146,7 +146,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/caller_name_tv"
+                android:id="@+id/caller_name_tv_vcallSc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -157,10 +157,10 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/calling_hints_tv"
+                android:id="@+id/calling_hints_tv_vcallSc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/caller_name_tv"
+                android:layout_below="@+id/caller_name_tv_vcallSc"
                 android:layout_centerHorizontal="true"
                 android:text="Calling"
                 android:textColor="@color/gray_3"
@@ -178,7 +178,7 @@
                 app:rb_scale="6">
 
                 <ImageView
-                    android:id="@+id/centerImage"
+                    android:id="@+id/centerImage_vcallSc"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_centerInParent="true"
@@ -200,7 +200,7 @@
                     android:layout_weight="1">
 
                     <ImageView
-                        android:id="@+id/in_call_reject_imv"
+                        android:id="@+id/in_call_reject_imv_vcallSc"
                         android:layout_width="70dip"
                         android:layout_height="70dip"
                         android:layout_centerInParent="true"
@@ -212,7 +212,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/in_call_reject_imv"
+                        android:layout_below="@+id/in_call_reject_imv_vcallSc"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dip"
                         android:text="Decline"
@@ -228,7 +228,7 @@
                     android:layout_weight="1">
 
                     <ImageView
-                        android:id="@+id/in_call_accept_imv"
+                        android:id="@+id/in_call_accept_imv_vcallSc"
                         android:layout_width="70dip"
                         android:layout_height="70dip"
                         android:layout_centerInParent="true"
@@ -240,7 +240,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/in_call_accept_imv"
+                        android:layout_below="@+id/in_call_accept_imv_vcallSc"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dip"
                         android:text="Accept"

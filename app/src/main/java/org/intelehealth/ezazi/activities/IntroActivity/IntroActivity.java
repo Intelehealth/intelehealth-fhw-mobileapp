@@ -91,10 +91,10 @@ public class IntroActivity extends AppCompatActivity {
 
         BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        viewPager = (ViewPager) findViewById(R.id.view_pager_intro);
+        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots_intro);
+        btnSkip = (Button) findViewById(R.id.btn_skip_intro);
+        btnNext = (Button) findViewById(R.id.btn_next_intro);
 
         layouts = new int[]{
                 R.layout.welcome_slide1,
@@ -219,13 +219,14 @@ public class IntroActivity extends AppCompatActivity {
             tvIntroOne = findViewById(R.id.tv_intro_one);
             tvIntroTwo = findViewById(R.id.tv_intro_two);
             button_demo_visit = findViewById(R.id.button_demo_visit);
-            button_custom_visit = findViewById(R.id.button_custom_visit);
+            button_custom_visit = findViewById(R.id.button_custom_visit_intro);
 
             //Highlighting Text
             String introOne = getString(R.string.intelehealth_a_telemedicine_platform);
             String textToHighlightOne = getString(R.string.intelehealth_name);
             String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
             tvIntroOne.setText(Html.fromHtml(newString));
+            tvIntroOne.setContentDescription("intro_One_tv");
 
             if (position == 1) {
                 String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
@@ -234,6 +235,7 @@ public class IntroActivity extends AppCompatActivity {
                         "<font color='blue'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");
                 tvIntroTwo.setText(Html.fromHtml(newhighlight));
+                tvIntroTwo.setContentDescription("intro_two_tv");
 
                 button_demo_visit.setOnClickListener(new View.OnClickListener() {
                     @Override

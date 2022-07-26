@@ -7,10 +7,10 @@
     tools:context=".activities.visitSummaryActivity.TimelineVisitSummaryActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_timeline"
+        android:id="@+id/rcv_timelineSc"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/endStageButton"
+        android:layout_above="@+id/endStageButton_timelineSc"
         android:fadeScrollbars="false"
         android:scrollbarSize="5dp"
         android:scrollbarThumbVertical="@color/colorAccent"
@@ -20,29 +20,30 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/endStageButton"
+        android:layout_above="@+id/endStageButton_timelineSc"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="4dp"
         android:background="@android:color/darker_gray" />
 
     <Button
-        android:id="@+id/endStageButton"
+        android:id="@+id/endStageButton_timelineSc"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/body_element_horizontal_margin"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
-        android:layout_toStartOf="@+id/fabv"
+        android:layout_toStartOf="@+id/fabv_timelineSc"
         android:background="@drawable/ic_rectangle_76"
         android:gravity="center"
         android:text="@string/endStageButton"
+        android:contentDescription="@string/endStageButton"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabc"
+        android:id="@+id/fabc_timelineSc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -53,13 +54,13 @@
         android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabv"
+        android:id="@+id/fabv_timelineSc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="40dip"
-        android:layout_toStartOf="@+id/fabc"
+        android:layout_toStartOf="@+id/fabc_timelineSc"
         android:contentDescription="@string/chat_fab"
         android:src="@drawable/ic_baseline_videocam_24"
         app:backgroundTint="@color/yellow" />
@@ -67,7 +68,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:id="@+id/outcomeTV"
+        android:id="@+id/outcomeTV_timelineSc"
         android:textColor="@color/colorPrimary"
         android:fontFamily="@font/lato_bold"
         android:layout_alignParentBottom="true"

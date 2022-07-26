@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     public void onBindViewHolder(ActivePatientViewHolder holder, int position) {
         final ActivePatientModel activePatientModel = filteractivePatient.get(position);
 //        final ActivePatientModel filteractivePatient=filteractivePatient.get(position);
+
+        holder.btnVisitDetails.setContentDescription(
+                new StringBuilder().append("acpsc_visit_Desc_").append(holder.headTextView.toString()));
+
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
             header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
@@ -148,6 +153,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         } else {
             holder.btnEndVisit.setVisibility(View.GONE);
         }
+
+        
 
 //            // indicator for next interval
 //            String latestencounterTime = activePatientModel.getLatestencounterTime();
@@ -287,7 +294,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         };
 //        holder.getRootView().setOnClickListener(listener);
         holder.btnVisitDetails.setOnClickListener(listener);
-
         boolean enableEndVisit = true;
 /*
         for (int i = 0; i < listPatientUUID.size(); i++) {
@@ -364,16 +370,16 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
-            tvStageNameTextView = itemView.findViewById(R.id.tvStageName);
-            headTextView = itemView.findViewById(R.id.list_item_head_text_view);
-            bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
-            indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
-            ivPriscription = itemView.findViewById(R.id.iv_prescription);
-            tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
-            btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
-            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
-            tvAgeGender = itemView.findViewById(R.id.tv_age_gender);
-            cardView_todaysVisit = itemView.findViewById(R.id.cardView_todaysVisit);
+            tvStageNameTextView = itemView.findViewById(R.id.tv_StageName_actpsc);
+            headTextView = itemView.findViewById(R.id.tv_head_actpsc);
+            bodyTextView = itemView.findViewById(R.id.tv_body_actpsc);
+            indicatorTextView = itemView.findViewById(R.id.tv_indicator_actpsc);
+            ivPriscription = itemView.findViewById(R.id.iv_prescription_actpsc);
+            tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded_actpsc);
+            btnEndVisit = itemView.findViewById(R.id.btn_end_visit_actpsc);
+            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details_actpsc);
+            tvAgeGender = itemView.findViewById(R.id.tv_age_gender_actpsc);
+            cardView_todaysVisit = itemView.findViewById(R.id.cardView_actpsc);
             rootView = itemView;
         }
 

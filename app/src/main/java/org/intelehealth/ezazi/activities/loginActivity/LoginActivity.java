@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
-        txt_cant_login = findViewById(R.id.cant_login_id);
+        txt_cant_login = findViewById(R.id.cant_login_id_LoginSc);
         txt_cant_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,13 +145,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        icLogo = findViewById(R.id.iv_logo);
+        icLogo = findViewById(R.id.iv_logo_LoginSc);
         setLogo();
 
         // Set up the login form.
-        mUsernameView = findViewById(R.id.et_email);
+        mUsernameView = findViewById(R.id.et_email_LoginSc);
         // populateAutoComplete(); TODO: create our own autocomplete code
-        mPasswordView = findViewById(R.id.et_password);
+        mPasswordView = findViewById(R.id.et_password_LoginSc);
 //      mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = findViewById(R.id.email_sign_in_button_LoginSc);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

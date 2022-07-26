@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_setsc"
                 android:layout_width="match_parent"
                 android:theme="@style/ToolbarTheme"
                 android:layout_height="?attr/actionBarSize"
@@ -43,15 +43,14 @@
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview1"
+                        android:id="@+id/cardview1_setsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         app:cardCornerRadius="10sp"
                         android:layout_marginTop="15dp"
                         app:cardElevation="5sp"
-                        app:cardPreventCornerOverlap="false"
-                        >
+                        app:cardPreventCornerOverlap="false">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -74,7 +73,7 @@
                                 android:paddingTop="5dp">
 
                                 <EditText
-                                    android:id="@+id/editText_URL"
+                                    android:id="@+id/editText_URL_setsc"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/enter_url"
@@ -83,6 +82,7 @@
                                     android:inputType="textUri"
                                     android:focusable="true"
                                     android:text="@string/setupUrl"
+                                    android:contentDescription="@string/setupUrl"
                                     android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,7 +231,7 @@
 <!--                    </androidx.cardview.widget.CardView>-->
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview2"
+                        android:id="@+id/cardview2_setsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
@@ -261,7 +261,7 @@
                                 android:layout_height="10dp" />
 
                             <RadioButton
-                                android:id="@+id/demoMindmap"
+                                android:id="@+id/demoMindmap_setsc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
@@ -270,12 +270,13 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:onClick="onRadioClick"
                                 android:textAppearance="@style/RobotoTextViewStyle"
-                                android:text="@string/setup_use_demo_mindmap" />
+                                android:text="@string/setup_use_demo_mindmap"
+                                android:contentDescription="@string/setup_use_demo_mindmap"/>
 
 
 
                             <RadioButton
-                                android:id="@+id/downloadMindmap"
+                                android:id="@+id/downloadMindmap_setsc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="onRadioClick"
@@ -283,14 +284,15 @@
                                 android:includeFontPadding="false"
                                 android:fontFamily="@font/lato_regular"
                                 android:textAppearance="@style/RobotoTextViewStyle"
-                                android:text="@string/setup_download_mindmap" />
+                                android:text="@string/setup_download_mindmap"
+                                android:contentDescription="@string/setup_download_mindmap"/>
 
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview3"
+                    android:id="@+id/cardview3_setsc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -321,10 +323,11 @@
                         android:layout_height="wrap_content">
 
                         <AutoCompleteTextView
-                            android:id="@+id/email"
+                            android:id="@+id/email_setsc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_email"
+                            android:contentDescription="@string/prompt_email"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
@@ -341,10 +344,11 @@
                         app:passwordToggleEnabled="true">
 
                         <EditText
-                            android:id="@+id/password"
+                            android:id="@+id/password_setsc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_password"
+                            android:contentDescription="@string/prompt_password"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:maxLines="1"
@@ -360,13 +364,14 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/admin_password"
+                            android:id="@+id/admin_password_setsc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_admin_password"
                             android:imeActionLabel="@string/action_sign_in_short"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textPassword"
+                            android:contentDescription="@string/prompt_admin_password"
                             android:visibility="gone"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -393,6 +398,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:text="@string/action_sign_in"
+                        android:contentDescription="@string/action_sign_in"
                         android:fontFamily="@font/lato_bold"
                         android:background="@color/colorPrimary"
                         android:textColor="@color/white"
@@ -404,7 +410,7 @@
                         android:layout_height="15sp" />
 
                     <TextView
-                        android:id="@+id/textView_Aid"
+                        android:id="@+id/textView_Aid_setsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"

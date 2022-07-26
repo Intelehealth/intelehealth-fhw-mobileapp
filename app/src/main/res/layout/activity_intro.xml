@@ -8,12 +8,12 @@
     tools:context=".activities.IntroActivity.IntroActivity">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/view_pager_intro"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <LinearLayout
-        android:id="@+id/layoutDots"
+        android:id="@+id/layoutDots_intro"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -27,11 +27,11 @@
         android:layout_height="1dp"
         android:alpha=".5"
         android:visibility="gone"
-        android:layout_above="@id/layoutDots"
+        android:layout_above="@id/layoutDots_intro"
         android:background="@android:color/black" />
 
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_next_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -40,13 +40,14 @@
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="20dp"
         android:text="@string/next"
+        android:contentDescription="@string/next"
         android:gravity="center"
         android:fontFamily="@fonts/Lato_Regular"
         android:drawableEnd="@drawable/ic_keyboard_arrow_right"
         android:textColor="@color/intro_next" />
 
     <Button
-        android:id="@+id/btn_skip"
+        android:id="@+id/btn_skip_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

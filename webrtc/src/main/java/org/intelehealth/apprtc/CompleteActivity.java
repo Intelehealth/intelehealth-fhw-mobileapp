@@ -141,11 +141,11 @@ public class CompleteActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        binding.callerNameTv.setText(mDoctorName);
-        binding.inCallAcceptImv.setOnClickListener(new View.OnClickListener() {
+        binding.callerNameTvVcallSc.setText(mDoctorName);
+        binding.inCallAcceptImvVcallSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.callingLayout.setVisibility(View.GONE);
+                binding.callingLayoutVcallSc.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (socket != null) {
                     socket.emit("create or join", mRoomId); // incoming
@@ -163,7 +163,7 @@ public class CompleteActivity extends AppCompatActivity {
                 stopRinging();
             }
         });
-        binding.inCallRejectImv.setOnClickListener(new View.OnClickListener() {
+        binding.inCallRejectImvVcallSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (socket != null) {
@@ -183,22 +183,22 @@ public class CompleteActivity extends AppCompatActivity {
             }
         });
 
-        binding.audioImv.setOnClickListener(new View.OnClickListener() {
+        binding.audioImvVcallSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (localAudioTrack != null) {
                     localAudioTrack.setEnabled(!localAudioTrack.enabled());
                     if (localAudioTrack.enabled()) {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_24);
+                        binding.audioImvVcallSc.setImageResource(R.drawable.ic_baseline_mic_24);
                         Toast.makeText(CompleteActivity.this, getString(R.string.audio_on_lbl), Toast.LENGTH_SHORT).show();
                     } else {
-                        binding.audioImv.setImageResource(R.drawable.ic_baseline_mic_off_24);
+                        binding.audioImvVcallSc.setImageResource(R.drawable.ic_baseline_mic_off_24);
                         Toast.makeText(CompleteActivity.this, getString(R.string.audio_off_lbl), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-        binding.callEndImv.setOnClickListener(new View.OnClickListener() {
+        binding.callEndImvVcallSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (socket != null)
@@ -207,22 +207,22 @@ public class CompleteActivity extends AppCompatActivity {
 
             }
         });
-        binding.videoImv.setOnClickListener(new View.OnClickListener() {
+        binding.videoImvVcallSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (videoTrackFromCamera != null) {
                     videoTrackFromCamera.setEnabled(!videoTrackFromCamera.enabled());
                     if (videoTrackFromCamera.enabled()) {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_24);
+                        binding.videoImvVcallSc.setImageResource(R.drawable.ic_baseline_videocam_24);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_on_lbl), Toast.LENGTH_SHORT).show();
                     } else {
-                        binding.videoImv.setImageResource(R.drawable.ic_baseline_videocam_off_24);
+                        binding.videoImvVcallSc.setImageResource(R.drawable.ic_baseline_videocam_off_24);
                         Toast.makeText(CompleteActivity.this, getString(R.string.video_off_lbl), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-        binding.flipImv.setOnClickListener(new View.OnClickListener() {
+        binding.flipImvVcallSc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mIsReverseCamera = !mIsReverseCamera;
@@ -260,7 +260,7 @@ public class CompleteActivity extends AppCompatActivity {
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
         start();
         if (mIsInComingRequest) {
-            binding.callingLayout.setVisibility(View.VISIBLE);
+            binding.callingLayoutVcallSc.setVisibility(View.VISIBLE);
             binding.rippleBackgroundContent.startRippleAnimation();
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             mRingtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
@@ -268,7 +268,7 @@ public class CompleteActivity extends AppCompatActivity {
             mRingtone.play();
 
         } else {
-            binding.callingLayout.setVisibility(View.GONE);
+            binding.callingLayoutVcallSc.setVisibility(View.GONE);
 
         }
     }
@@ -479,7 +479,7 @@ public class CompleteActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        binding.statusTv.setVisibility(View.GONE);
+                        binding.statusTvVcallSc.setVisibility(View.GONE);
                     }
                 });
 
@@ -500,7 +500,7 @@ public class CompleteActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(CompleteActivity.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
-                            binding.statusTv.setVisibility(View.GONE);
+                            binding.statusTvVcallSc.setVisibility(View.GONE);
                         }
                     });
                 }
@@ -644,13 +644,13 @@ public class CompleteActivity extends AppCompatActivity {
 
     private void initializeSurfaceViews() {
         rootEglBase = EglBase.create();
-        binding.selfSurfaceView.init(rootEglBase.getEglBaseContext(), null);
-        binding.selfSurfaceView.setEnableHardwareScaler(true);
-        binding.selfSurfaceView.setMirror(true);
+        binding.selfSurfaceViewVcallSc.init(rootEglBase.getEglBaseContext(), null);
+        binding.selfSurfaceViewVcallSc.setEnableHardwareScaler(true);
+        binding.selfSurfaceViewVcallSc.setMirror(true);
 
-        binding.incomingSurfaceView.init(rootEglBase.getEglBaseContext(), null);
-        binding.incomingSurfaceView.setEnableHardwareScaler(true);
-        binding.incomingSurfaceView.setMirror(true);
+        binding.incomingSurfaceViewVcallSc.init(rootEglBase.getEglBaseContext(), null);
+        binding.incomingSurfaceViewVcallSc.setEnableHardwareScaler(true);
+        binding.incomingSurfaceViewVcallSc.setMirror(true);
 
         //add one more
     }
@@ -680,7 +680,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (videoTrackFromCamera != null) videoTrackFromCamera.dispose();
         videoTrackFromCamera = factory.createVideoTrack(VIDEO_TRACK_ID, videoSource);
         videoTrackFromCamera.setEnabled(true);
-        selfSurfaceViewVideoRenderer = new VideoRenderer(binding.selfSurfaceView);
+        selfSurfaceViewVideoRenderer = new VideoRenderer(binding.selfSurfaceViewVcallSc);
 
         videoTrackFromCamera.addRenderer(selfSurfaceViewVideoRenderer);
 
@@ -795,7 +795,7 @@ public class CompleteActivity extends AppCompatActivity {
                 remoteAudioTrack = mediaStream.audioTracks.get(0);
                 remoteAudioTrack.setEnabled(true);
                 remoteVideoTrack.setEnabled(true);
-                incomingSurfaceViewVideoRenderer = new VideoRenderer(binding.incomingSurfaceView);
+                incomingSurfaceViewVideoRenderer = new VideoRenderer(binding.incomingSurfaceViewVcallSc);
                 remoteVideoTrack.addRenderer(incomingSurfaceViewVideoRenderer);
                 setSpeakerphone();
 

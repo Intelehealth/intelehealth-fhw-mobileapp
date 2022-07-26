@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/searchlinear"
+    android:id="@+id/searchlinear_SearchPsc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
@@ -24,17 +24,19 @@
 
 
             <TextView
-                android:id="@+id/list_item_head"
+                android:id="@+id/list_item_head_SearchPsc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Patient_name \n10LAM-3"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/list_item_body"
+                android:id="@+id/list_item_body_SearchPsc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="24 years (Male)"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/lato_regular" />
 

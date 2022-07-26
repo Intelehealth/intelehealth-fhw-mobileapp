@@ -77,7 +77,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_SearchPsc);
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.ic_sort_white_24dp);
@@ -92,9 +92,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
         //toolbar views
-        toolbarET = findViewById(R.id.toolbar_ET);
-        toolbarClear = findViewById(R.id.toolbar_clear);
-        toolbarSearch = findViewById(R.id.toolbar_search);
+        toolbarET = findViewById(R.id.toolbar_etSearch_SearchPsc);
+        toolbarClear = findViewById(R.id.toolbar_imgclear_SearchPsc);
+        toolbarSearch = findViewById(R.id.toolbar_imgsearch_SearchPsc);
 //        toolbarFilter = findViewById(R.id.toolbar_filter);
         toolbarET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -174,8 +174,8 @@ public class SearchPatientActivity extends AppCompatActivity {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        msg = findViewById(R.id.textviewmessage);
-        recyclerView = findViewById(R.id.recycle);
+        msg = findViewById(R.id.tv_msg_wait_sync_SearchPsc);
+        recyclerView = findViewById(R.id.rcv_SearchPsc);
         reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
 
@@ -198,7 +198,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 }
             }
         });
-        new_patient = findViewById(R.id.new_patient);
+        new_patient = findViewById(R.id.new_patient_SearchPsc);
 
 
         Intent intent = getIntent();
@@ -355,7 +355,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     public void noneFound(ListView lvItems, String query) {
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
                 R.layout.list_item_search,
-                R.id.list_item_head, new ArrayList<String>());
+                R.id.list_item_head_SearchPsc, new ArrayList<String>());
         String errorMessage = getString(R.string.alert_none_found).replace("_", query);
         searchAdapter.add(errorMessage);
         lvItems.setAdapter(searchAdapter);

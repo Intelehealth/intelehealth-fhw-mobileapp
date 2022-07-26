@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/text_tv"
+        android:id="@+id/text_tv_langsel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="2"
@@ -19,7 +19,7 @@
         android:textStyle="normal" />
 
     <ImageView
-        android:id="@+id/status_imv"
+        android:id="@+id/status_imv_langsel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -31,7 +31,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_below="@+id/text_tv"
+        android:layout_below="@+id/text_tv_langsel"
         android:layout_marginTop="4dip"
         android:background="@color/gray_1" />
 

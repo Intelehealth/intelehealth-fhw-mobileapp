@@ -80,6 +80,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(@NonNull TimelineViewHolder holder, int position) {
         if (encounterDTOList.size() > 0) {
+
+            holder.ivEdit.setContentDescription(
+                    new StringBuilder().append("ivEdit_desc_").append(holder.ivEdit.toString()));
+            holder.cardview.setContentDescription(
+                    new StringBuilder().append("cardview_desc_").append(holder.cardview.toString()));
+
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
@@ -285,16 +291,16 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         public TimelineViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            summaryNoteTextview = itemView.findViewById(R.id.summary_note_textview);
-            ivEdit = itemView.findViewById(R.id.ivEdit);
+            summaryNoteTextview = itemView.findViewById(R.id.summary_note_textview_timelineSc);
+            ivEdit = itemView.findViewById(R.id.ivEdit_timelineSc);
             ivEdit.setVisibility(View.GONE);
 
-            cardview = itemView.findViewById(R.id.cardview_parent);
-            timeTextview = itemView.findViewById(R.id.time1);
-            stage1start = itemView.findViewById(R.id.stage1start);
-            stage2start = itemView.findViewById(R.id.stage2start);
-            summary_textview = itemView.findViewById(R.id.summary_textview);
-            frame1 = itemView.findViewById(R.id.frame1);
+            cardview = itemView.findViewById(R.id.cardview_parent_timelineSc);
+            timeTextview = itemView.findViewById(R.id.time1_timelineSc);
+            stage1start = itemView.findViewById(R.id.stage1start_timelineSc);
+            stage2start = itemView.findViewById(R.id.stage2start_timelineSc);
+            summary_textview = itemView.findViewById(R.id.summary_textview_timelineSc);
+            frame1 = itemView.findViewById(R.id.frame1_timelineSc);
             ivEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

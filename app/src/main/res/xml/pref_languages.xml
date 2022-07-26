@@ -3,6 +3,8 @@
 
 
     <ListPreference
+        android:id="@+id/current_lang_change"
+        android:contentDescription="@string/current_language"
         android:entries="@array/language_names"
         android:entryValues="@array/language_values"
         android:key="hindiLang"

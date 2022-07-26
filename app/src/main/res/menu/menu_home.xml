@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:contentDescription="@string/main_menu_homesc"
+    android:id="@+id/mainmemubutton_homesc"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/updateTimeItem"
-        android:title="Last updated on 12pm"
+        android:id="@+id/updateTimeItem_homesc"
+        android:title="@string/last_updated_on_12pm"
+        android:contentDescription="@string/last_updated_on_12pm"
         app:showAsAction="always" />
 
-    <group android:id="@+id/main_menu_group">
+    <group android:id="@+id/main_menu_group_homesc"
+        android:contentDescription="@string/menu_group_homesc">
         <!--<item-->
         <!--android:id="@+id/syncOption"-->
         <!--android:title="@string/menu_option_sync"-->
         <!--android:orderInCategory="50" />-->
 
         <item
-            android:id="@+id/settingsOption"
+            android:id="@+id/LangsettingsOption_homesc"
             android:orderInCategory="100"
+            android:contentDescription="@string/change_languages"
             android:title="@string/change_languages" />
 
         <!--<item-->
@@ -33,18 +38,21 @@
         <!--android:orderInCategory="125"-->
         <!--android:title="Restore" />-->
         <item
-            android:id="@+id/updateProtocolsOption"
+            android:id="@+id/updateProtocolsOption_homesc"
             android:orderInCategory="150"
+            android:contentDescription="@string/update_protocols"
             android:title="@string/update_protocols" />
 
         <item
-            android:id="@+id/restAppOption"
+            android:id="@+id/restAppOption_homesc"
             android:orderInCategory="150"
+            android:contentDescription="@string/reset_app"
             android:title="@string/reset_app" />
 
         <item
-            android:id="@+id/logoutOption"
+            android:id="@+id/logoutOption_homesc"
             android:orderInCategory="175"
+            android:contentDescription="@string/menu_option_logout"
             android:title="@string/menu_option_logout" />
 
     </group>

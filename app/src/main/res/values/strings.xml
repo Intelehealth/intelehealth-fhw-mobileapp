@@ -857,6 +857,13 @@
     <string name="endedStage1Button">First Stage Ended</string>
     <string name="unique_Ezazi_registration_number">UER No</string>
     <string name="this_option_available_tablet_device">This option is available on a Tablet device</string>
+    <string name="btn_clear_search">Toolbar clear button</string>
+    <string name="btn_search_img">Toolbar search img</string>
+    <string name="new_patient_SearchPsc">New patient button</string>
+    <string name="main_menu_homesc">main menu home</string>
+    <string name="last_updated_on_12pm">Last updated on 12pm</string>
+    <string name="menu_group_homesc">menu group homesc</string>
+    <string name="identification_screen_prompt_alt_phone_number">Alternate Mobile Number</string>
 
 
 </resources>

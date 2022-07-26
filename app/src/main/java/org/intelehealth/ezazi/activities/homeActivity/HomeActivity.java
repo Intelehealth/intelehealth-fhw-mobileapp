@@ -295,7 +295,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_homesc);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -327,7 +327,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         /*NEW*/
-        mActiveVisitsRecyclerView = findViewById(R.id.rcvActiveVisits);
+        mActiveVisitsRecyclerView = findViewById(R.id.rcv_ActiveVisits_homesc);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mActiveVisitsRecyclerView.setLayoutManager(reLayoutManager);
         /*mActiveVisitsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -353,7 +353,7 @@ public class HomeActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         loadVisits();
 
-        findViewById(R.id.tvPatientsMenu).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tv_PatientsMenu_homesc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*//Loads the config file values and check for the boolean value of privacy key.
@@ -375,8 +375,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //Search pateint code
-        etvSearchVisit = findViewById(R.id.etvSearchVisit);
-        ivFilterAction = findViewById(R.id.ivFilterAction);
+        etvSearchVisit = findViewById(R.id.etv_SearchVisit_homesc);
+        ivFilterAction = findViewById(R.id.iv_FilterAction_homesc);
         ivFilterAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -403,7 +403,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        findViewById(R.id.tvHelpMenu).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tv_HelpMenu_homesc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+917005308163";
@@ -417,7 +417,7 @@ public class HomeActivity extends AppCompatActivity {
                                         phoneNumberWithCountryCode, message))));
             }
         });
-        findViewById(R.id.tvSyncMenu).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tv_SyncMenu_homesc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isNetworkConnected()) {
@@ -637,7 +637,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (sessionManager.isPullSyncFinished()) {
             getVisits();
-            findViewById(R.id.tvEmpty).setVisibility(View.GONE);
+            findViewById(R.id.tv_Empty_homesc).setVisibility(View.GONE);
             mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
             List<ActivePatientModel> activePatientModels = doQuery(offset);
             List<ActivePatientModel> filteractivePatient = doQuery(offset);
@@ -1001,7 +1001,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
-        mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem);
+        mLastUpdateMenuItem = menu.findItem(R.id.updateTimeItem_homesc);
         setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         return super.onCreateOptionsMenu(menu);
 
@@ -1013,10 +1013,10 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.settingsOption:
+            case R.id.LangsettingsOption_homesc:
                 settings();
                 return true;
-            case R.id.updateProtocolsOption: {
+            case R.id.updateProtocolsOption_homesc: {
 
 
                 if (NetworkConnection.isOnline(this)) {
@@ -1092,6 +1092,8 @@ public class HomeActivity extends AppCompatActivity {
                         // Get the alert dialog buttons reference
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive");
+                        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negitive");
 
                         // Change the alert dialog buttons text and background color
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -1203,7 +1205,7 @@ public class HomeActivity extends AppCompatActivity {
 //                manageBackup(false, false); // to restore app data if db is empty
 //                return true;
 
-            case R.id.logoutOption:
+            case R.id.logoutOption_homesc:
 //                manageBackup(true, false);
 
                 MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -1219,13 +1221,15 @@ public class HomeActivity extends AppCompatActivity {
                 alertDialog.show();
                 Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                 Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive");
+                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negitive");
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
                 return true;
 
-            case R.id.restAppOption:
+            case R.id.restAppOption_homesc:
 
                 if ((isNetworkConnected())) {
                     mResetSyncDialog.show();

@@ -47,7 +47,10 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     @Override
     public void onBindViewHolder(@NonNull SearchPatientAdapter.Myholder holder, int position) {
         final PatientDTO patinet = patients.get(position);
+
         if (patinet != null) {
+            holder.linearLayout.setContentDescription(
+                    new StringBuilder().append("SearchPsc_desc_").append(patinet.getOpenmrsId()).toString());
             //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
@@ -61,7 +64,6 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             holder.bodyTextView.setText(body);
-
         }
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +77,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 } else {
                     patientfullName = patinet.getFirstname() + " " + patinet.getLastname();
                 }
+
                 // end...
 
                 if(visitUUID != null && visitUUID.equalsIgnoreCase("")) { // visit is not yet created for this user.
@@ -113,9 +116,9 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
 
         public Myholder(View itemView) {
             super(itemView);
-            headTextView = itemView.findViewById(R.id.list_item_head);
-            bodyTextView = itemView.findViewById(R.id.list_item_body);
-            linearLayout = itemView.findViewById(R.id.searchlinear);
+            headTextView = itemView.findViewById(R.id.list_item_head_SearchPsc);
+            bodyTextView = itemView.findViewById(R.id.list_item_body_SearchPsc);
+            linearLayout = itemView.findViewById(R.id.searchlinear_SearchPsc);
         }
     }
 

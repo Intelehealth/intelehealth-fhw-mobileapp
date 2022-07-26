@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_identificationSc"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -32,7 +32,7 @@
         tools:showIn="@layout/activity_identification">
 
         <ScrollView
-            android:id="@+id/identification_scrollView"
+            android:id="@+id/identificationSc_scrollView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -41,7 +41,7 @@
 
 
             <LinearLayout
-                android:id="@+id/layout_identification"
+                android:id="@+id/layout_identificationSc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -76,7 +76,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview1"
+                    android:id="@+id/cardview1_identificationSc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -117,7 +117,7 @@
                                     <!--On the Left or Right of textview or Editext-->
 
                                     <EditText
-                                        android:id="@+id/identification_first_name"
+                                        android:id="@+id/identificationSc_etvfirst_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:background="@null"
@@ -128,6 +128,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_first_name"
+                                        android:contentDescription="@string/identification_screen_prompt_first_name"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
@@ -146,7 +147,7 @@
                                     android:padding="@dimen/common_padding">
 
                                     <EditText
-                                        android:id="@+id/identification_middle_name"
+                                        android:id="@+id/identificationSc_etvmiddle_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:background="@null"
@@ -157,6 +158,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_middle_name"
+                                        android:contentDescription="@string/identification_screen_prompt_middle_name"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
@@ -176,7 +178,7 @@
                                     android:padding="@dimen/common_padding">
 
                                     <EditText
-                                        android:id="@+id/identification_last_name"
+                                        android:id="@+id/identificationSc_etvlast_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:autofillHints="@string/action_settings"
@@ -188,6 +190,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_last_name"
+                                        android:contentDescription="@string/identification_screen_prompt_last_name"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
@@ -201,7 +204,7 @@
                             </LinearLayout>
 
                             <ImageView
-                                android:id="@+id/imageview_id_picture"
+                                android:id="@+id/identificationSc_img_id_picture"
                                 android:layout_width="0dp"
                                 android:layout_height="170dp"
                                 android:layout_gravity="right|center_vertical"
@@ -214,16 +217,17 @@
 
 
                         <RadioGroup
-                            android:id="@+id/radioGrp"
+                            android:id="@+id/identificationSc_radioGrp"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:contentDescription="radioGrpGender"
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:visibility="gone">
 
                             <RadioButton
-                                android:id="@+id/identification_gender_male"
+                                android:id="@+id/identificationSc_gender_male"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -232,16 +236,18 @@
                                 android:drawablePadding="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/identification_screen_checkbox_male"
+                                android:contentDescription="@string/identification_screen_checkbox_male"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <RadioButton
-                                android:id="@+id/identification_gender_female"
+                                android:id="@+id/identificationSc_gender_female"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:checked="true"
                                 android:drawableStart="@drawable/female_icon"
                                 android:drawableLeft="@drawable/female_icon"
+                                android:contentDescription="@string/identification_screen_checkbox_female"
                                 android:drawablePadding="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/identification_screen_checkbox_female"
@@ -258,7 +264,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_birth_date_text_view"
+                                android:id="@+id/identificationSc_etvbirth_date_tv"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -270,6 +276,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_birthday"
+                                android:contentDescription="@string/identification_screen_prompt_birthday"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
@@ -289,7 +296,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_age"
+                                android:id="@+id/identificationSc_etvage"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -302,6 +309,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_age"
+                                android:contentDescription="@string/identification_screen_prompt_age"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
@@ -320,7 +328,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_phone_number"
+                                android:id="@+id/identificationSc_etvphone_number"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -334,6 +342,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
+                                android:contentDescription="@string/identification_screen_prompt_phone_number"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="phone"
                                 android:maxLength="10"
@@ -353,7 +362,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_alt_phone_number"
+                                android:id="@+id/identificationSc_etvalt_phone_number"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -366,7 +375,8 @@
                                 android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Alternate Mobile Number"
+                                android:hint="@string/identification_screen_prompt_alt_phone_number"
+                                android:contentDescription="@string/identification_screen_prompt_alt_phone_number"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="phone"
                                 android:maxLength="10"
@@ -414,7 +424,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview2"
+                    android:id="@+id/cardview2_identificationSc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -433,7 +443,7 @@
                         android:padding="@dimen/common_padding">
 
                         <LinearLayout
-                            android:id="@+id/identification_llcountry_state"
+                            android:id="@+id/identificationSc_llcountry_state"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
@@ -459,7 +469,7 @@
                                         android:weightSum="4">
 
                                         <EditText
-                                            android:id="@+id/identification_country"
+                                            android:id="@+id/identificationSc_country"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2"
@@ -476,10 +486,12 @@
                                             android:inputType="textCapWords"
                                             android:maxLines="1"
                                             android:text="@string/identification_screen_prompt_country"
+                                            android:contentDescription="@string/identification_screen_prompt_country"
                                             android:textSize="@dimen/card_content_sub_text_size" />
 
                                         <Spinner
-                                            android:id="@+id/spinner_country"
+                                            android:id="@+id/identificationSc_spinner_country"
+                                            android:contentDescription="identificationSc_spinner_country"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2" />
@@ -511,7 +523,7 @@
                                         android:paddingBottom="2dp">
 
                                         <EditText
-                                            android:id="@+id/identification_state"
+                                            android:id="@+id/identificationSc_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2"
@@ -528,10 +540,12 @@
                                             android:inputType="textCapWords"
                                             android:maxLines="1"
                                             android:text="@string/identification_screen_prompt_state"
+                                            android:contentDescription="@string/identification_screen_prompt_state"
                                             android:textSize="@dimen/card_content_sub_text_size" />
 
                                         <Spinner
-                                            android:id="@+id/spinner_state"
+                                            android:id="@+id/identificationSc_spinner_state"
+                                            android:contentDescription="identificationSc_spinner_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2" />
@@ -551,7 +565,7 @@
                             android:padding="@dimen/common_padding">
 
                             <AutoCompleteTextView
-                                android:id="@+id/identification_city"
+                                android:id="@+id/identificationSc_city"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -561,6 +575,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_city"
+                                android:contentDescription="@string/identification_screen_prompt_city"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
@@ -578,7 +593,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_address1"
+                                android:id="@+id/identificationSc_address1"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -589,6 +604,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_address"
+                                android:contentDescription="@string/identification_screen_prompt_address"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
@@ -608,7 +624,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_address2"
+                                android:id="@+id/identificationSc_address2"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -619,6 +635,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_address2"
+                                android:contentDescription="@string/identification_screen_prompt_address2"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
@@ -637,7 +654,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/identification_postal_code"
+                                android:id="@+id/identificationSc_postal_code"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -648,6 +665,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_postal_code"
+                                android:contentDescription="@string/identification_screen_prompt_postal_code"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="number"
                                 android:maxLength="9"
@@ -693,7 +711,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview3"
+                    android:id="@+id/cardview3_identificationSc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -722,7 +740,7 @@
                             android:padding="@dimen/common_padding">
 
                             <EditText
-                                android:id="@+id/etv_wife_daughter_of"
+                                android:id="@+id/identificationSc_etvwife_daughter_of"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -733,6 +751,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="Wife/Daughter Of"
+                                android:contentDescription="Wife/Daughter Of"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
@@ -760,20 +779,21 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/tvAdmissionDate"
+                                android:id="@+id/identificationSc_tvAdmissionDate"
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/round_corner_gray_stroke_light"
                                 android:gravity="center"
                                 android:hint="Date : dd/mm/yyyy"
+                                android:contentDescription="AdmissionDate"
                                 android:minHeight="@dimen/edit_box_min_height"
                                 android:padding="@dimen/common_padding"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
 
                             <TextView
-                                android:id="@+id/tvAdmissionTime"
+                                android:id="@+id/identificationSc_tvAdmissionTime"
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/common_padding"
@@ -781,6 +801,7 @@
                                 android:background="@drawable/round_corner_gray_stroke_light"
                                 android:gravity="center"
                                 android:hint="Time : hh:mm"
+                                android:contentDescription="AdmissionTime"
                                 android:minHeight="@dimen/edit_box_min_height"
                                 android:padding="@dimen/common_padding"
                                 android:textColor="@color/gray_6"
@@ -813,7 +834,7 @@
                                 android:visibility="visible">
 
                                 <EditText
-                                    android:id="@+id/etvTotalBirth"
+                                    android:id="@+id/identificationSc_etvTotalBirth"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@null"
@@ -824,6 +845,7 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:hint="Total Birth"
+                                    android:contentDescription="Total Birth"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="number"
                                     android:maxLength="25"
@@ -845,7 +867,7 @@
                                 android:visibility="visible">
 
                                 <EditText
-                                    android:id="@+id/etvTotalMiscarriage"
+                                    android:id="@+id/identificationSc_etvTotalMiscarriage"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@null"
@@ -856,6 +878,7 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:hint="Total Miscarriage"
+                                    android:contentDescription="Total Miscarriage"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="number"
                                     android:maxLength="25"
@@ -878,26 +901,28 @@
                             android:textSize="@dimen/header_text_size" />
 
                         <RadioGroup
-                            android:id="@+id/rgLaborOnset"
+                            android:id="@+id/identificationSc_rgLaborOnset"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/common_padding">
 
                             <RadioButton
-                                android:id="@+id/rbLOSpontaneous"
+                                android:id="@+id/identificationSc_rbLOSpontaneous"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Spontaneous"
+                                android:contentDescription="Spontaneous"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
 
                             <RadioButton
-                                android:id="@+id/rbLOInduced"
+                                android:id="@+id/identificationSc_rbLOInduced"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/common_padding"
                                 android:text="Induced"
+                                android:contentDescription="Induced"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
                         </RadioGroup>
@@ -919,20 +944,21 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/tvActiveLaborDiagnosedDate"
+                                android:id="@+id/identificationSc_tvActiveLaborDiagnosedDate"
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/round_corner_gray_stroke_light"
                                 android:gravity="center"
                                 android:hint="Date : dd/mm/yyyy"
+                                android:contentDescription="ActiveLaborDiagnosedDate"
                                 android:minHeight="@dimen/edit_box_min_height"
                                 android:padding="@dimen/common_padding"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
 
                             <TextView
-                                android:id="@+id/tvActiveLaborDiagnosedTime"
+                                android:id="@+id/identificationSc_tvActiveLaborDiagnosedTime"
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/common_padding"
@@ -940,6 +966,7 @@
                                 android:background="@drawable/round_corner_gray_stroke_light"
                                 android:gravity="center"
                                 android:hint="Time : hh:mm"
+                                android:contentDescription="ActiveLaborDiagnosedTime"
                                 android:minHeight="@dimen/edit_box_min_height"
                                 android:padding="@dimen/common_padding"
                                 android:textColor="@color/gray_6"
@@ -956,17 +983,18 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toStartOf="@+id/cbUnknownMembraneRuptured"
+                                android:layout_toStartOf="@+id/identificationSc_cbUnknownMembrane"
                                 android:text="When was the membrane ruptured?"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/header_text_size" />
 
                             <CheckBox
-                                android:id="@+id/cbUnknownMembraneRuptured"
+                                android:id="@+id/identificationSc_cbUnknownMembrane"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
-                                android:text="Unknown?" />
+                                android:text="Unknown?"
+                                android:contentDescription="Unknown?"/>
                         </RelativeLayout>
 
                         <LinearLayout
@@ -976,20 +1004,21 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/tvMembraneRupturedDate"
+                                android:id="@+id/identificationSc_tvMembraneDate"
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/round_corner_gray_stroke_light"
                                 android:gravity="center"
                                 android:hint="Date : dd/mm/yyyy"
+                                android:contentDescription="MembraneDate"
                                 android:minHeight="@dimen/edit_box_min_height"
                                 android:padding="@dimen/common_padding"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
 
                             <TextView
-                                android:id="@+id/tvMembraneRupturedTime"
+                                android:id="@+id/identificationSc_tvMembraneTime"
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/common_padding"
@@ -997,6 +1026,7 @@
                                 android:background="@drawable/round_corner_gray_stroke_light"
                                 android:gravity="center"
                                 android:hint="Time : hh:mm"
+                                android:contentDescription="MembraneTime"
                                 android:minHeight="@dimen/edit_box_min_height"
                                 android:padding="@dimen/common_padding"
                                 android:textColor="@color/gray_6"
@@ -1012,7 +1042,7 @@
                             android:textSize="@dimen/header_text_size" />
 
                         <TextView
-                            android:id="@+id/tvRiskFactors"
+                            android:id="@+id/identificationSc_tvRiskFactors"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
@@ -1020,6 +1050,7 @@
                             android:drawableEnd="@drawable/ic_baseline_expand_more_24"
                             android:gravity="center_vertical"
                             android:hint="Select risk factors"
+                            android:contentDescription="Select risk factors"
                             android:minHeight="@dimen/edit_box_min_height"
                             android:padding="@dimen/common_padding"
                             android:textColor="@color/gray_6"
@@ -1034,46 +1065,50 @@
                             android:textSize="@dimen/header_text_size" />
 
                         <RadioGroup
-                            android:id="@+id/rgHospitalMaternity"
+                            android:id="@+id/identificationSc_rgHospitalMaternity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/common_padding">
 
                             <RadioButton
-                                android:id="@+id/rbHospital"
+                                android:id="@+id/identificationSc_rbHospital"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Hospital"
+                                android:contentDescription="Hospital"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
 
                             <RadioButton
-                                android:id="@+id/rbMaternity"
+                                android:id="@+id/identificationSc_rbMaternity"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/common_padding"
                                 android:text="Maternity"
+                                android:contentDescription="Maternity"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
 
                             <RadioButton
-                                android:id="@+id/rbOthers"
+                                android:id="@+id/identificationSc_rbOthers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/common_padding"
                                 android:text="Others"
+                                android:contentDescription="Others"
                                 android:textColor="@color/gray_6"
                                 android:textSize="@dimen/content_text_size" />
                         </RadioGroup>
 
                         <EditText
-                            android:id="@+id/etvOthersText"
+                            android:id="@+id/identificationSc_etvOthersText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/round_corner_gray_stroke_light"
                             android:gravity="center_vertical"
                             android:hint="Enter other location except Hospital &amp; Maternity"
+                            android:contentDescription="Enter other location except Hospital &amp; Maternity"
                             android:inputType="text"
                             android:minHeight="@dimen/edit_box_min_height"
                             android:padding="@dimen/common_padding"
@@ -1092,7 +1127,7 @@
                             android:visibility="gone">
 
                             <EditText
-                                android:id="@+id/identification_relationship"
+                                android:id="@+id/identificationSc_relationship"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -1103,6 +1138,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="Mother's Name"
+                                android:contentDescription="Mother's Name"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
@@ -1123,7 +1159,7 @@
 
 
                             <EditText
-                                android:id="@+id/identification_occupation"
+                                android:id="@+id/identificationSc_occupation"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -1134,6 +1170,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_occupation"
+                                android:contentDescription="@string/identification_screen_prompt_occupation"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
@@ -1147,7 +1184,7 @@
 
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/identification_txtlcaste"
+                            android:id="@+id/identificationSc_txtlcaste"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone">
@@ -1159,7 +1196,7 @@
                                 android:weightSum="4">
 
                                 <EditText
-                                    android:id="@+id/identification_caste"
+                                    android:id="@+id/identificationSc_caste"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:clickable="false"
@@ -1169,17 +1206,17 @@
                                     android:drawablePadding="10dp"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_caste"
+                                    android:contentDescription="@string/identification_screen_prompt_caste"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_caste"
+                                    android:id="@+id/identificationSc_spinner_caste"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -1187,7 +1224,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/identification_txtleconomic"
+                            android:id="@+id/identificationSc_txtleconomic"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone">
@@ -1199,7 +1236,7 @@
                                 android:weightSum="4">
 
                                 <EditText
-                                    android:id="@+id/identification_econiomic_status"
+                                    android:id="@+id/identificationSc_econiomic_status"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:clickable="false"
@@ -1215,17 +1252,18 @@
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_economic_status"
+                                    android:contentDescription="@string/identification_screen_prompt_economic_status"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_economic_status"
+                                    android:id="@+id/identificationSc_spinner_economic_status"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/identification_txtleducation"
+                            android:id="@+id/identificationSc_txtleducation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone">
@@ -1237,7 +1275,7 @@
                                 android:weightSum="4">
 
                                 <EditText
-                                    android:id="@+id/identification_education"
+                                    android:id="@+id/identificationSc_education"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:clickable="false"
@@ -1254,10 +1292,11 @@
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_education"
+                                    android:contentDescription="@string/identification_screen_prompt_education"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_education"
+                                    android:id="@+id/identificationSc_spinner_education"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -1271,11 +1310,12 @@
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab"
+                    android:id="@+id/identificationSc_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_margin="@dimen/fab_margin"
+                    android:contentDescription="identificationSc_fab"
                     app:srcCompat="@drawable/ic_done_24dp" />
             </LinearLayout>
         </ScrollView>

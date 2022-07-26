@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_todaysVisit"
+        android:id="@+id/cardView_actpsc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/white"
@@ -38,7 +38,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/list_item_head_text_view"
+                        android:id="@+id/tv_head_actpsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_bold"
@@ -50,7 +50,7 @@
                         tools:text="Patient Name" />
 
                     <TextView
-                        android:id="@+id/list_item_body_text_view"
+                        android:id="@+id/tv_body_actpsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -61,7 +61,7 @@
                         tools:text="10LAM-3" />
 
                     <TextView
-                        android:id="@+id/tv_age_gender"
+                        android:id="@+id/tv_age_gender_actpsc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -81,7 +81,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/list_item_indicator_text_view"
+                        android:id="@+id/tv_indicator_actpsc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -94,7 +94,7 @@
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/tv_not_uploaded"
+                        android:id="@+id/tv_not_uploaded_actpsc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -111,7 +111,7 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/iv_prescription"
+                    android:id="@+id/iv_prescription_actpsc"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/green_alert"
@@ -126,7 +126,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/btn_visit_details"
+                    android:id="@+id/btn_visit_details_actpsc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner_yellow"
@@ -141,7 +141,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/btn_end_visit"
+                    android:id="@+id/btn_end_visit_actpsc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/common_padding"
@@ -156,7 +156,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvStageName"
+                    android:id="@+id/tv_StageName_actpsc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/common_padding"

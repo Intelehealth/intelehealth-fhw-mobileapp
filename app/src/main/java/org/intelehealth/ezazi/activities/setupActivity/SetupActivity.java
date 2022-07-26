@@ -152,7 +152,7 @@ public class SetupActivity extends AppCompatActivity {
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_setsc);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -160,14 +160,14 @@ public class SetupActivity extends AppCompatActivity {
         customProgressDialog = new CustomProgressDialog(context);
 
         // Set up the login form.
-        mEmailView = findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email_setsc);
         // populateAutoComplete(); TODO: create our own autocomplete code
 
 
-        mPasswordView = findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password_setsc);
 
-        mAdminPasswordView = findViewById(R.id.admin_password);
-        mUrlField = findViewById(R.id.editText_URL);
+        mAdminPasswordView = findViewById(R.id.admin_password_setsc);
+        mUrlField = findViewById(R.id.editText_URL_setsc);
 
         mLoginButton = findViewById(R.id.setup_submit_button);
 
@@ -181,8 +181,8 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        r1 = findViewById(R.id.demoMindmap);
-        r2 = findViewById(R.id.downloadMindmap);
+        r1 = findViewById(R.id.demoMindmap_setsc);
+        r2 = findViewById(R.id.downloadMindmap_setsc);
 
         Button submitButton = findViewById(R.id.setup_submit_button);
 
@@ -210,7 +210,7 @@ public class SetupActivity extends AppCompatActivity {
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.admin_password || id == EditorInfo.IME_NULL) {
+                if (id == R.id.admin_password_setsc || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -218,7 +218,7 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        mAndroidIdTextView = findViewById(R.id.textView_Aid);
+        mAndroidIdTextView = findViewById(R.id.textView_Aid_setsc);
         String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
         mAndroidIdTextView.setText(deviceID);
 
@@ -235,6 +235,7 @@ public class SetupActivity extends AppCompatActivity {
         });
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
+        
 
         if(!mUrlField.getText().toString().trim().isEmpty() ||
         !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
@@ -1089,13 +1090,13 @@ public class SetupActivity extends AppCompatActivity {
 
         boolean checked = ((RadioButton) v).isChecked();
         switch (v.getId()) {
-            case R.id.demoMindmap:
+            case R.id.demoMindmap_setsc:
                 if (checked) {
                     r2.setChecked(false);
                 }
                 break;
 
-            case R.id.downloadMindmap:
+            case R.id.downloadMindmap_setsc:
                 if (NetworkConnection.isOnline(this)) {
                     if (checked) {
                         r1.setChecked(false);

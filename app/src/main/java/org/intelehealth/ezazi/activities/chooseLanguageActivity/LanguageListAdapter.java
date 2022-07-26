@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +56,11 @@ public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             try {
                 genericViewHolder.nameTextView.setText(genericViewHolder.jsonObject.getString("name"));
 
+                genericViewHolder.itemView.setContentDescription(
+                        new StringBuilder().append("lng_desc_root_").append(genericViewHolder.jsonObject.getString("name")).toString());
+                genericViewHolder.nameTextView.setContentDescription(
+                        new StringBuilder().append("lng_desc_tv_").append(genericViewHolder.jsonObject.getString("name")).toString());
+
                 if (genericViewHolder.jsonObject.getBoolean("selected")) {
                     genericViewHolder.statusImageView.setVisibility(View.VISIBLE);
                     genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_6));
@@ -80,16 +87,26 @@ public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
         ImageView statusImageView;
+        RelativeLayout rootView;
         JSONObject jsonObject;
+
         int index;
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.text_tv);
-            statusImageView = itemView.findViewById(R.id.status_imv);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            rootView = itemView.findViewById(R.id.rootView);
+            nameTextView = itemView.findViewById(R.id.text_tv_langsel);
+            statusImageView = itemView.findViewById(R.id.status_imv_langsel);
+           /* nameTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Toast.makeText(mContext, "Clicked On TextView", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+            nameTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Toast.makeText(mContext, "Clicked On itemView", Toast.LENGTH_SHORT).show();
                     try {
                         for (int i = 0; i < mItemList.size(); i++) {
                             if (i == index) {

@@ -223,27 +223,27 @@ public class IdentificationActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_identification);
         setTitle(R.string.title_activity_identification);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_identificationSc);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*new*/
-        mOthersEditText = findViewById(R.id.etvOthersText);
-        mAlternateNumberEditText = findViewById(R.id.identification_alt_phone_number);
-        mWifeDaughterOfEditText = findViewById(R.id.etv_wife_daughter_of);
-        mAdmissionDateTextView = findViewById(R.id.tvAdmissionDate);
-        mAdmissionTimeTextView = findViewById(R.id.tvAdmissionTime);
+        mOthersEditText = findViewById(R.id.identificationSc_etvOthersText);
+        mAlternateNumberEditText = findViewById(R.id.identificationSc_etvalt_phone_number);
+        mWifeDaughterOfEditText = findViewById(R.id.identificationSc_etvwife_daughter_of);
+        mAdmissionDateTextView = findViewById(R.id.identificationSc_tvAdmissionDate);
+        mAdmissionTimeTextView = findViewById(R.id.identificationSc_tvAdmissionTime);
 
-        mTotalBirthEditText = findViewById(R.id.etvTotalBirth);
-        mTotalMiscarriageEditText = findViewById(R.id.etvTotalMiscarriage);
-        mLaborOnsetRadioGroup = findViewById(R.id.rgLaborOnset);
-        mHospitalMaternityRadioGroup = findViewById(R.id.rgHospitalMaternity);
-        mActiveLaborDiagnosedDateTextView = findViewById(R.id.tvActiveLaborDiagnosedDate);
-        mActiveLaborDiagnosedTimeTextView = findViewById(R.id.tvActiveLaborDiagnosedTime);
-        mMembraneRupturedDateTextView = findViewById(R.id.tvMembraneRupturedDate);
-        mMembraneRupturedTimeTextView = findViewById(R.id.tvMembraneRupturedTime);
-        mRiskFactorsTextView = findViewById(R.id.tvRiskFactors);
-        mUnknownMembraneRupturedCheckBox = findViewById(R.id.cbUnknownMembraneRuptured);
+        mTotalBirthEditText = findViewById(R.id.identificationSc_etvTotalBirth);
+        mTotalMiscarriageEditText = findViewById(R.id.identificationSc_etvTotalMiscarriage);
+        mLaborOnsetRadioGroup = findViewById(R.id.identificationSc_rgLaborOnset);
+        mHospitalMaternityRadioGroup = findViewById(R.id.identificationSc_rgHospitalMaternity);
+        mActiveLaborDiagnosedDateTextView = findViewById(R.id.identificationSc_tvActiveLaborDiagnosedDate);
+        mActiveLaborDiagnosedTimeTextView = findViewById(R.id.identificationSc_tvActiveLaborDiagnosedTime);
+        mMembraneRupturedDateTextView = findViewById(R.id.identificationSc_tvMembraneDate);
+        mMembraneRupturedTimeTextView = findViewById(R.id.identificationSc_tvMembraneTime);
+        mRiskFactorsTextView = findViewById(R.id.identificationSc_tvRiskFactors);
+        mUnknownMembraneRupturedCheckBox = findViewById(R.id.identificationSc_cbUnknownMembrane);
 
         mAdmissionDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -432,6 +432,8 @@ public class IdentificationActivity extends AppCompatActivity {
                                     if (!stringBuilder.toString().isEmpty())
                                         stringBuilder.append(",");
                                     stringBuilder.append(mSelectedRiskFactorList.get(i));
+                                    mRiskFactorsTextView.setContentDescription(
+                                            new StringBuilder().append("SearchPsc_desc_").append(mSelectedRiskFactorList.get(i)));
 
                                 }
                                 mRiskFactorsString = stringBuilder.toString();
@@ -446,9 +448,9 @@ public class IdentificationActivity extends AppCompatActivity {
         mLaborOnsetRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rbLOSpontaneous) {
+                if (checkedId == R.id.identificationSc_rbLOSpontaneous) {
                     mLaborOnsetString = "Spontaneous";
-                } else if (checkedId == R.id.rbLOInduced) {
+                } else if (checkedId == R.id.identificationSc_rbLOInduced) {
                     mLaborOnsetString = "Induced";
                 }
             }
@@ -458,9 +460,9 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 mOthersEditText.setVisibility(View.GONE);
-                if (checkedId == R.id.rbHospital) {
+                if (checkedId == R.id.identificationSc_rbHospital) {
                     mHospitalMaternityString = "Hospital";
-                } else if (checkedId == R.id.rbMaternity) {
+                } else if (checkedId == R.id.identificationSc_rbMaternity) {
                     mHospitalMaternityString = "Maternity";
                 } else {
                     mHospitalMaternityString = " ";
@@ -482,17 +484,17 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        mFirstName = findViewById(R.id.identification_first_name);
+        mFirstName = findViewById(R.id.identificationSc_etvfirst_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
-        mMiddleName = findViewById(R.id.identification_middle_name);
+        mMiddleName = findViewById(R.id.identificationSc_etvmiddle_name);
         mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
-        mLastName = findViewById(R.id.identification_last_name);
+        mLastName = findViewById(R.id.identificationSc_etvlast_name);
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
-        mDOB = findViewById(R.id.identification_birth_date_text_view);
-        mPhoneNum = findViewById(R.id.identification_phone_number);
+        mDOB = findViewById(R.id.identificationSc_etvbirth_date_tv);
+        mPhoneNum = findViewById(R.id.identificationSc_etvphone_number);
 
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -506,41 +508,41 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });*/
 
-        mAge = findViewById(R.id.identification_age);
-        mAddress1 = findViewById(R.id.identification_address1);
+        mAge = findViewById(R.id.identificationSc_etvage);
+        mAddress1 = findViewById(R.id.identificationSc_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-        mAddress2 = findViewById(R.id.identification_address2);
+        mAddress2 = findViewById(R.id.identificationSc_address2);
         mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
-        mCity = findViewById(R.id.identification_city);
+        mCity = findViewById(R.id.identificationSc_city);
         mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        stateText = findViewById(R.id.identification_state);
-        mState = findViewById(R.id.spinner_state);
-        mPostal = findViewById(R.id.identification_postal_code);
-        countryText = findViewById(R.id.identification_country);
-        mCountry = findViewById(R.id.spinner_country);
-        mGenderM = findViewById(R.id.identification_gender_male);
-        mGenderF = findViewById(R.id.identification_gender_female);
-        mRelationship = findViewById(R.id.identification_relationship);
+        stateText = findViewById(R.id.identificationSc_state);
+        mState = findViewById(R.id.identificationSc_spinner_state);
+        mPostal = findViewById(R.id.identificationSc_postal_code);
+        countryText = findViewById(R.id.identificationSc_country);
+        mCountry = findViewById(R.id.identificationSc_spinner_country);
+        mGenderM = findViewById(R.id.identificationSc_gender_male);
+        mGenderF = findViewById(R.id.identificationSc_gender_female);
+        mRelationship = findViewById(R.id.identificationSc_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        mOccupation = findViewById(R.id.identification_occupation);
+        mOccupation = findViewById(R.id.identificationSc_occupation);
         mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        mCaste = findViewById(R.id.spinner_caste);
-        mEducation = findViewById(R.id.spinner_education);
-        mEconomicStatus = findViewById(R.id.spinner_economic_status);
-        casteText = findViewById(R.id.identification_caste);
-        educationText = findViewById(R.id.identification_education);
-        economicText = findViewById(R.id.identification_econiomic_status);
+        mCaste = findViewById(R.id.identificationSc_spinner_caste);
+        mEducation = findViewById(R.id.identificationSc_spinner_education);
+        mEconomicStatus = findViewById(R.id.identificationSc_spinner_economic_status);
+        casteText = findViewById(R.id.identificationSc_caste);
+        educationText = findViewById(R.id.identificationSc_education);
+        economicText = findViewById(R.id.identificationSc_econiomic_status);
 
-        casteLayout = findViewById(R.id.identification_txtlcaste);
-        economicLayout = findViewById(R.id.identification_txtleconomic);
-        educationLayout = findViewById(R.id.identification_txtleducation);
-        countryStateLayout = findViewById(R.id.identification_llcountry_state);
-        mImageView = findViewById(R.id.imageview_id_picture);
+        casteLayout = findViewById(R.id.identificationSc_txtlcaste);
+        economicLayout = findViewById(R.id.identificationSc_txtleconomic);
+        educationLayout = findViewById(R.id.identificationSc_txtleducation);
+        countryStateLayout = findViewById(R.id.identificationSc_llcountry_state);
+        mImageView = findViewById(R.id.identificationSc_img_id_picture);
 //Initialize the local database to store patient information
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -1466,7 +1468,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             }
         });
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.identificationSc_fab);
         fab.setOnClickListener(v -> {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
@@ -1660,12 +1662,12 @@ public class IdentificationActivity extends AppCompatActivity {
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
-            case R.id.identification_gender_male:
+            case R.id.identificationSc_gender_male:
                 if (checked)
                     mGender = "M";
                 Log.v(TAG, "gender:" + mGender);
                 break;
-            case R.id.identification_gender_female:
+            case R.id.identificationSc_gender_female:
                 if (checked)
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);

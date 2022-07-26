@@ -154,7 +154,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         setContentView(R.layout.activity_patient_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_PatientDetailSc);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -163,12 +163,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
-        newVisit = findViewById(R.id.button_new_visit);
+        newVisit = findViewById(R.id.btn_new_visit_PatientDetailSc);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
 
-        ivPrescription = findViewById(R.id.iv_prescription);
+        ivPrescription = findViewById(R.id.iv_prescription_PatientDetailSc);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -188,7 +188,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
 
-        editbtn = findViewById(R.id.edit_button);
+        editbtn = findViewById(R.id.btn_edit_PatientDetailSc);
 //        ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -596,19 +596,19 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //photoView = findViewById(R.id.imageView_patient);
 
-        idView = findViewById(R.id.textView_ID);
-        TextView patinetName = findViewById(R.id.textView_name);
-        TextView dobView = findViewById(R.id.textView_DOB);
-        TextView genderView = findViewById(R.id.textView_Gender);
-        TextView ageView = findViewById(R.id.textView_age);
-        TextView addr1View = findViewById(R.id.textView_address_1);
-        TableRow addr2Row = findViewById(R.id.tableRow_addr2);
-        TextView addr2View = findViewById(R.id.textView_address2);
-        TextView addrFinalView = findViewById(R.id.textView_address_final);
+        idView = findViewById(R.id.tv_ID_PatientDetailSc);
+        TextView patinetName = findViewById(R.id.tv_name_PatientDetailSc);
+        TextView dobView = findViewById(R.id.tv_DOB_PatientDetailSc);
+        TextView genderView = findViewById(R.id.tv_Gender_PatientDetailSc);
+        TextView ageView = findViewById(R.id.tv_age_PatientDetailSc);
+        TextView addr1View = findViewById(R.id.tv_address_1_PatientDetailSc);
+        TableRow addr2Row = findViewById(R.id.tableRow_addr2_PatientDetailSc);
+        TextView addr2View = findViewById(R.id.tv_address2_PatientDetailSc);
+        TextView addrFinalView = findViewById(R.id.tv_address_final_PatientDetailSc);
         TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
-        phoneView = findViewById(R.id.textView_phone);
+        phoneView = findViewById(R.id.tv_phone_PatientDetailSc);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -616,14 +616,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
-        ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
-        ImageView calling = findViewById(R.id.calling);
+        ImageView whatsapp_no = findViewById(R.id.whatsapp_no_PatientDetailSc);
+        ImageView calling = findViewById(R.id.calling_PatientDetailSc);
 
-        TextView medHistView = findViewById(R.id.textView_patHist);
-        TextView famHistView = findViewById(R.id.textView_famHist);
+        TextView medHistView = findViewById(R.id.tv_patHist_PatientDetailSc);
+        TextView famHistView = findViewById(R.id.tv_famHist_PatientDetailSc);
 
         //unique Ezazi registration number
-        TextView textView_UER_No=findViewById(R.id.textView_UER_No);
+//        TextView textView_UER_No=findViewById(R.id.textView_UER_No);
 
 
 

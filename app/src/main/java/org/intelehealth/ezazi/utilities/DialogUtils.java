@@ -28,6 +28,7 @@ public class DialogUtils {
                 });
         AlertDialog dialog = alertDialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("positive_ok");
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);

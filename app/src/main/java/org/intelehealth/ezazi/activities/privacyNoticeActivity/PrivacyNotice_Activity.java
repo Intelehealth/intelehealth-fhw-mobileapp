@@ -60,7 +60,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         /*
          * Toolbar which displays back arrow on action bar
          * Add the below lines for every activity*/
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_PrivacySc);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -75,11 +75,11 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 
 
         sessionManager = new SessionManager(this);
-        privacy_textview = findViewById(R.id.privacy_text);
+        privacy_textview = findViewById(R.id.tv_privacy_PrivacySc);
         privacy_textview.setAutoLinkMask(Linkify.ALL);
-        accept = findViewById(R.id.button_accept);
-        reject = findViewById(R.id.button_reject);
-        checkBox_cho = findViewById(R.id.checkbox_CHO);
+        accept = findViewById(R.id.btn_accept_PrivacySc);
+        reject = findViewById(R.id.btn_reject_PrivacySc);
+        checkBox_cho = findViewById(R.id.checkbox_CHO_PrivacySc);
 
 
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -184,7 +184,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
 
-        if (checkBox_cho.isChecked() && v.getId() == R.id.button_accept) {
+        if (checkBox_cho.isChecked() && v.getId() == R.id.btn_accept_PrivacySc) {
 
             //Clear HouseHold UUID from Session for new registration
             sessionManager.setHouseholdUuid("");
@@ -193,7 +193,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
             Log.d("Privacy", "selected radio: " + accept.getText().toString());
             startActivity(intent);
-        } else if (checkBox_cho.isChecked() && v.getId() == R.id.button_reject) {
+        } else if (checkBox_cho.isChecked() && v.getId() == R.id.btn_reject_PrivacySc) {
             Toast.makeText(PrivacyNotice_Activity.this,
                     getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();
             finish();

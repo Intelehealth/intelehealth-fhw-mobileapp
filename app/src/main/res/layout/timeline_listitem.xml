@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="10dp">
 
     <TextView
-        android:id="@+id/stage1start"
+        android:id="@+id/stage1start_timelineSc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -22,10 +22,10 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/stage2start"
+        android:id="@+id/stage2start_timelineSc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/stage1start"
+        android:layout_below="@+id/stage1start_timelineSc"
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="10dp"
         android:gravity="center"
@@ -38,17 +38,17 @@
         tools:visibility="visible" />
 
     <FrameLayout
-        android:id="@+id/frame1"
+        android:id="@+id/frame1_timelineSc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stage2start">
+        android:layout_below="@id/stage2start_timelineSc">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/time1"
+                android:id="@+id/time1_timelineSc"
                 android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -60,40 +60,40 @@
                 android:textSize="@dimen/header_text_size" />
 
             <View
-                android:id="@+id/vl_1"
+                android:id="@+id/vl_1_timelineSc"
                 android:layout_width="2dp"
                 android:layout_height="100dp"
-                android:layout_above="@+id/vl_2"
+                android:layout_above="@+id/vl_2_timelineSc"
                 android:layout_marginStart="21dp"
-                android:layout_toEndOf="@id/time1"
+                android:layout_toEndOf="@id/time1_timelineSc"
                 android:background="@color/gray_2" />
 
             <ImageView
-                android:id="@+id/circle1"
+                android:id="@+id/circle1_timelineSc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/time1"
+                android:layout_toEndOf="@+id/time1_timelineSc"
                 android:src="@drawable/circle_indicator_timeline" />
 
             <View
-                android:id="@+id/hl_1"
+                android:id="@+id/hl_1_timelineSc"
                 android:layout_width="30dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/circle1"
+                android:layout_toEndOf="@+id/circle1_timelineSc"
                 android:background="@color/gray_2" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_parent"
+                android:id="@+id/cardview_parent_timelineSc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toEndOf="@+id/hl_1"
+                android:layout_toEndOf="@+id/hl_1_timelineSc"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
@@ -111,24 +111,24 @@
                     android:padding="2dp">
 
                     <TextView
-                        android:id="@+id/summary_note_textview"
+                        android:id="@+id/summary_note_textview_timelineSc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@+id/ivEdit"
+                        android:layout_toStartOf="@+id/ivEdit_timelineSc"
                         android:text="Tap here to collect the history data!"
                         android:textColor="@color/gray_4"
                         android:textSize="@dimen/content_text_size" />
 
                     <TextView
-                        android:id="@+id/summary_textview"
+                        android:id="@+id/summary_textview_timelineSc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/summary_note_textview"
+                        android:layout_below="@+id/summary_note_textview_timelineSc"
                         android:gravity="center" android:textStyle="bold"
                         android:text="@string/click_to_enter" />
 
                     <ImageView
-                        android:id="@+id/ivEdit"
+                        android:id="@+id/ivEdit_timelineSc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

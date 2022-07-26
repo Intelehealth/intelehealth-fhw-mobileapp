@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_PatientDetailSc"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary" />
@@ -35,7 +35,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView_patDetail_summary"
+                android:id="@+id/cardView__PatientDetailSc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -66,26 +66,26 @@
 
 
                     <LinearLayout
-                        android:id="@+id/image_view"
+                        android:id="@+id/imglayout_PatientDetailSc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/edit_button"
+                            android:id="@+id/btn_edit_PatientDetailSc"
                             style="@style/SelectableItemBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@null"
-                            android:contentDescription="TODO"
+                            android:contentDescription="EditDetails"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:padding="10dp"
                             app:srcCompat="@drawable/edit_icon" />
 
                         <ImageView
-                            android:id="@+id/iv_prescription"
+                            android:id="@+id/iv_prescription_PatientDetailSc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -98,7 +98,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/linear_card"
+                    android:id="@+id/linear_card_PatientDetailSc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
@@ -126,7 +126,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_name"
+                                android:id="@+id/tv_name_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -158,7 +158,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_ID"
+                                android:id="@+id/tv_ID_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -174,37 +174,37 @@
 
                         </TableRow>
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+<!--                        <TableRow-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent">-->
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:includeFontPadding="false"
-                                android:paddingTop="@dimen/padding_card_action"
-                                android:text="@string/unique_Ezazi_registration_number"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-
-                            <TextView
-                                android:id="@+id/textView_UER_No"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:fontFamily="@font/lato_regular"
-                                android:includeFontPadding="false"
-                                android:paddingTop="@dimen/padding_card_action"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <androidx.legacy.widget.Space
-                                android:layout_width="10dp"
-                                android:layout_height="wrap_content" />
+<!--                            <TextView-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:fontFamily="@font/lato_bold"-->
+<!--                                android:includeFontPadding="false"-->
+<!--                                android:paddingTop="@dimen/padding_card_action"-->
+<!--                                android:text="@string/unique_Ezazi_registration_number"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
 
-                        </TableRow>
+<!--                            <TextView-->
+<!--                                android:id="@+id/textView_UER_No"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="2"-->
+<!--                                android:fontFamily="@font/lato_regular"-->
+<!--                                android:includeFontPadding="false"-->
+<!--                                android:paddingTop="@dimen/padding_card_action"-->
+<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
+
+<!--                            <androidx.legacy.widget.Space-->
+<!--                                android:layout_width="10dp"-->
+<!--                                android:layout_height="wrap_content" />-->
+
+
+<!--                        </TableRow>-->
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -223,7 +223,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_Gender"
+                                android:id="@+id/tv_Gender_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -255,7 +255,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_DOB"
+                                android:id="@+id/tv_DOB_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -288,7 +288,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_age"
+                                android:id="@+id/tv_age_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -321,7 +321,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_address_1"
+                                android:id="@+id/tv_address_1_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -338,7 +338,7 @@
                         </TableRow>
 
                         <TableRow
-                            android:id="@+id/tableRow_addr2"
+                            android:id="@+id/tableRow_addr2_PatientDetailSc"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -353,7 +353,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_address2"
+                                android:id="@+id/tv_address2_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -385,7 +385,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_address_final"
+                                android:id="@+id/tv_address_final_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -417,7 +417,7 @@
 
 
                             <TextView
-                                android:id="@+id/textView_phone"
+                                android:id="@+id/tv_phone_PatientDetailSc"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
@@ -431,14 +431,16 @@
                                 android:layout_height="wrap_content" />
 
                             <ImageView
-                                android:id="@+id/whatsapp_no"
+                                android:id="@+id/whatsapp_no_PatientDetailSc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
+                                android:contentDescription="whatsapp_no_PatientDetailSc"
                                 app:srcCompat="@drawable/ic_icons8_whatsapp" />
 
                             <ImageView
-                                android:id="@+id/calling"
+                                android:id="@+id/calling_PatientDetailSc"
+                                android:contentDescription="calling_PatientDetailSc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
@@ -786,7 +788,7 @@
                                 android:layout_height="wrap_content" />
 
                             <TextView
-                                android:id="@+id/textView_patHist"
+                                android:id="@+id/tv_patHist_PatientDetailSc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -816,7 +818,7 @@
                                 android:layout_height="wrap_content" />
 
                             <TextView
-                                android:id="@+id/textView_famHist"
+                                android:id="@+id/tv_famHist_PatientDetailSc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -837,7 +839,8 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button_new_visit"
+                android:id="@+id/btn_new_visit_PatientDetailSc"
+                android:contentDescription="Start New Visit"
                 style="@style/SelectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

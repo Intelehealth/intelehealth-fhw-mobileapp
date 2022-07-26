@@ -105,11 +105,11 @@ public class ChatActivity extends AppCompatActivity {
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
 
-        mEmptyTextView = findViewById(R.id.empty_tv);
-        mMessageEditText = findViewById(R.id.text_etv);
-        mLoadingLinearLayout = findViewById(R.id.loading_layout);
-        mEmptyLinearLayout = findViewById(R.id.empty_view);
-        mRecyclerView = findViewById(R.id.chats_rcv);
+        mEmptyTextView = findViewById(R.id.empty_tv_chatSc);
+        mMessageEditText = findViewById(R.id.text_etv_chatSc);
+        mLoadingLinearLayout = findViewById(R.id.loading_layout_chatSc);
+        mEmptyLinearLayout = findViewById(R.id.empty_view_chatSc);
+        mRecyclerView = findViewById(R.id.chats_rcv_chatSc);
         mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 

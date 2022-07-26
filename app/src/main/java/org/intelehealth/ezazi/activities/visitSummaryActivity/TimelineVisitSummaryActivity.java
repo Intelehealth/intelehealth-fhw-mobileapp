@@ -205,13 +205,13 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        fabv = findViewById(R.id.fabv);
-        outcomeTV = findViewById(R.id.outcomeTV);
-        fabc = findViewById(R.id.fabc);
+        fabv = findViewById(R.id.fabv_timelineSc);
+        outcomeTV = findViewById(R.id.outcomeTV_timelineSc);
+        fabc = findViewById(R.id.fabc_timelineSc);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         timeList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerview_timeline);
-        endStageButton = findViewById(R.id.endStageButton);
+        recyclerView = findViewById(R.id.rcv_timelineSc);
+        endStageButton = findViewById(R.id.endStageButton_timelineSc);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this,  LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayout);
         context = TimelineVisitSummaryActivity.this;

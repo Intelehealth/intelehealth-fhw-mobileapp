@@ -12,7 +12,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_SearchPsc"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -30,25 +30,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/type_to_search"
+                        android:contentDescription="@string/type_to_search"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:background="@null"
-                        android:id="@+id/toolbar_ET" />
+                        android:id="@+id/toolbar_etSearch_SearchPsc" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_baseline_clear_24"
                         android:layout_marginHorizontal="5dp"
-                        android:id="@+id/toolbar_clear"
+                        android:id="@+id/toolbar_imgclear_SearchPsc"
+                        android:contentDescription="@string/btn_clear_search"
                         android:visibility="gone"
                         tools:visibility="visible" />
 
                     <ImageView
-                        android:id="@+id/toolbar_search"
+                        android:id="@+id/toolbar_imgsearch_SearchPsc"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_baseline_search_24"
+                        android:contentDescription="@string/btn_search_img"
                         android:layout_marginHorizontal="5dp"
                         android:paddingHorizontal="5dp"
                         android:visibility="gone"
@@ -59,7 +62,7 @@
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_baseline_filter_alt_24"
                         android:layout_marginHorizontal="5dp"
-                        android:id="@+id/toolbar_filter"
+                        android:id="@+id/toolbar_filter_SearchPsc"
                         android:visibility="gone"/>
 
 
@@ -81,25 +84,26 @@
             tools:showIn="@layout/activity_search_patient">
 
             <TextView
-                android:id="@+id/textviewmessage"
+                android:id="@+id/tv_msg_wait_sync_SearchPsc"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/please_wait_till_sync_is_completed"
                 android:fontFamily="@font/lato_regular"
+                android:text="@string/please_wait_till_sync_is_completed"
                 android:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle"
+                android:id="@+id/rcv_SearchPsc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
         </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/new_patient"
+        android:id="@+id/new_patient_SearchPsc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:contentDescription="@string/new_patient_SearchPsc"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_24dp"
         />

@@ -1,8 +1,5 @@
 package org.intelehealth.ezazi.activities.chooseLanguageActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,6 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.IntroActivity.IntroActivity;
@@ -22,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 public class ChooseLanguageActivity extends AppCompatActivity {
 
 
@@ -36,7 +39,6 @@ public class ChooseLanguageActivity extends AppCompatActivity {
     String appLanguage;
     private RecyclerView mRecyclerView;
     private List<JSONObject> mItemList = new ArrayList<JSONObject>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,6 @@ public class ChooseLanguageActivity extends AppCompatActivity {
                     onBackPressed();
                 }
             });
-
         }
 
         SaveButton.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +87,8 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
         mRecyclerView = findViewById(R.id.language_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        SaveButton = findViewById(R.id.save_button);
-        BackImage = findViewById(R.id.backButton);
+        SaveButton = findViewById(R.id.save_button_langsel);
+        BackImage = findViewById(R.id.backButton_langsel);
 
     }
 
