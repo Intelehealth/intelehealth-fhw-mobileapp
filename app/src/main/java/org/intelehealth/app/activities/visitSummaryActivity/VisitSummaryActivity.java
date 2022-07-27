@@ -54,6 +54,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -206,6 +207,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String visitUuid;
     String state;
     String patientName;
+    String patientAge;
     String patientGender;
     String intentTag;
     String visitUUID;
@@ -257,6 +259,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     FrameLayout frameLayout_doctor;
     TextView nameView;
+    TextView ageView;
     TextView genderView;
     TextView idView;
     TextView visitView;
@@ -530,6 +533,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
+            patientAge = intent.getStringExtra("age");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
@@ -1118,6 +1122,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         queryData(String.valueOf(patientUuid));
         nameView = findViewById(R.id.textView_name_value);
+        ageView = findViewById(R.id.textView_age_value);
         genderView = findViewById(R.id.textView_gender_value);
 
         //OpenMRS Id
@@ -1130,6 +1135,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
         String gender_tv = patientGender;
         nameView.setText(patientName);
+        ageView.setText(DateAndTimeUtils.getAgeInYearMonth(patient.getDate_of_birth(), this));
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
