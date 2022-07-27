@@ -1456,5 +1456,6 @@
     <string name="_main_disconnect">" disconnected"</string>
     <string name="printing">Printing...</string>
     <string name="visit_confirmation">तुम्हाला ही भेट नक्की सुरू करायची आहे का?</string>
+    <string name="save_prescription">प्रिस्क्रिप्शन सेव्ह करा</string>
 
 </resources>

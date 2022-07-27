@@ -3,8 +3,10 @@ package org.intelehealth.app.activities.textprintactivity;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,12 +14,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -31,8 +39,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
 import com.rt.printerlibrary.bean.Position;
 import com.rt.printerlibrary.cmd.Cmd;
@@ -58,19 +68,37 @@ import com.rt.printerlibrary.setting.TextSetting;
 import com.rt.printerlibrary.utils.BitmapConvertUtil;
 import com.rt.printerlibrary.utils.FuncUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.BaseEnum;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.TimeRecordUtils;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class TextPrintESCActivity extends AppCompatActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
+
+    private WebView mWebView;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+
+    Patient patient = new Patient();
 
     private static final String TAG = TextPrintESCActivity.class.getSimpleName();
     private TextView pres_textview, drSign_textview, drDetails_textview;
@@ -125,6 +153,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         drSign_textview = findViewById(R.id.drSign_textview);
         drDetails_textview = findViewById(R.id.drDetails_textview);
         btn_txtprint = findViewById(R.id.btn_txtprint);
+
 //        ck_smallfont = findViewById(R.id.ck_smallfont);
 //        ck_anti_white = findViewById(R.id.ck_anti_white);
 //        ck_double_width = findViewById(R.id.ck_double_width);
@@ -234,8 +263,12 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
            /* prescData = "    - Not Provided\n" +
                     "    ";*/
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
-            font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
-            drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
+
+            if (intent.getStringExtra("font-family") != null)
+                font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
+
+            if (intent.getStringExtra("drSign_text") != null)
+                drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
         }
         Log.e("pres:", "prescFinall:" + intent.getStringExtra("sms_prescripton") + intent.getStringExtra("doctorDetails"));
 
@@ -252,8 +285,11 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
-        drSign_textview.setTypeface(face);
+        if (font_family != null) {
+            Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
+            drSign_textview.setTypeface(face);
+        }
+
         drSign_textview.setTextSize(60f);
         drSign_textview.setIncludeFontPadding(false);
         drSign_textview.setTextColor(getResources().getColor(R.color.ink_pen));
@@ -266,7 +302,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         drSign_textview.layout(0, 0, drSign_textview.getMeasuredWidth(), drSign_textview.getMeasuredHeight());
         mBitmap = drSign_textview.getDrawingCache();
 
-        pres_textview.setText(translatePrescription(prescData));
+        pres_textview.setText(prescData);
         drDetails_textview.setText(doctorDetails);
         Log.e("pres:", "prescFinal:" + pres_textview.getText().toString() + drSign_textview.getText().toString() +
                 drDetails_textview.getText().toString());
@@ -352,7 +388,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                     escCmd.append(escCmd.getLFCRCmd());
 
                     try {
-                        escCmd.append(escCmd.getBitmapCmd(bitmapSetting, mBitmap));
+                        if (mBitmap != null)
+                            escCmd.append(escCmd.getBitmapCmd(bitmapSetting, mBitmap));
                     } catch (SdkException e) {
                         e.printStackTrace();
                     }
