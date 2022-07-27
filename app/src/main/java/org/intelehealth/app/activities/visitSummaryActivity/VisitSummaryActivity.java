@@ -3737,7 +3737,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 Log.i(TAG, "parseData: val:" + value);
                 Log.i(TAG, "parseData: rx" + rxReturned);
                 if (!rxReturned.trim().isEmpty()) {
-                    rxReturned = rxReturned + "\n" + value;
+                    rxReturned = rxReturned + "\n\n" + value;
                 } else {
                     rxReturned = value;
                 }
@@ -4970,7 +4970,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String rx_web = stringToWeb_sms(rxReturned);
+        String rx_web = stringToWeb_sms(rxReturned).replace("<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">- </b>", "");
 
         String tests_web = stringToWeb_sms(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
