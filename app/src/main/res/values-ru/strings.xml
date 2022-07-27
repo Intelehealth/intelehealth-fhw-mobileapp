@@ -88,6 +88,7 @@
     <string name="identification_screen_prompt_gender" translatable="false">Пол *</string>
     <string name="identification_screen_checkbox_male">Мужской</string>
     <string name="identification_screen_checkbox_female">Женский</string>
+    <string name="identification_screen_checkbox_other">других</string>
     <string name="identification_screen_prompt_birthday">Дата рождения*</string>
     <string name="identification_screen_prompt_age">Возраст:</string>
     <string name="identification_screen_prompt_city">Село/Город</string>
@@ -807,5 +808,6 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">Протокол доступен, после чего загружается। Нажмите \'Да\', чтобы подтвердить загрузку протокола। Нажмите \'Нет\' для продолжения работы с демонстрационным протоколом।</string>
+    <string name="app_version_string">App Version - %1$s</string>
 
 </resources>

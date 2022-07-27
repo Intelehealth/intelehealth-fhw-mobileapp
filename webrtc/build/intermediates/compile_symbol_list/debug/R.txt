@@ -2537,6 +2537,7 @@ int string status_bar_notification_info_overflow 0x0
 int string switch_camera 0x0
 int string toggle_debug 0x0
 int string toggle_mic 0x0
+int string type_text_here_str 0x0
 int string video_call 0x0
 int string video_off_lbl 0x0
 int string video_on_lbl 0x0

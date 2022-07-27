@@ -86,6 +86,7 @@
     <string name="identification_screen_prompt_gender">લિંગ*</string>
     <string name="identification_screen_checkbox_male">પુરૂષ</string>
     <string name="identification_screen_checkbox_female">સ્ત્રી</string>
+    <string name="identification_screen_checkbox_other">અન્ય</string>
     <string name="identification_screen_prompt_birthday">જન્મતારીખ*</string>
     <string name="identification_screen_prompt_age">વય(ઉમર)</string>
     <string name="identification_screen_prompt_city">શહેર ગામ*</string>
@@ -800,5 +801,6 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">પ્રોટોકોલ ઉપલબ્ધ છે પછી ડાઉનલોડ થાય છે । પ્રોટોકોલ ડાઉનલોડ ફરીથી લખવા માટે \'હા\' દબાવો । ડેમો પ્રોટોકોલ સાથે સાતત્ય માટે \'ના\' દબાવો ।</string>
+    <string name="app_version_string">App Version - %1$s</string>
 
 </resources>

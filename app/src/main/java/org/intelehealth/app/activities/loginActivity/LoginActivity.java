@@ -259,8 +259,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         String phoneNumberWithCountryCode = "+917005308163";
                         String message =
-                                getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
-                                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                                getString(R.string.hello_my_name_is1) + sessionManager.getChwname() +
+                                        /*" from " + sessionManager.getState() + */getString(R.string.please_help);
 
                         startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(

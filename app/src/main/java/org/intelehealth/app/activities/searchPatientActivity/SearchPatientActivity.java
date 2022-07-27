@@ -86,7 +86,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.ic_sort_white_24dp);
-//        toolbar.setOverflowIcon(drawable);
+    toolbar.setOverflowIcon(drawable);
 
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -97,11 +97,12 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
         //toolbar views
-        toolbarET = findViewById(R.id.toolbar_ET);
+        //toolbarET = findViewById(R.id.toolbar_ET);
         toolbarClear = findViewById(R.id.toolbar_clear);
         toolbarSearch = findViewById(R.id.toolbar_search);
-//        toolbarFilter = findViewById(R.id.toolbar_filter);
-        toolbarET.addTextChangedListener(new TextWatcher() {
+       toolbarFilter = findViewById(R.id.toolbar_filter);
+
+     /*   toolbarET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -116,10 +117,12 @@ public class SearchPatientActivity extends AppCompatActivity {
                     toolbarET.clearFocus();
                     toolbarClear.setVisibility(View.GONE);
                     toolbarSearch.setVisibility(View.GONE);
+                    toolbarET.notify();
                     firstQuery();
                 }
             }
-        });
+
+        });*/
         toolbarClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,12 +149,12 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         });
 
-//        toolbarFilter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                displaySingleSelectionDialog();
-//            }
-//        });
+        toolbarFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displaySingleSelectionDialog();
+            }
+        });
 
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
@@ -293,60 +296,59 @@ public class SearchPatientActivity extends AppCompatActivity {
             Logger.logE("firstquery", "exception", e);
         }
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the options menu from XMLz
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_search, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the options menu from XMLz
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        inflater.inflate(R.menu.today_filter, menu);
 //        inflater.inflate(R.menu.today_filter, menu);
-////        inflater.inflate(R.menu.today_filter, menu);
-//        // Get the SearchView and set the searchable configuration
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
-//                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
-//        // Assumes current activity is the searchable activity
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                Log.d("Hack", "in query text change");
-//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
-//                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-//                suggestions.clearHistory();
-//                query = newText;
-//                doQuery(newText);
-//                return true;
-//            }
-//        });
-//
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.summary_endAllVisit:
-//                endAllVisit();
-//
-//            case R.id.action_filter:
-//                //alert box.
-//                displaySingleSelectionDialog();    //function call
-//            case R.id.action_search:
-//
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("Hack", "in query text change");
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                suggestions.clearHistory();
+                query = newText;
+                doQuery(newText);
+                return true;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.summary_endAllVisit:
+                endAllVisit();
+
+            case R.id.action_filter:
+                //alert box.
+                displaySingleSelectionDialog();    //function call
+            case R.id.action_search:
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     /**
      * This method is called when no search result is found for patient.

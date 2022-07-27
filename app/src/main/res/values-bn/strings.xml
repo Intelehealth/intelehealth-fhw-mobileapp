@@ -58,6 +58,7 @@
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুরুষ</string>
     <string name="identification_screen_checkbox_female">মহিলা</string>
+    <string name="identification_screen_checkbox_other">অন্যান্য</string>
     <string name="identification_screen_prompt_birthday">জন্ম তারিখ *</string>
     <string name="identification_screen_prompt_age">বয়স *</string>
     <string name="identification_screen_prompt_city">গ্রাম/শহর/মহানগর *</string>
@@ -677,5 +678,6 @@
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">প্রোটোকলটি উপলব্ধ তারপর ডাউনলোড করা হয়। প্রোটোকল ডাউনলোডটি পুনরায় চালু করতে \'হ্যাঁ\' টিপুন। ডেমো প্রোটোকলের সাথে ধারাবাহিকতার জন্য \'না\' টিপুন।</string>
+    <string name="app_version_string">App Version - %1$s</string>
 
 </resources>
