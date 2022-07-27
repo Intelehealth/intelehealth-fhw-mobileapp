@@ -557,7 +557,7 @@
     <string name="new_update_available">नवीन अद्यतन उपलब्ध</string>
     <string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अपडेट करा</string>
     <string name="update">\अपडेट करा</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा "</string>
 
     <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा -"</string>
 
