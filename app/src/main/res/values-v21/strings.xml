@@ -1082,7 +1082,7 @@
     <string name="more_than_ten_years">More than 10 years</string>
 
     <string name="history_of_alcohol_consumption">History Of Alcohol Consumption*</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption in the household?</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">Is there a history of alcohol consumption?</string>
     <string name="no_denied">No or Denied</string>
     <string name="rate_of_alcohol_consumption">Rate of alcohol consumption</string>
     <string name="zero_five_times">0 – 5 times</string>

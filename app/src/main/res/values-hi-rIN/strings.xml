@@ -1088,7 +1088,7 @@
 
     <!--    Alcohol Consumption Strings -->
     <string name="history_of_alcohol_consumption">शराब के सेवन का इतिहास*</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या घर में शराब पीने का कोई इतिहास है?</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">क्या शराब पीने का कोई इतिहास है?</string>
     <string name="no_denied">नहीं / अस्वीकार</string>
     <string name="rate_of_alcohol_consumption">शराब की खपत की दर</string>
     <string name="zero_five_times">0 – 5 बार</string>

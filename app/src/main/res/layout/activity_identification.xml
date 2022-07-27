@@ -519,7 +519,7 @@
                                 <Spinner
                                     android:id="@+id/spinner_village"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="38dp"
                                     android:layout_weight="1" />
                             </LinearLayout>
                             <!--<AutoCompleteTextView

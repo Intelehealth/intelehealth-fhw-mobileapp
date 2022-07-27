@@ -438,7 +438,6 @@ public class HwProfileActivity extends AppCompatActivity {
         int errorColor;
         final int version = Build.VERSION.SDK_INT;
         if (version >= 23) {
-
             errorColor = ContextCompat.getColor(getApplicationContext(), R.color.white);
         } else {
             errorColor = getResources().getColor(R.color.white);

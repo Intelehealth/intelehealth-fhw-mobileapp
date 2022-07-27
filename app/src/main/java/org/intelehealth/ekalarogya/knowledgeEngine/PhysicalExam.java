@@ -80,9 +80,6 @@ public class PhysicalExam extends Node {
                 }
             }
 
-
-
-
             //Find the other exams that need to be conducted and add them in
             if (selection == null || selection.isEmpty()) {
                 //If no exams were required, just do the general ones
@@ -300,7 +297,6 @@ public class PhysicalExam extends Node {
         return mLanguage;
     }
 
-
     private String removeCharsFindings(String raw) {
         String formatted;
         if (Character.toString(raw.charAt(0)).equals(",")) {
@@ -310,6 +306,5 @@ public class PhysicalExam extends Node {
         }
         return formatted;
     }
-
 
 }

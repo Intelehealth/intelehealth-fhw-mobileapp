@@ -687,12 +687,12 @@
     <string name="hemoglobin_error" translatable="false">হিম’গ্লবিন %1$s আৰু %2$s ৰ ভিতৰত থাকিব লাগে</string>
     <string name="sugar_error" translatable="false">চেনিৰ মাত্ৰা %1$s আৰু %2$s ৰ ভিতৰত হ’ব লাগে</string>
     <string name="blood_error" translatable="false">অনুগ্ৰহ কৰি ব্লাড গ্ৰুপ নিৰ্বাচন কৰক</string>
-    <string name="table_sugar_fasting" translatable="false">চেনি(খালি পেট)</string>
-    <string name="table_sugar_aftermeal" translatable="false">চেনি(খাদ্যৰ পিছত)</string>
+    <string name="table_sugar_fasting" translatable="false">ছুগাৰৰ মাত্ৰা খোৱাৰ আগত</string>
+    <string name="table_sugar_aftermeal" translatable="false">ছুগাৰৰ মাত্ৰা খোৱাৰ পিছত</string>
 
     <string name="table_hemoglobin" translatable="false">হিম’গ্লবিন</string>
     <string name="table_bld_grp" translatable="false">ব্লাড গ্ৰুপ</string>
-    <string name="table_sugar_level" translatable="false">চেনিৰ মাত্ৰা -মিলিগ্ৰাম/ডেচিলিটাৰ (ৰেন্ডম)</string>
+    <string name="table_sugar_level" translatable="false">ছুগাৰৰ মাত্ৰা মিলিগ্ৰাম /ডেচিলিটাৰ /ৰেণ্ডম</string>
 
     //----------hw profile strings--------------------
     <string name="hw_totalpatient_str" translatable="false">নিৰীক্ষণ \n সৃষ্টি কৰা হৈছে</string>
@@ -1061,7 +1061,7 @@
     <string name="more_than_ten_years">১০ বছৰতকৈ অধিক</string>
 
     <string name="history_of_alcohol_consumption">ঘৰত মদ্যপানৰ ইতিহাস*</string>
-    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">ঘৰত মদ্যপানৰ ইতিহাস আছে নেকি?</string>
+    <string name="is_there_a_history_of_alcohol_consumption_in_the_household">মদ্যপানৰ ইতিহাস আছে নেকি?</string>
     <string name="no_denied">নাই বা অস্বীকাৰ কৰা হৈছে</string>
     <string name="rate_of_alcohol_consumption">মদ্যপানৰ হাৰ</string>
     <string name="zero_five_times">০ – ৫ বাৰ</string>
