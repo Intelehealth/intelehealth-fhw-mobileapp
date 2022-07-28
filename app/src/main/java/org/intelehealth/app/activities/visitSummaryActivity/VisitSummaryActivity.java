@@ -1046,6 +1046,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1054,6 +1056,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1062,6 +1066,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1070,6 +1076,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1078,6 +1086,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1086,6 +1096,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1094,6 +1106,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1102,6 +1116,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1110,6 +1126,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
@@ -1118,6 +1136,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (gender_tv.equalsIgnoreCase("Other")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
             } else {
                 genderView.setText(gender_tv);
             }
