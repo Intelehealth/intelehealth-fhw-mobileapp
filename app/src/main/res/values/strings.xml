@@ -842,4 +842,10 @@
     <string name="and">”, and “</string>
     <string name="app_version_string">App Version - %1$s</string>
     <!--Appointment END-->
+
+    <!--UI2.0-->
+    <string name="username">Username</string>
+
+    <!--END-->
+
 </resources>

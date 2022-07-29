@@ -42,4 +42,25 @@
 
     <dimen name="text_18sp">18sp</dimen>
 
+
+    <!--UI2.0-->
+
+    <dimen name="common_button_height">48dp</dimen>
+    <dimen name="common_button_width">312dp</dimen>
+    <dimen name="common_button_text_size">16sp</dimen>
+    <dimen name="common_header_text_size">18sp</dimen>
+    <dimen name="common_label_text_size">14sp</dimen>
+    <dimen name="common_hint_text_size">16sp</dimen>
+    <dimen name="title_text_size">24sp</dimen>
+
+    <dimen name="common_edittext_padding_top">10dp</dimen>
+    <dimen name="common_edittext_padding_right">12dp</dimen>
+    <dimen name="common_edittext_padding_bottom">10dp</dimen>
+    <dimen name="common_edittext_padding_left">12dp</dimen>
+    <dimen name="card_top_rounded_white_height">381dp</dimen>
+    <dimen name="card_top_rounded_white_width">360dp</dimen>
+
+
+
+
 </resources>
