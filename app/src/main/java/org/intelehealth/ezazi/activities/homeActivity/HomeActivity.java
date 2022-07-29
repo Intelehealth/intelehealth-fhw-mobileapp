@@ -1814,7 +1814,7 @@ public class HomeActivity extends AppCompatActivity {
         resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                showResetProgressbar();
+               // showResetProgressbar();
                 deleteCache(getApplicationContext());
             }
         });
