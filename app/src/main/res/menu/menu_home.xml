@@ -35,7 +35,8 @@
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"
-            android:title="@string/update_protocols" />
+            android:title="@string/update_protocols"
+            android:visible="false" />
 
         <item
             android:id="@+id/restAppOption"

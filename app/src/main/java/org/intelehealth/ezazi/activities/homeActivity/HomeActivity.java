@@ -77,6 +77,7 @@ import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientAdapter;
+import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity;
@@ -1128,7 +1129,9 @@ public class HomeActivity extends AppCompatActivity {
 //                refreshDatabases();
 //                return true;
             case R.id.settingsOption:
-                settings();
+                //settings();
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.updateProtocolsOption: {
 

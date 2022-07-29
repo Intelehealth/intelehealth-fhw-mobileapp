@@ -43,13 +43,14 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_language);
         initViews();
-
+        getSupportActionBar().hide();
         appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
         if (!sessionManager.isFirstTimeLaunch()) {
             BackImage.setVisibility(View.VISIBLE);
+
             BackImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
