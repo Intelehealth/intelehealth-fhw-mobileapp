@@ -5102,72 +5102,44 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //        }
 
 //        if (isRespiratory) {
+
         String htmlDocument =
                 String.format("<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" +
-                                "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
-                                "<br><br>" +
+                        "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
+                        "<br><br>" +
+                        "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
+                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
+                        "<br><br>", heading, heading2, mPatientName, age, mGender);
 
-                                /*"<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +*/
-//                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
-                                /* doctorDetailStr +*/
+        // If the Diagnosis is not empty, only then the details will be displayed in the Prescription
+        if (!diagnosis_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
+                    "%s </b><br>", diagnosis_web));
+        }
 
+        // If the Medication Plan provided is not empty, only then will the details be displayed in the Prescription
+        if (!rx_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
+                    "%s </b><br>", rx_web));
+        }
 
-                                "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
-                                "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
-                                "<br><br>" +
+        // If the Tests provided is not empty, only then will the details be displayed in the Prescription
+        if (!tests_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
+                    "%s " + "</b><br>", tests_web));
+        }
 
-                                  /*  "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +*/
+        // If the Advice provided is not empty, only then will the details be displayed in the Prescription
+        if (!advice_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
+                    "%s" + "</b><br>", advice_web));
+        }
 
-                                   /* "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +*/
-
-                                   /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-
-                                  /*  "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +*/
-
-                                "<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
-                                "%s </b><br>" +
-                                "<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
-                                "%s </b><br>" +
-                                "<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
-                                "%s " + "</b><br>" +
-                                "<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
-                                "%s" + "</b><br>" +
-                                "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
-                                "%s" + "</b><br>"
-                        //+
-                        /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
-
-                        /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
-
-                        // doctorDetailStr
-                        /*"<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" +*/
-
-                        /*  doctrRegistartionNum + "</p>" +*/
-
-                        /*"</div>"*/
-                        ,
-                        heading, heading2, /*heading3,*/ mPatientName, age, mGender, /*mSdw*/
-//                            address, mPatientOpenMRSID, mDate,
-
-                            /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*/
-
-//                            (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
-//                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-
-                        /*pat_hist, fam_hist,*/ /*mComplaint,*/
-                        !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
-                        !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
-                        !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
-                        !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
-                        !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
-                        !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
+        // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription
+        if (!followUp_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
+                    "%s" + "</b><br>", followUp_web));
+        }
 
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
         //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
