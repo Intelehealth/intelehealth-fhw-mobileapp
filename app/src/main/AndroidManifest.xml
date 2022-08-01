@@ -39,17 +39,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="allowBackup"
-        tools:ignore="UnusedAttribute, LockedOrientationActivity">
+        tools:ignore="UnusedAttribute, LockedOrientationActivity"
+        tools:replace="allowBackup">
+        <activity
+            android:name=".activities.LoginActivityNew"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
-
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
@@ -242,11 +252,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.setupActivity.SetupActivity"
@@ -308,7 +314,10 @@
         <!-- </receiver> -->
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" /> <!-- Firebase Realdb -->
+            android:value="false" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
         <receiver
             android:name=".services.firebase_services.CallRTCNotifyReceiver"
             android:exported="false">

@@ -71,19 +71,22 @@
     <color name="colorPrimary2">#EA315B</color>
     <color name="colorPrimaryDark2">#B62546</color>
     <color name="colorAccent2">#E5FFF3</color>
-    <!--text color-->
+    <!--text colors-->
     <color name="textColorBlack">#1B163A</color>
     <color name="textColorGray">#7F7B92</color>
     <color name="textColorLightGary">#B0ADBE</color>
     <color name="textColorWhite">#FFFFFF</color>
 
-    <!--BG color-->
+    <!--BG colors-->
     <color name="backgroundGray">#FAF9FF</color>
     <color name="backgroundWhite">#FFFFFF</color>
-
     <color name="edittextBorder">#B2AFBE</color>
 
+    <!--Tint colors-->
 
+    <color name="iconTintBlack">#000000</color>
+    <color name="iconTintWhite">#ffffff</color>
+    <color name="iconTintGray">#7F7B92</color>
 
     <!--END-->
 </resources>
