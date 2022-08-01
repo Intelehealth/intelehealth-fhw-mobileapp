@@ -841,5 +841,12 @@
     <string name="end_shift">End Shift</string>
     <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
     <string name="patient_assigned_successfully">Patient assigned successfully!</string>
+    <string name="additional_info_submitted_successfully">अतिरिक्त माहिती यशस्वीरित्या सबमिट केली आहे</string>
+    <string name="enter_birth_weight">जन्माचे वजन प्रविष्ट करा</string>
+    <string name="enter_apgar_at_1_min">१ मिनिटाने अपगर प्रविष्ट करा</string>
+    <string name="enter_apgar_at_5_min">५ मिनिटांनी अपगरमध्ये प्रवेश करा</string>
+    <string name="enter_sex_of_baby">बाळाचे लिंग प्रविष्ट करा</string>
+    <string name="enter_baby_status">बाळाची स्थिती प्रविष्ट करा</string>
+    <string name="enter_mother_status">मदर स्टेटस एंटर करा</string>
 
 </resources>

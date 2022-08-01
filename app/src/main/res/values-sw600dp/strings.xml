@@ -47,4 +47,11 @@
     <string name="baby_status">Baby Status</string>
     <string name="mother_status">Mother Status</string>
     <string name="additional_information">Additional Information</string>
+    <string name="additional_info_submitted_successfully">Additional Information is submitted successfully</string>
+    <string name="enter_birth_weight">Enter Birth Weight</string>
+    <string name="enter_apgar_at_1_min">Enter Apgar at 1 min</string>
+    <string name="enter_apgar_at_5_min">Enter Apgar at 5 min</string>
+    <string name="enter_sex_of_baby">Enter Sex of baby</string>
+    <string name="enter_baby_status">Enter Baby Status</string>
+    <string name="enter_mother_status">Enter Mother Status</string>
 </resources>
