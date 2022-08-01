@@ -7,6 +7,8 @@
 
 
    <ScrollView
+       android:id="@+id/dialoge_edit_entry_scroll"
+       android:contentDescription="dialoge_edit_entry_scroll"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:layout_marginLeft="28dp"
@@ -17,6 +19,7 @@
 
     <TextView
         android:id="@+id/textView_entry"
+        android:contentDescription="textView_entry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical" />

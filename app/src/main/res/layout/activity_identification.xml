@@ -993,8 +993,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
-                                android:text="Unknown?"
-                                android:contentDescription="Unknown?"/>
+                                android:contentDescription="Unknown?"
+                                android:text="Unknown?" />
                         </RelativeLayout>
 
                         <LinearLayout
@@ -1313,7 +1313,7 @@
                             android:textSize="@dimen/header_text_size" />
 
                         <TextView
-                            android:id="@+id/tvPrimaryDoctor"
+                            android:id="@+id/identificationSc_tvPrimaryDoctor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
@@ -1321,6 +1321,7 @@
                             android:drawableEnd="@drawable/ic_baseline_expand_more_24"
                             android:gravity="center_vertical"
                             android:hint="Select Primary Doctor"
+                            android:contentDescription="Select Primary Doctor"
                             android:minHeight="@dimen/edit_box_min_height"
                             android:padding="@dimen/common_padding"
                             android:textColor="@color/gray_6"
@@ -1335,7 +1336,7 @@
                             android:textSize="@dimen/header_text_size" />
 
                         <TextView
-                            android:id="@+id/tvSecondaryDoctor"
+                            android:id="@+id/identificationSc_tvSecondaryDoctor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/common_padding"
@@ -1343,6 +1344,7 @@
                             android:drawableEnd="@drawable/ic_baseline_expand_more_24"
                             android:gravity="center_vertical"
                             android:hint="Select Secondary Doctor"
+                            android:contentDescription="Select Secondary Doctor"
                             android:minHeight="@dimen/edit_box_min_height"
                             android:padding="@dimen/common_padding"
                             android:textColor="@color/gray_6"

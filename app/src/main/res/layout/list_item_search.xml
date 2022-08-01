@@ -27,13 +27,20 @@
                 android:id="@+id/list_item_head_SearchPsc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Patient_name \n10LAM-3"
+                android:text="Patient_name"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
             <TextView
                 android:id="@+id/list_item_body_SearchPsc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10LAM-3"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular" />
+
+            <TextView
+                android:id="@+id/list_item_age_SearchPsc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="24 years (Male)"

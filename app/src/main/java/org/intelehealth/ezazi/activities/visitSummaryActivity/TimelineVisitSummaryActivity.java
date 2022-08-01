@@ -424,6 +424,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive_Yes");
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negative_Cancel");
         negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
 
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
@@ -485,6 +487,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive_Submit");
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negative_Cancel");
 
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
@@ -610,6 +614,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive_Yes");
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negative_Cancel");
 
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
@@ -795,6 +801,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive_Submit");
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negative_Cancel");
 
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
@@ -876,6 +884,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Positive_Yes");
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Negative_Cancel");
 
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }

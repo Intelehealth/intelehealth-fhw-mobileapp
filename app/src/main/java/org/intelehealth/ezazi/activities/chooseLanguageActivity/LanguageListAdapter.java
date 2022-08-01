@@ -94,7 +94,7 @@ public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            rootView = itemView.findViewById(R.id.rootView);
+            rootView = itemView.findViewById(R.id.rootView_langsel);
             nameTextView = itemView.findViewById(R.id.text_tv_langsel);
             statusImageView = itemView.findViewById(R.id.status_imv_langsel);
            /* nameTextView.setOnClickListener(new View.OnClickListener() {

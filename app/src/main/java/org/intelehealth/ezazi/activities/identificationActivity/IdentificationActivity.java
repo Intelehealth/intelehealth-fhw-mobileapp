@@ -255,8 +255,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mMembraneRupturedDateTextView = findViewById(R.id.identificationSc_tvMembraneDate);
         mMembraneRupturedTimeTextView = findViewById(R.id.identificationSc_tvMembraneTime);
         mRiskFactorsTextView = findViewById(R.id.identificationSc_tvRiskFactors);
-        mPrimaryDoctorTextView = findViewById(R.id.tvPrimaryDoctor);
-        mSecondaryDoctorTextView = findViewById(R.id.tvSecondaryDoctor);
+        mPrimaryDoctorTextView = findViewById(R.id.identificationSc_tvPrimaryDoctor);
+        mSecondaryDoctorTextView = findViewById(R.id.identificationSc_tvSecondaryDoctor);
         mUnknownMembraneRupturedCheckBox = findViewById(R.id.identificationSc_cbUnknownMembrane);
 
         mAdmissionDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -279,6 +279,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                 }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.getDatePicker().setContentDescription("mAdmissionDateTextView");
                 datePickerDialog.show();
             }
         });
@@ -446,15 +447,14 @@ public class IdentificationActivity extends AppCompatActivity {
                                     if (!stringBuilder.toString().isEmpty())
                                         stringBuilder.append(",");
                                     stringBuilder.append(mSelectedRiskFactorList.get(i));
-                                    mRiskFactorsTextView.setContentDescription(
-                                            new StringBuilder().append("SearchPsc_desc_").append(mSelectedRiskFactorList.get(i)));
 
                                 }
                                 mRiskFactorsString = stringBuilder.toString();
                                 mRiskFactorsTextView.setText(mRiskFactorsString);
+                                findViewById(R.id.text1).setContentDescription("RiskFactors_Desc_"+mRiskFactorsString);
+                                Log.d("RiskFactors_Desc",findViewById(R.id.text1).getContentDescription().toString());
                             }
                         });
-
 
                 builder.create().show();
             }
@@ -494,6 +494,8 @@ public class IdentificationActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 mPrimaryDoctorUUIDString = mDoctorUUIDs.get(which);
                                 mPrimaryDoctorTextView.setText(mDoctorNames[which]);
+                                findViewById(R.id.text1).setContentDescription("PrimaryDoctor_Desc_"+mDoctorNames[which]);
+                                Log.d("PrimaryDoctor",findViewById(R.id.text1).getContentDescription().toString());
                             }
                         });
                 builder.create().show();
@@ -538,6 +540,9 @@ public class IdentificationActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 mSecondaryDoctorUUIDString = mDoctorUUIDs.get(which);
                                 mSecondaryDoctorTextView.setText(mDoctorNames[which]);
+                                mSecondaryDoctorTextView.setContentDescription(mDoctorNames[which]);
+                                findViewById(R.id.text1).setContentDescription("SecondaryDoctor_Desc_"+mDoctorNames[which]);
+                                Log.d("SecondaryDoctor",findViewById(R.id.text1).getContentDescription().toString());
                             }
                         });
                 builder.create().show();
@@ -1058,6 +1063,9 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     String country = adapterView.getItemAtPosition(i).toString();
+                    findViewById(R.id.text1).setContentDescription(
+                            new StringBuilder().append("Country_Desc_").append(adapterView.getItemAtPosition(i).toString()));
+                    Log.d("Country_Desc",findViewById(R.id.text1).getContentDescription().toString());
 //                    ArrayAdapter<CharSequence> stateAdapter = null;
                 /*todo for All Language Changes Regarding...
                   if (country.matches(getResources().getString(R.string.str_check_India))) {
@@ -1190,6 +1198,10 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String state = parent.getItemAtPosition(position).toString();
+                findViewById(R.id.text1).setContentDescription(
+                        new StringBuilder().append("State_Desc_").append(parent.getItemAtPosition(position).toString()));
+                Log.d("State_Desc_",findViewById(R.id.text1).getContentDescription().toString());
+//
                 if (state.matches(getResources().getString(R.string.str_check_Odisha))) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -1435,6 +1447,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 dayTv.setText(getString(R.string.days));
                 middleText.setText(getString(R.string.identification_screen_picker_years));
                 endText.setText(getString(R.string.identification_screen_picker_months));
+                Log.d("dayTv_Desc",dayTv.getContentDescription().toString());
+                Log.d("endText_Desc",endText.getContentDescription().toString());
+                Log.d("middleText_Desc",middleText.getContentDescription().toString());
+                Log.d("yearPicker_Desc",yearPicker.getContentDescription().toString());
+                Log.d("monthPicker_Desc",monthPicker.getContentDescription().toString());
+                Log.d("dayPicker_Desc",dayPicker.getContentDescription().toString());
+
 
 
                 yearPicker.setMinValue(10);

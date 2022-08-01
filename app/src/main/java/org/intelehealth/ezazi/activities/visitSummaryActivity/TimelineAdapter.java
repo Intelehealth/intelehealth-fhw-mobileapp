@@ -80,11 +80,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(@NonNull TimelineViewHolder holder, int position) {
         if (encounterDTOList.size() > 0) {
-
-            holder.ivEdit.setContentDescription(
-                    new StringBuilder().append("ivEdit_desc_").append(holder.ivEdit.toString()));
+            for(int i=1;i<=encounterDTOList.size();i++){
+                holder.ivEdit.setContentDescription(
+                    new StringBuilder().append("ivEdit_desc_").append(i));
             holder.cardview.setContentDescription(
-                    new StringBuilder().append("cardview_desc_").append(holder.cardview.toString()));
+                    new StringBuilder().append("cardview_desc_").append(i));
+            }
+            Log.d("ivEdit_desc",holder.ivEdit.getContentDescription().toString());
+            Log.d("cardview_desc",holder.cardview.getContentDescription().toString());
 
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {

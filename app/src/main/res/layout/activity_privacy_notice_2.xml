@@ -73,6 +73,7 @@
         android:layout_above="@id/btns_PrivacySc"
         android:layout_below="@+id/actionbar_PrivacySc"
         android:layout_marginBottom="15dp"
+        android:contentDescription="actionbar_Decs_PrivacySc"
         android:fadeScrollbars="false"
         android:scrollbarSize="4dp"
         android:scrollbarThumbVertical="@color/intro_next"
@@ -100,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="5dp"
-                android:contentDescription="@string/i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient"
+                android:contentDescription="privacy_notice_check_box_Desc"
                 android:text="@string/i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient" />
 
         </LinearLayout>

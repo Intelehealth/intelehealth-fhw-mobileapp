@@ -5,6 +5,7 @@
     <item
         android:id="@+id/epartogramView"
         android:title="View"
+        android:contentDescription="Desc_epartogramView"
         app:showAsAction="always" />
 
 </menu>

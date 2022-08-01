@@ -75,9 +75,9 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     public void onBindViewHolder(ActivePatientViewHolder holder, int position) {
         final ActivePatientModel activePatientModel = filteractivePatient.get(position);
 //        final ActivePatientModel filteractivePatient=filteractivePatient.get(position);
-
         holder.btnVisitDetails.setContentDescription(
-                new StringBuilder().append("acpsc_visit_Desc_").append(holder.headTextView.toString()));
+                new StringBuilder().append("acpsc_visit_Desc_").append(activePatientModel.getOpenmrs_id()));
+        Log.d("acpsc_visit_Desc",holder.btnVisitDetails.getContentDescription().toString());
 
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
@@ -294,6 +294,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         };
 //        holder.getRootView().setOnClickListener(listener);
         holder.btnVisitDetails.setOnClickListener(listener);
+
         boolean enableEndVisit = true;
 /*
         for (int i = 0; i < listPatientUUID.size(); i++) {

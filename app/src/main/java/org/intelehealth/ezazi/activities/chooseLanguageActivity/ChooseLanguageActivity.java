@@ -87,8 +87,8 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
         mRecyclerView = findViewById(R.id.language_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        SaveButton = findViewById(R.id.save_button_langsel);
-        BackImage = findViewById(R.id.backButton_langsel);
+        SaveButton = findViewById(R.id.save_button_langselSc);
+        BackImage = findViewById(R.id.backButton_langselSc);
 
     }
 

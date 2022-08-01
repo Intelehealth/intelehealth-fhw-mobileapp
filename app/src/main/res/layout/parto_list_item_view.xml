@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rlRoot"
+    android:id="@+id/rlRoot_partogramlistSc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tvSectionName"
+            android:id="@+id/tvSectionName_partogramlistSc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
@@ -25,10 +25,10 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/llContainer"
+            android:id="@+id/llContainer_partogramlistSc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvSectionName"
+            android:layout_below="@id/tvSectionName_partogramlistSc"
             android:orientation="vertical"
             android:padding="@dimen/common_padding">
 

@@ -1,6 +1,8 @@
 package org.intelehealth.ezazi.activities.privacyNoticeActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -99,6 +101,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 
 //            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
 //            if(sharedPreferences.getAll().values().contains("cb"))
+
             Locale current = getResources().getConfiguration().locale;
             if (current.toString().equals("or")) { //Privacy notice support for Oriya
                 String privacy_string = obj.getString("privacyNoticeText_Oriya");

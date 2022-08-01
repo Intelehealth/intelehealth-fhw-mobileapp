@@ -14,6 +14,7 @@ import static org.intelehealth.ezazi.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -334,7 +335,7 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         /*NEW*/
         mActiveVisitsRecyclerView = findViewById(R.id.rcv_ActiveVisits_homesc);
-        mEndShiftTextView = findViewById(R.id.tvEndShift);
+        mEndShiftTextView = findViewById(R.id.tvEndShift_homeSc);
         //mActiveVisitsRecyclerView = findViewById(R.id.rcvActiveVisits);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mActiveVisitsRecyclerView.setLayoutManager(reLayoutManager);
@@ -464,9 +465,7 @@ public class HomeActivity extends AppCompatActivity {
                         return;
                     }
                     List<String> visitUUIDList = new ArrayList<>();
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(HomeActivity.this);
-
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                     builder.setTitle("Select patients to assign any nurse!")
                             .setPositiveButton("Proceed!", new DialogInterface.OnClickListener() {
                                 @Override
@@ -485,6 +484,9 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                             });
                     builder.create().show();
+                    AlertDialog dialog = builder.show();
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Button_Proceed");
+
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
@@ -724,9 +726,10 @@ public class HomeActivity extends AppCompatActivity {
                                 VisitsDAO visitsDAO = new VisitsDAO();
                                 for (int j = 0; j < visitUUIDList.size(); j++) {
                                     visitsDAO.updateVisitCreator(visitUUIDList.get(j), mLastSelectedNurseUUID);
+
                                 }
                                 mPendingForLogout = true;
-                                findViewById(R.id.tvSyncMenu).performClick();
+                                findViewById(R.id.tv_SyncMenu_homesc).performClick();
                                 Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
 
                             } catch (DAOException e) {

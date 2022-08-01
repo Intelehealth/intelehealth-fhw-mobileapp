@@ -47,24 +47,21 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     @Override
     public void onBindViewHolder(@NonNull SearchPatientAdapter.Myholder holder, int position) {
         final PatientDTO patinet = patients.get(position);
-
         if (patinet != null) {
-            holder.linearLayout.setContentDescription(
-                    new StringBuilder().append("SearchPsc_desc_").append(patinet.getOpenmrsId()).toString());
             //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
-            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+            String Age = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+            holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + "\n" + patinet.getOpenmrsId());
-            else
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
-
-            holder.bodyTextView.setText(body);
+                holder.bodyTextView.setText(patinet.getOpenmrsId());
+            holder.ageTextView.setText(Age);
         }
+        holder.linearLayout.setContentDescription(
+                new StringBuilder().append("SearchPsc_desc_").append(patinet.getOpenmrsId()));
+        Log.d("SearchPsc_Desc", String.valueOf(holder.linearLayout.getContentDescription()));
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,11 +110,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
+        private TextView ageTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head_SearchPsc);
             bodyTextView = itemView.findViewById(R.id.list_item_body_SearchPsc);
+            ageTextView = itemView.findViewById(R.id.list_item_age_SearchPsc);
             linearLayout = itemView.findViewById(R.id.searchlinear_SearchPsc);
         }
     }

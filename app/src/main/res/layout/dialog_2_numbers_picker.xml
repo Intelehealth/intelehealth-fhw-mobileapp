@@ -10,6 +10,7 @@
         android:orientation="horizontal">
         <NumberPicker
             android:id="@+id/dialog_2_numbers_quantity"
+            android:contentDescription="yearPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
@@ -18,6 +19,7 @@
         </NumberPicker>
         <NumberPicker
             android:id="@+id/dialog_2_numbers_unit"
+            android:contentDescription="monthPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
@@ -26,6 +28,7 @@
         </NumberPicker>
         <NumberPicker
             android:id="@+id/dialog_3_numbers_unit"
+            android:contentDescription="dayPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -41,6 +44,7 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/dialog_2_numbers_text"
+            android:contentDescription="middleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -50,6 +54,7 @@
             android:fontFamily="@font/lato_regular"/>
         <TextView
             android:id="@+id/dialog_2_numbers_text_2"
+            android:contentDescription="endText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -59,6 +64,7 @@
             android:fontFamily="@font/lato_regular"/>
         <TextView
             android:id="@+id/dialog_2_numbers_text_3"
+            android:contentDescription="dayTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

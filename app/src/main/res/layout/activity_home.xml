@@ -97,15 +97,16 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/tvEndShift"
+                    android:id="@+id/tvEndShift_homeSc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/end_shift"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/white"
-                    android:padding="@dimen/common_padding"
                     android:background="@drawable/round_corner_primary"
+                    android:contentDescription="@string/end_shift"
+                    android:padding="@dimen/common_padding"
+                    android:text="@string/end_shift"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/header_text_size"
                     android:textStyle="bold" />
             </RelativeLayout>

@@ -71,9 +71,9 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_partogram_data_capture);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("History Collection");
-        mSaveTextView = findViewById(R.id.tvSave);
-        mEpartogramTextView = findViewById(R.id.tvEpartogram);
-        mRecyclerView = findViewById(R.id.rvQuery);
+        mSaveTextView = findViewById(R.id.tvSave_partogramdataSc);
+        mEpartogramTextView = findViewById(R.id.tvEpartogram_partogramdataSc);
+        mRecyclerView = findViewById(R.id.rvQuery_partogramdataSc);
         mVisitUUID = getIntent().getStringExtra("visitUuid");
         mEncounterUUID = getIntent().getStringExtra("encounterUuid");
         mPatientName = getIntent().getStringExtra("name");
@@ -152,7 +152,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
         });
 
-        FloatingActionButton fabc = findViewById(R.id.fabc);
+        FloatingActionButton fabc = findViewById(R.id.fabc_partogramdataSc);
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +180,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                 startActivity(chatIntent);
             }
         });
-        FloatingActionButton fabv = findViewById(R.id.fabv);
+        FloatingActionButton fabv = findViewById(R.id.fabv_partogramdataSc);
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

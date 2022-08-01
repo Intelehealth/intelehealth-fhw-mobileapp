@@ -26,7 +26,7 @@
             android:paddingBottom="20dp"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
-            android:id="@+id/tv_intro_one"
+            android:id="@+id/tv_one_introSc"
             app:fontFamily="@fonts/Lato-Regular"
             tools:text="Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients."
             android:textColor="@color/font_black_welcome"

@@ -91,10 +91,10 @@ public class IntroActivity extends AppCompatActivity {
 
         BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager_intro);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots_intro);
-        btnSkip = (Button) findViewById(R.id.btn_skip_intro);
-        btnNext = (Button) findViewById(R.id.btn_next_intro);
+        viewPager = (ViewPager) findViewById(R.id.view_pager_introSc);
+        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots_introSc);
+        btnSkip = (Button) findViewById(R.id.btn_skip_introSc);
+        btnNext = (Button) findViewById(R.id.btn_next_introSc);
 
         layouts = new int[]{
                 R.layout.welcome_slide1,
@@ -216,10 +216,10 @@ public class IntroActivity extends AppCompatActivity {
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
 
-            tvIntroOne = findViewById(R.id.tv_intro_one);
-            tvIntroTwo = findViewById(R.id.tv_intro_two);
-            button_demo_visit = findViewById(R.id.button_demo_visit);
-            button_custom_visit = findViewById(R.id.button_custom_visit_intro);
+            tvIntroOne = findViewById(R.id.tv_one_introSc);
+            tvIntroTwo = findViewById(R.id.tv_two_introSc);
+            button_demo_visit = findViewById(R.id.button_demo_visit_introSc);
+            button_custom_visit = findViewById(R.id.button_custom_visit_introSc);
 
             //Highlighting Text
             String introOne = getString(R.string.intelehealth_a_telemedicine_platform);

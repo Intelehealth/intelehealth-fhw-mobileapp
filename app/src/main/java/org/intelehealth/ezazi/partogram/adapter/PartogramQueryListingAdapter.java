@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             genericViewHolder.partogramItemData = mItemList.get(position);
             genericViewHolder.selectedIndex = position;
             genericViewHolder.tvSectionNameTextView.setText(genericViewHolder.partogramItemData.getParamSectionName());
+//            genericViewHolder.tvSectionNameTextView.setContentDescription(
+//                    new StringBuilder().append("sectionname_Desc_").append(genericViewHolder.partogramItemData.getParamSectionName()));
             genericViewHolder.containerLinearLayout.removeAllViews();
             for (int i = 0; i < genericViewHolder.partogramItemData.getParamInfoList().size(); i++) {
                 ParamInfo paramInfo = genericViewHolder.partogramItemData.getParamInfoList().get(i);
@@ -111,8 +114,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvSectionNameTextView = itemView.findViewById(R.id.tvSectionName);
-            containerLinearLayout = itemView.findViewById(R.id.llContainer);
+            tvSectionNameTextView = itemView.findViewById(R.id.tvSectionName_partogramlistSc);
+            containerLinearLayout = itemView.findViewById(R.id.llContainer_partogramlistSc);
         }
 
     }
@@ -122,13 +125,14 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         AutoCompleteTextView dataEditText = tempView.findViewById(R.id.etvData);
         dataEditText.setAdapter(new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, mContext.getResources().getStringArray(R.array.medications)));
         dataEditText.setThreshold(1);
-
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
-
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
                 !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
         }
+        dataEditText.setContentDescription(
+                new StringBuilder().append("DataEditText_Desc_").append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()));
+        Log.d("showAutoComplete_Desc",dataEditText.getContentDescription().toString());
 
         if (paramDateType.equalsIgnoreCase(PartogramConstants.AUTOCOMPLETE_SUGGESTION_EDITTEXT))
             dataEditText.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE); // input type to AutoComplete
@@ -158,6 +162,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
+            dataEditText.setContentDescription(
+                    new StringBuilder().append("DataEditText_Desc_").append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()));
+            Log.d("showUserInput_Desc",dataEditText.getContentDescription().toString());
         } else {
             /*if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Initial")) {
                 String[] initials = new SessionManager(mContext).getChwname().split(" ");
@@ -236,6 +243,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()
                     [Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues())
                     .indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
+
         }
 
         dropdownTextView.setOnClickListener(new View.OnClickListener() {
@@ -251,6 +259,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
+                                dropdownTextView.setContentDescription(
+                                        new StringBuilder().append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()+"_").append(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]));
+                                Log.d("dropdownTextView_Desc",dropdownTextView.getContentDescription().toString());
                                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
                                 dialog.dismiss();
                             }

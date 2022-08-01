@@ -15,7 +15,7 @@
             android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ayu_logo_intro"
+        android:id="@+id/ayu_logo_introSc"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_ayu_logo_svg"
@@ -23,11 +23,11 @@
         android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:id="@+id/tv_intro_two"
+        android:id="@+id/tv_two_introSc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen"
-        android:layout_below="@id/ayu_logo_intro"
+        android:layout_below="@id/ayu_logo_introSc"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
         android:fontFamily="@font/lato_regular"
@@ -38,10 +38,10 @@
         android:gravity="center_horizontal|top" />
 
             <Button
-                android:id="@+id/button_demo_visit"
+                android:id="@+id/button_demo_visit_introSc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_intro_two"
+                android:layout_below="@id/tv_two_introSc"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginStart="70dp"
                 android:layout_marginTop="70dp"
@@ -54,10 +54,10 @@
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/button_custom_visit_intro"
+                android:id="@+id/button_custom_visit_introSc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/button_demo_visit"
+                android:layout_below="@id/button_demo_visit_introSc"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginStart="70dp"
                 android:layout_marginTop="70dp"

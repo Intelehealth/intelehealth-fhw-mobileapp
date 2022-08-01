@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Hospital Name"
+        android:contentDescription="Enter Hospital Name"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -18,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Doctor Name"
+        android:contentDescription="Enter Doctor Name"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -26,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Note"
+        android:contentDescription="Enter Note"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
