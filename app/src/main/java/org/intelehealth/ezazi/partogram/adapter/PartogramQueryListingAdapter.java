@@ -72,8 +72,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             genericViewHolder.partogramItemData = mItemList.get(position);
             genericViewHolder.selectedIndex = position;
             genericViewHolder.tvSectionNameTextView.setText(genericViewHolder.partogramItemData.getParamSectionName());
-//            genericViewHolder.tvSectionNameTextView.setContentDescription(
-//                    new StringBuilder().append("sectionname_Desc_").append(genericViewHolder.partogramItemData.getParamSectionName()));
             genericViewHolder.containerLinearLayout.removeAllViews();
             for (int i = 0; i < genericViewHolder.partogramItemData.getParamInfoList().size(); i++) {
                 ParamInfo paramInfo = genericViewHolder.partogramItemData.getParamInfoList().get(i);

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Birth Weight"
+        android:contentDescription="Enter Birth Weight"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -18,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Apgar at 1 min"
+        android:contentDescription="Enter Apgar at 1 min"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -26,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Apgar at 5 min"
+        android:contentDescription="Enter Apgar at 5 min"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -34,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Sex of baby"
+        android:contentDescription="Enter Sex of baby"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -42,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Baby Status"
+        android:contentDescription="Enter Baby Status"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 
@@ -50,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Mother Status"
+        android:contentDescription="Enter Mother Status"
         android:gravity="center_horizontal"
         android:paddingVertical="20dp"/>
 

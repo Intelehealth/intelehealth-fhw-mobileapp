@@ -83,7 +83,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             for(int i=1;i<=encounterDTOList.size();i++){
                 holder.ivEdit.setContentDescription(
                     new StringBuilder().append("ivEdit_desc_").append(i));
-            holder.cardview.setContentDescription(
+                holder.cardview.setContentDescription(
                     new StringBuilder().append("cardview_desc_").append(i));
             }
             Log.d("ivEdit_desc",holder.ivEdit.getContentDescription().toString());

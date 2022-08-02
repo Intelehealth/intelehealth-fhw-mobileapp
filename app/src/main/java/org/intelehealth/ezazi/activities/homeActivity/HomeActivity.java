@@ -473,6 +473,12 @@ public class HomeActivity extends AppCompatActivity {
                                     showNurseAssignDialog(visitUUIDList);
                                 }
                             })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.dismiss();
+                                }
+                            })
                             .setMultiChoiceItems(patients, null, new DialogInterface.OnMultiChoiceClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -486,6 +492,7 @@ public class HomeActivity extends AppCompatActivity {
                     builder.create().show();
                     AlertDialog dialog = builder.show();
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setContentDescription("Button_Proceed");
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setContentDescription("Button_negative");
 
                 } catch (DAOException e) {
                     e.printStackTrace();
@@ -736,6 +743,12 @@ public class HomeActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
                         }
                     })
                     .setSingleChoiceItems(nurseNames, 0, new DialogInterface.OnClickListener() {
