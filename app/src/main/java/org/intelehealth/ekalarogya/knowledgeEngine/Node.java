@@ -93,7 +93,6 @@ public class Node implements Serializable {
     private boolean isMultiChoice = false;
     private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
-
     //for Associated Complaints and medical history only
     private String positiveCondition;
     private String negativeCondition;
@@ -228,7 +227,6 @@ public class Node implements Serializable {
                 this.language = this.text;
             }
 
-
             //Only for physical exams
             if (!this.language.isEmpty()) {
                 if (this.language.contains(":")) {
@@ -251,7 +249,6 @@ public class Node implements Serializable {
 
             this.associatedComplaint = jsonNode.optString("associated-complaint");
             this.hasAssociations = !associatedComplaint.isEmpty();
-
 
             this.selected = false;
             this.isNoSelected = false;
@@ -2006,7 +2003,7 @@ public class Node implements Serializable {
 
     private static String or_en(String unit) {
         switch (unit) {
-            case "ମିନିଟ୍ |":
+            case "ମିନିଟ୍ \\|":
                 unit = "Minutes";
                 break;
 
@@ -3547,7 +3544,7 @@ public class Node implements Serializable {
                     .replaceAll("नव", "Nov")
                     .replaceAll("दिस", "Dec");
         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
-            displayStr = displayStr.replaceAll("ମିନିଟ୍ |", "Minutes")
+            displayStr = displayStr.replaceAll("ମିନିଟ୍ \\|", "Minutes")
                     .replaceAll("ଘଣ୍ଟା", "Hours")
                     .replaceAll("ଦିନଗୁଡିକ", "Days")
                     .replaceAll("ସପ୍ତାହଗୁଡିକ", "Weeks")

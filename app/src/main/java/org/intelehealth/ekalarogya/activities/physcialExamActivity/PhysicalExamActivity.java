@@ -375,7 +375,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
-        if ((physicalExamMap.getOption(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && !physicalExamMap.getOption(physExamPos).getOption(groupPosition).anySubSelected()) {
+        if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && !physicalExamMap.getOption(physExamPos).getOption(groupPosition).anySubSelected()) {
             Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
             //Log.d("Clicked", question.language());
             question.toggleSelected();
@@ -403,7 +403,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (!question.isTerminal() && question.isSelected()) {
                 Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
             }
-        }else if ((physicalExamMap.getOption(groupPosition).getChoiceType().equals("single")) && physicalExamMap.getOption(groupPosition).anySubSelected()) {
+        }else if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && physicalExamMap.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -311,32 +312,100 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     private void onListClick(View v, int groupPosition, int childPosition) {
-        Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
-        Log.i(TAG, "onChildClick: ");
-        clickedNode.toggleSelected();
-        if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
-            familyHistoryMap.getOption(groupPosition).setSelected(true);
-        } else {
-            familyHistoryMap.getOption(groupPosition).setUnselected();
-        }
-        adapter.notifyDataSetChanged();
+        if ((familyHistoryMap.getOption(groupPosition).getChoiceType().equals("single")) && !familyHistoryMap.getOption(groupPosition).anySubSelected()) {
+            Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+            Log.i(TAG, "onChildClick: ");
+            clickedNode.toggleSelected();
+            if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
+                familyHistoryMap.getOption(groupPosition).setSelected(true);
+            } else {
+                familyHistoryMap.getOption(groupPosition).setUnselected();
+            }
+            adapter.notifyDataSetChanged();
 
-        if (clickedNode.getInputType() != null) {
-            if (!clickedNode.getInputType().equals("camera")) {
-                Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+            if (clickedNode.getInputType() != null) {
+                if (!clickedNode.getInputType().equals("camera")) {
+                    Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+                }
+            }
+            if (!filePath.exists()) {
+                boolean res = filePath.mkdirs();
+                Log.i("RES>", "" + filePath + " -> " + res);
+            }
+
+            imageName = UUID.randomUUID().toString();
+
+            if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
+                    familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
+                Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+            }
+        }else if ((familyHistoryMap.getOption(groupPosition).getChoiceType().equals("single")) && familyHistoryMap.getOption(groupPosition).anySubSelected()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
+            alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        }else {
+            Node question = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+            question.toggleSelected();
+            if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
+                familyHistoryMap.getOption(groupPosition).setSelected(true);
+            } else {
+                familyHistoryMap.getOption(groupPosition).setUnselected();
+            }
+
+            if (!familyHistoryMap.findDisplay().equalsIgnoreCase("Associated Symptoms")
+                    && !familyHistoryMap.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !familyHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
+                    && !familyHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !familyHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
+                //code added to handle multiple and single option selection.
+                Node rootNode = familyHistoryMap.getOption(groupPosition);
+                if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                            familyHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+                Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
+                        question.isExcludedFromMultiChoice() && question.isSelected())) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (!childNode.getId().equals(question.getId())) {
+                            familyHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+            }
+            if (!question.getInputType().isEmpty() && question.isSelected()) {
+                if (question.getInputType().equals("camera")) {
+                    if (!filePath.exists()) {
+                        filePath.mkdirs();
+                    }
+                    Node.handleQuestion(question, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+                } else {
+                    Node.handleQuestion(question, FamilyHistoryActivity.this, adapter, null, null);
+                }
+                //If there is an input type, then the question has a special method of data entry.
+            }
+
+            if (!question.isTerminal() && question.isSelected()) {
+                Node.subLevelQuestion(question, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+                //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
         }
-        if (!filePath.exists()) {
-            boolean res = filePath.mkdirs();
-            Log.i("RES>", "" + filePath + " -> " + res);
-        }
-
-        imageName = UUID.randomUUID().toString();
-
-        if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
-                familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-            Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
-        }
+        //adapter.updateNode(currentNode);
+        adapter.notifyDataSetChanged();
 
     }
 

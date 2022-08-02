@@ -1072,7 +1072,6 @@ public class VitalsActivity extends AppCompatActivity {
                     if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
-
                         results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
                     } else {
                         results.setTemperature((mTemperature.getText().toString()));
