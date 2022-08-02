@@ -569,7 +569,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                         // Birth Outcome
                         if (positionStage == 0 || positionStage == 1) {
                             Log.v("birthoutcome", "value: " + value);
-                            isInserted = stage2_captureAdditionalData(value);
+                            stage2_captureAdditionalData(value);
+                            Log.v("isInserted", "isInserted_livebirth: "+isInserted);
 /*                            try {
                                 isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
                             } catch (DAOException e) {
@@ -784,6 +785,16 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
+
+                if (isAdded) {
+                    Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, HomeActivity.class);
+                    startActivity(intent);
+                    checkInternetAndUploadVisit_Encounter();
+                } else {
+                    Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+                dialogInterface.dismiss();
             }
         });
 

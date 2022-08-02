@@ -880,14 +880,13 @@
     <string name="end_shift">End Shift</string>
     <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
     <string name="patient_assigned_successfully">Patient assigned successfully!</string>
-    <string name="this_option_available_tablet_device">This option is available on a Tablet device</string>
-    <string name="btn_clear_search">Toolbar clear button</string>
-    <string name="btn_search_img">Toolbar search img</string>
-    <string name="new_patient_SearchPsc">New patient button</string>
-    <string name="main_menu_homesc">main menu home</string>
-    <string name="last_updated_on_12pm">Last updated on 12pm</string>
-    <string name="menu_group_homesc">menu group homesc</string>
-    <string name="identification_screen_prompt_alt_phone_number">Alternate Mobile Number</string>
+    <string name="additional_info_submitted_successfully">Additional Information is submitted successfully</string>
+    <string name="enter_birth_weight">Enter Birth Weight</string>
+    <string name="enter_apgar_at_1_min">Enter Apgar at 1 min</string>
+    <string name="enter_apgar_at_5_min">Enter Apgar at 5 min</string>
+    <string name="enter_sex_of_baby">Enter Sex of baby</string>
+    <string name="enter_baby_status">Enter Baby Status</string>
+    <string name="enter_mother_status">Enter Mother Status</string>
 
 
 </resources>

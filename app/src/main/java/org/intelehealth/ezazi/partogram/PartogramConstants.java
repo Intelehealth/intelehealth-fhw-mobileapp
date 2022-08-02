@@ -29,8 +29,10 @@ public class PartogramConstants {
             "Woman",
             "Labour Progress",
             "Medication",
-            "Shared Decision Making",
-            "Initials"};
+            "Shared Decision Making"
+//            ,
+//            "Initials"
+    };
 
     public static TreeMap<String, List<ParamInfo>> getSectionParamInfoMasterMap() {
         TreeMap<String, List<ParamInfo>> sectionParamInfoMap = new TreeMap<>();
@@ -291,15 +293,15 @@ public class PartogramConstants {
         sectionParamInfoMap.put(SECTION_LIST[5], stringList);//Shared Decision Making
 
         //Initials
-        stringList = new ArrayList<>();
-        paramInfo = new ParamInfo();
-        paramInfo.setParamSectionName(SECTION_LIST[6]);
-        paramInfo.setParamName("Initial");
-        paramInfo.setParamDateType(INPUT_TXT_TYPE);
-        paramInfo.setConceptUUID("165171AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        stringList.add(paramInfo);
-
-        sectionParamInfoMap.put(SECTION_LIST[6], stringList);//Initials
+//        stringList = new ArrayList<>();
+//        paramInfo = new ParamInfo();
+//        paramInfo.setParamSectionName(SECTION_LIST[6]);
+//        paramInfo.setParamName("Initial");
+//        paramInfo.setParamDateType(INPUT_TXT_TYPE);
+//        paramInfo.setConceptUUID("165171AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//        stringList.add(paramInfo);
+//
+//        sectionParamInfoMap.put(SECTION_LIST[6], stringList);//Initials
 
         //Actions
         stringList = new ArrayList<>();

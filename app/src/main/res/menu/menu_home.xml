@@ -40,8 +40,8 @@
         <item
             android:id="@+id/updateProtocolsOption_homesc"
             android:orderInCategory="150"
-            android:contentDescription="@string/update_protocols"
-            android:title="@string/update_protocols" />
+            android:title="@string/update_protocols"
+            android:visible="false" />
 
         <item
             android:id="@+id/restAppOption_homesc"

@@ -78,6 +78,7 @@ import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientAdapter;
+import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity;
@@ -1144,8 +1145,10 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.LangsettingsOption_homesc:
-                settings();
+            case R.id.settingsOption:
+                //settings();
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.updateProtocolsOption_homesc: {
 
@@ -1833,7 +1836,7 @@ public class HomeActivity extends AppCompatActivity {
         resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                showResetProgressbar();
+               // showResetProgressbar();
                 deleteCache(getApplicationContext());
             }
         });

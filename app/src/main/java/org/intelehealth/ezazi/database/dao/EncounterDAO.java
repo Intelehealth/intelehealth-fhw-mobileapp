@@ -84,9 +84,10 @@ public class EncounterDAO {
 
     public boolean isEncounterAlreadyAvailable(String visitUUid, String encounterTypeUUID) {
         boolean flag = true;
+        if (visitUUid == null || encounterTypeUUID == null) return false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid  = ? and encounter_type_uuid  = ? COLLATE NOCASE", new String[]{visitUUid, encounterTypeUUID});
-        if (cursor.getCount() == 0) {
+        if (cursor == null || cursor.getCount() == 0) {
             flag = false;
         }
         cursor.close();
@@ -145,7 +146,7 @@ public class EncounterDAO {
     }
 
     public String getEncounterTypeNameByUUID(String uuid) {
-        if(uuid==null) return "";
+        if (uuid == null) return "";
         String name = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT name FROM tbl_uuid_dictionary where uuid  = ? COLLATE NOCASE", new String[]{uuid});
