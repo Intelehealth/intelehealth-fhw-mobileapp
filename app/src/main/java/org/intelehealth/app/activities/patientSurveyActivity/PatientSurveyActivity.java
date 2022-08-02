@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -163,9 +165,12 @@ public class PatientSurveyActivity extends AppCompatActivity {
         encounterDTO.setUuid(uuid);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
 
+        String fiveMinutesAgoTime = "";
+
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+            fiveMinutesAgoTime = fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setEncounterTime(fiveMinutesAgoTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -184,17 +189,21 @@ public class PatientSurveyActivity extends AppCompatActivity {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         List<ObsDTO> obsDTOList = new ArrayList<>();
+
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(rating);
         obsDTO.setConceptuuid(UuidDictionary.RATING);
+        obsDTO.setObservationTime(fiveMinutesAgoTime);
         obsDTOList.add(obsDTO);
+
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(mComments.getText().toString());
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
+        obsDTO.setObservationTime(fiveMinutesAgoTime);
         obsDTOList.add(obsDTO);
         try {
             obsDAO.insertObsToDb(obsDTOList);
