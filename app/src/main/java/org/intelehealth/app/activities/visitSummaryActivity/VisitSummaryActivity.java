@@ -3,8 +3,8 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,7 +54,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -64,6 +63,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -82,27 +82,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rt.printerlibrary.bean.UsbConfigBean;
-import com.rt.printerlibrary.bean.WiFiConfigBean;
-import com.rt.printerlibrary.connect.PrinterInterface;
-import com.rt.printerlibrary.enumerate.CommonEnum;
-import com.rt.printerlibrary.enumerate.ConnectStateEnum;
-import com.rt.printerlibrary.factory.connect.BluetoothFactory;
-import com.rt.printerlibrary.factory.connect.PIFactory;
-import com.rt.printerlibrary.factory.printer.PrinterFactory;
-import com.rt.printerlibrary.factory.printer.UniversalPrinterFactory;
-import com.rt.printerlibrary.observer.PrinterObserver;
-import com.rt.printerlibrary.observer.PrinterObserverManager;
-import com.rt.printerlibrary.printer.RTPrinter;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
-import com.rt.printerlibrary.connect.PrinterInterface;
-import com.rt.printerlibrary.enumerate.ConnectStateEnum;
 
+import org.intelehealth.app.activities.billConfirmation.billConfirmationActivity;
 import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -111,15 +96,12 @@ import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Base64Utils;
-import org.intelehealth.app.utilities.BaseEnum;
-import org.intelehealth.app.utilities.TimeRecordUtils;
 import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -138,6 +120,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 import org.intelehealth.app.R;
@@ -175,10 +158,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
-
-import com.rt.printerlibrary.factory.printer.ThermalPrinterFactory;
-
-import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -368,6 +347,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+
+    //generate bill feature
+    String patientOpenMRSID = "";
+    String hideVisitUUID = "";
+    String patientPhoneNum = "";
+    String patientVillage = "";
+    String visitType = "Consultation";
+    Button generateBillBtn;
+    String receiptNum,receiptDate, patientFName, patientLName;
+    String receiptPaymentStatus = "NA";
+
    /* TextView tv_device_selected;
     Button btn_connect;
     private Object configObj;
@@ -534,6 +524,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientAge = intent.getStringExtra("age");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
@@ -585,6 +577,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
+        generateBillBtn = findViewById(R.id.btnGenerateBill);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -768,6 +761,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                     if (patient != null && patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("-")) {
                         editText.setText(patient.getPhone_number());
+                        patientPhoneNum = patient.getPhone_number();
                     }
 
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -844,8 +838,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists)
+
+        if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
+            generateBillBtn.setVisibility(View.VISIBLE);
+        }
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -1021,8 +1018,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     }
 
 
-                    if (isVisitSpecialityExists)
+                    if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
+                        generateBillBtn.setVisibility(View.VISIBLE);
+                    }
 
 
                     if (flag.isChecked()) {
@@ -1107,8 +1106,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                                    if (isVisitSpecialityExists)
+                                    if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
+                                        generateBillBtn.setVisibility(View.VISIBLE);
+                                    }
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " +
                                             getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
@@ -1142,9 +1143,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
+        if (patient.getCity_village() != null && !patient.getCity_village().isEmpty()) {
+            patientVillage = patient.getCity_village();
+        }
+        if (patient != null && patient.getPhone_number() != null && !patient.getPhone_number().equalsIgnoreCase("-")) {
+            patientPhoneNum = patient.getPhone_number();
+        }
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
-        } else {
+            patientOpenMRSID = patient.getOpenmrs_id();
+        }
+        else {
             idView.setText(getString(R.string.patient_not_registered));
         }
         String gender_tv = patientGender;
@@ -1528,6 +1537,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                    if(complaintView.getText().toString().contains("Follow up visit"))
+                                        visitType = "Follow-Up";
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -2054,7 +2065,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private String showVisitID() {
 
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            String hideVisitUUID = visitUUID;
+            hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
             visitView.setText("XXXX" + hideVisitUUID);
         }
@@ -2087,7 +2098,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             Log.e("ISSYNCED==", isSynedFlag);
 
             if (!isSynedFlag.equalsIgnoreCase("0")) {
-                String hideVisitUUID = visitUUID;
+                hideVisitUUID = visitUUID;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
             } else {
@@ -2095,7 +2106,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         } else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
-                String hideVisitUUID = visitUuid;
+                hideVisitUUID = visitUuid;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
 //              visitView.setText("----");
@@ -5276,5 +5287,295 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     }
 */
+
+    public void generateBill(View view) {
+        String billEncounterUuid = checkForOldBill();
+        if(!billEncounterUuid.equals(""))
+        {
+            fetchBillDetails(billEncounterUuid);
+        }
+        else {
+            boolean[] selected_tests = new boolean[8];
+            if (!glucose.getText().toString().isEmpty())
+                selected_tests[1] = true;
+            if (!glucoseFasting.getText().toString().isEmpty())
+                selected_tests[2] = true;
+            if (!glucosePostPrandial.getText().toString().isEmpty())
+                selected_tests[3] = true;
+            if (!glucoseRandom.getText().toString().isEmpty())
+                selected_tests[4] = true;
+            if (!uricAcid_textview.getText().toString().isEmpty())
+                selected_tests[5] = true;
+            if (!totalCholesterol_textview.getText().toString().isEmpty())
+                selected_tests[6] = true;
+            if (!hemoglobin.getText().toString().isEmpty())
+                selected_tests[7] = true;
+            showTestConfirmationCustomDialog(selected_tests);
+        }
+    }
+
+    private void showTestConfirmationCustomDialog(boolean[] checkedTests) {
+        ArrayList selectedTests = new ArrayList<>();
+        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid),getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+//        selectedTests.clear();
+
+        final Dialog dialog = new Dialog(VisitSummaryActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.confirm_test_dialog);
+
+        CheckBox glucose_fast = dialog.findViewById(R.id.glucose_f_CB);
+        CheckBox glucose_non_fast = dialog.findViewById(R.id.glucose_nf_CB);
+        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
+        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
+        CheckBox bp = dialog.findViewById(R.id.bp_CB);
+        CheckBox haemoglobin = dialog.findViewById(R.id.haemoglobin_CB);
+        CheckBox uric_acid = dialog.findViewById(R.id.uric_acid_CB);
+        CheckBox cholesterol = dialog.findViewById(R.id.cholesterol_CB);
+        TextView ok_dialog = dialog.findViewById(R.id.dialog_ok_button);
+        TextView cancel_dialog = dialog.findViewById(R.id.dialog_cancel_button);
+
+        if(checkedTests[1])
+            glucose_non_fast.setChecked(true);
+        if(checkedTests[2])
+            glucose_fast.setChecked(true);
+        if(checkedTests[3])
+            glucose_ppn.setChecked(true);
+        if(checkedTests[4])
+            glucose_rand.setChecked(true);
+        if(checkedTests[5])
+            uric_acid.setChecked(true);
+        if(checkedTests[6])
+            cholesterol.setChecked(true);
+        if(checkedTests[7])
+            haemoglobin.setChecked(true);
+
+        bp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(((CompoundButton) view).isChecked()){
+                    checkedTests[0] = true;
+                } else {
+                    checkedTests[0] = false;
+                }
+            }
+        });
+
+        ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(int j=0;j<checkedTests.length;j++)
+                {
+                    if(checkedTests[j])
+                        selectedTests.add(test_names[j]);
+                }
+                receiptNum = generateReceiptNum();
+                receiptDate = fetchSystemDateForBill();
+                passIntent(selectedTests);
+            }
+        });
+
+        cancel_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private String generateReceiptNum() {
+        String uniqueReceiptNum = "";
+        Random rnd = new Random();
+        int number = rnd.nextInt(9999);
+        String first = String.valueOf(patientFName.charAt(0));
+        String last = String.valueOf(patientLName.charAt(0));
+        uniqueReceiptNum = first + last + String.valueOf(number);
+        return uniqueReceiptNum;
+    }
+
+    private void passIntent(ArrayList<String> selectedTests) {
+        Intent intent = new Intent(VisitSummaryActivity.this, billConfirmationActivity.class);
+        intent.putExtra("patientName", patientName);
+        intent.putExtra("patientOpenMRSID", patientOpenMRSID);
+        intent.putExtra("patientPhoneNum", patientPhoneNum);
+        intent.putExtra("patientVillage", patientVillage);
+        intent.putExtra("patientHideVisitID", "XXXX" + hideVisitUUID);
+        intent.putExtra("patientVisitID", visitUuid);
+        intent.putExtra("testsList", selectedTests);
+        intent.putExtra("receiptNum", receiptNum);
+        intent.putExtra("receiptDate", receiptDate);
+        intent.putExtra("visitType", visitType);
+        intent.putExtra("billType", receiptPaymentStatus);
+        startActivity(intent);
+    }
+
+    private String fetchSystemDateForBill()
+    {
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+        return thisDate;
+    }
+
+    private String checkForOldBill() {
+        String billEncounterUuid = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
+        return billEncounterUuid;
+
+    }
+
+    private void fetchBillDetails(String billEncounterUuid) {
+        ArrayList selectedTests = new ArrayList<>();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {billEncounterUuid, "0", "TRUE"}; // so that the deleted values dont come in the presc.
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseBillData(selectedTests, dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+        passIntent(selectedTests);
+    }
+
+    private void parseBillData(ArrayList<String> selectedTests, String concept_id, String value) {
+
+        switch (concept_id) {
+            case UuidDictionary.BILL_NUM:
+            {
+                receiptNum = value;
+                break;
+            }
+            case UuidDictionary.BILL_DATE:
+            {
+               receiptDate = value;
+                break;
+            }
+            case UuidDictionary.BILL_PAYMENT_STATUS:
+            {
+                receiptPaymentStatus = value;
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BP_ID:
+            {
+                selectedTests.add(getString(R.string.visit_summary_bp));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.blood_glucose_non_fasting));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
+            {
+                selectedTests.add(getString(R.string.blood_glucose_random));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
+            {
+                selectedTests.add(getString(R.string.blood_glucose_post_prandial));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID: // Glucose
+            {
+                selectedTests.add(getString(R.string.blood_glucose_fasting));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID: // Hemoglobin
+            {
+                selectedTests.add(getString(R.string.haemoglobin));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_URIC_ACID_ID: // Uric Acid
+            {
+                selectedTests.add(getString(R.string.uric_acid));
+                break;
+            }
+            case UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID: // Cholestrol
+            {
+                selectedTests.add(getString(R.string.total_cholestrol));
+                break;
+            }
+            default:
+                Log.i(TAG, "parseData: " + value);
+                break;
+
+        }
+
+    }
+
+//    private List<String> showTestConfirmationDialog(boolean[] checkedTests) {
+//        ArrayList selectedTests = new ArrayList<>();
+//        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid),getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
+//        selectedTests.clear();
+//
+//        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+//        dialogBuilder.setTitle(getString(R.string.confirm_tests));
+//        dialogBuilder.setCancelable(false);
+//        dialogBuilder.setItems(test_names, null);
+//        dialogBuilder.setMultiChoiceItems(test_names, checkedTests, new DialogInterface.OnMultiChoiceClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+//                for(int j=1;j<checkedTests.length;j++)
+//                {
+//                    ((AlertDialog) dialogInterface).getListView().getChildAt(j).setEnabled(false);
+//                    ((AlertDialog) dialogInterface).getListView().getChildAt(j).setOnClickListener(null);
+//                }
+//
+////                if(b) {
+////                   checkedTests[i] = true;
+////                   selectedTests.add(test_names[i]);
+////               }
+////               else
+////               {
+////                   if(selectedTests.contains(test_names[i])) {
+////                       checkedTests[i] = false;
+////                       selectedTests.remove(test_names[i]);
+////                   }
+////                }
+//            }
+//        });
+//        dialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                for(int j=0;j<checkedTests.length;j++)
+//                {
+//                    if(checkedTests[j])
+//                        selectedTests.add(test_names[j]);
+//                }
+//                passIntent(selectedTests);
+//            }
+//        });
+//        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
+//        AlertDialog alertDialog = dialogBuilder.create();
+//
+//        alertDialog.show();
+//
+//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//
+//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        return selectedTests;
+//    }
+
 
 }
