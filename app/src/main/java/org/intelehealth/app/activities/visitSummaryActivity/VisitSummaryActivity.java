@@ -1341,8 +1341,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
-        if (complaint.getValue() != null)
+        if (complaint.getValue() != null) {
             complaintView.setText(Html.fromHtml(complaint.getValue()));
+            if(complaintView.getText().toString().contains("Follow up visit"))
+                visitType = "Follow-Up";
+        }
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -5521,61 +5524,5 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
 
     }
-
-//    private List<String> showTestConfirmationDialog(boolean[] checkedTests) {
-//        ArrayList selectedTests = new ArrayList<>();
-//        String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting), getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial), getString(R.string.blood_glucose_random), getString(R.string.uric_acid),getString(R.string.total_cholestrol), getString(R.string.haemoglobin)};
-//        selectedTests.clear();
-//
-//        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-//        dialogBuilder.setTitle(getString(R.string.confirm_tests));
-//        dialogBuilder.setCancelable(false);
-//        dialogBuilder.setItems(test_names, null);
-//        dialogBuilder.setMultiChoiceItems(test_names, checkedTests, new DialogInterface.OnMultiChoiceClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-//                for(int j=1;j<checkedTests.length;j++)
-//                {
-//                    ((AlertDialog) dialogInterface).getListView().getChildAt(j).setEnabled(false);
-//                    ((AlertDialog) dialogInterface).getListView().getChildAt(j).setOnClickListener(null);
-//                }
-//
-////                if(b) {
-////                   checkedTests[i] = true;
-////                   selectedTests.add(test_names[i]);
-////               }
-////               else
-////               {
-////                   if(selectedTests.contains(test_names[i])) {
-////                       checkedTests[i] = false;
-////                       selectedTests.remove(test_names[i]);
-////                   }
-////                }
-//            }
-//        });
-//        dialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                for(int j=0;j<checkedTests.length;j++)
-//                {
-//                    if(checkedTests[j])
-//                        selectedTests.add(test_names[j]);
-//                }
-//                passIntent(selectedTests);
-//            }
-//        });
-//        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
-//        AlertDialog alertDialog = dialogBuilder.create();
-//
-//        alertDialog.show();
-//
-//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//
-//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        return selectedTests;
-//    }
-
 
 }

@@ -42,6 +42,8 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.database.dao.ConceptAttributeTypeDAO;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -69,7 +71,7 @@ public class billConfirmationActivity extends AppCompatActivity {
     Toolbar toolbar;
     String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;
     ArrayList<String> selectedTests = new ArrayList<>();
-    TextView patientDetailsTV, stampPaid, stampUnpaid;
+    TextView patientDetailsTV, paymentStatusTV;
     String patientDetails;
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
@@ -89,6 +91,7 @@ public class billConfirmationActivity extends AppCompatActivity {
     private Bitmap bitmap;
     String finalBillPath = "";
     SyncUtils syncUtils = new SyncUtils();
+    ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +128,7 @@ public class billConfirmationActivity extends AppCompatActivity {
         uricAcidChargeTV = findViewById(R.id.uric_acid_chargesTV);
         totalAmountTV = findViewById(R.id.total_chargesTV);
         payingBillTV = findViewById(R.id.paying_billTV);
-        stampPaid = findViewById(R.id.stamp_paid);
-        stampUnpaid = findViewById(R.id.stamp_unpaid);
+        paymentStatusTV = findViewById(R.id.paymentStatus);
 
         //cardViews
         consultCV = findViewById(R.id.consultation_chargesCV);
@@ -173,13 +175,15 @@ public class billConfirmationActivity extends AppCompatActivity {
         {
             if(billType.equals("Paid"))
             {
-                stampPaid.setVisibility(View.VISIBLE);
-                stampUnpaid.setVisibility(View.GONE);
+                paymentStatusTV.setVisibility(View.VISIBLE);
+                paymentStatusTV.setText("Paid");
+                paymentStatusTV.setBackgroundColor(Color.GREEN);
             }
             else if(billType.contains("Unpaid"))
             {
-                stampPaid.setVisibility(View.GONE);
-                stampUnpaid.setVisibility(View.VISIBLE);
+                paymentStatusTV.setVisibility(View.VISIBLE);
+                paymentStatusTV.setText("Unpaid");
+                paymentStatusTV.setBackgroundColor(Color.RED);
             }
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
@@ -239,6 +243,18 @@ public class billConfirmationActivity extends AppCompatActivity {
                 }
                 boolean billSuccess = syncBillToServer();
                 if(billSuccess) {
+                    if(paymentStatus.equals("Paid"))
+                    {
+                        paymentStatusTV.setVisibility(View.VISIBLE);
+                        paymentStatusTV.setText("Paid");
+                        paymentStatusTV.setBackgroundColor(Color.GREEN);
+                    }
+                    else if(paymentStatus.contains("Unpaid"))
+                    {
+                        paymentStatusTV.setVisibility(View.VISIBLE);
+                        paymentStatusTV.setText("Unpaid");
+                        paymentStatusTV.setBackgroundColor(Color.RED);
+                    }
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
                     payingBillTV.setVisibility(View.GONE);
                     radioGroup.setVisibility(View.GONE);
@@ -517,36 +533,52 @@ public class billConfirmationActivity extends AppCompatActivity {
                 total_amount += Double.valueOf(obj.getString("followUpCharge"));
             }
             if (glucoseRCV.getVisibility() == View.VISIBLE) {
-                glucoseRChargeTV.setText("₹" + obj.getString("glucose_random_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_random_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+                price = price.substring(0,2);
+                glucoseRChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucoseFCV.getVisibility() == View.VISIBLE) {
-                glucoseFChargeTV.setText("₹" + obj.getString("glucose_fasting_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_fasting_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+                price = price.substring(0,2);
+                glucoseFChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucosePPNCV.getVisibility() == View.VISIBLE) {
-                glucosePPNChargeTV.setText("₹" + obj.getString("glucose_ppn_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_ppn_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+                price = price.substring(0,2);
+                glucosePPNChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (glucoseNFCV.getVisibility() == View.VISIBLE) {
-                glucoseNFChargeTV.setText("₹" + obj.getString("glucose_non_fasting_charge") + "/-");
-                total_amount += Double.valueOf(obj.getString("glucose_non_fasting_charge"));
+                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
+                price = price.substring(0,2);
+                glucoseNFChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (uricAcidCV.getVisibility() == View.VISIBLE) {
-                uricAcidChargeTV.setText("₹" + obj.getString("uric_acid_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("uric_acid_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+                price = price.substring(0,2);
+                uricAcidChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (haemoglobinCV.getVisibility() == View.VISIBLE) {
-                haemoglobinChargeTV.setText("₹" + obj.getString("haemoglobin_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("haemoglobin_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+                price = price.substring(0,2);
+                haemoglobinChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (cholesterolCV.getVisibility() == View.VISIBLE) {
-                cholesterolChargeTV.setText("₹" + obj.getString("cholesterol_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("cholesterol_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+                price = price.substring(0,2);
+                cholesterolChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
             if (bpCV.getVisibility() == View.VISIBLE) {
-                bpChargeTV.setText("₹" + obj.getString("bp_charges") + "/-");
-                total_amount += Double.valueOf(obj.getString("bp_charges"));
+                String price = conceptAttributeListDAO.getConceptPrice("BP Test");
+                price = price.substring(0,2);
+                bpChargeTV.setText("₹" + price + "/-");
+                total_amount += Integer.parseInt(price);
             }
 
         } catch (JSONException e) {
