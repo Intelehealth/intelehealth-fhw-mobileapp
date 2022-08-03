@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,6 +17,57 @@
         android:layout_margin="@dimen/padding_visit_summary_screen"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
+
+<!--        bluetooth option - start-->
+        <TextView
+            android:id="@+id/tv_device_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/button_bg_rounded_stroke"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="10dp"
+            android:tag="-1"
+            android:text="@string/please_connect"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <ProgressBar
+            android:id="@+id/pb_connect"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btn_disConnect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="@string/disconnect"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/connect"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+<!--        end-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/finalBillCV"
@@ -40,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="30dp"
+                android:paddingBottom="50dp"
                 android:orientation="vertical">
 
                 <!--                    <TextView-->
@@ -51,8 +104,8 @@
                 <!--                        android:text="Intelehealth"/>-->
 
                 <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:src="@drawable/img" />
 
@@ -70,21 +123,23 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_weight="2">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginHorizontal="10dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="10dp"
-                                android:layout_marginVertical="20dp"
                                 android:text="Receipt"
-                                android:textSize="22sp" />
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/paymentStatus"
@@ -96,7 +151,8 @@
                                 android:padding="5dp"
                                 android:text="Paid"
                                 android:textSize="14sp"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                tools:visibility="visible"/>
 
                         </LinearLayout>
 
@@ -111,11 +167,11 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
-                        android:src="@drawable/intelehealth_stamp"
-                        android:scaleType="fitXY"/>
+                        android:src="@drawable/intelehealth_stamp" />
 
                 </LinearLayout>
 
@@ -126,12 +182,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="6dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -172,12 +228,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="6dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -219,9 +275,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -263,9 +319,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -307,9 +363,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -351,9 +407,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -395,9 +451,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -439,9 +495,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -483,9 +539,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -527,9 +583,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -567,7 +623,9 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginHorizontal="5dp"
                     android:background="?android:attr/listDivider" />
 
                 <androidx.cardview.widget.CardView
@@ -576,10 +634,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="6dp"
-                    android:layout_marginVertical="25dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:contentPadding="10dp">
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -737,7 +796,8 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/button_print"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
