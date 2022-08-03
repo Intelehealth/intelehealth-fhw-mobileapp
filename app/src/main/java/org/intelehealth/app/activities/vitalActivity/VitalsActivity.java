@@ -1409,13 +1409,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDAO.updateObs(obsDTO);
 
                 // Glucose
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodglucose());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
-                obsDAO.updateObs(obsDTO);
+//                obsDTO = new ObsDTO();
+//                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+//                obsDTO.setEncounteruuid(encounterVitals);
+//                obsDTO.setCreator(sessionManager.getCreatorID());
+//                obsDTO.setValue(results.getBloodglucose());
+//                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
+//                obsDAO.updateObs(obsDTO);
 
                 // Glucose - Random
                 obsDTO = new ObsDTO();
@@ -1598,16 +1598,16 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
 
             // Glucose
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBloodglucose());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
+//            obsDTO = new ObsDTO();
+//            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+//            obsDTO.setEncounteruuid(encounterVitals);
+//            obsDTO.setCreator(sessionManager.getCreatorID());
+//            obsDTO.setValue(results.getBloodglucose());
+//            try {
+//                obsDAO.insertObs(obsDTO);
+//            } catch (DAOException e) {
+//                FirebaseCrashlytics.getInstance().recordException(e);
+//            }
 
             // Glucose - Random
             obsDTO = new ObsDTO();
