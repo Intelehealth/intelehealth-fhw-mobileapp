@@ -250,7 +250,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('71f0aadf-2a15-420f-897a-145dfc87fcd1','Haemoglobin Test', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('e331ccc4-7995-41d5-abe6-15b3e5ead1b1','SERUM URIC ACID', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('9d2f0fcc-538f-11e6-9cfe-86f436325720','TOTAL CHOLESTEROL', null, 0)");
-            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('82be928b-5b17-4f44-86f0-3b75ffc56839','Billing Visit Type', null, 0)");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('82be928b-5b17-4f44-86f0-3b75ffc56839','Billing Visit Type Consultation', null, 0)");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('4702a502-15c3-4759-99f0-bb685c374541','Billing Visit Type Followup', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('ba8b1ed9-ec2f-4bab-9e0e-c60fcb44c918','Bill Paid Status', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('9fa03f61-8083-4cce-bbc0-d5f752a8ee7b','Receipt Number', null, 0)");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name,price,retired) VALUES('caa20b34-48a2-4f79-b08e-7be82f379e49','Receipt Date', null, 0)");

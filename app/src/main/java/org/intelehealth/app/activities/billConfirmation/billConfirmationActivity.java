@@ -171,16 +171,12 @@ public class billConfirmationActivity extends AppCompatActivity {
 
         patientDetailsTV.setText(patientDetails);
         manageCardView(selectedTests);
-        if(!billType.equals("NA"))
-        {
-            if(billType.equals("Paid"))
-            {
+        if (!billType.equals("NA")) {
+            if (billType.equals("Paid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
                 paymentStatusTV.setText("Paid");
                 paymentStatusTV.setBackgroundColor(Color.GREEN);
-            }
-            else if(billType.contains("Unpaid"))
-            {
+            } else if (billType.contains("Unpaid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
                 paymentStatusTV.setText("Unpaid");
                 paymentStatusTV.setBackgroundColor(Color.RED);
@@ -210,8 +206,7 @@ public class billConfirmationActivity extends AppCompatActivity {
         confirmBillCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!yes.isChecked() && !no.isChecked())
-                {
+                if (!yes.isChecked() && !no.isChecked()) {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(billConfirmationActivity.this);
                     alertDialogBuilder.setTitle(R.string.error);
                     alertDialogBuilder.setMessage(R.string.select_payment_information);
@@ -229,28 +224,23 @@ public class billConfirmationActivity extends AppCompatActivity {
                     IntelehealthApplication.setAlertDialogCustomTheme(billConfirmationActivity.this, alertDialog);
                     return;
                 }
-                if(no.isChecked() && not_paying_reasonTIL.getVisibility() == View.VISIBLE)
-                {
-                    if(not_paying_reasonET.getText().toString().isEmpty()) {
+                if (no.isChecked() && not_paying_reasonTIL.getVisibility() == View.VISIBLE) {
+                    if (not_paying_reasonET.getText().toString().isEmpty()) {
                         not_paying_reasonET.setError(getResources().getString(R.string.error_field_required));
                         Toast.makeText(billConfirmationActivity.this, getString(R.string.enter_reason_toast), Toast.LENGTH_LONG).show();
                         return;
-                    }
-                    else {
+                    } else {
                         not_paying_reason = not_paying_reasonET.getText().toString();
                         paymentStatus = "Unpaid - " + not_paying_reason;
                     }
                 }
                 boolean billSuccess = syncBillToServer();
-                if(billSuccess) {
-                    if(paymentStatus.equals("Paid"))
-                    {
+                if (billSuccess) {
+                    if (paymentStatus.equals("Paid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
                         paymentStatusTV.setText("Paid");
                         paymentStatusTV.setBackgroundColor(Color.GREEN);
-                    }
-                    else if(paymentStatus.contains("Unpaid"))
-                    {
+                    } else if (paymentStatus.contains("Unpaid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
                         paymentStatusTV.setText("Unpaid");
                         paymentStatusTV.setBackgroundColor(Color.RED);
@@ -292,10 +282,10 @@ public class billConfirmationActivity extends AppCompatActivity {
         String thisDate = currentDate.format(todayDate);
         String encounter_uuid = UUID.randomUUID().toString();
         success = createEncounter(encounter_uuid, thisDate);
-        if(success) {
+        if (success) {
             success = createObs(encounter_uuid);
         }
-        if(success)
+        if (success)
             success = syncUtils.syncForeground("bill");
         return success;
     }
@@ -353,8 +343,7 @@ public class billConfirmationActivity extends AppCompatActivity {
         }
 
 
-        if (selectedTests.contains(getString(R.string.blood_glucose_non_fasting)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_non_fasting))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -367,8 +356,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.blood_glucose_fasting)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_fasting))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -381,8 +369,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.blood_glucose_post_prandial)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_post_prandial))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -395,8 +382,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.blood_glucose_random)))
-        {
+        if (selectedTests.contains(getString(R.string.blood_glucose_random))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -409,8 +395,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.uric_acid)))
-        {
+        if (selectedTests.contains(getString(R.string.uric_acid))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_URIC_ACID_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -423,8 +408,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.total_cholestrol)))
-        {
+        if (selectedTests.contains(getString(R.string.total_cholestrol))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -437,8 +421,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.haemoglobin)))
-        {
+        if (selectedTests.contains(getString(R.string.haemoglobin))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -451,8 +434,7 @@ public class billConfirmationActivity extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        if (selectedTests.contains(getString(R.string.visit_summary_bp)))
-        {
+        if (selectedTests.contains(getString(R.string.visit_summary_bp))) {
             obsDTO.setConceptuuid(UuidDictionary.BILL_PRICE_BP_ID);
             obsDTO.setEncounteruuid(encounter_uuid);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -493,100 +475,92 @@ public class billConfirmationActivity extends AppCompatActivity {
     }
 
     private void shareFile() {
-        if(finalBillPath.equals("")) {
-            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill),Toast.LENGTH_LONG).show();
-            return; }
+        if (finalBillPath.equals("")) {
+            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
+            return;
+        }
 
         File file = new File(finalBillPath);
-        if(!file.exists()){
-            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill),Toast.LENGTH_LONG).show();
-            return; }
+        if (!file.exists()) {
+            Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
+            return;
+        }
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" +file));
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
         startActivity(Intent.createChooser(intent, "Share the file...."));
     }
 
 
     private void setPrices() {
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
 
-        //Check for license key and load the correct config file
-        try {
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(
-                        FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                        String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
-            }
-
-            if (consultCV.getVisibility() == View.VISIBLE) {
-                consultChargeTV.setText("₹" + obj.getString("consulCharge") + "/-");
-                total_amount += Double.valueOf(obj.getString("consulCharge"));
-            }
-            if (followUPCV.getVisibility() == View.VISIBLE) {
-                followUpChargeTV.setText("₹" + obj.getString("followUpCharge") + "/-");
-                total_amount += Double.valueOf(obj.getString("followUpCharge"));
-            }
-            if (glucoseRCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
-                price = price.substring(0,2);
-                glucoseRChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucoseFCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
-                price = price.substring(0,2);
-                glucoseFChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucosePPNCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
-                price = price.substring(0,2);
-                glucosePPNChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (glucoseNFCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
-                price = price.substring(0,2);
-                glucoseNFChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (uricAcidCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
-                price = price.substring(0,2);
-                uricAcidChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (haemoglobinCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
-                price = price.substring(0,2);
-                haemoglobinChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (cholesterolCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
-                price = price.substring(0,2);
-                cholesterolChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-            if (bpCV.getVisibility() == View.VISIBLE) {
-                String price = conceptAttributeListDAO.getConceptPrice("BP Test");
-                price = price.substring(0,2);
-                bpChargeTV.setText("₹" + price + "/-");
-                total_amount += Integer.parseInt(price);
-            }
-
-        } catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+        if (consultCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Consultation");
+            price = getPrice(price, price.indexOf('.'));
+            consultChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (followUPCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Followup");
+            price = getPrice(price, price.indexOf('.'));
+            followUpChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucoseRCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+            price = getPrice(price, price.indexOf('.'));
+            glucoseRChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucoseFCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+            price = getPrice(price, price.indexOf('.'));
+            glucoseFChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucosePPNCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+            price = getPrice(price, price.indexOf('.'));
+            glucosePPNChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (glucoseNFCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
+            price = getPrice(price, price.indexOf('.'));
+            glucoseNFChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (uricAcidCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+            price = getPrice(price, price.indexOf('.'));
+            uricAcidChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (haemoglobinCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+            price = getPrice(price, price.indexOf('.'));
+            haemoglobinChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (cholesterolCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+            price = getPrice(price, price.indexOf('.'));
+            cholesterolChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
+        }
+        if (bpCV.getVisibility() == View.VISIBLE) {
+            String price = conceptAttributeListDAO.getConceptPrice("BP Test");
+            price = getPrice(price, price.indexOf('.'));
+            bpChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
         }
 
         totalAmountTV.setText("₹" + String.valueOf(total_amount) + "/-");
+    }
+
+    private String getPrice(String price, int indexOf) {
+        return price.substring(0, indexOf);
     }
 
     private void manageCardView(ArrayList<String> selectedTests) {
@@ -684,15 +658,15 @@ public class billConfirmationActivity extends AppCompatActivity {
 
         // write the document content
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_NAS_PDF/";
-        File filePath= new File(path);
+        File filePath = new File(path);
         if (!filePath.exists())
             filePath.mkdirs();
 
-        String fName = patientName + "_"+ patientOpenID + "_" + billDateString + ".pdf";
+        String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
         String finalPath = path + fName;
         finalBillPath = finalPath;
-        File file = new File (filePath, fName);
-        if (file.exists ()) file.delete ();
+        File file = new File(filePath, fName);
+        if (file.exists()) file.delete();
 
         try {
             file.createNewFile();
