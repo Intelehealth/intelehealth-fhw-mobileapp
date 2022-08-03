@@ -846,10 +846,23 @@
     <!--UI2.0-->
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="please_login">Please login to continue with \n your work</string>
+    <string name="please_login">Please login to continue with \nyour work</string>
     <string name="welcome_back">Welcome back!</string>
+    <string name="enter_login_details">Please enter your login details</string>
     <string name="enter_username1">Enter your username</string>
     <string name="enter_password1">Enter your password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password_instruction">Follow up the instructions below to \nuse your account again</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="enter_username2">Enter username</string>
+    <string name="enter_username_given">Please enter your username provided by \nIntelehealth</string>
+    <string name="login">Login</string>
+    <string name="enter_mobile_no">Enter mobile number</string>
+    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
+    <string name="enter_verification_code">Enter verification code</string>
+    <string name="otp_sent">6-digit OTP sent on your registered number and email.\nPlease check and enter the OTP.</string>
+    <string name="no_otp_received">Didn\'t receive OTP? <font color='#2F1E91'><u>Resend in time</u></font></string>
+    <string name="help"><u>Help</u></string>
 
 
     <!--END-->

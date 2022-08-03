@@ -76,6 +76,7 @@
     <color name="textColorGray">#7F7B92</color>
     <color name="textColorLightGary">#B0ADBE</color>
     <color name="textColorWhite">#FFFFFF</color>
+    <color name="textColorBlue">#2F1E91</color>
 
     <!--BG colors-->
     <color name="backgroundGray">#FAF9FF</color>

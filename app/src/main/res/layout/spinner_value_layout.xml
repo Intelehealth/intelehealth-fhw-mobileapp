@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2">
+
+    <ImageView
+        android:id="@+id/spinnerImages"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.8"
+      />
+
+    <TextView
+        android:id="@+id/spinnerTextView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:fontFamily="@font/dm_sans_regular"
+        android:textSize="@dimen/common_button_text_size" />
+
+</LinearLayout><!--
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:layout_height="match_parent" >
+        <ImageView
+            android:id="@+id/spinnerImages"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/app_name"/>
+        <TextView
+            android:id="@+id/spinnerTextView"
+            android:fontFamily="@font/dm_sans_regular"
+            android:textSize="@dimen/common_button_text_size"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+
+
+    </TableRow>
+
+</TableLayout>-->
