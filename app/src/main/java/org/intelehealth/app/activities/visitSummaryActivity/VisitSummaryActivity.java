@@ -4,7 +4,6 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.NotificationManager;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,27 +33,12 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -82,48 +66,76 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rt.printerlibrary.bean.UsbConfigBean;
-import com.rt.printerlibrary.bean.WiFiConfigBean;
-import com.rt.printerlibrary.connect.PrinterInterface;
-import com.rt.printerlibrary.enumerate.CommonEnum;
-import com.rt.printerlibrary.enumerate.ConnectStateEnum;
-import com.rt.printerlibrary.factory.connect.BluetoothFactory;
-import com.rt.printerlibrary.factory.connect.PIFactory;
-import com.rt.printerlibrary.factory.printer.PrinterFactory;
-import com.rt.printerlibrary.factory.printer.UniversalPrinterFactory;
-import com.rt.printerlibrary.observer.PrinterObserver;
-import com.rt.printerlibrary.observer.PrinterObserverManager;
-import com.rt.printerlibrary.printer.RTPrinter;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
-import com.rt.printerlibrary.connect.PrinterInterface;
-import com.rt.printerlibrary.enumerate.ConnectStateEnum;
 
+import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.prescription.PrescriptionActivity;
 import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
-import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.ClsDoctorDetails;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.services.DownloadService;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.Base64Utils;
-import org.intelehealth.app.utilities.BaseEnum;
-import org.intelehealth.app.utilities.TimeRecordUtils;
-import org.intelehealth.apprtc.ChatActivity;
-
-import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.ChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -140,54 +152,13 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
-import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
-import org.intelehealth.app.database.dao.RTCConnectionDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
-import org.intelehealth.app.database.dao.VisitAttributeListDAO;
-import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.ClsDoctorDetails;
-import org.intelehealth.app.models.Patient;
-import org.intelehealth.app.models.dto.EncounterDTO;
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.services.DownloadService;
-import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.NetworkConnection;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.exception.DAOException;
-
-import com.rt.printerlibrary.factory.printer.ThermalPrinterFactory;
-
-import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
 
@@ -2510,25 +2481,44 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    doctorDetailStr +
-                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
-                                    "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                                    para_open + "%s" + para_close + "<br><br>"
+
+                            , heading, heading2, heading3, mPatientName, age, mGender, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            /*pat_hist, fam_hist,*/ mComplaint);
+
+            if (!diagnosis_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                        "%s<br>", diagnosis_web));
+            }
+
+            if (!rx_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                        "%s<br>", rx_web));
+            }
+
+            if (!tests_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                        "%s<br>", tests_web));
+            }
+
+            if (!advice_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                        "%s<br>", advice_web));
+            }
+
+            if (!followUp_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                        "%s<br>", followUp_web));
+            }
+
+
+            htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                    doctorDetailStr +
+                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
+                    "</div>", doctor_web));
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -2547,25 +2537,44 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    doctorDetailStr +
-                                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
-                                    "</div>"
+                                    para_open + "%s" + para_close + "<br><br>"
+
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            /*pat_hist, fam_hist,*/ mComplaint);
+
+
+            if (!diagnosis_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                        "%s<br>", diagnosis_web));
+            }
+
+            if (!rx_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                        "%s<br>", rx_web));
+            }
+
+            if (!tests_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                        "%s<br>", tests_web));
+            }
+
+            if (!advice_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                        "%s<br>", advice_web));
+            }
+
+            if (!followUp_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                        "%s<br>", followUp_web));
+            }
+
+            htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
+                    doctorDetailStr +
+                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                    "</div>", doctor_web));
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
