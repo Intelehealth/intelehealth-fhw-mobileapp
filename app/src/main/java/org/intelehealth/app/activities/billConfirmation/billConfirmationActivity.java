@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -475,6 +476,10 @@ public class billConfirmationActivity extends AppCompatActivity {
     }
 
     private void shareFile() {
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/Download/";
+        String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
+        String finalPath = path + fName;
+        finalBillPath = finalPath;
         if (finalBillPath.equals("")) {
             Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
             return;
@@ -485,10 +490,13 @@ public class billConfirmationActivity extends AppCompatActivity {
             Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
             return;
         }
-
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                file);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(intent, "Share the file...."));
     }
 
@@ -657,7 +665,7 @@ public class billConfirmationActivity extends AppCompatActivity {
         document.finishPage(page);
 
         // write the document content
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_NAS_PDF/";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/Download/";
         File filePath = new File(path);
         if (!filePath.exists())
             filePath.mkdirs();
@@ -674,12 +682,13 @@ public class billConfirmationActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+            return;
         }
 
         document.close();
         Toast.makeText(this, "successfully pdf created", Toast.LENGTH_SHORT).show();
 
-        openPdf(finalPath);
+//        openPdf(finalPath);
 
     }
 
@@ -687,13 +696,15 @@ public class billConfirmationActivity extends AppCompatActivity {
         File file = new File(path);
         if (file.exists()) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.fromFile(file);
+            Uri uri = FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".fileprovider",
+                    file);
             intent.setDataAndType(uri, "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
             try {
                 startActivity(intent);
-            } catch (ActivityNotFoundException e) {
+            } catch (Exception e) {
                 Toast.makeText(this, "No Application for pdf view", Toast.LENGTH_SHORT).show();
             }
         }
