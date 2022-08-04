@@ -978,7 +978,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
-        values.add(bloodGlucose_editText);
         values.add(bloodGlucoseRandom_editText);
         values.add(bloodGlucosePostPrandial_editText);
         values.add(bloodGlucose_editText_fasting);
@@ -1139,33 +1138,14 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                     cancel = false;
                 }
             }
-            // glucose - non-fasting
+
+            // glucose - random
             else if (i == 8) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING))) {
-                        et.setError(getString(R.string.glucose_non_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_NON_FASTING, AppConstants.MAXIMUM_GLUCOSE_NON_FASTING));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-
-            // glucose - random
-            else if (i == 9) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
                         et.setError(getString(R.string.glucose_fasting_validation,
                                 AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
                         focusView = et;
@@ -1180,6 +1160,26 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
 
             // glucose - post-prandial
+            else if (i == 9) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING))) {
+                        et.setError(getString(R.string.glucose_fasting_validation,
+                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }
+
+            // glucose - fasting
             else if (i == 10) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
@@ -1198,28 +1198,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                     cancel = false;
                 }
             }
-
-            // glucose - fasting
-            else if (i == 11) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
-                        et.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
             // hemoglobin
-            else if (i == 12) {
+            else if (i == 11) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -1239,7 +1219,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
 
             // uric acid
-            else if (i == 13) {
+            else if (i == 12) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -1259,7 +1239,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
 
             // total cholesterol
-            else if (i == 14) {
+            else if (i == 13) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -1429,13 +1409,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDAO.updateObs(obsDTO);
 
                 // Glucose
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodglucose());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
-                obsDAO.updateObs(obsDTO);
+//                obsDTO = new ObsDTO();
+//                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+//                obsDTO.setEncounteruuid(encounterVitals);
+//                obsDTO.setCreator(sessionManager.getCreatorID());
+//                obsDTO.setValue(results.getBloodglucose());
+//                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
+//                obsDAO.updateObs(obsDTO);
 
                 // Glucose - Random
                 obsDTO = new ObsDTO();
@@ -1618,16 +1598,16 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
 
             // Glucose
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBloodglucose());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
+//            obsDTO = new ObsDTO();
+//            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
+//            obsDTO.setEncounteruuid(encounterVitals);
+//            obsDTO.setCreator(sessionManager.getCreatorID());
+//            obsDTO.setValue(results.getBloodglucose());
+//            try {
+//                obsDAO.insertObs(obsDTO);
+//            } catch (DAOException e) {
+//                FirebaseCrashlytics.getInstance().recordException(e);
+//            }
 
             // Glucose - Random
             obsDTO = new ObsDTO();

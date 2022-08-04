@@ -60,7 +60,7 @@ public class EncounterDAO {
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("modified_date", encounter.getEncounterTime());
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
@@ -87,7 +87,7 @@ public class EncounterDAO {
             values.put("encounter_time", encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("modified_date", encounter.getEncounterTime());
             values.put("sync", "false");
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
