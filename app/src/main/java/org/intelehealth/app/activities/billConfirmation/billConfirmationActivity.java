@@ -140,7 +140,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     private PrinterFactory printerFactory;
     public static PrinterInterface curPrinterInterface = null;
     private Bitmap mBitmap = null;
-    private int bmpPrintWidth = 20;
+    private int bmpPrintWidth = 50;
     private String printStr;
     private TextSetting textSetting;
     private String mChartsetName = "UTF-8";
@@ -1064,7 +1064,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     escCmd.append(escCmd.getHeaderCmd());// Initial //btnCmds = 2......
                     escCmd.setChartsetName(mChartsetName);
                     CommonSetting commonSetting = new CommonSetting();
-                    commonSetting.setAlign(ALIGN_LEFT);
+                    commonSetting.setAlign(ALIGN_MIDDLE);
                     escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
 
                     BitmapSetting bitmapSetting = new BitmapSetting();
