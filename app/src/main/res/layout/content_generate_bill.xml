@@ -139,6 +139,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Receipt"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -148,6 +149,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginHorizontal="8dp"
                                 android:background="@drawable/bg_visit_closed"
+                                android:textColor="@color/white"
                                 android:padding="5dp"
                                 android:text="Paid"
                                 android:textSize="14sp"
@@ -623,9 +625,9 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginHorizontal="10dp"
                     android:background="?android:attr/listDivider" />
 
                 <androidx.cardview.widget.CardView
