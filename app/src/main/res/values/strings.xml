@@ -863,6 +863,17 @@
     <string name="otp_sent">6-digit OTP sent on your registered number and email.\nPlease check and enter the OTP.</string>
     <string name="no_otp_received">Didn\'t receive OTP? <font color='#2F1E91'><u>Resend in time</u></font></string>
     <string name="help"><u>Help</u></string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="new_password">New password</string>
+    <string name="generate_new_password"><u>Generate a new password</u></string>
+    <string name="reenter_new_password">Re-enter new password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="button_continue">Continue</string>
+    <string name="save">Save</string>
+    <string name="reset_password">Reset Password?</string>
+    <string name="please_reset_password">Please reset new password for \nyour account</string>
+    <string name="forgot_password_link"><u>Forgot password</u></string>
+
 
 
     <!--END-->

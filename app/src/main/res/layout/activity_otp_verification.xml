@@ -16,18 +16,19 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="@dimen/margin_32"
         android:src="@drawable/ic_baseline_arrow_back_24" />
+
     <TextView
         android:id="@+id/tv_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_32"
-        android:fontFamily="@font/dm_sans_regular"
         android:layout_marginEnd="10dp"
-        android:text="@string/help"
-        android:drawablePadding="5dp"
         android:drawableEnd="@drawable/ui2_ic_outline_info_24"
+        android:drawablePadding="5dp"
         android:drawableTint="@color/iconTintWhite"
+        android:fontFamily="@font/dm_sans_regular"
+        android:text="@string/help"
         android:textColor="@color/textColorWhite"
         android:textSize="@dimen/common_hint_text_size" />
 
@@ -151,7 +152,7 @@
                     android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                     android:drawableTint="@color/iconTintWhite"
                     android:padding="@dimen/padding_15"
-                    android:text="Continue" />
+                    android:text="@string/button_continue" />
 
 
             </LinearLayout>

@@ -69,6 +69,7 @@
     <dimen name="common_imageview_back_height">20dp</dimen>
 
     <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_7">7dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_15">15dp</dimen>
@@ -92,10 +93,12 @@
     <dimen name="padding_40">40dp</dimen>
 
 
-    <dimen name="welcome_back_top_margin">92dp</dimen>
+    <dimen name="welcome_back_top_margin">82dp</dimen>
     <dimen name="image_intelehealth_login_height">88dp</dimen>
     <dimen name="image_intelehealth_login_width">204.73dp</dimen>
     <dimen name="forgot_password_top_margin">70dp</dimen>
 
+    <dimen name="login_collapsing_toolbar_height">80dp</dimen>
 
+    80dp
 </resources>

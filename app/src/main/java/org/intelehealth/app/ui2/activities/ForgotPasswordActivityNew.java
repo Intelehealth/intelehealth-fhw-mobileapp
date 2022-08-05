@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.goodiebag.pinview.Pinview;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 
@@ -32,7 +30,11 @@ public class ForgotPasswordActivityNew extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_new);
 
+        initUI();
 
+    }
+
+    private void initUI() {
         Button buttonUsername = findViewById(R.id.button_username);
         // buttonUsername.setBackground(getResources().getDrawable(R.drawable.ui2_common_button_bg_selected));
         Button buttonContinue = findViewById(R.id.button_continue);
@@ -65,23 +67,19 @@ public class ForgotPasswordActivityNew extends AppCompatActivity {
             }
         });
 
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ForgotPasswordActivityNew.this, ForgotPasswordOtpVerificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
-        TextView text = findViewById(R.id.spinnerTextView);
-        ImageView imageView = findViewById(R.id.spinnerImages);
         Spinner spinner = findViewById(R.id.mySpinner);
 
         SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.spinner_value_layout, textArray, imageArray);
         spinner.setAdapter(adapter);
-
-
-        buttonContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ForgotPasswordActivityNew.this, OtpVerificationActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     public class SpinnerAdapter extends ArrayAdapter<String> {
