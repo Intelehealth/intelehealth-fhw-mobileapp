@@ -20,6 +20,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@color/transparent"
+            android:contentDescription="backButton_langselSc"
             android:padding="0dp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />

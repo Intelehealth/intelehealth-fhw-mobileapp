@@ -18,9 +18,10 @@
         android:layout_marginEnd="10dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:textAlignment="center"
         android:padding="@dimen/common_padding"
         android:text="@string/save_button"
+        android:contentDescription="@string/save_button"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="@dimen/header_text_size"
@@ -40,6 +41,7 @@
         android:layout_toEndOf="@+id/tvSave_partogramdataSc"
         android:padding="@dimen/common_padding"
         android:text="View"
+        android:contentDescription="View"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="@dimen/header_text_size"
@@ -73,7 +75,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:contentDescription="@string/chat_fab"
+        android:contentDescription="@string/video_call"
         android:src="@drawable/ic_baseline_videocam_24"
         app:backgroundTint="@color/yellow" />
 

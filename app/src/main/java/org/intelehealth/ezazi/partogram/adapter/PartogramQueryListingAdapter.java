@@ -119,8 +119,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void showAutoComplete_EditText(final View tempView, final int position, final int positionChild, final String paramDateType) {
-        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
-        AutoCompleteTextView dataEditText = tempView.findViewById(R.id.etvData);
+        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName_Etv_autocomplete);
+        AutoCompleteTextView dataEditText = tempView.findViewById(R.id.etvData_Etv_autocomplete);
         dataEditText.setAdapter(new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, mContext.getResources().getStringArray(R.array.medications)));
         dataEditText.setThreshold(1);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
@@ -155,14 +155,14 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
 
     private void showUserInputBox(final View tempView, final int position, final int positionChild, final String paramDateType) {
-        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
-        EditText dataEditText = tempView.findViewById(R.id.etvData);
+        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName_Etv_view);
+        EditText dataEditText = tempView.findViewById(R.id.etvData_Etv_view);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
+        dataEditText.setContentDescription(
+                new StringBuilder().append("DataEditText_Desc_").append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()));
+        Log.d("showUserInput_Desc",dataEditText.getContentDescription().toString());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
-            dataEditText.setContentDescription(
-                    new StringBuilder().append("DataEditText_Desc_").append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()));
-            Log.d("showUserInput_Desc",dataEditText.getContentDescription().toString());
         } else {
             /*if (mItemList.get(position).getParamInfoList().get(positionChild).getParamName().equalsIgnoreCase("Initial")) {
                 String[] initials = new SessionManager(mContext).getChwname().split(" ");
@@ -232,9 +232,12 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void showListOptions(final View tempView, final int position, final int positionChild) {
-        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
-        TextView dropdownTextView = tempView.findViewById(R.id.tvData);
+        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName_dropdownview);
+        TextView dropdownTextView = tempView.findViewById(R.id.tvData_dropdownview);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
+        dropdownTextView.setContentDescription(
+                new StringBuilder().append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()));
+        Log.d("dropdownTextView_Desc",dropdownTextView.getContentDescription().toString());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
                 !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty())
         {
@@ -259,7 +262,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                                 dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
                                 dropdownTextView.setContentDescription(
                                         new StringBuilder().append(mItemList.get(position).getParamInfoList().get(positionChild).getParamName()+"_").append(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]));
-                                Log.d("dropdownTextView_Desc",dropdownTextView.getContentDescription().toString());
+                                Log.d("dropdown_select_Desc",dropdownTextView.getContentDescription().toString());
                                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
                                 dialog.dismiss();
                             }

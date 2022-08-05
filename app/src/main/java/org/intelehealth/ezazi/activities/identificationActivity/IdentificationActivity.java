@@ -279,7 +279,6 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                 }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.getDatePicker().setContentDescription("mAdmissionDateTextView");
                 datePickerDialog.show();
             }
         });
@@ -1368,6 +1367,40 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mDOBPicker.show();
+
+//                Calendar mCalendar = Calendar.getInstance();
+//                int year = mCalendar.get(Calendar.YEAR);
+//                int month = mCalendar.get(Calendar.MONTH);
+//                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(IdentificationActivity.this, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                        Calendar cal = Calendar.getInstance();
+//                        cal.setTimeInMillis(0);
+//                        cal.set(year, month, dayOfMonth);
+//                        Date date = cal.getTime();
+//
+//                        mAdmissionDateString = simpleDateFormat.format(date);
+//                        mDOB.setText(mAdmissionDateString);
+//                        String age = getYear(year, month, dayOfMonth, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+//                        //get years months days
+//                        String[] frtData = age.split("-");
+//
+//                        String[] yearData = frtData[0].split(" ");
+//                        String[] monthData = frtData[1].split(" ");
+//                        String[] daysData = frtData[2].split(" ");
+//
+//                        mAgeYears = Integer.valueOf(yearData[0]);
+//                        mAgeMonths = Integer.valueOf(monthData[1]);
+//                        mAgeDays = Integer.valueOf(daysData[1]);
+//                        String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+//                                mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+//                                mAgeDays + getResources().getString(R.string.days);
+//                        mAge.setText(ageS);
+//                    }
+//                }, year, month, dayOfMonth);
+//                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+//                datePickerDialog.show();
             }
         });
         //if patient update then age will be set
@@ -1962,6 +1995,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setContentDescription("BUTTON_NEGATIVE");
+        alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setContentDescription("BUTTON_POSITIVE");
 
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);

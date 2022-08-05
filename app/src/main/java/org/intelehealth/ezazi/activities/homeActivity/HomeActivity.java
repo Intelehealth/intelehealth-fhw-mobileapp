@@ -456,7 +456,7 @@ public class HomeActivity extends AppCompatActivity {
                         Logger.logV(TAG, "creatorUuid - " + creatorUuid);
                         PatientsDAO patientsDAO = new PatientsDAO();
                         FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(i).getPatientuuid());
-                        String patientNameString = patientNameInfo.getOpenMRSID() + "\n" + patientNameInfo.getName();
+                        String patientNameString = patientNameInfo.getOpenMRSID() + " (" + patientNameInfo.getName()+")";
                         Logger.logV(TAG, "patientNameString - " + patientNameString);
                         patients[i] = patientNameString;
                     }
@@ -468,19 +468,21 @@ public class HomeActivity extends AppCompatActivity {
                     List<String> visitUUIDList = new ArrayList<>();
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                     builder.setTitle("Select patients to assign any nurse!")
-                            .setPositiveButton("Proceed!", new DialogInterface.OnClickListener() {
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    Intent intent = new Intent(HomeActivity.this,HomeActivity.class);
+                                    startActivity(intent);
+//                                    dialog.dismiss();
+                                }
+                            });
+                    builder.setPositiveButton("Proceed!", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     showNurseAssignDialog(visitUUIDList);
                                 }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int i) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setMultiChoiceItems(patients, null, new DialogInterface.OnMultiChoiceClickListener() {
+                            });
+                    builder.setMultiChoiceItems(patients, null, new DialogInterface.OnMultiChoiceClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                     if (isChecked) {
@@ -1145,7 +1147,7 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.settingsOption:
+            case R.id.LangsettingsOption_homesc:
                 //settings();
                 Intent intent = new Intent(this, ChooseLanguageActivity.class);
                 startActivity(intent);
