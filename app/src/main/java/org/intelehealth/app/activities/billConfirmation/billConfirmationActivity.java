@@ -4,6 +4,8 @@ import static com.rt.printerlibrary.enumerate.CommonEnum.ALIGN_LEFT;
 import static com.rt.printerlibrary.enumerate.CommonEnum.ALIGN_MIDDLE;
 import static com.rt.printerlibrary.enumerate.CommonEnum.ALIGN_RIGHT;
 
+import static org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity.curPrinterInterface;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -36,6 +38,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -113,9 +116,9 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     String patientDetails;
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
-    CardView consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV,
-            cholesterolCV, bpCV, uricAcidCV, totalAmountCV, confirmBillCV,
-            printCV, downloadCV, shareCV, finalBillCV;
+    LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV,
+            cholesterolCV, bpCV, uricAcidCV, totalAmountCV;
+    CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV;
     TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV,
             glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV,
             uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected ;
@@ -138,7 +141,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
-    public static PrinterInterface curPrinterInterface = null;
+   // public static PrinterInterface curPrinterInterface = null;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 50;
     private String printStr;
@@ -235,11 +238,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
             if (billType.equals("Paid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
                 paymentStatusTV.setText("Paid");
-                paymentStatusTV.setBackgroundColor(Color.GREEN);
+              //  paymentStatusTV.setBackgroundColor(Color.GREEN);
             } else if (billType.contains("Unpaid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
                 paymentStatusTV.setText("Unpaid");
-                paymentStatusTV.setBackgroundColor(Color.RED);
+              //  paymentStatusTV.setBackgroundColor(Color.RED);
             }
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
@@ -303,11 +306,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     if (paymentStatus.equals("Paid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
                         paymentStatusTV.setText("Paid");
-                        paymentStatusTV.setBackgroundColor(Color.GREEN);
+                      //  paymentStatusTV.setBackgroundColor(Color.GREEN);
                     } else if (paymentStatus.contains("Unpaid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
                         paymentStatusTV.setText("Unpaid");
-                        paymentStatusTV.setBackgroundColor(Color.RED);
+                      //  paymentStatusTV.setBackgroundColor(Color.RED);
                     }
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
                     payingBillTV.setVisibility(View.GONE);
@@ -1065,14 +1068,15 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     escCmd.setChartsetName(mChartsetName);
                     CommonSetting commonSetting = new CommonSetting();
                     commonSetting.setAlign(ALIGN_MIDDLE);
-                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
 
                     BitmapSetting bitmapSetting = new BitmapSetting();
                     bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
                     bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
 
-//                    Position txtposition = new Position(0, 0);
-//                    textSetting.setTxtPrintPosition(txtposition);
+                    Position txtposition = new Position(0, 0);
+                    textSetting.setTxtPrintPosition(txtposition);
+                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
+
                     // textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
                     // commonSetting.setEscLineSpacing(getInputLineSpacing());
 

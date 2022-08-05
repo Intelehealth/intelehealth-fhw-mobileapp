@@ -5424,6 +5424,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     private String checkForOldBill() {
         String billEncounterUuid = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? AND voided = ?";
         String[] encounterIDArgs = {visitUuid, "0"};
@@ -5436,7 +5437,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (encounterCursor.moveToNext());
 
         }
-        encounterCursor.close();
+      //  encounterCursor.close();
 
         return billEncounterUuid;
 
@@ -5455,7 +5456,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 parseBillData(selectedTests, dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
-        visitCursor.close();
+      //  visitCursor.close();
         passIntent(selectedTests);
     }
 
