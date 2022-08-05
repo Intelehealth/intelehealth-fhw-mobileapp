@@ -1071,7 +1071,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
-                            android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
