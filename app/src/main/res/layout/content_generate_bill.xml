@@ -136,7 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginTop="25dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_marginBottom="5dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_weight="1"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="25dp"
                         android:src="@drawable/intelehealth_stamp" />
 
                 </LinearLayout>
@@ -189,10 +189,9 @@
                         android:orientation="horizontal"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -211,7 +210,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -227,10 +225,9 @@
                         android:orientation="horizontal"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="6dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -249,7 +246,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -266,8 +262,7 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:padding="2dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
@@ -287,7 +282,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -303,9 +297,8 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -324,7 +317,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -338,9 +330,8 @@
                         android:orientation="horizontal"
                         android:id="@+id/glucose_ppn_chargesCV"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:weightSum="1">
@@ -352,8 +343,6 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:paddingStart="5dp"
-                            android:paddingEnd="5dp"
-                            android:paddingBottom="5dp"
                             android:text="@string/blood_glucose_post_prandial"
                             android:textSize="14sp" />
 
@@ -363,7 +352,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -378,9 +366,8 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -399,7 +386,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -412,9 +398,8 @@
                         android:animateLayoutChanges="true"
                         android:orientation="horizontal"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:weightSum="1">
@@ -435,7 +420,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -450,9 +434,8 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -471,7 +454,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -486,9 +468,8 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -507,7 +488,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -524,7 +504,6 @@
                         tools:visibility="visible"
                         android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -543,7 +522,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -566,7 +544,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
-                        android:padding="2dp"
                         android:weightSum="1">
 
                         <TextView
@@ -585,7 +562,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:paddingVertical="6dp"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
