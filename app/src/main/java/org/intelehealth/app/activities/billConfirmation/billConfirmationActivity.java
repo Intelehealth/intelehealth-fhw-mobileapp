@@ -163,6 +163,10 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         toolbar = findViewById(R.id.toolbar);
         sessionManager = new SessionManager(this);
 
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+            bmpPrintWidth = 45;
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+            bmpPrintWidth = 50;
         //editText
         not_paying_reasonTIL = findViewById(R.id.reasonTIL);
         not_paying_reasonET = findViewById(R.id.reasonET);
