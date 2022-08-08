@@ -17,6 +17,8 @@ public class ApiClientAppointment {
     private Api mApi;
 
     private ApiClientAppointment(String baseUrl) {
+        if(baseUrl == null || baseUrl.equals(""))
+            return;
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
