@@ -600,7 +600,6 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
 
 
     private void setPrices() {
-
         if (consultCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Billing Visit Type Consultation");
             price = getPrice(price, price.indexOf('.'));
@@ -1057,6 +1056,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     }
 
     private void escPrint() throws UnsupportedEncodingException {
+        printCV.setEnabled(false); // to avoid multiple prints at same time if user clicks by mistake
+        printCV.setClickable(false);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -1085,7 +1086,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
 //                    } catch (UnsupportedEncodingException e) {
 //                        e.printStackTrace();
 //                    }
-                    escCmd.append(escCmd.getLFCRCmd());
+//                    escCmd.append(escCmd.getLFCRCmd());
                     escCmd.append(escCmd.getLFCRCmd());
 
                     // here printing the image...
@@ -1118,12 +1119,13 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     if (rtPrinter.getPrinterInterface() != null) {
                         // If without selecting Bluetooth user click Print button crash happens so added this condition.
                         rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
-
                         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(billConfirmationActivity.this);
                         alertdialogBuilder.setMessage(R.string.printing);
                         alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                printCV.setEnabled(true);
+                                printCV.setClickable(true);
                                 finish();
                             }
                         });
@@ -1137,6 +1139,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         IntelehealthApplication.setAlertDialogCustomTheme(billConfirmationActivity.this, alertDialog);
                     } else {
+                        printCV.setEnabled(true);
+                        printCV.setClickable(true);
                         Toast.makeText(billConfirmationActivity.this, getResources().getString
                                 (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
                     }

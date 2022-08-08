@@ -93,7 +93,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:orientation="vertical"
                 android:layout_marginTop="20dp"
-                android:paddingBottom="60dp">
+                android:paddingBottom="70dp">
 
                 <!--                    <TextView-->
                 <!--                        android:layout_width="wrap_content"-->
@@ -352,6 +352,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
+                            android:layout_gravity="center_vertical"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -502,7 +503,6 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
