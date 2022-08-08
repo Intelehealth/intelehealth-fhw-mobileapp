@@ -155,7 +155,7 @@
                                 android:background="@drawable/button_bg_rounded_stroke"
                                 android:padding="4dp"
                                 android:text="Paid"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:visibility="gone"
                                 tools:visibility="visible" />
 
