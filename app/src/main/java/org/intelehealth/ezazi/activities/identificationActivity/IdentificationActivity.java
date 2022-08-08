@@ -1911,8 +1911,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("PrimaryDoctor")) {
                     patient1.setPrimaryDoctor(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }if (name.equalsIgnoreCase("SecondaryDoctor")) {
+                }
+
+                if (name.equalsIgnoreCase("SecondaryDoctor")) {
                     patient1.setSecondaryDoctor(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Ezazi Registration Number")) {
+                    patient1.seteZaziRegNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 /*end*/
 
@@ -2365,6 +2371,15 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SecondaryDoctor"));
             patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString)+"@#@"+mSecondaryDoctorTextView.getText());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Ezazi Registration Number
+            int number = (int)(Math.random()*(99999999-100+1)+100);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Ezazi Registration Number"));
+            patientAttributesDTO.setValue(patientdto.getCountry().substring(0,2)+"/"+patientdto.getStateprovince().substring(0,2)+"/"+patientdto.getCityvillage().substring(0,2)+"/"+String.valueOf(number));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             /*end*/

@@ -310,6 +310,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         }
 
         void nextIntent(boolean isEditMode) {
+            Log.v("nextIntent", "nextIntent isEditMode - "+isEditMode);
             int type = 10;
             int stage = 1;
             String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");

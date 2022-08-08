@@ -37,6 +37,7 @@ public class Patient {
 
     private String primaryDoctor;
     private String secondaryDoctor;
+    private String eZaziRegNumber;
     /*end*/
 
     public String getUuid() {
@@ -301,5 +302,13 @@ public class Patient {
 
     public void setPrimaryDoctor(String primaryDoctor) {
         this.primaryDoctor = primaryDoctor;
+    }
+
+    public String geteZaziRegNumber() {
+        return eZaziRegNumber;
+    }
+
+    public void seteZaziRegNumber(String eZaziRegNumber) {
+        this.eZaziRegNumber = eZaziRegNumber;
     }
 }

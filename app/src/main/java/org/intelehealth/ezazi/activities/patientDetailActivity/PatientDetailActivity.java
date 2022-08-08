@@ -590,6 +590,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
 
+                if (name.equalsIgnoreCase("Ezazi Registration Number")) {
+                    patient_new.seteZaziRegNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
@@ -625,7 +629,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         //unique Ezazi registration number
         TextView textView_UER_No=findViewById(R.id.textView_UER_No);
 
-
+        textView_UER_No.setText(patient_new.geteZaziRegNumber());
 
 //        Log.d("country_vijay", patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2));
 //        String RegNo= patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2);

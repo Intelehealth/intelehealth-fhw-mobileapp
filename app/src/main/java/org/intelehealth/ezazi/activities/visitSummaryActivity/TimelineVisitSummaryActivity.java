@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -42,7 +44,6 @@ import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.Epartogram;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
@@ -87,7 +88,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     int stageNo = 0;
     String value = "";
     String isVCEPresent = "";
-    FloatingActionButton fabc, fabv;
+    FloatingActionButton fabc, fabv, fabSOS;
     private SQLiteDatabase db;
     TextView outcomeTV;
     String valueStage = "";
@@ -125,6 +126,53 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(adapter);
         //  triggerAlarm5MinsBefore(); // Notification to show 5min before for every 30min interval.
 
+        fabSOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                // Vibrate for 500 milliseconds
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    v.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    //deprecated in API 26
+                    v.vibrate(1000);
+                }
+
+                MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+                alertDialog.setTitle("Emergency!");
+                alertDialog.setMessage("Are you sure to capture the emergency data now?");
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+                        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+                        Log.v(TAG, "latestEncounterName - " + latestEncounterName);
+                        if (!latestEncounterName.toLowerCase().contains("stage") && !latestEncounterName.toLowerCase().contains("hour"))
+                            return;
+                        String[] parts = latestEncounterName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
+                        if (parts.length != 3) return;
+                        int stageNumber = Integer.parseInt(parts[0]);
+                        int hourNumber = Integer.parseInt(parts[1]) + 1;
+                        int cardNumber = 1;//Integer.parseInt(parts[2]);
+
+
+                        String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
+                        Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+
+                        createNewEncounter(visitUuid, nextEncounterTypeName);
+                        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+
+                    }
+                });
+                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
+            }
+        });
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -278,6 +326,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        fabSOS = findViewById(R.id.fabSOS);
         fabv = findViewById(R.id.fabv);
         outcomeTV = findViewById(R.id.outcomeTV);
         fabc = findViewById(R.id.fabc);
@@ -566,15 +615,14 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
                         if (positionStage == 0 || positionStage == 1) {
                             Log.v("birthoutcome", "value: " + value);
                             stage2_captureAdditionalData(value);
-                            Log.v("isInserted", "isInserted_livebirth: "+isInserted);
+                            Log.v("isInserted", "isInserted_livebirth: " + isInserted);
 /*                            try {
                                 isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
                             } catch (DAOException e) {
                                 e.printStackTrace();
                                 Log.e("birthoutcome", "insert visit complete: " + e);
                             }*/
-                        }
-                        else if (positionStage == 2) // refer other hospital // call visit complete enc.
+                        } else if (positionStage == 2) // refer other hospital // call visit complete enc.
                             referOtherHospitalDialog(valueStage);
                         else if (positionStage == 3) { // self discharge // call visit complete enc.
                             try {
