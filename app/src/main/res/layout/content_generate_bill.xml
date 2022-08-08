@@ -88,12 +88,13 @@
             <!--                android:layout_width="match_parent"-->
             <!--                android:layout_height="match_parent">-->
             <LinearLayout
+                android:id="@+id/padd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="5dp"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:paddingBottom="70dp">
+                android:paddingBottom="70dp"
+                android:layout_marginTop="10dp">
 
                 <!--                    <TextView-->
                 <!--                        android:layout_width="wrap_content"-->
@@ -108,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Intelehealth"
+                    android:text="@string/intelehealth"
                     android:textSize="20sp"
                     android:textColor="@color/colorPrimaryDark"/>
 
@@ -132,29 +133,29 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
-                            android:layout_marginTop="25dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginBottom="5dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
-                                android:text="Receipt"
+                                android:text="@string/receipt"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/paymentStatus"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:layout_marginHorizontal="8dp"
                                 android:background="@drawable/button_bg_rounded_stroke"
                                 android:padding="4dp"
-                                android:text="Paid"
+                                android:text="@string/paid"
                                 android:textSize="12sp"
                                 android:visibility="gone"
                                 tools:visibility="visible" />
@@ -163,9 +164,9 @@
 
                         <TextView
                             android:id="@+id/patientDetailsTV"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginStart="5dp"
                             android:text="@string/intelehealth_address"
                             android:textSize="14sp" />
 
@@ -174,8 +175,8 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="100dp"
-                        android:layout_weight="1"
-                        android:layout_marginTop="25dp"
+                        android:layout_weight="0.7"
+                        android:layout_marginTop="13dp"
                         android:src="@drawable/intelehealth_stamp" />
 
                 </LinearLayout>
@@ -191,7 +192,6 @@
                         tools:visibility="visible"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -224,7 +224,6 @@
                         android:animateLayoutChanges="true"
                         android:orientation="horizontal"
                         android:layout_gravity="center"
-                        android:layout_marginHorizontal="6dp"
                         android:layout_marginBottom="5dp"
                         android:visibility="gone"
                         tools:visibility="visible"
@@ -263,7 +262,6 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -282,6 +280,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
+                            android:layout_gravity="center_vertical"
                             android:paddingEnd="5dp"
                             android:text="15.00"
                             android:textSize="14sp" />
@@ -298,7 +297,6 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -308,6 +306,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:paddingStart="5dp"
+                            android:minLines="2"
                             android:text="@string/blood_glucose_fasting"
                             android:textSize="14sp" />
 
@@ -317,6 +316,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
+                            android:layout_gravity="center_vertical"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -331,7 +331,6 @@
                         android:id="@+id/glucose_ppn_chargesCV"
                         android:layout_gravity="center"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:weightSum="1">
@@ -368,7 +367,6 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -387,6 +385,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
+                            android:layout_gravity="center_vertical"
                             android:paddingEnd="5dp"
                             android:text="10.00"
                             android:textSize="14sp" />
@@ -400,7 +399,6 @@
                         android:orientation="horizontal"
                         android:layout_gravity="center"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:weightSum="1">
@@ -436,7 +434,6 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -470,7 +467,6 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -503,7 +499,6 @@
                         android:layout_gravity="center"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView
@@ -543,7 +538,6 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginHorizontal="6dp"
                         android:weightSum="1">
 
                         <TextView

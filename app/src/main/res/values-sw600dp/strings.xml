@@ -39,8 +39,8 @@
     <string name="total_cholestrol">Total Cholestrol</string>
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
-    <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
-    <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
+    <string name="blood_glucose_non_fasting">Blood Glucose \n(Non-Fasting)</string>
+    <string name="blood_glucose_fasting">Blood Glucose \n(Fasting)</string>
     <string name="haemoglobin">Haemoglobin</string>
 
     <!-- Thermal Printers -->
@@ -86,5 +86,32 @@
     <string name="_main_connected_fail">connect fail</string>
     <string name="_main_disconnect">" disconnected"</string>
     <string name="printing">Printing...</string>
+
+    //generate bill - NAS-70
+    <string name="generate_bill">Generate Bill</string>
+    <string name="confirm_tests">Please confirm the test(s)</string>
+    <string name="intelehealth_address">Telehealth Innovations Foundation\n14A, Shreeji Arcade,\nOpp Nitin Company , Panchpakhadi\nThane, 400602, Maharashtra, India.</string>
+    <string name="consultation_charges">Consultation Charges</string>
+    <string name="follow_up_charges">Follow-Up Charges</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="patient_paying">Is patient paying the bill?</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="print_button">Print</string>
+    <string name="enter_reason_toast">Enter reason for not paying bill.</string>
+    <string name="bill_generated_success">Bill generated successfully!</string>
+    <string name="select_payment_information">Payment Information is not selected.</string>
+    <string name="download_bill">First download the bill to share.</string>
+    <string name="intelehealth">Intelehealth</string>
+    <string name="receipt">Receipt</string>
+    <string name="paid">Paid</string>
+    <string name="receipt_no">"Receipt No.: "</string>
+    <string name="client_name">"Client Name: "</string>
+    <string name="client_id">"Client ID: "</string>
+    <string name="visit_id">"Visit ID: "</string>
+    <string name="contact_no">"Contact Number: "</string>
+    <string name="client_village_name">"Client Village Name: "</string>
+    <string name="date">"Date: "</string>
+    <string name="unpaid">Unpaid</string>
 
 </resources>

@@ -117,7 +117,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     String receiptNum = "XXXXX";
     String billDateString = "DD MM YYYY";
     LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV,
-            cholesterolCV, bpCV, uricAcidCV, totalAmountCV;
+            cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
     CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV;
     TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV,
             glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV,
@@ -191,6 +191,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         btn_connect = findViewById(R.id.btn_connect);
         btn_disConnect = findViewById(R.id.btn_disConnect);
         pb_connect = findViewById(R.id.pb_connect);
+        padd = findViewById(R.id.padd);
 
         //cardViews
         consultCV = findViewById(R.id.consultation_chargesCV);
@@ -226,22 +227,22 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
             selectedTests = (ArrayList<String>) intent.getSerializableExtra("testsList");
         }
 
-        patientDetails = "Receipt Number : " + receiptNum + "\nClient Name : " +
-                patientName + "\nClient ID : " + patientOpenID + "\nVisit ID : " +
-                patientHideVisitID + "\nContact Number : " + patientPhoneNum
-                + "\nClient Village Name : " + patientVillage + "\n" +
-                "Date : " + billDateString;
+        patientDetails = getString(R.string.receipt_no) + receiptNum + "\n" + getString(R.string.client_name) +
+                patientName + "\n" + getString(R.string.client_id) + patientOpenID + "\n" + getString(R.string.visit_id) +
+                patientHideVisitID + "\n" + getString(R.string.contact_no) + patientPhoneNum
+                + "\n" + getString(R.string.client_village_name) + patientVillage + "\n" +
+                getString(R.string.date) + billDateString;
 
         patientDetailsTV.setText(patientDetails);
         manageCardView(selectedTests);
         if (!billType.equals("NA")) {
             if (billType.equals("Paid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
-                paymentStatusTV.setText("Paid");
+                paymentStatusTV.setText(getString(R.string.paid));
               //  paymentStatusTV.setBackgroundColor(Color.GREEN);
             } else if (billType.contains("Unpaid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
-                paymentStatusTV.setText("Unpaid");
+                paymentStatusTV.setText(getString(R.string.unpaid));
               //  paymentStatusTV.setBackgroundColor(Color.RED);
             }
             payingBillTV.setVisibility(View.GONE);
@@ -305,11 +306,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                 if (billSuccess) {
                     if (paymentStatus.equals("Paid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
-                        paymentStatusTV.setText("Paid");
+                        paymentStatusTV.setText(getString(R.string.paid));
                       //  paymentStatusTV.setBackgroundColor(Color.GREEN);
                     } else if (paymentStatus.contains("Unpaid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
-                        paymentStatusTV.setText("Unpaid");
+                        paymentStatusTV.setText(getString(R.string.unpaid));
                       //  paymentStatusTV.setBackgroundColor(Color.RED);
                     }
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
@@ -898,6 +899,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         finalBillCV.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         finalBillCV.layout(0, 0, finalBillCV.getMeasuredWidth(), finalBillCV.getMeasuredHeight());
+      //  padd.setPadding(0,0,0,200);
         mBitmap = finalBillCV.getDrawingCache(); // converting cardview to bitmap
     }
 

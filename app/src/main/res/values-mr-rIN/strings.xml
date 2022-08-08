@@ -1401,10 +1401,10 @@
     <string name="total_cholestrol">एकूण कोलेस्ट्रॉल</string>
     <string name="uric_acid_calibration">यूरिक ऍसिड कॅलिब्रेशन</string>
     <string name="total_cholesterol_calibration">एकूण कोलेस्ट्रॉल कॅलिब्रेशन</string>
-    <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
-    <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपाशीपोटी)</string>
-    <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (Post-prandial)</string>
-    <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम ब्लड शुगर)</string>
+    <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज \n(जेवल्यानंतर)</string>
+    <string name="blood_glucose_fasting">रक्तातील ग्लुकोज \n(उपाशीपोटी)</string>
+    <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (पोस्ट-प्रँडियल)</string>
+    <string name="blood_glucose_random">रक्तातील ग्लुकोज \n(रँडम)</string>
     <string name="haemoglobin">हिमोग्लोबिन (mg/dL)</string>
 
     <string name="first_name">पहिले नाव</string>
@@ -1414,20 +1414,20 @@
     <string name="open_mrs_id">ओपन MRS आयडी</string>
 
     <!-- Thermal Printers -->
-    <string name="please_connect">Select Available Device</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="connect">Connect</string>
+    <string name="please_connect">उपलब्ध डिव्हाइस निवडा</string>
+    <string name="disconnect">डिस्कनेक्ट करा</string>
+    <string name="connect">कनेक्ट करा</string>
 
-    <string name="paired_devices">Paired</string>
-    <string name="tip_have_no_paired_device">No paired device</string>
-    <string name="tip_have_no_found_bluetooth_device">No Device</string>
-    <string name="search_device">Search</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_ok">OK</string>
-    <string name="dialog_tip">Tip</string>
-    <string name="main_pls_choose_device">Please choose a device</string>
-    <string name="dialog_back">Back</string>
-    <string name="main_discon_click_repeatedly">Device has been disconnected, no need to click repeatedly</string>
+    <string name="paired_devices">जोडले</string>
+    <string name="tip_have_no_paired_device">कोणतेही जोडलेले डिव्हाइस नाही</string>
+    <string name="tip_have_no_found_bluetooth_device">उपकरण नाही</string>
+    <string name="search_device">शोधा</string>
+    <string name="dialog_cancel">रद्द करा</string>
+    <string name="dialog_ok">ठीक आहे</string>
+    <string name="dialog_tip">टीप</string>
+    <string name="main_pls_choose_device">कृपया एक डिव्हाइस निवडा</string>
+    <string name="dialog_back">मागे</string>
+    <string name="main_discon_click_repeatedly">डिव्हाइस डिस्कनेक्ट केले गेले आहे, वारंवार क्लिक करण्याची आवश्यकता नाही</string>
     <string name="barcode_print">Barcode Print</string>
     <string name="headbar_back">Back</string>
     <string name="title_barcode">Barcode</string>
@@ -1448,14 +1448,41 @@
     <string name="tv_font_select">Font Choose：</string>
     <string name="btn_clk_sel_font">Click to choose the printed font</string>
     <string name="label_setting">Label Setting</string>
-    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
-    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
-    <string name="no_presc_available">No Prescription Available</string>
-    <string name="_main_connected">" connect success"</string>
-    <string name="_main_connected_fail">connect fail</string>
-    <string name="_main_disconnect">" disconnected"</string>
-    <string name="printing">Printing...</string>
+    <string name="bluetooth_notsupported_device">या डिव्हाइसवर ब्लूटूथ समर्थित नाही</string>
+    <string name="turn_on_bluetooth">कृपया ब्लूटूथ चालू करा</string>
+    <string name="no_presc_available">कोणतेही प्रिस्क्रिप्शन उपलब्ध नाही</string>
+    <string name="_main_connected">" यश कनेक्ट करा"</string>
+    <string name="_main_connected_fail">कनेक्ट अयशस्वी</string>
+    <string name="_main_disconnect">" डिस्कनेक्ट"</string>
+    <string name="printing">छपाई...</string>
     <string name="visit_confirmation">तुम्हाला ही भेट नक्की सुरू करायची आहे का?</string>
     <string name="save_prescription">प्रिस्क्रिप्शन सेव्ह करा</string>
+
+    //generate bill - NAS-70
+    <string name="generate_bill">बिल तयार करा</string>
+    <string name="confirm_tests">कृपया चाचणीची पुष्टी करा</string>
+    <string name="intelehealth_address">टेलिहेल्थ इनोव्हेशन फाऊंडेशन\n14A, श्रीजी आर्केड,\nनितीन कंपनीसमोर, पाचपाखाडी\nठाणे, 400602, महाराष्ट्र, भारत.</string>
+    <string name="consultation_charges">सल्ला शुल्क</string>
+    <string name="follow_up_charges">फॉलो-अप शुल्क</string>
+    <string name="total_amount">एकूण रक्कम</string>
+    <string name="patient_paying">रुग्ण बिल भरत आहे का?</string>
+    <string name="confirm_button">पुष्टी</string>
+    <string name="enter_reason">कारण प्रविष्ट करा</string>
+    <string name="print_button">छापा</string>
+    <string name="enter_reason_toast">बिल न भरण्याचे कारण एंटर करा.</string>
+    <string name="bill_generated_success">बिल यशस्वीरित्या व्युत्पन्न झाले!</string>
+    <string name="select_payment_information">पेमेंट माहिती निवडलेली नाही.</string>
+    <string name="download_bill">प्रथम शेअर करण्यासाठी बिल डाउनलोड करा.</string>
+    <string name="intelehealth">इंटेलहेल्थ</string>
+    <string name="receipt">पावती</string>
+    <string name="paid">दिले</string>
+    <string name="receipt_no">"पावती क्र.: "</string>
+    <string name="client_name">"क्लायंटचे नाव: "</string>
+    <string name="client_id">"ID: "</string>
+    <string name="visit_id">"भेट ID: "</string>
+    <string name="contact_no">"संपर्क क्र.: "</string>
+    <string name="client_village_name">"ग्राहक गावाचे नाव: "</string>
+    <string name="date">"दी.: "</string>
+    <string name="unpaid">न.दिले</string>
 
 </resources>

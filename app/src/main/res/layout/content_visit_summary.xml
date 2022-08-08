@@ -1809,6 +1809,7 @@
             android:onClick="generateBill"
             android:text="@string/generate_bill"
             android:visibility="gone"
+            tools:visibility="visible"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
