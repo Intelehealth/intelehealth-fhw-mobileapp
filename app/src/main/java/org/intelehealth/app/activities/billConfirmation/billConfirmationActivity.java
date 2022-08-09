@@ -579,7 +579,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     }
 
     private void shareFile() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/";
+      //  String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/";
+        File path = this.getExternalFilesDir("Bill");
         String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
         String finalPath = path + fName;
         finalBillPath = finalPath;
@@ -588,7 +589,8 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
             return;
         }
 
-        File file = new File(finalBillPath);
+      //  File file = new File(finalBillPath);
+        File file = new File(path, fName);
         if (!file.exists()) {
             Toast.makeText(billConfirmationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
             return;
@@ -767,15 +769,21 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         document.finishPage(page);
 
         // write the document content
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/";
-        File filePath = new File(path);
+      //  String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/";
+        File path = this.getExternalFilesDir("Bill");
+//        File filePath = new File(path);
+//        if (!filePath.exists())
+//            filePath.mkdirs();
+
+        String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
+        File filePath = new File(path, fName);
         if (!filePath.exists())
             filePath.mkdirs();
 
-        String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
         String finalPath = path + fName;
         finalBillPath = finalPath;
-        File file = new File(filePath, fName);
+//        File file = new File(filePath, fName);
+        File file = new File(path, fName);
         if (file.exists()) file.delete();
 
         try {
