@@ -1478,7 +1478,7 @@
     <string name="paid">दिले</string>
     <string name="receipt_no">"पावती क्र.: "</string>
     <string name="client_name">"क्लायंटचे नाव: "</string>
-    <string name="client_id">"ID: "</string>
+    <string name="client_id">"क्लायंटचे ID: "</string>
     <string name="visit_id">"भेट ID: "</string>
     <string name="contact_no">"संपर्क क्र.: "</string>
     <string name="client_village_name">"ग्राहक गावाचे नाव: "</string>
