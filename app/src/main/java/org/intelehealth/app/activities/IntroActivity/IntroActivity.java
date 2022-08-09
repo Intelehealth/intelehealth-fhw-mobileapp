@@ -89,7 +89,7 @@ public class IntroActivity extends AppCompatActivity {
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
 
-        BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
+        BASE_URL = "https://testing.intelehealth.org/openmrs/ws/rest/v1/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -202,7 +202,7 @@ public class IntroActivity extends AppCompatActivity {
         private LayoutInflater layoutInflater;
         private TextView tvIntroOne;
         private TextView tvIntroTwo;
-        private Button button_demo_visit;
+        private Button button_training_setup;
         private Button button_custom_visit;
 
 
@@ -218,7 +218,7 @@ public class IntroActivity extends AppCompatActivity {
 
             tvIntroOne = findViewById(R.id.tv_intro_one);
             tvIntroTwo = findViewById(R.id.tv_intro_two);
-            button_demo_visit = findViewById(R.id.button_demo_visit);
+            button_training_setup = findViewById(R.id.button_training_setup);
             button_custom_visit = findViewById(R.id.button_custom_visit);
 
             //Highlighting Text
@@ -231,11 +231,11 @@ public class IntroActivity extends AppCompatActivity {
                 String two = getString(R.string.hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started);
                 String textHighlight = getString(R.string.Ayu_name);
                 String newhighlight = two.replaceAll(textHighlight,
-                        "<font color='blue'>" + textHighlight + "</font>")
+                                "<font color='blue'>" + textHighlight + "</font>")
                         .replaceAll("\n", "<br>");
                 tvIntroTwo.setText(Html.fromHtml(newhighlight));
 
-                button_demo_visit.setOnClickListener(new View.OnClickListener() {
+                button_training_setup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 

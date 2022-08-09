@@ -1457,5 +1457,6 @@
     <string name="printing">Printing...</string>
     <string name="visit_confirmation">तुम्हाला ही भेट नक्की सुरू करायची आहे का?</string>
     <string name="save_prescription">प्रिस्क्रिप्शन सेव्ह करा</string>
+    <string name="training_setup">ट्रैनिंग सेटअप</string>
 
 </resources>
