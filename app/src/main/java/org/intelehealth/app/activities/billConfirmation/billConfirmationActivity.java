@@ -121,7 +121,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV;
     TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV,
             glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV,
-            uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected ;
+            uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected;
     Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
     String paymentStatus = "";
@@ -141,7 +141,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
-   // public static PrinterInterface curPrinterInterface = null;
+    // public static PrinterInterface curPrinterInterface = null;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 50;
     private String printStr;
@@ -163,9 +163,9 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         toolbar = findViewById(R.id.toolbar);
         sessionManager = new SessionManager(this);
 
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
             bmpPrintWidth = 40;
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
             bmpPrintWidth = 50;
         //editText
         not_paying_reasonTIL = findViewById(R.id.reasonTIL);
@@ -243,11 +243,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
             if (billType.equals("Paid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
                 paymentStatusTV.setText(getString(R.string.paid));
-              //  paymentStatusTV.setBackgroundColor(Color.GREEN);
+                //  paymentStatusTV.setBackgroundColor(Color.GREEN);
             } else if (billType.contains("Unpaid")) {
                 paymentStatusTV.setVisibility(View.VISIBLE);
                 paymentStatusTV.setText(getString(R.string.unpaid));
-              //  paymentStatusTV.setBackgroundColor(Color.RED);
+                //  paymentStatusTV.setBackgroundColor(Color.RED);
             }
             payingBillTV.setVisibility(View.GONE);
             radioGroup.setVisibility(View.GONE);
@@ -311,11 +311,11 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     if (paymentStatus.equals("Paid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
                         paymentStatusTV.setText(getString(R.string.paid));
-                      //  paymentStatusTV.setBackgroundColor(Color.GREEN);
+                        //  paymentStatusTV.setBackgroundColor(Color.GREEN);
                     } else if (paymentStatus.contains("Unpaid")) {
                         paymentStatusTV.setVisibility(View.VISIBLE);
                         paymentStatusTV.setText(getString(R.string.unpaid));
-                      //  paymentStatusTV.setBackgroundColor(Color.RED);
+                        //  paymentStatusTV.setBackgroundColor(Color.RED);
                     }
                     Toast.makeText(billConfirmationActivity.this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show();
                     payingBillTV.setVisibility(View.GONE);
@@ -579,7 +579,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
     }
 
     private void shareFile() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/Download/";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/";
         String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
         String finalPath = path + fName;
         finalBillPath = finalPath;
@@ -767,7 +767,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         document.finishPage(page);
 
         // write the document content
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/Download/";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/";
         File filePath = new File(path);
         if (!filePath.exists())
             filePath.mkdirs();
@@ -897,13 +897,13 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
 //        finalBillCV.setIncludeFontPadding(false);
 //        finalBillCV.setTextColor(getResources().getColor(R.color.ink_pen));
         finalBillCV.setBackgroundColor(getResources().getColor(R.color.white));
-       // patientDetailsTV.setText(drSign_Text);
+        // patientDetailsTV.setText(drSign_Text);
         finalBillCV.setDrawingCacheEnabled(true);
         finalBillCV.buildDrawingCache();
         finalBillCV.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         finalBillCV.layout(0, 0, finalBillCV.getMeasuredWidth(), finalBillCV.getMeasuredHeight());
-      //  padd.setPadding(0,0,0,200);
+        //  padd.setPadding(0,0,0,200);
         mBitmap = finalBillCV.getDrawingCache(); // converting cardview to bitmap
     }
 
@@ -1074,7 +1074,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     escCmd.append(escCmd.getHeaderCmd());// Initial //btnCmds = 2......
                     escCmd.setChartsetName(mChartsetName);
                     CommonSetting commonSetting = new CommonSetting();
-                    commonSetting.setAlign(ALIGN_MIDDLE);
+                    commonSetting.setAlign(ALIGN_LEFT);
 
                     BitmapSetting bitmapSetting = new BitmapSetting();
                     bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
