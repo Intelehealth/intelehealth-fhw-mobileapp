@@ -164,7 +164,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
         sessionManager = new SessionManager(this);
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-            bmpPrintWidth = 45;
+            bmpPrintWidth = 40;
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
             bmpPrintWidth = 50;
         //editText
