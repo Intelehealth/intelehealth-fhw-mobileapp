@@ -303,6 +303,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void fabClickedAtEnd() {
+        if(!physicalExamMap.areRequiredAnswered())
+        {   fabClicked();
+            return; }
         triggerConfirmation();
     }
 
@@ -463,7 +466,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     }
 
     public void questionsMissing() {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PhysicalExamActivity.this);
         //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(getResources().getString(R.string.question_answer_all_phy_exam));
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
