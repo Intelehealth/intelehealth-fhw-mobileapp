@@ -1074,7 +1074,7 @@ public class billConfirmationActivity extends AppCompatActivity implements Print
                     escCmd.append(escCmd.getHeaderCmd());// Initial //btnCmds = 2......
                     escCmd.setChartsetName(mChartsetName);
                     CommonSetting commonSetting = new CommonSetting();
-                    commonSetting.setAlign(ALIGN_LEFT);
+                    commonSetting.setAlign(ALIGN_MIDDLE);
 
                     BitmapSetting bitmapSetting = new BitmapSetting();
                     bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
