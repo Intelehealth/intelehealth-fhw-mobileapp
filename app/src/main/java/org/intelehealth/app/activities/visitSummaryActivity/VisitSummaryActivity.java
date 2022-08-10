@@ -1376,6 +1376,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
@@ -1394,6 +1396,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("gender", patientGender);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
@@ -1469,6 +1473,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_FamHist", "edit_FamHist");
                         intent1.putExtra("gender", patientGender);
@@ -1582,6 +1588,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
@@ -1689,6 +1697,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
@@ -1786,6 +1796,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("edit_PatHist", "edit_PatHist");
                         intent1.putExtra("gender", patientGender);
 //                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
