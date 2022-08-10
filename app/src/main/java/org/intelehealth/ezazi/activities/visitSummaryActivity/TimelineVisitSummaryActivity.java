@@ -56,6 +56,7 @@ import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
+import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -69,8 +70,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TimelineVisitSummaryActivity extends AppCompatActivity {
@@ -288,8 +292,22 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     }
 
     private void showEpartogram() {
+        Map<String, String> log = new HashMap<>();
+        log.put("TAG", TAG);
+        log.put("action", "showEpartogram");
+        TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        if (Objects.requireNonNull(manager).getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+            Intent intent = new Intent(context, Epartogram.class);
+            intent.putExtra("patientuuid", patientUuid);
+            intent.putExtra("visituuid", visitUuid);
+            startActivity(intent);
+            log.put("message", "Detected... You're using a Tablet");
 
-        DisplayMetrics metrics = new DisplayMetrics();
+        } else {
+            log.put("message", "Detected... You're using a Mobile Phone");
+        }
+        FirebaseRealTimeDBUtils.logData(log);
+       /* DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         int widthPixels = metrics.widthPixels;
@@ -303,25 +321,25 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         float smallestWidth = Math.min(widthDp, heightDp);
         Log.v("epartog", "smallest width: " + smallestWidth);
 
-      /*  float widthInches = widthPixels / widthDp;
+      *//*  float widthInches = widthPixels / widthDp;
         float heightInches = heightPixels / heightDp;
 
         double diagonalInches = Math.sqrt((widthInches * widthInches) + (heightInches * heightInches));
         Log.v("epartog", "Device Size: " + diagonalInches);
 */
 
-        if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
+      //  if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
             //Device is a 8" tablet
             // Call webview here...
-            Intent intent = new Intent(context, Epartogram.class);
+          /*  Intent intent = new Intent(context, Epartogram.class);
             intent.putExtra("patientuuid", patientUuid);
             intent.putExtra("visituuid", visitUuid);
-            startActivity(intent);
-        } else {
+            startActivity(intent);*/
+        /*} else {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(TimelineVisitSummaryActivity.this, "",
-                    context.getString(R.string.this_option_available_tablet_device) /*+ ": " + dpi*/, context.getString(R.string.ok));
-        }
+                    context.getString(R.string.this_option_available_tablet_device) *//*+ ": " + dpi*//*, context.getString(R.string.ok));
+        }*/
 
     }
 

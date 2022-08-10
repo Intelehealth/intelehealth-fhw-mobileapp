@@ -25,6 +25,7 @@ import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
+import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -33,8 +34,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +52,8 @@ public class CardGenerationEngine {
             EncounterDAO encounterDAO = new EncounterDAO();
             List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitsForMe(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
             Log.v(TAG, "visitDTOList count - " + visitDTOList.size());
+
+
             for (int i = 0; i < visitDTOList.size(); i++) {
                 String visitUid = visitDTOList.get(i).getUuid();
                 Log.v(TAG, "visitUid - " + new Gson().toJson(visitDTOList.get(i)));
@@ -81,6 +86,16 @@ public class CardGenerationEngine {
                 long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
                 Log.v(TAG, "minutes - " + minutes);
                 Log.v(TAG, "seconds - " + seconds);
+
+                Map<String, String> log = new HashMap<>();
+                log.put("TAG", TAG);
+                log.put("action", "scanForNewCardEligibility");
+                log.put("visitUid", visitUid);
+                log.put("latestEncounterTime", latestEncounterTime);
+                log.put("latestEncounterName", latestEncounterName);
+                log.put("minutes", String.valueOf(minutes));
+                FirebaseRealTimeDBUtils.logData(log);
+
                 if (latestEncounterName.toLowerCase().contains("stage1")) {
                     if (minutes >= 30) {
                         // get next encounter name
@@ -142,6 +157,13 @@ public class CardGenerationEngine {
         encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value("true");
+
+        Map<String, String> log = new HashMap<>();
+        log.put("TAG", TAG);
+        log.put("action", "createNewEncounter");
+        log.put("value", new Gson().toJson(encounterDAO));
+        log.put("nextEncounterTypeName", nextEncounterTypeName);
+        FirebaseRealTimeDBUtils.logData(log);
 
         try {
             boolean status = encounterDAO.createEncountersToDB(encounterDTO);

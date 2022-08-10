@@ -59,7 +59,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             });
 
         }
-
+        sessionManager.setAppLanguage("en");
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +80,8 @@ public class ChooseLanguageActivity extends AppCompatActivity {
                 finish();
             }
         });
-        populatingLanguages();
+        SaveButton.performClick();
+       // populatingLanguages();
     }
 
     public void initViews() {
@@ -97,10 +98,10 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             List<JSONObject> itemList = new ArrayList<JSONObject>();
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", "हिंदी");
+            /*jsonObject.put("name", "हिंदी");
             jsonObject.put("code", "hi");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("hi"));
-            itemList.add(jsonObject);
+            itemList.add(jsonObject);*/
 
             jsonObject = new JSONObject();
             jsonObject.put("name", "English");
@@ -108,7 +109,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("en"));
             itemList.add(jsonObject);
 
-            jsonObject = new JSONObject();
+            /*jsonObject = new JSONObject();
             jsonObject.put("name", "ଓଡିଆ");
             jsonObject.put("code", "or");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("or"));
@@ -166,7 +167,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("name", "தமிழ்");
             jsonObject.put("code", "ta");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
-            itemList.add(jsonObject);
+            itemList.add(jsonObject);*/
 
             LanguageListAdapter languageListAdapter = new LanguageListAdapter(ChooseLanguageActivity.this, itemList, new ItemSelectionListener() {
                 @Override

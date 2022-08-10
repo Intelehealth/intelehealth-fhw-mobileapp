@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class CallListenerBackgroundService extends Service {
@@ -124,6 +126,11 @@ public class CallListenerBackgroundService extends Service {
                     v.vibrate(500);
                 }*/
                     if (value == null) return;
+                    Map<String, String> log = new HashMap<>();
+                    log.put("TAG", "CallListenerBackgroundService");
+                    log.put("action", "onDataChange");
+                    log.put("value", new Gson().toJson(value));
+                    FirebaseRealTimeDBUtils.logData(log);
                     String device_token = String.valueOf(value.get("device_token"));
                    // if (!device_token.equals(refreshedFCMTokenID)) return;  // commented for ezazi only
                     Bundle bundle = new Bundle();

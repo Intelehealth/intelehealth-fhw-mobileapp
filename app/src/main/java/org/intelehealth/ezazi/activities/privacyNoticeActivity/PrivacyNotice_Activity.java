@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -15,22 +11,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.utilities.FileUtils;
+import org.intelehealth.ezazi.utilities.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
 import java.util.Objects;
-
-import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.utilities.FileUtils;
-import org.intelehealth.ezazi.utilities.SessionManager;
-
-import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 
 public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
     TextView privacy_textview;
@@ -100,7 +96,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 //            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
 //            if(sharedPreferences.getAll().values().contains("cb"))
             Locale current = getResources().getConfiguration().locale;
-            if (current.toString().equals("or")) { //Privacy notice support for Oriya
+           /* if (current.toString().equals("or")) { //Privacy notice support for Oriya
                 String privacy_string = obj.getString("privacyNoticeText_Oriya");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
@@ -168,10 +164,10 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     privacy_string = obj.getString("privacyNoticeText");
                 }
                 privacy_textview.setText(privacy_string);
-            } else {
-                String privacy_string = obj.getString("privacyNoticeText");
-                privacy_textview.setText(privacy_string);
-            }
+            } else {*/
+            String privacy_string = obj.getString("privacyNoticeText");
+            privacy_textview.setText(privacy_string);
+            //}
             accept.setOnClickListener(this);
             reject.setOnClickListener(this);
 
