@@ -428,7 +428,11 @@
         </androidx.cardview.widget.CardView>
 
         <!--Diagnostics-->
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <!--Diagnostics End-->
+
+        <!--C/O Card contains text-->
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView_diagnostics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -623,9 +627,6 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <!--Diagnostics End-->
-
-        <!--C/O Card contains text-->
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_complaint"
             android:layout_width="match_parent"
@@ -1783,13 +1784,31 @@
             style="@style/SelectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
+            android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/lato_bold"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="signAndSubmit"
             android:text="@string/startVisitNote"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnGenerateBill"
+            style="@style/SelectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:background="@color/colorAccent"
+            android:fontFamily="@font/lato_bold"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:onClick="generateBill"
+            android:text="@string/generate_bill"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20sp" />

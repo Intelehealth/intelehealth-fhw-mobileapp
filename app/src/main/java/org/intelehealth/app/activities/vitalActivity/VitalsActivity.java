@@ -74,7 +74,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 public class VitalsActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
-    private String patientName = "";
+    private String patientName = "", patientFName = "", patientLName = "";
     private String patientGender = "";
     private String intentTag;
     private String state;
@@ -113,6 +113,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientFName = intent.getStringExtra("patientFirstName");
+            patientLName = intent.getStringExtra("patientLastName");
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
@@ -1489,6 +1491,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("patientFirstName",patientFName);
+                intent.putExtra("patientLastName", patientLName);
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
@@ -1690,6 +1694,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);

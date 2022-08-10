@@ -44,12 +44,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
-
         <activity
-            android:name=".activities.textprintactivity.TextPrintESCActivity"
-            android:label="@string/view_print"
+            android:name=".activities.billConfirmation.billConfirmationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.textprintactivity.TextPrintESCActivity"
+            android:exported="false"
+            android:label="@string/view_print"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.devicesActivity.DevicesActivity"
             android:exported="false"
@@ -298,6 +301,16 @@
             android:enabled="true"
             android:exported="false"
             android:permission="" />
+
+        <provider
+            android:authorities="org.intelehealth.nas.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path"/>
+        </provider>
 
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
