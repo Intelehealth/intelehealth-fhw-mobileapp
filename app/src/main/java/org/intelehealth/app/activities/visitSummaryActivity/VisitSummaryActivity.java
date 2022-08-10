@@ -1353,19 +1353,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
-        if (bldglucose.getValue() != null)
-            glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null)
+        if (bldglucose.getValue() != null  && !bldglucose.getValue().equalsIgnoreCase("0"))
+            glucose.setText(bldglucose.getValue() );
+        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
             glucoseRandom.setText(bldglucose_random.getValue());
-        if (bldglucose_post_prandial.getValue() != null)
+        if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
             glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
-        if (bldglucose_fasting.getValue() != null)
+        if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
             glucoseFasting.setText(bldglucose_fasting.getValue());
-        if (hemoGlobin.getValue() != null)
+        if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
             hemoglobin.setText(hemoGlobin.getValue());
-        if (uricAcid.getValue() != null)
+        if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
             uricAcid_textview.setText(uricAcid.getValue());
-        if (totalCholesterol.getValue() != null)
+        if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
             totalCholesterol_textview.setText(totalCholesterol.getValue());
 
 
@@ -5453,6 +5453,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                if(dbValue!=null && !dbValue.equals("0"))
                 parseBillData(selectedTests, dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }

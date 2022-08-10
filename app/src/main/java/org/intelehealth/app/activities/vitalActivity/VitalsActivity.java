@@ -80,7 +80,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     private String state;
     private String patientUuid;
     private String visitUuid;
-    private String encounterVitals;
+    private String encounterVitals, encounterBill = "";
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
@@ -242,6 +242,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+        encounterBill = checkForOldBill();
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
         }
@@ -796,6 +797,27 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         });
     }
 
+    private String checkForOldBill() {
+        String billEncounterUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        //  encounterCursor.close();
+
+        return billEncounterUuid;
+
+    }
+
     private void showTestDialog() {
         // show dialog
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -920,25 +942,32 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 mSpo2.setText(value);
                 break;
             case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose // Non-Fasting
-                bloodGlucose_editText.setText(value);
+                if (!value.equalsIgnoreCase("0"))
+                    bloodGlucose_editText.setText(value);
                 break;
             case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID:
-                bloodGlucoseRandom_editText.setText(value);
+                if (!value.equalsIgnoreCase("0"))
+                    bloodGlucoseRandom_editText.setText(value);
                 break;
             case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID:
-                bloodGlucosePostPrandial_editText.setText(value);
+                if(!value.equalsIgnoreCase("0"))
+                    bloodGlucosePostPrandial_editText.setText(value);
                 break;
             case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
-                bloodGlucose_editText_fasting.setText(value);
+                if(!value.equalsIgnoreCase("0"))
+                    bloodGlucose_editText_fasting.setText(value);
                 break;
             case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
-                haemoglobin_editText.setText(value);
+                if(!value.equalsIgnoreCase("0"))
+                    haemoglobin_editText.setText(value);
                 break;
             case UuidDictionary.URIC_ACID_ID: // Uric Acid
-                uricAcid_editText.setText(value);
+                if(!value.equalsIgnoreCase("0"))
+                    uricAcid_editText.setText(value);
                 break;
             case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholesterol
-                totalCholestrol_editText.setText(value);
+                if(!value.equalsIgnoreCase("0"))
+                    totalCholestrol_editText.setText(value);
                 break;
             default:
                 break;
@@ -1322,27 +1351,34 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 if (mSpo2.getText() != null) {
                     results.setSpo2((mSpo2.getText().toString()));
                 }
-                if (bloodGlucose_editText.getText() != null) {
+                if (bloodGlucose_editText.getText() != null && !bloodGlucose_editText.getText().toString().equals("")) {
                     results.setBloodglucose((bloodGlucose_editText.getText().toString()));
-                }
-                if (bloodGlucoseRandom_editText.getText() != null) {
+                } else
+                    results.setBloodglucose("0");
+                if (bloodGlucoseRandom_editText.getText() != null && !bloodGlucoseRandom_editText.getText().toString().equals("")) {
                     results.setBloodGlucoseRandom((bloodGlucoseRandom_editText.getText().toString()));
-                }
-                if (bloodGlucosePostPrandial_editText.getText() != null) {
+                } else
+                    results.setBloodGlucoseRandom("0");
+                if (bloodGlucosePostPrandial_editText.getText() != null && !bloodGlucosePostPrandial_editText.getText().toString().equals("")) {
                     results.setBloodGlucosePostPrandial(bloodGlucosePostPrandial_editText.getText().toString());
-                }
-                if (bloodGlucose_editText_fasting.getText() != null) {
+                } else
+                    results.setBloodGlucosePostPrandial("0");
+                if (bloodGlucose_editText_fasting.getText() != null && !bloodGlucose_editText_fasting.getText().toString().equals("")) {
                     results.setBloodglucoseFasting((bloodGlucose_editText_fasting.getText().toString()));
-                }
-                if (haemoglobin_editText.getText() != null) {
+                } else
+                    results.setBloodglucoseFasting("0");
+                if (haemoglobin_editText.getText() != null && !haemoglobin_editText.getText().toString().equals("")) {
                     results.setHemoglobin((haemoglobin_editText.getText().toString()));
-                }
-                if (uricAcid_editText.getText() != null) {
+                } else
+                    results.setHemoglobin("0");
+                if (uricAcid_editText.getText() != null && !uricAcid_editText.getText().toString().equals("")) {
                     results.setUricAcid((uricAcid_editText.getText().toString()));
-                }
-                if (totalCholestrol_editText.getText() != null) {
+                } else
+                    results.setUricAcid("0");
+                if (totalCholestrol_editText.getText() != null && !totalCholestrol_editText.getText().toString().equals("")) {
                     results.setTotlaCholesterol((totalCholestrol_editText.getText().toString()));
-                }
+                } else
+                    results.setTotlaCholesterol("0");
 
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -1436,7 +1472,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucose());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
+                if ((results.getBloodglucose() == null || results.getBloodglucose().equals("0") || results.getBloodglucose().equals("") || results.getBloodglucose().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID));
                 obsDAO.updateObs(obsDTO);
 
                 // Glucose - Random
@@ -1445,6 +1483,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucoseRandom());
+                if ((results.getBloodGlucoseRandom() == null || results.getBloodGlucoseRandom().equals("0") || results.getBloodGlucoseRandom().equals("") || results.getBloodGlucoseRandom().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1454,6 +1494,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucosePostPrandial());
+                if ((results.getBloodGlucosePostPrandial() == null || results.getBloodGlucosePostPrandial().equals("0") || results.getBloodGlucosePostPrandial().equals("") || results.getBloodGlucosePostPrandial().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1463,6 +1505,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucoseFasting());
+                if ((results.getBloodglucoseFasting() == null || results.getBloodglucoseFasting().equals("0") || results.getBloodglucoseFasting().equals("") || results.getBloodglucoseFasting().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1472,6 +1516,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getHemoglobin());
+                if ((results.getHemoglobin() == null || results.getHemoglobin().equals("0") || results.getHemoglobin().equals("") || results.getHemoglobin().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1481,6 +1527,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getUricAcid());
+                if ((results.getUricAcid() == null || results.getUricAcid().equals("0") || results.getUricAcid().equals("") || results.getUricAcid().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_URIC_ACID_ID);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.URIC_ACID_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1490,6 +1538,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getTotlaCholesterol());
+                if ((results.getTotlaCholesterol() == null || results.getTotlaCholesterol().equals("0") || results.getTotlaCholesterol().equals("") || results.getTotlaCholesterol().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TOTAL_CHOLESTEROL_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1511,7 +1561,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
-                intent.putExtra("patientFirstName",patientFName);
+                intent.putExtra("patientFirstName", patientFName);
                 intent.putExtra("patientLastName", patientLName);
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("tag", intentTag);
@@ -1714,7 +1764,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
-            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientFirstName", patientFName);
             intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -1786,6 +1836,29 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
             default:
 
+        }
+    }
+
+    private void updateBillEncounter(String encounterBill, String obsConceptID) {
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO1 = new ObsDTO();
+        obsDTO1.setConceptuuid(obsConceptID);
+        obsDTO1.setEncounteruuid(encounterBill);
+        obsDTO1.setCreator(sessionManager.getCreatorID());
+        obsDTO1.setValue("0");
+        try {
+            obsDTO1.setUuid(obsDAO.getObsuuid(encounterBill, obsConceptID));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        obsDAO.updateObs(obsDTO1);
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterBill);
+            encounterDAO.updateEncounterModifiedDate(encounterBill);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
