@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,6 +101,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     TextView textView;
     AlertDialog alertDialog;
     int btnClick = 0;
+    ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1389,6 +1391,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
+        String price = "0";
         if (intentTag != null && intentTag.equals("edit")) {
             try {
                 obsDTO = new ObsDTO();
@@ -1472,8 +1475,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucose());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getBloodglucose() == null || results.getBloodglucose().equals("0") || results.getBloodglucose().equals("") || results.getBloodglucose().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1483,8 +1490,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucoseRandom());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getBloodGlucoseRandom() == null || results.getBloodGlucoseRandom().equals("0") || results.getBloodGlucoseRandom().equals("") || results.getBloodGlucoseRandom().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1494,8 +1505,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucosePostPrandial());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getBloodGlucosePostPrandial() == null || results.getBloodGlucosePostPrandial().equals("0") || results.getBloodGlucosePostPrandial().equals("") || results.getBloodGlucosePostPrandial().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1505,8 +1520,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodglucoseFasting());
+                price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getBloodglucoseFasting() == null || results.getBloodglucoseFasting().equals("0") || results.getBloodglucoseFasting().equals("") || results.getBloodglucoseFasting().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1516,8 +1535,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getHemoglobin());
+                price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getHemoglobin() == null || results.getHemoglobin().equals("0") || results.getHemoglobin().equals("") || results.getHemoglobin().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1527,8 +1550,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getUricAcid());
+                price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getUricAcid() == null || results.getUricAcid().equals("0") || results.getUricAcid().equals("") || results.getUricAcid().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_URIC_ACID_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_URIC_ACID_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_URIC_ACID_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.URIC_ACID_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1538,8 +1565,12 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getTotlaCholesterol());
+                price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+                price = getPrice(price, price.indexOf('.'));
                 if ((results.getTotlaCholesterol() == null || results.getTotlaCholesterol().equals("0") || results.getTotlaCholesterol().equals("") || results.getTotlaCholesterol().equals(" ")) && (encounterBill != null && !encounterBill.equals("")))
-                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID);
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, "0");
+                else
+                    updateBillEncounter(encounterBill, UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, price);
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TOTAL_CHOLESTEROL_ID));
                 obsDAO.updateObs(obsDTO);
 
@@ -1839,13 +1870,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         }
     }
 
-    private void updateBillEncounter(String encounterBill, String obsConceptID) {
+    private void updateBillEncounter(String encounterBill, String obsConceptID, String price) {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO1 = new ObsDTO();
         obsDTO1.setConceptuuid(obsConceptID);
         obsDTO1.setEncounteruuid(encounterBill);
         obsDTO1.setCreator(sessionManager.getCreatorID());
-        obsDTO1.setValue("0");
+        obsDTO1.setValue(price);
         try {
             obsDTO1.setUuid(obsDAO.getObsuuid(encounterBill, obsConceptID));
         } catch (DAOException e) {
@@ -1978,5 +2009,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     public void onStatusChange(BluetoothStatus bluetoothStatus) {
 //        if (!bluetoothStatus.equals(BluetoothStatus.CONNECTED))
 //            Toast.makeText(this, "Please connect to Health cube device", Toast.LENGTH_SHORT).show();
+    }
+
+    private String getPrice(String price, int indexOf) {
+        return price.substring(0, indexOf);
     }
 }
