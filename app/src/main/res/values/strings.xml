@@ -375,6 +375,8 @@
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
     <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
+    <string name="glucose_random_validation">Blood Glucose (Random) should be in between %1$s and %2$s</string>
+    <string name="glucose_post_prandial_validation">Blood Glucose (Post-Prandial) should be in between %1$s and %2$s</string>
 
     <string name="not_provided">Not provided</string>
 
@@ -1551,4 +1553,5 @@
     <string name="client_village_name">"Client Village Name: "</string>
     <string name="date">"Date: "</string>
     <string name="unpaid">Unpaid</string>
+    <string name="training_setup">Training Setup</string>
 </resources>

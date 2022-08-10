@@ -9,6 +9,7 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     compileSdkVersion 30
     dataBinding {
@@ -20,7 +21,7 @@ android {
         targetSdkVersion 30
         versionCode 16
         buildToolsVersion('29.0.2')
-        versionName "1.1.11"
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -40,8 +41,14 @@ android {
             }
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"as.intelehealth.org\""
+        }
+
+        debug {
+            buildConfigField "String", "BASE_URL", "\"testing.intelehealth.org\""
         }
     }
+
     // use the bundle block to control which types of configuration APKs
     // you want your app bundle to support.
     bundle {
@@ -57,7 +64,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = true
+            enableSplit = true
         }
         abi {
             enableSplit = true
