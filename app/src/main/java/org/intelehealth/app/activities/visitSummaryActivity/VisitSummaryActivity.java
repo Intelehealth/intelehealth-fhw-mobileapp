@@ -1386,19 +1386,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
-        if (bldglucose.getValue() != null)
-            glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null)
+        if (bldglucose.getValue() != null  && !bldglucose.getValue().equalsIgnoreCase("0"))
+            glucose.setText(bldglucose.getValue() );
+        if (bldglucose_random.getValue() != null && !bldglucose_random.getValue().equalsIgnoreCase("0"))
             glucoseRandom.setText(bldglucose_random.getValue());
-        if (bldglucose_post_prandial.getValue() != null)
+        if (bldglucose_post_prandial.getValue() != null && !bldglucose_post_prandial.getValue().equalsIgnoreCase("0"))
             glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
-        if (bldglucose_fasting.getValue() != null)
+        if (bldglucose_fasting.getValue() != null && !bldglucose_fasting.getValue().equalsIgnoreCase("0"))
             glucoseFasting.setText(bldglucose_fasting.getValue());
-        if (hemoGlobin.getValue() != null)
+        if (hemoGlobin.getValue() != null && !hemoGlobin.getValue().equalsIgnoreCase("0"))
             hemoglobin.setText(hemoGlobin.getValue());
-        if (uricAcid.getValue() != null)
+        if (uricAcid.getValue() != null && !uricAcid.getValue().equalsIgnoreCase("0"))
             uricAcid_textview.setText(uricAcid.getValue());
-        if (totalCholesterol.getValue() != null)
+        if (totalCholesterol.getValue() != null && !totalCholesterol.getValue().equalsIgnoreCase("0"))
             totalCholesterol_textview.setText(totalCholesterol.getValue());
 
 
@@ -1409,6 +1409,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
@@ -1427,6 +1429,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 intent1.putExtra("gender", patientGender);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("gender", patientGender);
+                intent1.putExtra("patientFirstName", patientFName);
+                intent1.putExtra("patientLastName", patientLName);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
@@ -1502,6 +1506,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_FamHist", "edit_FamHist");
                         intent1.putExtra("gender", patientGender);
@@ -1615,6 +1621,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
@@ -1722,6 +1730,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("gender", patientGender);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
@@ -1819,6 +1829,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("patientFirstName", patientFName);
+                        intent1.putExtra("patientLastName", patientLName);
                         intent1.putExtra("edit_PatHist", "edit_PatHist");
                         intent1.putExtra("gender", patientGender);
 //                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
@@ -5501,6 +5513,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                if(dbValue!=null && !dbValue.equals("0"))
                 parseBillData(selectedTests, dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
