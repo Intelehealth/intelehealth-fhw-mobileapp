@@ -4329,6 +4329,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     public void downloadPrescription() {
         VisitsDAO visitsDAO = new VisitsDAO();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
                 String visitnote = "";
@@ -4468,10 +4469,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (downloadPrescriptionService != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
+        //In onStop() it will check and unregister the receiver...
+        //This is done in onStop as we are registering them in onStart()
         if (receiver != null) {
-            unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            receiver = null;
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        isReceiverRegistered = false;
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

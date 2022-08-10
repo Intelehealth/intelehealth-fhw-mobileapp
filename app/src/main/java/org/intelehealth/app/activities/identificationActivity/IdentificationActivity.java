@@ -538,7 +538,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             mAddress1.setText(patient1.getAddress1());
 //        mAddress2.setText(patient1.getAddress2());
 
-            if (!patient1.getPostal_code().equalsIgnoreCase("-"))
+            if (patient1.getPostal_code()!=null && !patient1.getPostal_code().equalsIgnoreCase("-"))
                 mPostal.setText(patient1.getPostal_code());
         }
 //        mRelationship.setText(patient1.getSdw());
