@@ -1379,6 +1379,9 @@
     <string name="thermal_printer">प्रिंटर</string>
     <string name="glucose_non_fasting_validation">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावे %1$s आणि %2$s</string>
     <string name="glucose_fasting_validation">रक्तातील ग्लुकोज (उपाशीपोटी) दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="glucose_random_validation">रक्तातील ग्लुकोज (रँडम ब्लड शुगर) दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="glucose_post_prandial_validation">रक्तातील ग्लुकोज (Post-Prandial) दरम्यान असावे %1$s आणि %2$s</string>
+
     <string name="hemoglobin_validation">हिमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
     <string name="calibration_not_required">कॅलिब्रेशन आवश्यक नाही. चाचणी थेट केली जाऊ शकते</string>
     <string name="connect_bluetooth">ब्लूटूथ कनेक्ट करा</string>

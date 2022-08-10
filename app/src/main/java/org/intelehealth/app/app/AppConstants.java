@@ -58,6 +58,12 @@ public class AppConstants {
     public static final String MINIMUM_GLUCOSE_FASTING = "30";
     public static final String MAXIMUM_GLUCOSE_FASTING = "300";
 
+    public static final String MINIMUM_GLUCOSE_RANDOM = "30";
+    public static final String MAXIMUM_GLUCOSE_RANDOM = "500";
+
+    public static final String MINIMUM_GLUCOSE_POST_PRANDIAL = "70";
+    public static final String MAXIMUM_GLUCOSE_POST_PRANDIAL = "400";
+
     public static final String MINIMUM_HEMOGLOBIN = "4";
     public static final String MAXIMUM_HEMOGLOBIN = "18";
 
@@ -86,7 +92,7 @@ public class AppConstants {
     public static int IMAGE_JPG_QUALITY = 70;
 
     // HealthCube Key
-    public static final String  key = "VmtaYVUxZHJNVlpPVlZaWFZrWmFUMXBYZEZabFJsSnpWV3RLYTAxRVJrVlVWV2h2VkRKV2MxSlVSbFZXTTBKMVZGUkJNVlpXV2xWU2F6VlRVbFZaZWc9PQ==";
+    public static final String key = "VmtaYVUxZHJNVlpPVlZaWFZrWmFUMXBYZEZabFJsSnpWV3RLYTAxRVJrVlVWV2h2VkRKV2MxSlVSbFZXTTBKMVZGUkJNVlpXV2xWU2F6VlRVbFZaZWc9PQ==";
 
 
     public static int REPEAT_INTERVAL = 15;
