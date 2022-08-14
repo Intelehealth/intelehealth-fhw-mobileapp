@@ -65,20 +65,23 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                 holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
 
             holder.bodyTextView.setText(body);
-            if (TextUtils.isEmpty(patinet.getComment())) {
+            if (TextUtils.isEmpty(patinet.getComment()) && patinet.getComment() == null && patinet.getComment().equalsIgnoreCase("null")) {
                 holder.commentTextView.setVisibility(View.GONE);
             } else {
                 holder.commentTextView.setText(Html.fromHtml(patinet.getComment()));
                 holder.commentTextView.setVisibility(View.VISIBLE);
             }
+            if (patinet.getValue() == 0 || patinet.getValue() == 1) {
+                holder.dueDateTextView.setVisibility(View.GONE);
+            } else {
+                if(patinet.getFollowup_date()!=null) {
+                    holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
+                    holder.dueDateTextView.setVisibility(View.VISIBLE);
+                }
+            }
+
         }
-        if (patinet.getFollowup_date().equalsIgnoreCase("null")) {
-holder.dueDateTextView.setVisibility(View.GONE);
-        }
-        else{
-            holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
-            holder.dueDateTextView.setVisibility(View.VISIBLE);
-        }
+
 //        if (!patinet.getVisitStartDate().equalsIgnoreCase("null")) {
 //
 //            String[] arrSplit_2 = patinet.getComment().split("-");
@@ -159,7 +162,7 @@ holder.dueDateTextView.setVisibility(View.GONE);
                 Log.d("search adapter", "patientuuid" + patinet.getUuid());
                 String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getUuid());
+                intent.putExtra("patientUuid", patinet.getPatientuuid());
                 intent.putExtra("patientName", patinet.getFirst_name() + "" + patinet.getLast_name());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "search");
