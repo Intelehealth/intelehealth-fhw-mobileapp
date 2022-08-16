@@ -3966,9 +3966,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+        try {
+            objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+        }
+        catch (Exception e)
+        {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
-
         String doctorSign = "";
         String doctrRegistartionNum = "";
         // String docDigitallySign = "";
