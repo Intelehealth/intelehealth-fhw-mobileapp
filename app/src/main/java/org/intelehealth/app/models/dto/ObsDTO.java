@@ -27,19 +27,6 @@ public class ObsDTO {
     @SerializedName("voided")
     @Expose
     private Integer voided;
-    @SerializedName("encounter_time")
-    @Expose
-    private String encounterTime;
-
-    public String getEncounterTime() {
-        return encounterTime;
-    }
-
-    public void setEncounterTime(String encounterTime) {
-        this.encounterTime = encounterTime;
-    }
-
-    private String observationTime;
 
     public String getUuid() {
         return uuid;
@@ -91,17 +78,5 @@ public class ObsDTO {
 
     public String getObsServerModifiedDate() {
         return obsServerModifiedDate;
-    }
-
-    public void setObsServerModifiedDate(String obsServerModifiedDate) {
-        this.obsServerModifiedDate = obsServerModifiedDate;
-    }
-
-    public String getObservationTime() {
-        return observationTime;
-    }
-
-    public void setObservationTime(String observationTime) {
-        this.observationTime = observationTime;
     }
 }

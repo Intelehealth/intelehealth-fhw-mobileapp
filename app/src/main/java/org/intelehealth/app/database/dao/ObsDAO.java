@@ -66,7 +66,7 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTOS.getConceptuuid());
             values.put("value", obsDTOS.getValue());
             values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
-            values.put("modified_date", obsDTOS.getEncounterTime());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -166,7 +166,7 @@ public class ObsDAO {
                 values.put("creator", ob.getCreator());
                 values.put("conceptuuid", ob.getConceptuuid());
                 values.put("value", ob.getValue());
-                values.put("modified_date", ob.getObservationTime());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "0");
                 values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
                 insertedCount = db.insert("tbl_obs", null, values);
