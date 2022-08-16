@@ -9,6 +9,7 @@ import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
 
 import static org.intelehealth.app.app.AppConstants.key;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -47,8 +48,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1582,6 +1585,15 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                     encounterDAO.updateEncounterModifiedDate(encounterVitals);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                //sync has to be performed once the vitals are updated for the bill update feature
+                SyncUtils syncUtils = new SyncUtils();
+                boolean success = false;
+                success = syncUtils.syncForeground("bill");
+
+                if(!success) {
+                    Toast.makeText(VitalsActivity.this, getString(R.string.sync_failed), Toast.LENGTH_LONG).show();
                 }
 
                 Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
