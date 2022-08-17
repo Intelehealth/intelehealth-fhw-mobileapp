@@ -25,8 +25,10 @@ import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.models.FollowUpModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -91,6 +93,114 @@ public class FollowUpNotificationWorker extends Worker {
         scheduled = true;
     }
 
+    public static long getFollowUpCount(SQLiteDatabase db) {
+        int count = 0;
+        String visitType = "General";
+        List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
+        String table = "tbl_patient";
+        Date cDate = new Date();
+        FollowUpModel model = new FollowUpModel();
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+        String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC) as sub GROUP BY patientuuid ORDER BY startdate DESC";
+        final Cursor searchCursor = db.rawQuery(query, null);
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    String visitStartDateFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate"));
+                    String visitFollowup = "";
+                    if (searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).contains(" Do you want us to follow-up? - Yes")) {
+                        visitType = "Diabetes Follow-up";
+                        visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(68, 79);
+                        visitFollowup = visitFollowup.replaceAll("/", "-");
+                        Date requiredFormat = new SimpleDateFormat("dd-MMM-yyyy").parse(visitFollowup);
+                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                        visitFollowup = outputDateFormat.format(requiredFormat);
+                    } else {
+                        visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                    }
+
+
+                    SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                    Date startDate = sd1.parse(visitStartDateFollowup);
+                    Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(visitFollowup);
+                    String newStartDate = new SimpleDateFormat("dd-MM-yyyy").format(startDate);
+                    Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
+                    int value = followUp.compareTo(currentD);
+
+                    if (visitType.equalsIgnoreCase("Diabetes Follow-up")) {
+                        if (value == -1 || value == 0) {
+                            count++;
+                        }
+                    } else {
+                        String mSeverityValue = getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),db);
+                        int days = mGetDaysAccording(newStartDate);
+                        String mValue = "";
+                        if (!mSeverityValue.contains("Do you want us to follow-up?")) {
+                            String[] arrSplit_2 = mSeverityValue.split("-");
+                            mValue = arrSplit_2[arrSplit_2.length - 1];
+                        }
+                        if (value == -1) {
+
+                            if (days > 0 && days < 11) {
+                                Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
+                                Log.d("days", "days++ " + days);
+
+                                if (days % 2 == 0) {
+                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.") || mValue.trim().contains("Mild.")) {
+                                        count++;
+                                    } else if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    } else {
+                                        count++;
+                                    }
+                                } else {
+                                    if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    } else {
+                                        count++;
+                                    }
+                                }
+
+                            } else {
+                                count++;
+                            }
+                        } else if (value > 0) {
+
+                            if (days > 0 && days < 11 && days != 0) {
+                                Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
+                                Log.d("days", "days++ " + days);
+
+                                if (days % 2 == 0) {
+                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.") || mValue.trim().contains("Mild.")) {
+                                        count++;
+                                    } else if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    } else {
+// todo No need to added
+                                    }
+                                } else {
+                                    if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    }
+
+                                }
+
+                            }
+                        } else {
+                            count++;
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+        return count;
+    }
+
 //    public static long getFollowUpCount(SQLiteDatabase db) {
 //        /*final Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v  where  v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.value like '%Moderate%' or o.value like '%Mild%' or 'Severe')))", null);
 //        boolean result = searchCursor.moveToFirst();
@@ -118,96 +228,97 @@ public class FollowUpNotificationWorker extends Worker {
 //        }
 //        return count;
 //    }
-    public static long getFollowUpCount(SQLiteDatabase db) {
 
-        int count = 0;
-        Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    try {
-                        String visitDateFollowup = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
-                        String followUpDate = cursor.getString(cursor.getColumnIndexOrThrow("value")).substring(0,10);
-                        SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-                        Date startDate = sd1.parse(visitDateFollowup);
-
-                        String newStartDate = new SimpleDateFormat("dd-MM-yyyy").format(startDate);
-                        Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
-
-                        Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
+//    public static long getFollowUpCount(SQLiteDatabase db) {
+//
+//        int count = 0;
+//        Date cDate = new Date();
+//        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+//        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
+//        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+//        if (cursor != null) {
+//            if (cursor.moveToFirst()) {
+//                do {
+//                    try {
+//                        String visitDateFollowup = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+//                        String followUpDate = cursor.getString(cursor.getColumnIndexOrThrow("value")).substring(0,10);
+//                        SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+//                        Date startDate = sd1.parse(visitDateFollowup);
+//
+//                        String newStartDate = new SimpleDateFormat("dd-MM-yyyy").format(startDate);
 //                        Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
-                        int value = followUp.compareTo(currentD);
-                        String mSeverityValue = getSeverity(cursor.getString(cursor.getColumnIndexOrThrow("uuid")),db);
-                        Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
-                        String[] arrSplit_2 = mSeverityValue.split("-");
-                        String mValue = arrSplit_2[arrSplit_2.length - 1];
-                        int days = mGetDaysAccording(newStartDate);
-
-                        if (value == -1) {
+//
+//                        Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
+////                        Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
+//                        int value = followUp.compareTo(currentD);
+//                        String mSeverityValue = getSeverity(cursor.getString(cursor.getColumnIndexOrThrow("uuid")),db);
+//                        Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
+//                        String[] arrSplit_2 = mSeverityValue.split("-");
+//                        String mValue = arrSplit_2[arrSplit_2.length - 1];
+//                        int days = mGetDaysAccording(newStartDate);
+//
+//                        if (value == -1) {
+////                            count++;
+//
+//                            if (days > 0 && days < 11) {
+//                                if (days % 2 == 0) {
+//                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.")|| mValue.trim().contains("Mild."))
+//                                    {
+//                                        count++;
+//                                    } else if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
+//                                        count++;
+//                                    } else {
+//// todo No need to added
+//                                    }
+//                                }
+//                                else {
+//                                    if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
+//                                        count++;
+//                                    } else {
+//
+//                                    }
+//                                }
+//
+//                            } else { // todo No need to added
+//                            }
+//                        }
+//                        else if(value>0) {
+//                            if (days > 0 && days < 11 && days != 0) {
+//                                if (days % 2 == 0) {
+//                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.") || mValue.trim().contains("Mild.")) {
+//                                        count++;
+//                                    } else if (mValue.trim().equalsIgnoreCase("Severe.")|| mValue.trim().contains("Severe.")) {
+//                                        count++;
+//                                    } else {
+//// todo No need to added
+//                                    }
+//                                } else {
+//                                    if (mValue.trim().contains("Severe.") ||mValue.trim().equalsIgnoreCase("Severe.")) {
+//                                        count++;
+//                                    } else {
+//
+//                                    }
+//                                }
+//
+//                            }
+//
+//                        }
+//                        else{
 //                            count++;
-
-                            if (days > 0 && days < 11) {
-                                if (days % 2 == 0) {
-                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.")|| mValue.trim().contains("Mild."))
-                                    {
-                                        count++;
-                                    } else if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
-                                        count++;
-                                    } else {
-// todo No need to added
-                                    }
-                                }
-                                else {
-                                    if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
-                                        count++;
-                                    } else {
-
-                                    }
-                                }
-
-                            } else { // todo No need to added
-                            }
-                        }
-                        else if(value>0) {
-                            if (days > 0 && days < 11 && days != 0) {
-                                if (days % 2 == 0) {
-                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.") || mValue.trim().contains("Mild.")) {
-                                        count++;
-                                    } else if (mValue.trim().equalsIgnoreCase("Severe.")|| mValue.trim().contains("Severe.")) {
-                                        count++;
-                                    } else {
-// todo No need to added
-                                    }
-                                } else {
-                                    if (mValue.trim().contains("Severe.") ||mValue.trim().equalsIgnoreCase("Severe.")) {
-                                        count++;
-                                    } else {
-
-                                    }
-                                }
-
-                            }
-
-                        }
-                        else{
-                            count++;
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } while (cursor.moveToNext());
-            }
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return count;
-    }
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                } while (cursor.moveToNext());
+//            }
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+//        return count;
+//    }
 
     private static String getSeverity(String patientUid, SQLiteDatabase db) {
         String severity = null;
