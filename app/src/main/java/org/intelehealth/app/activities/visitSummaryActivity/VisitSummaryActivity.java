@@ -204,13 +204,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
-    ObsDTO bldglucose = new ObsDTO();
-    ObsDTO bldglucose_random = new ObsDTO();
-    ObsDTO bldglucose_post_prandial = new ObsDTO();
-    ObsDTO bldglucose_fasting = new ObsDTO();
-    ObsDTO hemoGlobin = new ObsDTO();
-    ObsDTO uricAcid = new ObsDTO();
-    ObsDTO totalCholesterol = new ObsDTO();
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -221,7 +214,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String followUpDate = "";
 
     ImageButton editVitals;
-    ImageButton editDiagnostics;
     ImageButton editComplaint;
     ImageButton editPhysical;
     ImageButton editFamHist;
@@ -248,14 +240,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView glucose;
-    TextView glucoseRandom;
-    TextView glucosePostPrandial;
-    TextView glucoseFasting;
-    TextView hemoglobin;
-    TextView uricAcid_textview;
-    TextView totalCholesterol_textview;
-    //    //    Respiratory added by mahiti dev team
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -416,20 +400,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.summary_home: {
-//                NavUtils.navigateUpFromSameTask(this);
                 Intent i = new Intent(this, HomeActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 return true;
             }
-//            case R.id.summary_print: {
-//                try {
-//                    doWebViewPrint_Button();
-//                } catch (ParseException e) {
-//                    FirebaseCrashlytics.getInstance().recordException(e);
-//                }
-//                return true;
-//            }
             case R.id.summary_sms: {
                 //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
                 return true;
@@ -447,8 +422,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //meera
         if (downloaded) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
             alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                 @Override
@@ -471,7 +444,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         } else {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
             alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                 @Override
@@ -480,7 +452,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
     }
@@ -510,7 +481,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
 //            hasPrescription = intent.getStringExtra("hasPrescription");
-
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
             physicalExams.clear();
@@ -607,11 +577,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             @Override
             public void onClick(View v) {
                 doQuery();
-                if (speciality_selected == null
-                        || speciality_selected.isEmpty()
-                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
-                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
-                ) {
+                if (speciality_selected == null || speciality_selected.isEmpty() || "Select Specialization".equalsIgnoreCase(speciality_selected))
+                {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -633,7 +600,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
-
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
         prescriptionCard = findViewById(R.id.cardView_rx);
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
@@ -809,7 +775,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
-
         ivPrescription = findViewById(R.id.iv_prescription);
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
@@ -897,7 +862,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
-        editDiagnostics = findViewById(R.id.imagebutton_edit_diagnostics);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
@@ -905,12 +869,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
-
-        //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
-
-        //additionalDocumentsDownlaod.setVisibility(View.GONE);
-
         physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
         onExaminationDownload.setVisibility(View.GONE);
 
@@ -934,7 +893,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
-            editDiagnostics.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
@@ -1045,12 +1003,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     if (!flag.isChecked()) {
                         //
                     }
-
-
-//                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
-//                        .setBackgroundColor(Color.BLACK)
-//                        .setTextColor(Color.WHITE)
-//                        .show();
 
                     if (NetworkConnection.isOnline(getApplication())) {
                         Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
@@ -1212,16 +1164,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
-        glucose = findViewById(R.id.textView_glucose_value);
-        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
-        glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
-        glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
-        hemoglobin = findViewById(R.id.textView_hemoglobin_value);
-        uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
-        totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
-
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
+
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -1299,7 +1244,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
-//        tempView.setText(temperature.getValue());
+
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
@@ -1312,39 +1257,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
-        if (bldglucose.getValue() != null)
-            glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null)
-            glucoseRandom.setText(bldglucose_random.getValue());
-        if (bldglucose_post_prandial.getValue() != null)
-            glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
-        if (bldglucose_fasting.getValue() != null)
-            glucoseFasting.setText(bldglucose_fasting.getValue());
-        if (hemoGlobin.getValue() != null)
-            hemoglobin.setText(hemoGlobin.getValue());
-        if (uricAcid.getValue() != null)
-            uricAcid_textview.setText(uricAcid.getValue());
-        if (totalCholesterol.getValue() != null)
-            totalCholesterol_textview.setText(totalCholesterol.getValue());
-
-
         editVitals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
-                intent1.putExtra("patientUuid", patientUuid);
-                intent1.putExtra("visitUuid", visitUuid);
-                intent1.putExtra("gender", patientGender);
-                intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("gender", patientGender);
-                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-            }
-        });
-
-        editDiagnostics.setOnClickListener(new View.OnClickListener() { // Edit Diagnostics
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
@@ -1970,11 +1883,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     public void setLocale(String appLanguage) {
-//        Locale locale = new Locale(appLanguage);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
         Resources res = getResources();
         Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
@@ -1992,20 +1900,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         res.updateConfiguration(conf, dm);
     }
 
-//    private String convertCtoF(String temperature) {
-//
-//        String result = "";
-//        double a = Double.parseDouble(String.valueOf(temperature));
-//        Double b = (a * 9 / 5) + 32;
-//
-//        DecimalFormat dtime = new DecimalFormat("#.##");
-//        b = Double.valueOf(dtime.format(b));
-//
-//        result = String.valueOf(b);
-//        return result;
-//
-//    }
-
     private String convertCtoF(String temperature) {
 
         String resultVal;
@@ -2013,9 +1907,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         double a = Double.parseDouble(temperature);
         double b = (a * 9 / 5) + 32;
         nf.format(b);
-//        DecimalFormat dtime = new DecimalFormat("0.00");
-//        b = Double.parseDouble(dtime.format(b));
-//        int IntValue = (int) Math.round(b);
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
@@ -3714,41 +3605,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             case UuidDictionary.SPO2: //SpO2
             {
                 spO2.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
-            {
-                bldglucose.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
-            {
-                bldglucose_random.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
-            {
-                bldglucose_post_prandial.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
-            {
-                bldglucose_fasting.setValue(value);
-                break;
-            }
-            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
-            {
-                hemoGlobin.setValue(value);
-                break;
-            }
-            case UuidDictionary.URIC_ACID_ID: // Uric Acid
-            {
-                uricAcid.setValue(value);
-                break;
-            }
-            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholestrol
-            {
-                totalCholesterol.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {

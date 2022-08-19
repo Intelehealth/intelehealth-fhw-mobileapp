@@ -71,7 +71,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
+public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";
@@ -90,12 +90,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
-            bloodGlucose_editText, bloodGlucose_editText_fasting, bloodGlucoseRandom_editText, bloodGlucosePostPrandial_editText,
-            haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
-    ImageButton bloodGlucose_Btn, bloodGlucose_Btn_Fasting, bloodGlucoseRandom_Btn, bloodGlucosePostPrandial_Btn, haemoglobin_btn, bp_Btn, spo2_Btn,
-            uricAcid_btn, cholesterol_btn;
-    BluetoothService bluetoothService;
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
     AppCompatImageView imageView;
     TextView textView;
     AlertDialog alertDialog;
@@ -145,29 +140,10 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
-        bp_Btn = findViewById(R.id.bp_Btn);
-        uricAcid_btn = findViewById(R.id.uricAcid_btn);
-        cholesterol_btn = findViewById(R.id.totalCholestrol_btn);
-        bloodGlucose_editText = findViewById(R.id.bloodGlucose_editText);
-        bloodGlucose_editText_fasting = findViewById(R.id.bloodGlucose_editText_fasting);
-        bloodGlucoseRandom_editText = findViewById(R.id.bloodGlucoseRandom_editText);
-        bloodGlucosePostPrandial_editText = findViewById(R.id.bloodGlucosePostPrandial_editText);
-        bloodGlucose_Btn = findViewById(R.id.bloodGlucose_Btn);
-        bloodGlucose_Btn_Fasting = findViewById(R.id.bloodGlucose_Btn_fasting);
-        bloodGlucoseRandom_Btn = findViewById(R.id.bloodGlucoseRandom_Btn);
-        bloodGlucosePostPrandial_Btn = findViewById(R.id.bloodGlucosePostPrandial_Btn);
-        haemoglobin_editText = findViewById(R.id.haemoglobin_editText);
-        uricAcid_editText = findViewById(R.id.uricAcid_editText);
-        totalCholestrol_editText = findViewById(R.id.totalCholestrol_editText);
-        haemoglobin_btn = findViewById(R.id.haemoglobin_btn);
-        spo2_Btn = findViewById(R.id.spo2_Btn);
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
         mResp = findViewById(R.id.table_respiratory);
         mBMI.setEnabled(false);
-
-        bluetoothService = BluetoothService.getDefaultInstance();
-        bluetoothService.setOnEventCallback(this);
 
         //Check for license key and load the correct config file
         try {
@@ -277,60 +253,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 }
             }
         });
-
-        bp_Btn.setOnClickListener(view -> {
-            EzdxBT.startAdultBloodPressure();
-            showTestDialog();
-        });
-
-        bloodGlucose_Btn.setOnClickListener(view -> { // Diabetes // Non-Fasting
-            Status status = EzdxBT.startBloodGlucose();
-            Log.v("Details", "gluc_nonfast: " + status.toString());
-            showTestDialog();
-            btnClick = 1;
-        });
-
-        bloodGlucoseRandom_Btn.setOnClickListener(view -> {
-            Status status = EzdxBT.startBloodGlucose();
-            Log.v("Details", "gluc_random: " + status.toString());
-            showTestDialog();
-            btnClick = 3;
-        });
-
-        bloodGlucosePostPrandial_Btn.setOnClickListener(view -> {
-            Status status = EzdxBT.startBloodGlucose();
-            Log.v("Details", "gluc_post_prandial: " + status.toString());
-            showTestDialog();
-            btnClick = 4;
-        });
-
-        bloodGlucose_Btn_Fasting.setOnClickListener(view -> { // Diabetes // Fasting
-            Status status = EzdxBT.startBloodGlucose();
-            Log.v("Details", "gluc_fast: " + status.toString());
-            showTestDialog();
-            btnClick = 2;
-        });
-
-        haemoglobin_btn.setOnClickListener(view -> { // Anaemia
-            EzdxBT.startHemoglobin();
-            showTestDialog();
-        });
-
-        spo2_Btn.setOnClickListener(view -> {
-            EzdxBT.startPulseOximetry();
-            showTestDialog();
-        });
-
-        uricAcid_btn.setOnClickListener(view -> {
-            EzdxBT.startUricAcid();
-            showTestDialog();
-        });
-
-        cholesterol_btn.setOnClickListener(view -> {
-            EzdxBT.startCholestrol();
-            showTestDialog();
-        });
-
 
         mWeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -568,220 +490,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 }
             }
         });
-
-        // glucose - non-fasting
-        bloodGlucose_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_GLUCOSE_NON_FASTING)) {
-                        bloodGlucose_editText.setError(getString(R.string.glucose_non_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_NON_FASTING, AppConstants.MAXIMUM_GLUCOSE_NON_FASTING));
-                    } else {
-                        bloodGlucose_editText.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (bloodGlucose_editText.getText().toString().startsWith(".")) {
-                    bloodGlucose_editText.setText("");
-                } else {
-
-                }
-            }
-        });
-        //end
-
-        // glucose - random - start
-        bloodGlucoseRandom_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING) ||
-                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING)) {
-                        bloodGlucoseRandom_editText.setError(getString(R.string.glucose_non_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_NON_FASTING, AppConstants.MAXIMUM_GLUCOSE_NON_FASTING));
-                    } else {
-                        bloodGlucoseRandom_editText.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (bloodGlucoseRandom_editText.getText().toString().startsWith("."))
-                    bloodGlucoseRandom_editText.setText("");
-            }
-        });
-        // glucose - random - end
-
-        // glucose - post-prandial - start
-        bloodGlucosePostPrandial_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING) ||
-                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING)) {
-                        bloodGlucosePostPrandial_editText.setError(getString(R.string.glucose_non_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_NON_FASTING, AppConstants.MAXIMUM_GLUCOSE_NON_FASTING));
-                    } else {
-                        bloodGlucosePostPrandial_editText.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (bloodGlucosePostPrandial_editText.getText().toString().startsWith("."))
-                    bloodGlucosePostPrandial_editText.setText("");
-            }
-        });
-        // glucose - post-prandial - end
-
-        // glucose - fasting
-        bloodGlucose_editText_fasting.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_GLUCOSE_FASTING) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_GLUCOSE_FASTING)) {
-                        bloodGlucose_editText_fasting.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
-                    } else {
-                        bloodGlucose_editText_fasting.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (bloodGlucose_editText_fasting.getText().toString().startsWith(".")) {
-                    bloodGlucose_editText_fasting.setText("");
-                } else {
-
-                }
-            }
-        });
-        //end
-
-        // hemoglobin
-        haemoglobin_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEMOGLOBIN) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEMOGLOBIN)) {
-                        haemoglobin_editText.setError(getString(R.string.hemoglobin_validation,
-                                AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
-                    } else {
-                        haemoglobin_editText.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (haemoglobin_editText.getText().toString().startsWith(".")) {
-                    haemoglobin_editText.setText("");
-                } else {
-
-                }
-            }
-        });
-
-        // Uric Acid
-        uricAcid_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_URIC_ACID) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_URIC_ACID)) {
-                        uricAcid_editText.setError(getString(R.string.uric_acid_validation,
-                                AppConstants.MINIMUM_URIC_ACID, AppConstants.MAXIMUM_URIC_ACID));
-                    } else {
-                        uricAcid_editText.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (uricAcid_editText.getText().toString().startsWith(".")) {
-                    uricAcid_editText.setText("");
-                } else {
-
-                }
-            }
-        });
-        //end
-
-        // Total Cholesterol
-        totalCholestrol_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TOTAL_CHOLSTEROL) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TOTAL_CHOLSTEROL)) {
-                        totalCholestrol_editText.setError(getString(R.string.total_cholesterol_validation,
-                                AppConstants.MINIMUM_TOTAL_CHOLSTEROL, AppConstants.MAXIMUM_TOTAL_CHOLSTEROL));
-                    } else {
-                        totalCholestrol_editText.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (totalCholestrol_editText.getText().toString().startsWith(".")) {
-                    totalCholestrol_editText.setText("");
-                } else {
-
-                }
-            }
-        });
         //end
 
         TextView fab = findViewById(R.id.fab);
@@ -792,38 +500,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 validateTable();
             }
         });
-    }
-
-    private void showTestDialog() {
-        // show dialog
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        View layoutInflater = LayoutInflater.from(VitalsActivity.this)
-                .inflate(R.layout.welcome_slide1, null);
-        imageView = layoutInflater.findViewById(R.id.instructionImage);
-        imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
-        textView = layoutInflater.findViewById(R.id.tv_intro_one);
-        textView.setTextColor(getColor(R.color.colorPrimaryDark));
-        dialog.setView(layoutInflater);
-
-        dialog.setNegativeButton(R.string.STOP, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-                EzdxBT.stopCurrentTest(); // stopping the test is necessary...
-                Toast.makeText(VitalsActivity.this, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        alertDialog = dialog.create();
-        alertDialog.show();
-
-        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     public void calculateBMI() {
@@ -917,27 +593,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             case UuidDictionary.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose // Non-Fasting
-                bloodGlucose_editText.setText(value);
-                break;
-            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID:
-                bloodGlucoseRandom_editText.setText(value);
-                break;
-            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID:
-                bloodGlucosePostPrandial_editText.setText(value);
-                break;
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose // Non-Fasting
-                bloodGlucose_editText_fasting.setText(value);
-                break;
-            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
-                haemoglobin_editText.setText(value);
-                break;
-            case UuidDictionary.URIC_ACID_ID: // Uric Acid
-                uricAcid_editText.setText(value);
-                break;
-            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholesterol
-                totalCholestrol_editText.setText(value);
-                break;
             default:
                 break;
 
@@ -978,12 +633,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
-        values.add(bloodGlucoseRandom_editText);
-        values.add(bloodGlucosePostPrandial_editText);
-        values.add(bloodGlucose_editText_fasting);
-        values.add(haemoglobin_editText);
-        values.add(uricAcid_editText);
-        values.add(totalCholestrol_editText);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -1138,125 +787,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                     cancel = false;
                 }
             }
-
-            // glucose - random
-            else if (i == 8) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING))) {
-                        et.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-
-            // glucose - post-prandial
-            else if (i == 9) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING))) {
-                        et.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-
-            // glucose - fasting
-            else if (i == 10) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_FASTING)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_FASTING))) {
-                        et.setError(getString(R.string.glucose_fasting_validation,
-                                AppConstants.MINIMUM_GLUCOSE_FASTING, AppConstants.MAXIMUM_GLUCOSE_FASTING));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-            // hemoglobin
-            else if (i == 11) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN))) {
-                        et.setError(getString(R.string.hemoglobin_validation,
-                                AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-
-            // uric acid
-            else if (i == 12) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_URIC_ACID)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_URIC_ACID))) {
-                        et.setError(getString(R.string.uric_acid_validation,
-                                AppConstants.MINIMUM_URIC_ACID, AppConstants.MAXIMUM_URIC_ACID));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
-
-            // total cholesterol
-            else if (i == 13) {
-                EditText et = values.get(i);
-                String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TOTAL_CHOLSTEROL)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TOTAL_CHOLSTEROL))) {
-                        et.setError(getString(R.string.total_cholesterol_validation,
-                                AppConstants.MINIMUM_TOTAL_CHOLSTEROL, AppConstants.MAXIMUM_TOTAL_CHOLSTEROL));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
-                    }
-                } else {
-                    cancel = false;
-                }
-            }
         }
 
         if (cancel) {
@@ -1299,27 +829,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 }
                 if (mSpo2.getText() != null) {
                     results.setSpo2((mSpo2.getText().toString()));
-                }
-                if (bloodGlucose_editText.getText() != null) {
-                    results.setBloodglucose((bloodGlucose_editText.getText().toString()));
-                }
-                if (bloodGlucoseRandom_editText.getText() != null) {
-                    results.setBloodGlucoseRandom((bloodGlucoseRandom_editText.getText().toString()));
-                }
-                if (bloodGlucosePostPrandial_editText.getText() != null) {
-                    results.setBloodGlucosePostPrandial(bloodGlucosePostPrandial_editText.getText().toString());
-                }
-                if (bloodGlucose_editText_fasting.getText() != null) {
-                    results.setBloodglucoseFasting((bloodGlucose_editText_fasting.getText().toString()));
-                }
-                if (haemoglobin_editText.getText() != null) {
-                    results.setHemoglobin((haemoglobin_editText.getText().toString()));
-                }
-                if (uricAcid_editText.getText() != null) {
-                    results.setUricAcid((uricAcid_editText.getText().toString()));
-                }
-                if (totalCholestrol_editText.getText() != null) {
-                    results.setTotlaCholesterol((totalCholestrol_editText.getText().toString()));
                 }
 
             } catch (NumberFormatException e) {
@@ -1407,70 +916,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 obsDTO.setValue(results.getSpo2());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                 obsDAO.updateObs(obsDTO);
-
-                // Glucose
-//                obsDTO = new ObsDTO();
-//                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
-//                obsDTO.setEncounteruuid(encounterVitals);
-//                obsDTO.setCreator(sessionManager.getCreatorID());
-//                obsDTO.setValue(results.getBloodglucose());
-//                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_ID));
-//                obsDAO.updateObs(obsDTO);
-
-                // Glucose - Random
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGlucoseRandom());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID));
-                obsDAO.updateObs(obsDTO);
-
-                // Glucose - Post-prandial
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGlucosePostPrandial());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID));
-                obsDAO.updateObs(obsDTO);
-
-                // Glucose - Fasting
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodglucoseFasting());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_FASTING_ID));
-                obsDAO.updateObs(obsDTO);
-
-                // Hemoglobin
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getHemoglobin());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN_ID));
-                obsDAO.updateObs(obsDTO);
-
-                // Uric Acid
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.URIC_ACID_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getUricAcid());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.URIC_ACID_ID));
-                obsDAO.updateObs(obsDTO);
-
-                // total cholesterol
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL_ID);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getTotlaCholesterol());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TOTAL_CHOLESTEROL_ID));
-                obsDAO.updateObs(obsDTO);
-
 
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -1597,90 +1042,6 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
 
-            // Glucose
-//            obsDTO = new ObsDTO();
-//            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_ID);
-//            obsDTO.setEncounteruuid(encounterVitals);
-//            obsDTO.setCreator(sessionManager.getCreatorID());
-//            obsDTO.setValue(results.getBloodglucose());
-//            try {
-//                obsDAO.insertObs(obsDTO);
-//            } catch (DAOException e) {
-//                FirebaseCrashlytics.getInstance().recordException(e);
-//            }
-
-            // Glucose - Random
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBloodGlucoseRandom());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            // Glucose - Post-prandial
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBloodGlucosePostPrandial());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            // Glucose - Fasting
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBloodglucoseFasting());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            // Hemoglobin
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getHemoglobin());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            // Uric Acid Test
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.URIC_ACID_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getUricAcid());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            // total cholesterol Test
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL_ID);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getTotlaCholesterol());
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 
             intent.putExtra("patientUuid", patientUuid);
@@ -1731,153 +1092,4 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     public void onBackPressed() {
     }
 
-    @Override
-    public void onEzdxData(EzdxData ezdxData) {
-        switch (ezdxData.getTestName()) {
-            case BLOOD_PRESSURE: { // <a href="https://www.flaticon.com/free-icons/blood-pressure" title="blood-pressure icons">Blood-pressure icons created by photo3idea_studio - Flaticon</a>
-                fetchStatusOfTest(ezdxData, BLOOD_PRESSURE);
-                break;
-            }
-            case BLOOD_GLUCOSE: { // <a href="https://www.flaticon.com/free-icons/diabetes" title="diabetes icons">Diabetes icons created by Freepik - Flaticon</a>
-                fetchStatusOfTest(ezdxData, BLOOD_GLUCOSE); // Diabetes
-                break;
-            }
-            case HEMOGLOBIN: { // <a href="https://www.flaticon.com/free-icons/blood-test" title="blood test icons">Blood test icons created by Freepik - Flaticon</a>
-                fetchStatusOfTest(ezdxData, HEMOGLOBIN); // Anaemia
-                break;
-            }
-            case PULSE_OXIMETER: { // <a href="https://www.flaticon.com/free-icons/oximeter" title="oximeter icons">Oximeter icons created by Kalashnyk - Flaticon</a>
-                fetchStatusOfTest(ezdxData, PULSE_OXIMETER); // SPO2 and BPM:
-                break;
-            }
-            case URIC_ACID: { // <a href="https://www.flaticon.com/free-icons/urine-analysis" title="urine analysis icons">Urine analysis icons created by surang - Flaticon</a>
-                fetchStatusOfTest(ezdxData, URIC_ACID); // URIC_ACID:
-                break;
-            }
-            case CHOLESTEROL: { // <a href="https://www.flaticon.com/free-icons/cholesterol" title="cholesterol icons">Cholesterol icons created by Linector - Flaticon</a>
-                fetchStatusOfTest(ezdxData, CHOLESTEROL); // CHOLESTEROL:
-                break;
-            }
-            default:
-
-        }
-    }
-
-    private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
-        if (testName.equals(BLOOD_PRESSURE)) {
-            imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
-                mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
-            }
-        } else if (testName.equals(BLOOD_GLUCOSE)) { // Diabetes
-            imageView.setImageDrawable(getDrawable(R.drawable.glucose_meter));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                if (btnClick != 0) {
-                    if (btnClick == 1)
-                        bloodGlucose_editText.setText(String.valueOf(ezdxData.getResult1()));
-                    else if (btnClick == 2)
-                        bloodGlucose_editText_fasting.setText(String.valueOf(ezdxData.getResult1()));
-                    else if (btnClick == 3)
-                        bloodGlucoseRandom_editText.setText(String.valueOf(ezdxData.getResult1()));
-                    else if (btnClick == 4)
-                        bloodGlucosePostPrandial_editText.setText(String.valueOf(ezdxData.getResult1()));
-                }
-                btnClick = 0;
-            }
-        } else if (testName.equals(HEMOGLOBIN)) { // HEMOGLOBIN (Anaemia)
-            imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED))
-                haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
-        } else if (testName.equals(PULSE_OXIMETER)) { // SPO2 and BPM
-            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                mSpo2.setText(String.valueOf(ezdxData.getResult1()));
-                mPulse.setText(String.valueOf(ezdxData.getResult2()));
-            }
-        } else if (testName.equals(URIC_ACID)) { // Uric acid
-            imageView.setImageDrawable(getDrawable(R.drawable.urine_sample));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                uricAcid_editText.setText(String.valueOf(ezdxData.getResult1()));
-            }
-        } else if (testName.equals(CHOLESTEROL)) { // Cholesterol
-            imageView.setImageDrawable(getDrawable(R.drawable.cholesterol));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                totalCholestrol_editText.setText(String.valueOf(ezdxData.getResult1()));
-            }
-        }
-
-        // Status reading...
-        if (ezdxData.getStatus().equals(Status.STARTED)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.test_has_started);
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INITIALIZING)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.initializing);
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INSERT_TEST_STRIP)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.insert_test_strip);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INSERT_VALID_TEST_STRIP)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.insert_valid_test_strip);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.STRIP_DETECTED_APPLY_BLOOD)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.strip_detected_apply_blood);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.PLACE_FINGER_IN_THE_PROBE)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.place_finger_in_probe);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.SENSOR_PROBE_NOT_CONNECTED)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.connect_sensor_probe_to_device);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.ANALYSING)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.analysing);
-                textView.setTextColor(getColor(R.color.colorPrimaryDark));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.STOPPED)) {
-            Toast.makeText(this, R.string.test_stopped, Toast.LENGTH_SHORT).show();
-        }
-
-        if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-            if (alertDialog != null) {
-                alertDialog.dismiss();
-            }
-            Toast.makeText(this, getString(R.string.test_completed), Toast.LENGTH_SHORT).show();
-            EzdxBT.stopCurrentTest();
-                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
-                     ‘stopCurrentTest()’ method to stop the test.
-                     Otherwise callback will be called every second until stop is called.*/
-        }
-    }
-
-    @Override
-    public void onHCDeviceInfo(HCDeviceData hcDeviceData) {
-
-    }
-
-    @Override
-    public void onStatusChange(BluetoothStatus bluetoothStatus) {
-//        if (!bluetoothStatus.equals(BluetoothStatus.CONNECTED))
-//            Toast.makeText(this, "Please connect to Health cube device", Toast.LENGTH_SHORT).show();
-    }
 }
