@@ -1592,6 +1592,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="signAndSubmit"
+            android:visibility="gone"
             android:text="@string/startVisitNote"
             android:textAlignment="center"
             android:textColor="@android:color/white"
