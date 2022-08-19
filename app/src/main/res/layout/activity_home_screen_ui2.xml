@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="visible"
+        tools:context=".activities.HomeActivity"
+        tools:openDrawer="start">
+
+        <include
+            layout="@layout/layout_new_app_bar_ui2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_home_ui2"
+            app:menu="@menu/activity_home_menu_drawer_ui2" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <include
+        android:id="@+id/bottom_nav_mg_home1"
+        layout="@layout/layout_common_bottom_nav_ui2"
+        android:visibility="gone" />
+</RelativeLayout>

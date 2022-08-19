@@ -42,7 +42,14 @@ public class ForgotPasswordActivityNew extends AppCompatActivity {
         RelativeLayout layoutMobileNo = findViewById(R.id.layout_parent_mobile_no);
         LinearLayout layoutUsername = findViewById(R.id.layout_parent_username);
         LinearLayout layoutChooseOption = findViewById(R.id.layout_choose_option);
-
+        ImageView imageviewBack = findViewById(R.id.imageview_back_forgot_password);
+        imageviewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ForgotPasswordActivityNew.this, LoginActivityNew.class);
+                startActivity(intent);
+            }
+        });
 
         buttonUsername.setOnClickListener(new View.OnClickListener() {
             @Override

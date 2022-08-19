@@ -2,4 +2,74 @@
 
     <dimen name="physical_exam_img_max_height">200dp</dimen>
 
+
+    <!--UI2.0-->
+    <!--Home Screen UI2.0-->
+    <dimen name="common_button_height">48dp</dimen>
+    <dimen name="common_button_width">312dp</dimen>
+    <dimen name="common_button_text_size">20sp</dimen>
+    <dimen name="common_header_text_size">24sp</dimen>
+    <dimen name="common_label_text_size">20sp</dimen>
+    <dimen name="common_hint_text_size">22sp</dimen>
+    <dimen name="title_text_size">28sp</dimen>
+
+    <dimen name="home_toolbar_layout_margin">8dp</dimen>
+    <dimen name="hamburger_width">35dp</dimen>
+    <dimen name="hamburger_height">40dp</dimen>
+    <dimen name="hamburger_margin_end">15dp</dimen>
+    <dimen name="hamburger_margin_top">20dp</dimen>
+    <dimen name="home_location_margin_top">20dp</dimen>
+    <dimen name="home_location_drawable_padding">14dp</dimen>
+    <dimen name="text_last_updated_home_top_margin">5dp</dimen>
+    <dimen name="image_home_toolbar_icon_height">45dp</dimen>
+    <dimen name="image_home_toolbar_icon_width">40dp</dimen>
+    <dimen name="image_home_toolbar_icon_margintop">20dp</dimen>
+    <dimen name="image_home_toolbar_icon_marginend">15dp</dimen>
+
+    <!--Home Screen - Homefragment UI2.0-->
+    <dimen name="home_parent_layout_padding">28dp</dimen>
+    <dimen name="find_patient_padding_top">15dp</dimen>
+    <dimen name="find_patient_padding_end">17dp</dimen>
+    <dimen name="find_patient_padding_bottom">15dp</dimen>
+    <dimen name="find_patient_padding_start">17dp</dimen>
+    <dimen name="find_patient_height">70dp</dimen>
+    <dimen name="find_patient_hint_size">24sp</dimen>
+
+    <dimen name="card_add_patient_home_height">140dp</dimen>
+    <dimen name="card_add_patient_home_topmargin">40dp</dimen>
+    <dimen name="common_card_corner_radius">12dp</dimen>
+
+    <dimen name="card_add_patient_margin">5dp</dimen>
+    <dimen name="image_add_patient_width">82dp</dimen>
+    <dimen name="image_add_patient_height">82dp</dimen>
+    <dimen name="image_add_patient_padding">9dp</dimen>
+    <dimen name="image_add_patient_next_height">65dp</dimen>
+    <dimen name="image_add_patient_next_width">65dp</dimen>
+    <dimen name="image_add_patient_next_padding">6dp</dimen>
+    <dimen name="image_add_patient_margin_start">10dp</dimen>
+    <dimen name="card_prescriptions_margin_start">15dp</dimen>
+    <dimen name="card_prescriptions_margin_top">15dp</dimen>
+    <dimen name="card_prescriptions_margin_bottom">5dp</dimen>
+    <dimen name="card_prescriptions_margin_end">5dp</dimen>
+    <dimen name="card_prescriptions_next_margin_top">10dp</dimen>
+    <dimen name="card_prescription_image_height">120dp</dimen>
+    <dimen name="card_prescription_image_width">160dp</dimen>
+    <dimen name="card_prescription_image_margin_bottom">15dp</dimen>
+    <dimen name="card_close_visit_margin_top">15dp</dimen>
+    <dimen name="card_close_visit_margin_start">10dp</dimen>
+    <dimen name="total_visit_margin_top">5dp</dimen>
+
+    <dimen name="common_headings_home">28sp</dimen>
+    <dimen name="common_sub_headings_home">24sp</dimen>
+    <dimen name="common_info_title_home">20sp</dimen>
+    <dimen name="common_info_margin_bottom">10dp</dimen>
+    <dimen name="common_info_margin_top">8dp</dimen>
+    <dimen name="home_card_images_padding">6dp</dimen>
+    <dimen name="common_all_card_top_margin">40dp</dimen>
+    <dimen name="card_appointment_margin_end">10dp</dimen>
+    <dimen name="card_appointment_card_elevation">5dp</dimen>
+    <dimen name="card_options_icons_margin_top">6dp</dimen>
+    <dimen name="options_heading_margin_top">20dp</dimen>
+    <dimen name="options_sub_heading_margin_top">10dp</dimen>
+
 </resources>

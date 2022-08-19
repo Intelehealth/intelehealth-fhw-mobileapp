@@ -42,10 +42,24 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".ui2.activities.LoginActivityNew"
+            android:name=".ui2.activities.UIDesignActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" >
+
+        </activity>
+        <activity
+            android:name=".ui2.activities.HomeScreenActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
+        <activity
+            android:name=".ui2.activities.LoginActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,9 +70,7 @@
             android:name=".ui2.activities.ResetPasswordActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui2.activities.ForgotPasswordOtpVerificationActivity"
             android:exported="false"
@@ -68,9 +80,7 @@
             android:name=".ui2.activities.ForgotPasswordActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"

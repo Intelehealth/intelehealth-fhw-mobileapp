@@ -873,7 +873,8 @@
     <string name="reset_password">Reset Password?</string>
     <string name="please_reset_password">Please reset new password for \nyour account</string>
     <string name="forgot_password_link"><u>Forgot password</u></string>
-
+    <string name="prescriptions">Prescriptions</string>
+    <string name="close_visits">Close visits</string>
 
 
     <!--END-->

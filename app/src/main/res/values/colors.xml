@@ -89,5 +89,12 @@
     <color name="iconTintWhite">#ffffff</color>
     <color name="iconTintGray">#7F7B92</color>
 
+    <color name="cardTintDarkBlue">#2F1E96</color>
+    <color name="cardTintLightGreen">#E6FFF3</color>
+
+
+    android:theme="@style/AppThemeMaterialNew"
+
+
     <!--END-->
 </resources>

@@ -21,4 +21,15 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!-- UI 2.0 -->
+    <style name="AppThemeMaterialNew" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--status bar-->
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorError">@color/colorAccent</item>
+        <item name="colorPrimaryVariant">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
 </resources>

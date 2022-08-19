@@ -140,7 +140,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-config'
 
     /* UI2.0*/
+    //for pinview
     implementation 'com.github.GoodieBag:Pinview:v1.4'
+    //for tooltip
+    implementation 'com.github.piruin:quickaction:2.4.3'
+
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
