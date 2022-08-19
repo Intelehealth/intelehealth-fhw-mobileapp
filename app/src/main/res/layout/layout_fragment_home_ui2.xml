@@ -13,9 +13,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textlayout_find_patient"
             android:layout_width="match_parent"
-            app:hintEnabled="false"
             android:layout_height="wrap_content"
-
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,12 +29,12 @@
                 android:hint="@string/find_patient"
                 android:importantForAutofill="no"
                 android:maxLines="1"
-                android:textSize="@dimen/find_patient_hint_size"
                 android:paddingStart="@dimen/find_patient_padding_start"
                 android:paddingTop="@dimen/find_patient_padding_top"
                 android:paddingEnd="@dimen/find_patient_padding_end"
                 android:paddingBottom="@dimen/find_patient_padding_bottom"
                 android:singleLine="true"
+                android:textSize="@dimen/find_patient_hint_size"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -91,8 +90,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:foregroundGravity="center"
-                    android:padding="@dimen/image_add_patient_next_padding"
-                    android:src="@drawable/ui2_forward_arrow_white"
+                    android:paddingTop="@dimen/image_add_patient_icon_padding_top"
+                    android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
+                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"                    android:src="@drawable/ui2_forward_arrow_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -101,25 +101,21 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_all_card_top_margin"
-            android:backgroundTint="@color/cardTintLightGreen"
-            app:cardCornerRadius="@dimen/common_card_corner_radius"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView">
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardView2"
                 android:layout_width="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                android:backgroundTint="@color/blue_1"
+                android:background="@drawable/ui2_card_bg_gray_border"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/card_prescriptions_margin_start"
-                android:layout_marginTop="@dimen/card_prescriptions_margin_top"
-                android:layout_marginEnd="@dimen/card_prescriptions_margin_end"
-                android:layout_marginBottom="@dimen/card_prescriptions_margin_bottom">
+                android:layout_marginTop="@dimen/common_all_card_top_margin"
+                android:paddingStart="@dimen/common_all_card_start_padding"
+                android:layout_marginEnd="@dimen/card_prescriptions_margin_end">
 
                 <TextView
                     android:id="@+id/textview_prescriptions"
@@ -151,7 +147,10 @@
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_below="@+id/textview_received_no"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
-                    android:padding="@dimen/image_add_patient_next_padding"
+                    android:paddingTop="@dimen/image_add_patient_icon_padding_top"
+                    android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
+                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
+
                     android:src="@drawable/ui2_forward_arrow_green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -162,13 +161,13 @@
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_below="@+id/textview_prescriptions"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="1dp"
                     android:background="@drawable/ui2_image_prescription_green_bg"
                     android:padding="@dimen/home_card_images_padding"
                     android:src="@drawable/ui2_image_prescription_green"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
@@ -184,14 +183,15 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/blue_1"
-                android:visibility="visible">
+                android:paddingStart="@dimen/common_all_card_start_padding"
+                android:layout_marginTop="@dimen/card_prescriptions_margin_top"
+                android:layout_marginEnd="@dimen/card_prescriptions_margin_end"
+                android:background="@color/colorAccent">
 
                 <TextView
                     android:id="@+id/textview_prescriptions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/card_close_visit_margin_start"
                     android:layout_marginTop="@dimen/card_close_visit_margin_top"
                     android:fontFamily="@font/dm_sans_regular"
                     android:text="@string/close_visits"
@@ -205,7 +205,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textview_prescriptions"
-                    android:layout_marginStart="@dimen/card_close_visit_margin_start"
                     android:layout_marginTop="@dimen/common_info_margin_top"
                     android:fontFamily="@font/dm_sans_regular"
                     android:text="12 unclosed visits"
@@ -218,9 +217,10 @@
                     android:id="@+id/imageview_prescription_next"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
-                    android:layout_marginStart="4dp"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
-                    android:padding="@dimen/image_add_patient_next_padding"
+                    android:paddingTop="@dimen/image_add_patient_icon_padding_top"
+                    android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
+                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
                     android:src="@drawable/ui2_forward_arrow_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -251,12 +251,11 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView4"
                 android:layout_width="0dp"
+                app:cardElevation="2dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card_appointment_margin_end"
-                android:backgroundTint="@color/backgroundWhite"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
-                app:cardElevation="@dimen/card_appointment_card_elevation"
-                app:cardUseCompatPadding="true"
+                android:background="@drawable/ui2_card_bg_gray_border"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cardView5"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -270,7 +269,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/backgroundWhite"
-                    android:padding="@dimen/card_options_padding"                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="@dimen/card_options_padding"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent">
 

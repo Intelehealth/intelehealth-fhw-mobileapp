@@ -148,6 +148,9 @@
     <dimen name="close_visit_next_padding_top">6dp</dimen>
     <dimen name="close_visit_next_padding_end">6dp</dimen>
     <dimen name="close_visit_next_padding_bottom">6dp</dimen>
+    <dimen name="image_add_patient_icon_padding_top">6dp</dimen>
+    <dimen name="image_add_patient_icon_padding_bottom">6dp</dimen>
+    <dimen name="image_add_patient_icon_padding_end">6dp</dimen>
 
     <dimen name="common_headings_home">18sp</dimen>
     <dimen name="common_sub_headings_home">16sp</dimen>
@@ -156,8 +159,11 @@
     <dimen name="common_info_margin_top">5dp</dimen>
     <dimen name="home_card_images_padding">6dp</dimen>
     <dimen name="common_all_card_top_margin">20dp</dimen>
+    <dimen name="common_all_card_start_padding">12dp</dimen>
+    <dimen name="common_all_card_start_margin">12dp</dimen>
+
     <dimen name="card_appointment_margin_end">5dp</dimen>
-    <dimen name="card_appointment_card_elevation">5dp</dimen>
+    <dimen name="card_appointment_card_elevation">2dp</dimen>
     <dimen name="card_options_icons_margin_top">3dp</dimen>
     <dimen name="card_options_padding">12dp</dimen>
     <dimen name="options_heading_margin_top">15dp</dimen>
