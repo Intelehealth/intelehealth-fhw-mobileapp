@@ -882,7 +882,16 @@
     <string name="this_week">This week</string>
     <string name="this_month">This Month</string>
     <string name="fu_item_title">Anthony Gonsalves</string>
+    <string name="fu_visit_name">Anthony G.</string>
     <string name="caption">Follow up on 12 June</string>
+    <string name="misc_txt">M 50</string>
+    <string name="fu_openmrsID">ID-987654jK</string>
+    <string name="details_head1">Headache and body pain</string>
+    <string name="details_head2">Visit ID: 987654jK</string>
+    <string name="fu_detiails_date">21 May 2022</string>
+    <string name="gp_txt">General physician</string>
+    <string name="dr_speciality">Doctor\'s speciality</string>
+
 
 
     <!--END-->

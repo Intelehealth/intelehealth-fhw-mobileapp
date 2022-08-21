@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/frame_10021"
+    tools:context=".activities.FollowUp_VisitDetails">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/frame_10021"
+        android:layout_width="0dp"
+        android:layout_height="84dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-24dp"
+        android:background="@drawable/frame_10021">
+
+        <!-- Frame 100167 -->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/frame_10016"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginRight="24dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!-- Frame 100116 -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/frame_10011"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="2.8"
+                android:orientation="horizontal">
+
+                <!-- arrow-right -->
+                <ImageButton
+                    android:id="@+id/vector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:padding="@dimen/margin_5"
+                    android:background="@null"
+                    android:src="@drawable/ic_arrow_right" />
+
+                <!-- Label -->
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:gravity="top"
+                    android:lineSpacingExtra="1sp"
+                    android:text="@string/visit_summary_patient_details"
+                    android:textAppearance="@style/label"
+                    android:translationY="-0.28sp" />
+
+            </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:background="@null"
+                    android:src="@drawable/ic_refreshbtn" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_head"
+           android:layout_width="match_parent"
+           android:layout_height="72dp"
+           android:layout_alignParentLeft="true"
+           android:layout_marginLeft="24dp"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="24dp"
+           android:elevation="16dp"
+           app:cardElevation="@dimen/margin_5"
+           app:cardCornerRadius="@dimen/margin_5"
+           android:layout_marginTop="@dimen/margin_16"
+        android:layout_below="@+id/frame_10021">
+
+           <!-- Frame 100340 -->
+           <LinearLayout
+               android:id="@+id/frame_10034"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:weightSum="2"
+               android:layout_margin="@dimen/margin_12"
+               android:orientation="horizontal">
+
+               <!--1st-->
+               <RelativeLayout
+                   android:layout_width="0dp"
+                   android:layout_weight="2"
+                   android:layout_height="match_parent">
+
+                   <ImageView
+                       android:id="@+id/profile"
+                       android:layout_width="48dp"
+                       android:layout_height="match_parent"
+                       android:background="@null"
+                       android:src="@drawable/fu_profile_item" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_marginStart="@dimen/margin_12"
+                       android:layout_toEndOf="@+id/profile"
+                       android:orientation="vertical">
+
+                       <LinearLayout
+                           android:id="@+id/frame_10033"
+                           android:layout_width="137dp"
+                           android:layout_height="0dp"
+                           android:layout_weight="1"
+                           android:orientation="horizontal">
+
+                           <TextView
+                               android:id="@+id/label_name"
+                               android:layout_width="81dp"
+                               android:layout_height="match_parent"
+                               android:layout_gravity="center"
+                               android:gravity="center_horizontal|center_vertical"
+                               android:lineSpacingExtra="-3sp"
+                               android:text="@string/fu_visit_name"
+                               android:textAppearance="@style/label_16sp"
+                               android:textColor="@null" />
+
+                           <TextView
+                               android:id="@+id/label_misc"
+                               android:layout_width="34dp"
+                               android:layout_height="match_parent"
+                               android:layout_gravity="center"
+                               android:layout_marginStart="@dimen/margin_4"
+                               android:layout_toEndOf="@+id/label_name"
+                               android:gravity="center_vertical"
+                               android:lineSpacingExtra="-2sp"
+                               android:text="@string/misc_txt"
+                               android:textAppearance="@style/label_misc_txt_14sp"
+                               android:textColor="@null" />
+
+                           <ImageButton
+                               android:id="@+id/icons8_edit"
+                               android:layout_width="14dp"
+                               android:layout_height="14dp"
+                               android:layout_gravity="center"
+                               android:layout_marginStart="@dimen/margin_4"
+                               android:layout_toEndOf="@id/label_misc"
+                               android:background="@drawable/ic_icno8_edit" />
+
+                       </LinearLayout>
+
+                       <!-- Caption -->
+                       <TextView
+                           android:id="@+id/caption"
+                           android:layout_width="82dp"
+                           android:layout_height="0dp"
+                           android:layout_marginTop="@dimen/margin_4"
+                           android:layout_weight="1"
+                           android:gravity="center_vertical"
+                           android:lineSpacingExtra="0sp"
+                           android:text="@string/fu_openmrsID"
+                           android:textAppearance="@style/caption_fu_openmrsId"
+                           android:textColor="@null" />
+
+                   </LinearLayout>
+               </RelativeLayout>
+
+               <!--2nd-->
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:orientation="horizontal"
+                   android:layout_marginTop="@dimen/margin_18">
+
+                   <ImageButton
+                       xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:id="@+id/frame_26088"
+                       android:layout_width="28dp"
+                       android:layout_height="28dp"
+                       android:src="@drawable/ic_icon8_phone"
+                       />
+
+                   <ImageButton
+                       xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:id="@+id/frame_26088"
+                       android:layout_width="28dp"
+                       android:layout_height="28dp"
+                       android:layout_marginStart="@dimen/margin_12"
+                       android:src="@drawable/ic_icon8_whatsapp"
+                       />
+
+               </LinearLayout>
+
+           </LinearLayout>
+
+       </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview_head"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="@dimen/padding_40"
+        android:layout_marginRight="24dp"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/margin_5"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/frame_10004"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_16"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:src="@drawable/frame_priority" />
+
+            <TextView
+                android:id="@+id/details_head1"
+                android:layout_width="216dp"
+                android:layout_height="24dp"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/details_head1"
+                android:layout_marginStart="@dimen/margin_12"
+                android:textAppearance="@style/details_head1"
+                android:textColor="@null" />
+
+            <TextView
+                android:id="@+id/details_head2"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_below="@+id/details_head1"
+                android:layout_marginStart="@dimen/margin_12"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/details_head2"
+                android:textAppearance="@style/details_head2"
+                android:textColor="@null" />
+
+            <ImageButton
+                android:id="@+id/fu_progress_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_head2"
+                android:layout_marginTop="@dimen/margin_16"
+                android:background="@null"
+                android:layout_marginStart="@dimen/margin_12"
+                android:src="@drawable/ic_fu_details_progress_indicator" />
+
+            <LinearLayout
+                android:id="@+id/ll_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_below="@+id/fu_progress_indicator">
+
+                <ImageView
+                    android:id="@+id/fu_details_calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/followup_item_calendar" />
+
+                <TextView
+                    android:id="@+id/fu_detiails_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/fu_detiails_date"
+                    android:textAppearance="@style/fu_detiails_date"
+                    android:lineSpacingExtra="3sp"
+                    android:gravity="center_vertical"
+                    android:textColor="@null"
+                    android:layout_marginStart="@dimen/margin_6"
+                    android:layout_toEndOf="@+id/fu_details_calendar" />
+                />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_1"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:src="@drawable/ic_horizontal_divider_line" />
+
+            <!--general physician-->
+            <LinearLayout
+                android:id="@+id/ll_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:layout_below="@+id/divider"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:orientation="horizontal">
+
+                <!--1st-->
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/profile"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_grp_general_phys" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_toEndOf="@+id/profile"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/gp_txt"
+                            android:layout_width="137dp"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="-3sp"
+                            android:text="@string/gp_txt"
+                            android:textAppearance="@style/details_head1"
+                            android:textColor="@null" />
+
+
+                        <!-- Caption -->
+                        <TextView
+                            android:id="@+id/dr_speciality"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:gravity="center_vertical"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/dr_speciality"
+                            android:textAppearance="@style/details_head2"
+                            android:textColor="@null" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!--2nd-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/frame_26088"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_icon8_phone"
+                        />
+
+                    <ImageButton
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/frame_26088"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:src="@drawable/ic_icon8_whatsapp"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_2"
+                android:src="@drawable/ic_horizontal_divider_line"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_16"
+                />
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
