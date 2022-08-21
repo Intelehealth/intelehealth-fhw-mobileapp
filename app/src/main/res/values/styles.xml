@@ -142,4 +142,32 @@
 
     </style>
 
+    <style name="label">
+        <item name="android:textSize">
+            18sp
+        </item>
+        <item name="android:textColor">
+            #1B163A
+        </item>
+    </style>
+
+    <style name="you_can_add">
+        <item name="android:textSize">
+            14sp
+        </item>
+        <item name="android:textColor">
+            #1B163A
+        </item>
+    </style>
+
+    <style name="caption">
+        <item name="android:textSize">
+            14sp
+        </item>
+        <item name="android:textColor">
+            #7F7B92
+        </item>
+    </style>
+
+
 </resources>

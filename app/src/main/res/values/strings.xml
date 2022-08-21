@@ -876,6 +876,14 @@
     <string name="prescriptions">Prescriptions</string>
     <string name="close_visits">Close visits</string>
 
+    <!--    Follow-up new screens -->
+    <string name="label">Follow-up visits(9)</string>
+    <string name="you_can_add">Today</string>
+    <string name="this_week">This week</string>
+    <string name="this_month">This Month</string>
+    <string name="fu_item_title">Anthony Gonsalves</string>
+    <string name="caption">Follow up on 12 June</string>
+
 
     <!--END-->
 

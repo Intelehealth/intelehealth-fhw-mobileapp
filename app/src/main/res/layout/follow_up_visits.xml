@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/follow_up_v"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/follow_up_v">
+
+    <!-- Frame 100217 -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/frame_10021"
+        android:layout_width="0dp"
+        android:layout_height="84dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-24dp"
+        android:background="@drawable/frame_10021">
+
+        <!-- Frame 100167 -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/frame_10016"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginRight="24dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!-- Frame 100116 -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/frame_10011"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="2.2"
+                android:orientation="horizontal">
+
+                <!-- arrow-right -->
+                <ImageButton
+                    android:id="@+id/vector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:padding="@dimen/margin_5"
+                    android:background="@null"
+                    android:src="@drawable/ic_arrow_right" />
+
+                <!-- Label -->
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="158dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:gravity="top"
+                    android:lineSpacingExtra="1sp"
+                    android:text="@string/label"
+                    android:textAppearance="@style/label"
+                    android:translationY="-0.28sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:layout_marginStart="@dimen/margin_20"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@drawable/ic_refreshbtn" />
+
+                <ImageButton
+                    android:id="@+id/filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@drawable/ic_filter" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frame_10021"
+        android:fillViewport="true">
+
+        <!-- Frame 2608676 -->
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/frame_26086"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="24dp"
+            android:layout_alignParentTop="true">
+
+            <!-- You can add all acco -->
+            <TextView
+                android:id="@+id/you_can_add"
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:layout_marginTop="@dimen/margin_20"
+                android:gravity="top"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/you_can_add"
+                android:textAppearance="@style/you_can_add" />
+
+            <!-- Frame 100314 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_today"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/you_can_add"
+                android:layout_marginTop="@dimen/text_margin"
+                tools:itemCount="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/followup_list_item" />
+
+<!--            This week-->
+            <TextView
+                android:id="@+id/this_week"
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:layout_below="@+id/recycler_today"
+                android:gravity="top"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/this_week"
+                android:textAppearance="@style/you_can_add" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_thisweek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/this_week"
+                android:layout_marginTop="@dimen/text_margin"
+                tools:itemCount="2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/followup_list_item" />
+
+            <!-- This month -->
+            <TextView
+                android:id="@+id/this_month"
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:text="@string/this_month"
+                android:textAppearance="@style/you_can_add"
+                android:lineSpacingExtra="3sp"
+                android:gravity="top"
+                android:layout_marginTop="@dimen/text_margin"
+                android:layout_below="@+id/rv_thisweek"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_thismonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/this_month"
+                android:layout_marginTop="@dimen/text_margin"
+                tools:itemCount="4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/followup_list_item" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

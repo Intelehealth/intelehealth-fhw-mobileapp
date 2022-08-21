@@ -42,19 +42,22 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.followuppatients.FollowUpPatientActivity_New"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_follow_up" />
+
+        <activity
             android:name=".ui2.activities.UIDesignActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ui2.activities.HomeScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ui2.activities.LoginActivityNew"
             android:exported="true"

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fu_cardview_item"
+    android:layout_width="match_parent"
+    android:layout_height="73dp"
+    app:cardCornerRadius="@dimen/margin_10"
+    android:layout_marginBottom="24dp"
+    android:layout_marginHorizontal="@dimen/margin_5"
+    android:layout_marginTop="@dimen/margin_5"
+    app:cardElevation="@dimen/margin_5" >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/frame_10014"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="2.5"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_12">
+
+                <ImageView
+                    android:id="@+id/profile"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@null"
+                    android:src="@drawable/fu_profile_item" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/profile">
+
+                    <!-- Label -->
+                    <TextView
+                        android:id="@+id/label"
+                        android:layout_width="172dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/fu_item_title"
+                        android:textAppearance="@style/label" />
+
+                    <ImageView
+                        android:id="@+id/fu_item_calendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginTop="@dimen/margin_6.5"
+                        android:src="@drawable/followup_item_calendar"/>
+
+                    <TextView
+                        android:id="@+id/caption"
+                        android:layout_width="134dp"
+                        android:layout_height="21dp"
+                        android:layout_below="@+id/label"
+                        android:layout_marginStart="@dimen/margin_4"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_toEndOf="@+id/fu_item_calendar"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/caption"
+                        android:textAppearance="@style/caption" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/you_can_add"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:src="@drawable/frame_priority"
+                android:lineSpacingExtra="0sp"
+                android:layout_gravity="top|end|center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_14"
+                android:layout_marginEnd="@dimen/margin_16"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+</androidx.cardview.widget.CardView>
