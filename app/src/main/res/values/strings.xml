@@ -891,6 +891,9 @@
     <string name="fu_detiails_date">21 May 2022</string>
     <string name="gp_txt">General physician</string>
     <string name="dr_speciality">Doctor\'s speciality</string>
+    <string name="visitDetails_text">Visit summary</string>
+    <string name="followup_date_txtv">Follow up on 12 June</string>
+    <string name="followup_info">Please take Prajwal Waingankar\'s follow-up visit.</string>
 
 
 

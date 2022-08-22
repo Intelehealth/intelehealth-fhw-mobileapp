@@ -332,8 +332,8 @@
                         android:id="@+id/profile"
                         android:layout_width="48dp"
                         android:layout_height="wrap_content"
-                        android:background="@null"
                         android:layout_centerVertical="true"
+                        android:background="@null"
                         android:src="@drawable/ic_grp_general_phys" />
 
                     <LinearLayout
@@ -401,11 +401,97 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_2"
-                android:src="@drawable/ic_horizontal_divider_line"
                 android:layout_marginTop="@dimen/margin_16"
                 android:layout_marginBottom="@dimen/margin_16"
+                android:src="@drawable/ic_horizontal_divider_line" />
+
+            <!-- Frame 2608662 -->
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ll_3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/divider_2"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/margin_12">
+
+                <ImageView
+                    android:id="@+id/icon_visit_details"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ic_visit_details_icon8" />
+
+                <!-- label-text -->
+                <TextView
+                    android:id="@+id/visitDetails_text"
+                    android:layout_width="111dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/icon_visit_details"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
+                    android:textColor="@null"
+                    android:text="@string/visitDetails_text"
+                    android:textAppearance="@style/visitDetails_text" />
+
+                <ImageButton
+                    android:id="@+id/icon_arrowRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_right_icon8" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/divider_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_3"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:src="@drawable/ic_horizontal_divider_line" />
+
+            <TextView
+                android:id="@+id/followup_date_txtv"
+                android:layout_width="288dp"
+                android:layout_height="27dp"
+                android:layout_below="@+id/divider_3"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/followup_date_txtv"
+                android:textAppearance="@style/followup_date_txtv"
+                android:textColor="@null" />
+
+            <TextView
+                android:id="@+id/followup_info"
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/followup_date_txtv"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_4"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/followup_info"
+                android:textAppearance="@style/followup_info"
+                android:textColor="@null"
                 />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/followup_info"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:background="@drawable/icon_followup_disabled" />
 
         </RelativeLayout>
 

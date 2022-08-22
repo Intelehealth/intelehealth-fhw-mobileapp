@@ -73,6 +73,7 @@
     <dimen name="margin_6">6dp</dimen>
     <dimen name="margin_6.5">6.5dp</dimen>
     <dimen name="margin_7">7dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_14">14dp</dimen>
