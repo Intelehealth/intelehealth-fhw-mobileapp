@@ -300,7 +300,7 @@ public class IntroActivity extends AppCompatActivity {
                                 else
                                     location = mLocations.get(0);
 
-                                TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
+                                TestSetup("testing.intelehealth.org", "nurse_demo", "Nurse@123", "", location);
 
                             } else {
                                 progress.dismiss();
