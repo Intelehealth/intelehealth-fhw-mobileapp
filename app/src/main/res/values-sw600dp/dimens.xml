@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <dimen name="physical_exam_img_max_height">200dp</dimen>
 
@@ -18,6 +18,8 @@
     <dimen name="hamburger_height">40dp</dimen>
     <dimen name="hamburger_margin_end">15dp</dimen>
     <dimen name="hamburger_margin_top">20dp</dimen>
+    <dimen name="hamburger_margin_start">12dp</dimen>
+
     <dimen name="home_location_margin_top">20dp</dimen>
     <dimen name="home_location_drawable_padding">14dp</dimen>
     <dimen name="text_last_updated_home_top_margin">5dp</dimen>
@@ -27,13 +29,19 @@
     <dimen name="image_home_toolbar_icon_marginend">15dp</dimen>
 
     <!--Home Screen - Homefragment UI2.0-->
-    <dimen name="home_parent_layout_padding">28dp</dimen>
+    <dimen name="home_parent_layout_padding">16dp</dimen>
     <dimen name="find_patient_padding_top">15dp</dimen>
     <dimen name="find_patient_padding_end">17dp</dimen>
     <dimen name="find_patient_padding_bottom">15dp</dimen>
     <dimen name="find_patient_padding_start">17dp</dimen>
-    <dimen name="find_patient_height">70dp</dimen>
-    <dimen name="find_patient_hint_size">24sp</dimen>
+    <dimen name="find_patient_height">40dp</dimen>
+    <dimen name="find_patient_hint_size">18sp</dimen>
+    <dimen name="find_patient_margin_start">5dp</dimen>
+    <dimen name="find_patient_margin_end">7dp</dimen>
+    <dimen name="find_patient_padding">16dp</dimen>
+    <dimen name="find_patient_icon_padding">16dp</dimen>
+    <dimen name="find_patient_margin_top">5dp</dimen>
+    <dimen name="home_framelayout_margin_top">7dp</dimen>
 
     <dimen name="card_add_patient_home_height">140dp</dimen>
     <dimen name="card_add_patient_home_topmargin">40dp</dimen>
@@ -65,20 +73,30 @@
     <dimen name="image_add_patient_icon_padding_bottom">6dp</dimen>
     <dimen name="image_add_patient_icon_padding_end">6dp</dimen>
 
-    <dimen name="common_headings_home">28sp</dimen>
-    <dimen name="common_sub_headings_home">24sp</dimen>
+    <dimen name="common_headings_home">26sp</dimen>
+    <dimen name="common_sub_headings_home">22sp</dimen>
     <dimen name="common_info_title_home">20sp</dimen>
     <dimen name="common_info_margin_bottom">10dp</dimen>
-    <dimen name="common_info_margin_top">8dp</dimen>
+    <dimen name="common_info_margin_top">5dp</dimen>
     <dimen name="home_card_images_padding">6dp</dimen>
-    <dimen name="common_all_card_top_margin">40dp</dimen>
+    <dimen name="common_all_card_top_margin">20dp</dimen>
     <dimen name="common_all_card_start_padding">15dp</dimen>
     <dimen name="common_all_card_start_margin">15dp</dimen>
 
     <dimen name="card_appointment_margin_end">10dp</dimen>
-    <dimen name="card_appointment_card_elevation">5dp</dimen>
+    <dimen name="card_appointment_card_elevation">3dp</dimen>
     <dimen name="card_options_icons_margin_top">6dp</dimen>
     <dimen name="options_heading_margin_top">20dp</dimen>
     <dimen name="options_sub_heading_margin_top">10dp</dimen>
+    <dimen name="card_close_visits_margin_top">20dp</dimen>
+    <dimen name="bottom_nav_menu_text_size">40sp</dimen>
+    <dimen name="bottom_nav_icon_size">40dp</dimen>
+
+    <dimen name="design_bottom_navigation_text_size"
+        tools:override="true">18sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size"
+        tools:override="true">18sp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">75dp</dimen>
+
 
 </resources>

@@ -10,34 +10,30 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/home_parent_layout_padding">
 
-        <com.google.android.material.textfield.TextInputLayout
+
+        <TextView
             android:id="@+id/textlayout_find_patient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false"
+            android:layout_marginStart="@dimen/find_patient_margin_start"
+            android:layout_marginEnd="@dimen/find_patient_margin_end"
+            android:background="@drawable/ui2_common_input_bg"
+            android:drawableStart="@drawable/ui2_search_icon_home"
+            android:drawablePadding="@dimen/find_patient_icon_padding"
+            android:drawableTint="@color/colorPrimary"
+            android:text="@string/find_patient"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/textColorGray"
+            android:importantForAutofill="no"
+            android:maxLines="1"
+            android:padding="@dimen/find_patient_padding"
+            android:singleLine="true"
+            android:textSize="@dimen/find_patient_hint_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/ui2_search_icon_home"
-            app:startIconTint="@color/colorPrimary">
+            tools:ignore="SpeakableTextPresentCheck" />
 
-            <AutoCompleteTextView
-                android:id="@+id/autotv_find_patient"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/find_patient_height"
-                android:background="@drawable/ui2_common_input_bg"
-                android:hint="@string/find_patient"
-                android:importantForAutofill="no"
-                android:maxLines="1"
-                android:paddingStart="@dimen/find_patient_padding_start"
-                android:paddingTop="@dimen/find_patient_padding_top"
-                android:paddingEnd="@dimen/find_patient_padding_end"
-                android:paddingBottom="@dimen/find_patient_padding_bottom"
-                android:singleLine="true"
-                android:textSize="@dimen/find_patient_hint_size"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -46,6 +42,7 @@
             android:layout_marginTop="@dimen/common_all_card_top_margin"
             android:backgroundTint="@color/cardTintDarkBlue"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
+            app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textlayout_find_patient">
@@ -92,7 +89,8 @@
                     android:foregroundGravity="center"
                     android:paddingTop="@dimen/image_add_patient_icon_padding_top"
                     android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
-                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"                    android:src="@drawable/ui2_forward_arrow_white"
+                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
+                    android:src="@drawable/ui2_forward_arrow_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -101,21 +99,27 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:backgroundTint="@color/cardTintLightGreen"
+            app:cardCornerRadius="@dimen/common_card_corner_radius"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardView2"
                 android:layout_width="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                android:backgroundTint="@color/blue_1"
-                android:background="@drawable/ui2_card_bg_gray_border"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
-                android:paddingStart="@dimen/common_all_card_start_padding"
-                android:layout_marginEnd="@dimen/card_prescriptions_margin_end">
+                android:background="@color/cardTintLightGreen"
+                android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
                     android:id="@+id/textview_prescriptions"
@@ -137,7 +141,7 @@
                     android:fontFamily="@font/dm_sans_regular"
                     android:text="5 out of 12 received"
                     android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_info_title_home"
+                    android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
 
@@ -161,13 +165,13 @@
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_below="@+id/textview_prescriptions"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="1dp"
                     android:background="@drawable/ui2_image_prescription_green_bg"
                     android:padding="@dimen/home_card_images_padding"
                     android:src="@drawable/ui2_image_prescription_green"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
@@ -176,23 +180,24 @@
             android:layout_marginTop="@dimen/common_all_card_top_margin"
             android:backgroundTint="@color/colorAccent"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:cardUseCompatPadding="true"
             app:layout_constraintTop_toBottomOf="@+id/cardView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/common_all_card_start_padding"
-                android:layout_marginTop="@dimen/card_prescriptions_margin_top"
+                android:layout_marginTop="@dimen/common_all_card_top_margin"
                 android:layout_marginEnd="@dimen/card_prescriptions_margin_end"
-                android:background="@color/colorAccent">
+                android:background="@color/colorAccent"
+                android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
                     android:id="@+id/textview_prescriptions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/card_close_visit_margin_top"
                     android:fontFamily="@font/dm_sans_regular"
                     android:text="@string/close_visits"
                     android:textSize="@dimen/common_headings_home"
@@ -209,7 +214,7 @@
                     android:fontFamily="@font/dm_sans_regular"
                     android:text="12 unclosed visits"
                     android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_info_title_home"
+                    android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
 
@@ -250,18 +255,21 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView4"
+
                 android:layout_width="0dp"
-                app:cardElevation="2dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card_appointment_margin_end"
-                app:cardCornerRadius="@dimen/common_card_corner_radius"
                 android:background="@drawable/ui2_card_bg_gray_border"
+                app:cardCornerRadius="@dimen/common_card_corner_radius"
+                app:cardElevation="@dimen/card_appointment_card_elevation"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cardView5"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:cardMaxElevation="8dp"
                 app:strokeWidth="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -313,6 +321,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView5"
+                app:cardMaxElevation="8dp"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

@@ -20,6 +20,7 @@
             android:layout_height="@dimen/hamburger_height"
             android:layout_marginTop="@dimen/hamburger_margin_top"
             android:layout_marginEnd="@dimen/hamburger_margin_top"
+            android:layout_marginStart="@dimen/hamburger_margin_start"
             android:foregroundGravity="center_horizontal"
             android:visibility="visible"
             app:srcCompat="@drawable/ui2_hamburger" />
@@ -42,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_user_location_home"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/find_patient_margin_top"
             android:layout_toEndOf="@+id/imageview_nav_drawer"
             android:fontFamily="@font/dm_sans_regular"
             android:text="Last sync: 12:30 pm, 12 May 2022"
@@ -74,6 +75,8 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/home_framelayout_margin_top"
+        android:layout_marginBottom="20dp"
         android:layout_below="@+id/layout_toolbar_home"
         android:paddingBottom="?actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

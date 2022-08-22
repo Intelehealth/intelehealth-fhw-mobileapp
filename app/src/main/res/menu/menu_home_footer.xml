@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_account_box_black_24dp"
+        android:icon="@drawable/ui2_home_icon_bottomnav"
         android:title="Home" />
 
     <item
         android:id="@+id/navigation_explore"
-        android:icon="@drawable/ic_account_box_black_24dp"
-        android:title="Menu1" />
+        android:icon="@drawable/ui2_achivements_home_bottomnav"
+        android:title="Achievements" />
 
     <item
         android:id="@+id/navigation_subscriptions"
-        android:icon="@drawable/ic_account_box_black_24dp"
-        android:title="Menu2" />
+        android:icon="@drawable/ui2_help_home"
+        android:title="Help" />
 
     <item
         android:id="@+id/navigation_library"
-        android:icon="@drawable/ic_account_box_black_24dp"
-        android:title="Menu3" />
+        android:icon="@drawable/ui2_add_patient_home"
+        android:title="Add patient" />
 
 </menu>

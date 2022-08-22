@@ -30,24 +30,24 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
-    <include
+   <!-- <include
         android:id="@+id/bottom_nav_mg_home1"
         layout="@layout/layout_common_bottom_nav_ui2"
         android:visibility="gone" />
-
+-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
+        style="@style/NavigationView"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/ui2_common_top_rounded_white_bg"
         app:elevation="8dip"
         app:itemBackground="@drawable/bottom_nav_tab_background"
-        app:itemIconTint="@color/colorPrimary"
-        app:itemTextAppearanceActive="@color/colorPrimary"
-        app:itemTextAppearanceInactive="@color/colorPrimaryLight"
-        app:itemTextColor="@color/colorPrimary"
         app:labelVisibilityMode="labeled"
+        app:itemIconSize="@dimen/bottom_nav_icon_size"
+        app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
+        app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
+        app:itemRippleColor="@color/colorPrimary2"
         app:menu="@menu/menu_home_footer" />
-
 </RelativeLayout>

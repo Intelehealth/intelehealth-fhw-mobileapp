@@ -133,13 +133,12 @@
     </style>
     <!--designs for login and register-->
 
-    <style name="NavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+
+    <!-- UI2.0 -->
+    <style name="NavigationView" parent="Widget.Design.BottomNavigationView">
         <item name="itemTextAppearanceActive">@color/colorPrimary</item>
-        <item name="itemTextAppearanceInactive">@color/iconTintGray</item>
-        <item name="itemTextColor">@color/colorPrimary</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="itemTextAppearanceInactive">@color/iconTintGrayBottomNav</item>
+        <item name="itemTextColor">@color/textColorGray</item>
 
     </style>
-
 </resources>
