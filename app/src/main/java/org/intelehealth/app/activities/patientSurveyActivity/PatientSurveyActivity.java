@@ -125,7 +125,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
                 if (rating != null && !TextUtils.isEmpty(rating)) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
-                    endVisit();
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
                 }
@@ -165,12 +164,9 @@ public class PatientSurveyActivity extends AppCompatActivity {
         encounterDTO.setUuid(uuid);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
 
-        String fiveMinutesAgoTime = "";
-
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            fiveMinutesAgoTime = fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime());
-            encounterDTO.setEncounterTime(fiveMinutesAgoTime);
+            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -195,7 +191,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(rating);
         obsDTO.setConceptuuid(UuidDictionary.RATING);
-        obsDTO.setObservationTime(fiveMinutesAgoTime);
         obsDTOList.add(obsDTO);
 
         obsDTO = new ObsDTO();
@@ -203,10 +198,12 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(mComments.getText().toString());
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
-        obsDTO.setObservationTime(fiveMinutesAgoTime);
         obsDTOList.add(obsDTO);
         try {
-            obsDAO.insertObsToDb(obsDTOList);
+            boolean isInserted = obsDAO.insertObsToDb(obsDTOList);
+            if (isInserted) {
+                endVisit();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

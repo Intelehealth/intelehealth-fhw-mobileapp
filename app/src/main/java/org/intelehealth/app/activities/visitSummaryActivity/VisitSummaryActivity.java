@@ -6,6 +6,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -178,10 +179,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -2534,6 +2537,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String doctrRegistartionNum = "";
         // String docDigitallySign = "";
         String doctorDetailStr = "";
+
+        String logos = "<div class=\"row\">" +
+                "<img src='file:///android_res/drawable/ic_launcher.png' style=\"width:100px;height:100px;text-align: left;\">" +
+                "<img src='file:///android_res/drawable/ic_intelehealth_logo.png' style=\"width:150px;height:70px;float: right;display:flex\">" +
+                "</div>" + "</br>";
+
+        String headingHTML = "<div class=\"row\" style=\"text-align:center;\">" +
+                "<div class=\"col-md-2 col-sm-2\" style=\"float:left;\">" +
+                "<img src='file:///android_res/drawable/ic_launcher.png' style=\"width:60px;height:60px;\">" +
+                "</div>" +
+                "<div class=\"col-md-7 col-sm-8\" style=\"text-align:center;\">" +
+                font_face +
+                "<b> " +
+                "<p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px;\">%s</p>" +
+                "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p>" +
+                "</div>" +
+                "<div class=\"col-md-2 col-sm-2\" style=\"float:right;margin-top:-40px;\">" +
+                "<img src='file:///android_res/drawable/ic_intelehealth_logo.png' style=\"width:100px;height:38px;\">" +
+                "</div>" +
+                "</div>";
+
         if (objClsDoctorDetails != null) {
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
@@ -2549,12 +2573,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
 
+
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
         if (isRespiratory) {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(headingHTML + font_face +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     /* doctorDetailStr +*/
@@ -2607,11 +2631,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                     "</div>", doctor_web));
 
+            Log.d("Doc", htmlDocument);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
-                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(headingHTML + font_face +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
@@ -2664,6 +2688,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "</div>", doctor_web));
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+            Log.d("Doc", htmlDocument);
         }
 
 
