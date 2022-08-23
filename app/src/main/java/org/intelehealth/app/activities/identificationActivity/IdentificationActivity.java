@@ -702,9 +702,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states_india, R.layout.custom_spinner);
-        mState.setEnabled(false);
-        mState.setClickable(false);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states_syriana, R.layout.custom_spinner);
         mState.setAdapter(stateAdapter);
 
         if (patientID_edit == null) {
