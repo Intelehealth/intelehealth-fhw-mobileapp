@@ -9,6 +9,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="40dp"
         android:src="@drawable/bg_visit_closed" />
 
@@ -40,8 +41,19 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/imageview_profile_icon"
-        android:text="Vivek jain"
-        android:textSize="@dimen/common_header_text_size" />
+        android:text="CHW ID : 987654jK "
+        android:textSize="@dimen/nav_header_userid" />
+
+    <TextView
+        android:id="@+id/textview_edit_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_userid"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/imageview_profile_icon"
+        android:text="Edit Profile"
+        android:textSize="@dimen/nav_header_edit_profile" />
 
 
 </RelativeLayout>
