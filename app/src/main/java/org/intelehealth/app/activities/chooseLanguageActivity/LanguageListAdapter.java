@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,12 +59,12 @@ public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     genericViewHolder.statusImageView.setVisibility(View.VISIBLE);
                     genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_6));
                     genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.BOLD);
-                    genericViewHolder.nameTextView.setBackgroundResource(R.drawable.round_corner_gray_light);
+                    genericViewHolder.rlRoot.setBackgroundResource(R.drawable.round_corner_gray_light);
                 } else {
                     genericViewHolder.statusImageView.setVisibility(View.INVISIBLE);
                     genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_4));
                     genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.NORMAL);
-                    genericViewHolder.nameTextView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    genericViewHolder.rlRoot.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 }
 
             } catch (JSONException e) {
@@ -81,10 +82,12 @@ public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView nameTextView;
         ImageView statusImageView;
         JSONObject jsonObject;
+        RelativeLayout rlRoot;
         int index;
 
         GenericViewHolder(View itemView) {
             super(itemView);
+            rlRoot = itemView.findViewById(R.id.rlRoot);
             nameTextView = itemView.findViewById(R.id.text_tv);
             statusImageView = itemView.findViewById(R.id.status_imv);
             itemView.setOnClickListener(new View.OnClickListener() {

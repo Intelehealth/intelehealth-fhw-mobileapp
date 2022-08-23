@@ -1,13 +1,16 @@
 package org.intelehealth.app.utilities;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.util.Locale;
+
 /**
  * Created by Prajwal Maruti Waingankar on 20-01-2022, 17:02
  * Copyright (c) 2021 . All rights reserved.
@@ -40,6 +43,29 @@ public class LocaleHelper extends ContextWrapper {
         }
 
         return new LocaleHelper(context);
+    }
+
+    public static Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        if (!appLanguage.isEmpty()) {
+            Resources res = context.getResources();
+            Configuration conf = res.getConfiguration();
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            conf.setLocale(locale);
+            context.createConfigurationContext(conf);
+            DisplayMetrics dm = res.getDisplayMetrics();
+            conf.setLocales(new LocaleList(locale));
+            res.updateConfiguration(conf, dm);
+        }
+        return context;
+    }
+
+    public static boolean isArabic(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        return appLanguage.equalsIgnoreCase("ar");
     }
 
 }

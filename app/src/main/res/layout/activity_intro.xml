@@ -18,9 +18,8 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:gravity="start"
-        android:paddingStart="30dp"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:orientation="horizontal"
+        android:paddingStart="30dp"></LinearLayout>
 
     <View
         android:layout_width="match_parent"

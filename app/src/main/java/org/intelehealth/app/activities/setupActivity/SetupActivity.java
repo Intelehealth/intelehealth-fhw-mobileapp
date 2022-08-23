@@ -31,6 +31,7 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,7 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
@@ -75,6 +77,7 @@ import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -154,10 +157,11 @@ public class SetupActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+
         toolbar.setTitleTextColor(Color.WHITE);
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
-
+        getSupportActionBar().setTitle(getString(R.string.title_activity_setup));
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
@@ -218,7 +222,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
+        String deviceID = getString(R.string.device_ID)+ IntelehealthApplication.getAndroidId();
         mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -516,6 +520,14 @@ public class SetupActivity extends AppCompatActivity {
 
 
         showProgressbar();
+
+        if(LocaleHelper.isArabic(this)){
+            mUrlField.setGravity(Gravity.END);
+           /* mEmailView.setGravity(Gravity.END);
+            mPasswordView.setGravity(Gravity.END);
+            ((TextInputLayout)findViewById(R.id.passwordField)).setGravity(Gravity.START);*/
+            mUrlField.setGravity(Gravity.END);
+        }
     }
 
 //    private void empty_spinner(String value) {
@@ -1651,33 +1663,9 @@ public class SetupActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(setLocale(newBase));
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
-    public Context setLocale(Context context) {
-        SessionManager sessionManager1 = new SessionManager(context);
-        String appLanguage = sessionManager1.getAppLanguage();
-//        Locale locale = new Locale(appLanguage);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-        Locale locale = new Locale(appLanguage);
-        Locale.setDefault(locale);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(locale);
-            context.createConfigurationContext(conf);
-        }
-        DisplayMetrics dm = res.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(new LocaleList(locale));
-        } else {
-            conf.locale = locale;
-        }
-        res.updateConfiguration(conf, dm);
-        return context;
-    }
+
 
 }

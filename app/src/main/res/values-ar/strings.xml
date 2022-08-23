@@ -1,0 +1,1526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">سيريانا</string>
+    <string name="notification_title">Realtime sync is ON!</string>
+    <!--//Generic-->
+    <string name="generic_the_flipping_word_next">Next</string>
+    <string name="hint_required">Required</string>
+    <string name="hint_optional">Optional</string>
+    <string name="tag_optional">optional</string>
+    <string name="generic_ok">نعم</string>
+    <string name="generic_cancel">Cancel</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
+    <string name="generic_back">Back</string>
+    <string name="generic_coming_soon">Coming Soon.....</string>
+    <string name="action_print">Print</string>
+    <string name="action_sms">Sms</string>
+    <string name="action_home">Home</string>
+    <string name="action_settings">Settings</string>
+    <string name="generic_warning">تحذير!</string>
+    <string name="generic_update">Update</string>
+    <string name="generic_deleted">Deleted</string>
+
+
+    <!-- //Database Schema Names-->
+    <string name="db_first_name" translatable="false">first_name</string>
+    <string name="db_middle_name" translatable="false">middle_name</string>
+    <string name="db_last_name" translatable="false">last_name</string>
+    <string name="db_dob" translatable="false">date_of_birth</string>
+    <string name="db_phone_number" translatable="false">phone_number</string>
+    <string name="db_address_line1" translatable="false">address1</string>
+    <string name="db_address_line2" translatable="false">address2</string>
+    <string name="db_city" translatable="false">city_village</string>
+    <string name="db_state" translatable="false">state_province</string>
+    <string name="db_postal_code" translatable="false">postal_code</string>
+    <string name="db_country" translatable="false">country</string>
+    <string name="db_gender" translatable="false">gender</string>
+    <string name="db_patient_id1" translatable="false">patient_identifier1</string>
+    <string name="db_patient_id2" translatable="false">patient_identifier2</string>
+    <string name="db_patient_id3" translatable="false">patient_identifier3</string>
+    <string name="db_open_mrs_id" translatable="false">openmrs_id</string>
+
+    <!--//Login Screen-->
+    <!--    <string name="title_activity_login">Intelehealth</string>-->
+    <string name="title_activity_login">سيريانا</string>
+    <string name="prompt_email">اسم المستخدم</string>
+    <string name="prompt_password">كلمة المرور</string>
+    <string name="prompt_admin_password">Admin Password</string>
+    <string name="action_sign_in">تسجيل الدخول</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="url_invalid">تحقق من عنوان URL الخاص بك.</string>
+    <string name="prefix_invalid">Select a different prefix!</string>
+    <string name="error_invalid_email">This username is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">please check username and password entered</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_network" translatable="false">Network Error</string>
+    <string name="error_location_not_selected">Please select a value form the location dropdown</string>
+    <string name="error_location_not_fetched">Unable to fetch locations</string>
+    <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
+    </string>
+    <string name="device_id">Device ID:</string>
+    <string name="identification_screen_prompt_time">Time:</string>
+    <string name="identification_screen_picker_hours" translatable="false">Hours</string>
+    <string name="identification_screen_picker_minute" translatable="false">Minutes</string>
+    <string name="cant_login_user">Can\'t log in?</string>
+    <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
+    <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
+
+    <!--//Home Screen (after login)-->
+    <string name="title_home_screen">Home</string>
+    <string name="button_new_pt">New Patient</string>
+    <string name="button_find_pt">Find Patient</string>
+    <string name="button_diagnostic_tests">Diagnostic Tests</string>
+    <string name="button_active_pt">Active Patients</string>
+    <string name="menu_option_sync">Refresh Data</string>
+    <string name="menu_option_settings">Settings</string>
+    <string name="menu_option_end_of_day">End of Day</string>
+    <string name="menu_option_logout">Logout</string>
+
+
+    <!--//Identification Screen-->
+    <string name="title_activity_identification">Add New Patient</string>
+    <string name="identification_screen_prompt_first_name">First name *</string>
+    <string name="identification_screen_prompt_middle_name">Middle name</string>
+    <string name="identification_screen_prompt_last_name">Last name *</string>
+    <string name="identification_screen_prompt_address">Address line 1</string>
+    <string name="identification_screen_prompt_address2">Address line 2</string>
+    <string name="identification_screen_prompt_phone_number">Phone number</string>
+    <string name="admin_password_dialog_heading">Enter Admin Password</string>
+    <string name="identification_screen_prompt_gender">Gender *</string>
+    <string name="identification_screen_checkbox_male">Male</string>
+    <string name="identification_screen_checkbox_female">Female</string>
+    <string name="identification_screen_prompt_birthday">Date of birth*</string>
+    <string name="identification_screen_prompt_age">Age:</string>
+    <string name="identification_screen_prompt_city">Village/Town/City *</string>
+    <string name="identification_screen_prompt_state">State *</string>
+    <string name="identification_screen_prompt_caste">Caste</string>
+    <string name="identification_screen_prompt_economic_status">Economic status</string>
+    <string name="identification_screen_prompt_education">Education level</string>
+    <string name="identification_screen_prompt_country">Country *</string>
+    <string name="identification_screen_prompt_postal_code">Postal code</string>
+    <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
+    <string name="identification_screen_prompt_occupation">Occupation</string>
+    <string name="identification_screen_snack_patient_created">Patient created! Uploading to server.</string>
+    <string name="identification_screen_error_data_fields">Error: data fields are not formatted correctly</string>
+    <string name="identification_screen_dialog_age">Please enter age in years</string>
+    <string name="identification_screen_dialog_error_dob">Date of birth is set for date after today</string>
+    <string name="identification_screen_dialog_error_gender">Gender is not selected</string>
+    <string name="identification_screen_required_fields">Please enter required fields</string>
+    <string name="identification_screen_error_dob">Enter a valid DOB</string>
+    <string name="identification_screen_error_age">Enter a valid age</string>
+    <string name="identification_screen_text_years"> years </string>
+    <string name="identification_screen_text_months"> months</string>
+    <string name="identification_screen_picker_years">years</string>
+    <string name="identification_screen_picker_months">months</string>
+
+    <!--//Active Patients Screen-->
+    <string name="title_activity_active_patient">Active Visits</string>
+
+    <!--//Patient History Screen-->
+    <string name="title_activity_get_patient_history">Patient History</string>
+    <string name="title_activity_search_patient">Patient Lookup</string>
+
+    <!--//Complaint Node Screen-->
+    <string name="title_activity_complaint_select">Select Complaints</string>
+    <string name="title_activity_complaint_questions">Answer All Questions</string>
+    <string name="title_activity_complaint_node">Select Complaints</string>
+    <string name="complaint_category_selected">Selected Categories:</string>
+    <string name="complaint_complaint_selected">Selected Complaints:</string>
+    <string name="complaint_dialog_title">Reason for visit</string>
+    <string name="complaint_required">Complaint must be selected!</string>
+
+    <!--//Question Node Screen-->
+    <string name="title_activity_question_node">QuestionNodeActivity</string>
+    <string name="complaint_change_selected">Modify</string>
+    <string name="question_answer_all">Are you sure you have answered all questions.</string>
+    <string name="question_answer_all_phy_exam">Please answer all general exam questions.</string>
+    <string name="question_duration_picker">Please enter duration</string>
+    <string name="question_text_input">Please enter text</string>
+    <string name="question_date_picker">Please select date</string>
+    <string name="question_location_picker">Please select locations</string>
+    <string name="question_number_picker">Please enter number</string>
+    <string name="question_area_picker">Please enter the area (width X length)</string>
+    <string name="question_range_picker">Please enter a range</string>
+    <string name="question_frequency_picker">Please enter how many times</string>
+
+
+    <!--//Table Exam Screen-->
+    <string name="title_activity_vitals">Vitals &amp; Diagnostics</string>
+    <string name="table_hw">Body Measurements</string>
+    <string name="table_height">Height (cm)</string>
+    <string name="table_weight">Weight (kg)</string>
+    <string name="table_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
+    <string name="table_pulse">Pulse (bpm)</string>
+    <string name="table_bp">Vital Signs</string>
+    <string name="table_bpsys">BP Sys (mmHg)</string>
+    <string name="table_bpdia">BP Dia (mmHg)</string>
+    <string name="table_temp">Temperature (C)</string>
+    <string name="table_spo2">SpO2 (%)</string>
+
+    <!--//Patient Search Screen-->
+    <string name="search_hint">Type to search patient by name…</string>
+    <string name="action_search">Search</string>
+    <string name="alert_none_found">Please check username and pasword entered</string>
+
+    <!--//Past Medical History Screen-->
+    <string name="title_activity_patient_history">Past Medical History</string>
+
+    <!--//Visit Summary Screen-->
+    <string name="title_activity_family_history">Family History</string>
+    <string name="title_activity_physical_exam">Physical Exam</string>
+    <string name="title_activity_patient_summary">Visit Summary</string>
+    <string name="visit_summary_temperature">Temperature(C)</string>
+    <string name="visit_summary_pulseox">SpO2 (%)</string>
+    <string name="visit_summary_hw_on_duty">CHW On Duty</string>
+    <string name="visit_summary_vitals_heading">Vitals</string>
+    <string name="visit_summary_height_heading">Height (cm)</string>
+    <string name="visit_summary_weight">Weight (kg)</string>
+    <string name="visit_summary_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
+    <string name="visit_summary_bp">BP</string>
+    <string name="visit_summary_pulse">Pulse</string>
+    <string name="visit_summary_previous_reports">Previous Reports</string>
+    <string name="visit_summary_medical_history">Medical history</string>
+    <string name="visit_summary_family_history">Family history</string>
+    <string name="visit_summary_on_examination">On examination</string>
+    <string name="visit_summary_complaint">Reason for visit</string>
+    <string name="visit_summary_vitals">Vitals</string>
+    <string name="visit_summary_doctor_details">Doctor Details</string>
+    <string name="visit_summary_rx">Prescribed Medications</string>
+    <string name="visit_summary_diagnosis">Diagnosis</string>
+    <string name="visit_summary_advice">Medical Advice</string>
+    <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
+    <string name="visit_summary_additional_comments">Additional Comments</string>
+    <string name="visit_summary_heading_name">Name</string>
+    <string name="visit_summary_heading_id">ID</string>
+    <string name="visit_summary_button_download">Download</string>
+    <string name="visit_summary_button_upload">Upload</string>
+    <string name="name_button_download">button_download</string>
+    <string name="visit_summary_follow_up_date">Follow Up Date</string>
+    <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
+    <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>
+
+
+    <!--//Diagnostic Tests Screen-->
+    <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
+
+    <!--//Physical Exam Dialog-->
+    <string name="wash_hands">Remember to wash your hands</string>
+
+
+    <!--//Patient Detail Screen-->
+    <string name="header_patient_detail">Patient information</string>
+    <string name="button_history">Patient History</string>
+    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="header_medical_history">History</string>
+    <string name="button_new_visit">Start new visit</string>
+    <string name="header_previous_visits">Previous visits</string>
+    <string name="header_patient_history">Medical history</string>
+    <string name="header_family_history">Family history</string>
+    <string name="string_no_hist">No history of illness</string>
+    <string name="row_patient_id">Patient ID</string>
+    <string name="row_dob">DOB</string>
+    <string name="row_age">Age</string>
+    <string name="row_gender">Gender</string>
+    <string name="row_address">Address</string>
+    <string name="row_phone_number">Phone number</string>
+    <string name="row_open_visit">Click to open visit</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact based on your message
+        history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+
+    <!-- Example settings for Data & syncBackground -->
+    <string name="pref_header_data_sync">Data &amp; Refresh</string>
+
+    <string name="pref_title_server_url">Server URL</string>
+    <string name="pref_title_id_prefix">Location Prefix</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="toast_crash">Application error encountered; report sent</string>
+
+
+    <string name="title_activity_setup">اقامة</string>
+
+    <string name="title_activity_camera">Camera</string>
+    <string name="title_activity_today_patient">Today\'s Visits</string>
+    <string name="title_activity_additional_documents">Additional Documents</string>
+    <string name="title_activity_video_library">Video Library</string>
+    <string name="visit_summary_patient_details">Visit details</string>
+
+    <!--Setup Activity-->
+    <string name="setup_internet">مطلوب اتصال إنترنت قوي للإعداد.</string>
+    <string name="generic_manual_entry">Manual Entry</string>
+    <string name="generic_erase_redo">Erase and Re-Do</string>
+    <string name="visit_summary_edit_vitals">You can re-do the vitals from the vitals screen</string>
+
+    <!--//Camera Permissions-->
+    <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+    <string name="permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
+    <string name="button_ok">نعم</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="picture_taken">Picture taken</string>
+    <string name="switch_flash">Switch flash</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="flash_auto">Flash auto</string>
+    <string name="flash_off">Flash off</string>
+    <string name="flash_on">Flash on</string>
+
+    <!--//SEND SMS Permissions-->
+    <string name="permission_sms_rationale">SMS permission is needed to send SMS.</string>
+    <string name="permission_sms_denied">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
+    <string name="permission_sms_never_askagain">SMS permission was denied with never ask again.</string>
+
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
+
+    <!--//Camera Dialog-->
+    <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
+
+    <!--Offline Login Errors-->
+    <string name="offline_credentials_unavailable">Offline Login is not available.</string>
+    <string name="offline_user_does_not_match">User does not match.</string>
+    <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
+    <string name="admin_authentication_not_possible">Unable to authenticate.</string>
+
+    <string name="login_location_select">اختر موقعا</string>
+    <string name="prompt_licensekey">مفتاح الترخيص</string>
+    <string name="setup_use_demo_mindmap">استخدم البروتوكولات التجريبية</string>
+    <string name="setup_download_mindmap">تحميل البروتوكولات</string>
+
+    <string name="please_wait_progress">Please Wait</string>
+    <string name="downloading_protocols">Downloading protocols</string>
+    <string name="logging_in">Logging in</string>
+    <string name="error_downloading_protocols">Error Downloading Mind Maps</string>
+
+    <!--//Sync strings-->
+    <string name="sync_stopped">Stopped</string>
+    <string name="sync_in_progress">In progress</string>
+    <string name="sync_complete">Complete</string>
+    <string name="sync_error">Error : No such status</string>
+
+    <string name="id_number">ID Number</string>
+    <string name="uploading">Uploading</string>
+    <string name="downloading">Downloading...</string>
+
+    <string name="visit">Visit</string>
+    <string name="visit_update">Visit Update</string>
+    <string name="patient">Patient</string>
+    <string name="patient_update">Patient Update</string>
+    <string name="patient_images">Patient Profile Image</string>
+    <string name="visit_images">Visit Images</string>
+    <string name="prescription">Prescription</string>
+
+    <string name="error_no_data">Please download first before attempting to end the visit.</string>
+    <string name="error_phone_number">Phone number can\'t be empty</string>
+    <string name="action_end_visit">End Visit</string>
+
+    <string name="error_sms">SMS failed, please try again later!</string>
+    <string name="sms_success">SMS Sent!</string>
+
+    <string name="question_update_details">Do you want to update details?</string>
+
+    <string name="backup_completed">Backup Completed!</string>
+
+    <string name="hide_text">HIDE</string>
+    <string name="show_text">SHOW</string>
+
+    <string name="new_patient">New Patient</string>
+    <string name="find_patient">البحث عن المرضى</string>
+    <string name="video_library">مكتبة الفيديو</string>
+
+    <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
+    <string name="error_admin_password">Admin Password Wrong</string>
+    <string name="error_no_file">No Files in this directory</string>
+    <string name="error_no_camera">No camera installed.</string>
+    <string name="error_delete">Error in deleting</string>
+    <string name="error_offline_login">Offline Login Unsuccessful</string>
+    <string name="success_offline_login">Offline Login Successful</string>
+    <string name="invalidate_offline_login">Offline Login Invalidated</string>
+
+    <string name="patient_upload_error">Patient has not been uploaded</string>
+    <string name="patient_not_registered">Patient not registered</string>
+
+    <string name="action_sync_all">Refresh Data</string>
+
+    <!-- Vitals Screen Error-->
+
+    <string name="weight_error">Weight should be less than %1$s kg</string>
+    <string name="height_error">Height should be between 0 and %1$s cm</string>
+    <string name="spo2_error">SpO2 should be in between %1$s and %2$s</string>
+    <string name="pulse_error">Pulse should be in between %1$s and %2$s</string>
+    <string name="bpsys_error">Systolic pressure should be in between %1$s and %2$s</string>
+    <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
+    <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
+    <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
+    <string name="glucose_non_fasting_validation">Blood Glucose (Non-Fasting) should be in between %1$s and %2$s</string>
+    <string name="glucose_fasting_validation">Blood Glucose (Fasting) should be in between %1$s and %2$s</string>
+
+    <string name="not_provided">Not provided</string>
+
+    <!-- Patient Exit Survey -->
+    <string name="exit_survey_label">How was your experience?</string>
+    <string name="exit_survey_prompt">Enter your comments here</string>
+    <string name="exit_survey_skip">SKIP</string>
+    <string name="exit_survey_submit">Submit</string>
+    <string name="exit_survey_toast">Please select a smiley before submitting</string>
+
+
+    <!--DB Backup-->
+
+    <string name="db_backup_complete">Database Backup Complete!</string>
+    <string name="db_restore_complete">Database Restore Complete!</string>
+
+    <!--Cloud Backup-->
+
+    <string name="cloud_upload_header">Uploading database to cloud</string>
+    <string name="no_network">Internet connection not available</string>
+    <string name="no_data">No data to backup!</string>
+    <string name="local_backup_failed">Local backup not available</string>
+    <string name="local_backup_restore">Restoring from local backup</string>
+
+    <string name="cloud_restore_header">Restore form cloud</string>
+    <string name="restore_data">Restoring data</string>
+    <string name="error_existing_data">Database contains data, cannot restore!</string>
+    <string name="cloud_download_data">Downloading database from cloud</string>
+
+    <string name="force_restore_header">Restoring data from cloud(Forced)</string>
+
+    <string name="database_upload">Database Upload</string>
+    <string name="database_uploading">Database Uploading</string>
+    <string name="database_upload_complete">Database Upload Complete</string>
+    <string name="database_upload_failed">Database Upload Failed</string>
+
+    <string name="db_backup_unavailable">Database backup not available</string>
+    <string name="db_file_write_error">Error writing backup file</string>
+
+    <string name="local_restore_alert_title">Restore backup</string>
+    <string name="local_restore_alert_message">A local backup has been found. Do you want to restore?</string>
+
+
+    <!--Image Download Service-->
+    <string name="image_downloading_service_title">Downloading</string>
+    <string name="image_downloading_service_message">Downloading Image Data</string>
+    <string name="image_downloading_service_complete_title">Image Data Download Complete</string>
+    <string name="image_downloading_service_complete_message">All image files have been downloaded</string>
+    <string name="image_downloading_service_process_message">Downloaded</string>
+    <string name="error_img_unavailable">Image not available</string>
+    <string name="error_img_download_failed">Image Download failed</string>
+
+    <!--Parse Validation User login-->
+
+    <string name="user_logged_in">Already logged in!</string>
+    <string name="user_logged_in_other_device">Already logged in.Please logout from other device.</string>
+    <string name="user_logged_out">Logged out from server</string>
+    <string name="user_login_check_success">Login Successful!</string>
+    <string name="user_login_error">Another user is logged into this location. Please contact admin</string>
+    <string name="user_server_unreachable">Device Offline. Cannot check server for login verification</string>
+
+    <string name="title_activity_splash_acticity">SplashActicity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_sync">ActivityRefresh</string>
+    <string name="title_activity_privacy_notice">Privacy Notice</string>
+    <string name="title_activity_visit_summary">VisitSummaryActivity</string>
+    <string name="title_activity_past_medical_history">PastMedicalHistoryActivity</string>
+    <string name="title_activity_patient_survey">PatientSurveyActivity</string>
+
+    <!--Privacy Notice Activity-->
+    <string name="privacy_toast">Please select an option</string>
+    <string name="temperature_f">Temperature (℉)</string>
+    <string name="sync_now">Refresh Now</string>
+    <string name="lastsync">آخر مزامنة</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="patient_denies">Patient denies</string>
+    <string name="patient_reports">Patient reports</string>
+
+    <string name="associated_symptoms">Associated symptoms</string>
+    <string name="enter_server_url">Enter Server URL</string>
+    <string name="enter_license_key"><b>Enter license key</b></string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="years">years</string>
+    <string name="months">months</string>
+    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
+    <string name="patient_name">Patient name</string>
+    <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
+    <string name="occupation">Occupation</string>
+    <string name="economic_status">Economic status</string>
+    <string name="education_level">Education level</string>
+    <string name="caste">Caste</string>
+    <string name="previous_visits">Previous visits</string>
+    <string name="accept">قبول</string>
+    <string name="reject">رفض</string>
+    <string name="next">التالي</string>
+    <string name="prev">السابق</string>
+    <string name="which_server_would_you_like_to_connect_to">ما الخادم الذي تريد الاتصال به؟</string>
+    <string name="enter_url">إدخال عنوان الموقع</string>
+    <string name="choose_a_location_to_login">اختر موقعا لتسجيل الدخول</string>
+    <string name="choose_an_option_for_protocols">اختر خيارًا للبروتوكولات</string>
+    <string name="please_enter_your_username_and_password">الرجاء إدخال اسم المستخدم وكلمة المرور الخاصة بك</string>
+    <string name="android_id">معرف Android:</string>
+    <string name="respiratory_rate">Respiratory Rate (per minute)</string>
+    <string name="click_to_download_the_images">Click to download the images</string>
+    <string name="doctor">Doctor Details</string>
+    <string name="health_worker">Health worker</string>
+    <string name="priority">Priority</string>
+    <string name="server_url">Server url</string>
+    <string name="sync">Refresh</string>
+    <string name="update_protocols">Update Protocols</string>
+    <string name="end_all_visit">End All Visit</string>
+    <string name="filter_by_creator">Filter by creator</string>
+    <string name="planet_name">Planet Name</string>
+    <string name="ok">نعم</string>
+    <string name="cancel">Cancel</string>
+    <string name="unable_to_end">Unable to end</string>
+    <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
+    <string name="active">Active</string>
+    <string name="closed">Closed</string>
+
+    <string name="syncInProgress">Refresh in progress</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="sync_notif_title">refresh</string>
+    <string name="sync_background_completed">refreshBackground Completed</string>
+    <string name="sync_not_available">Refresh not available</string>
+    <string name="please_connect_to_internet">Please connect to an internet connection!</string>
+    <string name="image_upload">ImageUpload</string>
+    <string name="image_upload_failed">ImageUpload failed</string>
+    <string name="sure_to_exit">Are you sure you want to EXIT?</string>
+    <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="lastsync_normal">Last Refresh</string>
+    <string name="update_patient_identification">Update Patient</string>
+    <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
+    <string name="error">Error</string>
+    <string name="patient_data_upload">Patient Data Upload</string>
+    <string name="patient_image_download_notifi">Patient Image Download</string>
+    <string name="image_download_complete_notifi">\'s Image Download complete.</string>
+    <string name="no_prior_visits">No prior visits.</string>
+    <string name="end_visit_notif">End visit</string>
+    <string name="visit_ended_notif">Visit ended</string>
+    <string name="this_question_only_one_answer">This question can have only one answer.</string>
+    <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
+    <string name="visit_data_upload">Visit Data Upload</string>
+    <string name="uploading_visit_data_notif">Uploading visit data</string>
+    <string name="uploaded_visit_data_notif">Uploaded visit data</string>
+    <string name="failed_to_upload">failed to Uploaded</string>
+    <string name="upload_completed">Upload Completed</string>
+    <string name="check_your_connectivity">Check your connectivity</string>
+    <string name="download_from_doctor">Download from doctor</string>
+    <string name="prescription_downloaded">Prescription downloaded</string>
+    <string name="downloading_prescription">Downloading prescription</string>
+    <string name="visit_data_failed">Visit Data Failed</string>
+    <string name="patient_data_failed">Patient Data Failed</string>
+    <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="syncing_visitDialog">Refreshing</string>
+    <string name="successfully_synced_notif">Successfully Refreshed</string>
+    <string name="languages">Languages</string>
+    <string name="change_languages">Change Languages</string>
+    <string name="current_language">Current Language</string>
+
+    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
+    <string name="no_protocols_found">No protocols found</string>
+    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
+    <string name="last_synced">آخر تحديث - </string>
+    <string name="location_setup">موقع الإعداد - </string>
+    <string name="today_visits">زيارات اليوم</string>
+    <string name="active_visits">زيارات نشطة</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="s">s</string>
+    <string name="ago">ago</string>
+    <string name="successfully_synced">Successfully refreshed</string>
+    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
+    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="upload_started">Uploading...</string>
+    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
+    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
+    <string name="visitID">Visit ID</string>
+
+    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
+    <string name="privacy_reject_toast">You cannot register a patient without consent</string>
+    <string name="not_answered">Not answered</string>
+    <string name="new_update_available">New Update Available</string>
+    <string name="update_app_note">New version is available with new features please update app</string>
+    <string name="update">Update</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+
+
+    <!--New Ayu Related Changes-->
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
+    <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
+    <string name="swipe_up">Swipe to Up for Next</string>
+    <string name="swipe_down">Swipe to Down for previous</string>
+    <string name="have_symptom">Do you have this Symptom?</string>
+
+    <!--New UI changes 2.1-->
+    <string name="personal_information">Personal Information</string>
+    <string name="address_details">Address Details</string>
+    <string name="txt_others">Others</string>
+    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
+    <string name="whatsapp_helpline">WhatsApp Helpline</string>
+    <string name="Whatsapp_Help_Cardview">يساعد</string>
+    <string name="skip">skip</string>
+    <string name="start">Start</string>
+    <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
+    <string name="custom_setup">اقامة</string>
+    <string name="demo_version">النسخة التجريبية</string>
+    <string name="sample_text">Sample Text</string>
+    <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
+    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
+    <string name="active_defaultTag">Active</string>
+    <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \n\n أنا آيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \n\n أنا آيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_my_name_is">"Hello, my name is "</string>
+    <string name="i_need_assistance">" and I need some assistance."</string>
+    <string name="economic_values_missing">Economic values are missing</string>
+    <string name="education_values_missing">Education values are missing</string>
+    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">سيريانا هو تطبيق للتطبيب عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية بالأطباء البعيدين حتى يتمكنوا من تقديم خدمات صحية عالية الجودة لمرضاهم.</string>
+    <string name="intelehealth_name">Intelehealth</string>
+    <string name="Ayu_name">Ayu</string>
+    <string name="close_button">Close</string>
+    <string name="active_tag_patientDetail">" Active"</string>
+    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
+    <string name="device_ID">معرف الجهاز:</string>
+    <string name="enter_valid_license_url">Enter valid License Url</string>
+    <string name="please_enter_url_and_key">Please enter URL and Key</string>
+    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
+    <string name="permission_denied">Permission Denied\n</string>
+    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
+    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="temperature_C">"Temperature(C): "</string>
+    <string name="temperature_F">"Temperature(F): "</string>
+    <string name="no_history_family_found">No history of illness in family provided.</string>
+    <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
+    <string name="dr_registration_no">Registration No: </string>
+    <string name="dr_phone_number">Phone Number: </string>
+    <string name="dr_email">Email: </string>
+    <string name="_visit_summary"> Visit Summary</string>
+    <string name="patient_id_">Patient Id: </string>
+    <string name="patient_name_title">Patient Name: </string>
+    <string name="patient_DOB">Patient DOB: </string>
+    <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
+    <string name="download_protocols">Downloading Protocols</string>
+    <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
+    <string name="days">days</string>
+    <string name="contact">Contact</string>
+    <string name="has_a_new_prescription">has a new prescription</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
+    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
+    <string name="share">Share</string>
+    <string name="please_enter_mobile_number">Please enter a mobile number</string>
+    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_9_digits">Enter 9 digits</string>
+    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
+    <string name="view_print">View/Print</string>
+    <string name="refresh">Refresh</string>
+    <string name="family_member">Family Member</string>
+    <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="question_not_answered">Question not answered</string>
+    <string name="version_settings">Version 1.3</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="document_">"Document - "</string>
+    <string name="Hours">Hours</string>
+    <string name="Days">Days</string>
+    <string name="Weeks">Weeks</string>
+    <string name="Months">Months</string>
+    <string name="Years">Years</string>
+    <string name="per_Hour">per Hour</string>
+    <string name="per_Day">per Day</string>
+    <string name="per_Week">Per Week</string>
+    <string name="per_Month">per Month</string>
+    <string name="per_Year">per Year</string>
+    <!--@lincon-->
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+
+    //setup activity
+    <string name="setup_internet_available">مطلوب اتصال إنترنت قوي للإعداد.</string>
+    <string name="setup_internet_not_available">أنت غير متصل بالإنترنت.</string>
+    <string name="generic_info">معلومات!</string>
+    <string name="speciality_cardview_title">تخصص</string>
+    <string name="select_specialization_text">Select Specialization</string>
+    <string name="please_select_specialization_msg">Please select specialization</string>
+    <string name="chat_fab">chat fab</string>
+
+    <string name="visit_closed">Visit Closed</string>
+    <string name="ok_close_now">Ok, Close It</string>
+    <string name="retry_again">Retry Again!</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="additional_doc_image_picker_title">Add Additional Document!</string>
+    <string name="something_went_wrong">Something went wrong. Please contact support</string>
+
+    <!--    Strings for special Check-->
+    <string name="str_check_Odisha">Odisha</string>
+    <string name="str_check_Bukidnon">Bukidnon</string>
+    <string name="str_check_India">India</string>
+    <string name="str_check_UnitedStates">United States</string>
+    <string name="str_check_Philippines">Philippines</string>
+    <string name="loading_more">Loading more...</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
+    <string name="due_on">Due Date:</string>
+    <string name="title_follow_up">زيارات المتابعة</string>
+    <string name="location">Location</string>
+
+    //----------reset app strings-------------
+    <string name="reset_app">Reset App</string>
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+
+    //Reset App functionality
+    <string name="sync_failed">Sync Failed! Please try again later.</string>
+    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
+    <string name="app_sync">Syncing App..</string>
+
+    <string name="saving_captured_image">Saving Captured Image...</string>
+    <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
+
+    //Language Screen
+    <string name="choose_lang_title">اختر لغتك</string>
+    <string name="save_button">إرسال</string>
+    <string name="selectLanguageToast">الرجاء تحديد اللغة</string>
+    <string name="config_not_found_alert_message">No config attribute found</string>
+    <string name="error_login_title">Error Login</string>
+    <string name="config_file_error">config file error</string>
+    <string name="internet_connected_txt">Connected to Internet!</string>
+    <string name="not_connected_txt">Not connected to Internet!</string>
+    <string name="config_error">Config Error</string>
+
+    <string name="notification_message"></string>
+    <string name="ticker_text">Looking for new task</string>
+    <string name="identification_screen_prompt_citizen_id">Citizen ID(*)</string>
+    <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
+    <string name="country_matching_String_forIndia">India</string>
+    <string name="country_matching_String_forPhilippines">Philippines</string>
+    <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
+    <!--Prescription-->
+    <string name="prescription_age">Age</string>
+    <string name="prescription_gender">Gender</string>
+    <string name="prescription_address_contact">Address and Contact</string>
+    <string name="prescription_patient_id">Patient Id</string>
+    <string name="prescription_date_of_visit">Date of visit</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_rr">Respiratory Rate</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">Blood Pressure</string>
+    <string name="prescription_bmi">BMI</string>
+
+    <string name="prescription_wt">Weight(kg)</string>
+    <string name="prescription_ht">Height(cm)</string>
+    <string name="prescription_pre_comp">Presenting complaint(s)</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_med_plan">Medication(s) plan</string>
+    <string name="prescription_rec_investigation">Recommended Investigation(s)</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up_date">Follow Up Date</string>
+    <string name="prescription_temp_c">Temperature (C) : </string>
+    <string name="prescription_temp_f">Temperature (F) : </string>
+
+    <string name="intro_text_1">
+        Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare.
+        \n\n
+        Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
+    </string>
+
+    <string name="book_appointment">Book Appointment</string>
+    <string name="reschedule_appointment">Reschedule Appointment</string>
+    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
+    <string name="cancel_appointment">Cancel Appointment</string>
+    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
+    <string name="appointment_empty_message">You don\'t have any appointment!</string>
+    <string name="appointment_listing_title">Appointment Listing</string>
+    <string name="appointment_booking_title">Appointment Booking</string>
+    <string name="appointment_for">Appointment For</string>
+    <string name="please_select_appointment_slot">Please select appointment slot</string>
+    <string name="please_select_speciality">Please select speciality!</string>
+
+    <string name="doctor_appointments">مواعيد الطبيب</string>
+    <string name="slot_info">Slot info</string>
+    <string name="appointment_booked">Appointment Booked</string>
+    <string name="minutes_txt">minutes</string>
+    <string name="booked_txt">booked</string>
+    <string name="cancelled_txt">cancelled</string>
+    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
+    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
+    <string name="appointment_booked_failed">Appointment booked failed!</string>
+    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
+    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
+    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
+    <string name="have_you_spoken_with_the_patient_directly">Have you spoken with the patient directly?</string>
+    <string name="patient_interaction">Patient Interaction</string>
+
+    <string name="diagnosis">Diagnosis</string>
+    <string name="primary">Primary</string>
+    <string name="secondary">Secondary</string>
+    <string name="provisiona">Provisional</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="recommended_medication">Recommended Medication</string>
+    <string name="medication">Medication</string>
+    <string name="strength">Strength</string>
+    <string name="units">Units (eg: mg)</string>
+    <string name="units_tab">Units (eg: Tab/Syrup)</string>
+    <string name="for_duration">For Duration</string>
+    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>
+    <string name="additional_instruction">Additional Instruction</string>
+    <string name="recommended_tests">Recommended Tests</string>
+    <string name="test">Test</string>
+
+    <string name="advice_or_refer_patient">Advice or Refer Patient</string>
+    <string name="notes">Notes</string>
+    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>
+    <string name="follow_up">Follow Up</string>
+    <string name="sign_and_submit">Sign and Submit</string>
+    <string name="add_test">Add Test</string>
+    <string name="add_advice">Add Advice</string>
+    <string name="add_note">Add Note</string>
+    <string name="schedule_a_follow_up">Schedule a follow up</string>
+    <string name="submit">Submit</string>
+    <string name="add_meds">Add Meds</string>
+    <string name="add_diagnosis">Add Diagnosis</string>
+    <string name="startVisitNote">Start Visit Note</string>
+
+    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
+    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
+    <string name="amount">Amount</string>
+    <string name="frequency">Frequency</string>
+    <string name="route_optional">Route (Optional)</string>
+    <string name="reason_optional">Reason (Optional)</string>
+    <string name="choose_a_date">Choose a date</string>
+    <string name="follow_up_remark">Follow up remark</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
+    <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="type_to_search">Type to Search..</string>
+
+    <!--    Questions for HoH -->
+    <string name="select">Select</string>
+
+    <string name="name_of_investigator">Name of Investigator*</string>
+    <string name="village">Village*</string>
+    <string name="block">Block*</string>
+    <string name="district">District*</string>
+    <string name="district_nashik">Nashik</string>
+    <string name="state_Maharastra">Maharastra</string>
+    <string name="date_of_visit">Date of Visit</string>
+    <string name="name_of_primary_respondent">Name of Primary Respondent*</string>
+    <string name="household_number">Household No.*</string>
+    <string name="household_structure_type">Household structure type*</string>
+    <string name="kucha">Kucha</string>
+    <string name="pucca">Pucca</string>
+    <string name="result_of_visit">Result of Visit*</string>
+    <string name="available_and_accepted">Available and accepted</string>
+    <string name="available_and_deferred">Available and deferred</string>
+    <string name="not_available_at_time_of_the_survey">Not available at time of the survey</string>
+    <string name="not_available_on_the_second_visit">Not available on the second visit</string>
+    <string name="not_available_on_the_third_visit">Not available on the third visit</string>
+    <string name="refused_to_participate">Refused to participate</string>
+
+    <string name="household_identification_for_survey">Household Identification for Survey</string>
+    <string name="nasik_district">Nasik</string>
+    <string name="name_of_head_of_household">Name of Head of Household</string>
+    <string name="gender_of_head_of_household">Gender of Head of Household</string>
+    <string name="religion">Religion</string>
+    <string name="religion_others">Religion Others</string>
+
+    <string name="religion_hindu">Hindu</string>
+    <string name="religion_muslim">Muslim</string>
+    <string name="religion_christian">Christian</string>
+    <string name="religion_sikh">Sikh</string>
+    <string name="religion_buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
+    <string name="religion_other">Other</string>
+    <string name="religion_no_religion">No Religion</string>
+    <string name="nas_caste">Caste</string>
+    <string name="caste_schedule_caste">Schedule Caste (SC)</string>
+    <string name="caste_schedule_tribe">Schedule Tribe (ST)</string>
+    <string name="caste_other_backward_caste">Other Backward Caste (OBC)</string>
+    <string name="caste_general">General</string>
+    <string name="caste_VJNT">VJNT</string>
+    <string name="caste_dont_know">Don’t know</string>
+    <string name="caste_refused_to_answer">Refused to answer</string>
+    <string name="number_of_smartphones_in_the_household">Number of smartphones in the household</string>
+    <string name="number_of_feature_phones_in_the_household">Number of feature phones in the household</string>
+    <string name="how_many_earning_members_are_there_in_the_household">How many earning members are there in the household?</string>
+    <string name="what_is_the_primary_source_of_income_in_the_household">What is the primary source of income in the household?</string>
+    <string name="sale_of_cereal_production">Sale of cereal production (wheat, maize, barley), cash crops (cotton, sugarcane, jute), or vegetables and fruits</string>
+    <string name="sale_of_animals_or_animal_products">Sale of animals-animal products</string>
+    <string name="agricultural_wage_labor_employed_for_farm_work">Agricultural wage labor (employed for farm work)</string>
+    <string name="salaried_worker_fixed_monthly_salary">Salaried worker (fixed monthly salary) - Government, private, etc.</string>
+    <string name="self_employed_non_agricultural_petty_business">Self-employed (non-agriculture or petty business)</string>
+    <string name="daily_labor_unskilled_work_agricultural_non_agricultural">Daily labor (unskilled work - Agricultural or non-Agricultural)</string>
+    <string name="nrega">NREGA</string>
+    <string name="seasonal_labor">Seasonal Labor</string>
+    <string name="no_paid_work">No paid work</string>
+    <string name="pension">Pension</string>
+    <string name="remittances_checkbox">Remittances</string>
+    <string name="other_please_specify">Other (please specify)</string>
+    <string name="other_sources_of_income">Other sources of income</string>
+    <string name="does_the_house_have_electricity">Does the house have electricity?</string>
+    <string name="number_of_hours_of_load_shedding_per_day">No. of hours of load shedding per day</string>
+    <string name="number_of_days_with_load_shedding_per_week">No. of days with load shedding per week</string>
+    <string name="is_there_running_water_available_in_the_house">Is there running water available in the house?</string>
+    <string name="what_is_the_primary_source_of_water_for_the_household">What is the primary source of water for the household?</string>
+    <string name="village_tank">Village Tank</string>
+    <string name="open_well">Open Well</string>
+    <string name="hand_pump_checkbox">Handpump</string>
+    <string name="bore_well">Borewell</string>
+    <string name="river">River</string>
+    <string name="pond">Pond</string>
+    <string name="other">Other</string>
+
+    <string name="other_water_sources">Other water sources</string>
+    <string name="how_far_is_the_water_source_from_the_house">How far is the water source from the house?</string>
+    <string name="meter">Meter</string>
+    <string name="km">KM</string>
+    <string name="available_of_water_supply_hours_per_day">Availability of water supply (hours per day)</string>
+    <string name="available_of_water_supply_days_per_week">Availability of water supply (days per week)</string>
+    <string name="does_the_house_have_a_bank_account">Does the household have a bank account?</string>
+
+    <string name="amount_of_cultivable_land_owned_by_household">Amount of cultivable land owned by household</string>
+    <string name="hectare">Hectare</string>
+    <string name="acre">Acre</string>
+    <string name="bigha">Bigha</string>
+    <string name="gunta">Gunta</string>
+    <string name="enter_the_no">Enter the no.</string>
+    <string name="average_annual_household_income">Average Annual Household Income (INR)</string>
+    <string name="zero_thirty_thousand">0 – 30,000</string>
+    <string name="thirty_fifty_thousand">30,000 – 50,000</string>
+    <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+    <string name="more_than_two_lakh_fifty_thousand">More than 2,50,000</string>
+    <string name="monthly_expenditure_on_food">Monthly Expenditure on food</string>
+    <string name="zero_fifteen_hundred">0 – 1,500</string>
+    <string name="fifteen_twenty_five_hundred">1,500 – 2,500</string>
+    <string name="twenty_five_hundred_five_thousand">2,500 – 5,000</string>
+    <string name="five_ten_thousand">5,000 – 10,000</string>
+    <string name="more_than_ten_thousand">More than 10,000</string>
+
+    <string name="annual_household_expenditure_on_health">Annual household expenditure on health</string>
+    <string name="annual_household_expenditure_on_food">Annual household expenditure on food</string>
+    <string name="zero_five_thousand">0 – 5,000</string>
+    <string name="five_thousand_one_ten_thousand">5,001 – 10,000</string>
+    <string name="ten_thousand_one_twenty_thousand">10,001 – 20,000</string>
+    <string name="twenty_thousand_one_thirty_thousand">20,001 – 30,000</string>
+    <string name="more_than_thirty_thousand">More than 30,000</string>
+    <string name="if_more_than_30000_a_year_specify_an_estimate">If more than Rs. 30,000 - specify an estimate</string>
+    <string name="annual_expenditure_on_education">Annual expenditure on Education</string>
+
+    <string name="zero_ten_thousand">0 – 10,000</string>
+    <string name="ten_twenty_thousand">10,000 – 20,000</string>
+    <string name="twenty_forty_thousand">20,000 – 40,000</string>
+    <string name="forty_thousand_one_lakh">40,000 – 1,00,000</string>
+    <string name="more_than_one_lakh">More than 1,00,000</string>
+    <string name="annual_expenditure_on_clothing_conveyance_consumables_etc">Annual expenditure on clothing, conveyance, consumables, etc.</string>
+    <string name="monthly_expenditure_on_intoxicants_such_as_alcohol_and_tobacco">Monthly expenditure on intoxicants such as alcohol and tobacco</string>
+
+    <string name="zero">0</string>
+    <string name="one_to_six_hundred">1 – 600</string>
+    <string name="six_hundred_one_thousand">600 – 1,000</string>
+    <string name="thousand_to_fifteen_hundred">1,000 – 1,500</string>
+    <string name="fifteen_hundred_to_twenty_five_hundred">1,500 – 2,500</string>
+    <string name="more_than_twenty_five_hundred">More than 2,500</string>
+    <string name="yes_card_seen">Yes, Card Seen</string>
+    <string name="yes_card_not_seen">Yes, Card Not Seen</string>
+    <string name="no_card">No Card</string>
+    <string name="DO_NOT_KNOW">Do Not Know</string>
+    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card or coupon?</string>
+    <string name="does_this_household_have_a_antodaya_card">Does this household have an Antodaya card/coupon?</string>
+    <string name="does_this_household_have_a_rsby_card">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
+    <string name="does_this_household_have_a_mgnrega_card">Does this household have an MGNREGA card?</string>
+
+    <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">What type of fuel does your household mainly use for cooking?</string>
+    <string name="electricity">Electricity</string>
+    <string name="lpg_natural_gas">LPG or Natural Gas</string>
+    <string name="biogas_checkbox">Biogas</string>
+    <string name="kerosene">Kerosene</string>
+    <string name="coal_lignite">Coal or Lignite</string>
+    <string name="charcoal">Charcoal</string>
+    <string name="wood">Wood</string>
+    <string name="straw_shrubs_grass">Straw or Shrubs or Grass</string>
+    <string name="agricultural_crop_waste">Agricultural Crop Waste</string>
+    <string name="dung_cakes">Dung Cakes</string>
+    <string name="no_measures_taken_for_purification_drinking_as_it_is">No measures taken for purification, drinking as it is</string>
+    <string name="other_specify">Other (Specify)</string>
+    <string name="others">Others</string>
+    <string name="what_is_the_main_source_of_lighting_in_this_household">What is the main source of lighting in this household?</string>
+    <string name="lantern">Lantern</string>
+    <string name="kerosene_lamp">Kerosene Lamp</string>
+    <string name="candle">Candle</string>
+    <string name="electric">Electric</string>
+    <string name="lpg">LPG</string>
+    <string name="solar_energy">Solar Energy</string>
+    <string name="none">None</string>
+
+    <string name="nas_what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
+    <string name="piped_into_dwelling">Piped Into Dwelling</string>
+    <string name="piped_into_yard_plot">Piped to Yard or Plot</string>
+    <string name="public_tap_standpipe">Public Tap or Standpipe</string>
+    <string name="tube_well_borehole">Tube Well or Borehole</string>
+    <string name="protected_well_checkbox">Protected Well</string>
+    <string name="unprotected_well">Unprotected Well</string>
+    <string name="protected_spring">Protected Spring</string>
+    <string name="unprotected_spring">Unprotected Spring</string>
+    <string name="rainwater">Rainwater</string>
+    <string name="tanker_truck">Tanker Truck</string>
+    <string name="cart_with_small_tank">Cart With Small Tank</string>
+    <string name="surface_water">Surface Water</string>
+    <string name="common_hand_pump">Common Hand Pump</string>
+    <string name="hand_pump_at_home">Hand Pump at Home</string>
+    <string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">What do you usually do to the water to make it safer to drink?</string>
+    <string name="boil">Boil</string>
+    <string name="use_alum">Use Alum</string>
+    <string name="add_bleach_chlorine_tablets_drops">Add Bleach or Chlorine Tablets or Drops</string>
+    <string name="strain_through_a_cloth">Strain Through a Cloth</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">Use Water Filter (Ceramic or Sand or Composite etc.)</string>
+    <string name="use_electronic_purifier">Use Electronic Purifier</string>
+    <string name="let_it_stand_and_settle">Let It Stand and Settle</string>
+
+
+    <string name="nas_what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
+    <string name="flush_to_piped_sewer_system">Flush to Piped Sewer System</string>
+    <string name="flush_to_septic_tank">Flush to Septic Tank</string>
+    <string name="flush_to_pit_latrine">Flush To Pit Latrine</string>
+    <string name="flush_to_somewhere_else">Flush to Somewhere Else</string>
+    <string name="flush_dont_know_where">Flush Don\’t Know Where</string>
+    <string name="ventilated_improved_pit_biogas_latrine">Ventilated Improved Pit (VIP) or Biogas Latrine</string>
+    <string name="pit_latrine_with_slab">Pit Latrine With Slab</string>
+    <string name="pit_latrine_without_slab_open_pit">Pit Latrine Without Slab or Open Pit</string>
+    <string name="twin_pit_composting_toilet">Twin Pit or Composting Toilet</string>
+    <string name="dry_toilet">Dry Toilet</string>
+    <string name="communal_toilet">Communal Toilet</string>
+    <string name="no_facility_uses_open_space_or_field">No Facility or Uses Open Space or Field</string>
+
+    <string name="in_the_past_week_has_anyone_in_your_household_including_children_defecated_in_the_open_for_example_in_the_field_or_in_the_river">In the past week has anyone in your household including children defecated in the open for example in the field or in the river?</string>
+    <string name="what_kind_of_food_items_were_cooked_prepared_in_the_last_twenty_four_hours_in_your_household">What kind of food items were prepared in the last 24hr in your household?</string>
+    <string name="starch_staple_food">Starch staple food</string>
+    <string name="beans_and_peas">Beans and peas</string>
+    <string name="nuts_and_seeds">Nuts and seeds</string>
+    <string name="dairy">Dairy</string>
+    <string name="eggs">Eggs</string>
+    <string name="flesh_food">Flesh food</string>
+    <string name="any_vegetables">Any Vegetables</string>
+
+    <string name="distance_to_sub_centre_in_walking_time">Distance to Sub-Centre (In walking time)</string>
+    <string name="within_5_minutes">Within 5 minutes</string>
+    <string name="five_fifteen_minutes">5 – 15 minutes</string>
+    <string name="fifteen_thirty_minutes">15–30 minutes</string>
+    <string name="more_than_thirty_minutes">More than 30 minutes</string>
+    <string name="distance_to_nearest_primary_health_centres_in_kms">Distance to nearest Primary health centres (IN KMS)*</string>
+    <string name="within_1_km">Within 1km</string>
+    <string name="one_to_three_kms">1–3 km</string>
+    <string name="three_to_five_kms">3–5km</string>
+    <string name="more_than_five_kms">More than 5km</string>
+    <string name="distance_to_nearest_community_health_centre">Distance to nearest Community Health Centre</string>
+    <string name="within_3_km">Within 3km</string>
+    <string name="three_to_six_kms">3–6km</string>
+    <string name="six_to_ten_kms">6–10km</string>
+    <string name="more_than_ten_kms">More than 10km</string>
+    <string name="distance_to_nearest_district_hospital">Distance to nearest District Hospital</string>
+    <string name="within_5_kms">Within 5 km</string>
+    <string name="five_to_ten_kms">5–10 km</string>
+    <string name="ten_to_twenty_kms">10–20 km</string>
+    <string name="twenty_to_thirty_kms">20–30 km</string>
+    <string name="more_than_thirty_kms">More than 30km</string>
+
+    <string name="distance_to_nearest_medical_store">Distance to nearest medical store</string>
+    <string name="distance_to_nearest_pathological_lab">Distance to nearest pathological lab</string>
+    <string name="distance_to_nearest_private_clinic_with_an_mbbs_doctor">Distance to a nearest private clinic (With an MBBS Doctor)</string>
+    <string name="distance_to_nearest_private_clinic_with_alternate_medical_practitioners">Distance to nearest private clinic (With alternate medical practitioners - BAMS, BHMS, Ayurveda, etc)</string>
+    <string name="distance_to_nearest_tertiary_care_facility">Distance to nearest tertiary care facility</string>
+
+    <string name="household_basic_information">Household Basic Information</string>
+    <string name="household_basic_characteristics">Household Basic Characteristics</string>
+    <string name="health_service_access_availability_utilization">Health Service Access, Availability &amp; Utilization</string>
+
+    <!--    Roster-->
+    <string name="please_tell_me_the_names_of_all_the_persons_who_usually_live_in_your_household_starting_with_the_head_of_the_household">Please tell me the names of all the persons who usually live in your household, starting with the head of the household.</string>
+    <string name="what_is_the_relationship_of_name_to_the_head_of_household">What is the relationship %1$s of to the head of household?</string>
+    <string name="head_of_the_household">Head of the Household</string>
+    <string name="spouse">Spouse</string>
+    <string name="son_or_daughter">Son / Daughter</string>
+    <string name="son_or_daughter_in_law">Son / Daughter in Law</string>
+    <string name="grandchild">Grandchild</string>
+    <string name="father_or_mother">Father/Mother</string>
+    <string name="father_or_mother_in_law">Father/Mother-in-Law</string>
+    <string name="nas_brother_or_sister">Brother/Sister</string>
+    <string name="brother_or_sister_in_law">Brother/Sister-in-Law</string>
+    <string name="niece_or_nephew">Niece/Nephew</string>
+    <string name="grandparent_or_grandparent_in_law">Grandparent/Grand Parent-in-Law</string>
+    <string name="other_relative">Other Relative</string>
+    <string name="adopted_foster_stepchild">Adopted/Foster/Stepchild</string>
+    <string name="domestic_servant">Domestic Servant</string>
+    <string name="other_not_related">Other Not Related</string>
+    <string name="not_stated">Not Stated</string>
+
+    <string name="what_is_the_sex_of_name">What is the sex of %1$s?</string>
+    <string name="how_old_is_name">How old is %1$s?</string>
+    <string name="gender_other">Other</string>
+    <string name="enter_in_completed_years">Enter in Completed Years</string>
+    <string name="what_is_name_s_marital_status">What is %1$s\'s marital status?</string>
+    <string name="what_is_your_marital_status">What is your marital status?*</string>
+    <string name="currently_married">Currently Married</string>
+    <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
+    <string name="widowed">Widowed</string>
+    <string name="divorced">Divorced</string>
+    <string name="separated">Separated</string>
+    <string name="deserted">Deserted</string>
+    <string name="nas_never_married">Never Married</string>
+
+    <string name="what_is_name_s_education_status">What is %1$s\'s education status?</string>
+    <string name="what_is_your_education_status">What is your education status?*</string>
+    <string name="cannot_read_or_write">Cannot Read or Write</string>
+    <string name="can_read_and_write">Can Read and Write</string>
+    <string name="primary_education_till_class_five">Primary Education (Till Class 5)</string>
+    <string name="middle_school_sixth_eighth">Middle School (6th-8th)</string>
+    <string name="passed_secondary_school_tenth_boards">Passed Secondary School (Class 10th Boards)</string>
+    <string name="passed_senior_secondary_school_twelfth_boards">Passed Senior Secondary School (12th Boards)</string>
+    <string name="graduate">Graduate</string>
+    <string name="postgraduate">Graduate</string>
+    <string name="nas_none">None</string>
+
+    <string name="nas_occupation">Occupation*</string>
+    <string name="phone_ownership">Phone ownership</string>
+    <string name="shared">Shared</string>
+    <string name="owns_smartphone">Owns Smartphone</string>
+    <string name="owns_feature_phone">Owns Feature Phone</string>
+
+    <string name="salaried_government_job">Salaried Government Job</string>
+    <string name="salaried_private_job">Salaried Private Job</string>
+    <string name="petty_business_shop_owner">Petty Business/Shop Owner</string>
+    <string name="technician_craftsman_other_skilled_work_driver_mason">Technician/Craftsman/Other Skilled Work (Driver, Mason etc)</string>
+    <string name="agricultural_farmer">Agricultural Farmer</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">Tenant Farmer/Agricultural Daily Wage Worker</string>
+    <string name="daily_wage_worker">Daily Wage Worker (Unskilled Work)</string>
+    <string name="household_work">Household Work</string>
+    <string name="student">Student</string>
+    <string name="unemployed">Unemployed</string>
+    <string name="retired_with_pension">Retired (With Pension)</string>
+    <string name="retired_without_pension">Retired (Without Pension)</string>
+    <string name="nas_bp_checked">BP Checked</string>
+    <string name="nas_never_checked">Never Checked</string>
+    <string name="in_past_one_week">In past one week</string>
+    <string name="within_last_month">Within last month</string>
+    <string name="between_one_month_to_three_months_ago">Between one month to 3 months ago</string>
+    <string name="between_three_months_to_six_months">Between 3 months-6months ago</string>
+    <string name="more_than_six_months">More than 6 months</string>
+
+    <string name="sugar_checked">Sugar Checked</string>
+    <string name="hb_test">HB test</string>
+    <string name="bmi_height_and_weight_checked">BMI (Height and weight) checked</string>
+
+    <!--    PO Roster -->
+    <!--    PO Roster -->
+    <string name="how_many_times_have_you_been_pregnant">How many times have you been pregnant?</string>
+    <string name="have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had a pregnancy outcomes in the past two years? (January 1st, 2020 - December 31st, 2021)</string>
+    <string name="what_was_the_outcome_of_your_pregnancy">What was the outcome of your ……pregnancy?</string>
+    <string name="born_alive">Born Alive</string>
+    <string name="still_birth">Still Birth</string>
+    <string name="induced_abortion_mtp">Induced Abortion (MTP)</string>
+    <string name="miscarriage">Miscarriage</string>
+    <string name="currently_pregnant">Currently Pregnant</string>
+    <string name="is_the_child_alive">Is the child alive?</string>
+    <string name="what_was_the_year_of_pregnancy_outcome">What was the year of pregnancy outcome?</string>
+    <string name="how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>
+    <string name="how_many_months_have_you_been_pregnant">How many months have you been pregnant?</string>
+
+    <string name="place_of_delivery">Place of Delivery</string>
+    <string name="place_of_delivery_home">Home</string>
+    <string name="place_of_delivery_sub_center">Sub Center</string>
+    <string name="place_of_delivery_chc_civil_hospital_at_block_level">CHC / Civil Hospital at Block Level</string>
+    <string name="place_of_delivery_district_hospital_civil_hospital_at_district_level">District Hospital/ Civil Hospital at District Level</string>
+    <string name="place_of_delivery_private_clinic">Private Clinic</string>
+    <string name="place_of_delivery_private_hospital">Private Hospital</string>
+    <string name="occupation_values_missing">Occupation values are missing</string>
+
+    <string name="focal_facility_for_this_pregnancy">Focal Facility for this pregnancy</string>
+    <string name="was_this_a_single_or_multiple_births">Was this a single/multiple births?</string>
+    <string name="what_is_was_the_sex_of_name">What is/was the sex of %1$s?</string>
+    <string name="how_old_was_name_when_he_or_she_died">How old was %1$s when he/she died? PROBE: How many months old was %1$s?</string>
+    <string name="was_this_pregnancy_planned">Was this pregnancy planned?</string>
+    <string name="were_you_identified_as_a_high_risk_pregnancy_case">Were you identified as a High-Risk Pregnancy case?</string>
+    <string name="were_any_complications_identified_at_the_time_of_delivery">Were any complications identified at the time of delivery</string>
+    <string name="how_many_times_have_you_been_pregnant_in_your_lifetime">How many times have you been pregnant in your lifetime?</string>
+
+    <!--    HealthServUtilizationRoster -->
+    <string name="name_of_member_of_household">Name of Household member</string>
+    <!--    <string name="health_issue_reported">Health issue reported</string>-->
+    <string name="health_issue_reported_fever">Fever</string>
+    <string name="health_issue_reported_cough_cold">Cough / Cold</string>
+    <string name="health_issue_reported_diarrhoea">Diarrhoea</string>
+    <string name="health_issue_reported_injury">Injury</string>
+    <string name="health_issue_reported_skin_issues">Skin Issues</string>
+    <string name="health_issue_reported_eye_vision_issues">Eye / Vision issues</string>
+    <string name="health_issue_reported_joint_bone_pain">Joint / Bone Pain</string>
+    <string name="health_issue_reported_others_specify">Others (Specify)</string>
+
+    <string name="no_of_episodes_in_the_last_year">No. of episodes in the last year</string>
+    <!--    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, which is the primary health provider you interacted with for this health issue</string>-->
+    <!--    <string name="government_doctor">GOVERNMENT DOCTOR</string>-->
+    <!--    <string name="private_doctor">PRIVATE DOCTOR</string>-->
+    <!--    <string name="staff_nurse">STAFF NURSE</string>-->
+    <!--    <string name="anm">ANM</string>-->
+    <!--    <string name="asha">ASHA</string>-->
+    <!--    <string name="aww">AWW</string>-->
+    <!--    <string name="rmp">RMP</string>-->
+    <!--    <string name="ayush_doctor">AYUSH DOCTOR</string>-->
+    <!--    <string name="homeopath_doctor">HOMEOPATH DOCTOR</string>-->
+    <!--    <string name="traditional_healer_quack">TRADITIONAL HEALER / QUACK</string>-->
+    <string name="did_not_consult_any_health_provider_for_the_issue">Did not consult any Health Provider for this issue</string>
+
+    <string name="first_location_of_visit_interaction">First Location of visit/interaction</string>
+    <string name="first_location_of_visit_home">Home</string>
+    <string name="first_location_of_visit_private_clinic">Private Clinic</string>
+    <string name="first_location_of_visit_phc">PHC</string>
+    <string name="first_location_of_visit_chc">CHC</string>
+    <string name="first_location_of_visit_dh">DH</string>
+    <string name="first_location_of_visit_private_hospital">Private Hospital</string>
+    <string name="first_location_of_visit_ayush_center">Ayush Center</string>
+    <string name="first_location_of_visit_pharmacy">Pharmacy</string>
+
+    <!--    <string name="referred_to">Referred to</string>-->
+    <!--    <string name="not_referred">NOT REFERRED</string>-->
+    <!--    <string name="private_clinic">PRIVATE CLINIC</string>-->
+    <!--    <string name="phc">PHC</string>-->
+    <!--    <string name="chc">CHC</string>-->
+    <!--    <string name="dh">DH</string>-->
+    <!--    <string name="private_hospital">PRIVATE HOSPITAL</string>-->
+    <!--    <string name="ayush_center">AYUSH CENTER</string>-->
+    <string name="others_please_specify">Others (Specify)</string>
+
+    <string name="mode_of_transportations_used_to_reach_facility_provider">Mode of transportations used to reach facility/provider</string>
+    <string name="mode_of_transportation_walking">Walking</string>
+    <string name="mode_of_transportation_bus">Bus</string>
+    <string name="mode_of_transportation_private_taxi">Private Taxi</string>
+    <string name="mode_of_transportation_shuttle_taxi">Shuttle Taxi</string>
+    <string name="mode_of_transportation_auto">Auto</string>
+    <string name="mode_of_transportation_own_vehicle">Own Vehicle</string>
+    <string name="mode_of_transportation_friends_neighbours_vehicle">Friends\’ / Neighbours\’ Vehicle</string>
+    <string name="mode_of_transportation_ambulance">Ambulance</string>
+
+    <!--    <string name="average_cost_incurred_on_travel_and_stay_per_episode">Average Cost incurred on travel and stay per episode</string>-->
+    <!--    <string name="average_cost_incurred_on_consultation_fees_per_episode">Average cost incurred on consultation fees per episode</string>-->
+    <!--    <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>-->
+    <!--    <string name="score_for_experience_of_treatment">Score for experience of treatment</string>-->
+    <string name="score_dissatisfied">Dissatisfied</string>
+    <string name="score_below_average">Below Average</string>
+    <string name="score_average">Average</string>
+    <string name="score_good">Good</string>
+    <string name="score_very_good">Very Good</string>
+
+    <string name="health_serv_utilization_roster">Health Service Utilization Roster</string>
+    <string name="health_issue_reported">Health Issue Reported</string>
+    <string name="number_of_episodes_in_the_last_year">No. Of Episodes In The Last Year</string>
+    <string name="name_of_household_member">Name Of Household Member</string>
+    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, which is the primary health provider you interacted with for this health issue?</string>
+    <string name="primary_health_care_provider">Primary Healthcare Provider</string>
+    <string name="first_location_of_visit">First Location Of Visit / Interaction</string>
+    <string name="referred_to">Referred To</string>
+    <string name="mode_of_transportation_used_to_reach_facility">Mode Of Transportation Used To Reach Facility</string>
+    <string name="average_cost_incurred_on_travel_and_stay_per_episode">Average Cost Incurred On Travel And Stay Per Episode</string>
+    <string name="average_cost_incurred_on_consultation_fees_per_episode">Average Cost Incurred On Consultation Fees Per Episode</string>
+    <string name="average_cost_incurred_on_medicines_per_episode">Average Cost Incurred On Medicines Per Episode</string>
+    <string name="score_for_experience_of_treatment">Score For Experience Of Treatment</string>
+    <string name="select_health_issue">Select Health Issue</string>
+    <string name="others_specify_lowercase">Others (Specify)</string>
+
+    <string name="fever">Fever</string>
+    <string name="cough_cold">Cough / Cold</string>
+    <string name="diarrhoea">Diarrhoea</string>
+    <string name="injury">Injury</string>
+    <string name="skin_issues">Skin Issues</string>
+    <string name="eye_vision_issues">Eye / Vision Issues</string>
+    <string name="joint_bone_pain">Joint / Bone Pain</string>
+    <string name="typhoid">Typhoid</string>
+    <string name="jaundice">Jaundice</string>
+    <string name="malaria">Malaria</string>
+    <string name="dengue">Dengue</string>
+    <string name="diabetes">Diabetes</string>
+    <string name="hypertensionBP">Hypertension/BP</string>
+    <string name="asthama">Asthama</string>
+    <string name="cancer">Cancer</string>
+    <string name="tB">TB</string>
+    <string name="skin_diseases">Skin diseases</string>
+    <string name="water_related_diseases">Water-related diseases</string>
+
+
+    <string name="select_primary_health_care_provider">Select Primary Healthcare Provider</string>
+    <string name="government_doctor">Government Doctor</string>
+    <string name="private_doctor">Private Doctor</string>
+    <string name="staff_nurse">Staff Nurse</string>
+    <string name="anm">ANM</string>
+    <string name="asha">ASHA</string>
+    <string name="aww">AWW</string>
+    <string name="rmp">RMP</string>
+    <string name="ayush_doctor">Ayush Doctor</string>
+    <string name="homeopath_doctor">Homeopath Doctor</string>
+    <string name="traditional_healer_quack">Traditional Healer / Quack</string>
+    <string name="did_not_consult_any_health_provider_for_this_issue">Did not consult any health doctor for this issue</string>
+    <string name="home">Home</string>
+    <string name="private_clinic">Private Clinic</string>
+    <string name="phc">PHC</string>
+    <string name="chc">CHC</string>
+    <string name="dh">DH</string>
+    <string name="private_hospital">Private Hospital</string>
+    <string name="ayush_center">Ayush Center</string>
+    <string name="pharmacy">Pharmacy</string>
+
+    <string name="not_referred">Not Referred</string>
+    <string name="walking">Walking</string>
+    <string name="bus">Bus</string>
+    <string name="private_taxi">Private Taxi</string>
+    <string name="shuttle_taxi">Shuttle Taxi</string>
+    <string name="auto">Auto</string>
+    <string name="own_vehicle">Own Vehicle</string>
+    <string name="friends_neighbours_vehicle">Friends\’ / Neighbours\’ Vehicle</string>
+    <string name="ambulance">Ambulance</string>
+    <string name="dissatisfied">Dissatisfied</string>
+    <string name="below_average">Below Average</string>
+    <string name="average">Average</string>
+    <string name="good">Good</string>
+    <string name="very_good">Very Good</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fill_required_fields">please fill all required fields</string>
+    <!--    <string name="what_is_your_marital_status">What is your Marital Status</string>-->
+
+
+    <string name="txt_hedingRosters">Rosters</string>
+    <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
+    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
+    <string name="txt_phone_ownership">Phone Ownership*</string>
+    <string name="txt_bp_checked">BP checked</string>
+    <string name="txt_sugar_checked">Sugar Checked</string>
+    <string name="txt_hb_test">HB test</string>
+
+    <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?*</string>
+    <string name="txt_what_health_issue_is_reported">What Health issue is reported?</string>
+    <string name="txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, Which is the primary health provider you interacted with for this health issue?</string>
+    <string name="txt_first_location_of_visit_interaction">First Location of visit/interaction</string>
+    <string name="txt_referred_to">Referred to</string>
+    <string name="txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider">What is the mode of transportations used to reach facility/provider?</string>
+    <string name="txt_no_of_episodes_in_the_last_year">No. of episodes in the last year</string>
+    <string name="txt_average_cost_incurred_on_travel_and_stay_per_episode">Average Cost incurred on travel and stay per episode</string>
+    <string name="txt_average_cost_incurred_on_consultation_fees_per_episode">Average cost incurred on consultation fees per episode</string>
+    <string name="txt_score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="txt_how_many_times_have_you_been_pregnant">How many times have you been pregnant?*</string>
+    <string name="txt_have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had any pregnancy outcomes in the past 2 years?*</string>
+    <string name="txt_what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?</string>
+    <string name="txt_is_the_child_alive">Is the child alive?</string>
+    <string name="txt_what_was_the_year_of_pregnancy_outcome">What was the year of pregnancy outcome ? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/ miscarriage)</string>
+    <string name="txt_how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>
+    <string name="txt_how_many_months_have_you_been_pregnant">How many months have you been pregnant</string>
+    <string name="txt_what_is_the_place_of_delivery">What is the Place of Delivery?</string>
+    <string name="txt_focal_facility_for_this_pregnancy">Focal Facility for this pregnancy</string>
+    <string name="txt_was_this_a_single_multiple_births">Was this a single/multiple births?</string>
+    <string name="txt_how_old_was_the_baby_when_he_she_died">How old was the baby when he/she died?</string>
+    <string name="txt_what_is_was_the_sex_of_the_baby">What is/was the sex of the baby?</string>
+    <string name="txt_was_this_pregnancy_planned">Was this pregnancy planned?</string>
+    <string name="txt_were_you_identified_as_a_high_risk_pregnancy_case">Were you identified as a High-Risk Pregnancy case?</string>
+    <string name="txt_were_any_complications_identified_at_the_time_of_delivery">Were any complications identified at the time of delivery?</string>
+    <string name="txt_averagecost_incurred_on_medicines_per_episode">Averagecost incurred on medicines per episode</string>
+    <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">When was the last time you got your HB level tested?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?*</string>
+    <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
+
+    <string name="household_survey">Household Survey</string>
+    <string name="rice_roti_bread">(Rice, Roti, Bread, Pressed rice, Muri, Potato, sweet potato, arbi, Cassava, Banana, any other roots and tubers, noodles, pasta)</string>
+    <string name="beans_peas_mung_dal_chana_dal">(Beans, peas, Mung dal, Chana dal, Arahar dal, Urad dal, kidney beans, Matter dal, other pulse and Soybeans, Seem, mustard)</string>
+    <string name="groundnut_apricort_almond_pista">(Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds )</string>
+    <string name="milk_cow_goat_buffalo">(Milk – cow/goat/buffalo, Powder milk, Liquid packet milk, Curd, Paneer, sewai, kheer, sweets, Butter, Ghee)</string>
+    <string name="meat_lamb_beef_pork">(Meat – Lamb/Beef/pork, Organ meat, chicken, duck, other birds, fish – big/small/shell fish/prawn)</string>
+    <string name="edit_dialog_button">Edit</string>
+    <string name="delete_dialog_button">Delete</string>
+
+    <!--Focal Facility-->
+    <string name="surgane">Surgane</string>
+    <string name="sadadapada">Sadadapada</string>
+    <string name="bhatavihir">Bhatavihir</string>
+    <string name="borada">Borada</string>
+    <string name="ghubadasaka">Ghubadasaka</string>
+    <string name="sheharipada">Sheharipada</string>
+    <string name="mohalipada">Mohalipada</string>
+    <string name="tungarapada">Tungarapada</string>
+    <string name="hedapada">Hedapada</string>
+    <string name="kapurane">Kapurane</string>
+    <string name="ghotapada">Ghotapada</string>
+    <string name="vadapada">Vadapada</string>
+    <string name="dabhadi">Dabhadi</string>
+    <string name="gandole">Gandole</string>
+    <string name="chaukada">Chaukada</string>
+    <string name="holamari">Holamari</string>
+    <string name="badagi">Badagi</string>
+    <string name="palashi">Palashi</string>
+    <string name="jamale">Jamale</string>
+    <string name="derapada">Derapada</string>
+    <string name="golasapada">Golasapada</string>
+    <string name="chikhali">Chikhali</string>
+    <string name="modhalapada">Modhalapada</string>
+    <string name="khiramane">Khiramane</string>
+    <string name="kalamane">Kalamane</string>
+    <string name="bhegu_savarapada">Bhegu-Savarapada</string>
+    <string name="kotambi">Kotambi</string>
+    <string name="jambhulapada">Jambhulapada</string>
+    <string name="ambupada">Ambupada</string>
+    <string name="bedase">Bedase</string>
+    <string name="peth_block">Peth Block</string>
+    <string name="suragana_block">Suragana Block</string>
+
+    <!--Focal Facility-->
+    <string name="surveyDialogTitle">Saved Successful</string>
+    <string name="surveyDialogMessage">Survey added successfully</string>
+    <string name="block_values_are_missing">Block values are missing</string>
+    <string name="more_than_twenty_km">More than 20km</string>
+    <string name="within_ten_km">Within 10km</string>
+    <string name="twenty_to_forty_km">20–40km</string>
+    <string name="fifty_to_seventy_km">50–70km</string>
+    <string name="more_than_seventy_km">More than 70km</string>
+    <string name="not_treated">Not Treated</string>
+    <string name="select_village">Select Village</string>
+    <string name="enter_block_name_other">Enter Block Name</string>
+    <string name="enter_village_name_other">Enter Village Name</string>
+    <string name="no_of_pregnancy_outcomes_in_the_past_2_years">No. of pregnancy outcomes in the past 2 years</string>
+    <string name="no_of_times_pasttwoyrs_limit_toast">Max limit reached</string>
+    <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">Was this birth pre-term? (earlier than the due date for delivery?)</string>
+    <string name="what_was_the_name_of_the_facility">What was the name of the facility?</string>
+    <string name="app_version_string">%1$s - نسخة التطبيق</string>
+
+    <string name="what_is_the_type_of_delivery">What was the type of delivery?</string>
+    <string name="normal_vaginal_delivery">Normal or Vaginal Delivery</string>
+    <string name="cesarean_section_c_section">Cesarean Section (C-Section)</string>
+    <string name="please_add_pregnancy_outcome">Please add Pregnancy Outcome</string>
+    <string name="draft_survey_title">Draft Survey</string>
+    <string name="add_pregnancy_outcome">Add Pregnancy Outcome</string>
+
+    <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
+    <string name="connecting_please_wait">Connecting please wait ...</string>
+    <string name="connected">HealthCube Connected</string>
+    <string name="disconnected">HealthCube Disconnected</string>
+    <string name="please_enable_location">Please enable location to connect.</string>
+    <string name="please_allow_permission_to_continue">Please Allow the permission to continue</string>
+    <string name="medical_device_1">HealthCube 1</string>
+    <string name="medical_device_2">HealthCube 2</string>
+    <string name="medical_device_3">HealthCube 3</string>
+    <string name="STOP">Stop</string>
+    <string name="devices">Devices</string>
+    <string name="healthcube_device_info">HealthCube Device Info</string>
+    <string name="blood_glucose_calibration">Blood Glucose Calibration</string>
+    <string name="hemoglobin_calibration">Hemoglobin Calibration</string>
+    <string name="healthcube">HealthCube</string>
+    <string name="thermalprinter_device_info">Device Info</string>
+    <string name="thermal_printer">Printer</string>
+    <string name="hemoglobin_validation">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="uric_acid_validation">Uric Acid should be in between %1$s and %2$s</string>
+    <string name="total_cholesterol_validation">Total Cholesterol should be in between %1$s and %2$s</string>
+    <string name="calibration_not_required">Calibration Not Required. Test can be directly performed.</string>
+    <string name="connect_bluetooth">Connect Bluetooth</string>
+    <string name="test_stopped">Test Stopped</string>
+    <string name="calibration_started_successfully">Calibration Started Successfully ....</string>
+    <string name="initializing">Initializing ....</string>
+    <string name="insert_calibration_strip">Insert Calibration Strip ....</string>
+    <string name="calibration_stopped_successfully">Calibration Stopped Successfully</string>
+    <string name="calibration_completed_successfully">Calibration Completed Successfully</string>
+    <string name="test_has_started">Test has started ....</string>
+    <string name="insert_test_strip">Insert Test Strip ....</string>
+    <string name="insert_valid_test_strip">Insert Valid Test Strip ....</string>
+    <string name="strip_detected_apply_blood">Strip Detected Apply Blood ....</string>
+    <string name="place_finger_in_probe">Place the Finger in the Probe ....</string>
+    <string name="connect_sensor_probe_to_device">Connect the Sensor Probe to the Device ....</string>
+    <string name="analysing">Analysing ....</string>
+    <string name="test_completed">Test Completed</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="uric_acid">Uric Acid</string>
+    <string name="total_cholestrol">Total Cholesterol</string>
+    <string name="uric_acid_calibration">Uric Acid Calibration</string>
+    <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
+    <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
+    <string name="blood_glucose_random">Blood Glucose (Random)</string>
+    <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
+    <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
+    <string name="haemoglobin">Haemoglobin (mg/dL)</string>
+
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="household_no">Household No.</string>
+    <string name="open_mrs_id">OpenMRS ID</string>
+
+    <!-- Thermal Printers -->
+    <string name="please_connect">Select Available Device</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connect">Connect</string>
+
+    <string name="paired_devices">Paired</string>
+    <string name="tip_have_no_paired_device">No paired device</string>
+    <string name="tip_have_no_found_bluetooth_device">No Device</string>
+    <string name="search_device">Search</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">نعم</string>
+    <string name="dialog_tip">Tip</string>
+    <string name="main_pls_choose_device">Please choose a device</string>
+    <string name="dialog_back">Back</string>
+    <string name="main_discon_click_repeatedly">Device has been disconnected, no need to click repeatedly</string>
+    <string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+    <string name="please_enter_text">Please enter text.</string>
+    <string name="small_font">Small Font</string>
+    <string name="anti_white">Anti white</string>
+    <string name="double_width">Double Width</string>
+    <string name="double_height">Double Height</string>
+    <string name="bold">Bold</string>
+    <string name="underline">Underline</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
+    <string name="text_encode">Text Encode:</string>
+    <string name="dialog_title_chartset_setting">Chartset name settings</string>
+    <string name="spin_default_esc_font">Please choose a Font</string>
+    <string name="tv_font_select">Font Choose：</string>
+    <string name="btn_clk_sel_font">Click to choose the printed font</string>
+    <string name="label_setting">Label Setting</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="no_presc_available">No Prescription Available</string>
+    <string name="_main_connected">" connect success"</string>
+    <string name="_main_connected_fail">connect fail</string>
+    <string name="_main_disconnect">" disconnected"</string>
+    <string name="printing">Printing...</string>
+    <string name="visit_confirmation">"Are you sure that you want to start the visit? "</string>
+    <string name="save_prescription">Save Prescription</string>
+</resources>

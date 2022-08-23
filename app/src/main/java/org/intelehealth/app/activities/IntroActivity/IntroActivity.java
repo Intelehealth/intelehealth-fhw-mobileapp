@@ -47,6 +47,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
@@ -506,6 +507,11 @@ public class IntroActivity extends AppCompatActivity {
         }
         return salt;
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
 }

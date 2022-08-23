@@ -22,8 +22,7 @@
         android:layout_height="160dp"
         android:layout_gravity="center"
         android:padding="5dp"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/intelehealth_i_icon_only" />
 
     <TextView
         android:layout_width="wrap_content"

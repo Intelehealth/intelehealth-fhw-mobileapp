@@ -96,10 +96,10 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             List<JSONObject> itemList = new ArrayList<JSONObject>();
 
             JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("name", "हिंदी");
-//            jsonObject.put("code", "hi");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("hi"));
-//            itemList.add(jsonObject);
+            jsonObject.put("name", "عربى");
+            jsonObject.put("code", "ar");
+            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ar"));
+            itemList.add(jsonObject);
 
             jsonObject = new JSONObject();
             jsonObject.put("name", "English");
@@ -107,65 +107,9 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("en"));
             itemList.add(jsonObject);
 
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "ଓଡିଆ");
-//            jsonObject.put("code", "or");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("or"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "తెలుగు");
-//            jsonObject.put("code", "te");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("te"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "ગુજરાતી");
-//            jsonObject.put("code", "gu");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("gu"));
-//            itemList.add(jsonObject);
 
-            jsonObject = new JSONObject();
-            jsonObject.put("name", "Marathi");
-            jsonObject.put("code", "mr");
-            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("mr"));
-            itemList.add(jsonObject);
 
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "Kannada");
-//            jsonObject.put("code", "kn");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("kn"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "Assamese");
-//            jsonObject.put("code", "as");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("as"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "Malyalam");
-//            jsonObject.put("code", "ml");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ml"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "русский");
-//            jsonObject.put("code", "ru");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().equalsIgnoreCase("ru"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "বাংলা");
-//            jsonObject.put("code", "bn");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("bn"));
-//            itemList.add(jsonObject);
-//
-//            jsonObject = new JSONObject();
-//            jsonObject.put("name", "தமிழ்");
-//            jsonObject.put("code", "ta");
-//            jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
-//            itemList.add(jsonObject);
+
 
             LanguageListAdapter languageListAdapter = new LanguageListAdapter(ChooseLanguageActivity.this, itemList, new ItemSelectionListener() {
                 @Override

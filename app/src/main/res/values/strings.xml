@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--    <string name="app_name" translatable="false">Intelehealth</string>-->
-    <string name="app_name">Arogya Sampada</string>
+   <string name="app_name">Syriana</string>
     <string name="notification_title">Realtime sync is ON!</string>
-    //Generic
+    <!--//Generic-->
     <string name="generic_the_flipping_word_next">Next</string>
     <string name="hint_required">Required</string>
     <string name="hint_optional">Optional</string>
@@ -22,7 +22,7 @@
     <string name="generic_deleted">Deleted</string>
 
 
-    //Database Schema Names
+   <!-- //Database Schema Names-->
     <string name="db_first_name" translatable="false">first_name</string>
     <string name="db_middle_name" translatable="false">middle_name</string>
     <string name="db_last_name" translatable="false">last_name</string>
@@ -40,9 +40,9 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
     <string name="db_open_mrs_id" translatable="false">openmrs_id</string>
 
-    //Login Screen
+    <!--//Login Screen-->
     <!--    <string name="title_activity_login">Intelehealth</string>-->
-    <string name="title_activity_login">Arogya Sampada</string>
+    <string name="title_activity_login">Syriana</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -67,7 +67,7 @@
     <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
     <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
 
-    //Home Screen (after login)
+    <!--//Home Screen (after login)-->
     <string name="title_home_screen">Home</string>
     <string name="button_new_pt">New Patient</string>
     <string name="button_find_pt">Find Patient</string>
@@ -79,7 +79,7 @@
     <string name="menu_option_logout">Logout</string>
 
 
-    //Identification Screen
+    <!--//Identification Screen-->
     <string name="title_activity_identification">Add New Patient</string>
     <string name="identification_screen_prompt_first_name">First name *</string>
     <string name="identification_screen_prompt_middle_name">Middle name</string>
@@ -115,14 +115,14 @@
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
 
-    //Active Patients Screen
+    <!--//Active Patients Screen-->
     <string name="title_activity_active_patient">Active Visits</string>
 
-    //Patient History Screen
+    <!--//Patient History Screen-->
     <string name="title_activity_get_patient_history">Patient History</string>
     <string name="title_activity_search_patient">Patient Lookup</string>
 
-    //Complaint Node Screen
+    <!--//Complaint Node Screen-->
     <string name="title_activity_complaint_select">Select Complaints</string>
     <string name="title_activity_complaint_questions">Answer All Questions</string>
     <string name="title_activity_complaint_node">Select Complaints</string>
@@ -131,7 +131,7 @@
     <string name="complaint_dialog_title">Reason for visit</string>
     <string name="complaint_required">Complaint must be selected!</string>
 
-    //Question Node Screen
+    <!--//Question Node Screen-->
     <string name="title_activity_question_node">QuestionNodeActivity</string>
     <string name="complaint_change_selected">Modify</string>
     <string name="question_answer_all">Are you sure you have answered all questions.</string>
@@ -146,7 +146,7 @@
     <string name="question_frequency_picker">Please enter how many times</string>
 
 
-    //Table Exam Screen
+    <!--//Table Exam Screen-->
     <string name="title_activity_vitals">Vitals &amp; Diagnostics</string>
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
@@ -159,15 +159,15 @@
     <string name="table_temp">Temperature (C)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
-    //Patient Search Screen
+    <!--//Patient Search Screen-->
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
     <string name="alert_none_found">Please check username and pasword entered</string>
 
-    //Past Medical History Screen
+    <!--//Past Medical History Screen-->
     <string name="title_activity_patient_history">Past Medical History</string>
 
-    //Visit Summary Screen
+    <!--//Visit Summary Screen-->
     <string name="title_activity_family_history">Family History</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="title_activity_patient_summary">Visit Summary</string>
@@ -202,14 +202,14 @@
     <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>
 
 
-    //Diagnostic Tests Screen
+    <!--//Diagnostic Tests Screen-->
     <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
 
-    //Physical Exam Dialog
+    <!--//Physical Exam Dialog-->
     <string name="wash_hands">Remember to wash your hands</string>
 
 
-    //Patient Detail Screen
+    <!--//Patient Detail Screen-->
     <string name="header_patient_detail">Patient information</string>
     <string name="button_history">Patient History</string>
     <string name="title_activity_patient_detail">Patient Detail</string>
@@ -271,7 +271,7 @@
     <string name="generic_erase_redo">Erase and Re-Do</string>
     <string name="visit_summary_edit_vitals">You can re-do the vitals from the vitals screen</string>
 
-    //Camera Permissions
+    <!--//Camera Permissions-->
     <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
     <string name="permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
     <string name="permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
@@ -286,7 +286,7 @@
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
 
-    //SEND SMS Permissions
+    <!--//SEND SMS Permissions-->
     <string name="permission_sms_rationale">SMS permission is needed to send SMS.</string>
     <string name="permission_sms_denied">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
     <string name="permission_sms_never_askagain">SMS permission was denied with never ask again.</string>
@@ -294,7 +294,7 @@
     <string name="button_save">Save</string>
     <string name="button_delete">Delete</string>
 
-    //Camera Dialog
+    <!--//Camera Dialog-->
     <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
 
     <!--Offline Login Errors-->
@@ -313,7 +313,7 @@
     <string name="logging_in">Logging in</string>
     <string name="error_downloading_protocols">Error Downloading Mind Maps</string>
 
-    //Sync strings
+    <!--//Sync strings-->
     <string name="sync_stopped">Stopped</string>
     <string name="sync_in_progress">In progress</string>
     <string name="sync_complete">Complete</string>
@@ -599,7 +599,7 @@
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
     <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">Arogya Sampada is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">Syriana is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
     <string name="intelehealth_name">Intelehealth</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
