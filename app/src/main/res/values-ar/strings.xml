@@ -92,7 +92,7 @@
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
-    <string name="identification_screen_prompt_age">Age:</string>
+    <string name="identification_screen_prompt_age">سن:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
     <string name="identification_screen_prompt_caste">Caste</string>
@@ -110,13 +110,13 @@
     <string name="identification_screen_required_fields">Please enter required fields</string>
     <string name="identification_screen_error_dob">Enter a valid DOB</string>
     <string name="identification_screen_error_age">Enter a valid age</string>
-    <string name="identification_screen_text_years"> years </string>
-    <string name="identification_screen_text_months"> months</string>
-    <string name="identification_screen_picker_years">years</string>
-    <string name="identification_screen_picker_months">months</string>
+    <string name="identification_screen_text_years">سنوات</string>
+    <string name="identification_screen_text_months">الشهور</string>
+    <string name="identification_screen_picker_years">سنوات</string>
+    <string name="identification_screen_picker_months">الشهور</string>
 
     <!--//Active Patients Screen-->
-    <string name="title_activity_active_patient">Active Visits</string>
+    <string name="title_activity_active_patient">زيارات نشطة</string>
 
     <!--//Patient History Screen-->
     <string name="title_activity_get_patient_history">Patient History</string>
@@ -260,10 +260,10 @@
     <string name="title_activity_setup">اقامة</string>
 
     <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_today_patient">Today\'s Visits</string>
+    <string name="title_activity_today_patient">زيارات اليوم</string>
     <string name="title_activity_additional_documents">Additional Documents</string>
     <string name="title_activity_video_library">Video Library</string>
-    <string name="visit_summary_patient_details">Visit details</string>
+    <string name="visit_summary_patient_details">تفاصيل الزيارة</string>
 
     <!--Setup Activity-->
     <string name="setup_internet">مطلوب اتصال إنترنت قوي للإعداد.</string>
@@ -333,7 +333,7 @@
 
     <string name="error_no_data">Please download first before attempting to end the visit.</string>
     <string name="error_phone_number">Phone number can\'t be empty</string>
-    <string name="action_end_visit">End Visit</string>
+    <string name="action_end_visit">نهاية الزيارة</string>
 
     <string name="error_sms">SMS failed, please try again later!</string>
     <string name="sms_success">SMS Sent!</string>
@@ -458,9 +458,9 @@
     <string name="enter_server_url">Enter Server URL</string>
     <string name="enter_license_key"><b>Enter license key</b></string>
     <string name="invalid_url">Invalid URL</string>
-    <string name="years">years</string>
-    <string name="months">months</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
+    <string name="years">سنوات</string>
+    <string name="months">الشهور</string>
+    <string name="please_wait_till_sync_is_completed">يرجى الانتظار حتى اكتمال التحديث</string>
     <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
@@ -544,7 +544,7 @@
     <string name="location_setup">موقع الإعداد - </string>
     <string name="today_visits">زيارات اليوم</string>
     <string name="active_visits">زيارات نشطة</string>
-    <string name="day">day</string>
+    <string name="day">يوم</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
     <string name="s">s</string>
@@ -626,7 +626,7 @@
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
-    <string name="days">days</string>
+    <string name="days">أيام</string>
     <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
@@ -648,10 +648,10 @@
     <string name="gender_female">Female</string>
     <string name="document_">"Document - "</string>
     <string name="Hours">Hours</string>
-    <string name="Days">Days</string>
+    <string name="Days">أيام</string>
     <string name="Weeks">Weeks</string>
-    <string name="Months">Months</string>
-    <string name="Years">Years</string>
+    <string name="Months">الشهور</string>
+    <string name="Years">سنوات</string>
     <string name="per_Hour">per Hour</string>
     <string name="per_Day">per Day</string>
     <string name="per_Week">Per Week</string>
