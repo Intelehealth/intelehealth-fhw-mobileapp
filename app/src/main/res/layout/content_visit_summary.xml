@@ -1344,11 +1344,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/print_imageview"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
-                    android:text="@string/view_print"
-                    android:layout_toEndOf="@+id/print_imageview"
                     android:paddingStart="10dp"
+                    android:text="@string/view_print"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />

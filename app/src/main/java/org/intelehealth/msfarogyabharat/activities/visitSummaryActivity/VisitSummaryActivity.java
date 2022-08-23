@@ -77,11 +77,12 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.msfarogyabharat.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.msfarogyabharat.models.SendCallData;
-import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
+import org.intelehealth.msfarogyabharat.models.prescribed_medications_model.Datum;
+import org.intelehealth.msfarogyabharat.models.prescribed_medications_model.PrescribedMedication;
 import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.json.JSONException;
@@ -297,6 +298,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isRespiratory = false;
     String appLanguage;
 
+    List<PrescribedMedication> prescribedMedicationArrayList = new ArrayList<>();
+    String englishString = "";
+    String hindiString = "";
+    StringBuilder finalString;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -648,15 +653,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
-        if(items!=null) //According to ticket MHM-124,129 the three specialities are no longer required and need to be removed: By Nishita
+        if (items != null) //According to ticket MHM-124,129 the three specialities are no longer required and need to be removed: By Nishita
         {
-            if(items.contains("MSF MD")){
+            if (items.contains("MSF MD")) {
                 items.remove(items.indexOf("MSF MD"));
             }
-            if(items.contains("Doctor not needed")){
+            if (items.contains("Doctor not needed")) {
                 items.remove(items.indexOf("Doctor not needed"));
             }
-            if(items.contains("All")){
+            if (items.contains("All")) {
                 items.remove(items.indexOf("All"));
             }
         }
@@ -1035,8 +1040,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
                     showCallOverDialog();
-                }
-                else {
+                } else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
                     t.setError(getResources().getString(R.string.please_select_specialization));
                     t.setTextColor(Color.RED);
@@ -1134,7 +1138,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (height.getValue().trim().equals("0")) {
                 heightView.setText("-");
             } else {
-                String heightVal=ConvertHeightIntoFeets(height.getValue());
+                String heightVal = ConvertHeightIntoFeets(height.getValue());
                 heightView.setText(heightVal);
             }
         }
@@ -1724,7 +1728,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
         String sendDataUrl = urlModifiers.sendCallData();
-        apiInterface.callPatientData(sendDataUrl,model).enqueue(new Callback<ResponseBody>() {
+        apiInterface.callPatientData(sendDataUrl, model).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Toast.makeText(VisitSummaryActivity.this, "Information stored successfully!", Toast.LENGTH_SHORT).show();
@@ -2484,7 +2488,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String rx_web = stringToWeb(rxReturned);
+        String medicationPlan = finalString.toString().replace("\n\n", "\n");
+        String rx_web = stringToWeb(medicationPlan)
+                .replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●", "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">")
+                .replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\"></p>", "</p>");
 
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
@@ -3585,18 +3592,46 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
-                Log.i(TAG, "parseData: val:" + value);
-                Log.i(TAG, "parseData: rx" + rxReturned);
-                if (!rxReturned.trim().isEmpty()) {
-                    rxReturned = rxReturned + "\n" + value;
-                } else {
-                    rxReturned = value;
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                PrescribedMedication medication = gson.fromJson(value, PrescribedMedication.class);
+                prescribedMedicationArrayList.add(medication);
+
+                finalString = new StringBuilder();
+
+                for (int i = 0; i < prescribedMedicationArrayList.size(); i++) {
+                    String engMealTime = prescribedMedicationArrayList.get(i).getEn().getMealType();
+                    List<Datum> engDatumList = prescribedMedicationArrayList.get(i).getEn().getData();
+                    for (Datum datum : engDatumList) {
+                        englishString = datum.getValue();
+                    }
+                    int serial = i + 1;
+                    finalString = finalString.append(serial).append(". ").append(engMealTime).append("\n-").append(englishString).append("\n\n");
                 }
-                Log.i(TAG, "parseData: rxfin" + rxReturned);
+
+                finalString = finalString.append("\n");
+
+                for (int i = 0; i < prescribedMedicationArrayList.size(); i++) {
+                    String hindiMealTime = prescribedMedicationArrayList.get(i).getHi().getMealType();
+                    List<Datum> hiDatumList = prescribedMedicationArrayList.get(i).getHi().getData();
+                    for (Datum datum : hiDatumList) {
+                        hindiString = datum.getValue();
+                    }
+
+                    int serial = i + 1;
+                    finalString = finalString.append(serial).append(". ").append(hindiMealTime).append("\n-").append(hindiString).append("\n\n");
+                }
+
+//                if (!rxReturned.trim().isEmpty()) {
+//                    rxReturned = rxReturned + "\n" + value;
+//                } else {
+//                    rxReturned = value;
+//                }
+//                Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
-                prescriptionTextView.setText(rxReturned);
+                prescriptionTextView.setText(finalString.toString().trim());
                 //checkForDoctor();
                 break;
             }
@@ -4232,13 +4267,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
-    public String ConvertHeightIntoFeets(String height){
-        int val=Integer.parseInt(height);
-        double centemeters=val/2.54;
-        int inche=(int)centemeters%12;
-        int feet=(int)centemeters/12;
-        String heightVal=feet+getString(R.string.table_height_feet)+" "+inche+getString(R.string.table_height_inche);
-        System.out.println("value of height="+val);
+    public String ConvertHeightIntoFeets(String height) {
+        int val = Integer.parseInt(height);
+        double centemeters = val / 2.54;
+        int inche = (int) centemeters % 12;
+        int feet = (int) centemeters / 12;
+        String heightVal = feet + getString(R.string.table_height_feet) + " " + inche + getString(R.string.table_height_inche);
+        System.out.println("value of height=" + val);
         return heightVal;
     }
 
