@@ -1459,7 +1459,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //                default:
 //                    spinner_focalPointVillage.setVisibility(View.GONE);
 //            }
-        }
+//        }
 //        //focal
 
         //Single/Multiple
