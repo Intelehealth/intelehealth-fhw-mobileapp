@@ -72,6 +72,12 @@
     </string-array>
 
     <string-array name="states_india">
+        <item>Select</item>
+        <item>@string/state_Maharastra</item>
+    </string-array>
+
+    <string-array name="states_syriana">
+        <item>Select</item>
         <item>@string/state_Maharastra</item>
     </string-array>
 
