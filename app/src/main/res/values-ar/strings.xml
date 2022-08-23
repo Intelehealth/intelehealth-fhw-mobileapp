@@ -551,7 +551,7 @@
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully refreshed</string>
     <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="visit_not_uploaded"></string>
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
