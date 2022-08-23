@@ -1,7 +1,10 @@
 package org.intelehealth.app.activities.followuppatients;
 
+import static org.intelehealth.app.utilities.RTLUtils.isArabicText;
+
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +61,9 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                         + ", " + patinet.getOpenmrs_id());
             else
                 holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
+
+            if(isArabicText(patinet.getFirst_name() + " " + patinet.getLast_name()))
+                holder.headTextView.setGravity(Gravity.END);
 
             holder.bodyTextView.setText(body);
 
