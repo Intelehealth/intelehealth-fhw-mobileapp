@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">"ସାମାଜିକ ସ୍ବସ୍ଥ୍ୟ ଗ୍ରାହକ "</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">ଆନ୍ତରିକତା</string>
+    <string name="notification_title">ରିଅଲ ସିଙ୍କ୍ କରନ୍ତୁ ମ ସିଙ୍କ ଅନ୍ ଅଛି!</string>
     <string name="generic_the_flipping_word_next">ପରବତ୍ତର୍ତ୍ତୀ</string>
     <string name="button_ok">ଓକେ</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
@@ -65,6 +66,7 @@
     <string name="hint_optional">ଇଚ୍ଛାଧିନ</string>
     <string name="id_number">"ରଡ଼ି ସଂଖ୍ଯା "</string>
     <string name="identification_screen_checkbox_female">ମହିଳା</string>
+    <string name="identification_screen_checkbox_other">ଅନ୍ୟାନ୍ୟ</string>
     <string name="identification_screen_checkbox_male">ପୁରୁଷ</string>
     <string name="identification_screen_dialog_age">ଦୟାକରି ବୟସକୁ ବର୍ଷରେ ପ୍ରବେଶ କରାନ୍ତୁ</string>
     <string name="identification_screen_dialog_error_dob">"ଭୁଲ: ଅାଜି ପରର ତାରିଖ ପାଇଁ ଜନ୍ମତିଥି ସେଟ ୍ଅଛି "</string>
@@ -159,7 +161,7 @@
     <string name="table_spo2">ଏସପିଓ ଦୁଇ (%)</string>
     <string name="table_hw">ଶରୀର ମାପ</string>
     <string name="tag_optional">ଇଚ୍ଛାଧିନ</string>
-    <string name="title_activity_additional_documents">ତିରକ୍ତ ଡ଼କୁ୍ଯମେଣ୍ଟସ୍ (ଦସ୍ତାବିଦ୍)</string>
+    <string name="title_activity_additional_documents">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ (ଦସ୍ତାବିଦ୍)</string>
     <string name="title_activity_complaint_node">" ଚୟନ କରିବା"</string>
     <string name="title_activity_complaint_questions">ସମସ୍ତ ପ୍ରଶ୍ନର ଉତ୍ତର</string>
     <string name="title_activity_complaint_select">ଭିଯୋଗ ଗୁଡ଼ିକ</string>
@@ -168,7 +170,7 @@
     <string name="title_activity_family_history">ପରିବାର ଇତିହାସ</string>
     <string name="title_activity_get_patient_history">ରୋଗୀ ଇତିିହାସ</string>
     <string name="title_activity_identification">ନୂତନ ରୋଗୀମାନଙ୍କୁ ଯୋଡ଼ିବା</string>
-    <string name="title_activity_login">ବୃଦ୍ଧି ସମ୍ବନ୍ଧୀୟ ସ୍ବାସ୍ଥ୍ୟ</string>
+    <string name="title_activity_login">ଇଣ୍ଟେଲିହେଲଥ୍</string>
     <string name="title_activity_patient_detail">ରୋଗୀ ବିବରଣୀ</string>
     <string name="title_activity_patient_history">ତୀତ ପୁରୁଣା ଚିକିସତ୍ା ଇଚ୍ଛିହାସ</string>
     <string name="title_activity_patient_summary">ଯାତ୍ରା ସାରାଂଶ</string>
@@ -207,10 +209,10 @@
     <string name="visit_summary_patient_details">ରୋଗୀ ବିବରଣୀ</string>
     <string name="visit_summary_weight">ଓଜନ (କି.ଗ୍ରା)</string>
     <string name="visit_update">ଯାତ୍ରା ଅପ୍ଡ଼େଟ୍ କରିବା</string>
-    <string name="visit_summary_medical_history">ଚିକସତ୍ା ଇଚ୍ଛିହାସ</string>
+    <string name="visit_summary_medical_history">ଚିକିତ୍ସା ଇତିହାସ</string>
     <string name="visit_summary_edit_vitals">ପଣ ପ୍ରମୂଖ ସ୍କନିରୁ ପ୍ରମୂଖ କରିପାରିବେ</string>
-    <string name="generic_yes">"ହଁ "</string>
-    <string name="generic_no">"ନା "</string>
+    <string name="generic_yes">"ହଁ"</string>
+    <string name="generic_no">"ନ "</string>
     <string name="hint_required">ଜରୁରୀ </string>
     <string name="generic_back">ପଛକୁ ଯାନ୍ତୁ </string>
     <string name="generic_update">"ଅପଡେଟ "</string>
@@ -315,7 +317,15 @@
     <string name="privacy_notice_title">ଗୋପନୀୟତା ନୋଟିସ୍</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
 
-    <string name="not_provided" translatable="false">Not provided</string>
+    <string name="weight_error">ଓଜନ %1$s କିଲୋଗ୍ରାମରୁ କମ୍ ହେବା ଉଚିତ୍</string>
+    <string name="height_error">ଉଚ୍ଚତା 0 ରୁ %1$s ସେମି ମଧ୍ୟରେ ହେବା ଉଚିତ୍</string>
+    <string name="spo2_error">SpO2 %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ </string>
+    <string name="pulse_error">ସ୍ଫନ୍ଦନ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="bpsys_error">ସିଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="bpdia_error">ଡାୟାଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="resp_error">ଶ୍ୱାସକ୍ରିୟା ହାର %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="temp_error">ତାପମାତ୍ରା %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="not_provided">ଦିଅ ଯାଇ ନାହିଁ</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"</string>
@@ -334,6 +344,7 @@
     <string name="protocols_downloaded_successfully">ପ୍ରୋଟୋକଲ୍ ସଫଳତାର ସହ ଡାଉନଲୋଡ୍ ହେଲା!</string>
     <string name="no_protocols_found">କୌଣସି ପ୍ରୋଟୋକଲ୍ ମିଳିଲା ନାହିଁ</string>
     <string name="last_synced">ଶେଷ ସମକାଳୀନକରଣ - </string>
+    <string name="location_setup">ସେଟଅପ୍ ଅବସ୍ଥାନ - </string>
     <string name="day">ଦିନ</string>
     <string name="hour">ଘଣ୍ଟା</string>
     <string name="minute">ମିନିଟ୍</string>
@@ -365,8 +376,8 @@
     <string name="who_is_this_napplication_for">ଏହିଆପିଲସକଶନ୍ କାହା ପାଇଁ?</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">ନମସ୍କାର \n\n ମୁଁ ଆୟୁ, ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକ | ଚାଲ ଆରମ୍ଭ କରିବା</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">ନମସ୍କାର \n\n ମୁଁ ଆୟୁ, ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକ | ଚାଲ ଆରମ୍ଭ କରିବା!</string>
     <string name="Ayu_name">ଆୟୁ</string>
     <string name="active_tag_patientDetail">" ସକ୍ରିୟ"</string>
     <string name="associated_symptoms_patientDetail">Associated symptoms</string>
@@ -423,7 +434,7 @@
     <string name="choose_an_option_for_protocols">ସପ୍ରାସଟାକଲ୍ ପାଇଁଏକ ବକିଳ୍ପ ବାଛନ</string>
     <string name="please_enter_your_username_and_password">ଦୟାକରିନଜିର ୟୁଜରସନମ୍ ଓ ପାସୱାର୍ଡପ୍ରସବଶ କରନ</string>
     <string name="android_id">ଆଣ୍ଡ୍ରଏଡ୍ ଆଇର୍:ି</string>
-    <string name="doctor">ର୍ାକ୍ତରଙ୍କ ବବିରଣୀ</string>
+    <string name="doctor">ଡାକ୍ତର ବିବରଣୀ</string>
     <string name="server_url">ସଭଡର ୟୁଆରଏଲ</string>
     <string name="please_wait">ଦୟାକରିଅସପୋ କରନ୍ତୁ…</string>
     <string name="patient_data_upload">ସରାଗୀଙ୍କ ତଥ୍ୟ ଅପସଲାଡ</string>
@@ -481,5 +492,178 @@
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
+    <string name="whatsapp_presc_toast">ଫାଇଲ୍ ଏକ୍ସପ୍ଲୋରରରୁ ପ୍ରେସକ୍ରିପସନ୍ ପିଡିଏଫ୍ ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ / ଇଣ୍ଟେଲିହେଲଥ୍lth_ପିଡିଏଫ୍</string>
+    <string name="enter_mobile_number_to_share_prescription">ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କର ଯେଉଁଥିରେ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ଅଂଶୀଦାର କରିବାକୁ ଚାହୁଁଛନ୍ତି |</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ବିଜ୍ଞପ୍ତି ପଠନ ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
+    <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପଢ଼ିନିଅନ୍ତୁ .</string>
+    <string name="download_prescription_first_before_sharing">ବାଣ୍ଟିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
+    <string name="share">ଶେୟାର୍</string>
+    <string name="view_print">ଦେଖନ୍ତୁ/ପ୍ରିଣ୍ଟ କରନ୍ତୁ</string>
+    <string name="refresh">ରିଫ୍ରେଶ୍</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଆନ୍ତରିକତା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ | "</string>
+    <string name="and_enter_your_patient_id">" ଏବଂ ଆପଣଙ୍କ ରୋଗୀ ଆଇଡି ପ୍ରବେଶ କରନ୍ତୁ - "</string>
+    <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
+    <string name="no_family_member_registered">କ Family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
+    <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
+    <string name="Hours">ଘଣ୍ଟା</string>
+    <string name="Days">ଦିନ</string>
+    <string name="Weeks">ସପ୍ତାହ</string>
+    <string name="Months">ମାସ</string>
+    <string name="Years">ବର୍ଷ</string>
+    <string name="per_Hour">ପ୍ରତି ଘଣ୍ଟା</string>
+    <string name="per_Day">ପ୍ରତିଦିନ</string>
+    <string name="per_Week">ପ୍ରତି ସପ୍ତାହ</string>
+    <string name="per_Month">ପ୍ରତି ମାସରେ |</string>
+    <string name="per_Year">ପ୍ରତିବର୍ଷ</string>
+    <string name="row_gender">ଲିଙ୍ଗ</string>
+    <string name="gender_male">ପୁରୁଷ</string>
+    <string name="gender_female">ମହିଳା</string>
+    <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ - "</string>
+
+    <!--@lincon-->
+    <string name="failed_initial_synced">ସିଙ୍କ ବିଫଳ ହେଲା, ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ | ଦୟାକରି ବନ୍ଦ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଆପ୍ ଆରମ୍ଭ କରନ୍ତୁ |</string>
+    <string name="visit_closed">ପରିଦର୍ଶନ ବନ୍ଦ |</string>
+    <string name="speciality_cardview_title">ବିଶେଷତା</string>
+    <string name="select_specialization_text">ବିଶେଷତା ଚୟନ କରନ୍ତୁ |</string>
+    <string name="please_select_specialization_msg">ଦୟାକରି ବିଶେଷତା ଚୟନ କରନ୍ତୁ |</string>
+    <string name="chat_fab">ଚାଟ୍ ଫାବ୍ |</string>
+    <string name="ok_close_now">ଠିକ ଅଛି, ଏହାକୁ ବନ୍ଦ କର </string>
+    <string name="retry_again">ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ!</string>
+    <string name="take_photo">ଫଟୋ ନିଅନ୍ତୁ </string>
+    <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
+    <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
+    <string name="change_languages">ଭାଷା ପରିବର୍ତ୍ତନ</string>
+    <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
+
+    <string name="app_reset_toast">ଆପ୍ ପୁନ et ସେଟ୍ ହୋଇଛି !</string>
+    <string name="sure_to_reset_app">ଆପଣ ଆପ୍ପୁନଃସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="resetting_app_dialog">ଆପ୍ ପୁନ ସେଟ୍ କରୁଛି</string>
+    <string name="reset_app">ଆପ୍ ପୁନ ସେଟ୍ କରନ୍ତୁ</string>
+
+    <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି…</string>
+    <string name="warning_app_update">ଦୟାକରି ଆପକୁ ସର୍ବଶେଷ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ.</string>
+    <string name="due_on">ଧାର୍ଯ୍ୟ ତାରିଖ:</string>
+    <string name="title_follow_up">ପରିଦର୍ଶନଗୁଡିକ ଅନୁସରଣ କରନ୍ତୁ </string>
+    <string name="location">ଅବସ୍ଥାନ</string>
+
+    <string name="sync_failed"> ସିଙ୍କ ବିଫଳ ହେଲା! ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
+    <string name="no_network_sync"> ଆପଣ ଇଣ୍ଟରନେଟ୍ ସହିତ ସଂଯୁକ୍ତ ନୁହଁନ୍ତି | ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
+    <string name="app_sync"> ସିଙ୍କ୍ ଆପ୍ .. </string>
+
+
+    <!--    <string name="cancel_appointment">Cancel Appointment</string>-->
+
+
+    <string name="doctor_appointments">ଡାକ୍ତର ନିଯୁକ୍ତ</string>
+    <string name="slot_info">ସ୍ଲଟ୍ ସୂଚନା</string>
+    <string name="appointment_booked">ନିଯୁକ୍ତି ବୁକ୍</string>
+    <string name="minutes_txt">ମିନିଟ୍</string>
+    <string name="booked_txt">ବୁକ୍ ହୋଇଛି</string>
+    <string name="cancelled_txt">ବାତିଲ</string>
+    <string name="please_upload_visit">ନିଯୁକ୍ତିକୁ ବୁକିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ଭ୍ରମଣକୁ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="appointment_booked_successfully">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବୁକ୍ ହୋଇଛି!</string>
+    <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକ୍ ହୋଇଥିବା ବିଫଳ!</string>
+    <string name="postal_code_invalid_txt">ଦୟାକରି ଏକ ସଠିକ୍ ଡାକ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="failed_to_cancel_appointment">ନିଯୁକ୍ତିକୁ ବାତିଲ କରିବାରେ ବିଫଳ!</string>
+    <string name="appointment_cancelled_success_txt">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବାତିଲ ହେଲା!</string>
+
+    <string name="prescription_age">ୟସ</string>
+    <string name="prescription_gender">ଲିଙ୍ଗ</string>
+    <string name="prescription_address_contact">ଠିକଣା ଏବଂ ଯୋଗାଯୋଗ</string>
+    <string name="prescription_patient_id">ରୋଗୀ Id</string>
+    <string name="prescription_date_of_visit">ପରିଦର୍ଶନ ତାରିଖ </string>
+    <string name="prescription_vitals">ମହତ୍ତ୍</string>
+    <string name="prescription_rr">ଶ୍ ir ାସକ୍ରିୟା ହାର</string>
+    <string name="prescription_pulse">ପଲ୍ସ (bpm)</string>
+    <string name="prescription_bp">ରକ୍ତଚାପ</string>
+    <string name="prescription_bmi">BMI</string>
+
+
+    <string name="prescription_wt">ଓଜନ (କିଗ୍ରା)</string>
+    <string name="prescription_ht">ଉଚ୍ଚତା (ସେମି)</string>
+    <string name="prescription_pre_comp">ଅଭିଯୋଗ (ଗୁଡିକ)</string>
+    <string name="prescription_diagnosis">ନିଦାନ</string>
+    <string name="prescription_med_plan">ଷଧ (ଗୁଡିକ) ଯୋଜନା</string>
+    <string name="prescription_rec_investigation">ସୁପାରିଶ କରାଯାଇଥିବା ଅନୁସନ୍ଧାନ (ଗୁଡିକ)</string>
+    <string name="prescription_general_advice">ସାଧାରଣ ଉପଦେଶ</string>
+    <string name="prescription_follow_up_date">ଅନୁସରଣ ତାରିଖ</string>
+    <string name="prescription_temp_c">ତାପମାତ୍ରା (C):</string>
+    <string name="prescription_temp_f">ତାପମାତ୍ରା (F):</string>
+
+    <string name="diagnosis">ନିଦାନ</string>
+    <string name="primary"> ପ୍ରାଥମିକ</string>
+    <string name="secondary">ଦ୍ିତୀୟ</string>
+    <string name="provisiona">ଅସ୍ଥାୟୀ</string>
+    <string name="confirmed">ନିଶ୍ଚିତ</string>
+    <string name="recommended_medication">ସୁପାରିଶ କରାଯାଇଥିବା ଷଧ</string>
+    <string name="medication">ଷଧ</string>
+    <string name="strength">ଶକ୍ତ</string>
+    <string name="units">ୟୁନିଟ୍ (ଯଥା: ମିଗ୍ରା)</string>
+    <string name="units_tab">ୟୁନିଟ୍ (ଯଥା: ଟ୍ୟାବ୍ / ସିରପ୍)</string>
+    <string name="for_duration">ଅବଧି ପାଇଁ</string>
+    <string name="units_eg_days_weeks_etc">ୟୁନିଟ୍ (ଯଥା: ଦିନ / ସପ୍ତାହ / ଇତ୍ୟାଦି)</string>
+    <string name="additional_instruction">ଅତିରିକ୍ତ ନିର୍ଦ୍ଦେଶ</string>
+    <string name="recommended_tests">ସୁପାରିଶ କରାଯାଇଥିବା ପରୀକ୍ଷା</string>
+    <string name="test">ପରୀକ୍ଷା</string>
+    <string name="advice_or_refer_patient">ଉପଦେଶ କିମ୍ବା ରୋଗୀକୁ ଅନୁସରଣ କରନ୍ତ</string>
+    <string name="notes">ଟିପ୍ପଣୀ</string>
+    <string name="notes_not_shared_with_the_patient">ଟିପ୍ପଣୀ (ରୋଗୀ ସହିତ ଅଂଶୀଦାର ନୁହେଁ)</string>
+    <string name="follow_up">ଅନୁସରଣ କରନ୍ତୁ</string>
+    <string name="sign_and_submit">ସାଇନ୍ ଏବଂ ଦାଖଲ</string>
+    <string name="add_test">ପରୀକ୍ଷା ଯୋଡନ୍ତୁ</string>
+    <string name="add_advice">ଉପଦେଶ ଯୋଡନ୍ତୁ</string>
+    <string name="add_note">ଟିପ୍ପଣୀ ଯୋଡନ୍ତୁ</string>
+    <string name="schedule_a_follow_up">ଏକ ଅନୁସରଣ କାର୍ଯ୍ୟସୂଚୀ</string>
+    <string name="submit">ଦାଖଲ</string>
+    <string name="add_meds">ମେଡସ୍ ଯୋଡନ୍ତୁ</string>
+    <string name="add_diagnosis">ନିଦାନ ଯୋଡନ୍ତୁ</string>
+    <string name="startVisitNote">ଟିପ୍ପଣୀ ପରିଦର୍ଶନ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name="prescGivenSuccessfully">ଧନ୍ୟବାଦ! ପ୍ରେସକ୍ରିପସନ୍ ସଫଳତାର ସହିତ</string>
+    <string name="morethanonefollowupnotallowed">ଦୟାକରି ଏକ ସମୟରେ କେବଳ ଗୋଟିଏ ଅନୁସରଣ ପ୍ରଦାନ କରନ୍ତୁ</string>
+    <string name="amount">ପରିମାଣ</string>
+    <string name="frequency">ଫ୍ରିକ୍ୱେନ୍ସି</string>
+    <string name="route_optional">ମାର୍ଗ (ବାଧ୍ୟତାମୂଳକ ନୁହେଁ )</string>
+    <string name="reason_optional">କାରଣ (ବାଧ୍ୟତାମୂଳକ ନୁହେଁ )</string>
+    <string name="choose_a_date">ଏକ ତାରିଖ ବାଛନ୍ତୁ</string>
+    <string name="follow_up_remark">ଟିପ୍ପଣୀ</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">ପ୍ରେସକ୍ରିପସନ୍ ଦେବାକୁ ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="visit_summary_prescription_already_given">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ପ୍ରଦାନ କରାଯାଇଛି | ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
+
+    <string name="book_appointment"> ବୁକ୍ ନିଯୁକ୍ତି </string>
+    <string name="reschedule_appointment"> ପୁନର୍ବାର ନିଯୁକ୍ତିକୁ ନିର୍ଦ୍ଧାରଣ କରନ୍ତୁ </string>
+    <string name="appointment_booking_confirmation_txt"> ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
+    <string name="appointment_booking_cancel_confirmation_txt"> ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
+    <string name="cancel_appointment" tools:ignore="DuplicateDefinition">ନିଯୁକ୍ତି ବାତିଲ୍</string>
+    <string name="slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନୁହେଁ!</string>
+    <string name="appointment_empty_message"> ଆପଣଙ୍କର କ appointment ଣସି ନିଯୁକ୍ତି ନାହିଁ! </string>
+    <string name="appointment_listing_title"> ନିଯୁକ୍ତି ତାଲିକା </string>
+    <string name="appointment_booking_title"> ନିଯୁକ୍ତି ବୁକିଂ </string>
+    <string name="appointment_for"> ନିଯୁକ୍ତି </string>
+    ପାଇଁ |
+    <string name="please_select_appointment_slot"> ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ </string>
+    ଚୟନ କରନ୍ତୁ |
+    <string name="please_select_speciality"> ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ! </string>
+    <string name="please_select_your_reschedule_reason">ଦୟାକରି ଆପଣଙ୍କର ପୁନର୍ବାର ନିଯୁକ୍ତିକୁ ନିର୍ଦ୍ଧାରଣ କାରଣ ଚୟନ କରନ୍ତୁ</string>
+    <string name="please_select_your_cancel_reason">ଦୟାକରି ଆପଣଙ୍କର ବାତିଲ୍ କାରଣ ଚୟନ କରନ୍ତୁ</string>
+    <string name="doctor_is_not_available">ଡାକ୍ତର ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="patient_is_not_available">ରୋଗୀ ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="others">ଅନ୍ୟମାନେ</string>
+    <string name="please_enter_the_reason_details">ଦୟାକରି କାରଣ ବିବରଣୀ ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="save_amp_proceed">ସଞ୍ଚୟ ଏବଂ ଅଗ୍ରଗତି କର</string>
+    <string name="please_enter_reason_txt">ଦୟାକରି ଏହାର କାରଣ ପ୍ରବେଶ କରନ୍ତୁ!</string>
+
+    <string name="yes">ହଁ</string>
+    <string name="no">ନା </string>
+    <string name="type_to_search">ସନ୍ଧାନ ପାଇଁ ଟାଇପ୍ କରନ୍ତୁ ..</string>
+
+    <!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->
+
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">ପ୍ରୋଟୋକଲ୍ ଉପଲବ୍ଧ ତାପରେ ଡାଉନଲୋଡ୍ ହୋଇଛି। ପ୍ରୋଟୋକଲ ଡାଉନଲୋଡ୍ ପୁନଃସତ୍ୟ କରିବାକୁ \'ହଁ\' ଦବାନ୍ତୁ। ଡେମୋ ପ୍ରୋଟୋକଲ ସହିତ ନିରନ୍ତରତାକୁ \'ନା\' ଦବାନ୍ତୁ ।</string>
+    <string name="error_login_title">ଲଗଇନ୍ କରିବା ସମୟରେ ତ୍ରୁଟି</string>
+    <string name="answer_following_questions">ବାଧ୍ୟତାମୂଳକ ପ୍ରଶ୍ନଗୁଡ଼ିକ ନିମ୍ନରେ ଦିଆଯାଇଛି, ଦୟାକରି ସେମାନଙ୍କୁ ଉତ୍ତର ଦିଅ |</string>
+    <string name="app_version_string">App Version - %1$s</string>
+
 
 </resources>

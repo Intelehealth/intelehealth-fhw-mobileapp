@@ -1,0 +1,108 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="org.intelehealth.apprtc"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="19"
+9-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+10        android:targetSdkVersion="30" />
+10-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+11
+12    <uses-feature android:name="android.hardware.camera" />
+12-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:5-60
+12-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:19-57
+13    <uses-feature android:name="android.hardware.camera.autofocus" />
+13-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:5-70
+13-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:19-67
+14    <uses-feature
+14-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:8:5-10:35
+15        android:glEsVersion="0x00020000"
+15-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:9:9-41
+16        android:required="true" />
+16-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:10:9-32
+17
+18    <uses-permission android:name="android.permission.CAMERA" />
+18-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:5-65
+18-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:22-62
+19    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+19-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:5-79
+19-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:22-76
+20    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+20-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:5-80
+20-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:22-77
+21    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+21-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:5-71
+21-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:22-68
+22    <uses-permission android:name="android.permission.INTERNET" />
+22-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:5-67
+22-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:22-64
+23    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+23-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:5-81
+23-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:22-78
+24    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+24-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-79
+24-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-76
+25    <uses-permission android:name="android.permission.BLUETOOTH" />
+25-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-68
+25-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-65
+26    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+26-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-75
+26-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-72
+27
+28    <application
+28-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-60:19
+29        android:allowBackup="true"
+29-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:9-35
+30        android:label="@string/app_name"
+30-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:9-41
+31        android:supportsRtl="true"
+31-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:25:9-35
+32        android:theme="@style/AppTheme"
+32-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:9-40
+33        tools:ignore="LockedOrientationActivity" >
+33-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-49
+34        <activity
+34-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-32:63
+35            android:name="org.intelehealth.apprtc.ChatActivity"
+35-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:13-64
+36            android:screenOrientation="portrait"
+36-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:13-49
+37            android:windowSoftInputMode="stateAlwaysHidden" />
+37-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:13-60
+38        <!--
+39          <activity
+40              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
+41              android:label="@string/app_name"
+42              android:windowSoftInputMode="adjustPan" />
+43          <activity
+44              android:name="com.shivam.androidwebrtc.app_rtc_sample.call.CallActivity"
+45              android:configChanges="orientation|screenSize"
+46              android:label="@string/app_name"
+47              android:screenOrientation="fullUser"
+48              android:theme="@style/AppTheme.Call" />
+49        -->
+50        <!--
+51<activity
+52            android:name="com.shivam.androidwebrtc.LauncherActivity"
+53            android:theme="@style/AppTheme.NoActionBar">
+54            <intent-filter>
+55                <action android:name="android.intent.action.MAIN" />
+56
+57                <category android:name="android.intent.category.LAUNCHER" />
+58            </intent-filter>
+59        </activity>
+60        -->
+61        <activity
+61-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-59:59
+62            android:name="org.intelehealth.apprtc.CompleteActivity"
+62-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:57:13-68
+63            android:screenOrientation="portrait"
+63-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:58:13-49
+64            android:theme="@style/AppTheme.NoActionBar" />
+64-->C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-56
+65    </application>
+66
+67</manifest>

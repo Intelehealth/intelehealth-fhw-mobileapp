@@ -5,6 +5,7 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/coordinatorLayout"
     tools:context=".activities.setupActivity.SetupActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -79,7 +80,10 @@
                                     android:hint="@string/enter_url"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/lato_regular"
-                                    android:inputType="textUri" />
+                                    android:inputType="textUri"
+                                    android:focusable="true"
+                                    android:text="demo.intelehealth.org"
+                                    android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <Space
@@ -93,12 +97,11 @@
                                 android:includeFontPadding="false"
                                 android:textSize="16sp"
                                 android:text="@string/choose_a_location_to_login"
-                               android:fontFamily="@font/lato_bold" />
+                                android:fontFamily="@font/lato_bold" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp">
 
                                 <Spinner
@@ -107,9 +110,118 @@
                                     android:layout_height="wrap_content"
                                     android:nextFocusForward="@+id/demoMindmap" />
                             </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:id="@+id/cardview_locations"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="10dp"-->
+<!--                        org:cardCornerRadius="10sp"-->
+<!--                        android:layout_marginTop="15dp"-->
+<!--                        org:cardElevation="5sp"-->
+<!--                        org:cardPreventCornerOverlap="false">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:ems="10"-->
+<!--                                android:includeFontPadding="false"-->
+<!--                                android:textSize="16sp"-->
+<!--                                android:text="Locations"-->
+<!--                                android:fontFamily="@font/lato_bold" />-->
+
+<!--                            <android.widget.Space-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="10dp"/>-->
+
+<!--                            <Spinner-->
+<!--                                android:id="@+id/spinner_location"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:nextFocusForward="@+id/demoMindmap"-->
+<!--                                android:entries="@array/location"-->
+<!--                                android:focusable="true"-->
+<!--                                android:alpha="0.4"-->
+<!--                                />-->
+
+<!--                            <android.widget.Space-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="10dp"/>-->
+
+<!--                            <Space-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="10dp" />-->
+
+<!--                                <Spinner-->
+<!--                                    android:id="@+id/spinner_state"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:nextFocusForward="@+id/spinner_district"-->
+<!--                                    android:entries="@array/location_state"-->
+<!--                                    android:alpha="0.4"-->
+<!--                                    android:focusable="true"-->
+<!--                                    />-->
+
+<!--                                <android.widget.Space-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="10dp"/>-->
+
+<!--                                <Spinner-->
+<!--                                    android:id="@+id/spinner_district"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:nextFocusForward="@+id/spinner_sanch"-->
+<!--                                    android:entries="@array/location_district"-->
+<!--                                    android:focusable="true"-->
+<!--                                    android:alpha="0.4"-->
+<!--                                    />-->
+
+<!--                                <android.widget.Space-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="10dp"/>-->
+
+<!--                                <Spinner-->
+<!--                                    android:id="@+id/spinner_sanch"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:nextFocusForward="@+id/spinner_village"-->
+<!--                                    android:entries="@array/location_sanch"-->
+<!--                                    android:focusable="true"-->
+<!--                                    android:alpha="0.4"-->
+<!--                                    />-->
+
+<!--                                <android.widget.Space-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="10dp"/>-->
+
+<!--                                <Spinner-->
+<!--                                    android:id="@+id/spinner_village"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:nextFocusForward="@+id/demoMindmap"-->
+<!--                                    android:entries="@array/location_village"-->
+<!--                                    android:focusable="true"-->
+<!--                                    android:alpha="0.4"-->
+<!--                                    />-->
+
+<!--                                <android.widget.Space-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="10dp"/>-->
+
+
+<!--                        </LinearLayout>-->
+
+<!--                    </androidx.cardview.widget.CardView>-->
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview2"
@@ -217,15 +329,16 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:passwordToggleTint="@color/font_black_1"
+                        app:passwordToggleEnabled="true">
 
                         <EditText
                             android:id="@+id/password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_password"
-                            android:imeActionId="@+id/admin_password"
-                            android:imeOptions="actionNext"
+                            android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -236,16 +349,18 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@id/admin_password"
+                            android:id="@+id/admin_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_admin_password"
                             android:imeActionLabel="@string/action_sign_in_short"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textPassword"
+                            android:visibility="gone"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="14sp"

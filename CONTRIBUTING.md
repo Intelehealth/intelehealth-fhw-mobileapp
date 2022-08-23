@@ -61,7 +61,7 @@ Borrowing these from [Facebook's Guidelines](https://github.com/facebook/draft-j
 * 2 spaces for indentation rather than tabs
 * You can try running `npm run lint` for style unification
 
-Check out [our Intelehealth App Developer Guide on our wiki](https://sites.google.com/a/intelehealth.io/team-wiki/the-intelehealth-platform/intelehealth-android-application/app-implementation-guide?authuser=0)
+Check out [our Intelehealth App Developer Guide on our wiki](https://sites.google.com/a/intelehealth.io/team-wiki/the-intelehealth-platform/intelehealth-android-application/org-implementation-guide?authuser=0)
 for naming conventions, directory structure, and style guide.
 
 ## We use Material Design

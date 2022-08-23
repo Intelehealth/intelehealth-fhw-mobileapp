@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">इंटेलहेल्थ</string>
+
+    //Generic
+    <string name="generic_the_flipping_word_next">पुढे</string>
+    <string name="hint_required">आवश्यक</string>
+    <string name="hint_optional">पर्यायी</string>
+    <string name="tag_optional">पर्यायी</string>
+    <string name="generic_ok">ठीक आहे</string>
+    <string name="generic_cancel">रद्द करा</string>
+    <string name="generic_yes">होय</string>
+    <string name="generic_no">नाही</string>
+    <string name="generic_back">मागे</string>
+    <string name="generic_coming_soon">लवकरच येत आहे .....</string>
+    <string name="action_print">प्रिंट</string>
+    <string name="action_sms">एसएमएस</string>
+    <string name="action_home">मुख्यपृष्ठ</string>
+    <string name="action_settings">सेटिंग्ज</string>
+    <string name="generic_warning">चेतावणी!</string>
+    <string name="generic_update">अद्यतनित करा</string>
+    <string name="generic_deleted">हटविले</string>
+
+
+    //Database Schema Names
+    <string name="db_first_name">first_name</string>
+    <string name="db_middle_name">middle_name</string>
+    <string name="db_last_name">last_name</string>
+    <string name="db_dob">date_of_birth</string>
+    <string name="db_phone_number">phone_number</string>
+    <string name="db_address_line1">address1</string>
+    <string name="db_address_line2">address2</string>
+    <string name="db_city">city_village</string>
+    <string name="db_state">state_province</string>
+    <string name="db_postal_code">postal_code</string>
+    <string name="db_country">country</string>
+    <string name="db_gender">gender</string>
+    <string name="db_patient_id1">patient_identifier1</string>
+    <string name="db_patient_id2">patient_identifier2</string>
+    <string name="db_patient_id3">patient_identifier3</string>
+
+    //Login Screen
+    <string name="title_activity_login">इंटेलहेल्थ</string>
+    <string name="prompt_email">वापरकर्तानाव</string>
+    <string name="prompt_password">संकेतशब्द</string>
+    <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
+    <string name="action_sign_in">लॉगिन</string>
+    <string name="action_sign_in_short">साइन इन करा</string>
+    <string name="url_invalid">आपली URL तपासा.</string>
+    <string name="prefix_invalid">भिन्न उपसर्ग निवडा!</string>
+    <string name="error_invalid_email">हे वापरकर्तानाव अवैध आहे</string>
+    <string name="error_invalid_password">हा संकेतशब्द खूप छोटा आहे</string>
+    <string name="error_incorrect_password">कृपया प्रविष्ट केलेले वापरकर्तानाव आणि संकेतशब्द तपासा</string>
+    <string name="error_field_required">हे क्षेत्र आवश्यक आहे</string>
+    <string name="error_network">नेटवर्क त्रुटि</string>
+    <string name="error_location_not_selected">कृपया स्थान ड्रॉपडाउन मूल्य फॉर्म निवडा</string>
+    <string name="error_location_not_fetched">स्थाने आणण्यात अक्षम</string>
+    <string name="permission_rationale">ईमेल पूर्णता प्रदान करण्यासाठी संपर्क परवानग्यांची आवश्यकता आहे.
+</string>
+    <string name="device_id">डिव्हाइस आयडी:</string>
+
+
+    <string name="cant_login_user">लॉग इन करू शकत नाही?</string>
+    <string name="email_link">कृपया आपला संकेतशब्द रीसेट करण्यासाठी आपल्या सिस्टम प्रशासकाशी संपर्क साधा किंवा समर्थन@intelehealth.io वर ईमेल पाठवा</string>
+    <string name="contact_whatsapp">कृपया आपला संकेतशब्द रीसेट करण्यासाठी आपल्या सिस्टम प्रशासकाशी संपर्क साधा</string>
+
+    //Home Screen (after login)
+    <string name="title_home_screen">मुख्यपृष्ठ</string>
+    <string name="button_new_pt">नवीन पेशंट</string>
+    <string name="button_find_pt">रुग्ण शोधा</string>
+    <string name="button_diagnostic_tests">निदान चाचण्या</string>
+    <string name="button_active_pt">सक्रिय रुग्ण</string>
+    <string name="menu_option_sync">रीफ्रेश डेटा</string>
+    <string name="menu_option_settings">सेटिंग्ज</string>
+    <string name="menu_option_end_of_day">दिवसाचा शेवट</string>
+    <string name="menu_option_logout">बाहेर पडणे</string>
+
+
+    //Identification Screen
+    <string name="title_activity_identification">नवीन रुग्ण जोडा</string>
+    <string name="identification_screen_prompt_first_name">पहिले नाव *</string>
+    <string name="identification_screen_prompt_middle_name">मधले नाव</string>
+    <string name="identification_screen_prompt_last_name">आडनाव *</string>
+    <string name="identification_screen_prompt_address">पत्ता ओळ 1</string>
+    <string name="identification_screen_prompt_address2">पत्ता ओळ 2</string>
+    <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
+    <string name="admin_password_dialog_heading">प्रशासन संकेतशब्द प्रविष्ट करा</string>
+    <string name="identification_screen_prompt_gender">लिंग *</string>
+    <string name="identification_screen_checkbox_male">नर</string>
+    <string name="identification_screen_checkbox_female">स्त्री</string>
+    <string name="identification_screen_checkbox_other">इतर</string>
+    <string name="identification_screen_prompt_birthday">जन्म तारीख*</string>
+    <string name="identification_screen_prompt_age">वय: *</string>
+    <string name="identification_screen_prompt_time">वेळः</string>
+    <string name="identification_screen_prompt_city">गाव / नगर / शहर *</string>
+    <string name="identification_screen_prompt_state">राज्य *</string>
+    <string name="identification_screen_prompt_caste">जाति</string>
+    <string name="identification_screen_prompt_economic_status">आर्थिक स्थिति</string>
+    <string name="identification_screen_prompt_education">शैक्षणिक पातळी</string>
+    <string name="identification_screen_prompt_country">देश *</string>
+    <string name="identification_screen_prompt_postal_code">पिनकोड</string>
+    <string name="identification_screen_prompt_relationship">मुलगा / मुलगी / पत्नी</string>
+    <string name="identification_screen_prompt_occupation">व्यवसाय</string>
+    <string name="identification_screen_snack_patient_created">रुग्ण तयार केला! सर्व्हरवर अपलोड करत आहे.</string>
+    <string name="identification_screen_error_data_fields"> त्रुटी: डेटा फील्ड योग्यरित्या स्वरूपित केलेली नाहीत</string>
+    <string name="identification_screen_dialog_age">कृपया वर्षांमध्ये वय प्रविष्ट करा</string>
+    <string name="identification_screen_dialog_error_dob">आजच्या तारखेसाठी जन्मतारीख निश्चित केली आहे</string>
+    <string name="identification_screen_dialog_error_gender">लिंग निवडलेले नाही</string>
+    <string name="identification_screen_required_fields">कृपया आवश्यक फील्ड प्रविष्ट करा</string>
+    <string name="identification_screen_error_dob">वैध डीओबी प्रविष्ट करा</string>
+    <string name="identification_screen_error_age">वैध वय प्रविष्ट करा</string>
+    <string name="identification_screen_text_years">वर्ष</string>
+    <string name="identification_screen_text_months"> महीने</string>
+    <string name="identification_screen_picker_years">वर्ष</string>
+    <string name="identification_screen_picker_hours">तास</string>
+    <string name="identification_screen_picker_months">महीने</string>
+    <string name="identification_screen_picker_minute">मिनिट</string>
+
+    //Active Patients Screen
+    <string name="title_activity_active_patient">सक्रिय भेटी</string>
+
+    //Patient History Screen
+    <string name="title_activity_get_patient_history">रुग्णांचा इतिहास</string>
+    <string name="title_activity_search_patient">पेशंट लुकअप</string>
+
+    //Complaint Node Screen
+    <string name="title_activity_complaint_select">तक्रारी निवडा</string>
+    <string name="title_activity_complaint_questions">सर्व प्रश्नांची उत्तरे द्या</string>
+    <string name="title_activity_complaint_node">तक्रारी निवडा</string>
+    <string name="complaint_category_selected">निवडलेल्या श्रेणी:</string>
+    <string name="complaint_complaint_selected">निवडलेल्या तक्रारी:</string>
+    <string name="complaint_dialog_title">भेटीचे कारण</string>
+    <string name="complaint_required">तक्रार निवडणे आवश्यक आहे!</string>
+
+    //Question Node Screen
+    <string name="title_activity_question_node"> प्रश्ननोड क्रिया</string>
+    <string name="complaint_change_selected">सुधारित करा</string>
+    <string name="question_answer_all">आपली खात्री आहे की आपण सर्व प्रश्नांची उत्तरे दिली आहेत.</string>
+    <string name="question_answer_all_phy_exam">कृपया सर्व सामान्य परीक्षांच्या प्रश्नांची उत्तरे द्या.</string>
+    <string name="question_duration_picker">कृपया कालावधी प्रविष्ट करा</string>
+    <string name="question_text_input">कृपया मजकूर प्रविष्ट करा</string>
+    <string name="question_date_picker">कृपया तारीख निवडा</string>
+    <string name="question_location_picker">कृपया स्थाने निवडा</string>
+    <string name="question_number_picker">कृपया क्रमांक प्रविष्ट करा</string>
+    <string name="question_area_picker">कृपया क्षेत्र प्रविष्ट करा (रुंदी X लांबी)</string>
+    <string name="question_range_picker">कृपया एक श्रेणी प्रविष्ट करा</string>
+    <string name="question_frequency_picker">कृपया किती वेळा प्रविष्ट करा</string>
+
+
+    //Table Exam Screen
+    <string name="title_activity_vitals">महत्वपूर्ण</string>
+    <string name="table_hw">शरीर मोजमाप</string>
+    <string name="table_height">उंची (सेमी)</string>
+    <string name="table_weight">वजन (किलो)</string>
+    <string name="table_bmi">बीएमआय</string>
+    <string name="table_pulse">नाडी (बीपीएम)</string>
+    <string name="table_bp">महत्वाच्या चिन्हे</string>
+    <string name="table_bpsys">बीपी सिस</string>
+    <string name="table_bpdia">बीपी डाय</string>
+    <string name="table_temp">तापमान (सी)</string>
+    <string name="table_spo">एसपीओ 2 (%)</string>
+
+    //Patient Search Screen
+    <string name="search_hint">नावानुसार रूग्ण शोधण्यासाठी टाइप करा…</string>
+    <string name="action_search">शोधा</string>
+    <string name="alert_none_found">कृपया वापरकर्तानाव आणि संकेतशब्द प्रविष्ट केलेला तपासा</string>
+
+    //Past Medical History Screen
+    <string name="title_activity_patient_history">मागील वैद्यकीय इतिहास</string>
+
+    //Visit Summary Screen
+    <string name="title_activity_family_history">कौटुंबिक इतिहास</string>
+    <string name="title_activity_physical_exam">शारीरिक परीक्षा</string>
+    <string name="title_activity_patient_summary">भेट सारांश</string>
+    <string name="visit_summary_temperature">तापमान (सी)</string>
+    <string name="visit_summary_pulseox">एसपीओ 2 (%)</string>
+    <string name="visit_summary_hw_on_duty">सीएचडब्ल्यू ऑन ड्यूटी</string>
+    <string name="visit_summary_vitals_heading">महत्वपूर्ण</string>
+    <string name="visit_summary_height_heading">उंची (सेमी)</string>
+    <string name="visit_summary_weight">वजन (किलो)</string>
+    <string name="visit_summary_bmi">बीएमआय</string>
+    <string name="visit_summary_bp">बी.पी.</string>
+    <string name="visit_summary_pulse">नाडी</string>
+    <string name="visit_summary_previous_reports">मागील अहवाल</string>
+    <string name="visit_summary_medical_history">वैद्यकीय इतिहास</string>
+    <string name="visit_summary_family_history">कौटुंबिक इतिहास</string>
+    <string name="visit_summary_on_examination">परीक्षेवर</string>
+    <string name="visit_summary_complaint">भेटीचे कारण</string>
+    <string name="visit_summary_vitals">महत्वपूर्ण</string>
+    <string name="visit_summary_doctor_details">डॉक्टर तपशील</string>
+    <string name="visit_summary_rx">लिहून दिलेली औषधे</string>
+    <string name="visit_summary_diagnosis">निदान</string>
+    <string name="visit_summary_advice">वैद्यकीय सल्ला</string>
+    <string name="visit_summary_tests_prescribed">चाचण्या / संदर्भ</string>
+    <string name="visit_summary_additional_comments">अतिरिक्त टिप्पण्या</string>
+    <string name="visit_summary_heading_name">नाव</string>
+    <string name="visit_summary_heading_id">आयडी</string>
+    <string name="visit_summary_button_download">डाउनलोड करा</string>
+    <string name="visit_summary_button_upload">अपलोड करा</string>
+    <string name="name_button_download">बटण डाउनलोड</string>
+    <string name="visit_summary_follow_up_date">पाठपुरावा तारीख</string>
+    <string name="visit_summary_follow_up_reminder">कृपया रुग्णाला त्यांच्या पाठपुरावा तारखेची आठवण करून द्या:</string>
+    <string name="visit_summary_upload_reminder">कृपया भेट समाप्त करण्याचा प्रयत्न करण्यापूर्वी प्रथम अपलोड करा.</string>
+
+
+    //Diagnostic Tests Screen
+    <string name="title_activity_diagnostic_tests_list">निदान चाचणी निवडा</string>
+
+    //Physical Exam Dialog
+    <string name="wash_hands">आपले हात धुण्यास लक्षात ठेवा</string>
+
+
+    //Patient Detail Screen
+    <string name="header_patient_detail">रुग्णांची माहिती</string>
+    <string name="button_history">रुग्णांचा इतिहास</string>
+    <string name="title_activity_patient_detail">रुग्ण तपशील</string>
+    <string name="header_medical_history">इतिहास</string>
+    <string name="button_new_visit">नवीन भेट द्या</string>
+    <string name="header_previous_visits">मागील भेटी</string>
+    <string name="header_patient_history">वैद्यकीय इतिहास</string>
+    <string name="header_family_history">कौटुंबिक इतिहास</string>
+    <string name="string_no_hist">आजाराचा इतिहास नाही</string>
+    <string name="row_patient_id">पेशंट आयडी</string>
+    <string name="row_dob">डीओबी</string>
+    <string name="row_age">वय</string>
+    <string name="row_address">पत्ता</string>
+    <string name="row_phone_number">फोन नंबर</string>
+    <string name="row_gender">लिंग</string>
+    <string name="row_open_visit">भेट देण्यासाठी उघडण्यासाठी क्लिक करा</string>
+    <string name="title_activity_settings">सेटिंग्ज</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">सामान्य</string>
+
+    <string name="pref_title_social_recommendations">सामाजिक शिफारसी सक्षम करा</string>
+    <string name="pref_description_social_recommendations">"आपल्या संदेशाच्या आधारे लोकांशी संपर्क साधण्यासाठी शिफारस इतिहास "</string>
+
+    <string name="pref_title_display_name">प्रदर्शन नाव</string>
+    <string name="pref_default_display_name">जॉन स्मिथ</string>
+
+
+    <!-- Example settings for Data & syncBackground -->
+    <string name="pref_header_data_sync">डेटा आणि रीफ्रेश</string>
+
+    <string name="pref_title_server_url">सर्व्हर URL</string>
+    <string name="pref_title_id_prefix">स्थान उपसर्ग</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">अधिसूचना</string>
+    <string name="pref_title_new_message_notifications">नवीन संदेश सूचना</string>
+    <string name="pref_title_ringtone">रिंगटोन</string>
+    <string name="pref_ringtone_silent">मूक</string>
+    <string name="pref_title_vibrate">कंपन</string>
+    <string name="toast_crash">अनुप्रयोग त्रुटी आली</string>
+
+
+    <string name="title_activity_setup">सेटअप</string>
+
+    <string name="title_activity_camera">कॅमेरा</string>
+    <string name="title_activity_today_patient">आजची भेट</string>
+    <string name="title_activity_additional_documents">अतिरिक्त कागदपत्रे</string>
+    <string name="title_activity_video_library">व्हिडिओ लायब्ररी</string>
+    <string name="visit_summary_patient_details">भेट द्या तपशील</string>
+
+    <!--Setup Activity-->
+    <string name="setup_internet">सेटअपसाठी एक मजबूत इंटरनेट कनेक्शन आवश्यक आहे.</string>
+    <string name="generic_manual_entry">व्यक्तिचलित प्रवेशिका</string>
+    <string name="generic_erase_redo">पुसून टाका आणि पुन्हा करा</string>
+    <string name="visit_summary_edit_vitals">आपण त्वचेच्या स्क्रीनवरून त्वचे पुन्हा करू शकता</string>
+
+    //Camera Permissions
+    <string name="permission_camera_rationale">कॅमेरा पूर्वावलोकन दर्शविण्यासाठी कॅमेरा परवानगी आवश्यक आहे.</string>
+    <string name="permission_camera_denied">कॅमेर्‍याची परवानगी नाकारली गेली. कृपया कॅमेर्‍यावर प्रवेश करण्यासाठी हे मंजूर करण्याचा विचार करा!</string>
+    <string name="permission_camera_never_askagain">पुन्हा कधीही विचारू नका सह कॅमेरा परवानगी नाकारली गेली.</string>
+    <string name="button_allow">परवानगी द्या</string>
+    <string name="button_deny">नकार द्या</string>
+    <string name="button_ok">ठीक आहे</string>
+    <string name="button_cancel">रद्द करा</string>
+    <string name="picture_taken">चित्र घेतले</string>
+    <string name="switch_flash">स्विच फ्लॅश</string>
+    <string name="switch_camera">कॅमेरा स्विच करा</string>
+    <string name="flash_auto">फ्लॅश ऑटो</string>
+    <string name="flash_off">फ्लॅश बंद</string>
+    <string name="flash_on">फ्लॅश चालू</string>
+
+    //SEND SMS Permissions
+    <string name="permission_sms_rationale">एसएमएस पाठविण्यासाठी एसएमएस परवानगी आवश्यक आहे.</string>
+    <string name="permission_sms_denied">एसएमएस परवानगी नाकारली गेली. कृपया अर्जातून एसएमएस पाठविण्यासाठी हे देण्याचा विचार करा!</string>
+    <string name="permission_sms_never_askagain">पुन्हा कधीही विचारू नका सह एसएमएस परवानगी नाकारली गेली.</string>
+
+    <string name="button_save">जतन करा</string>
+    <string name="button_delete">हटवा</string>
+
+    //Camera Dialog
+    <string name="camera_dialog_default">कृपया चांगल्या प्रकाश परिस्थितीमध्ये फक्त दस्तऐवज फोटो क्लिक करा. जर कागदजत्र फोटो स्पष्ट नसेल तर कृपया दस्तऐवज फोटो पुन्हा घ्या.</string>
+
+    <!--Offline Login Errors-->
+    <string name="offline_credentials_unavailable">ऑफलाइन लॉगिन उपलब्ध नाही.</string>
+    <string name="offline_user_does_not_match">वापरकर्ता जुळत नाही.</string>
+    <string name="offline_authentication_not_possible">ऑफलाइन प्रमाणीकरण करण्यात अक्षम.</string>
+    <string name="admin_authentication_not_possible">प्रमाणीकृत करण्यात अक्षम.</string>
+
+    <string name="login_location_select">स्थान निवडा</string>
+    <string name="prompt_licensekey">परवाना की</string>
+    <string name="setup_use_demo_mindmap">डेमो प्रोटोकॉल वापरा</string>
+    <string name="setup_download_mindmap">प्रोटोकॉल डाउनलोड करा</string>
+
+    <string name="please_wait_progress">कृपया थांबा</string>
+    <string name="downloading_protocols">प्रोटोकॉल डाउनलोड करीत आहे</string>
+    <string name="logging_in">लॉग इन करत आहे</string>
+    <string name="error_downloading_protocols">मनाचे नकाशे डाउनलोड करण्यात त्रुटी</string>
+
+    //Sync strings
+    <string name="sync_stopped">थांबलो</string>
+    <string name="sync_in_progress">प्रगतीपथावर</string>
+    <string name="sync_complete">पूर्ण</string>
+    <string name="sync_error">त्रुटी: अशी कोणतीही स्थिती नाही</string>
+
+    <string name="id_number">आयडी नंबर</string>
+    <string name="uploading">अपलोड करीत आहे...</string>
+    <string name="downloading">डाउनलोड करीत आहे ...</string>
+
+    <string name="visit">भेट</string>
+    <string name="visit_update">भेट द्या अद्यतन</string>
+    <string name="patient">पेशंट</string>
+    <string name="patient_update">पेशंट अपडेट</string>
+    <string name="patient_images">रुग्ण प्रोफाइल प्रतिमा</string>
+    <string name="visit_images">प्रतिमा भेट द्या</string>
+    <string name="prescription">प्रिस्क्रिप्शन</string>
+
+    <string name="error_no_data">कृपया भेट समाप्त करण्याचा प्रयत्न करण्यापूर्वी प्रथम डाउनलोड करा.</string>
+    <string name="error_phone_number">फोन नंबर रिक्त असू शकत नाही</string>
+    <string name="action_end_visit">भेट समाप्त</string>
+
+    <string name="error_sms">एसएमएस अयशस्वी, कृपया नंतर पुन्हा प्रयत्न करा!</string>
+    <string name="sms_success">एसएमएस पाठविला!</string>
+
+    <string name="question_update_details">आपण तपशील अद्यतनित करू इच्छिता?</string>
+
+    <string name="backup_completed">बॅकअप पूर्ण!</string>
+
+    <string name="hide_text">लपवा</string>
+    <string name="show_text">दाखवा</string>
+
+    <string name="new_patient">नवीन पेशंट</string>
+    <string name="find_patient">रुग्ण शोधा</string>
+    <string name="video_library">व्हिडिओ लायब्ररी</string>
+
+    <string name="error_no_sd">हे वैशिष्ट्य केवळ एसडी कार्ड असलेल्या डिव्हाइसवर उपलब्ध आहे.</string>
+    <string name="error_admin_password">प्रशासन संकेतशब्द चुकीचा</string>
+    <string name="error_no_file">या निर्देशिकेत कोणत्याही फायली नाहीत</string>
+    <string name="error_no_camera">कोणताही कॅमेरा स्थापित केलेला नाही.</string>
+    <string name="error_delete">हटविताना त्रुटी</string>
+    <string name="error_offline_login">ऑफलाइन लॉगिन अयशस्वी</string>
+    <string name="success_offline_login">ऑफलाइन लॉगिन यशस्वी</string>
+    <string name="invalidate_offline_login">ऑफलाइन लॉगिन अवैध</string>
+
+    <string name="patient_upload_error">पेशंट अपलोड झाला नाही</string>
+    <string name="patient_not_registered">रुग्ण नोंदणीकृत नाही</string>
+
+    <string name="action_sync_all">रीफ्रेश डेटा</string>
+
+    <!-- Vitals Screen Error-->
+
+    <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
+    <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
+    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>
+    <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
+    <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
+    <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
+    <string name="resp_error">श्वसन दर %1$s आणि %2$s दरम्यान असावा</string>
+    <string name="temp_error">तापमान %1$s आणि %2$s दरम्यान असले पाहिजे</string>
+
+    <string name="not_provided">दिले नाही</string>
+
+    <!-- Patient Exit Survey -->
+    <string name="exit_survey_label">तुमचा अनुभव कसा होता?</string>
+    <string name="exit_survey_prompt">आपल्या टिप्पण्या येथे प्रविष्ट करा</string>
+    <string name="exit_survey_skip">वगळा</string>
+    <string name="exit_survey_submit">प्रस्तुत करणे</string>
+    <string name="exit_survey_toast">कृपया सबमिट करण्यापूर्वी हसू निवडा</string>
+
+
+    <!--DB Backup-->
+
+    <string name="db_backup_complete" translatable="false">Database Backup Complete!</string>
+    <string name="db_restore_complete" translatable="false">Database Restore Complete!</string>
+
+    <!--Cloud Backup-->
+
+    <string name="cloud_upload_header">क्लाऊडवर डेटाबेस अपलोड करीत आहे</string>
+    <string name="no_network">इंटरनेट कनेक्शन उपलब्ध नाही</string>
+    <string name="no_data">बॅकअपसाठी कोणताही डेटा नाही!</string>
+    <string name="local_backup_failed">स्थानिक बॅकअप उपलब्ध नाही</string>
+    <string name="local_backup_restore">स्थानिक बॅकअप वरून पुनर्संचयित करीत आहे</string>
+
+    <string name="cloud_restore_header">फॉर्म मेघ पुनर्संचयित करा</string>
+    <string name="restore_data">डेटा पुनर्संचयित करीत आहे</string>
+    <string name="error_existing_data">डेटाबेस मध्ये डेटा आहे, पुनर्संचयित करू शकत नाही!</string>
+    <string name="cloud_download_data">मेघ वरून डेटाबेस डाउनलोड करीत आहे</string>
+
+    <string name="force_restore_header">मेघ वरून डेटा पुनर्संचयित करणे (सक्ती)</string>
+
+    <string name="database_upload">डेटाबेस अपलोड</string>
+    <string name="database_uploading">डेटाबेस अपलोड करीत आहे</string>
+    <string name="database_upload_complete">डेटाबेस अपलोड पूर्ण</string>
+    <string name="database_upload_failed">डेटाबेस अपलोड अयशस्वी</string>
+
+    <string name="db_backup_unavailable">डेटाबेस बॅकअप उपलब्ध नाही</string>
+    <string name="db_file_write_error">बॅकअप फाइल लिहिताना त्रुटी</string>
+
+    <string name="local_restore_alert_title">बॅकअप पुनर्संचयित</string>
+    <string name="local_restore_alert_message">स्थानिक बॅकअप सापडला आहे. आपण पुनर्संचयित करू इच्छिता?</string>
+
+
+    <!--Image Download Service-->
+    <string name="image_downloading_service_title">डाउनलोड करत आहे</string>
+    <string name="image_downloading_service_message">प्रतिमा डेटा डाउनलोड करीत आहे</string>
+    <string name="image_downloading_service_complete_title">प्रतिमा डेटा डाउनलोड पूर्ण</string>
+    <string name="image_downloading_service_complete_message">सर्व प्रतिमा फायली डाउनलोड केल्या गेल्या आहेत</string>
+    <string name="image_downloading_service_process_message">डाउनलोड केले</string>
+    <string name="error_img_unavailable">प्रतिमा उपलब्ध नाही</string>
+    <string name="error_img_download_failed">प्रतिमा डाउनलोड अयशस्वी</string>
+
+    <!--Parse Validation User login-->
+
+    <string name="user_logged_in">आधीपासून लॉग इन केले!</string>
+    <string name="user_logged_in_other_device">आधीपासून लॉग इन आहे. कृपया अन्य डिव्हाइसमधून लॉग आउट करा.</string>
+    <string name="user_logged_out">सर्व्हरवरून लॉग आउट केले</string>
+    <string name="user_login_check_success">लॉगिन यशस्वी!</string>
+    <string name="user_login_error">दुसरा वापरकर्ता या ठिकाणी लॉग इन आहे. कृपया प्रशासकाशी संपर्क साधा</string>
+    <string name="user_server_unreachable">डिव्हाइस ऑफलाइन. लॉगिन सत्यापनासाठी सर्व्हर तपासू शकत नाही</string>
+
+    <string name="title_activity_splash_acticity">Splash Activity</string>
+    <string name="title_activity_home">मुख्यपृष्ठ क्रियाकलाप</string>
+    <string name="title_activity_sync">अ‍ॅक्टिव्हिटी रिफ्रेश</string>
+    <string name="title_activity_privacy_notice">गोपनीयता सूचना</string>
+    <string name="title_activity_visit_summary">भेटसुमरीअॅक्टिव्हिटी</string>
+    <string name="title_activity_past_medical_history">पेस्टमेडिकलहिस्टोरीअॅक्टिव्हिटी</string>
+    <string name="title_activity_patient_survey">पेशंटसुरव्हीएक्टिव्हिटी</string>
+
+    <!--Privacy Notice Activity-->
+    <string name="privacy_toast">कृपया एक पर्याय निवडा</string>
+    <string name="temperature_f">तापमान (फॅ)</string>
+    <string name="sync_now">रीफ्रेश</string>
+    <string name="lastsync">लास्टसिंक</string>
+    <string name="enter_password">आपला संकेतशब्द प्रविष्ट करा</string>
+    <string name="enter_username">आपले वापरकर्तानाव प्रविष्ट करा</string>
+    <string name="patient_denies">रुग्ण नकार देतो</string>
+    <string name="patient_reports">रुग्ण अहवाल</string>
+
+    <string name="associated_symptoms">संबद्ध लक्षणे</string>
+    <string name="enter_server_url">सर्व्हर URL प्रविष्ट करा</string>
+    <string name="enter_license_key"><b>परवाना की प्रविष्ट करा</b></string>
+    <string name="invalid_url">अवैध URL</string>
+    <string name="years">वर्षे</string>
+    <string name="months">महिने</string>
+    <string name="please_wait_till_sync_is_completed">कृपया रीफ्रेश होईपर्यंत प्रतीक्षा करा</string>
+    <string name="patient_name">रुग्णांचे नाव</string>
+    <string name="son_daughter_wife_of">मुलगा / मुलगी / पत्नी</string>
+    <string name="occupation">व्यवसाय</string>
+    <string name="economic_status">आर्थिक स्थिती</string>
+    <string name="education_level">शैक्षणिक पातळी</string>
+    <string name="caste">जाती</string>
+    <string name="previous_visits">मागील भेटी</string>
+    <string name="accept">स्वीकारा</string>
+    <string name="reject">नाकारणे</string>
+    <string name="next">पुढे</string>
+    <string name="which_server_would_you_like_to_connect_to">आपण कोणत्या सर्व्हरशी कनेक्ट होऊ इच्छिता?</string>
+    <string name="enter_url">URL प्रविष्ट करा</string>
+    <string name="choose_a_location_to_login">लॉगिन करण्यासाठी एक स्थान निवडा</string>
+    <string name="choose_an_option_for_protocols">प्रोटोकॉलसाठी एक पर्याय निवडा</string>
+    <string name="please_enter_your_username_and_password">कृपया आपले वापरकर्तानाव आणि संकेतशब्द प्रविष्ट करा</string>
+    <string name="android_id">Android Id:</string>
+    <string name="respiratory_rate">श्वसन दर</string>
+    <string name="click_to_download_the_images">प्रतिमा डाउनलोड करण्यासाठी क्लिक करा</string>
+    <string name="doctor">डॉक्टर तपशील</string>
+    <string name="health_worker">आरोग्य कर्मचारी</string>
+    <string name="priority">प्राधान्य</string>
+    <string name="server_url">सर्व्हर url</string>
+    <string name="sync">रीफ्रेश</string>
+    <string name="update_protocols">प्रोटोकॉल अद्यतनित करा</string>
+    <string name="end_all_visit">सर्व भेट समाप्त करा</string>
+    <string name="filter_by_creator">निर्मात्याद्वारे फिल्टर करा</string>
+    <string name="planet_name">ग्रह नाव</string>
+    <string name="ok">ठीक आहे</string>
+    <string name="cancel">रद्द करा</string>
+    <string name="unable_to_end">समाप्त करण्यास अक्षम</string>
+    <string name="upload_before_end_visit_active">भेट द्या. कृपया भेट समाप्त करण्याचा प्रयत्न करण्यापूर्वी भेट अपलोड करा.</string>
+    <string name="active">सक्रिय</string>
+    <string name="closed">बंद</string>
+
+    <string name="syncInProgress">रीफ्रेश प्रगतीपथावर</string>
+    <string name="please_wait">कृपया थांबा...</string>
+    <string name="sync_notif_title">रीफ्रेश</string>
+    <string name="sync_background_completed">रीफ्रेशबॅकग्राउंड पूर्ण</string>
+    <string name="sync_not_available">रीफ्रेश उपलब्ध नाही</string>
+    <string name="please_connect_to_internet">कृपया इंटरनेट कनेक्शनशी कनेक्ट व्हा!</string>
+    <string name="image_upload">प्रतिमा अपलोड</string>
+    <string name="image_upload_failed">इमेजअपलोड अयशस्वी</string>
+    <string name="sure_to_exit">आपली खात्री आहे की आपण बाहेर पडू इच्छिता?</string>
+    <string name="sure_to_logout">आपली खात्री आहे की आपण लॉगआउट करू इच्छिता?</string>
+    <string name="lastsync_normal">शेवटचे रीफ्रेश</string>
+    <string name="update_patient_identification">रुग्ण अद्यतनित करा</string>
+    <string name="are_you_want_go_back">आपली खात्री आहे की आपण परत जाऊ इच्छिता?</string>
+    <string name="error">त्रुटी</string>
+    <string name="patient_data_upload">रुग्ण डेटा अपलोड</string>
+    <string name="patient_image_download_notifi">रुग्णांची प्रतिमा डाउनलोड</string>
+    <string name="image_download_complete_notifi">चे प्रतिमा डाउनलोड पूर्ण.</string>
+    <string name="no_prior_visits">पूर्वीची भेट नाही.</string>
+    <string name="end_visit_notif">भेट संपेल</string>
+    <string name="visit_ended_notif">भेट संपली</string>
+    <string name="this_question_only_one_answer">या प्रश्नाचे एकच उत्तर असू शकते.</string>
+    <string name="uploading_to_doctor_notif">डॉक्टरकडे अपलोड करत आहे.</string>
+    <string name="visit_data_upload">डेटा अपलोडला भेट द्या</string>
+    <string name="uploading_visit_data_notif">भेट डेटा अपलोड करीत आहे</string>
+    <string name="uploaded_visit_data_notif">अपलोड केलेला डेटा</string>
+    <string name="failed_to_upload">अपलोड करण्यात अयशस्वी</string>
+    <string name="upload_completed">अपलोड पूर्ण झाले</string>
+    <string name="check_your_connectivity">आपली कनेक्टिव्हिटी तपासा</string>
+    <string name="download_from_doctor">डॉक्टरांकडून डाउनलोड करा</string>
+    <string name="prescription_downloaded">प्रिस्क्रिप्शन डाउनलोड केले</string>
+    <string name="downloading_prescription">प्रिस्क्रिप्शन डाउनलोड करीत आहे</string>
+    <string name="visit_data_failed">भेट द्या डेटा अयशस्वी</string>
+    <string name="patient_data_failed">रुग्ण डेटा अयशस्वी</string>
+    <string name="privacy_notice_title">गोपनीयता सूचना</string>
+    <string name="no_data_active_patients">या आरोग्य कर्मचा .्याची कोणतीही रुग्ण नोंद आढळली नाही.</string>
+    <string name="syncing_visitDialog">रीफ्रेश</string>
+    <string name="successfully_synced_notif">यशस्वीरित्या रीफ्रेश</string>
+    <string name="languages">भाषा</string>
+    <string name="current_language">सद्य भाषा</string>
+    <string name="protocols_downloaded_successfully">प्रोटोकॉल यशस्वीरित्या डाउनलोड केले!</string>
+    <string name="no_protocols_found">कोणतेही प्रोटोकॉल आढळले नाहीत</string>
+    <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करताना समस्या आली, कृपया सिस्टम प्रशासकाशी संपर्क साधा</string>
+    <string name="last_synced">अंतिम रीफ्रेश -</string>
+    <string name="today_visits">आजची भेट</string>
+    <string name="active_visits">सक्रिय भेटी</string>
+    <string name="day">दिवस</string>
+    <string name="hour">तास</string>
+    <string name="minute">मिनिट</string>
+    <string name="s">s</string>
+    <string name="ago">पूर्वी</string>
+    <string name="successfully_synced">यशस्वीरित्या रीफ्रेश</string>
+    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
+    <string name="visit_not_uploaded">भेट दिली नाही अपलोड केलेले नाही</string>
+    <string name="upload_started">अपलोड करीत आहे ...</string>
+    <string name="visit_uploaded_successfully">यशस्वीरित्या अपलोड केलेले भेट द्या</string>
+    <string name="visit_uploaded_failed">इंटरनेट उपलब्ध असेल तेव्हा अपलोड केले जाईल</string>
+    <string name="visitID">भेट द्या आयडी</string>
+
+    <string name="end_visit_msg">आपली खात्री आहे की आपण भेट समाप्त करू इच्छिता?</string>
+    <string name="prescription_not_downloaded_check_internet">प्रिस्क्रिप्शन डाउनलोड केलेले नाही, इंटरनेट कनेक्शन तपासा</string>
+    <string name="privacy_reject_toast">आपण संमतीशिवाय रुग्णाची नोंदणी करू शकत नाही</string>
+    <string name="not_answered">उत्तर दिले नाही</string>
+    <string name="new_update_available">नवीन अद्यतन उपलब्ध</string>
+    <string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अद्यतनित करा</string>
+    <string name="update">अद्यतनित करा</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा "</string>
+
+    <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा - "</string>
+
+    <!--New Ayu Related Changes-->
+    <string name="what_is_the_reason_for_your_visit">आपल्या भेटीचे कारण काय आहे?</string>
+    <string name="swipe_down_to_return">पुढील साठी मागील / अप खाली स्वाइप करा</string>
+    <string name="swipe_up">पुढील साठी स्वाइप करा</string>
+    <string name="swipe_down">मागील साठी खाली स्वाइप करा</string>
+    <string name="have_symptom">आपल्याकडे हे लक्षण आहे?</string>
+
+
+    <!--New UI changes 2.1-->
+    <string name="personal_information">वैयक्तिक माहिती</string>
+    <string name="address_details">पत्ता तपशील</string>
+    <string name="txt_others">इतर</string>
+    <string name="do_you_need_help_please_contact_us">तुम्हाला मदत हवी आहे का? कृपया आमच्याशी संपर्क साधा!</string>
+    <string name="whatsapp_helpline">व्हॉट्सअ‍ॅप हेल्पलाइन</string>
+    <string name="Whatsapp_Help_Cardview">मदत</string>
+    <string name="skip">वगळा</string>
+    <string name="start">प्रारंभ करा</string>
+    <string name="who_is_this_napplication_for">हे app अप्लिकेशन कोणासाठी आहे?</string>
+    <string name="custom_setup">सेटअप</string>
+    <string name="demo_version">डेमो आवृत्ती</string>
+    <string name="sample_text">नमुना मजकूर</string>
+    <string name="test_2_vibha_onplus_6t_10fke_7">चाचणी 2 विभा ऑनप्लस 6 टी, 10 एफकेई -7</string>
+    <string name="age_11_years_5_months">वय: 11 वर्षे, 5 महिने</string>
+    <string name="active_defaultTag">सक्रिय</string>
+    <string name="since_when_have_you_had_this_symptom">आपल्याला हे लक्षण कधीपासून आहे?</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">हॅलो \ n \ n मी आययू, डिजिटल आरोग्य सहाय्यक. चला सुरू करुया!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">हॅलो \ n \ n मी आययू, डिजिटल आरोग्य सहाय्यक. चला सुरू करुया!</string>
+    <string name="hello_my_name_is">"हॅलो माझे नाव आहे "</string>
+    <string name="i_need_assistance">"आणि मला काही मदत हवी आहे."</string>
+    <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
+    <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
+    <string name="intelehealth_a_telemedicine_platform">इंटेलहेल्थ हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="intelehealth_name">एकल आरोग्य</string>
+    <string name="Ayu_name">आयु</string>
+    <string name="close_button">बंद</string>
+    <string name="active_tag_patientDetail">"सक्रिय"</string>
+    <string name="associated_symptoms_patientDetail">संबद्ध लक्षणे</string>
+    <string name="device_ID">डिव्हाइस आयडी:</string>
+    <string name="enter_valid_license_url">वैध परवाना url प्रविष्ट करा</string>
+    <string name="please_enter_url_and_key">कृपया URL आणि की प्रविष्ट करा</string>
+    <string name="please_enter_valid_license_key">कृपया एक वैध परवाना की प्रविष्ट करा</string>
+    <string name="permission_denied">परवानगी नाकारली \ n</string>
+    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
+    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="temperature_C">"तापमान (सी):"</string>
+    <string name="temperature_F">"तापमान (फॅ):"</string>
+    <string name="no_history_family_found">कुटुंबातील आजाराचा कोणताही इतिहास प्रदान केलेला नाही.</string>
+    <string name="no_history_patient_illness_found">रूग्णाच्या आजाराचा कोणताही इतिहास दिलेला नाही.</string>
+    <string name="dr_registration_no">नॊदणी क्रमांक:</string>
+    <string name="dr_phone_number">फोन नंबर:</string>
+    <string name="dr_email">ईमेल:</string>
+    <string name="_visit_summary">भेट सारांश</string>
+    <string name="patient_id_">पेशंट आयडी:</string>
+    <string name="patient_name_title">रुग्णाचे नाव:</string>
+    <string name="patient_DOB">रुग्ण डीओबी:</string>
+    <string name="error_non_decimal_no_added">त्रुटी: दशांश नसलेला क्रमांक प्रविष्ट केला.</string>
+    <string name="download_protocols">प्रोटोकॉल डाउनलोड करीत आहे</string>
+    <string name="mindmap_internect_connection">मायन्डमॅप्स डाउनलोड करण्यासाठी आपल्याला इंटरनेट कनेक्टिव्हिटीची आवश्यकता आहे, कृपया आपले इंटरनेट चालू करा</string>
+    <string name="days">दिवस</string>
+    <string name="contact">संपर्क</string>
+    <string name="has_a_new_prescription">नवीन प्रिस्क्रिप्शन आहे</string>
+    <string name="whatsapp_presc_toast">फाईल एक्सप्लोररकडून प्रिस्क्रिप्शन पीडीएफ निवडा - अंतर्गत स्टोरेज / एकलआरोग्य_पीडीएफ</string>
+    <string name="enter_mobile_number_to_share_prescription">आपण प्रिस्क्रिप्शन सामायिक करू इच्छित मोबाइल नंबर प्रविष्ट करा.</string>
+    <string name="share">सामायिक करा</string>
+    <string name="please_enter_mobile_number">कृपया मोबाइल नंबर प्रविष्ट करा</string>
+    <string name="download_prescription_first_before_sharing">सामायिक करण्यापूर्वी प्रिस्क्रिप्शन डाउनलोड करा</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* मी (सेविका) पुष्टी करतो की मी गोपनीयतेची सूचना वाचली आहे आणि रुग्णाची संमती घेतली आहे.</string>
+    <string name="enter_10_digits">10 अंक प्रविष्ट करा</string>
+    <string name="please_read_out_privacy_consent_first">कृपया प्रथम गोपनीयता संमती वाचा.</string>
+    <string name="view_print">पहा / मुद्रित करा</string>
+    <string name="refresh">रीफ्रेश</string>
+    <string name="family_member">कुटुंब सदस्य</string>
+    <string name="no_family_member_registered">कुटुंबातील कोणत्याही सदस्याने नोंदणी केली नाही</string>
+    <string name="document_">"दस्तऐवज -"</string>
+    <string name="gender">लिंग</string>
+    <string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>
+    <string name="what_is_your_occupation">काय काम करतात?*</string>
+    <string name="do_you_have_a_bank_account">आपल्याकडे बँक खाते आहे? *</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">आपल्याकडे वैयक्तिकरित्या कोणत्या प्रकारचा मोबाइल फोन आहे? *</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा तुमच्या कुटुंबातील कोणी व्हॉट्सअ‍ॅप वापरत आहात? *</string>
+    <string name="total_number_of_members_in_the_household">कुटुंबातील एकूण सदस्यांची संख्या *</string>
+    <string name="enter_number">क्रमांक प्रविष्ट करा</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">सामान्यत: किती सदस्य आपल्या घरात राहतात किंवा आता आपल्याबरोबर राहत आहेत *</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याचे मुख्य स्रोत काय आहे? *</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">पिण्याचे पाणी अधिक सुरक्षित करण्यासाठी आपण काय करता? *</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">तेथे जाण्यासाठी, पाणी मिळविण्यासाठी आणि एका सहलीमध्ये परत येण्यास किती वेळ लागेल? *</string>
+    <string name="declined">उत्तर देण्यास नकार दिला</string>
+    <string name="enter_time">वेळ प्रविष्ट करा</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">मागील दोन आठवड्यांत, या स्त्रोताचे पाणी कमीतकमी एक दिवसभर उपलब्ध नव्हते काय? *</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात? *</string>
+    <string name="select_the_structure_of_house">घराची रचना निवडा *</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे? *</string>
+    <string name="enter_answer">उत्तर प्रविष्ट करा</string>
+    <string name="enter_occupation">व्यवसाय प्रविष्ट करा</string>
+    <string name="select">निवडा</string>
+    <string name="Hours">तास</string>
+    <string name="Days">दिवस</string>
+    <string name="Weeks">आठवडे</string>
+    <string name="Months">महिने</string>
+    <string name="Years">वर्षे</string>
+    <string name="image_saved">प्रतिमा यशस्वीरित्या जतन केली!</string>
+    <string name="emergency_confirmation">आपण ही भेट तात्काळ म्हणून सेट करू इच्छिता?</string>
+    <string name="per_Hour">प्रती तास</string>
+    <string name="per_Day">प्रती दिन</string>
+    <string name="per_Week">प्रति आठवडा</string>
+    <string name="per_Month">दर महिन्याला</string>
+    <string name="per_Year">दर वर्षी</string>
+
+    <!--@lincon-->
+    <string name="failed_initial_synced">रीफ्रेश करण्यात अयशस्वी, आपले इंटरनेट कनेक्शन तपासा. कृपया अॅप रीस्टार्ट करा.</string>
+    <string name="something_went_wrong">काहीतरी चूक झाली. कृपया समर्थनाशी संपर्क साधा</string>
+
+    //Speciality Spinner
+    <string name="speciality">वैशिष्ट्य</string>
+    <string name="select_speciality">विशेषज्ञता निवडा</string>
+    <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>
+
+    <string name="take_photo">फोटो काधा</string>
+    <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
+    <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
+
+    <string name = "change_languages">भाषा बदला</string>
+
+    <string name="loading_more">अधिक लोड करत आहे...</string>
+    <string name="warning_app_update">कृपया अॅप नवीनतम आवृत्तीवर अपडेट करा.</string>
+    <string name="due_on">देय तारीख:</string>
+    <string name="title_follow_up">फॉलो अप भेटी</string>
+    <string name="location">स्थान</string>
+
+    //----------reset app strings-------------
+    <string name = "reset_app"> अॅप रीसेट करा</string>
+    <string name="app_reset_toast">अॅप रीसेट पूर्ण झाले!</string>
+    <string name="resetting_app_dialog">अॅप रीसेट करत आहे</string>
+    <string name="sure_to_reset_app">तुम्हाला खात्री आहे की तुम्ही अॅप रीसेट करू इच्छिता?</string>
+
+    // अॅप कार्यक्षमता रीसेट करा
+    <string name="sync_failed">सिंक अयशस्वी! कृपया नंतर पुन्हा प्रयत्न करा.</string>
+    <string name="no_network_sync">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही. कृपया नंतर पुन्हा प्रयत्न करा.</string>
+    <string name = "app_sync"> अॅप सिंक करत आहे..</string>
+
+
+    <string name="location_setup">सेटअप स्थान - </string>
+    <string name="speciality_cardview_title">वैशिष्ट्यपूर्ण</string>
+
+
+    <string name="doctor_appointments">डॉक्टर अपॉइंटमेंट्स</string>
+    <string name="slot_info">स्लॉट माहिती</string>
+    <string name="appointment_booked">अपॉइंटमेंट बुक केली आहे</string>
+    <string name = "minutes_txt">मिनिटे</string>
+    <string name="booked_txt">बुक केले</string>
+    <string name="cancelled_txt">रद्द केले</string>
+    <string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
+    <string name = "appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
+    <string name="appointment_booked_failed">अपॉइंटमेंट बुक करण्यात अयशस्वी!</string>
+    <string name="postal_code_invalid_txt">कृपया वैध पोस्टल कोड प्रविष्ट करा</string>
+    <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
+    <string name="appointment_cancelled_success_txt">अपॉइंटमेंट यशस्वीरित्या रद्द करण्यात आली!</string>
+
+    <string name="book_appointment">पुस्तक भेट</string>
+    <string name="reschedule_appointment">अपॉइंटमेंट पुन्हा शेड्यूल करा</string>
+    <string name="appointment_booking_confirmation_txt">तुम्ही हा स्लॉट बुक करणार आहात का?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">तुम्हाला भेट रद्द करण्याची खात्री आहे का?</string>
+    <string name="cancel_appointment">अपॉइंटमेंट रद्द करा</string>
+    <string name="slot_empty_message">निवडलेल्या तारखेसाठी आणि विशेषतेसाठी अपॉइंटमेंट स्लॉट उपलब्ध नाही!</string>
+    <string name="appointment_empty_message">तुमच्याकडे कोणतीही भेट नाही!</string>
+    <string name="appointment_listing_title">अपॉइंटमेंट सूची</string>
+    <string name="appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
+    <string name = "appointment_for"> साठी भेट</string>
+    <string name="please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट निवडा</string>
+    <string name="please_select_speciality">कृपया स्पेशॅलिटी निवडा!</string>
+    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
+    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
+    <string name="doctor_is_not_available">Doctor is not available</string>
+    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="others">Others</string>
+    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="please_enter_reason_txt">Please enter the reason!</string>
+
+    <string name = "diagnosis">निदान</string>
+    <string name="primary">प्राथमिक</string>
+    <string name="secondary">दुय्यम</string>
+    <string name="provisiona">तात्पुरती</string>
+    <string name="confirmed">पुष्टी केली</string>
+    <string name="recommended_medication">शिफारस केलेले औषध</string>
+    <string name="medication">औषध</string>
+    <string name="strength">शक्ती</string>
+    <string name="units">युनिट्स (उदा: mg)</string>
+    <string name="units_tab">युनिट्स (उदा: टॅब/सिरप)</string>
+    <string name = "for_duration"> कालावधीसाठी</string>
+    <string name="units_eg_days_weeks_etc">युनिट्स (उदा. दिवस/आठवडे/इ.)</string>
+    <string name = "additional_instruction">अतिरिक्त सूचना</string>
+    <string name="recommended_tests">शिफारस केलेल्या चाचण्या</string>
+    <string name="test">चाचणी</string>
+    <string name="advice_or_refer_patient">पेशंटला सल्ला किंवा संदर्भ द्या</string>
+    <string name="notes">नोट्स</string>
+    <string name="notes_not_shared_with_the_patient">टिपा (रुग्णासोबत शेअर केलेल्या नाहीत)</string>
+    <string name = "follow_up"> फॉलो अप</string>
+    <string name="sign_and_submit">स्वाक्षरी करा आणि सबमिट करा</string>
+    <string name="add_test">चाचणी जोडा</string>
+    <string name="add_advice">सल्ला जोडा</string>
+    <string name="add_note">टीप जोडा</string>
+    <string name="schedule_a_follow_up">एक फॉलो अप शेड्यूल करा</string>
+    <string name="submit">सबमिट करा</string>
+    <string name = "add_meds"> औषध जोडा</string>
+    <string name = "add_diagnosis">निदान जोडा</string>
+    <string name="startVisitNote">प्रारंभ भेट टीप</string>
+    <string name="prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन यशस्वीरित्या दिले आहे</string>
+    <string name="morethanonefollowupnotallowed">कृपया एका वेळी फक्त एक फॉलोअप प्रदान करा.</string>
+    <string name = "amount"> रक्कम</string>
+    <string name="frequency">वारंवारता</string>
+    <string name = "route_optional">मार्ग (पर्यायी)</string>
+    <string name = "reason_optional">कारण (पर्यायी)</string>
+    <string name="choose_a_date">तारीख निवडा</string>
+    <string name = "follow_up_remark"> फॉलो अप टिप्पणी</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया प्रिस्क्रिप्शन देण्याचा प्रयत्न करण्यापूर्वी प्रथम अपलोड करा.</string>
+    <string name="visit_summary_prescription_already_given">प्रिस्क्रिप्शन आधीच दिलेले आहे. कृपया प्रिस्क्रिप्शन डाउनलोड करा.</string>
+
+    <string name = "prescription_age">वय</string>
+    <string name="prescription_gender">लिंग</string>
+    <string name="prescription_address_contact">पत्ता आणि संपर्क</string>
+    <string name = "prescription_patient_id">रुग्ण आयडी</string>
+    <string name = "prescription_date_of_visit">भेटीची तारीख</string>
+    <string name = "prescription_vitals"> जीवनावश्यक गोष्टी</string>
+    <string name = "prescription_rr">श्वसन दर</string>
+    <string name = "prescription_pulse">पल्स(bpm)</string>
+    <string name="prescription_bp">रक्तदाब</string>
+    <string name = "prescription_bmi">BMI</string>
+    <string name = "prescription_wt">वजन(किलो)</string>
+    <string name = "prescription_ht">उंची(सेमी)</string>
+    <string name="prescription_pre_comp">तक्रार(त्या) सादर करणे</string>
+    <string name = "prescription_diagnosis">निदान</string>
+    <string name = "prescription_med_plan">औषध योजना</string>
+    <string name="prescription_rec_investigation">शिफारस केलेले तपास</string>
+    <string name = "prescription_general_advice">सामान्य सल्ला</string>
+    <string name = "prescription_follow_up_date"> फॉलो अप डेट</string>
+    <string name = "prescription_temp_c">तापमान (C): </string>
+    <string name="prescription_temp_f">तापमान (F): </string>
+    <string name="type_to_search">शोधण्यासाठी टाइप करा..</string>
+
+    <string name="yes">होय</string>
+    <string name="no">नाही</string>
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">स्त्री</string>
+
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">त्यानंतर प्रोटोकॉल डाउनलोड केला जातो। प्रोटोकॉल डाउनलोडची पुनरावृत्ती करण्यासाठी \'होय\' दाबा। डेमो प्रोटोकॉलसह सातत्यासाठी \'नाही\' दाबा।</string>
+    <string name="app_version_string">App Version - %1$s</string>
+
+</resources>

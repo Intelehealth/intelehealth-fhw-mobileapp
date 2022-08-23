@@ -94,5 +94,8 @@
         <item name="spi_looped">false</item>
     </style>
 
-
+    <style name="DatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 </resources>

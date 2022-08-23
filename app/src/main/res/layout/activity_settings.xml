@@ -22,6 +22,16 @@
 
     <include layout="@layout/content_settings" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom"
+        android:paddingBottom="5dp"
+        android:text="@string/version_settings"
+        android:textAlignment="center" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

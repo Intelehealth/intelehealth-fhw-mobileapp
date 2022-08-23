@@ -3,23 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingTop="120dp">
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-           >
+            android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/ayu_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_ayu_logo_svg"
+        android:layout_marginTop="120dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -29,7 +29,7 @@
         android:text="@string/hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen"
         android:layout_below="@id/ayu_logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="45dp"
         android:fontFamily="@font/lato_regular"
         android:textSize="18sp"
         android:layout_marginStart="44dp"
@@ -49,6 +49,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginStart="70dp"
             android:layout_marginEnd="70dp"
+            android:visibility="visible"
             android:includeFontPadding="true"
             android:background="@drawable/ic_rectangle_76" />
 
@@ -58,15 +59,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:elevation="5dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="70dp"
             android:fontFamily="@font/lato_bold"
             android:text="@string/custom_setup"
-            android:textColor="#000000"
             android:layout_marginStart="70dp"
             android:layout_marginEnd="70dp"
             android:includeFontPadding="true"
             android:layout_below="@id/button_demo_visit"
-            android:background="@drawable/ic_rectangle_custom_setup" />
+            android:background="@drawable/ic_rectangle_76" />
 
         </RelativeLayout>
     </ScrollView>

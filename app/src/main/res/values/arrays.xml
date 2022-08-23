@@ -2,17 +2,52 @@
 
 
     <string-array name="language_names">
+        <item>हिंदी</item>
         <item>English</item>
-        <item>Odiya</item>
+        <item>ଓଡିଆ</item>
+        <item>తెలుగు</item>
+        <item>ગુજરાતી</item>
+        <item>मराठी</item>
+        <item>ಕನ್ನಡ</item>
+        <item>অসমীয়া</item>
+        <item>മലയാളം</item>
+        <item>Русский</item>
+        <!--        <item>Cebuano</item>-->
+        <item>বাংলা</item>
+        <item>தமிழ்</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
+        <item>hi</item>
         <item>en</item>
         <item>or</item>
+        <item>te</item>
+        <item>gu</item>
+        <item>mr</item>
+        <item>kn</item>
+        <item>as</item>
+        <item>ml</item>
+        <item>ru</item>
+        <!--        <item>cb</item>-->
+        <item>bn</item>
+        <item>ta</item>
 <!--        <item>cb</item>-->
     </string-array>
 
+    <string-array name="speciality_values">
+        <item>Select Specialization</item>
+        <item>General Physician</item>
+    </string-array>
+
+    <string-array name="speciality_value_hindi">
+        <item>स्पेशलाइज़ेशन चुनिए</item>
+        <item>सामान्य चिकित्सक</item>
+        <item>त्वचा विशेषज्ञ</item>
+        <item>फ़िज़ियोथेरेपिस्ट</item>
+        <item>प्रसूतिशास्री</item>
+        <item>बच्चों का चिकित्सक</item>
+    </string-array>
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
@@ -34,6 +69,11 @@
         <item>United States</item>
         <item>Philippines</item>
     </string-array>
+    <string-array name="economic_gu">
+        <item>પસંદ કરો</item>
+        <item>ગરીબીની રેખાથી ઉપર</item>
+        <item>ગરીબીની રેખાથી નિચે</item>
+    </string-array>
 
     <string-array name="education_or">
         <item>ଶିକ୍ଷା ଚୟନ</item>
@@ -52,6 +92,42 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+    <string-array name="education_te">
+        <item>ఎంచుకొను చదువు</item>
+        <item>నిరక్షరాస్యులు</item>
+        <item>ప్రాథమిక</item>
+        <item>ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
+        <item>ଉଚ୍ଚ ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
+        <item>ସగ్రాడ్యుయేషన్ &amp; ఉన్నత</item>
+    </string-array>
+    <string-array name="education_gu">
+        <item>પસંદ કરો</item>
+        <item>અશિક્ષિત</item>
+        <item>પ્રાથમિક</item>
+        <item>સેકેંડરી</item>
+        <item>હાયર સેકેંડરી</item>
+        <item>સ્નાતક અને વધુ</item>
+    </string-array>
+
+    <string-array name="education_bn">
+        <item>নির্বাচন করুন</item>
+        <item>নিরক্ষর</item>
+        <item>প্রাথমিক</item>
+        <item>মাধ্যমিক</item>
+        <item>উচ্চ মাধ্যমিক</item>
+        <item>স্নাতক বা উচ্চতর</item>
+    </string-array>
+
+
+    <string-array name="education_ta">
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>எழுதப்படிக்கத்தெரியாதவர்</item>
+        <item>முதல்நிலை</item>
+        <item>இடைநிலை</item>
+        <item>மேல்நிலை</item>
+        <item>பட்டம் மற்றும் உயர்</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -61,7 +137,65 @@
         <item>Graduation &amp; Higher</item>
     </string-array>
 
-    <string-array name="caste">
+    <string-array name="education_hi">
+        <item>चयन करें</item>
+        <item>अशिक्षित</item>
+        <item>प्रथम</item>
+        <item>माध्यमिक</item>
+        <item>उच्च माध्यमिक</item>
+        <item>स्नातक और उच्चतर</item>
+    </string-array>
+    <string-array name="education_mr">
+        <item>निवडा</item>
+        <item>निरक्षर</item>
+        <item>प्राथमिक</item>
+        <item>दुय्यम</item>
+        <item>उच्च माध्यमिक</item>
+        <item>पदवी आणि उच्च</item>
+    </string-array>
+
+    <string-array name="education_as">
+        <item>শিক্ষা বাছনি কৰক</item>
+        <item>নিৰক্ষৰ</item>
+        <item>প্ৰাথমিক</item>
+        <item>গৌণ</item>
+        <item>উচ্চতৰ মাধ্যমিক</item>
+        <item>স্নাতক আৰু উচ্চতৰ</item>
+    </string-array>
+ <string-array name="education_ml">
+        <item>വിദ്യാഭ്യാസം തിരഞ്ഞെടുക്കുക</item>
+        <item>നിരക്ഷരൻ</item>
+        <item>പ്രാഥമിക</item>
+        <item>സെക്കൻഡറി</item>
+        <item>ഹയർ സെക്കൻഡറി</item>
+        <item>ബിരുദവും ഉന്നതവും</item>
+    </string-array>
+    <string-array name="caste_mr">
+        <item>निवडा</item>
+        <item>सामान्य</item>
+        <item>इतर मागील वर्ग</item>
+        <item>अनुसूचित जाति</item>
+        <item>अनुसूचित जनजाती</item>
+        <item>इतर</item>
+    </string-array>
+    <string-array name="education_ru">
+        <item>Выберите Образование</item>
+        <item>Неграмотный</item>
+        <item>Первичный</item>
+        <item>Необязательно</item>
+        <item>Среднее образование</item>
+        <item>Окончание и высшее</item>
+    </string-array>
+    <string-array name="education_kn">
+        <item>ಆಯ್ಕೆಮಾಡಿ</item>
+        <item>ಅಶಿಕ್ಷಿತ</item>
+        <item>ಒಂದನೆಯ</item>
+        <item>ದ್ವಿತೀಯ</item>
+        <item>ಹೈಯರ್ ಸೆಕೆಂಡರಿ</item>
+        <item>ಪದವಿ ಮತ್ತು ಹೆಚ್ಚಿನ</item>
+    </string-array>
+
+    <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
         <item>OBC</item>
@@ -70,21 +204,170 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_cb">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
+    <string-array name="caste_gu">
+        <item>પસંદ કરો</item>
+        <item>જનરલ</item>
+        <item>સામાજિક શૈક્ષણિક પછાત</item>
+        <item>શેડ્યુલ કાસ્ટ</item>
+        <item>શેડ્યુલ ટ્રાઇબ</item>
+        <item>અન્ય</item>
+    </string-array>
+
+    <string-array name="caste_bn">
+        <item>নির্বাচন করুন</item>
+        <item>সাধারণ</item>
+        <item>ওবিসি</item>
+        <item>এসসি</item>
+        <item>এসটি</item>
+        <item>অন্যান্য</item>
+    </string-array>
+
+    <string-array name="caste_ta">
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>பொது</item>
+        <item>ஓபிசி</item>
+        <item>எஸ்சி</item>
+        <item>எஸ்டி</item>
+        <item>மற்றவை</item>
+    </string-array>
+
+    <string-array name="caste_or">
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ସାଧାରଣ</item>
+        <item>ଅନ୍ୟାନ୍ୟ ପଛୁଆ ବର୍ଗ</item>
+        <item>ଅନୁସୂଚିତ ଜାତି</item>
+        <item>ଅନୁସୂଚିତ ଜନଜାତି</item>
+        <item>ଅନ୍ୟାନ୍ୟ</item>
+    </string-array>
+
+    <string-array name="caste_te">
+        <item>ఎంచుకోండి</item>
+        <item>జనరల్</item>
+        <item>ఓబిసి</item>
+        <item>ఎస్సీఎస్సీ</item>
+        <item>ఎస్టీ</item>
+        <item>ఇతరులు</item>
+    </string-array>
+
+    <string-array name="caste_hi">
+        <item>चयन करें</item>
+        <item>सामान्य</item>
+        <item>अन्य पिछड़ा वर्ग</item>
+        <item>अनुसूचित जाति</item>
+        <item>अनुसूचित जनजाति</item>
+        <item>अन्य</item>
+    </string-array>
+
+    <string-array name="caste_as">
+        <item>নিৰ্বাচন কৰক</item>
+        <item>সাধাৰণ</item>
+        <item>অবিচি</item>
+        <item>উচ্চতম ন্যায়ালয়</item>
+        <item>এচটি</item>
+        <item>আন</item>
+    </string-array>
+
+    <string-array name="caste_ml">
+        <item>തിരഞ്ഞെടുക്കുക</item>
+        <item>ജനറൽ</item>
+        <item>ഒ.ബി.സി.</item>
+        <item>എസ്.സി.</item>
+        <item>എസ്.ടി</item>
+        <item>മറ്റുള്ളവർ</item>
+    </string-array>
+ <string-array name="caste_kn">
+        <item>ಆಯ್ಕೆಮಾಡಿ</item>
+        <item>ಸಾಮಾನ್ಯ</item>
+        <item>ಓ.ಬಿ.ಸಿ.</item>
+        <item>ಎಸ್ಸಿ</item>
+        <item>ಪರಿಶಿಷ್ಟ ಪಂಗಡ</item>
+        <item>ಇತರ</item>
+    </string-array>
+
+    <string-array name="caste_ru">
+        <item>Выбирать</item>
+        <item>Общие</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>другие</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
 
+    <string-array name="economic_ta">
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>வறுமைக் கோட்டிற்கு மேல்</item>
+        <item>வறுமைக் கோட்டிற்குக் கீழ்</item>
+    </string-array>
+
+    <string-array name="economic_bn">
+        <item>নির্বাচন করুন</item>
+        <item>দারিদ্র্যসীমার উপরে</item>
+        <item>দারিদ্র্যসীমার নিচে</item>
+    </string-array>
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ</item>
+        <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ</item>
+    </string-array>
+
+    <string-array name="economic_te">
+        <item>ఎంచుకోండి</item>
+        <item>ఎపిఎల్</item>
+        <item>బిపిఎల్</item>
+    </string-array>
+
+    <string-array name="economic_mr">
+        <item>निवडा</item>
+        <item>दारिद्र्य रेषेच्या वर</item>
+        <item>दारिद्र्य रेषेखाली</item>
     </string-array>
 
     <string-array name="economic_cb">
         <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_hi">
+        <item>चयन करें</item>
+        <item>गरीबी रेखा से ऊपर</item>
+        <item>गरीबी रेखा से नीचे</item>
+    </string-array>
+
+    <string-array name="economic_as">
+        <item>নিৰ্বাচন কৰক</item>
+        <item>এপিএল</item>
+        <item>বিপিএল</item>
+    </string-array>
+
+    <string-array name="economic_ml">
+        <item>തിരഞ്ഞെടുക്കുക</item>
+        <item>എ.പി.എൽ</item>
+        <item>ബിപിഎൽ</item>
+    </string-array>
+<string-array name="economic_kn">
+        <item>ಆಯ್ಕೆಮಾಡಿ</item>
+        <item>ಬಡತನ ರೇಖೆಯ ಮೇಲೆ</item>
+        <item>ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ</item>
+
+    </string-array><string-array name="economic_ru">
+        <item>Выбирать</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
@@ -303,5 +586,1032 @@
         <item>@color/dot_dark_screen3</item>
         <item>@color/dot_dark_screen4</item>
     </array>
+
+    <string-array name="location_state">
+        <item>Select State</item>
+    </string-array>
+
+    <string-array name="location_district">
+        <item>Select District</item>
+    </string-array>
+
+    <string-array name="location_sanch">
+        <item>Select Sanch</item>
+    </string-array>
+
+    <string-array name="location_village">
+        <item>Select Village</item>
+    </string-array>
+
+
+    <!-- Prescription -->
+    <string-array name="medications">
+        <item>Albendazole Tablets 400mg</item>
+        <item>Amlodipine Tablets 5 mg</item>
+        <item>Amoxycillin Capsules 500 mg</item>
+        <item>Amoxycillin Capsules 250mg</item>
+        <item>Ascorbic Acid Tablets(Chewable)</item>
+        <item>Atenolol Tablets 50 mg</item>
+        <item>Bisacodyl Tablet 5 mg</item>
+        <item>Calcium gluconate Tablet 500 mg</item>
+        <item>Chloroquine phosphateTablet 250 mg</item>
+        <item>Chlorpheniramine Maleate Tablets 4 mg</item>
+        <item>Clotrimazole Vaginal Tablet 100 mg</item>
+        <item>Dexamethasone Tablet 0.5 mg</item>
+        <item>Diclofenac Sodium Tablets 50 mg</item>
+        <item>Dicyclomine Tablets 20 mg</item>
+        <item>Domperidone Tablets 10 mg</item>
+        <item>Enalapril Maleate Tablets 5 mg</item>
+        <item>Etopyllin with theophylline tablet</item>
+        <item>Ferrous salt 20 mg + Folic acid 100 mcg Tablet</item>
+        <item>Ferrous salt 100 mg + Folic acid 500 mcg Tablet</item>
+        <item>Folic Acid Tablets 5mg</item>
+        <item>Ibuprofen Tablets 400mg</item>
+        <item>Metformin HCL Tablets 500mg</item>
+        <item>Metronidazole Tablets 400mg</item>
+        <item>Metronidazole Tablet 200mg</item>
+        <item>Norfloxacin Tablets 400mg</item>
+        <item>Paracetamol Tablets 500mg</item>
+        <item>Primaquine Phosphate Tablets 2.5mg</item>
+        <item>Primaquine Phosphate Tablets 7.5mg</item>
+        <item>Salbutamol Tablet 4 mg</item>
+        <item>Vitamin A Capsules</item>
+        <item>Vitamin B Complex Tablets (Therapeutic)</item>
+        <item>Azithromycin Tablet 500 mg</item>
+        <item>Cefixime Tablet 200 mg</item>
+        <item>Asprin (Acetylsalicylic acid) Tablet 75 mg</item>
+        <item>Clopidogrel Tablets 75mg</item>
+        <item>Zinc Sulphate Dispersible Tablets 20mg</item>
+        <item>Atorvastatin Tablet 40 mg</item>
+        <item>Bisacodyl Suppository 5 mg</item>
+        <item>Azithromycin Tablet 250 mg</item>
+        <item>Famotidine Tablets 40mg</item>
+        <item>Formoterol &amp; Budesonide Rotacap 6 mcg+ 200 mcg 200mcg</item>
+        <item>Montelukast Sodium Tablet 10 mg</item>
+        <item>Paracetamol Tablet 650 mg</item>
+        <item>Labetalol Tablet 100 mg</item>
+        <item>Ferrous salt 60mg + Folic acid 500mcg</item>
+        <item>Tablet Diclofenac sodium</item>
+        <item>Injection Eteophylline &amp; Theophylline</item>
+        <item>Injection Gentamicin Injection 80 mg/ml</item>
+        <item>Pralidoxime chloride Injection 25 mg/ml</item>
+        <item>Ringer lactate Injection</item>
+        <item>Sodium chloride injection</item>
+        <item>Sterile Water for Injection (5ml)</item>
+        <item>Vitamin B Complex Injection</item>
+        <item>Sodium Chloride Inj.(IV use) 100ml</item>
+        <item>Albendazole Oral liquid 200 mg/5 ml</item>
+        <item>Amoxycillin oral suspension</item>
+        <item>Betamethasone Valerate Cream 0.1%</item>
+        <item>Cholecalciferol Granules (Vitamin D3)</item>
+        <item>Ciprofloxacin Ophthalmic Solution</item>
+        <item>Clotrimazole Cream 1%</item>
+        <item>Vitamin A Solution Conc. 1 Lac IU/1ml, 100ml</item>
+        <item>Bottle Dextromethorphan Syrup 13.5 mg/5 ml</item>
+        <item>Domperidone Syrup</item>
+        <item>Framycetin Sulphate Skin Cream (30Gm Tube)</item>
+        <item>Glycerine Hydrogen peroxide Solution</item>
+        <item>Ibuprofen oral Suspension 100 mg/5 ml</item>
+        <item>Metronidazole Oral liquid 100 mg/5 ml</item>
+        <item>O.R.S.(W.H.O. Formula)</item>
+        <item>Paracetamol Syrup 125 mg/5ml</item>
+        <item>Povidone iodine Solution 5%</item>
+        <item>Povidine lodine (Ointment)</item>
+        <item>Povidone lodine Solution 5%W/V(1 Litre)</item>
+        <item>Salbutamol Nebulizer Solution</item>
+        <item>Salbutamol Syrup 2 mg/5 ml</item>
+        <item>Silver sulphadiazine Cream 1%</item>
+        <item>Calamine Lotion Neomycin</item>
+        <item>Bacitracin &amp; Palymaxin B Oint.</item>
+        <item>Azithromycin Oral liquid 200mg/5ml</item>
+        <item>Levocetirizine Dihydrochloride Syrup</item>
+        <item>Lignocaine Hydrochloride Jelly</item>
+        <item>IRON FOLIC ACID (IFA) SYRUP</item>
+        <item>Alcoholic Rub Hand Disinfectant 500 ml</item>
+        <item>Calcium &amp; Vitamin D3 Suspension 100 ml bottle</item>
+        <item>Cefixime syrup</item>
+        <item>Xylometazoline Nasal Drops 0.05%</item>
+        <item>Disposable Syringe 10 ml(Without Needle)</item>
+        <item>Sterile Hypodermic Syringe for Single use Size 2 ml(Without Needle)</item>
+        <item>Sterile Hypodermic Syringe for Single use Size: SML(Without Needle)</item>
+        <item>Plastic Bags(Yellow)</item>
+        <item>Small Plastic Bags(Red)</item>
+        <item>Small Plastic Bags(Black)</item>
+        <item>Small Surgical Rubber Gloves(Disposable) 6 Inch</item>
+        <item>Surgical Rubber Gloves(Disposable) 6.5 Inch</item>
+        <item>Surgical Rubber Gloves(Disposable) 7 Inch</item>
+        <item>Surgical Rubber Gloves (Disposable) 7.5 Inch</item>
+        <item>Surgical Rubber Gloves (Disposable) 8 Inch tab</item>
+        <item>metformin 500mg + tab glimeperide 2mg tab</item>
+        <item>metformin 500mg + tab glimeperide 1mg Glimepiride Tablet 2 mg</item>
+        <item>Metformin Hydrochloride Tablets 500 mg TAB</item>
+        <item>GLIPIZIDE 5MG</item>
+        <item>Альбендазол 400 мг</item>
+        <item>Амлодипин в таблетках 5 мг</item>
+        <item>Амоксициллин в капсулах 500 мг</item>
+        <item>Амоксициллин в капсулах 250 мг</item>
+        <item>Аскорбиновая кислота (жевательные)</item>
+        <item>Атенолол в таблетках 50 мг</item>
+        <item>Бисакодил Таблетка 5 мг</item>
+        <item>Глюконат кальция таблетки 500 мг</item>
+        <item>Хлорохин фосфат Таблетка 250 мг</item>
+        <item>Хлорфенирамин малеат таблетки 4 мг</item>
+        <item>Клотримазол вагинальные таблетки 100 мг</item>
+        <item>Таблетка дексаметазона 0,5 мг</item>
+        <item>Диклофенак натрия в таблетках 50 мг</item>
+        <item>Дицикломин таблетки 20 мг</item>
+        <item>Домперидон таблетки 10 мг</item>
+        <item>Эналаприл малеат таблетки 5 мг</item>
+        <item>Этопиллин с теофиллином в таблетке</item>
+        <item>Соль железа 20 мг + фолиевая кислота 100 мкг Таблетка</item>
+        <item>Соль железа 100 мг + фолиевая кислота 500 мкг Таблетка</item>
+        <item>Фолиевая кислота таблетки 5 мг</item>
+        <item>Ибупрофен таблетки 400 мг</item>
+        <item>Метформин HCL таблетки 500 мг</item>
+        <item>Метронидазол в таблетках 400 мг</item>
+        <item>Метронидазол Таблетка 200 мг</item>
+        <item>Норфлоксацин таблетки 400 мг</item>
+        <item>Парацетамол таблетки 500 мг</item>
+        <item>Примахина фосфат таблетки 2,5 мг</item>
+        <item>Примахина фосфат таблетки 7,5 мг</item>
+        <item>Сальбутамол таблетки 4 мг</item>
+        <item>Витамин А в капсулах</item>
+        <item>Витамина B комплекс в таблетках (терапевтические)</item>
+        <item>Азитромицин Таблетка 500 мг</item>
+        <item>Цефиксим Таблетка 200 мг</item>
+        <item>Асприн (ацетилсалициловая кислота) таблетка 75 мг</item>
+        <item>Клопидогрель таблетки 75 мг</item>
+        <item>Диспергируемые таблетки сульфата цинка 20 мг</item>
+        <item>Аторвастатин таблетки 40 мг</item>
+        <item>Бисакодил свечи 5 мг</item>
+        <item>Азитромицин Таблетка 250 мг</item>
+        <item>Фамотидин в таблетках 40 мг</item>
+        <item>Формотерол и будесонид Rotacap 6 мкг + 200 мкг 200 мкг</item>
+        <item>Монтелукаст натрия в таблетках 10 мг</item>
+        <item>Таблетка парацетамола 650 мг</item>
+        <item>Лабеталол Таблетка 100 мг</item>
+        <item>Соль железа 60 мг + фолиевая кислота 500 мкг</item>
+        <item>Диклофенак натрия в Таблетках</item>
+        <item>Этеофиллин и теофиллин для инъекций</item>
+        <item>Инъекции Гентамицин для инъекций 80 мг / мл</item>
+        <item>Пралидоксим хлорид для инъекций 25 мг / мл</item>
+        <item>Инъекция лактата Рингера</item>
+        <item>Раствор натрия хлорида для инъекций</item>
+        <item>Стерильная вода для инъекций (5 мл)</item>
+        <item>Комплексная инъекция витамина B</item>
+        <item>Хлорид натрия для инъекций (внутривенное употребление) 100 мл</item>
+        <item>Альбендазол Жидкость для перорального применения 200 мг / 5 мл</item>
+        <item>Пероральная суспензия амоксициллина</item>
+        <item>Бетаметазона валерат крем 0,1%</item>
+        <item>Гранулы холекальциферола (витамин D3)</item>
+        <item>Ципрофлоксацин офтальмологический раствор</item>
+        <item>Клотримазол крем 1%</item>
+        <item>Концентрация раствора витамина А. 1 Lac МЕ / 1 мл, 100 мл</item>
+        <item>Флакон с сиропом декстрометорфан 13,5 мг / 5 мл</item>
+        <item>Домперидон сироп</item>
+        <item>Крем для кожи на основе сульфата фрамицетина (тюбик 30 г)</item>
+        <item>Глицерин раствор перекиси водорода</item>
+        <item>Ибупрофен пероральная суспензия 100 мг / 5 мл</item>
+        <item>Метронидазол Жидкость для перорального применения 100 мг / 5 мл</item>
+        <item>ПРС (формула ВОЗ)</item>
+        <item>Сироп парацетамола 125 мг / 5 мл</item>
+        <item>Повидон йодный раствор 5%</item>
+        <item>Повидин-йодин (мазь)</item>
+        <item>Повидона йода раствор 5% мас. / Об. (1 литр)</item>
+        <item>Раствор для распылителя сальбутамола</item>
+        <item>Сальбутамол сироп 2 мг / 5 мл</item>
+        <item>Крем сульфадиазин серебра 1%</item>
+        <item>Лосьон Каламин Неомицин</item>
+        <item>Мазь бацитрацин и палимаксин B.</item>
+        <item>Азитромицин Жидкость для перорального применения 200 мг / 5 мл</item>
+        <item>Сироп дигидрохлорида левоцетиризина</item>
+        <item>Желе с лигнокаином гидрохлоридом</item>
+        <item>ЖЕЛЕЗНАЯ ФОЛИЕВАЯ КИСЛОТА (IFA) СИРОП</item>
+        <item>Спиртовое дезинфицирующее средство для рук 500 мл</item>
+        <item>Суспензия кальция и витамина D3, флакон 100 мл</item>
+        <item>Цефиксим сироп</item>
+        <item>Ксилометазолин капли назальные 0,05%</item>
+        <item>Одноразовый шприц 10 мл (без иглы)</item>
+        <item>Стерильный шприц для подкожных инъекций для одноразового использования, размер 2 мл (без иглы)</item>
+        <item>Стерильный шприц для подкожных инъекций для одноразового использования Размер: SML (без иглы)</item>
+        <item>Пластиковые пакеты (желтые)</item>
+        <item>Маленькие пластиковые пакеты (красные)</item>
+        <item>Маленькие пластиковые пакеты (черные)</item>
+        <item>Малые хирургические резиновые перчатки (одноразовые) 6 дюймов</item>
+        <item>Хирургические резиновые перчатки (одноразовые) 6.5 дюймов</item>
+        <item>Перчатки хирургические резиновые (одноразовые) 7 дюймов</item>
+        <item>Хирургические резиновые перчатки (одноразовые) 7,5 дюйма</item>
+        <item>Хирургические резиновые перчатки (одноразовые), вкладка 8 дюймов</item>
+        <item>метформин 500 мг + таблетка глимеперид 2 мг таб</item>
+        <item>метформин 500 мг + таблетка глимеперид 1 мг Глимепирид таблетка 2 мг</item>
+        <item>Таблетки метформина гидрохлорида 500 мг ТАБ</item>
+        <item>ГЛИПИЗИД 5МГ</item>
+
+        <!-- This below part not sure from where it was added and by whom - Prajwal -->
+        <item>Tab Paracetamol 500mg</item>
+        <item>Tab Cetrizine 10mg</item>
+        <item>Tab Amoxicillin/clavulanic acid 875/125mg</item>
+        <item>Cap Omeprazole 20mg</item>
+        <item>Tab Dexamethasone 6mg</item>
+        <item>Tab Hydrocortisone 10mg</item>
+        <item>Tab Prednisolone 20mg</item>
+        <item>Tab Methylprednisolone 8mg</item>
+        <item>Tab Vitamin C 500mg</item>
+        <item>Cholecalciferol Grannules 6000IU</item>
+        <item>Tab Metformin 500mg</item>
+        <item>Tab Glimepride 2mg</item>
+        <item>Tab Glibenclamide 5mg</item>
+        <item>Tab Atenolol 50mg</item>
+        <item>Tab Amlodepine 5mg</item>
+        <item>Tab Enalapril 5mg</item>
+        <item>Tab Cefixime 200mg</item>
+        <item>Tab Azithromycin 250mg</item>
+        <item>Lactulose 250ml bottle</item>
+        <item>ORS 21gm sachet</item>
+        <item>Tab Doxycycline 100mg</item>
+        <item>Syrup Kesol 200ml bottle</item>
+    </string-array>
+
+    <string-array name="weight_units">
+        <item>Ampule(s)</item>
+        <item>Application</item>
+        <item>Bar</item>
+        <item>Biscuit wafer</item>
+        <item>Can</item>
+        <item>Capsule</item>
+        <item>Container</item>
+        <item>Drop</item>
+        <item>Enema</item>
+        <item>Fluid ounce</item>
+        <item>Gallon</item>
+        <item>Gram</item>
+        <item>Gum</item>
+        <item>Inch</item>
+        <item>International units</item>
+        <item>Kilogram</item>
+        <item>Liter</item>
+        <item>Lozenge</item>
+        <item>Milliequivalent</item>
+        <item>Metric drop</item>
+        <item>Microgram</item>
+        <item>Milligram</item>
+        <item>Milligram per meter squared</item>
+        <item>Milliliter</item>
+        <item>Million units</item>
+        <item>Nebulizer</item>
+        <item>Pad</item>
+        <item>Patch</item>
+        <item>Pint</item>
+        <item>Puff</item>
+        <item>Ring pessary</item>
+        <item>Scoopful</item>
+        <item>Spray</item>
+        <item>Suppository</item>
+        <item>Syringe</item>
+        <item>Tablet</item>
+        <item>Tablespoon</item>
+        <item>Teaspoon</item>
+        <item>Tube</item>
+        <item>Unit</item>
+        <item>Vial</item>
+        <item>Ампула (ы)</item>
+        <item>Приложение</item>
+        <item>Бар</item>
+        <item>Бисквитная вафля</item>
+        <item>Может</item>
+        <item>Капсула</item>
+        <item>Контейнер</item>
+        <item>Уронить</item>
+        <item>Клизма</item>
+        <item>Жидкая унция</item>
+        <item>Галлон</item>
+        <item>Грамм</item>
+        <item>Жвачка</item>
+        <item>Дюйм</item>
+        <item>Международные единицы</item>
+        <item>Килограмм</item>
+        <item>Литр</item>
+        <item>Леденец</item>
+        <item>Миллиэквивалент</item>
+        <item>Метрическое падение</item>
+        <item>Микрограмм</item>
+        <item>Миллиграмм</item>
+        <item>Миллиграмм на квадратный метр</item>
+        <item>Миллилитр</item>
+        <item>Миллион единиц</item>
+        <item>Распылитель</item>
+        <item>подушка</item>
+        <item>Пластырь</item>
+        <item>Пинта</item>
+        <item>Слойка</item>
+        <item>Кольцевой пессарий</item>
+        <item>Черпающий</item>
+        <item>Спрей</item>
+        <item>Суппозиторий</item>
+        <item>Шприц</item>
+        <item>Таблетка</item>
+        <item>Столовая ложка</item>
+        <item>Чайная ложка</item>
+        <item>Трубка</item>
+        <item>Единица измерения</item>
+        <item>Флакон</item>
+    </string-array>
+
+    <string-array name="frequency">
+        <item>Twice daily</item>
+        <item>Twice daily before meals</item>
+        <item>Twice daily after meals</item>
+        <item>Twice daily with meals</item>
+        <item>Once daily</item>
+        <item>Once daily, at bedtime</item>
+        <item>Once daily, in the morning</item>
+        <item>Once daily, in the evening</item>
+        <item>Thrice daily</item>
+        <item>Thrice daily, after meals</item>
+        <item>Thrice daily, with meals</item>
+        <item>Thrice daily, before meals</item>
+        <item>Four times daily</item>
+        <item>Four times daily, before meals and at bedtime</item>
+        <item>Four times daily, after meals and at bedtime</item>
+        <item>One time</item>
+        <item>Every two hours</item>
+        <item>Every 30 min</item>
+        <item>Every four hours</item>
+        <item>Every five hours</item>
+        <item>Every six hours</item>
+        <item>Every twelve hours</item>
+        <item>Every eight hours</item>
+        <item>Every twenty-four hours</item>
+        <item>Every thirty-six hours</item>
+        <item>Every forty-eight hours</item>
+        <item>Every seventy-two hours</item>
+        <item>Every Monday, Wednesday and Friday</item>
+        <item>Concept #163141</item>
+        <item>HALF HR BEFORE BREAKFAST</item>
+        <item>AFTER BREAKFAST</item>
+        <item>15MIN BEFORE LUNCH</item>
+        <item>AFTER LUNCH</item>
+        <item>EVENING</item>
+        <item>HALF HR BEFORE DINNER</item>
+        <item>15MIN BEFORE DINNER</item>
+        <item>AFTER DINNER</item>
+        <item>AT BEDTIME</item>
+        <item>As and when required</item>
+        <item>Continue until further consultation</item>
+        <item>Дважды в день</item>
+        <item>Дважды в день перед едой</item>
+        <item>Дважды в день после еды</item>
+        <item>Дважды в день во время еды</item>
+        <item>Раз в день</item>
+        <item>Один раз в день перед сном</item>
+        <item>Один раз в день утром</item>
+        <item>Один раз в день вечером</item>
+        <item>Трижды в день</item>
+        <item>Трижды в день, после еды</item>
+        <item>Трижды в день во время еды</item>
+        <item>Трижды в день, до еды</item>
+        <item>Четыре раза в день</item>
+        <item>Четыре раза в день, перед едой и перед сном</item>
+        <item>Четыре раза в день, после еды и перед сном</item>
+        <item>Один раз</item>
+        <item>Каждые два часа</item>
+        <item>Каждые 30 мин.</item>
+        <item>Каждые четыре часа</item>
+        <item>Каждые пять часов</item>
+        <item>Каждые шесть часов</item>
+        <item>Каждые двенадцать часов</item>
+        <item>Каждые восемь часов</item>
+        <item>Каждые двадцать четыре часа</item>
+        <item>Каждые тридцать шесть часов</item>
+        <item>Каждые сорок восемь часов</item>
+        <item>Каждые семьдесят два часа</item>
+        <item>Каждый понедельник, среду и пятницу</item>
+        <item>Концепция № 163141</item>
+        <item>ПОЛОВИНА ЧАСА ПЕРЕД ЗАВТРАКОМ</item>
+        <item>После завтрака</item>
+        <item>15мин до обеда</item>
+        <item>После обеда</item>
+        <item>ВЕЧЕР</item>
+        <item>ПОЛОВИНА ЧАСА ПЕРЕД УЖИНОМ</item>
+        <item>15мин до ужина</item>
+        <item>ПОСЛЕ УЖИНА</item>
+        <item>ВРЕМЯ СНА</item>
+        <item>По мере необходимости</item>
+        <item>Продолжайте до дальнейших консультаций</item>
+    </string-array>
+
+    <string-array name="route">
+        <item>Oral</item>
+        <item>Intravenous</item>
+        <item>Intramuscular</item>
+        <item>Subcutaneous</item>
+        <item>Inhalation</item>
+        <item>Intranasal</item>
+        <item>In left ear</item>
+        <item>In right ear</item>
+        <item>In both ears</item>
+        <item>In left eye</item>
+        <item>In right eye</item>
+        <item>In both eyes</item>
+        <item>Transdermal</item>
+        <item>Vaginally</item>
+        <item>Rectally</item>
+        <item>Per NG tube</item>
+        <item>Intraosseous</item>
+        <item>Устный</item>
+        <item>Внутривенно</item>
+        <item>Внутримышечный</item>
+        <item>Подкожный</item>
+        <item>Вдыхание</item>
+        <item>Интраназальный</item>
+        <item>В левом ухе</item>
+        <item>В правом ухе</item>
+        <item>В оба уха</item>
+        <item>В левом глазу</item>
+        <item>В правом глазу</item>
+        <item>В оба глаза</item>
+        <item>Трансдермальный</item>
+        <item>Вагинально</item>
+        <item>Ректально</item>
+        <item>через назогастральный зонд</item>
+        <item>Внутрикостный</item>
+
+    </string-array>
+
+    <string-array name="time_units">
+        <item>Seconds</item>
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>DAYS</item>
+        <item>WEEKS</item>
+        <item>MONTHS</item>
+        <item>Years</item>
+        <item>Number of occurrences</item>
+        <item>Секунды</item>
+        <item>Минуты</item>
+        <item>Часы</item>
+        <item>ДНЕЙ</item>
+        <item>НЕДЕЛИ</item>
+        <item>МЕСЯЦЫ</item>
+        <item>Годы</item>
+        <item>Количество повторов</item>
+
+    </string-array>
+
+    <string-array name="tests">
+        <item>CBC: HB/WBC/RBC PLATELET</item>
+        <item>BLOOD SUGAR: F AND PP</item>
+        <item>UREA AND CREATININE TEST</item>
+        <item>SERUM SODIUM AND POTASSIUM</item>
+        <item>PREGNANCY TEST</item>
+        <item>LIVER FUNCTION TEST: BILIRUBIN AND LIVER ENZYMES (SGOT/SGPT/SAKP)</item>
+        <item>HBA1C</item>
+        <item>THYROID FUNCTION TEST (T3 /T4/TSH)</item>
+        <item>URINE: ROUTINE AND MICROSCOPIC ANC CULTURE</item>
+        <item>STOOL: OCCULT BLOOD AND MICROSCOPIC FOR CYSTS ETC. AND CULTURE</item>
+        <item>WIDAL TEST (TYPHOID FEVER)</item>
+        <item>SERUM URIC ACID</item>
+        <item>LIPID PROFILE</item>
+        <item>SERUM CALCIUM</item>
+        <item>SERUM VIT. D3</item>
+        <item>SERUM ALBUMIN AND GLOBULIN</item>
+        <item>TROPONIN - T</item>
+        <item>URINE MICROALBUMINURIA</item>
+        <item>TB PCR</item>
+        <item>MALARIA - ANTIGEN/ANTOBODY/PARASITE DETECTION</item>
+        <item>DENGUE</item>
+        <item>COAGULATION PROFILE (PT/APTT)</item>
+        <item>BLOOD GROUP AND RH</item>
+        <item>RHEUMATOID FACTOR/ANTI-NUCLEAR FACTOR/HLA B27</item>
+        <item>FEVER PANEL: PYREXIA OF UNKNOWN ORIGIN VIRAL/BACTERIAL/PARASITIC</item>
+        <item>SERUM IRON AND VIT. B12</item>
+        <item>CHEST X-RAY PA VIEW</item>
+        <item>CERVICAL SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>THORACIC SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>LUMBOSACCRAL SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>KNEE JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>SHOULDER JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>ANKLE JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>ULTRASOUND, ABDOMEN</item>
+        <item>PELVIC ULTRASOUND</item>
+        <item>ECG</item>
+        <item>Concept #163201</item>
+        <item>Общий анализ крови: HB / WBC / RBC PLATELET</item>
+        <item>САХАР В КРОВИ: F И PP</item>
+        <item>ТЕСТ МОЧИНЫ И КРЕАТИНИНА</item>
+        <item>СЫВОРОТКА НАТРИЯ И КАЛИЯ</item>
+        <item>ТЕСТ НА БЕРЕМЕННОСТЬ</item>
+        <item>ТЕСТ ФУНКЦИИ ПЕЧЕНИ: БИЛИРУБИН И ФЕРМЕНТЫ ПЕЧЕНИ (SGOT / SGPT / SAKP)</item>
+        <item>HBA1C</item>
+        <item>ТЕСТ НА ФУНКЦИЮ ЩИТОВИДНОЙ ЖЕЛЕЗЫ (T3 / T4 / TSH)</item>
+        <item>МОЧА: ОБЫЧНАЯ И МИКРОСКОПИЧЕСКАЯ АНК КУЛЬТУРА</item>
+        <item>КУЛЬТУРА: ОККУЛЬТНАЯ КРОВИ И МИКРОСКОПИЧЕСКИЙ ДЛЯ КИСТ И Т.Д. И КУЛЬТУРА</item>
+        <item>Широкий тест (тифоидная лихорадка)</item>
+        <item>СЫВОРОТКА МОЧЕВАЯ КИСЛОТА</item>
+        <item>ЛИПИДНЫЙ ПРОФИЛЬ</item>
+        <item>СЫВОРОТКА КАЛЬЦИЯ</item>
+        <item>Витамин Д3 сыворотка</item>
+        <item>СЫВОРОТКА АЛЬБУМИН И ГЛОБУЛИН</item>
+        <item>ТРОПОНИН - Т</item>
+        <item>МИКРОАЛЬБУМИНУРИЯ МОЧИ</item>
+        <item>ТБ ПЦР</item>
+        <item>МАЛЯРИЯ - ОБНАРУЖЕНИЕ АНТИГЕНОВ / АНТОБОДИ / ПАРАЗИТОВ</item>
+        <item>ДЕНГЕ</item>
+        <item>ПРОФИЛЬ КОАГУЛЯЦИИ (PT / APTT)</item>
+        <item>ГРУППА КРОВИ И RH</item>
+        <item>РЕВМАТОИДНЫЙ ФАКТОР / АНТИЯДЕРНЫЙ ФАКТОР / HLA B27</item>
+        <item>ПАНЕЛЬ ЛИХОРАДКИ: ПИРЕКСИЯ НЕИЗВЕСТНОГО ПРОИСХОЖДЕНИЯ ВИРУСНАЯ / БАКТЕРИАЛЬНАЯ / ПАРАЗИТНАЯ</item>
+        <item>СЫВОРОТКА IRON И VIT. B12</item>
+        <item>РЕНТГЕНОВСКИЙ ВИД НА ГРУДИ</item>
+        <item>Рентген шейного отдела позвоночника ПА И ВИД С БЕЗОПАСНОСТИ</item>
+        <item>Рентген грудного отдела позвоночника ПА И ВИД С БЕЗОПАСНОСТИ</item>
+        <item>РЕНТГЕНОВСКИЙ РЕНТГЕНОК ПОЯСНИЧНО-АККРАЛЬНОГО ПОЗВОНОЧНИКА И ВЗГЛЯД С БЕЗОПАСНОСТИ</item>
+        <item>РЕНТГЕНОГРАФИЯ КОЛЕННОГО СУСТАВА И ВИД С БЕЗОПАСНОСТИ</item>
+        <item>РЕНТГЕНОВСКИЙ ПАРАМЕТР ПЛЕЧА И БОКОВОЙ ВИД</item>
+        <item>РЕНТГЕНОВСКИЙ РЕНТГЕН БОЛЬШОГО СУСТАВА И ВИД БОКОВОЙ</item>
+        <item>УЛЬТРАЗВУК, ЖИВОТ</item>
+        <item>УЗИ таза</item>
+        <item>ЭКГ</item>
+        <item>Концепция № 163201</item>
+
+    </string-array>
+
+    <string-array name="advice">
+        <item>DO NOT SLEEP AT NOON</item>
+        <item>DO NOT EAT STALE FOODS AND FERMENTED RICE</item>
+        <item>DO NOT SMOKE CIGARETTES</item>
+        <item>DO NOT WALK BAREFOOT</item>
+        <item>FOLLOW DIABETIC FOOD CHART</item>
+        <item>DO NOT EAT RAW SALT</item>
+        <item>DIET</item>
+        <item>DO NOT BATH IN PONDS</item>
+        <item>DO NOT CHEW TOBACCO</item>
+        <item>EAT HOT MEALS</item>
+        <item>EAT FOODS COOKED WITHOUT SALT</item>
+        <item>STAY NEAT AND CLEAN</item>
+        <item>DO NOT CLOSE ALL THE DOORS AND WINDOWS WHILE SLEEPING</item>
+        <item>DRINK LESS WATER</item>
+        <item>DO NOT EAT RAW ONION</item>
+        <item>DO NOT EAT RAW ONION, TOMATO, LETTUCE, OR LENTIL</item>
+        <item>DRINK LOTS OF WATER</item>
+        <item>DRINK COOLED BOILED DRINKING WATER</item>
+        <item>WEAR DRY CLOTHES AFTER BATH</item>
+        <item>DO NOT DO HEAVY WORK</item>
+        <item>DO NOT BRUSH YOUR TEETH WITH GURAKHU</item>
+        <item>EAT PLENTY OF GREEN LEAF VEGETABLES AND FRUITS</item>
+        <item>AVOID OILY AND SPICY FOODS</item>
+        <item>DO NOT DRINK ALCHOHOL</item>
+        <item>REVIEW WITH DIAGNOSTIC REPORT</item>
+        <item>GURGLE WITH LUKEWARM SALINE WATER</item>
+        <item>DO NOT STUDY IN LOW LIGHT</item>
+        <item>Concept #163113</item>
+        <item>Concept #163112</item>
+        <item>Не спите в полдень</item>
+        <item>Не ешьте несвежие продукты и ферментированный рис.</item>
+        <item>НЕ КУРИТЕ СИГАРЕТЫ</item>
+        <item>НЕ ХОДИТЕ БОСИКОМ</item>
+        <item>СЛЕДУЙТЕ ТАБЛИЦЕ ДЛЯ ДИАБЕТИЧЕСКОГО ПИТАНИЯ</item>
+        <item>Не употреблять соль</item>
+        <item>Рацион питания</item>
+        <item>Не купаться в прудах</item>
+        <item>Не жевать табак</item>
+        <item>Ешьте горячее питание</item>
+        <item>Употребляйте еду без добавления соли</item>
+        <item>Оставайтесь аккуратными и чистыми</item>
+        <item>НЕ ЗАКРЫВАЙТЕ ВСЕ ДВЕРИ И ОКНА ВО ВРЕМЯ СНА</item>
+        <item>Пить меньше воды</item>
+        <item>Не кушать лук</item>
+        <item>Не употреблять лук, томат, листья салата или чечевицу.</item>
+        <item>ПИТЬ МНОГО ВОДЫ</item>
+        <item>ПИТЬ ОХЛАЖДЕННУЮ КИПЕННУЮ ВОДУ</item>
+        <item>НОСИТЕ СУХУЮ ОДЕЖДУ ПОСЛЕ ПРИЕМКИ</item>
+        <item>НЕ ЗАНИМАЙТЕСЬ ТЯЖЕЛЫМИ РАБОТАМИ</item>
+        <item>НЕ ЧИСТИТЕ ЗУБЫ ГУРАХУ</item>
+        <item>ЕСТЬ МНОГО ЗЕЛЕНЫХ ОВОЩЕЙ И ФРУКТОВ</item>
+        <item>ИЗБЕГАЙТЕ ЖИРНЫХ И ОСТРЫХ ПРОДУКТОВ</item>
+        <item>НЕ ПИТЬ АЛКОГОЛЬ</item>
+        <item>ОБЗОР С ДИАГНОСТИЧЕСКИМ ОТЧЕТОМ</item>
+        <item>Прополоскайте горло физ.раствором с водой</item>
+        <item>НЕ ОБСЛЕДУЙТЕ ПАЦИЕНТА ПРИ СЛАБОМ ОСВЕЩЕНИИ</item>
+        <item>Концепция № 163113</item>
+        <item>Концепция № 163112</item>
+
+    </string-array>
+
+    <string-array name="diagnosis">
+        <item>Malaria</item>
+        <item>SEIZURE</item>
+        <item>CONVULSION</item>
+        <item>Oedema</item>
+        <item>Leprosy</item>
+        <item>Fatigue</item>
+        <item>Meningitis</item>
+        <item>Headache</item>
+        <item>MEASLES</item>
+        <item>Acute pain</item>
+        <item>Syncope and collapse</item>
+        <item>Shock</item>
+        <item>Bleeding</item>
+        <item>Chronic intractable pain</item>
+        <item>Specified bacterial disease, other</item>
+        <item>Bacterial Infection</item>
+        <item>Rabies</item>
+        <item>Other bacterial agents as the cause of diseases classified to other chapters</item>
+        <item>Malaria, confirmed </item>
+        <item>Confirmed malaria with pregnancy </item>
+        <item>Malaria confirmed with minor digestive symptoms </item>
+        <item>Confirmed malaria with minor digestive symptoms, pregnant</item>
+        <item>Presumptive malaria with pregnancy</item>
+        <item>Presumptive malaria with minor digestive symptoms, pregnant</item>
+        <item>Presumptive malaria with minor digestive system</item>
+        <item>Malaria severe</item>
+        <item>Primary Respiratory Tuberculosis, Confirmed Bacteriologically and Histologically</item>
+        <item>Tuberculosis, Tuberculosis BK+</item>
+        <item>Toxic Effect of Venom</item>
+        <item>Varicella</item>
+        <item>Fever of unknown origin</item>
+        <item>Covid 19 </item>
+        <item>Covid suspected</item>
+        <item>Covid follow up</item>
+        <item>Long Covid</item>
+        <item>Covid complications</item>
+        <item>G80 - Cerebral palsy</item>
+        <item>ANEMIA, IRON DEFICIENCY</item>
+        <item>Lymphadenopathy</item>
+        <item>Anaemia</item>
+        <item>Hyperglycaemia</item>
+        <item>Other Noninfectious Disorders of Lymphatic Channels</item>
+        <item>Positive Serological and/or Viral Culture Findings for Human Immunodeficiency Virus</item>
+        <item>Diarrhea, chronic</item>
+        <item>HIV STAGING - CANDIDIASIS, ORORESPIRATORY TRACT</item>
+        <item>Human immunodeficiency virus disease resulting in other specified diseases</item>
+        <item>HIV resulting in infectious or parasitic disease</item>
+        <item>Generalized Skin Infection due to AIDS</item>
+        <item>Herpes Zoster</item>
+        <item>HUMAN IMMUNODEFICIENCY VIRUS (HIV) DISEASE</item>
+        <item>DYSPEPSIA </item>
+        <item>AMOEBIASIS</item>
+        <item>Gastritis</item>
+        <item>gastroenteritis</item>
+        <item>Cholera due to Vibrio Cholerae</item>
+        <item>HELMINTHIASIS</item>
+        <item>Peptic ulcer</item>
+        <item>Hemorrhagic diarrhea</item>
+        <item>Jaundice</item>
+        <item>Bacterial Gastroenteritis</item>
+        <item>SCHISTOSOMIASIS</item>
+        <item>GASTROESOPHAGEAL REFLUX DISEASE</item>
+        <item>Ascariasis</item>
+        <item>Intestinal Parasitism</item>
+        <item>Shigellosis</item>
+        <item>hookworm disease </item>
+        <item>Infection by Taenia</item>
+        <item>Infection by Strongyloides</item>
+        <item>Trichuriasis</item>
+        <item>Chronic Viral Hepatitis</item>
+        <item>Acute viral hepatitis, other</item>
+        <item>Disease of stomach and duodenum, other</item>
+        <item>Irritable bowel syndrome</item>
+        <item>Functional intestinal disorders, other</item>
+        <item>Bacterial foodborne intoxication</item>
+        <item>Protozoal intestinal diseases, other</item>
+        <item>Viral and other specified intestinal infection</item>
+        <item>Enterobiasis</item>
+        <item>Intestinal helminthiasis, other</item>
+        <item>Abdominal or pelvic pain</item>
+        <item>Flatulence, Eructation and Gas Pain</item>
+        <item>Hepatomegaly or splenomegaly, not classified elsewhere</item>
+        <item>Dysphagia</item>
+        <item>Trachoma</item>
+        <item>Viral conjunctivitis</item>
+        <item>Trichiasis of eyelid</item>
+        <item>Disorder of eye</item>
+        <item>Neonatal conjunctivitis</item>
+        <item>Otitis media</item>
+        <item>Otitis externa</item>
+        <item>Disorder of Ear</item>
+        <item>Hypertensive heart disease</item>
+        <item>Essential hypertension</item>
+        <item>Rheumatic fever without heart involvement</item>
+        <item>Rheumatic fever with cardiac involvement</item>
+        <item>Secondary hypertension</item>
+        <item>Phlebitis and thrombophlebitis</item>
+        <item>Hemorrhoids</item>
+        <item>Hypotension</item>
+        <item>Late Effects of Cerebrovascular Disease</item>
+        <item>Burn</item>
+        <item>Physical trauma</item>
+        <item>Superficial injury of shoulder and upper arm</item>
+        <item>Superficial injury of forearm</item>
+        <item>Polydactyly</item>
+        <item>Superficial head injury</item>
+        <item>Disease of bone and joint</item>
+        <item>Superficial injury of hand or wrist</item>
+        <item>Superficial injury of hip or thigh</item>
+        <item>Disorder of joint</item>
+        <item>Superficial injury of lower limb, level unspecified</item>
+        <item>Superficial injury of abdomen, lower back or pelvis</item>
+        <item>EPILEPSY</item>
+        <item>Poliomyelitis</item>
+        <item>Microcephalus</item>
+        <item>Encephalocele</item>
+        <item>Disorder of Nervous System</item>
+        <item>Tetanus</item>
+        <item>Spina Bifida</item>
+        <item>Poliomyelitis, suspected</item>
+        <item>Depression</item>
+        <item>Schizophrenia</item>
+        <item>Reaction to severe stress, and adjustment disorder</item>
+        <item>Post-traumatic stress disorder</item>
+        <item>Psychosomatic problems</item>
+        <item>Psychological problem, other</item>
+        <item>Behavior disorders not due to alcohol and drugs</item>
+        <item>Mental or behavioral disorder due to alcohol or illicit drug use</item>
+        <item>Mental Disorder</item>
+        <item>Cough</item>
+        <item>Pneumonia</item>
+        <item>Asthma</item>
+        <item>Shortness of breath</item>
+        <item>Asthma with status asthmaticus</item>
+        <item>Acute Pharyngitis</item>
+        <item>Acute Tonsillitis</item>
+        <item>Pulmonary hemorrhage</item>
+        <item>Acute respiratory infection, other</item>
+        <item>Abscess of Skin and Subcutaneous Tissue</item>
+        <item>Scabies</item>
+        <item>Candidiasis</item>
+        <item>Herpes Simplex</item>
+        <item>RASH</item>
+        <item>Decubitus Ulcer</item>
+        <item>Infection of Skin</item>
+        <item>Herpes Zoster</item>
+        <item>Pruritus</item>
+        <item>Dermatomycosis</item>
+        <item>Other Specified Dermatomycoses</item>
+        <item>Nutritional Marasmus</item>
+        <item>Kwashiorkor</item>
+        <item>Marasmic Kwashiorkor</item>
+        <item>Diabetes Mellitus</item>
+        <item>Diabetes Mellitus, Type II</item>
+        <item>Acute malnutrition</item>
+        <item>Disorder of Metabolism</item>
+        <item>Vitamin A Deficiency with Keratomalacia</item>
+        <item>Electrolyte or Fluid Disorder</item>
+        <item>Weight loss</item>
+        <item>Hypovolaemia</item>
+        <item>Urinary tract infection</item>
+        <item>Urethrorrhoea</item>
+        <item>Dysuria</item>
+        <item>Urethritis or urethral syndrome</item>
+        <item>Urinary symptoms</item>
+        <item>Urinary incontinence</item>
+        <item>Retention of urine</item>
+        <item>Abnormal urine</item>
+        <item>Glycosuria</item>
+        <item>Cystitis</item>
+        <item>Hematuria</item>
+        <item>POSTPARTUM HEMORRHAGE</item>
+        <item>PREGNANCY, MISCARRIAGE</item>
+        <item>Single spontaneous delivery</item>
+        <item>Hypothermia of newborn</item>
+        <item>Multiple gestation</item>
+        <item>Hemorrhage in early pregnancy</item>
+        <item>Premature rupture of membranes</item>
+        <item>Perineal laceration during delivery</item>
+        <item>Retained placenta or membranes, without Hemorrhage</item>
+        <item>Genitourinary tract infection in pregnancy</item>
+        <item>Spontaneous abortion</item>
+        <item>Umbilical hemorrhage after birth</item>
+        <item>Labor and delivery complicated by intrapartum hemorrhage</item>
+        <item>Multiple delivery</item>
+        <item>Feeding problems in newborn</item>
+        <item>Tetanus neonatorum</item>
+        <item>Postnatal infection</item>
+        <item>Irregular intermenstrual bleeding</item>
+        <item>Convulsions in the newborn</item>
+        <item>Complication of puerperium</item>
+        <item>Sexually transmitted disease</item>
+        <item>Chancroid</item>
+        <item>Trichomoniasis</item>
+        <item>Granuloma inguinale</item>
+        <item>Lymphogranuloma venereum</item>
+        <item>Genital herpes</item>
+        <item>Gonorrhea</item>
+        <item>Sexually transmitted chlamydial disease</item>
+        <item>Syphilis</item>
+        <item>Condyloma</item>
+        <item>Dental caries</item>
+        <item>Gingivitis and periodontal diseases</item>
+        <item>Pulp and periapical tissue disease</item>
+        <item>Other disease of hard tissue of teeth</item>
+        <item>Infection of teeth or gums</item>
+        <!-- Russian Translations -->
+        <item>Малярия</item>
+        <item>ЗАХВАТ</item>
+        <item>Судороги</item>
+        <item>Отек</item>
+        <item>Проказа</item>
+        <item>Усталость</item>
+        <item>Менингит</item>
+        <item>Головная боль</item>
+        <item>КОРЬ</item>
+        <item>Острая боль</item>
+        <item>Обморок и коллапс</item>
+        <item>Шок</item>
+        <item>Кровотечение</item>
+        <item>Хроническая непреодолимая боль</item>
+        <item>Уточненное бактериальное заболевание, другое</item>
+        <item>Бактериальная инфекция</item>
+        <item>Бешенство</item>
+        <item>Другие бактериальные агенты как причина болезней, классифицированных в других рубриках</item>
+        <item>Подтвержденная малярия</item>
+        <item>Подтвержденная малярия при беременности</item>
+        <item>Малярия подтверждена незначительными пищеварительными симптомами</item>
+        <item>Подтвержденная малярия с незначительными пищеварительными симптомами, беременность</item>
+        <item>Предполагаемая малярия при беременности</item>
+        <item>Предполагаемая малярия с незначительными пищеварительными симптомами, беременность</item>
+        <item>Предполагаемая малярия с незначительной пищеварительной системой</item>
+        <item>Малярия sevère</item>
+        <item>Первичный туберкулез органов дыхания, подтвержденный бактериологически и гистологически</item>
+        <item>Туберкулез, Туберкулез BK +</item>
+        <item>Токсический эффект яда</item>
+        <item>Ветряная оспа</item>
+        <item>Лихорадка неизвестного происхождения</item>
+        <item>COVID-19</item>
+        <item>Подозрение на Covid-19</item>
+        <item>Covid-19 осложнение</item>
+        <item>Продолжительный Covid-19</item>
+        <item>Covid осложнения</item>
+        <item>G80 - Церебральный Паралич</item>
+        <item>АНЕМИЯ, НЕДОСТАТОЧНОСТЬ ЖЕЛЕЗА</item>
+        <item>Лимфаденопатия</item>
+        <item>Анемия</item>
+        <item>Гипергликемия</item>
+        <item>Другие неинфекционные заболевания лимфатических каналов</item>
+        <item>Положительные результаты серологических и / или вирусных культур на вирус иммунодефицита человека</item>
+        <item>Диарея хроническая</item>
+        <item>СТАДИЯ ВИЧ - КАНДИДИАЗ, ИРОРЕСПИРАТОРНЫЙ ТРАКТ</item>
+        <item>Болезнь, вызванная вирусом иммунодефицита человека, с проявлением других уточненных заболеваний</item>
+        <item>ВИЧ, вызывающий инфекционное или паразитарное заболевание</item>
+        <item>Генерализованная кожная инфекция, вызванная СПИДом</item>
+        <item>Опоясывающий герпес</item>
+        <item>ЗАБОЛЕВАНИЕ, ВИРУС ИММУНОДЕФИЦИТА ЧЕЛОВЕКА (ВИЧ)</item>
+        <item>ДИСПЕПСИЯ</item>
+        <item>АМОЕБИАЗ</item>
+        <item>Гастрит</item>
+        <item>гастроэнтерит</item>
+        <item>Холера, вызванная холерным вибрионом</item>
+        <item>ГЕЛЬМИНТИАЗ</item>
+        <item>Язвенная болезнь</item>
+        <item>Геморрагическая диарея</item>
+        <item>Желтуха</item>
+        <item>Бактериальный гастроэнтерит</item>
+        <item>ХИСТОСОМАЗ</item>
+        <item>ГАСТРОЭЗОФАГЕАЛЬНАЯ РЕФЛЮКСНАЯ БОЛЕЗНЬ</item>
+        <item>Аскаридоз</item>
+        <item>Кишечный паразитизм</item>
+        <item>Шигеллез</item>
+        <item>анкилостомоз</item>
+        <item>Заражение от Taenia</item>
+        <item>Заражение Strongyloides</item>
+        <item>Трихоцефалопатия</item>
+        <item>Хронический вирусный гепатит</item>
+        <item>Острый вирусный гепатит, прочее</item>
+        <item>Заболевания желудка и двенадцатиперстной кишки прочие</item>
+        <item>Синдром раздраженного кишечника</item>
+        <item>Функциональные расстройства кишечника, прочее</item>
+        <item>Бактериальная пищевая интоксикация</item>
+        <item>Протозойные кишечные заболевания, прочие</item>
+        <item>Вирусные и другие уточненные кишечные инфекции</item>
+        <item>Энтеробиоз</item>
+        <item>Кишечные гельминтозы прочие</item>
+        <item>Боль в животе или тазу</item>
+        <item>Метеоризм, отрыжка и газовая боль</item>
+        <item>Гепатомегалия или спленомегалия, не классифицированные в других рубриках</item>
+        <item>ДИСФАГИЯ</item>
+        <item>Трахома</item>
+        <item>Вирусный конъюнктивит</item>
+        <item>Трихиаз век</item>
+        <item>Заболевание глаз</item>
+        <item>Неонатальный конъюнктивит</item>
+        <item>СРЕДНИЙ ОТИТ</item>
+        <item>НАРУЖНЫЙ ОТИТ</item>
+        <item>Заболевание уха</item>
+        <item>Гипертоническая болезнь сердца</item>
+        <item>Эссенциальная гипертензия</item>
+        <item>Ревматическая лихорадка без поражения сердца</item>
+        <item>Ревматическая лихорадка с поражением сердца</item>
+        <item>Вторичная гипертензия</item>
+        <item>Флебит и тромбофлебит</item>
+        <item>Геморрой</item>
+        <item>Гипотония</item>
+        <item>Поздние эффекты цереброваскулярного заболевания</item>
+        <item>ГОРЕТЬ</item>
+        <item>Физическая травма</item>
+        <item>Поверхностная травма плеча и плеча</item>
+        <item>Поверхностная травма предплечья</item>
+        <item>Полидактилия</item>
+        <item>Поверхностная травма головы</item>
+        <item>Заболевание костей и суставов</item>
+        <item>Поверхностная травма кисти или запястья</item>
+        <item>Поверхностная травма бедра или бедра</item>
+        <item>Расстройство сустава</item>
+        <item>Поверхностная травма нижней конечности на неуточненном уровне</item>
+        <item>Поверхностная травма живота, поясницы или таза</item>
+        <item>ЭПИЛЕПСИЯ</item>
+        <item>ПОЛИОМИЕЛИТ</item>
+        <item>Микроцефалия</item>
+        <item>Энцефалоцеле</item>
+        <item>Расстройство нервной системы</item>
+        <item>Столбняк</item>
+        <item>Расщелина позвоночника</item>
+        <item>Подозрение на полиомиелит</item>
+        <item>Депрессия</item>
+        <item>ШИЗОФРЕНИЯ</item>
+        <item>Реакция на сильный стресс и нарушение адаптации</item>
+        <item>Пост-травматическое стрессовое растройство</item>
+        <item>Психосоматические проблемы</item>
+        <item>Психологическая проблема, другое</item>
+        <item>Расстройства поведения не из-за алкоголя и наркотиков</item>
+        <item>Психическое или поведенческое расстройство, вызванное употреблением алкоголя или запрещенных наркотиков</item>
+        <item>Психическое расстройство</item>
+        <item>КАШЕЛЬ</item>
+        <item>ПНЕВМОНИЯ</item>
+        <item>АСТМА</item>
+        <item>ОДЫШКА</item>
+        <item>Астма с астматическим статусом</item>
+        <item>Острый фарингит</item>
+        <item>Острый тонзиллит</item>
+        <item>Легочное кровотечение</item>
+        <item>Острая респираторная инфекция, прочее</item>
+        <item>Абсцесс кожи и подкожной ткани</item>
+        <item>Чесотка</item>
+        <item>КАНДИДОЗ</item>
+        <item>Простой герпес</item>
+        <item>СЫПЬ</item>
+        <item>Пролежневая язва</item>
+        <item>Заражение кожи</item>
+        <item>ОПОЯСЫВАЮЩИЙ ГЕРПЕС</item>
+        <item>Зуд</item>
+        <item>Дерматомикоз</item>
+        <item>Другие уточненные дерматомикозы</item>
+        <item>Пищевой маразм</item>
+        <item>Квашиоркор</item>
+        <item>Маразм Квашиоркор</item>
+        <item>Сахарный диабет</item>
+        <item>Сахарный диабет II типа</item>
+        <item>Острое недоедание</item>
+        <item>Нарушение обмена веществ</item>
+        <item>Дефицит витамина А при кератомаляции</item>
+        <item>Электролит или расстройство жидкости</item>
+        <item>ПОТЕРЯ ВЕСА</item>
+        <item>Гиповолемия</item>
+        <item>ИНФЕКЦИЯ МОЧЕВЫХ ПУТЕЙ</item>
+        <item>Уретрорея</item>
+        <item>ДИЗУРИЯ</item>
+        <item>Уретрит или уретральный синдром</item>
+        <item>Симптомы со стороны мочевыводящих путей</item>
+        <item>Недержание мочи</item>
+        <item>Задержка мочи</item>
+        <item>Аномальная моча</item>
+        <item>Глюкозурия</item>
+        <item>Цистит</item>
+        <item>ГЕМАТУРИЯ</item>
+        <item>ПОСЛЕРОДОВОЕ КРОВОТЕЧЕНИЕ</item>
+        <item>БЕРЕМЕННОСТЬ, НЕИСПРАВНОСТЬ</item>
+        <item>Единичные самопроизвольные роды</item>
+        <item>Переохлаждение новорожденного</item>
+        <item>Многоплодная беременность</item>
+        <item>Кровоизлияние на ранних сроках беременности</item>
+        <item>Преждевременный разрыв плодных оболочек</item>
+        <item>Разрыв промежности во время родов</item>
+        <item>Острый вирусный гепатит, прочее</item>
+        <item>Инфекция мочеполовых путей при беременности</item>
+        <item>Самопроизвольный аборт</item>
+        <item>Пупочное кровотечение после рождения</item>
+        <item>Роды, осложнившиеся внутриродовым кровотечением.</item>
+        <item>Множественная доставка</item>
+        <item>Проблемы с кормлением у новорожденного</item>
+        <item>Столбняк новорожденных</item>
+        <item>Послеродовая инфекция</item>
+        <item>Нерегулярное межменструальное кровотечение</item>
+        <item>Судороги у новорожденного</item>
+        <item>Осложнение послеродового периода</item>
+        <item>Венерическая болезнь</item>
+        <item>Мягкий шанкр</item>
+        <item>Трихомониаз</item>
+        <item>Паховая гранулема</item>
+        <item>Венерическая лимфогранулема</item>
+        <item>Генитальный герпес</item>
+        <item>Гонорея</item>
+        <item>Хламидийное заболевание, передающееся половым путем</item>
+        <item>СИФИЛИС</item>
+        <item>Кондиломы</item>
+        <item>КАРИЕС</item>
+        <item>Гингивит и заболевания пародонта</item>
+        <item>Заболевание пульпы и периапикальных тканей</item>
+        <item>Другое заболевание твердых тканей зубов</item>
+        <item>Заражение зубов или десен</item>
+    </string-array>
 
 </resources>

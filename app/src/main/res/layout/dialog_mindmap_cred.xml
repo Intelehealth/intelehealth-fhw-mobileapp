@@ -19,7 +19,9 @@
             android:maxLines="1"
             android:fontFamily="@font/lato_regular"
             android:textSize="14sp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -37,7 +39,9 @@
             android:textSize="14sp"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>

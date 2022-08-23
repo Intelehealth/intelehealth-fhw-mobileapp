@@ -43,7 +43,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-        <app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator
+        <org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator
             android:id="@+id/recyclerViewIndicator"
             android:layout_below="@+id/app_bar_view"
             android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
 
             app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-        </app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator>
+        </org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/physExam_recyclerView"

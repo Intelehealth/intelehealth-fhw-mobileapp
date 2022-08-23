@@ -205,8 +205,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="8dp">
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp">
 
                             <RadioButton
                                 android:id="@+id/identification_gender_male"
@@ -215,7 +215,6 @@
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/male_icon"
                                 android:drawableLeft="@drawable/male_icon"
-                                android:drawablePadding="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/identification_screen_checkbox_male"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -227,9 +226,19 @@
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/female_icon"
                                 android:drawableLeft="@drawable/female_icon"
-                                android:drawablePadding="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/identification_screen_checkbox_female"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/identification_gender_other"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/female_icon"
+                                android:drawableLeft="@drawable/female_icon"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/identification_screen_checkbox_other"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </RadioGroup>
@@ -312,7 +321,9 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -392,13 +403,14 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:orientation="vertical"
+                                        android:paddingBottom="2dp"
                                         android:weightSum="4">
 
                                         <EditText
                                             android:id="@+id/identification_country"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="3"
+                                            android:layout_weight="2"
                                             android:clickable="false"
                                             android:cursorVisible="false"
                                             android:drawableStart="@drawable/country_flag_icon"
@@ -418,7 +430,7 @@
                                             android:id="@+id/spinner_country"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1" />
+                                            android:layout_weight="2" />
 
                                     </LinearLayout>
 
@@ -443,13 +455,14 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
+                                        android:paddingBottom="2dp"
                                         android:orientation="vertical">
 
                                         <EditText
                                             android:id="@+id/identification_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="3"
+                                            android:layout_weight="2"
                                             android:clickable="false"
                                             android:cursorVisible="false"
                                             android:drawableStart="@drawable/state_list_icon"
@@ -469,7 +482,7 @@
                                             android:id="@+id/spinner_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1" />
+                                            android:layout_weight="2" />
                                     </LinearLayout>
 
 

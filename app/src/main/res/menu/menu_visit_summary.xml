@@ -8,6 +8,7 @@
         android:id="@+id/summary_print"
         android:orderInCategory="200"
         android:title="@string/action_print"
+        android:visible="false"
         app:showAsAction="never">
 
     </item>

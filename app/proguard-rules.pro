@@ -72,7 +72,7 @@
 }
 
 # The support library contains references to newer platform versions.
-# Don't warn about those in case this app is linking against an older
+# Don't warn about those in case this org is linking against an older
 # platform version.  We know about them, and they are safe.
 # Retrofit
 -dontwarn retrofit2.**
