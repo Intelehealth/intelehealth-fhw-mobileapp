@@ -187,4 +187,9 @@
         tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">55dp</dimen>
 
+    <!-- navigation drawer -->
+    <dimen name="nav_header_username">18sp</dimen>
+    <dimen name="nav_header_userid">14sp</dimen>
+    <dimen name="nav_header_edit_profile">14sp</dimen>
+
 </resources>
