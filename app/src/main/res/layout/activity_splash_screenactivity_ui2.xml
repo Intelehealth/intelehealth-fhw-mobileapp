@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".ui2.onboarding.SplashScreenActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="214dp"
+            android:layout_height="92dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="332dp"
+            android:src="@drawable/intelehealth_logo_white" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans_regular"
+            android:gravity="center"
+            android:lineHeight="24dp"
+            android:text="Deliver quality healthcare where\n
+           there is no doctor"
+            android:textColor="@color/textColorGray1"
+            android:textSize="@dimen/sub_heading_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ui2_achivements_home_bottomnav"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

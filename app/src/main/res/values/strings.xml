@@ -875,6 +875,20 @@
     <string name="forgot_password_link"><u>Forgot password</u></string>
     <string name="prescriptions">Prescriptions</string>
     <string name="close_visits">Close visits</string>
+    <string name="skip_new">Skip</string>
+    <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health
+        workers in rural areas and remote areas with remote
+        doctor so they can provide high quality health services for their patients</string>
+    <string name="who_we_are">Who are we?</string>
+    <string name="take_patient_visits">Take patient visits</string>
+    <string name="take_patient_visits_intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin mi etiam faucibus fusce. Ut vitae praesent eu est morbi. Eleifend commodo auctor vestibulum tortor. Sit nibh tincidunt euismod amet integer.</string>
+    <string name="provide_prescriptions">Provide prescriptions</string>
+    <string name="provide_prescriptions_intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin mi etiam faucibus fusce. Ut vitae praesent eu est morbi. Eleifend commodo auctor vestibulum tortor. Sit nibh tincidunt euismod amet integer.</string>
+    <string name="hello_i_am_ayu">Hello, I am AYU!</string>
+    <string name="ayu_intro">I am your digital health assistant.\nHow are you feeling today?</string>
+    <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font>
+ and <font color='#2F1E91'><u>Privacy policy</u></font></string>
+    <string name="setup">Setup</string>
 
 
     <!--END-->

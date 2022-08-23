@@ -191,5 +191,11 @@
     <dimen name="nav_header_username">18sp</dimen>
     <dimen name="nav_header_userid">14sp</dimen>
     <dimen name="nav_header_edit_profile">14sp</dimen>
+    <!-- onboarding -->
+    <dimen name="sub_heading_text_size">16sp</dimen>
+    <dimen name="introscreen_title">20sp</dimen>
+    <dimen name="introscreen_content">14sp</dimen>
+    <dimen name="setup_privacy_screen_title">24sp</dimen>
+    <dimen name="setup_privacy_screen_info">18sp</dimen>
 
 </resources>

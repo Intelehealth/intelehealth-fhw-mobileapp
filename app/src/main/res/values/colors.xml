@@ -77,6 +77,9 @@
     <color name="textColorLightGary">#B0ADBE</color>
     <color name="textColorWhite">#FFFFFF</color>
     <color name="textColorBlue">#2F1E91</color>
+    <color name="textColorGray1">#CCFFFFFF</color>
+
+
 
     <!--BG colors-->
     <color name="backgroundGray">#FAF9FF</color>
@@ -92,9 +95,6 @@
 
     <color name="cardTintDarkBlue">#2F1E96</color>
     <color name="cardTintLightGreen">#E6FFF3</color>
-
-
-    android:theme="@style/AppThemeMaterialNew"
 
 
     <!--END-->

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="316dp"
+            android:layout_height="287dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ui2_ic_intro_image3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/dm_sans_regular"
+            android:gravity="center"
+            android:lineHeight="30dp"
+            android:text="@string/provide_prescriptions"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/introscreen_title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/dm_sans_regular"
+            android:gravity="center"
+            android:lineHeight="22.4dp"
+            android:text="@string/provide_prescriptions_intro"
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/introscreen_content" />
+    </LinearLayout>
+</ScrollView>
