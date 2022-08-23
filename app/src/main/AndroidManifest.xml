@@ -42,7 +42,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".activities.FollowUp_VisitDetails"
+            android:name=".activities.followuppatients.FollowUp_VisitDetails"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"

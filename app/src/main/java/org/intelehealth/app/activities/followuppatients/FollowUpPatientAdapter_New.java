@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.followuppatients;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
     @Override
     public void onBindViewHolder(@NonNull FollowUpPatientAdapter_New.Myholder holder, int position) {
-
+        holder.cardView.setOnClickListener(v -> { // TODO: This is just for testing purpose added later remove.
+            Intent i = new Intent(context, FollowUp_VisitDetails.class);
+            context.startActivity(i);
+        });
     }
 
     @Override

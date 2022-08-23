@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities;
+package org.intelehealth.app.activities.followuppatients;
 
 import androidx.appcompat.app.AppCompatActivity;
 
