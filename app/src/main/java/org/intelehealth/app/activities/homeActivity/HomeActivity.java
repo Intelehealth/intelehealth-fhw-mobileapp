@@ -596,12 +596,12 @@ public class HomeActivity extends AppCompatActivity implements
                 draftSurvey();
                 return true;
 
-            case R.id.devicesOption:
+            /*case R.id.devicesOption:
             {
                 Intent intent = new Intent(this, DevicesActivity.class);
                 startActivity(intent);
                 return true;
-            }
+            }*/
 
             case R.id.settingsOption:
                 settings();

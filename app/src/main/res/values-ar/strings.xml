@@ -8,9 +8,9 @@
     <string name="hint_optional">Optional</string>
     <string name="tag_optional">optional</string>
     <string name="generic_ok">نعم</string>
-    <string name="generic_cancel">Cancel</string>
-    <string name="generic_yes">Yes</string>
-    <string name="generic_no">No</string>
+    <string name="generic_cancel">يلغي</string>
+    <string name="generic_yes">نعم</string>
+    <string name="generic_no">رقم</string>
     <string name="generic_back">Back</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
@@ -245,7 +245,7 @@
     <!-- Example settings for Data & syncBackground -->
     <string name="pref_header_data_sync">Data &amp; Refresh</string>
 
-    <string name="pref_title_server_url">Server URL</string>
+    <string name="pref_title_server_url">عنوان URL للخادم</string>
     <string name="pref_title_id_prefix">Location Prefix</string>
 
     <!-- Example settings for Notifications -->
@@ -278,7 +278,7 @@
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>
     <string name="button_ok">نعم</string>
-    <string name="button_cancel">Cancel</string>
+    <string name="button_cancel">يلغي</string>
     <string name="picture_taken">Picture taken</string>
     <string name="switch_flash">Switch flash</string>
     <string name="switch_camera">Switch camera</string>
@@ -456,7 +456,7 @@
 
     <string name="associated_symptoms">Associated symptoms</string>
     <string name="enter_server_url">Enter Server URL</string>
-    <string name="enter_license_key"><b>Enter license key</b></string>
+    <string name="enter_license_key"><b>أدخل مفتاح الترخيص</b></string>
     <string name="invalid_url">Invalid URL</string>
     <string name="years">سنوات</string>
     <string name="months">الشهور</string>
@@ -490,7 +490,7 @@
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">نعم</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">يلغي</string>
     <string name="unable_to_end">Unable to end</string>
     <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
@@ -533,9 +533,9 @@
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
-    <string name="languages">Languages</string>
+    <string name="languages">اللغات</string>
     <string name="change_languages">تغيير اللغات</string>
-    <string name="current_language">Current Language</string>
+    <string name="current_language">اللغة الحالية</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="no_protocols_found">No protocols found</string>
@@ -693,12 +693,12 @@
     <string name="reset_app">إعادة تعيين التطبيق</string>
     <string name="app_reset_toast">App Reset is done!</string>
     <string name="resetting_app_dialog">Resetting App</string>
-    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="sure_to_reset_app">هل أنت متأكد أنك تريد إعادة تعيين التطبيق؟</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
-    <string name="app_sync">Syncing App..</string>
+    <string name="app_sync">مزامنة التطبيق ..</string>
 
     <string name="saving_captured_image">Saving Captured Image...</string>
     <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
@@ -756,8 +756,8 @@
     <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
     <string name="cancel_appointment">Cancel Appointment</string>
     <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
+    <string name="appointment_empty_message">ليس لديك موعد!</string>
+    <string name="appointment_listing_title">قائمة المواعيد</string>
     <string name="appointment_booking_title">Appointment Booking</string>
     <string name="appointment_for">Appointment For</string>
     <string name="please_select_appointment_slot">Please select appointment slot</string>
@@ -1488,7 +1488,7 @@
     <string name="tip_have_no_paired_device">No paired device</string>
     <string name="tip_have_no_found_bluetooth_device">No Device</string>
     <string name="search_device">Search</string>
-    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_cancel">يلغي</string>
     <string name="dialog_ok">نعم</string>
     <string name="dialog_tip">Tip</string>
     <string name="main_pls_choose_device">Please choose a device</string>
