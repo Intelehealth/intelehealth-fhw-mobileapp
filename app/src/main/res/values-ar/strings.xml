@@ -551,7 +551,7 @@
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully refreshed</string>
     <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
-    <string name="visit_not_uploaded"></string>
+    <string name="visit_not_uploaded">Visit not uploaded</string>
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
@@ -594,8 +594,8 @@
     <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \n\n أنا آيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \n\n أنا آيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
-    <string name="hello_my_name_is">"Hello, my name is "</string>
-    <string name="i_need_assistance">" and I need some assistance."</string>
+    <string name="hello_my_name_is">"مرحبا اسمي "</string>
+    <string name="i_need_assistance">"وأنا بحاجة إلى بعض المساعدة."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
     <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
@@ -821,7 +821,7 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="type_to_search">Type to Search..</string>
+    <string name="type_to_search">اكتب للبحث..</string>
 
     <!--    Questions for HoH -->
     <string name="select">Select</string>
