@@ -1,117 +1,117 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
 	package
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:4:5-38
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:4:5-38
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:3:5-51
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:11-69
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:11-69
 uses-feature#android.hardware.camera
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:5-60
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:5-60
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:19-57
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:19-57
 uses-feature#android.hardware.camera.autofocus
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:5-70
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:5-70
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:19-67
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:19-67
 uses-feature#0x00020000
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:8:5-10:35
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:8:5-10:35
 	android:glEsVersion
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:9:9-41
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:9:9-41
 	android:required
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:10:9-32
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:10:9-32
 uses-permission#android.permission.CAMERA
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:5-65
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:5-65
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:22-62
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:22-62
 uses-permission#android.permission.CHANGE_NETWORK_STATE
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:5-79
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:5-79
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:22-76
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:22-76
 uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:5-80
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:5-80
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:22-77
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:22-77
 uses-permission#android.permission.RECORD_AUDIO
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:5-71
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:5-71
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:22-68
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:22-68
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:5-67
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:5-67
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:22-64
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:22-64
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:5-81
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:5-81
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:22-78
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:17:22-78
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-79
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-79
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-76
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-76
 uses-permission#android.permission.BLUETOOTH
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-68
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-68
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-65
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-65
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-75
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-75
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-72
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-72
 application
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-60:19
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-60:19
 	android:supportsRtl
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:25:9-35
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:25:9-35
 	android:label
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:9-41
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:9-41
 	tools:ignore
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-49
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-49
 	android:allowBackup
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:9-35
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:9-35
 	android:theme
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:9-40
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:9-40
 activity#org.intelehealth.apprtc.ChatActivity
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-32:63
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-32:63
 	android:screenOrientation
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:13-49
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:13-60
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:13-60
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:13-64
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:13-64
 activity#org.intelehealth.apprtc.CompleteActivity
-ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-59:59
+ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-59:59
 	android:screenOrientation
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:58:13-49
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:58:13-49
 	android:theme
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-56
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-56
 	android:name
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:57:13-68
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:57:13-68
 uses-sdk
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		ADDED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\DELL\AndroidStudioProjects\IDA_sprint2\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		ADDED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+		INJECTED from D:\Repo Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
