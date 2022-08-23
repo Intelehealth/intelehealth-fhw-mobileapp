@@ -76,7 +76,7 @@
     <string name="menu_option_sync">Refresh Data</string>
     <string name="menu_option_settings">Settings</string>
     <string name="menu_option_end_of_day">End of Day</string>
-    <string name="menu_option_logout">Logout</string>
+    <string name="menu_option_logout">تسجيل خروج</string>
 
 
     <!--//Identification Screen-->
@@ -485,7 +485,7 @@
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
-    <string name="update_protocols">Update Protocols</string>
+    <string name="update_protocols">تحديث البروتوكولات</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
@@ -534,7 +534,7 @@
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
-    <string name="change_languages">Change Languages</string>
+    <string name="change_languages">تغيير اللغات</string>
     <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
@@ -690,7 +690,7 @@
     <string name="location">Location</string>
 
     //----------reset app strings-------------
-    <string name="reset_app">Reset App</string>
+    <string name="reset_app">إعادة تعيين التطبيق</string>
     <string name="app_reset_toast">App Reset is done!</string>
     <string name="resetting_app_dialog">Resetting App</string>
     <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
@@ -1423,7 +1423,7 @@
     <string name="normal_vaginal_delivery">Normal or Vaginal Delivery</string>
     <string name="cesarean_section_c_section">Cesarean Section (C-Section)</string>
     <string name="please_add_pregnancy_outcome">Please add Pregnancy Outcome</string>
-    <string name="draft_survey_title">Draft Survey</string>
+    <string name="draft_survey_title">مسودة الاستبيات</string>
     <string name="add_pregnancy_outcome">Add Pregnancy Outcome</string>
 
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
@@ -1436,7 +1436,7 @@
     <string name="medical_device_2">HealthCube 2</string>
     <string name="medical_device_3">HealthCube 3</string>
     <string name="STOP">Stop</string>
-    <string name="devices">Devices</string>
+    <string name="devices">الأجهزة</string>
     <string name="healthcube_device_info">HealthCube Device Info</string>
     <string name="blood_glucose_calibration">Blood Glucose Calibration</string>
     <string name="hemoglobin_calibration">Hemoglobin Calibration</string>
