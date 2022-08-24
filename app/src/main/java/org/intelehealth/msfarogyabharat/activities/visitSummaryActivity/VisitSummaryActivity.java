@@ -3592,6 +3592,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
+                Log.v("gson", "gson value: " + value);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 PrescribedMedication medication = gson.fromJson(value, PrescribedMedication.class);
