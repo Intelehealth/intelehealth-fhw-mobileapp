@@ -168,33 +168,33 @@
     <string name="title_activity_patient_history">Past Medical History</string>
 
     <!--//Visit Summary Screen-->
-    <string name="title_activity_family_history">Family History</string>
-    <string name="title_activity_physical_exam">Physical Exam</string>
-    <string name="title_activity_patient_summary">Visit Summary</string>
-    <string name="visit_summary_temperature">Temperature(C)</string>
+    <string name="title_activity_family_history">تاريخ العائلة</string>
+    <string name="title_activity_physical_exam">اختبار بدني</string>
+    <string name="title_activity_patient_summary">قم بزيارة الملخص</string>
+    <string name="visit_summary_temperature">درجة الحرارة (ج)</string>
     <string name="visit_summary_pulseox">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty">CHW On Duty</string>
-    <string name="visit_summary_vitals_heading">Vitals</string>
+    <string name="visit_summary_vitals_heading">العناصر الحيوية</string>
     <string name="visit_summary_height_heading">Height (cm)</string>
     <string name="visit_summary_weight">Weight (kg)</string>
     <string name="visit_summary_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
     <string name="visit_summary_bp">BP</string>
-    <string name="visit_summary_pulse">Pulse</string>
+    <string name="visit_summary_pulse">نبض</string>
     <string name="visit_summary_previous_reports">Previous Reports</string>
     <string name="visit_summary_medical_history">Medical history</string>
     <string name="visit_summary_family_history">Family history</string>
-    <string name="visit_summary_on_examination">On examination</string>
-    <string name="visit_summary_complaint">Reason for visit</string>
-    <string name="visit_summary_vitals">Vitals</string>
+    <string name="visit_summary_on_examination">في الامتحان</string>
+    <string name="visit_summary_complaint">سبب الزيارة</string>
+    <string name="visit_summary_vitals">العناصر الحيوية</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
     <string name="visit_summary_diagnosis">Diagnosis</string>
     <string name="visit_summary_advice">Medical Advice</string>
     <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
     <string name="visit_summary_additional_comments">Additional Comments</string>
-    <string name="visit_summary_heading_name">Name</string>
-    <string name="visit_summary_heading_id">ID</string>
-    <string name="visit_summary_button_download">Download</string>
+    <string name="visit_summary_heading_name">اسم</string>
+    <string name="visit_summary_heading_id">بطاقة تعريف</string>
+    <string name="visit_summary_button_download">تحميل</string>
     <string name="visit_summary_button_upload">Upload</string>
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
@@ -261,7 +261,7 @@
 
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_today_patient">زيارات اليوم</string>
-    <string name="title_activity_additional_documents">Additional Documents</string>
+    <string name="title_activity_additional_documents">مستندات إضافية</string>
     <string name="title_activity_video_library">Video Library</string>
     <string name="visit_summary_patient_details">تفاصيل الزيارة</string>
 
@@ -379,11 +379,11 @@
     <string name="not_provided">Not provided</string>
 
     <!-- Patient Exit Survey -->
-    <string name="exit_survey_label">How was your experience?</string>
-    <string name="exit_survey_prompt">Enter your comments here</string>
-    <string name="exit_survey_skip">SKIP</string>
-    <string name="exit_survey_submit">Submit</string>
-    <string name="exit_survey_toast">Please select a smiley before submitting</string>
+    <string name="exit_survey_label">كيف كانت تجربتك؟</string>
+    <string name="exit_survey_prompt">أدخل تعليقاتك هنا</string>
+    <string name="exit_survey_skip">يتخطى</string>
+    <string name="exit_survey_submit">يُقدِّم</string>
+    <string name="exit_survey_toast">الرجاء تحديد ابتسامة قبل التقديم</string>
 
 
     <!--DB Backup-->
@@ -672,9 +672,9 @@
     <string name="visit_closed">Visit Closed</string>
     <string name="ok_close_now">Ok, Close It</string>
     <string name="retry_again">Retry Again!</string>
-    <string name="take_photo">Take Photo</string>
-    <string name="choose_from_gallery">Choose from Gallery</string>
-    <string name="additional_doc_image_picker_title">Add Additional Document!</string>
+    <string name="take_photo">تصوير</string>
+    <string name="choose_from_gallery">اختر من المعرض</string>
+    <string name="additional_doc_image_picker_title">أضف وثيقة إضافية!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
     <!--    Strings for special Check-->
@@ -750,17 +750,17 @@
         Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
     </string>
 
-    <string name="book_appointment">Book Appointment</string>
+    <string name="book_appointment">موعد الكتاب</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
     <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
     <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
+    <string name="slot_empty_message">خانة المواعيد غير متاحة للتاريخ والتخصص المختارين!</string>
     <string name="appointment_empty_message">ليس لديك موعد!</string>
     <string name="appointment_listing_title">قائمة المواعيد</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
+    <string name="appointment_booking_title">حجز موعد</string>
+    <string name="appointment_for">موعد ل</string>
+    <string name="please_select_appointment_slot">الرجاء تحديد خانة الموعد</string>
     <string name="please_select_speciality">Please select speciality!</string>
 
     <string name="doctor_appointments">مواعيد الطبيب</string>
