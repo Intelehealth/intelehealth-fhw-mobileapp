@@ -85,9 +85,11 @@
                             android:id="@+id/textView_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_heading_name"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -108,9 +110,11 @@
                             android:id="@+id/textView_age"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="start"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/row_age"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -130,9 +134,11 @@
                             android:id="@+id/textView_gender"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="start"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/row_gender"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -152,9 +158,11 @@
                             android:id="@+id/textView_id"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="start"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_heading_id"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
@@ -162,6 +170,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
+                            android:layout_gravity="start"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -174,15 +183,18 @@
                             android:id="@+id/textView_visit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visitID"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_visit_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
                             android:layout_weight="3"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -208,34 +220,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_heading_vitals"
+                <RelativeLayout
+                    android:id="@+id/layout_vitals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/visit_summary_vitals_heading"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_vitals"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/edit_icon" />
+                    <TextView
+                        android:id="@+id/textView_heading_vitals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/titleBar_cardview"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/visit_summary_vitals_heading"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_edit_vitals"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/edit_icon" />
+
+                </RelativeLayout>
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_vitals"
+                    android:layout_below="@id/layout_vitals"
                     android:padding="@dimen/padding_card">
 
                     <!--Height-->
@@ -443,39 +465,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_heading_complaint"
+                <RelativeLayout
+                    android:id="@+id/layout_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/visit_summary_complaint"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_complaint"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/textView_heading_complaint"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/edit_icon" />
+                    <TextView
+                        android:id="@+id/textView_heading_complaint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/visit_summary_complaint"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_edit_complaint"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/edit_icon" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/textView_content_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_heading_complaint"
+                    android:layout_below="@+id/layout_complaint"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:paddingTop="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />
+
+
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -494,48 +527,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_heading_physexam"
+                <RelativeLayout
+                    android:id="@+id/layout_physicalExam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/visit_summary_on_examination"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_physexam"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/textView_heading_physexam"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/edit_icon" />
+                    <TextView
+                        android:id="@+id/textView_heading_physexam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/visit_summary_on_examination"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_download_physexam"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/imagebutton_edit_physexam"
-                    android:layout_marginLeft="-29dp"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/download" />
+                    <ImageButton
+                        android:id="@+id/imagebutton_edit_physexam"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/edit_icon" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_download_physexam"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/imagebutton_edit_physexam"
+                        android:layout_marginLeft="-29dp"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/download" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/textView_content_physexam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_heading_physexam"
+                    android:layout_below="@+id/layout_physicalExam"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -575,35 +618,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_heading_pathist"
+                <RelativeLayout
+                    android:id="@+id/layout_patHist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/visit_summary_medical_history"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_pathist"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/textView_heading_pathist"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/edit_icon" />
+                    <TextView
+                        android:id="@+id/textView_heading_pathist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/titleBar_cardview"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/visit_summary_medical_history"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_edit_pathist"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/edit_icon" />
+
+                </RelativeLayout>
+
 
                 <TextView
                     android:id="@+id/textView_content_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_heading_pathist"
+                    android:layout_below="@+id/layout_patHist"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -626,35 +680,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_heading_famhist"
+                <RelativeLayout
+                    android:id="@+id/layout_famHist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/visit_summary_family_history"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_famhist"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/textView_heading_famhist"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/edit_icon" />
+                    <TextView
+                        android:id="@+id/textView_heading_famhist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/titleBar_cardview"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/visit_summary_family_history"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_edit_famhist"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/edit_icon" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/textView_content_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_heading_famhist"
+                    android:layout_below="@+id/layout_famHist"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -676,35 +740,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_additional_document_images"
+                <RelativeLayout
+                    android:id="@+id/layout_addDoc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/title_activity_additional_documents"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_additional_document"
-                    style="@style/SelectableItemBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/textView_additional_document_images"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/edit_icon" />
+                    <TextView
+                        android:id="@+id/textView_additional_document_images"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/titleBar_cardview"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/title_activity_additional_documents"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_edit_additional_document"
+                        style="@style/SelectableItemBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/edit_icon" />
+
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recy_additional_documents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_additional_document_images"
+                    android:layout_below="@+id/layout_addDoc"
                     android:padding="@dimen/padding_card"></androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
@@ -1061,16 +1135,26 @@
                     android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/title_doctor"
+                    <RelativeLayout
+                        android:id="@+id/layout_doctorDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/titleBar_cardview"
+                        android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/title_doctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/titleBar_cardview"
                         android:paddingVertical="12dp"
+                        android:layout_gravity="end"
                         android:paddingStart="20dp"
                         android:text="@string/doctor"
                         android:textColor="@color/white"
                         android:textSize="@dimen/card_content_text_size" />
+
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/doctor_details"
@@ -1100,29 +1184,39 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:id="@+id/layout_healthWorker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview">
+
                 <TextView
                     android:id="@+id/title_health_worker"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
                     android:fontFamily="@font/lato_bold"
+                    android:layout_alignParentStart="true"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
                     android:text="@string/health_worker"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/chw_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/title_health_worker"
+                    android:layout_below="@+id/layout_healthWorker"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:text=""
                     android:textSize="@dimen/card_content_sub_text_size" />
 
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -1140,16 +1234,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/layout_speciality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/speciality_cardview_title"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/titleBar_cardview"
+                        android:fontFamily="@font/lato_bold"
+                        android:layout_alignParentStart="true"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/speciality_cardview_title"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                </RelativeLayout>
 
                 <Spinner
                     android:id="@+id/speciality_spinner"
@@ -1202,8 +1306,8 @@
                     android:layout_margin="16dip"
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:fontFamily="@font/lato_bold"
-                    android:gravity="center_vertical"
                     android:padding="12dp"
+                    android:textAlignment="viewStart"
                     android:text="@string/book_appointment"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size"
@@ -1226,12 +1330,11 @@
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/padding_card">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                <RelativeLayout
+                    android:id="@+id/layout_emergency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/flag"
@@ -1239,6 +1342,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
                     android:fontFamily="@font/lato_bold"
+                    android:layout_alignParentStart="true"
                     android:paddingVertical="12dp"
                     android:paddingStart="5dp"
                     android:text="@string/priority"
@@ -1248,11 +1352,13 @@
                     android:id="@+id/flaggedcheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_weight="0.1"
                     android:fontFamily="@font/lato_regular"
                     android:textSize="20sp" />
 
-            </LinearLayout>
+                </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->
@@ -1592,11 +1698,11 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="signAndSubmit"
-            android:visibility="gone"
             android:text="@string/startVisitNote"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
 
 
         <!-- <Button

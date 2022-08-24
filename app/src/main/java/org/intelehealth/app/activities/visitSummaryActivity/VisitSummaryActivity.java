@@ -128,6 +128,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -461,10 +462,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager1 = new SessionManager(this);
-        appLanguage = sessionManager1.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
-        }
+//        appLanguage = sessionManager1.getAppLanguage();
+//        if (!appLanguage.equalsIgnoreCase("")) {
+//            setLocale(appLanguage);
+//        }
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -1757,6 +1758,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         getAppointmentDetails(visitUuid);
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
 //    private void doConnect() {
 //
 //        if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
@@ -1882,23 +1888,25 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return isExists;
     }
 
-    public void setLocale(String appLanguage) {
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
-        Locale locale = new Locale(appLanguage);
-        Locale.setDefault(locale);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf);
-        }
-        DisplayMetrics dm = res.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(new LocaleList(locale));
-        } else {
-            conf.locale = locale;
-        }
-        res.updateConfiguration(conf, dm);
-    }
+
+    //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//    public void setLocale(String appLanguage) {
+//        Resources res = getResources();
+//        Configuration conf = res.getConfiguration();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            conf.setLocale(locale);
+//            getApplicationContext().createConfigurationContext(conf);
+//        }
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            conf.setLocales(new LocaleList(locale));
+//        } else {
+//            conf.locale = locale;
+//        }
+//        res.updateConfiguration(conf, dm);
+//    }
 
     private String convertCtoF(String temperature) {
 
