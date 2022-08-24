@@ -9,6 +9,7 @@ import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
 
 import static org.intelehealth.app.app.AppConstants.key;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -48,6 +49,7 @@ import android.widget.Toast;
 
 
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -500,6 +502,12 @@ public class VitalsActivity extends AppCompatActivity {
                 validateTable();
             }
         });
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     public void calculateBMI() {
