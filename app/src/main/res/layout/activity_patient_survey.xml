@@ -140,7 +140,7 @@
             <TextView
                 android:id="@+id/button_survey_skip"
                 style="?android:textAppearanceSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/button_survey_submit"
                 android:layout_alignParentRight="true"
@@ -149,10 +149,9 @@
                 android:fontFamily="@font/lato_bold"
                 android:padding="14dp"
                 android:text="@string/exit_survey_skip"
-                android:textAlignment="center"
+                android:textAlignment="viewStart"
                 android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                 />
+                android:textSize="15sp" />
 
 
         </RelativeLayout>
