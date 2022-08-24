@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -37,6 +38,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 
@@ -59,16 +61,19 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the org should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+
+//        String language = sessionManager.getAppLanguage();
+//        //In case of crash still the org should hold the current lang fix.
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_documents);
@@ -122,6 +127,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     @Override
