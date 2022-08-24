@@ -3,6 +3,8 @@ package org.intelehealth.app.activities.chooseLanguageActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
@@ -44,10 +47,12 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_language);
         initViews();
 
-        appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
-        }
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//        appLanguage = sessionManager.getAppLanguage();
+//        if (!appLanguage.equalsIgnoreCase("")) {
+//            setLocale(appLanguage);
+//        }
+
         if (!sessionManager.isFirstTimeLaunch()) {
             BackImage.setVisibility(View.VISIBLE);
             BackImage.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +67,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLocale(sessionManager.getAppLanguage());
+//                setLocale(sessionManager.getAppLanguage());
                 if (sessionManager.isFirstTimeLaunch()) {
                     Logger.logD(LOG_TAG, "Starting setup");
 //                    Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
@@ -80,6 +85,11 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             }
         });
         populatingLanguages();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     public void initViews() {
@@ -127,13 +137,14 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         }
     }
 
-    public void setLocale(String appLanguage) {
+    //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+    /*public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-    }
+    }*/
 
     public interface ItemSelectionListener {
         void onSelect(JSONObject jsonObject, int index);
