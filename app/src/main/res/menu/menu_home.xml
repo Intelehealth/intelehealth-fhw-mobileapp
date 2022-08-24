@@ -6,6 +6,7 @@
         <item
             android:id="@+id/bluetooth"
             android:title="Bluetooth"
+            android:visible="false"
             android:icon="@drawable/bluetooth"
             app:showAsAction="always"/>
 
