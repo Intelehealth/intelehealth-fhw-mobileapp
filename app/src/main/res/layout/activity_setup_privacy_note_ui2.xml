@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,50 +53,47 @@
         android:textColor="@color/textColorWhite"
         android:textSize="@dimen/setup_privacy_screen_info" />
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/padding_25"
+        android:paddingTop="@dimen/padding_30"
+        android:paddingEnd="@dimen/padding_25"
+        android:paddingBottom="@dimen/padding_20">
+
+        <CheckBox
+            android:id="@+id/checkbox_privacy_policy"
+            android:layout_width="30dp"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/tv_privacy_notice_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14.96dp"
+            android:layout_toEndOf="@+id/checkbox_privacy_policy"
+
+            android:text="@string/agree_to_terms"
+            />
+
+        <Button
+            android:id="@+id/btn_setup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/ui2_common_top_rounded_white_bg"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/padding_25"
-            android:paddingTop="@dimen/padding_30"
-            android:paddingEnd="@dimen/padding_25"
-            android:paddingBottom="@dimen/padding_20">
+            android:layout_below="@+id/tv_privacy_notice_link"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:drawableTint="@color/iconTintWhite"
+            android:padding="@dimen/padding_15"
+            android:text="@string/setup" />
 
-            <CheckBox
-                android:id="@+id/checkbox_privacy"
-                android:layout_width="30dp"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:id="@+id/tv_privacy_notice_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14.96dp"
-                android:layout_toEndOf="@+id/checkbox_privacy"
-                android:text="@string/agree_to_terms" />
-
-            <Button
-                android:id="@+id/btn_skip_intro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_privacy_notice_link"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-                android:drawableTint="@color/iconTintWhite"
-                android:fontFamily="@font/dm_sans_regular"
-                android:lineHeight="24dp"
-                android:padding="@dimen/padding_15"
-                android:text="@string/setup"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size" />
-
-        </RelativeLayout>
+    </RelativeLayout>
     </RelativeLayout>
 
 

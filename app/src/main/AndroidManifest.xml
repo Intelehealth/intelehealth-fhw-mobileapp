@@ -42,6 +42,16 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".ui2.onboarding.PrivacyPolicyActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui2.onboarding.TermsAndConditionsActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".ui2.onboarding.SetupPrivacyNoteActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -61,7 +71,7 @@
             android:name=".ui2.onboarding.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui2.activities.UIDesignActivity"
             android:exported="true"

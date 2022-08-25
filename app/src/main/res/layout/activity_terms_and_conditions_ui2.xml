@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui2.onboarding.TermsAndConditionsActivityNew">
+
+    <ImageView
+        android:id="@+id/iv_back_arrow_terms"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ui2_ic_arrow_right" />
+
+    <TextView
+        android:id="@+id/tv_title_terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_toEndOf="@+id/iv_back_arrow_terms"
+        android:lineHeight="24dp"
+        android:text="@string/terms_and_conditions"
+        android:textSize="@dimen/setup_privacy_screen_info" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title_terms"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_toEndOf="@+id/iv_back_arrow_terms"
+        android:lineHeight="24dp"
+        android:text="Not Complete Policy"
+        android:textSize="28dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_decline_terms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:lineHeight="18dp"
+            android:fontFamily="@font/dm_sans_regular"
+            android:textSize="@dimen/common_button_text_size"
+            android:background="@drawable/ui2_common_primary_bg_disabled"
+            android:padding="@dimen/padding_15"
+            android:textStyle="bold"
+            android:text="@string/decline" />
+
+        <Button
+            android:id="@+id/btn_accept_terms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1"
+            android:lineHeight="18dp"
+            android:fontFamily="@font/dm_sans_regular"
+            android:textSize="@dimen/common_button_text_size"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:padding="@dimen/padding_15"
+            android:text="@string/accept_new" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
