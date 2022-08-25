@@ -89,5 +89,8 @@
     <dimen name="fu_icons_margin_top">36dp</dimen>
     <dimen name="fu_icon_width">32dp</dimen>
     <dimen name="fu_icon_height">32dp</dimen>
+    <dimen name="fu_vs_margin_start">8dp</dimen>
+    <dimen name="fu_vs_margin_top">60dp</dimen>
+    <dimen name="fu_date_txt_size">18sp</dimen>
 
 </resources>

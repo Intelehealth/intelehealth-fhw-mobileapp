@@ -216,69 +216,69 @@
         android:layout_below="@+id/cardview_head"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="@dimen/padding_40"
-        android:layout_marginRight="24dp"
+        android:layout_marginLeft="@dimen/fu_card_margin_sides"
+        android:layout_marginTop="@dimen/fu_vs_margin_top"
+        android:layout_marginRight="@dimen/fu_card_margin_sides"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/margin_5"
         app:cardElevation="@dimen/margin_5">
 
-        <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/frame_10004"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_16"
-            >
+            android:layout_marginTop="@dimen/fu_card_margin_updown">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/fu_margin_start"
                 android:src="@drawable/frame_priority" />
 
             <TextView
                 android:id="@+id/details_head1"
-                android:layout_width="216dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/details_head1"
-                android:layout_marginStart="@dimen/margin_12"
                 android:textAppearance="@style/details_head1"
-                android:textColor="@null" />
+                android:textColor="@null"
+                android:textSize="@dimen/fu_name_txt_size" />
 
             <TextView
                 android:id="@+id/details_head2"
                 android:layout_width="wrap_content"
-                android:layout_height="21dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/details_head1"
-                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginStart="@dimen/fu_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/details_head2"
                 android:textAppearance="@style/details_head2"
-                android:textColor="@null" />
+                android:textColor="@null"
+                android:textSize="@dimen/fu_male_textsize" />
 
             <ImageButton
                 android:id="@+id/fu_progress_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/details_head2"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:background="@null"
-                android:layout_marginStart="@dimen/margin_12"
                 android:src="@drawable/ic_fu_details_progress_indicator" />
 
             <LinearLayout
                 android:id="@+id/ll_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_below="@+id/fu_progress_indicator">
+                android:layout_below="@+id/fu_progress_indicator"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/fu_details_calendar"
@@ -290,13 +290,14 @@
                     android:id="@+id/fu_detiails_date"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_6"
+                    android:layout_toEndOf="@+id/fu_details_calendar"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
                     android:text="@string/fu_detiails_date"
                     android:textAppearance="@style/fu_detiails_date"
-                    android:lineSpacingExtra="3sp"
-                    android:gravity="center_vertical"
                     android:textColor="@null"
-                    android:layout_marginStart="@dimen/margin_6"
-                    android:layout_toEndOf="@+id/fu_details_calendar" />
+                    android:textSize="@dimen/fu_male_textsize" />
                 />
 
             </LinearLayout>
@@ -306,8 +307,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_1"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:src="@drawable/ic_horizontal_divider_line" />
 
             <!--general physician-->
@@ -315,21 +316,21 @@
                 android:id="@+id/ll_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
                 android:layout_below="@+id/divider"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginEnd="@dimen/margin_12"
-                android:orientation="horizontal">
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <!--1st-->
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
 
                     <ImageView
                         android:id="@+id/profile"
-                        android:layout_width="48dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:background="@null"
@@ -338,18 +339,19 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_toEndOf="@+id/profile"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/gp_txt"
-                            android:layout_width="137dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="-3sp"
                             android:text="@string/gp_txt"
                             android:textAppearance="@style/details_head1"
-                            android:textColor="@null" />
+                            android:textColor="@null"
+                            android:textSize="@dimen/fu_name_txt_size" />
 
 
                         <!-- Caption -->
@@ -357,12 +359,13 @@
                             android:id="@+id/dr_speciality"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_4"
+                            android:layout_marginTop="@dimen/fu_male_margin_start"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="0sp"
                             android:text="@string/dr_speciality"
                             android:textAppearance="@style/details_head2"
-                            android:textColor="@null" />
+                            android:textColor="@null"
+                            android:textSize="@dimen/fu_male_textsize" />
 
                     </LinearLayout>
                 </RelativeLayout>
@@ -373,24 +376,20 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <ImageButton
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/frame_26088"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="@dimen/fu_icon_width"
+                        android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_icon8_phone"
-                        />
+                        android:src="@drawable/ic_icon8_phone" />
 
-                    <ImageButton
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/frame_26088"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="@dimen/fu_icon_width"
+                        android:layout_height="@dimen/fu_icon_height"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/margin_12"
-                        android:src="@drawable/ic_icon8_whatsapp"
-                        />
+                        android:src="@drawable/ic_icon8_whatsapp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -400,8 +399,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_2"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:src="@drawable/ic_horizontal_divider_line" />
 
             <!-- Frame 2608662 -->
@@ -410,12 +409,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@+id/divider_2"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginEnd="@dimen/margin_12">
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start">
 
                 <ImageView
                     android:id="@+id/icon_visit_details"
-                    android:layout_width="48dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
@@ -424,24 +423,25 @@
                 <!-- label-text -->
                 <TextView
                     android:id="@+id/visitDetails_text"
-                    android:layout_width="111dp"
-                    android:layout_height="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_toEndOf="@+id/icon_visit_details"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
-                    android:textColor="@null"
                     android:text="@string/visitDetails_text"
-                    android:textAppearance="@style/visitDetails_text" />
+                    android:textAppearance="@style/visitDetails_text"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_name_txt_size" />
 
                 <ImageButton
                     android:id="@+id/icon_arrowRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:background="@null"
                     android:layout_centerVertical="true"
+                    android:background="@null"
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>
 
@@ -450,26 +450,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_3"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:src="@drawable/ic_horizontal_divider_line" />
 
             <TextView
                 android:id="@+id/followup_date_txtv"
-                android:layout_width="288dp"
-                android:layout_height="27dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/divider_3"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginEnd="@dimen/margin_12"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="4sp"
                 android:text="@string/followup_date_txtv"
                 android:textAppearance="@style/followup_date_txtv"
-                android:textColor="@null" />
+                android:textColor="@null"
+                android:textSize="@dimen/fu_date_txt_size" />
 
             <TextView
                 android:id="@+id/followup_info"
-                android:layout_width="288dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/followup_date_txtv"
                 android:layout_marginStart="@dimen/margin_12"
@@ -479,16 +480,15 @@
                 android:lineSpacingExtra="3sp"
                 android:text="@string/followup_info"
                 android:textAppearance="@style/followup_info"
-                android:textColor="@null"
-                />
+                android:textColor="@null" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_below="@+id/followup_info"
                 android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginEnd="@dimen/margin_12"
                 android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/margin_12"
                 android:layout_marginBottom="@dimen/margin_16"
                 android:background="@drawable/icon_followup_disabled" />
 
