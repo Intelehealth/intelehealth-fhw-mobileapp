@@ -41,6 +41,7 @@
     <dimen name="physical_exam_img_max_height">125dp</dimen>
 
     <dimen name="text_18sp">18sp</dimen>
+    <dimen name="toolbar_text_size">18sp</dimen>
 
 
     <!--UI2.0-->
@@ -170,5 +171,21 @@
     <dimen name="card_options_padding">12dp</dimen>
     <dimen name="options_heading_margin_top">15dp</dimen>
     <dimen name="options_sub_heading_margin_top">5dp</dimen>
+    <dimen name="followup_toolbar">84dp</dimen>
+    <dimen name="fu_toolbat_txt_height">24dp</dimen>
+    <dimen name="fu_header_card_height">72dp</dimen>
+    <dimen name="fu_card_margin_sides">24dp</dimen>
+    <dimen name="fu_card_margin_updown">16dp</dimen>
+    <dimen name="fu_image_width">48dp</dimen>
+    <dimen name="fu_margin_start">12dp</dimen>
+    <dimen name="fu_name_txt_size">16sp</dimen>
+    <dimen name="fu_male_margin_start">4dp</dimen>
+    <dimen name="fu_male_textsize">14sp</dimen>
+    <dimen name="fu_pencil_width">14dp</dimen>
+    <dimen name="fu_pencil_height">14dp</dimen>
+    <dimen name="fu_icons_margin_top">18dp</dimen>
+    <dimen name="fu_icon_width">28dp</dimen>
+    <dimen name="fu_icon_height">28dp</dimen>
+
 
 </resources>
