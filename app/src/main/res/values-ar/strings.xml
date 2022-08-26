@@ -147,16 +147,16 @@
 
 
     <!--//Table Exam Screen-->
-    <string name="title_activity_vitals">Vitals &amp; Diagnostics</string>
-    <string name="table_hw">Body Measurements</string>
-    <string name="table_height">Height (cm)</string>
-    <string name="table_weight">Weight (kg)</string>
+    <string name="title_activity_vitals">العناصر الحيوية</string>
+    <string name="table_hw">قياسات الجسم</string>
+    <string name="table_height">الطول (سم)</string>
+    <string name="table_weight">الوزن (كجم)</string>
     <string name="table_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
-    <string name="table_pulse">Pulse (bpm)</string>
-    <string name="table_bp">Vital Signs</string>
+    <string name="table_pulse">نبض (نبضة في الدقيقة)</string>
+    <string name="table_bp">علامات حيوية</string>
     <string name="table_bpsys">BP Sys (mmHg)</string>
     <string name="table_bpdia">BP Dia (mmHg)</string>
-    <string name="table_temp">Temperature (C)</string>
+    <string name="table_temp">درجة الحرارة (ج)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
     <!--//Patient Search Screen-->
@@ -569,7 +569,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">ما هو سبب زيارتك؟ </string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -803,7 +803,7 @@
     <string name="add_advice">Add Advice</string>
     <string name="add_note">Add Note</string>
     <string name="schedule_a_follow_up">Schedule a follow up</string>
-    <string name="submit">Submit</string>
+    <string name="submit">يُقدِّم</string>
     <string name="add_meds">Add Meds</string>
     <string name="add_diagnosis">Add Diagnosis</string>
     <string name="startVisitNote">Start Visit Note</string>
