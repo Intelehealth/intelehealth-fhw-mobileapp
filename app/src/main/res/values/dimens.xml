@@ -190,6 +190,7 @@
     <dimen name="fu_vs_margin_start">8dp</dimen>
     <dimen name="fu_vs_margin_top">40dp</dimen>
     <dimen name="fu_date_txt_size">18sp</dimen>
+    <dimen name="fu_btn_size">48dp</dimen>
 
 
 </resources>

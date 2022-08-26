@@ -473,9 +473,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/followup_date_txtv"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_4"
-                android:layout_marginEnd="@dimen/margin_12"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_male_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/followup_info"
@@ -484,12 +484,12 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/fu_btn_size"
                 android:layout_below="@+id/followup_info"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginEnd="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                 android:background="@drawable/icon_followup_disabled" />
 
         </RelativeLayout>
