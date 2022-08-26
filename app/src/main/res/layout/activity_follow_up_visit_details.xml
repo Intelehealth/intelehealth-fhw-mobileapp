@@ -175,8 +175,8 @@
                         android:layout_marginTop="@dimen/margin_4"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:lineSpacingExtra="0sp"
                         android:text="@string/fu_openmrsID"
+                        android:textSize="@dimen/fu_male_textsize"
                         android:textAppearance="@style/caption_fu_openmrsId"
                         android:textColor="@null" />
 
