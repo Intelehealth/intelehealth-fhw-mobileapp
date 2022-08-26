@@ -22,7 +22,7 @@ import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActiv
 public class ForgotPasswordActivityNew extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     String[] textArray = {"+91", "+00", "+20", "+22"};
-    Integer[] imageArray = {R.drawable.ui2_country_flag_india, R.drawable.ic_flag_black_24dp,
+    Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
 
     @Override

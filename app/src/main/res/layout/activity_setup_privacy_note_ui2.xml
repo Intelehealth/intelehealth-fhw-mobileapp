@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_setup_privacy_back"
-            android:layout_width="@dimen/common_imageview_back_width"
-            android:layout_height="@dimen/common_imageview_back_height"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="@dimen/margin_32"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
+    <ImageView
+        android:id="@+id/iv_setup_privacy_back"
+        android:layout_width="@dimen/back_arrow_demo1_width"
+        android:layout_height="@dimen/back_arrow_demo1_height"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/back_arrow_demo1_margin_start"
+        android:layout_marginTop="@dimen/back_arrow_demo1_margin_top"
+        android:src="@drawable/ic_baseline_arrow_back_24" />
 
 
     <ImageView
         android:id="@+id/iv_ayu_icon"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="@dimen/demo1_ayu_image_width"
+        android:layout_height="@dimen/demo1_ayu_image_height"
         android:layout_below="@+id/tv_please_continue"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="@dimen/demo1_ayu_img_margin_top"
         android:src="@drawable/ui2_ic_ayu_image" />
 
     <TextView
@@ -32,10 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_ayu_icon"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/setup_title_margin_top"
         android:fontFamily="@font/dm_sans_regular"
         android:gravity="center"
-        android:lineHeight="36dp"
+        android:lineHeight="@dimen/setup_title_line_height"
         android:text="@string/hello_i_am_ayu"
         android:textColor="@color/textColorWhite"
         android:textSize="@dimen/setup_privacy_screen_title"
@@ -45,10 +43,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_hello_ayu"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/setup_info_margin_top"
         android:fontFamily="@font/dm_sans_regular"
         android:gravity="center"
-        android:lineHeight="27dp"
+        android:lineHeight="@dimen/setup_info_line_height"
         android:text="@string/ayu_intro"
         android:textColor="@color/textColorWhite"
         android:textSize="@dimen/setup_privacy_screen_info" />
@@ -66,34 +64,34 @@
 
         <CheckBox
             android:id="@+id/checkbox_privacy_policy"
-            android:layout_width="30dp"
-            android:layout_height="20dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:button="@drawable/ui2_ic_default_checkbox" />
 
         <TextView
             android:id="@+id/tv_privacy_notice_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14.96dp"
+            android:layout_marginStart="@dimen/terms_link_margin_start"
             android:layout_toEndOf="@+id/checkbox_privacy_policy"
-
-            android:text="@string/agree_to_terms"
-            />
+            android:text="@string/agree_to_terms" />
 
         <Button
             android:id="@+id/btn_setup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_privacy_notice_link"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="@dimen/button_setup_margin_top"
+            android:layout_marginEnd="@dimen/button_setup_margin_end"
+            android:layout_marginBottom="@dimen/button_setup_margin_bottom"
             android:background="@drawable/ui2_common_primary_bg"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:drawableTint="@color/iconTintWhite"
-            android:padding="@dimen/padding_15"
+            android:padding="@dimen/button_setup_padding"
             android:text="@string/setup" />
 
     </RelativeLayout>
-    </RelativeLayout>
+</RelativeLayout>
 
 

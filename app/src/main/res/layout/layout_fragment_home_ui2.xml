@@ -18,7 +18,7 @@
             android:layout_marginStart="@dimen/find_patient_margin_start"
             android:layout_marginEnd="@dimen/find_patient_margin_end"
             android:background="@drawable/ui2_common_input_bg"
-            android:drawableStart="@drawable/ui2_search_icon_home"
+            android:drawableStart="@drawable/ui2_ic_search_icon_home"
             android:drawablePadding="@dimen/find_patient_icon_padding"
             android:drawableTint="@color/colorPrimary"
             android:text="@string/find_patient"
@@ -59,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:foregroundGravity="center"
                     android:padding="@dimen/image_add_patient_padding"
-                    android:src="@drawable/ui2_add_pateint_home"
+                    android:src="@drawable/ui2_ic_add_pateint_home"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -90,7 +90,7 @@
                     android:paddingTop="@dimen/image_add_patient_icon_padding_top"
                     android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
                     android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-                    android:src="@drawable/ui2_forward_arrow_white"
+                    android:src="@drawable/ui2_ic_forward_arrow_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -154,8 +154,7 @@
                     android:paddingTop="@dimen/image_add_patient_icon_padding_top"
                     android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
                     android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-
-                    android:src="@drawable/ui2_forward_arrow_green"
+                    android:src="@drawable/ui2_ic_forward_arrow_green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -226,7 +225,7 @@
                     android:paddingTop="@dimen/image_add_patient_icon_padding_top"
                     android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
                     android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-                    android:src="@drawable/ui2_forward_arrow_white"
+                    android:src="@drawable/ui2_ic_forward_arrow_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -237,7 +236,7 @@
                     android:layout_below="@+id/textview_prescriptions"
                     android:layout_alignParentEnd="true"
                     android:padding="@dimen/home_card_images_padding"
-                    android:src="@drawable/ui2_image_prescription_blue"
+                    android:src="@drawable/ui2_ic_close_visit"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
 
@@ -287,7 +286,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/card_options_icons_margin_top"
-                        android:src="@drawable/ui2_appointments_icon_home"
+                        android:src="@drawable/ui2_ic_appointments_icon_home"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -348,7 +347,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/card_options_icons_margin_top"
-                        android:src="@drawable/ui2_followup_visits_icon_home"
+                        android:src="@drawable/ui2_ic_followup_visits_icon_home"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

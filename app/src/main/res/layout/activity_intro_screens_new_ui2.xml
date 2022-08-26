@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/iv_back_arrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="@dimen/back_arrow_intro_width"
+        android:layout_height="@dimen/back_arrow_intro_height"
+        android:layout_marginStart="@dimen/back_arrow_intro_margin_start"
+        android:layout_marginTop="@dimen/back_arrow_intro_margin_top"
         android:src="@drawable/ui2_ic_arrow_right" />
 
     <androidx.viewpager.widget.ViewPager
@@ -24,8 +24,8 @@
     <LinearLayout
         android:id="@+id/layoutDots_intro"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="@dimen/layout_dots_height"
+        android:layout_marginTop="@dimen/layout_dots_margin_top"
         android:layout_above="@+id/btn_skip_intro"
         android:gravity="center"
         android:orientation="horizontal" />
@@ -37,15 +37,15 @@
         android:layout_alignParentBottom="true"
         android:text="@string/skip_new"
         android:textAllCaps="false"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
-        android:lineHeight="24dp"
+        android:layout_marginStart="@dimen/button_skip_margin_start"
+        android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+        android:lineHeight="@dimen/button_skip_line_height"
         android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
         android:drawableTint="@color/iconTintWhite"
         android:padding="@dimen/padding_15"
         android:textSize="@dimen/common_button_text_size"
         android:fontFamily="@font/dm_sans_regular"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="@dimen/button_skip_margin_end"
         android:background="@drawable/ui2_common_primary_bg"
         android:textColor="@color/white"
          />

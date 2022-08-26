@@ -1,0 +1,176 @@
+package org.intelehealth.app.activities.chooseLanguageActivity;
+
+import android.content.Context;
+import android.graphics.Typeface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.intelehealth.app.R;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private Context mContext;
+    private List<JSONObject> mItemList = new ArrayList<JSONObject>();
+    int selectedPosition = -1;
+    ItemClickListener itemClickListener;
+    //ChooseLanguageActivity.ItemSelectionListener mItemSelectionListener;
+
+  /*  public ChooseLanguageAdapterNew(Context context,
+                                    List<JSONObject> itemList,
+                                    ChooseLanguageActivity.ItemSelectionListener
+                                            itemSelectionListener, ItemClickListener itemClickListener) {
+        mContext = context;
+        mItemList = itemList;
+        mItemSelectionListener = itemSelectionListener;
+        this.itemClickListener = itemClickListener;
+
+
+    }*/
+
+    public ChooseLanguageAdapterNew(Context context,
+                                    List<JSONObject> itemList,
+                                    ItemClickListener itemClickListener) {
+        mContext = context;
+        mItemList = itemList;
+        this.itemClickListener = itemClickListener;
+
+
+    }
+
+    private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
+
+    public void setLabelJSON(JSONObject json) {
+        mThisScreenLanguageJsonObject = json;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.language_list_item_view_ui2, parent, false);
+
+        return new ChooseLanguageAdapterNew.GenericViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ChooseLanguageAdapterNew.GenericViewHolder) {
+            ChooseLanguageAdapterNew.GenericViewHolder genericViewHolder = (ChooseLanguageAdapterNew.GenericViewHolder) holder;
+            genericViewHolder.index = position;
+            genericViewHolder.jsonObject = mItemList.get(position);
+
+            try {
+                genericViewHolder.rbChooseLanguage.setText(genericViewHolder.jsonObject.getString("name"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            genericViewHolder.rbChooseLanguage.setChecked(selectedPosition == position);
+            if (genericViewHolder.rbChooseLanguage.isChecked()) {
+                genericViewHolder.layoutRb.setBackgroundColor(mContext.getResources().getColor(R.color.cardTintLightGreen));
+                genericViewHolder.rbChooseLanguage.setButtonDrawable(mContext.getDrawable(R.drawable.ui2_ic_selected_green));
+
+            }
+            /*
+            old code
+            try {
+                genericViewHolder.nameTextView.setText(genericViewHolder.jsonObject.getString("name"));
+
+                if (genericViewHolder.jsonObject.getBoolean("selected")) {
+                    genericViewHolder.statusImageView.setVisibility(View.VISIBLE);
+                    genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_6));
+                    genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.BOLD);
+                    genericViewHolder.nameTextView.setBackgroundResource(R.drawable.round_corner_gray_light);
+                } else {
+                    genericViewHolder.statusImageView.setVisibility(View.INVISIBLE);
+                    genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_4));
+                    genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.NORMAL);
+                    genericViewHolder.nameTextView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mItemList.size();
+    }
+
+    private class GenericViewHolder extends RecyclerView.ViewHolder {
+        RadioButton rbChooseLanguage;
+        JSONObject jsonObject;
+        int index;
+        LinearLayout layoutRb;
+
+        GenericViewHolder(View itemView) {
+            super(itemView);
+            rbChooseLanguage = itemView.findViewById(R.id.rb_choose_language);
+            layoutRb = itemView.findViewById(R.id.layout_rb_choose_language);
+
+
+            rbChooseLanguage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    selectedPosition = getAdapterPosition();
+                    try {
+                        String name = mItemList.get(selectedPosition).getString("name");
+                        Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+
+            /* nameTextView = itemView.findViewById(R.id.text_tv);
+             statusImageView = itemView.findViewById(R.id.status_imv);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        for (int i = 0; i < mItemList.size(); i++) {
+                            if (i == index) {
+                                mItemList.get(i).put("selected", true);
+                            } else {
+                                mItemList.get(i).put("selected", false);
+                            }
+                        }
+                        mItemSelectionListener.onSelect(jsonObject, index);
+                        notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });*/
+
+        }
+
+
+    }
+
+    public interface ItemClickListener {
+        void onClick(String s, int position);
+    }
+}
+

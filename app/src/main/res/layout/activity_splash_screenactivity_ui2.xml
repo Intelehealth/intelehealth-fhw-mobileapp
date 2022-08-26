@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".ui2.onboarding.SplashScreenActivity">
+    tools:context=".activities.chooseLanguageActivity.SplashScreenActivity">
 
     <LinearLayout
+        android:id="@+id/layout_child1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="214dp"
-            android:layout_height="92dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_intelehealth_login_height"
             android:layout_gravity="center"
-            android:layout_marginTop="332dp"
-            android:src="@drawable/intelehealth_logo_white" />
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ui2_ic_intelehealth_logo" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -37,13 +40,37 @@
         android:id="@+id/layout_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_below="@+id/layout_child1"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <ImageView
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
             android:layout_gravity="center"
-            android:src="@drawable/ui2_achivements_home_bottomnav"
-            android:visibility="gone" />
+            android:layout_marginTop="5dp"
+            android:background="@color/solidViewLightGray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/dm_sans_regular"
+            android:gravity="center"
+            android:lineHeight="24dp"
+            android:text="Select language"
+            android:textSize="@dimen/select_language" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_select_language"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:scrollbars="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

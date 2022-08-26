@@ -74,7 +74,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     if (info[i].getState() == NetworkInfo.State.CONNECTED) {
                         if (!isConnected) {
                             if (imageViewIsInternet != null) {
-                                imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_internet_available));
+                                imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
                                 flag = 1;
                                 setTooltipForInternet("Good internet.\nRefresh");
 
@@ -87,7 +87,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         if (flag == 0) {
             if (imageViewIsInternet != null) {
-                imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_no_internet));
+                imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
                 setTooltipForInternet("No internet");
             }

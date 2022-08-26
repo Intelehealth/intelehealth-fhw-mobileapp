@@ -18,12 +18,12 @@
             android:id="@+id/imageview_nav_drawer"
             android:layout_width="@dimen/hamburger_width"
             android:layout_height="@dimen/hamburger_height"
+            android:layout_marginStart="@dimen/hamburger_margin_start"
             android:layout_marginTop="@dimen/hamburger_margin_top"
             android:layout_marginEnd="@dimen/hamburger_margin_top"
-            android:layout_marginStart="@dimen/hamburger_margin_start"
             android:foregroundGravity="center_horizontal"
             android:visibility="visible"
-            app:srcCompat="@drawable/ui2_hamburger" />
+            app:srcCompat="@drawable/ui2_ic_hamburger" />
 
         <TextView
             android:id="@+id/tv_user_location_home"
@@ -37,7 +37,7 @@
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/common_header_text_size"
             android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ui2_location_home" />
+            app:drawableEndCompat="@drawable/ui2_ic_location_home" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
             android:layout_marginTop="@dimen/image_home_toolbar_icon_margintop"
             android:layout_marginEnd="@dimen/image_home_toolbar_icon_marginend"
             android:foregroundGravity="center_horizontal"
-            android:src="@drawable/ui2_notifications_home" />
+            android:src="@drawable/ui2_ic_notifications_home" />
     </RelativeLayout>
 
     <FrameLayout

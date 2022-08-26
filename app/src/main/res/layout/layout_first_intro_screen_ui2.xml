@@ -10,18 +10,18 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="@dimen/intro_image_height"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/intro_image_margin_top"
             android:src="@drawable/ui2_ic_intro_image1" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/intro_heading_margin_top"
             android:fontFamily="@font/dm_sans_regular"
             android:gravity="center"
-            android:lineHeight="30dp"
+            android:lineHeight="@dimen/intro_heading_line_height"
             android:text="@string/who_we_are"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/introscreen_title"
@@ -30,12 +30,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/intro_description_margin_start"
+            android:layout_marginTop="@dimen/intro_description_margin_top"
+            android:layout_marginEnd="@dimen/intro_description_margin_end"
             android:fontFamily="@font/dm_sans_regular"
             android:gravity="center"
-            android:lineHeight="22.4dp"
+            android:lineHeight="@dimen/intro_description_line_height"
             android:text="@string/who_we_are_intro"
             android:textColor="@color/textColorGray"
             android:textSize="@dimen/introscreen_content" />

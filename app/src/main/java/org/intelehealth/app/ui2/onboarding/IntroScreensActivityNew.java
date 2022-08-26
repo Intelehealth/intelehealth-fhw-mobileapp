@@ -1,13 +1,9 @@
 package org.intelehealth.app.ui2.onboarding;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +17,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.IntroActivity.IntroActivity;
-import org.intelehealth.app.activities.setupActivity.SetupActivity;
+import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 
 public class IntroScreensActivityNew extends AppCompatActivity {
     private static final String TAG = "IntroScreensActivityNew";

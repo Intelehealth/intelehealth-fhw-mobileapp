@@ -893,6 +893,9 @@
     <string name="privacy_policy">Privacy policy</string>
     <string name="decline">Decline</string>
     <string name="accept_new">Accept</string>
+    <string name="strong_internet_needed">Strong internet needed</string>
+
+
 
 
     <!--END-->

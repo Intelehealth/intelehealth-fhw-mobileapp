@@ -13,9 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
 
 import org.intelehealth.app.R;
 
@@ -36,35 +41,35 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
         chkBoxPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(((CompoundButton) view).isChecked()){
-                    chkBoxPrivacyPolicy.setButtonTintList(getColorStateList(R.color.colorGreen));
-
+                if (((CompoundButton) view).isChecked()) {
+                    chkBoxPrivacyPolicy.setButtonDrawable(getResources().getDrawable(R.drawable.ui2_ic_checkbox_checked));
                     btnSetup.setBackground(getResources().getDrawable(R.drawable.ui2_common_primary_bg));
 
                 } else {
                     btnSetup.getBackground().setAlpha(60);
+                    chkBoxPrivacyPolicy.setButtonDrawable(getResources().getDrawable(R.drawable.ui2_ic_default_checkbox));
 
                 }
             }
         });
 
 
-        if(chkBoxPrivacyPolicy.isChecked()){
+        if (chkBoxPrivacyPolicy.isChecked()) {
             btnSetup.getBackground().setAlpha(0);
 
-        }else{
+        } else {
             btnSetup.getBackground().setAlpha(60);
 
         }
 
         tvTermsAndPrivacy
-        .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                termsAndPrivacyPolicy();
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        termsAndPrivacyPolicy();
 
-            }
-        });
+                    }
+                });
 
     }
 
@@ -111,4 +116,5 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
         tvTermsAndPrivacy.setSelected(true);
     }
+
 }
