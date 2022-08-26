@@ -97,8 +97,8 @@
                             android:layout_width="1dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
-                            android:gravity="fill"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
@@ -122,6 +122,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -146,6 +147,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -170,7 +172,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:layout_gravity="start"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -194,7 +196,7 @@
                             android:id="@+id/textView_visit_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start"
+                            android:textAlignment="viewStart"
                             android:layout_weight="3"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -1212,7 +1214,8 @@
                     android:layout_below="@+id/layout_healthWorker"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
-                    android:text=""
+                    android:textAlignment="viewStart"
+                    android:text="nurse1"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
             </LinearLayout>
