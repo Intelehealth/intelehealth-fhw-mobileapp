@@ -467,7 +467,7 @@
     <string name="reject">প্ৰত্যাখ্যান</string>
     <string name="next">এটাৰ পাচৰ</string>
     <string name="which_server_would_you_like_to_connect_to">আপুনি কোনটো চাৰ্ভাৰৰ সৈতে সংযোগ কৰিব বিচাৰে?</string>
-    <string name="enter_url">URL সুমুৱাওক</string>
+    <string name="enter_url">ইউআৰএল প্ৰবিষ্ট কৰক</string>
     <string name="choose_a_location_to_login">প্ৰৱেশ কৰিবলৈ এটা অৱস্থান বাছক</string>
     <string name="choose_an_option_for_protocols">প্ৰটোকলসমূহৰ বাবে এটা বিকল্প নিৰ্ব্বাচন কৰক</string>
     <string name="please_enter_your_username_and_password">অনুগ্ৰহ কৰি আপোনাৰ ব্যৱহাৰকাৰীনাম আৰু গুপ্তশব্দ দিয়ক</string>
@@ -856,7 +856,7 @@
     <string name="one_three_km">১ – ৩ কিলোমিটাৰ</string>
     <string name="three_five_km">৩ – ৫কিলোমিটাৰ</string>
     <string name="more_than_five_km">৫ কিলোমিটাৰতকৈ অধিক</string>
-    <string name="distance_to_nearest_primary_health_centers">নিকটতম প্ৰাথমিক স্বাস্থ্য কেন্দ্ৰৰ পৰা দূৰত্ব (IN KMS)*</string>
+    <string name="distance_to_nearest_primary_health_centers">নিকটতম প্ৰাথমিক স্বাস্থ্য কেন্দ্ৰৰ পৰা দূৰত্ব (কেএমএছত)*</string>
     <string name="distance_to_nearest_community_health_centre_in_walking_time">ওচৰৰ সামূহিক স্বাস্থ্য কেন্দ্ৰৰ পৰা দূৰত্ব*</string>
     <string name="within_3_km">৩ কিলোমিটাৰৰ ভিতৰত</string>
     <string name="three_six_km">৩ – ৬কিলোমিটাৰ</string>
@@ -870,8 +870,8 @@
     <string name="more_than_thirty_km">৩০ কিলোমিটাৰতকৈ অধিক</string>
     <string name="distance_to_the_nearest_medical_store">ওচৰৰ মেডিকেল ষ্ট’ৰলৈ দূৰত্ব*</string>
     <string name="distance_to_the_nearest_pathological_lab">ওচৰৰ পেথ’লজিকেল লেবৰ পৰা দূৰত্ব*</string>
-    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">ওচৰৰ ব্যক্তিগত ক্লিনিকৰ পৰা দূৰত্ব (এজন MBBS ডাক্তৰৰ সৈতে)*</string>
-    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">ওচৰৰ ব্যক্তিগত ক্লিনিকৰ পৰা দূৰত্ব (বিকল্প চিকিৎসকৰ সৈতে – BAMS, BHMS, আয়ুৰ্বেদ আদি)*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">ওচৰৰ ব্যক্তিগত ক্লিনিকৰ পৰা দূৰত্ব (এজন এমবিবিএছ ডাক্তৰৰ সৈতে)*</string>
+    <string name="distance_to_the_nearest_private_clinic_with_alternate_medical">ওচৰৰ ব্যক্তিগত ক্লিনিকৰ পৰা দূৰত্ব (বিকল্প চিকিৎসকৰ সৈতে – বি.এ.এম.এছ., বি.এইচ.এম.এছ., আয়ুৰ্বেদ আদি)*</string>
     <string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">এই ঘৰৰ কোনো সদস্যৰ বেংক একাউণ্ট বা ডাকঘৰৰ একাউণ্ট আছেনে?</string>
     <string name="do_not_know">নাজানো</string>
     <string name="does_this_household_have_a_bpl_card_coupon">এই ঘৰৰ বিপিএল কাৰ্ড/কুপন আছে নেকি?</string>

@@ -38,6 +38,7 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -301,14 +302,18 @@ public class HwProfileActivity extends AppCompatActivity {
             total_consultaion_value.setText(hwProfileModel.getCompletedConsultation() + "");
 
             HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
+            Log.v("lang", "langModel: " + personalInformationModel.getGender());
 
-            if (personalInformationModel.getGender().equalsIgnoreCase("F")) {
+            if (personalInformationModel.getGender().equalsIgnoreCase("F") ||
+                    personalInformationModel.getGender().equalsIgnoreCase("Female")) {
                 hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else if (personalInformationModel.getGender().equalsIgnoreCase("M")) {
+            } else if (personalInformationModel.getGender().equalsIgnoreCase("M") ||
+                    personalInformationModel.getGender().equalsIgnoreCase("Male")) {
                 hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else {
                 hw_gender_value.setText(personalInformationModel.getGender());
             }
+            Log.v("lang", "langModel: " + hw_gender_value.getText().toString());
             hw_state_value.setText(personalInformationModel.getState());
             hw_mobile_value.setText(personalInformationModel.getMobile());
             hw_whatsapp_value.setText(personalInformationModel.getWhatsApp());
@@ -444,10 +449,31 @@ public class HwProfileActivity extends AppCompatActivity {
         }
 
         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColor);
+        String name = hw_gender_value.getText().toString().trim();
+        Log.v("lang", "langModel: " + name);
 
-        if(hw_gender_value.getText().toString().trim().length()>0){
-            if(!hw_gender_value.getText().toString().trim().equalsIgnoreCase("Male") &&
-                !hw_gender_value.getText().toString().trim().equalsIgnoreCase("Female")){
+        if(name.equalsIgnoreCase("ପୁରୁଷ"))
+            name = "Male";
+        else if(name.equalsIgnoreCase("पुरुष"))
+            name = "Male";
+        else if(name.equalsIgnoreCase("પુરુષ"))
+            name = "Male";
+        else if(name.equalsIgnoreCase("পুৰুষ"))
+            name = "Male";
+
+        if(name.equalsIgnoreCase("ମହିଳା"))
+            name = "Female";
+        else if(name.equalsIgnoreCase("महिला"))
+            name = "Female";
+        else if(name.equalsIgnoreCase("સ્ત્રી"))
+            name = "Female";
+        else if(name.equalsIgnoreCase("মহিলা"))
+            name = "Female";
+
+
+        if(name.length()>0){
+            if(!name.equalsIgnoreCase("Male") &&
+                    !name.equalsIgnoreCase("Female")){
                 hw_gender_value.requestFocus();
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(getString(R.string.enter_valid_gender));
                 spannableStringBuilder.setSpan(foregroundColorSpan, 0, getString(R.string.enter_valid_gender).length(), 0);
