@@ -282,6 +282,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
 
     }
 

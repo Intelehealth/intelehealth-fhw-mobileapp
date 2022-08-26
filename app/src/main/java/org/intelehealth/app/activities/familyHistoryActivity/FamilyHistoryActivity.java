@@ -282,6 +282,9 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(family_history_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
+
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
 

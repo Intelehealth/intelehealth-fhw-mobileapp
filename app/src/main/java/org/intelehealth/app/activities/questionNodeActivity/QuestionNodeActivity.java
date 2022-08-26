@@ -425,6 +425,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         adapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
 
     }
 
@@ -524,6 +526,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
+
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
@@ -561,6 +566,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void setRecyclerViewIndicator() {
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
+
     }
 
     private void removeDuplicateSymptoms() {

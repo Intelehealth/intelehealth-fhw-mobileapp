@@ -312,7 +312,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         pastMedical_recyclerView.setAdapter(adapter);
 
         recyclerViewIndicator.attachToRecyclerView(pastMedical_recyclerView);
-
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
 
 
        /* historyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
