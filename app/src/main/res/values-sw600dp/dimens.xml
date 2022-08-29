@@ -78,7 +78,7 @@
     <dimen name="toolbar_text_size">22sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
     <dimen name="fu_card_margin_sides">34dp</dimen>
-    <dimen name="fu_card_margin_updown">20dp</dimen>
+    <dimen name="fu_card_margin_updown">32dp</dimen>
     <dimen name="fu_image_width">58dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>
     <dimen name="fu_name_txt_size">20sp</dimen>
@@ -86,12 +86,21 @@
     <dimen name="fu_male_textsize">16sp</dimen>
     <dimen name="fu_pencil_width">16dp</dimen>
     <dimen name="fu_pencil_height">16dp</dimen>
-    <dimen name="fu_icons_margin_top">36dp</dimen>
+    <dimen name="fu_icons_margin_top">24dp</dimen>
     <dimen name="fu_icon_width">32dp</dimen>
     <dimen name="fu_icon_height">32dp</dimen>
     <dimen name="fu_vs_margin_start">12dp</dimen>
-    <dimen name="fu_vs_margin_top">60dp</dimen>
+    <dimen name="fu_vs_margin_top">50dp</dimen>
     <dimen name="fu_date_txt_size">22sp</dimen>
     <dimen name="fu_btn_size">68dp</dimen>
+    <dimen name="toolbar_margin_left">34dp</dimen>
+    <dimen name="toolbar_margin_top">54dp</dimen>
+    <dimen name="toolbar_margin_right">34dp</dimen>
+    <dimen name="cal_margin_top">12dp</dimen>
+    <dimen name="cal_margnin_start">8dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
+    <dimen name="profile_img_card_size">42dp</dimen>
+    <dimen name="cal_size">18dp</dimen>
+
 
 </resources>

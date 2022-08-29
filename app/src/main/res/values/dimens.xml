@@ -191,6 +191,14 @@
     <dimen name="fu_vs_margin_top">40dp</dimen>
     <dimen name="fu_date_txt_size">18sp</dimen>
     <dimen name="fu_btn_size">48dp</dimen>
+    <dimen name="toolbar_margin_left">24dp</dimen>
+    <dimen name="toolbar_margin_top">44dp</dimen>
+    <dimen name="toolbar_margin_right">24dp</dimen>
+    <dimen name="cal_margin_top">6dp</dimen>
+    <dimen name="cal_margnin_start">4dp</dimen>
+    <dimen name="card_padding">5dp</dimen>
+    <dimen name="profile_img_card_size">32dp</dimen>
+    <dimen name="cal_size">16dp</dimen>
 
 
 </resources>

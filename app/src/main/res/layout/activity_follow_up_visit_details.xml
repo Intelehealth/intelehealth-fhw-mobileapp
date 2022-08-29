@@ -26,9 +26,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginLeft="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/toolbar_margin_top"
+            android:layout_marginRight="@dimen/toolbar_margin_right"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -98,7 +98,7 @@
             android:id="@+id/frame_10034"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_12"
+            android:layout_margin="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -176,9 +176,9 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="@string/fu_openmrsID"
-                        android:textSize="@dimen/fu_male_textsize"
                         android:textAppearance="@style/caption_fu_openmrsId"
-                        android:textColor="@null" />
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_male_textsize" />
 
                 </LinearLayout>
             </RelativeLayout>
