@@ -894,6 +894,13 @@
     <string name="visitDetails_text">Visit summary</string>
     <string name="followup_date_txtv">Follow up on 12 June</string>
     <string name="followup_info">Please take Prajwal Waingankar\'s follow-up visit.</string>
+    <string name="search_txt_enter">Type Patient name or ID</string>
+    <string name="search_hint_text">Previously searched</string>
+    <string name="search_date_txt">24 May, at 3:15 pm</string>
+    <string name="search_gender">M 22</string>
+    <string name="search_stopwatch_text">In 2 minutes</string>
+    <string name="search_pat_not_found_txt">Patient not found!</string>
+    <string name="search_pat_hint_txt">Use correct Username or ID to search or you can a register new patient.</string>
 
 
 

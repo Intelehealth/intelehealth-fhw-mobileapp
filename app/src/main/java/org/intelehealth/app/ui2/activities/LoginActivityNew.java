@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 
 public class LoginActivityNew extends AppCompatActivity {
     TextInputEditText edittextUsername, editTextPassword;
@@ -47,7 +48,7 @@ public class LoginActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              //   Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity.class);
-                Intent intent = new Intent(LoginActivityNew.this, FollowUpPatientActivity_New.class);
+                Intent intent = new Intent(LoginActivityNew.this, SearchPatientActivity_New.class);
                 // TODO: 21-Aug-22 : Remove line FollowupActivity.
                 startActivity(intent);
             }

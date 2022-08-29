@@ -303,6 +303,11 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
+        <activity
+            android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">

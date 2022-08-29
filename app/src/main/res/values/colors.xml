@@ -92,6 +92,8 @@
     <color name="cardTintDarkBlue">#2F1E96</color>
     <color name="cardTintLightGreen">#E6FFF3</color>
 
+    <color name="search_followup">#7F7B92</color>
+
 
     android:theme="@style/AppThemeMaterialNew"
 

@@ -199,6 +199,8 @@
     <dimen name="card_padding">5dp</dimen>
     <dimen name="profile_img_card_size">32dp</dimen>
     <dimen name="cal_size">16dp</dimen>
+    <dimen name="search_priority_tag">20dp</dimen>
+    <dimen name="search_presTag_margin_top">8dp</dimen>
 
 
 </resources>
