@@ -83,7 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_privacy_notice_link"
             android:layout_marginTop="@dimen/button_setup_margin_top"
-            android:layout_marginEnd="@dimen/button_setup_margin_end"
             android:layout_marginBottom="@dimen/button_setup_margin_bottom"
             android:background="@drawable/ui2_common_primary_bg"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"

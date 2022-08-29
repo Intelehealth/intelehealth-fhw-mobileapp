@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ui2.onboarding.SetupPrivacyNoteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,30 +26,16 @@ import java.util.List;
 public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private List<JSONObject> mItemList = new ArrayList<JSONObject>();
-    int selectedPosition = -1;
-    ItemClickListener itemClickListener;
-    //ChooseLanguageActivity.ItemSelectionListener mItemSelectionListener;
-
-  /*  public ChooseLanguageAdapterNew(Context context,
-                                    List<JSONObject> itemList,
-                                    ChooseLanguageActivity.ItemSelectionListener
-                                            itemSelectionListener, ItemClickListener itemClickListener) {
-        mContext = context;
-        mItemList = itemList;
-        mItemSelectionListener = itemSelectionListener;
-        this.itemClickListener = itemClickListener;
-
-
-    }*/
+    int selectedPosition1 = -1;
+    SplashScreenActivity.ItemSelectionListener mItemSelectionListener;
 
     public ChooseLanguageAdapterNew(Context context,
                                     List<JSONObject> itemList,
-                                    ItemClickListener itemClickListener) {
+                                    SplashScreenActivity.ItemSelectionListener itemSelectionListener
+                                          ) {
         mContext = context;
         mItemList = itemList;
-        this.itemClickListener = itemClickListener;
-
-
+        mItemSelectionListener = itemSelectionListener;
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
@@ -74,15 +62,19 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
             try {
                 genericViewHolder.rbChooseLanguage.setText(genericViewHolder.jsonObject.getString("name"));
 
+                if (genericViewHolder.jsonObject.getBoolean("selected")) {
+                    genericViewHolder.layoutRb.setBackgroundColor(mContext.getResources().getColor(R.color.cardTintLightGreen));
+                    genericViewHolder.rbChooseLanguage.setButtonDrawable(mContext.getDrawable(R.drawable.ui2_ic_selected_green));
+
+                } else {
+                    genericViewHolder.layoutRb.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    genericViewHolder.rbChooseLanguage.setButtonDrawable(mContext.getDrawable(R.drawable.ui2_ic_circle));
+
+                }
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-
-            genericViewHolder.rbChooseLanguage.setChecked(selectedPosition == position);
-            if (genericViewHolder.rbChooseLanguage.isChecked()) {
-                genericViewHolder.layoutRb.setBackgroundColor(mContext.getResources().getColor(R.color.cardTintLightGreen));
-                genericViewHolder.rbChooseLanguage.setButtonDrawable(mContext.getDrawable(R.drawable.ui2_ic_selected_green));
-
             }
             /*
             old code
@@ -128,26 +120,6 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
                 @Override
                 public void onClick(View v) {
 
-                    selectedPosition = getAdapterPosition();
-                    try {
-                        String name = mItemList.get(selectedPosition).getString("name");
-                        Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
-                        notifyDataSetChanged();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-
-
-            /* nameTextView = itemView.findViewById(R.id.text_tv);
-             statusImageView = itemView.findViewById(R.id.status_imv);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
                     try {
                         for (int i = 0; i < mItemList.size(); i++) {
                             if (i == index) {
@@ -156,21 +128,21 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
                                 mItemList.get(i).put("selected", false);
                             }
                         }
-                        mItemSelectionListener.onSelect(jsonObject, index);
+                       int  selectedPosition = getAdapterPosition();
+                        String name = mItemList.get(selectedPosition).getString("name");
+                    //    Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
+                       mItemSelectionListener.onSelect(jsonObject, index);
                         notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                 }
-            });*/
+            });
 
         }
 
-
     }
 
-    public interface ItemClickListener {
-        void onClick(String s, int position);
-    }
 }
 

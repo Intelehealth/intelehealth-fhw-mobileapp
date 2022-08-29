@@ -3,6 +3,7 @@ package org.intelehealth.app.ui2.onboarding;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,21 @@ public class IntroScreensActivityNew extends AppCompatActivity {
     private TextView[] dots;
     private ImageView[] dots1;
     private int[] layouts;
+    private int page = 0;
+    private Handler handler;
+    private int delay = 3000; //milliseconds
 
+    Runnable runnable = new Runnable() {
+        public void run() {
+            if (myViewPagerAdapter.getCount() == page) {
+                page = 0;
+            } else {
+                page++;
+            }
+            viewPager.setCurrentItem(page, true);
+            handler.postDelayed(this, delay);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +55,9 @@ public class IntroScreensActivityNew extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntroScreensActivityNew.this, SplashScreenActivity.class);
+                Intent intent = new Intent(IntroScreensActivityNew.this, SetupPrivacyNoteActivity.class);
                 startActivity(intent);
-                finish();
+               finish();
             }
         });
 
@@ -67,14 +82,29 @@ public class IntroScreensActivityNew extends AppCompatActivity {
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        handler = new Handler();
+
+        //auto slide layouts
+
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, delay);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+    }
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(int position) {
             addBottomDots1(position);
+            page = position;
 
         }
 

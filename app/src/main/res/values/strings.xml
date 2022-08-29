@@ -894,6 +894,9 @@
     <string name="decline">Decline</string>
     <string name="accept_new">Accept</string>
     <string name="strong_internet_needed">Strong internet needed</string>
+    <string name="next_new">Next</string>
+    <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
+    <string name="okay">Okay</string>
 
 
 

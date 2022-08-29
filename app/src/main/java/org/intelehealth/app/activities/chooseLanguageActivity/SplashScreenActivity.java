@@ -1,36 +1,51 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Ignore;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ui2.onboarding.IntroScreensActivityNew;
+import org.intelehealth.app.ui2.onboarding.SetupPrivacyNoteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String TAG = "SplashScreenActivity";
     private boolean isPanelShown;
     RecyclerView rvSelectLanguage;
-    ChooseLanguageAdapterNew.ItemClickListener itemClickListener;
-    ChooseLanguageAdapterNew chooseLanguageAdapterNew;
+    View layoutLanguage;
+    ViewGroup layoutParent;
+    ConstraintLayout layoutHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,40 +54,76 @@ public class SplashScreenActivity extends AppCompatActivity {
         isPanelShown = false;
 
         rvSelectLanguage = findViewById(R.id.rv_select_language);
+        Button btnNextToIntro = findViewById(R.id.btn_next_to_intro);
+        btnNextToIntro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivityNew.class);
+                    startActivity(intent);
+
+
+            }
+        });
+
+        layoutLanguage = findViewById(R.id.layout_panel);
+        layoutParent = findViewById(R.id.layout_parent);
+        layoutHeader = findViewById(R.id.layout_child1);
+
         populatingLanguages();
+        animateViews();
+
+    }
 
 
-        //show after 2 seconds
+    private void animateViews() {
+
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showChooseLanguageUI(true);
+                Animation translateAnim = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.ui2_new_center_to_top);
+                translateAnim.setFillAfter(true);
+                translateAnim.setFillEnabled(true);
+                translateAnim.setFillBefore(false);
+                translateAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        final Handler handler2 = new Handler(Looper.getMainLooper());
+                        handler2.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                showChooseLanguageUI(true);
+                            }
+                        }, 500);
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                layoutHeader.startAnimation(translateAnim);
+
             }
-        }, 2000);
+        }, 3000);
+
 
     }
 
     private void showChooseLanguageUI(boolean show) {
-        View layoutLanguage = findViewById(R.id.layout_panel);
-        ViewGroup parent = findViewById(R.id.layout_parent);
-        LinearLayout child = findViewById(R.id.layout_child1);
-
         Transition transition = new Slide(Gravity.BOTTOM);
         transition.setDuration(2000);
         transition.addTarget(R.id.layout_panel);
 
-        TransitionManager.beginDelayedTransition(parent, transition);
+        TransitionManager.beginDelayedTransition(layoutParent, transition);
         layoutLanguage.setVisibility(show ? View.VISIBLE : View.GONE);
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 50, 0, 0);
-        child.setLayoutParams(params);
-
-
 
     }
 
@@ -152,8 +203,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             // jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
             itemList.add(jsonObject);
 
-           /* LanguageListAdapter languageListAdapter = new LanguageListAdapter(SplashScreenActivity.this,
-                    itemList, new ChooseLanguageActivity.ItemSelectionListener() {
+            ChooseLanguageAdapterNew languageListAdapter = new ChooseLanguageAdapterNew(SplashScreenActivity.this,
+                    itemList, new ItemSelectionListener() {
                 @Override
                 public void onSelect(JSONObject jsonObject, int index) {
                     try {
@@ -162,30 +213,19 @@ public class SplashScreenActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-            });*/
-            itemClickListener = new ChooseLanguageAdapterNew.ItemClickListener() {
-                @Override
-                public void onClick(String s, int position) {
-                    rvSelectLanguage.post(new Runnable() {
-                        @Override
-                        public void run() {
+            });
 
-                            chooseLanguageAdapterNew.notifyItemChanged(position);
-                        }
-                    });
-
-                }
-            };
-            chooseLanguageAdapterNew = new ChooseLanguageAdapterNew(this, itemList, itemClickListener);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             rvSelectLanguage.setLayoutManager(layoutManager);
             rvSelectLanguage.setItemAnimator(new DefaultItemAnimator());
-            rvSelectLanguage.setAdapter(chooseLanguageAdapterNew);
+            rvSelectLanguage.setAdapter(languageListAdapter);
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
+    public interface ItemSelectionListener {
+        void onSelect(JSONObject jsonObject, int index);
+    }
 }

@@ -15,11 +15,11 @@
             android:id="@+id/textlayout_find_patient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/find_patient_margin_start"
-            android:layout_marginEnd="@dimen/find_patient_margin_end"
+            android:layout_marginStart="@dimen/find_patient_margin_start_new"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableStart="@drawable/ui2_ic_search_icon_home"
             android:drawablePadding="@dimen/find_patient_icon_padding"
+            android:layout_marginEnd="@dimen/find_patient_margin_end_new"
             android:drawableTint="@color/colorPrimary"
             android:text="@string/find_patient"
             android:layout_marginTop="5dp"
@@ -38,11 +38,14 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_height="@dimen/card_add_patient_home_height"
             android:layout_marginTop="@dimen/common_all_card_top_margin"
             android:backgroundTint="@color/cardTintDarkBlue"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/common_all_card_start_margin"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textlayout_find_patient">
@@ -107,6 +110,8 @@
             android:backgroundTint="@color/cardTintLightGreen"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
+            android:layout_marginEnd="@dimen/common_all_card_end_margin"
+            android:layout_marginStart="@dimen/common_all_card_start_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,10 +180,12 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
             android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_all_card_top_margin"
             android:backgroundTint="@color/colorAccent"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
+            android:layout_marginStart="@dimen/common_all_card_start_margin"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -246,15 +253,17 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/options_cards_start_margin"
+            android:layout_marginEnd="@dimen/options_cards_end_margin"
+
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginTop="@dimen/options_card_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView4"
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card_appointment_margin_end"
@@ -324,7 +333,7 @@
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/card_followup_margin_start"
                 android:backgroundTint="@color/backgroundWhite"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardElevation="@dimen/card_appointment_card_elevation"

@@ -130,6 +130,10 @@
     <dimen name="find_patient_margin_top">3dp</dimen>
     <dimen name="home_framelayout_margin_top">5dp</dimen>
 
+    <!-- new-->
+    <dimen name="find_patient_margin_start_new">15dp</dimen>
+    <dimen name="find_patient_margin_end_new">15dp</dimen>
+
     <dimen name="card_add_patient_home_height">100dp</dimen>
     <dimen name="card_add_patient_home_topmargin">20dp</dimen>
     <dimen name="common_card_corner_radius">8dp</dimen>
@@ -170,8 +174,16 @@
     <dimen name="common_all_card_top_margin">14dp</dimen>
     <dimen name="common_all_card_start_padding">12dp</dimen>
     <dimen name="common_all_card_start_margin">12dp</dimen>
+    <dimen name="options_cards_start_margin">9dp</dimen>
+    <dimen name="common_all_card_end_margin">12dp</dimen>
+    <dimen name="options_cards_end_margin">9dp</dimen>
 
-    <dimen name="card_appointment_margin_end">5dp</dimen>
+    <!-- new-->
+    <dimen name="options_card_margin_top">5dp</dimen>
+
+    <dimen name="card_appointment_margin_end">3dp</dimen>
+    <dimen name="card_followup_margin_start">3dp</dimen>
+
     <dimen name="card_appointment_card_elevation">2dp</dimen>
     <dimen name="card_options_icons_margin_top">3dp</dimen>
     <dimen name="card_options_padding">12dp</dimen>
@@ -198,6 +210,7 @@
 
     <dimen name="internet_warning_title">20sp</dimen>
     <dimen name="internet_warning_title_margin_top">24dp</dimen>
+    <dimen name="internet_warning_note">16sp</dimen>
 
     <!-- splash screen -->
 
@@ -247,7 +260,7 @@
     <!-- ayu first screen -demo -->
     <dimen name="back_arrow_demo1_height">40dp</dimen>
     <dimen name="back_arrow_demo1_width">20dp</dimen>
-    <dimen name="back_arrow_demo1_margin_start">10dp</dimen>
+    <dimen name="back_arrow_demo1_margin_start">27dp</dimen>
     <dimen name="back_arrow_demo1_margin_top">32dp</dimen>
     <dimen name="demo1_ayu_image_height">180dp</dimen>
     <dimen name="demo1_ayu_image_width">180dp</dimen>
@@ -271,6 +284,6 @@
     <dimen name="rb_width_select_lang">200dp</dimen>
     <dimen name="rb_select_lang_padding">14dp</dimen>
     <dimen name="rb_select_lang_line_height">24dp</dimen>
-    <dimen name="rb_select_lang_text_size">18sp</dimen>
+    <dimen name="rb_select_lang_text_size">17sp</dimen>
 
 </resources>

@@ -2,6 +2,7 @@ package org.intelehealth.app.ui2.onboarding;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -71,6 +73,13 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
                     }
                 });
 
+        btnSetup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogForInternetConnection();
+            }
+        });
+
     }
 
     public void termsAndPrivacyPolicy() {
@@ -115,6 +124,19 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
         tvTermsAndPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
         tvTermsAndPrivacy.setSelected(true);
+    }
+    private void showDialogForInternetConnection() {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        final View customLayout = getLayoutInflater().inflate(R.layout.ui2_layout_dialog_internet_warning, null);
+        builder.setView(customLayout);
+
+        //EditText etTask = customLayout.findViewById(R.id.et_task_reminder);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialog.show();
     }
 
 }
