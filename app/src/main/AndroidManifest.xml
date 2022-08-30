@@ -42,12 +42,14 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.followuppatients.FollowUp_VisitDetails"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity_New"
             android:configChanges="uiMode"
@@ -306,7 +308,7 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
