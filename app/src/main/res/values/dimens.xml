@@ -199,7 +199,7 @@
     <dimen name="card_padding">5dp</dimen>
     <dimen name="profile_img_card_size">32dp</dimen>
     <dimen name="cal_size">16dp</dimen>
-    <dimen name="search_priority_tag">20dp</dimen>
+    <dimen name="search_priority_tag">25dp</dimen>
     <dimen name="search_presTag_margin_top">8dp</dimen>
     <dimen name="search_toolbar_height">112dp</dimen>
     <dimen name="search_icon_toolbar">20dp</dimen>
@@ -208,6 +208,7 @@
     <dimen name="search_pat_notfound_txtsize">20sp</dimen>
     <dimen name="search_addbtn_width">176dp</dimen>
     <dimen name="search_add_btn_height">40dp</dimen>
+    <dimen name="search_item_name_width">130dp</dimen>
 
 
 </resources>

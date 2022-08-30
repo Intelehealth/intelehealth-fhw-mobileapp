@@ -93,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_relative"
+        android:visibility="gone"
         android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
         android:layout_marginTop="@dimen/search_empty_margin_top">
 
@@ -158,10 +159,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_hint_text"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="@dimen/margin_16"
-        android:layout_marginEnd="24dp"
-        android:visibility="gone"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/fu_card_margin_updown"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:visibility="visible"
         tools:listitem="@layout/search_listitem_layout"/>
 
 </RelativeLayout>
