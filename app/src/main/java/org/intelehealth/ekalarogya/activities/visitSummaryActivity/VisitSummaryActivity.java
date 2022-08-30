@@ -142,6 +142,7 @@ import java.util.Set;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -1048,6 +1049,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (complaint.getValue() == null) {
+                    Toast.makeText(getBaseContext(), getString(R.string.complaint_required), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
@@ -2163,7 +2169,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = /*getString(R.string.temperature_F)*/ "Temperature(F):"+ (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = /*getString(R.string.temperature_F)*/ "Temperature(F):" + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
