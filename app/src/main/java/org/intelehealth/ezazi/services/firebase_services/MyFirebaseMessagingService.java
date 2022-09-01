@@ -103,7 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    intent.setComponent(new ComponentName("org.intelehealth.ezazi", "org.intelehealth.ezazi.utilities.RTCMessageReceiver"));
                     getApplicationContext().sendBroadcast(intent);
 
 

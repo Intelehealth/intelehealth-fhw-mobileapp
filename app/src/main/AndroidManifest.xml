@@ -47,6 +47,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_epartogram"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -79,7 +80,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />
+                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />
             </intent-filter>
         </receiver>
 
@@ -324,6 +325,7 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
+
         <receiver
             android:name="org.intelehealth.ezazi.services.firebase_services.CallRTCNotifyReceiver"
             android:exported="false">
@@ -354,7 +356,7 @@
             android:exported="true" />
 
         <receiver android:name="org.intelehealth.ezazi.utilities.NotificationReceiver" />
-        <receiver android:name=".services.EndCallReceiver" >
+        <receiver android:name=".services.EndCallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>

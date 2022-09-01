@@ -59,6 +59,7 @@ import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
+import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -296,7 +297,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         log.put("TAG", TAG);
         log.put("action", "showEpartogram");
         TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        if (Objects.requireNonNull(manager).getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+        Logger.logV("PHONE_TYPE_NONE", String.valueOf(Objects.requireNonNull(manager).getPhoneType()));
+        if (getResources().getBoolean(R.bool.isTablet)) {
             Intent intent = new Intent(context, Epartogram.class);
             intent.putExtra("patientuuid", patientUuid);
             intent.putExtra("visituuid", visitUuid);
@@ -305,6 +307,9 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
         } else {
             log.put("message", "Detected... You're using a Mobile Phone");
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(TimelineVisitSummaryActivity.this, "",
+                    context.getString(R.string.this_option_available_tablet_device) , context.getString(R.string.ok));
         }
         FirebaseRealTimeDBUtils.logData(log);
        /* DisplayMetrics metrics = new DisplayMetrics();
@@ -421,6 +426,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             }
             fabc.setVisibility(View.GONE);
             fabv.setVisibility(View.GONE);
+            fabSOS.setVisibility(View.GONE);
         }
 
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.

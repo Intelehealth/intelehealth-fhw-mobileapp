@@ -414,7 +414,7 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.tvHelpMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+917005308163";
+                String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
                                 getString(R.string.i_need_assistance);
@@ -1940,11 +1940,13 @@ public class HomeActivity extends AppCompatActivity {
      * @return void
      */
     private List<ActivePatientModel> doQuery(int offset) {
+        String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
+                "AND a.creator = '" +myCreatorUUID+"'"+
                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate DESC  limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
