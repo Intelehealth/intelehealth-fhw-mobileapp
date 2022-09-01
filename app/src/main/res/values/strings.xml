@@ -887,7 +887,7 @@
     <string name="hello_i_am_ayu">Hello, I am AYU!</string>
     <string name="ayu_intro">I am your digital health assistant.\nHow are you feeling today?</string>
     <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font>
- and <font color='#2F1E91'><u>Privacy policy</u></font></string>
+ and <font color='#2F1E91'><u>privacy policy</u></font></string>
     <string name="setup">Setup</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="privacy_policy">Privacy policy</string>

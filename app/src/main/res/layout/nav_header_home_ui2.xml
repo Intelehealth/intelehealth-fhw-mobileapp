@@ -6,12 +6,12 @@
 
     <ImageView
         android:id="@+id/imageview_close_drawer"
-        android:layout_width="50dp"
+        android:layout_width="20dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
         android:layout_marginTop="40dp"
-        android:src="@drawable/bg_visit_closed" />
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ui2_ic_close_drawer" />
 
     <ImageView
         android:id="@+id/imageview_profile_icon"

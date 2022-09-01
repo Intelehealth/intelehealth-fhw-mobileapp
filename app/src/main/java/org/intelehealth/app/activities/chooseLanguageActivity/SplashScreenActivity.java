@@ -94,14 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        final Handler handler2 = new Handler(Looper.getMainLooper());
-                        handler2.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                showChooseLanguageUI(true);
-                            }
-                        }, 500);
-
+                        showChooseLanguageUI(true);
                     }
 
                     @Override
@@ -112,7 +105,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 layoutHeader.startAnimation(translateAnim);
 
             }
-        }, 3000);
+        }, 500);
 
 
     }

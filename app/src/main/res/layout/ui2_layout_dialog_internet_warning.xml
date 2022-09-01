@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
-    android:layout_height="350dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:cardElevation="6dp"
-    android:layout_margin="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -13,15 +12,15 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
+            android:layout_height="@dimen/iv_icon_height"
+            android:layout_marginTop="@dimen/iv_icon_margin_top"
             android:src="@drawable/ui2_ic_warning_internet" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/tv_internet_title_margin_top"
             android:text="@string/strong_internet_needed"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/internet_warning_title" />
@@ -29,25 +28,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:lineSpacingExtra="3sp"
-            android:lineHeight="24dp"
-            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="@dimen/tv_internet_desc_line_spacing"
+            android:lineHeight="@dimen/tv_internet_desc_line_height"
+            android:layout_marginTop="@dimen/tv_internet_desc_margin_top"
             android:text="@string/strong_internet_needed_note"
             android:textColor="@color/textColorGray"
             android:textSize="@dimen/internet_warning_note" />
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/btn_okay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:layout_marginTop="@dimen/margin_50"
-            android:textSize="14sp"
+            android:paddingStart="@dimen/btn_okay_internet_padding_start"
+            android:paddingEnd="@dimen/btn_okay_internet_padding_end"
+            android:layout_marginTop="@dimen/btn_okay_internet_margin_top"
+            android:textSize="@dimen/btn_okay_text_size"
             android:lineHeight="21dp"
-            android:paddingTop="12dp"
-            android:layout_marginBottom="32dp"
-            android:paddingBottom="12dp"
+            android:layout_marginBottom="@dimen/btn_okay_internet_margin_bottom"
+            android:paddingBottom="@dimen/btn_okay_internet_padding_bottom"
             android:textAlignment="center"
             android:background="@drawable/ui2_common_primary_bg"
             android:padding="@dimen/padding_15"

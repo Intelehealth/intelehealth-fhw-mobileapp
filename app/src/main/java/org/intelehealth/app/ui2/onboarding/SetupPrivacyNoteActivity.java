@@ -1,5 +1,7 @@
 package org.intelehealth.app.ui2.onboarding;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +12,11 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -18,6 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -25,6 +33,8 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 import org.intelehealth.app.R;
+
+import java.util.Objects;
 
 public class SetupPrivacyNoteActivity extends AppCompatActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
@@ -76,7 +86,8 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogForInternetConnection();
+                CustomDialog customDialog = new CustomDialog(SetupPrivacyNoteActivity.this);
+                customDialog.showDialog1();
             }
         });
 
@@ -125,18 +136,37 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
         tvTermsAndPrivacy.setSelected(true);
     }
-    private void showDialogForInternetConnection() {
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        final View customLayout = getLayoutInflater().inflate(R.layout.ui2_layout_dialog_internet_warning, null);
-        builder.setView(customLayout);
 
-        //EditText etTask = customLayout.findViewById(R.id.et_task_reminder);
 
-        AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialog.show();
+    class CustomDialog extends DialogFragment {
+        Context context;
+
+        public CustomDialog(Context context) {
+            this.context = context;
+        }
+
+        public void showDialog1() {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(context);
+            builder.setCancelable(false);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_internet_warning, null);
+            builder.setView(customLayout);
+
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+            dialog.show();
+            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+
+            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
+            btnOkay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }
     }
-
 }
