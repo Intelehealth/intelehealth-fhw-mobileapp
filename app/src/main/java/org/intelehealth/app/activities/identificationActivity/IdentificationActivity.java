@@ -374,11 +374,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //            } else {
 //                mRelationship.setVisibility(View.GONE);
 //            }
-            if (obj.getBoolean("mOccupation")) {
+           /* if (obj.getBoolean("mOccupation")) {
                 mOccupation.setVisibility(View.VISIBLE);
             } else {
                 mOccupation.setVisibility(View.GONE);
-            }
+            }*/
 //            if (obj.getBoolean("casteLayout")) {
 //                casteLayout.setVisibility(View.VISIBLE);
 //            } else {

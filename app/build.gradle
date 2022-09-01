@@ -15,7 +15,7 @@ android {
         enabled = true
     }
     defaultConfig {
-        applicationId "org.intelehealth.nas"
+        applicationId "syriana.intelehealth.org"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 16
