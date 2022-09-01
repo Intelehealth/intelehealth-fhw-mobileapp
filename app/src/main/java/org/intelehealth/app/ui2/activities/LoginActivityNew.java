@@ -48,7 +48,7 @@ public class LoginActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              //   Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity.class);
-                Intent intent = new Intent(LoginActivityNew.this, SearchPatientActivity_New.class);
+                Intent intent = new Intent(LoginActivityNew.this, FollowUpPatientActivity_New.class);
                 // TODO: 21-Aug-22 : Remove line FollowupActivity.
                 startActivity(intent);
             }

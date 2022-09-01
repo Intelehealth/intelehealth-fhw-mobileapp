@@ -902,7 +902,7 @@
     <string name="search_pat_not_found_txt">Patient not found!</string>
     <string name="search_pat_hint_txt">Use correct Username or ID to search or you can a register new patient.</string>
     <string name="notifi_title">Notification</string>
-
+    <string name="notifi_header_title">5 prescriptions received</string>
 
     <!--END-->
 

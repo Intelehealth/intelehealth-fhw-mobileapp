@@ -98,33 +98,50 @@
 
     <!--card view-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notifi_relative"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/notifi_green_header_card">
+
+        <ImageView
+            android:id="@+id/notifi_header_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/notifi_green_header_card"
-            android:layout_below="@+id/notifi_relative">
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:src="@drawable/ic_notifi_header_icon" />
 
-            <ImageView
-                android:id="@+id/notifi_header_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_12"
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_notifi_header_icon" />
+        <TextView
+            android:id="@+id/notifi_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/notifi_header_icon"
+            android:textSize="@dimen/fu_male_textsize"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginStart="@dimen/margin_12"
+            android:text="@string/notifi_header_title"
+            android:textColor="@color/header_title_color"/>
 
-            <TextView
-                android:id="@+id/notifi_header_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/notifi_header_icon"
-                android:text=""
+        <TextView
+            android:id="@+id/notifi_sub_header_title"
+            android:layout_width="204dp"
+            android:layout_height="18dp"
+            android:layout_toEndOf="@+id/notifi_header_icon"
+            android:layout_below="@+id/notifi_header_title"
+            android:layout_marginStart="@dimen/margin_12"
+            android:text="@string/label"
+            android:textAppearance="@style/label"
+            android:lineSpacingExtra="2sp"
+            android:gravity="center_vertical"
+            />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 
 
