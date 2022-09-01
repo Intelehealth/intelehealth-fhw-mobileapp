@@ -1319,13 +1319,18 @@
 
     <string name="txt_hedingRosters">Rosters</string>
     <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
-    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
-    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
+    <string name="txt_what_is_your_relationship_with_household_members_you_support">What is your relationship with the household members you support?*</string>
+    <string name="txt_what_is_your_maritual_status">What is your marital status?</string>
     <string name="txt_phone_ownership">Phone Ownership*</string>
     <string name="txt_bp_checked">BP checked</string>
     <string name="txt_sugar_checked">Sugar Checked</string>
     <string name="txt_hb_test">HB test</string>
-
+    <string name="do_you_stay_independent_residence">Do you stay/yen with an independent residence for any other two children?</string>
+    <string name="what_made_you_main_official">What made you the main official for your family\'s support?</string>
+    <string name="family_needed_you_as_main_tendency">Has your family needed you as a main tendency to have another breadwinner?</string>
+    <string name="husband_status">For married women, what is the status of the husband?</string>
+    <string name="reason_changing_condition_for_support">What is the reason for changing the condition of the support?</string>
+    <string name="since_change_happened">Since this change happened? (Years)</string>
     <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?*</string>
     <string name="txt_what_health_issue_is_reported">What Health issue is reported?</string>
     <string name="txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, Which is the primary health provider you interacted with for this health issue?</string>
