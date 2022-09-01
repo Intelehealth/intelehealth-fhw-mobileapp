@@ -6,6 +6,7 @@
         <item
             android:id="@+id/bluetooth"
             android:title="Bluetooth"
+            android:visible="false"
             android:icon="@drawable/bluetooth"
             app:showAsAction="always"/>
 
@@ -22,28 +23,13 @@
         <item
             android:id="@+id/devicesOption"
             android:orderInCategory="103"
+            android:visible="false"
             android:title="@string/devices" />
 
         <item
             android:id="@+id/settingsOption"
             android:orderInCategory="104"
             android:title="@string/change_languages" />
-
-        <!--<item-->
-        <!--android:id="@+id/endOfDayOption"-->
-        <!--android:title="@string/menu_option_end_of_day"-->
-        <!--android:orderInCategory="100" />-->
-
-        <!--<item-->
-        <!--android:id="@+id/backupOption"-->
-        <!--android:orderInCategory="125"-->
-        <!--android:title="Backup" />-->
-
-        <!--<item-->
-        <!--android:id="@+id/restoreOption"-->
-        <!--android:orderInCategory="125"-->
-        <!--android:title="Restore" />-->
-
 
         <item
             android:id="@+id/restAppOption"

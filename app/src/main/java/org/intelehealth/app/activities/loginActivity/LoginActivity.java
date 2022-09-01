@@ -43,6 +43,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
@@ -257,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        startActivity(Intent.createChooser(intent, "Send Email"));
 //                        //add email function here !
 
-                        String phoneNumberWithCountryCode = "+917005308163";
+                        String phoneNumberWithCountryCode = "+919503692181";
                         String message =
                                 getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
                                         /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
@@ -276,6 +277,11 @@ public class LoginActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
         //prajwal_changes
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     /**

@@ -8,9 +8,9 @@
     <string name="hint_optional">Optional</string>
     <string name="tag_optional">optional</string>
     <string name="generic_ok">نعم</string>
-    <string name="generic_cancel">Cancel</string>
-    <string name="generic_yes">Yes</string>
-    <string name="generic_no">No</string>
+    <string name="generic_cancel">يلغي</string>
+    <string name="generic_yes">نعم</string>
+    <string name="generic_no">رقم</string>
     <string name="generic_back">Back</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
@@ -76,7 +76,7 @@
     <string name="menu_option_sync">Refresh Data</string>
     <string name="menu_option_settings">Settings</string>
     <string name="menu_option_end_of_day">End of Day</string>
-    <string name="menu_option_logout">Logout</string>
+    <string name="menu_option_logout">تسجيل خروج</string>
 
 
     <!--//Identification Screen-->
@@ -110,13 +110,13 @@
     <string name="identification_screen_required_fields">Please enter required fields</string>
     <string name="identification_screen_error_dob">Enter a valid DOB</string>
     <string name="identification_screen_error_age">Enter a valid age</string>
-    <string name="identification_screen_text_years"> years </string>
-    <string name="identification_screen_text_months"> months</string>
-    <string name="identification_screen_picker_years">years</string>
-    <string name="identification_screen_picker_months">months</string>
+    <string name="identification_screen_text_years">سنوات</string>
+    <string name="identification_screen_text_months">الشهور</string>
+    <string name="identification_screen_picker_years">سنوات</string>
+    <string name="identification_screen_picker_months">الشهور</string>
 
     <!--//Active Patients Screen-->
-    <string name="title_activity_active_patient">Active Visits</string>
+    <string name="title_activity_active_patient">زيارات نشطة</string>
 
     <!--//Patient History Screen-->
     <string name="title_activity_get_patient_history">Patient History</string>
@@ -147,16 +147,16 @@
 
 
     <!--//Table Exam Screen-->
-    <string name="title_activity_vitals">Vitals &amp; Diagnostics</string>
-    <string name="table_hw">Body Measurements</string>
-    <string name="table_height">Height (cm)</string>
-    <string name="table_weight">Weight (kg)</string>
+    <string name="title_activity_vitals">العناصر الحيوية</string>
+    <string name="table_hw">قياسات الجسم</string>
+    <string name="table_height">الطول (سم)</string>
+    <string name="table_weight">الوزن (كجم)</string>
     <string name="table_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
-    <string name="table_pulse">Pulse (bpm)</string>
-    <string name="table_bp">Vital Signs</string>
+    <string name="table_pulse">نبض (نبضة في الدقيقة)</string>
+    <string name="table_bp">علامات حيوية</string>
     <string name="table_bpsys">BP Sys (mmHg)</string>
     <string name="table_bpdia">BP Dia (mmHg)</string>
-    <string name="table_temp">Temperature (C)</string>
+    <string name="table_temp">درجة الحرارة (ج)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
     <!--//Patient Search Screen-->
@@ -168,33 +168,33 @@
     <string name="title_activity_patient_history">Past Medical History</string>
 
     <!--//Visit Summary Screen-->
-    <string name="title_activity_family_history">Family History</string>
-    <string name="title_activity_physical_exam">Physical Exam</string>
-    <string name="title_activity_patient_summary">Visit Summary</string>
-    <string name="visit_summary_temperature">Temperature(C)</string>
+    <string name="title_activity_family_history">تاريخ العائلة</string>
+    <string name="title_activity_physical_exam">اختبار بدني</string>
+    <string name="title_activity_patient_summary">قم بزيارة الملخص</string>
+    <string name="visit_summary_temperature">درجة الحرارة (ج)</string>
     <string name="visit_summary_pulseox">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty">CHW On Duty</string>
-    <string name="visit_summary_vitals_heading">Vitals</string>
+    <string name="visit_summary_vitals_heading">العناصر الحيوية</string>
     <string name="visit_summary_height_heading">Height (cm)</string>
     <string name="visit_summary_weight">Weight (kg)</string>
     <string name="visit_summary_bmi">BMI (Kg/m<sup><small>2</small></sup>)</string>
     <string name="visit_summary_bp">BP</string>
-    <string name="visit_summary_pulse">Pulse</string>
+    <string name="visit_summary_pulse">نبض</string>
     <string name="visit_summary_previous_reports">Previous Reports</string>
     <string name="visit_summary_medical_history">Medical history</string>
     <string name="visit_summary_family_history">Family history</string>
-    <string name="visit_summary_on_examination">On examination</string>
-    <string name="visit_summary_complaint">Reason for visit</string>
-    <string name="visit_summary_vitals">Vitals</string>
+    <string name="visit_summary_on_examination">في الامتحان</string>
+    <string name="visit_summary_complaint">سبب الزيارة</string>
+    <string name="visit_summary_vitals">العناصر الحيوية</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
     <string name="visit_summary_diagnosis">Diagnosis</string>
     <string name="visit_summary_advice">Medical Advice</string>
     <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
     <string name="visit_summary_additional_comments">Additional Comments</string>
-    <string name="visit_summary_heading_name">Name</string>
-    <string name="visit_summary_heading_id">ID</string>
-    <string name="visit_summary_button_download">Download</string>
+    <string name="visit_summary_heading_name">اسم</string>
+    <string name="visit_summary_heading_id">بطاقة تعريف</string>
+    <string name="visit_summary_button_download">تحميل</string>
     <string name="visit_summary_button_upload">Upload</string>
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
@@ -245,7 +245,7 @@
     <!-- Example settings for Data & syncBackground -->
     <string name="pref_header_data_sync">Data &amp; Refresh</string>
 
-    <string name="pref_title_server_url">Server URL</string>
+    <string name="pref_title_server_url">عنوان URL للخادم</string>
     <string name="pref_title_id_prefix">Location Prefix</string>
 
     <!-- Example settings for Notifications -->
@@ -260,10 +260,10 @@
     <string name="title_activity_setup">اقامة</string>
 
     <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_today_patient">Today\'s Visits</string>
-    <string name="title_activity_additional_documents">Additional Documents</string>
+    <string name="title_activity_today_patient">زيارات اليوم</string>
+    <string name="title_activity_additional_documents">مستندات إضافية</string>
     <string name="title_activity_video_library">Video Library</string>
-    <string name="visit_summary_patient_details">Visit details</string>
+    <string name="visit_summary_patient_details">تفاصيل الزيارة</string>
 
     <!--Setup Activity-->
     <string name="setup_internet">مطلوب اتصال إنترنت قوي للإعداد.</string>
@@ -278,7 +278,7 @@
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>
     <string name="button_ok">نعم</string>
-    <string name="button_cancel">Cancel</string>
+    <string name="button_cancel">يلغي</string>
     <string name="picture_taken">Picture taken</string>
     <string name="switch_flash">Switch flash</string>
     <string name="switch_camera">Switch camera</string>
@@ -333,7 +333,7 @@
 
     <string name="error_no_data">Please download first before attempting to end the visit.</string>
     <string name="error_phone_number">Phone number can\'t be empty</string>
-    <string name="action_end_visit">End Visit</string>
+    <string name="action_end_visit">نهاية الزيارة</string>
 
     <string name="error_sms">SMS failed, please try again later!</string>
     <string name="sms_success">SMS Sent!</string>
@@ -379,11 +379,11 @@
     <string name="not_provided">Not provided</string>
 
     <!-- Patient Exit Survey -->
-    <string name="exit_survey_label">How was your experience?</string>
-    <string name="exit_survey_prompt">Enter your comments here</string>
-    <string name="exit_survey_skip">SKIP</string>
-    <string name="exit_survey_submit">Submit</string>
-    <string name="exit_survey_toast">Please select a smiley before submitting</string>
+    <string name="exit_survey_label">كيف كانت تجربتك؟</string>
+    <string name="exit_survey_prompt">أدخل تعليقاتك هنا</string>
+    <string name="exit_survey_skip">يتخطى</string>
+    <string name="exit_survey_submit">يُقدِّم</string>
+    <string name="exit_survey_toast">الرجاء تحديد ابتسامة قبل التقديم</string>
 
 
     <!--DB Backup-->
@@ -456,7 +456,7 @@
 
     <string name="associated_symptoms">Associated symptoms</string>
     <string name="enter_server_url">Enter Server URL</string>
-    <string name="enter_license_key"><b>Enter license key</b></string>
+    <string name="enter_license_key"><b>أدخل مفتاح الترخيص</b></string>
     <string name="invalid_url">Invalid URL</string>
     <string name="years">سنوات</string>
     <string name="months">الشهور</string>
@@ -485,12 +485,12 @@
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
-    <string name="update_protocols">Update Protocols</string>
+    <string name="update_protocols">تحديث البروتوكولات</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">نعم</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">يلغي</string>
     <string name="unable_to_end">Unable to end</string>
     <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
@@ -533,9 +533,9 @@
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
-    <string name="languages">Languages</string>
-    <string name="change_languages">Change Languages</string>
-    <string name="current_language">Current Language</string>
+    <string name="languages">اللغات</string>
+    <string name="change_languages">تغيير اللغات</string>
+    <string name="current_language">اللغة الحالية</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="no_protocols_found">No protocols found</string>
@@ -544,14 +544,14 @@
     <string name="location_setup">موقع الإعداد - </string>
     <string name="today_visits">زيارات اليوم</string>
     <string name="active_visits">زيارات نشطة</string>
-    <string name="day">day</string>
+    <string name="day">يوم</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully refreshed</string>
     <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="visit_not_uploaded">Visit not uploaded</string>
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
@@ -569,7 +569,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">ما هو سبب زيارتك؟ </string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -594,8 +594,8 @@
     <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \n\n أنا آيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \n\n أنا آيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
-    <string name="hello_my_name_is">"Hello, my name is "</string>
-    <string name="i_need_assistance">" and I need some assistance."</string>
+    <string name="hello_my_name_is">"مرحبا اسمي "</string>
+    <string name="i_need_assistance">"وأنا بحاجة إلى بعض المساعدة."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
     <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
@@ -626,7 +626,7 @@
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
-    <string name="days">days</string>
+    <string name="days">أيام</string>
     <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
@@ -648,10 +648,10 @@
     <string name="gender_female">أنثى</string>
     <string name="document_">"Document - "</string>
     <string name="Hours">Hours</string>
-    <string name="Days">Days</string>
+    <string name="Days">أيام</string>
     <string name="Weeks">Weeks</string>
-    <string name="Months">Months</string>
-    <string name="Years">Years</string>
+    <string name="Months">الشهور</string>
+    <string name="Years">سنوات</string>
     <string name="per_Hour">per Hour</string>
     <string name="per_Day">per Day</string>
     <string name="per_Week">Per Week</string>
@@ -672,9 +672,9 @@
     <string name="visit_closed">Visit Closed</string>
     <string name="ok_close_now">Ok, Close It</string>
     <string name="retry_again">Retry Again!</string>
-    <string name="take_photo">Take Photo</string>
-    <string name="choose_from_gallery">Choose from Gallery</string>
-    <string name="additional_doc_image_picker_title">Add Additional Document!</string>
+    <string name="take_photo">تصوير</string>
+    <string name="choose_from_gallery">اختر من المعرض</string>
+    <string name="additional_doc_image_picker_title">أضف وثيقة إضافية!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
     <!--    Strings for special Check-->
@@ -690,15 +690,15 @@
     <string name="location">Location</string>
 
     //----------reset app strings-------------
-    <string name="reset_app">Reset App</string>
+    <string name="reset_app">إعادة تعيين التطبيق</string>
     <string name="app_reset_toast">App Reset is done!</string>
     <string name="resetting_app_dialog">Resetting App</string>
-    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="sure_to_reset_app">هل أنت متأكد أنك تريد إعادة تعيين التطبيق؟</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
-    <string name="app_sync">Syncing App..</string>
+    <string name="app_sync">مزامنة التطبيق ..</string>
 
     <string name="saving_captured_image">Saving Captured Image...</string>
     <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
@@ -750,17 +750,17 @@
         Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
     </string>
 
-    <string name="book_appointment">Book Appointment</string>
+    <string name="book_appointment">موعد الكتاب</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
     <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
     <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
+    <string name="slot_empty_message">خانة المواعيد غير متاحة للتاريخ والتخصص المختارين!</string>
+    <string name="appointment_empty_message">ليس لديك موعد!</string>
+    <string name="appointment_listing_title">قائمة المواعيد</string>
+    <string name="appointment_booking_title">حجز موعد</string>
+    <string name="appointment_for">موعد ل</string>
+    <string name="please_select_appointment_slot">الرجاء تحديد خانة الموعد</string>
     <string name="please_select_speciality">Please select speciality!</string>
 
     <string name="doctor_appointments">مواعيد الطبيب</string>
@@ -803,7 +803,7 @@
     <string name="add_advice">Add Advice</string>
     <string name="add_note">Add Note</string>
     <string name="schedule_a_follow_up">Schedule a follow up</string>
-    <string name="submit">Submit</string>
+    <string name="submit">يُقدِّم</string>
     <string name="add_meds">Add Meds</string>
     <string name="add_diagnosis">Add Diagnosis</string>
     <string name="startVisitNote">Start Visit Note</string>
@@ -1423,7 +1423,7 @@
     <string name="normal_vaginal_delivery">Normal or Vaginal Delivery</string>
     <string name="cesarean_section_c_section">Cesarean Section (C-Section)</string>
     <string name="please_add_pregnancy_outcome">Please add Pregnancy Outcome</string>
-    <string name="draft_survey_title">Draft Survey</string>
+    <string name="draft_survey_title">مسودة الاستبيات</string>
     <string name="add_pregnancy_outcome">Add Pregnancy Outcome</string>
 
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
@@ -1436,7 +1436,7 @@
     <string name="medical_device_2">HealthCube 2</string>
     <string name="medical_device_3">HealthCube 3</string>
     <string name="STOP">Stop</string>
-    <string name="devices">Devices</string>
+    <string name="devices">الأجهزة</string>
     <string name="healthcube_device_info">HealthCube Device Info</string>
     <string name="blood_glucose_calibration">Blood Glucose Calibration</string>
     <string name="hemoglobin_calibration">Hemoglobin Calibration</string>
@@ -1488,7 +1488,7 @@
     <string name="tip_have_no_paired_device">No paired device</string>
     <string name="tip_have_no_found_bluetooth_device">No Device</string>
     <string name="search_device">Search</string>
-    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_cancel">يلغي</string>
     <string name="dialog_ok">نعم</string>
     <string name="dialog_tip">Tip</string>
     <string name="main_pls_choose_device">Please choose a device</string>

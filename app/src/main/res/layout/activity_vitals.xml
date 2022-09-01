@@ -329,6 +329,7 @@
 
                             <ImageButton
                                 android:id="@+id/bp_Btn"
+                                android:visibility="gone"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -422,6 +423,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
+                                android:visibility="gone"
                                 android:layout_margin="10dp"
                                 android:background="@drawable/circle"
                                 android:backgroundTint="@color/colorAccent"
@@ -547,6 +549,7 @@
                     android:layout_marginBottom="10dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="10sp"
+                    android:visibility="gone"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false"
                     app:cardUseCompatPadding="true">
