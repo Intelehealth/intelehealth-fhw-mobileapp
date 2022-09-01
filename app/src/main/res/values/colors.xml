@@ -94,6 +94,7 @@
 
     <color name="search_followup">#7F7B92</color>
     <color name="header_title_color">#1B163A</color>
+    <color name="header_subtitle_color">#7F7B92</color>
 
 
     android:theme="@style/AppThemeMaterialNew"

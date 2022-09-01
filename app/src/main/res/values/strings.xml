@@ -879,6 +879,7 @@
     <!--    Follow-up new screens -->
     <string name="label">Follow-up visits(9)</string>
     <string name="you_can_add">Today</string>
+    <string name="yesterday">Yesterday</string>
     <string name="this_week">This week</string>
     <string name="this_month">This Month</string>
     <string name="fu_item_title">Anthony Gonsalves</string>
@@ -903,6 +904,7 @@
     <string name="search_pat_hint_txt">Use correct Username or ID to search or you can a register new patient.</string>
     <string name="notifi_title">Notification</string>
     <string name="notifi_header_title">5 prescriptions received</string>
+    <string name="notifi_subheader_title">Send prescriptions to the patients</string>
 
     <!--END-->
 
