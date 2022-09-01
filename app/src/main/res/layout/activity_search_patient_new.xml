@@ -163,6 +163,6 @@
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
         android:visibility="visible"
-        tools:listitem="@layout/search_listitem_layout"/>
+        tools:listitem="@layout/search_listitem_layout" />
 
 </RelativeLayout>
