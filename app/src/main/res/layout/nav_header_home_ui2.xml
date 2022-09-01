@@ -50,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textview_userid"
         android:layout_marginStart="20dp"
+        android:drawableEnd="@drawable/ui2_ic_info_question_mark"
+        android:drawablePadding="@dimen/padding_7"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/imageview_profile_icon"
         android:text="Edit Profile"
