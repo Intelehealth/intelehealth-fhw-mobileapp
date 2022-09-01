@@ -109,6 +109,15 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     privacy_textview.setText(privacy_string);
                 }
 
+            }else if (current.toString().equals("ar")) { //Privacy notice support for Odiya
+                String privacy_string = obj.getString("privacyNoticeText_ar");
+                if (privacy_string.isEmpty()) {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                } else {
+                    privacy_textview.setText(privacy_string);
+                }
+
             } else if (current.toString().equals("gu")) {
 //                String privacy_string = obj.getString("privacyNoticeText_Gujarati");
                 String privacy_string = obj.getString("privacyNoticeText");

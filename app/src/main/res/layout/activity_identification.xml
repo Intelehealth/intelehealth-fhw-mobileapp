@@ -239,7 +239,7 @@
                                 android:drawableLeft="@drawable/female_icon"
                                 android:fontFamily="@font/lato_regular"
                                 android:maxLines="1"
-                                android:text="Other"
+                                android:text="@string/other"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </RadioGroup>

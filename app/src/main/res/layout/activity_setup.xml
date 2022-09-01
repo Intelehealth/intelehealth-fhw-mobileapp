@@ -83,7 +83,7 @@
                                 android:gravity="start"
                                 android:hint="@string/enter_url"
                                 android:inputType="textUri"
-                                android:text="testing.intelehealth.org"
+                                android:text="syrianatest.intelehealth.org"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 

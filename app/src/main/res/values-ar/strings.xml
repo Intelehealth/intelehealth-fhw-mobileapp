@@ -80,28 +80,28 @@
 
 
     <!--//Identification Screen-->
-    <string name="title_activity_identification">Add New Patient</string>
-    <string name="identification_screen_prompt_first_name">First name *</string>
-    <string name="identification_screen_prompt_middle_name">Middle name</string>
-    <string name="identification_screen_prompt_last_name">Last name *</string>
-    <string name="identification_screen_prompt_address">Address line 1</string>
-    <string name="identification_screen_prompt_address2">Address line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone number</string>
+    <string name="title_activity_identification">إضافة مريض جديد</string>
+    <string name="identification_screen_prompt_first_name">الاسم الاول *</string>
+    <string name="identification_screen_prompt_middle_name">الاسم الوسطى</string>
+    <string name="identification_screen_prompt_last_name">اللقب *</string>
+    <string name="identification_screen_prompt_address">العنوان الأول</string>
+    <string name="identification_screen_prompt_address2">سطر العنوان 2</string>
+    <string name="identification_screen_prompt_phone_number">رقم الهاتف</string>
     <string name="admin_password_dialog_heading">Enter Admin Password</string>
-    <string name="identification_screen_prompt_gender">Gender *</string>
-    <string name="identification_screen_checkbox_male">Male</string>
-    <string name="identification_screen_checkbox_female">Female</string>
-    <string name="identification_screen_prompt_birthday">Date of birth*</string>
-    <string name="identification_screen_prompt_age">Age:</string>
-    <string name="identification_screen_prompt_city">Village/Town/City *</string>
-    <string name="identification_screen_prompt_state">State *</string>
-    <string name="identification_screen_prompt_caste">Caste</string>
+    <string name="identification_screen_prompt_gender">جنس *</string>
+    <string name="identification_screen_checkbox_male">ذكر</string>
+    <string name="identification_screen_checkbox_female">أنثى</string>
+    <string name="identification_screen_prompt_birthday">تاريخ الولادة*</string>
+    <string name="identification_screen_prompt_age">سن:</string>
+    <string name="identification_screen_prompt_city">القرية / البلدة / المدينة *</string>
+    <string name="identification_screen_prompt_state">حالة *</string>
+    <string name="identification_screen_prompt_caste">الطائفة</string>
     <string name="identification_screen_prompt_economic_status">Economic status</string>
     <string name="identification_screen_prompt_education">Education level</string>
-    <string name="identification_screen_prompt_country">Country *</string>
-    <string name="identification_screen_prompt_postal_code">Postal code</string>
-    <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
-    <string name="identification_screen_prompt_occupation">Occupation</string>
+    <string name="identification_screen_prompt_country">دولة *</string>
+    <string name="identification_screen_prompt_postal_code">رمز بريدي</string>
+    <string name="identification_screen_prompt_relationship">ابن / ابنة / زوجة</string>
+    <string name="identification_screen_prompt_occupation">إشغال</string>
     <string name="identification_screen_snack_patient_created">Patient created! Uploading to server.</string>
     <string name="identification_screen_error_data_fields">Error: data fields are not formatted correctly</string>
     <string name="identification_screen_dialog_age">Please enter age in years</string>
@@ -210,23 +210,23 @@
 
 
     <!--//Patient Detail Screen-->
-    <string name="header_patient_detail">Patient information</string>
-    <string name="button_history">Patient History</string>
-    <string name="title_activity_patient_detail">Patient Detail</string>
-    <string name="header_medical_history">History</string>
-    <string name="button_new_visit">Start new visit</string>
-    <string name="header_previous_visits">Previous visits</string>
-    <string name="header_patient_history">Medical history</string>
-    <string name="header_family_history">Family history</string>
-    <string name="string_no_hist">No history of illness</string>
-    <string name="row_patient_id">Patient ID</string>
-    <string name="row_dob">DOB</string>
-    <string name="row_age">Age</string>
-    <string name="row_gender">Gender</string>
-    <string name="row_address">Address</string>
-    <string name="row_phone_number">Phone number</string>
-    <string name="row_open_visit">Click to open visit</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="header_patient_detail">معلومات المريض</string>
+    <string name="button_history">تاريخ المريض</string>
+    <string name="title_activity_patient_detail">تفاصيل المريض</string>
+    <string name="header_medical_history">تاريخ</string>
+    <string name="button_new_visit">ابدأ زيارة جديدة</string>
+    <string name="header_previous_visits">الزيارات السابقة</string>
+    <string name="header_patient_history">تاريخ طبى</string>
+    <string name="header_family_history">تاريخ العائلة</string>
+    <string name="string_no_hist">لا يوجد تاريخ للمرض</string>
+    <string name="row_patient_id">رقم المريض</string>
+    <string name="row_dob">تاريخ الولادة</string>
+    <string name="row_age">سن</string>
+    <string name="row_gender">جنس</string>
+    <string name="row_address">تبوك</string>
+    <string name="row_phone_number">رقم الهاتف</string>
+    <string name="row_open_visit">انقر لفتح Visit</string>
+    <string name="title_activity_settings">إعدادات</string>
 
     <!-- Strings related to Settings -->
 
@@ -458,16 +458,16 @@
     <string name="enter_server_url">Enter Server URL</string>
     <string name="enter_license_key"><b>Enter license key</b></string>
     <string name="invalid_url">Invalid URL</string>
-    <string name="years">years</string>
-    <string name="months">months</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
-    <string name="patient_name">Patient name</string>
-    <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
-    <string name="occupation">Occupation</string>
-    <string name="economic_status">Economic status</string>
-    <string name="education_level">Education level</string>
-    <string name="caste">Caste</string>
-    <string name="previous_visits">Previous visits</string>
+    <string name="years">سنوات</string>
+    <string name="months">الشهور</string>
+    <string name="please_wait_till_sync_is_completed">يرجى الانتظار حتى اكتمال التحديث</string>
+    <string name="patient_name">اسم المريض</string>
+    <string name="son_daughter_wife_of">ابن / ابنة / زوجة</string>
+    <string name="occupation">إشغال</string>
+    <string name="economic_status">الحالة الاقتصادية</string>
+    <string name="education_level">مستوى التعليم</string>
+    <string name="caste">الطائفة</string>
+    <string name="previous_visits">الزيارات السابقة</string>
     <string name="accept">قبول</string>
     <string name="reject">رفض</string>
     <string name="next">التالي</string>
@@ -529,7 +529,7 @@
     <string name="downloading_prescription">Downloading prescription</string>
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
-    <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="privacy_notice_title">إشعار الخصوصية</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
@@ -576,10 +576,10 @@
     <string name="have_symptom">Do you have this Symptom?</string>
 
     <!--New UI changes 2.1-->
-    <string name="personal_information">Personal Information</string>
-    <string name="address_details">Address Details</string>
-    <string name="txt_others">Others</string>
-    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
+    <string name="personal_information">معلومات شخصية</string>
+    <string name="address_details">تفاصيل العنوان</string>
+    <string name="txt_others">آحرون</string>
+    <string name="do_you_need_help_please_contact_us">هل تحتاج مساعدة؟ الرجاء التواصل معنا!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
     <string name="Whatsapp_Help_Cardview">يساعد</string>
     <string name="skip">skip</string>
@@ -634,18 +634,18 @@
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* أنا (العامل الصحي) أؤكد أنني قد قرأت إشعار الخصوصية وأوافق على المريض.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
     <string name="refresh">Refresh</string>
-    <string name="family_member">Family Member</string>
-    <string name="no_family_member_registered">No Family Member Registered</string>
-    <string name="question_not_answered">Question not answered</string>
+    <string name="family_member">فرد من العائلة</string>
+    <string name="no_family_member_registered">لم يتم تسجيل أي فرد من أفراد العائلة</string>
+    <string name="question_not_answered">سؤال لم تتم الإجابة عليه</string>
     <string name="version_settings">Version 1.3</string>
-    <string name="gender_male">Male</string>
-    <string name="gender_female">Female</string>
+    <string name="gender_male">ذكر</string>
+    <string name="gender_female">أنثى</string>
     <string name="document_">"Document - "</string>
     <string name="Hours">Hours</string>
     <string name="Days">Days</string>
@@ -819,9 +819,9 @@
     <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
     <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
 
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="type_to_search">Type to Search..</string>
+    <string name="yes">نعم</string>
+    <string name="no">رقم</string>
+    <string name="type_to_search">اكتب للبحث..</string>
 
     <!--    Questions for HoH -->
     <string name="select">Select</string>
@@ -896,7 +896,7 @@
     <string name="bore_well">Borewell</string>
     <string name="river">River</string>
     <string name="pond">Pond</string>
-    <string name="other">Other</string>
+    <string name="other">آخر</string>
 
     <string name="other_water_sources">Other water sources</string>
     <string name="how_far_is_the_water_source_from_the_house">How far is the water source from the house?</string>
@@ -1089,8 +1089,8 @@
     <string name="gender_other">Other</string>
     <string name="enter_in_completed_years">Enter in Completed Years</string>
     <string name="what_is_name_s_marital_status">What is %1$s\'s marital status?</string>
-    <string name="what_is_your_marital_status">What is your marital status?*</string>
-    <string name="currently_married">Currently Married</string>
+    <string name="what_is_your_marital_status">ما هو وضعك العائلي؟*</string>
+    <string name="currently_married">متزوج حاليا</string>
     <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
     <string name="widowed">Widowed</string>
     <string name="divorced">Divorced</string>
@@ -1099,7 +1099,7 @@
     <string name="nas_never_married">Never Married</string>
 
     <string name="what_is_name_s_education_status">What is %1$s\'s education status?</string>
-    <string name="what_is_your_education_status">What is your education status?*</string>
+    <string name="what_is_your_education_status">ما هي حالتك التعليمية؟ *</string>
     <string name="cannot_read_or_write">Cannot Read or Write</string>
     <string name="can_read_and_write">Can Read and Write</string>
     <string name="primary_education_till_class_five">Primary Education (Till Class 5)</string>
@@ -1110,7 +1110,7 @@
     <string name="postgraduate">Graduate</string>
     <string name="nas_none">None</string>
 
-    <string name="nas_occupation">Occupation*</string>
+    <string name="nas_occupation">إشغال*</string>
     <string name="phone_ownership">Phone ownership</string>
     <string name="shared">Shared</string>
     <string name="owns_smartphone">Owns Smartphone</string>
@@ -1317,17 +1317,17 @@
     <!--    <string name="what_is_your_marital_status">What is your Marital Status</string>-->
 
 
-    <string name="txt_hedingRosters">Rosters</string>
-    <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
-    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
-    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
-    <string name="txt_phone_ownership">Phone Ownership*</string>
-    <string name="txt_bp_checked">BP checked</string>
-    <string name="txt_sugar_checked">Sugar Checked</string>
-    <string name="txt_hb_test">HB test</string>
+    <string name="txt_hedingRosters">القوائم</string>
+    <string name="txt_heading_pregnancy_outcome_roster">قائمة نتائج الحمل</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household">ما علاقتك برب الأسرة *</string>
+    <string name="txt_what_is_your_maritual_status">ما هي حالتك الزوجية</string>
+    <string name="txt_phone_ownership">ملكية الهاتف *</string>
+    <string name="txt_bp_checked">فحص BP</string>
+    <string name="txt_sugar_checked">فحص السكر</string>
+    <string name="txt_hb_test">اختبار HB</string>
 
-    <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?*</string>
-    <string name="txt_what_health_issue_is_reported">What Health issue is reported?</string>
+    <string name="txt_bmi_height_and_weight_checked">تم فحص مؤشر كتلة الجسم (الطول والوزن)؟ *</string>
+    <string name="txt_what_health_issue_is_reported">ما المشكلة الصحية المبلغ عنها?</string>
     <string name="txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, Which is the primary health provider you interacted with for this health issue?</string>
     <string name="txt_first_location_of_visit_interaction">First Location of visit/interaction</string>
     <string name="txt_referred_to">Referred to</string>
@@ -1523,4 +1523,15 @@
     <string name="printing">Printing...</string>
     <string name="visit_confirmation">"Are you sure that you want to start the visit? "</string>
     <string name="save_prescription">Save Prescription</string>
+
+    //Syriana
+    <string name="what_is_residence_nature">ما هي طبيعة المجمع السكني الخاص بك؟</string>
+    <string name="what_is_residence_link_nature">ما هي طبيعة الارتباط بمحل الإقامة؟</string>
+    <string name="family_member_count">كم عدد أفراد الأسرة الذين يعيشون في نفس المسكن؟</string>
+    <string name="enter_number">أدخل رقم</string>
+    <string name="enter_duration">أدخل المدة</string>
+    <string name="percentage_of_income">باستثناء المساعدة ، ما هي نسبة الدخل التي تقدمها بالنسبة لإجمالي دخل الأسرة؟</string>
+    <string name="since_when_you_are_supporting_family">منذ متى وأنت المسؤول الرئيسي عن إعالة أسرتك؟</string>
+    <string name="are_you_head_of_the_family">هل انت رب الاسرة؟ *</string>
+
 </resources>

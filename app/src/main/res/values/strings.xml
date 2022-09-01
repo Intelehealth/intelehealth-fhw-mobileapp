@@ -821,7 +821,7 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="type_to_search">Type to Search..</string>
+    <string name="type_to_search">اكتب للبحث..</string>
 
     <!--    Questions for HoH -->
     <string name="select">Select</string>
