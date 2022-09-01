@@ -302,14 +302,16 @@
 
             </LinearLayout>
 
-            <ImageView
+            <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 android:layout_below="@+id/ll_1"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:src="@drawable/ic_horizontal_divider_line" />
+                android:background="@color/notifi_divider_color" />
 
             <!--general physician-->
             <LinearLayout
@@ -394,14 +396,16 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <ImageView
+            <View
                 android:id="@+id/divider_2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_2"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_2"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:src="@drawable/ic_horizontal_divider_line" />
+                android:background="@color/notifi_divider_color" />
 
             <!-- Frame 2608662 -->
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -445,14 +449,16 @@
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>
 
-            <ImageView
+            <View
                 android:id="@+id/divider_3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_3"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_3"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:src="@drawable/ic_horizontal_divider_line" />
+                android:background="@color/notifi_divider_color" />
 
             <TextView
                 android:id="@+id/followup_date_txtv"
