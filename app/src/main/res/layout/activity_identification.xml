@@ -791,28 +791,6 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_whatisyourrelation_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
-                            <!--On the Left or Right of textview or Editext-->
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_whatisyourrelation_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -1077,28 +1055,6 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_occupation_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
-                            <!--On the Left or Right of textview or Editext-->
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_occupation_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -1158,36 +1114,6 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <TextView
-                            android:id="@+id/identification_family_member_count"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/family_member_count"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <EditText
-                            android:id="@+id/et_family_member_count"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_number"
-                            android:inputType="number" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
 
                         <View
                             android:layout_width="match_parent"
@@ -1208,12 +1134,10 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <EditText
-                            android:id="@+id/et_percentage_income"
+                        <Spinner
+                            android:id="@+id/spinner_percentage_income"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_number"
-                            android:inputType="number" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"

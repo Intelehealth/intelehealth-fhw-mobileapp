@@ -525,7 +525,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("occupation")) {
+                if (name.equalsIgnoreCase("working condition")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("blockSurvey")) {

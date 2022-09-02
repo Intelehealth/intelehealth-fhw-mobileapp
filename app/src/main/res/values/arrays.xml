@@ -46,184 +46,35 @@
 
     <string-array name="education_en">
         <item>Select</item>
-        <item>Cannot read or write</item>
-        <item>Can read and write</item>
-        <item>Primary education (till class 5)</item>
-        <item>Middle school (6th-8th)</item>
-        <item>Passed secondary school (class 10th boards)</item>
-        <item>Passed senior secondary school (12th boards)</item>
-        <item>Graduate</item>
+        <item>Elementary and below</item>
+        <item>Junior high</item>
+        <item>High School</item>
+        <item>Average Institute</item>
+        <item>University</item>
         <item>Postgraduate</item>
     </string-array>
 
-    <string-array name="caste_en">
-        <item>Select</item>
-        <item>General</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
+    <string-array name="education_ar">
+        <item>يختار</item>
+        <item> الابتدائية  و ما دونها</item>
+        <item>الاعدادية </item>
+        <item>الثانوية</item>
+        <item>معهد متوسط</item>
+        <item>جامعة </item>
+        <item>دراسات عليا</item>
     </string-array>
 
-    <string-array name="economic_en">
-        <item>Select</item>
-        <item>APL</item>
-        <item>BPL</item>
-    </string-array>
 
-    <string-array name="states_india">
-        <item>Select</item>
-        <item>@string/state_Maharastra</item>
-    </string-array>
-
-    <string-array name="states_syriana">
+    <string-array name="states_syriana_en">
         <item>Select</item>
         <item>As-Sweida</item>
         <item>Deir-ez-Zor</item>
     </string-array>
 
-    <string-array name="states_philippines">
-        <item>Select State</item>
-        <item>Bukidnon</item>
-    </string-array>
-    <string-array name="bukidnon_villages">
-        <item>Adtuyon-Pangantucan</item>
-        <item>Bacusanon-Pangantucan</item>
-        <item>Bangahan-Pangantucan</item>
-        <item>Barandias-Pangantucan</item>
-        <item>Concepcion-Pangantucan</item>
-        <item>Gandingan-Pangantucan</item>
-        <item>Kimanait-Pangantucan</item>
-        <item>Kipadukan-Pangantucan</item>
-        <item>Langcataon-Pangantucan</item>
-        <item>Lantay-Pangantucan</item>
-        <item>Madaya-Pangantucan</item>
-        <item>Malipayon-Pangantucan</item>
-        <item>Mendis-Pangantucan</item>
-        <item>Nabaliwa-Pangantucan</item>
-        <item>New Eden-Pangantucan</item>
-        <item>Payad-Pangantucan</item>
-        <item>Pigtauranan-Pangantucan</item>
-        <item>Poblacion-Pangantucan</item>
-        <item>Portulin-Pangantucan</item>
-        <item></item>
-
-    </string-array>
-
-    <string-array name="states_us">
-        <item>Select State</item>
-        <item>Alabama</item>
-        <item>Alaska</item>
-        <item>Arizona</item>
-        <item>Arkansas</item>
-        <item>California</item>
-        <item>Colorado</item>
-        <item>Connecticut</item>
-        <item>Delaware</item>
-        <item>Florida</item>
-        <item>Georgia</item>
-        <item>Hawaii</item>
-        <item>Idaho</item>
-        <item>Illinois</item>
-        <item>Indiana</item>
-        <item>Iowa</item>
-        <item>Kansas</item>
-        <item>Kentucky</item>
-        <item>Louisiana</item>
-        <item>Maine</item>
-        <item>Maryland</item>
-        <item>Massachusetts</item>
-        <item>Michigan</item>
-        <item>Minnesota</item>
-        <item>Mississippi</item>
-        <item>Missouri</item>
-        <item>Montana</item>
-        <item>Nebraska</item>
-        <item>Nevada</item>
-        <item>New Hampshire</item>
-        <item>New Jersey</item>
-        <item>New Mexico</item>
-        <item>New York</item>
-        <item>North Carolina</item>
-        <item>North Dakota</item>
-        <item>Ohio</item>
-        <item>Oklahoma</item>
-        <item>Oregon</item>
-        <item>Pennsylvania</item>
-        <item>Rhode Island</item>
-        <item>South Carolina</item>
-        <item>South Dakota</item>
-        <item>Tennessee</item>
-        <item>Texas</item>
-        <item>Utah</item>
-        <item>Vermont</item>
-        <item>Virginia</item>
-        <item>Washington</item>
-        <item>West Virginia</item>
-        <item>Wisconsin</item>
-        <item>Wyoming</item>
-    </string-array>
-
-    <string-array name="odisha_villages">
-        <item>Satygaon</item>
-        <item>Bhanjamunda</item>
-        <item>Baidehipur</item>
-        <item>Bhadramunda</item>
-        <item>Patamara</item>
-        <item>Ditikrushnapur</item>
-        <item>Pita Kulha Sahi</item>
-        <item>Kusumapal</item>
-        <item>Paunsia</item>
-        <item>Genjeimuni</item>
-        <item>Sagamanji Sahi</item>
-        <item>Bankhuli</item>
-        <item>Tandiberani</item>
-        <item>Nalasahi</item>
-        <item>Chanapala</item>
-        <item>Magarmuhan</item>
-        <item>Rangamatia</item>
-        <item>Suabasa</item>
-        <item>Kurumula</item>
-        <item>Ghenakani</item>
-        <item>Gopinnathpur</item>
-        <item>Kusubania</item>
-        <item>Hathimunda</item>
-        <item>Dhipasahi</item>
-        <item>Kuchinda</item>
-        <item>Chadakamara</item>
-        <item>Phuljhari</item>
-        <item>Khuntaposi</item>
-        <item>Jenapada</item>
-        <item>Monnakhul</item>
-        <item>Gopinathpur</item>
-        <item>Siarimalia Colony Sai</item>
-        <item>Siarimalia</item>
-        <item>Dangapala</item>
-        <item>Ditikrushnapur</item>
-        <item>Sanadhauragotha</item>
-        <item>Kunjam</item>
-        <item>Padang</item>
-        <item>Khulamunda</item>
-        <item>Priyambadapur</item>
-        <item>Jaganathpur</item>
-        <item>Roghunathpur</item>
-        <item>Muharmuhan</item>
-        <item>Saubasa</item>
-        <item>Bankuli</item>
-        <item>Sagamanghi Sai</item>
-        <item>Rengaromunda</item>
-        <item>Rangiapala</item>
-        <item>Benipathar</item>
-        <item>Debahali</item>
-        <item>Gentunali</item>
-        <item>Kakichanda(Munduribeda)</item>
-        <item>Dipasahi</item>
-        <item>Badasada</item>
-        <item>Kanteikali(Kanteigiri)</item>
-        <item>Purunapani</item>
-        <item>Fingamunda</item>
-        <item>Bijapani</item>
-        <item>Charakmunda</item>
+    <string-array name="states_syriana_ar">
+        <item>Select</item>
+        <item>As-Sweida</item>
+        <item>Deir-ez-Zor</item>
     </string-array>
 
     <string-array name="units">
@@ -1293,46 +1144,29 @@
 
     <!--Roster-->
 
-
     <string-array name="relationshipHoH_en">
         <item>Select</item>
-        <item>Self</item>
-        <item>Spouse</item>
-        <item>Son/daughter</item>
-        <item>Son/daughter in law</item>
-        <item>Grandchild</item>
-        <item>Father/mother</item>
-        <item>Father/mother-in-law</item>
-        <item>Brother/sister</item>
-        <item>Brother/sister-in-law</item>
-        <item>Niece/nephew</item>
-        <item>Grandparent/grand parent-in-law</item>
-        <item>Other relative</item>
-        <item>Adopted/foster/stepchild</item>
-        <item>Domestic servant</item>
-        <item>Other not related</item>
-        <item>Other (specify)</item>
-        <item>Not stated</item>
+        <item>No Relation</item>
+        <item>Wife</item>
+        <item>Mother</item>
+        <item>Sister</item>
+        <item>Daughter</item>
+        <item>Grandmother</item>
+        <item>Daughter-in-law</item>
+        <item>Grandchildren/brothers and sisters</item>
     </string-array>
 
-    <string-array name="relationshipHoH_Self_en">
+    <string-array name="relationshipHoH_ar">
         <item>Select</item>
-        <item>Spouse</item>
-        <item>Son/daughter</item>
-        <item>Son/daughter in law</item>
-        <item>Grandchild</item>
-        <item>Father/mother</item>
-        <item>Father/mother-in-law</item>
-        <item>Brother/sister</item>
-        <item>Brother/sister-in-law</item>
-        <item>Niece/nephew</item>
-        <item>Grandparent/grand parent-in-law</item>
-        <item>Other relative</item>
-        <item>Adopted/foster/stepchild</item>
-        <item>Domestic servant</item>
-        <item>Other not related</item>
-        <item>Other (specify)</item>
-        <item>Not stated</item>
+        <item>لا أحد</item>
+        <item>نفسي</item>
+        <item>زوج/ة</item>
+        <item>أبناء</item>
+        <item>أبوان</item>
+        <item>أخوة</item>
+        <item>أهل الزوج/ة</item>
+        <item>أحفاد/أبناء أخوة و أخوات</item>
+
     </string-array>
 
     <string-array name="bp_en">
@@ -1447,85 +1281,159 @@
         <item>No</item>
     </string-array>
 
-    <string-array name="outcomepregnancy_en">
+
+    //Occupation
+    <string-array name="occupation_identification_en">
         <item>Select</item>
-        <item>Born alive</item>
-        <item>Still birth</item>
-        <item>Induced abortion (mtp)</item>
-        <item>Miscarriage</item>
-        <item>Currently pregnant</item>
+        <item>Housewife unable to work</item>
+        <item>Small Business</item>
+        <item>Employee in the government sector</item>
+        <item>Employee in the private sector</item>
+        <item>Student</item>
+        <item>Retired</item>
+        <item>Free Business</item>
     </string-array>
 
-    <string-array name="childalive_en">
+    <string-array name="occupation_identification_ar">
+        <item>يختار</item>
+        <item>ربة منزل بدون عمل مدر للدخل</item>
+        <item>مشروع صغير (مالكة أو مساهمة)</item>
+        <item>موظف/ة في القطاع حكومي </item>
+        <item>موظف/ة في القطاع الخاص </item>
+        <item>طالب/ة </item>
+        <item>متقاعد/ة</item>
+        <item>أعمال حرة</item>
+    </string-array>
+
+    //Nature of residential complex
+    <string-array name="nature_residential_complex_en">
+        <item>Select</item>
+        <item>City</item>
+        <item>Town</item>
+        <item>Village</item>
+        <item>Bedouin pool</item>
+    </string-array>
+
+    <string-array name="nature_residential_complex_ar">
+        <item>يختار</item>
+        <item>مدينة</item>
+        <item>بلدة</item>
+        <item>قرية</item>
+        <item>تجمع بداوة</item>
+    </string-array>
+
+    //Nature of link to residential complex
+    <string-array name="nature_of_link_to_residence_en">
+        <item>Select</item>
+        <item>Not displaced</item>
+        <item>IDPs from within the governorate</item>
+        <item>IDPs from outside the governorate</item>
+        <item>Returning</item>
+    </string-array>
+
+    <string-array name="nature_of_link_to_residence_ar">
+        <item>يختار</item>
+        <item>غير نازح</item>
+        <item>نازح من داخل المحافظة</item>
+        <item>نازح من خارج المحافظة</item>
+        <item>عائد</item>
+    </string-array>
+
+    //Marital Status (Family Condition)
+    <string-array name="marital_en">
+        <item>Select</item>
+        <item>Single</item>
+        <item>Married</item>
+        <item>Widowed</item>
+        <item>Divorced</item>
+    </string-array>
+
+    <string-array name="marital_ar">
+        <item>يختار</item>
+        <item>عازب/ة </item>
+        <item> متزوج/ة</item>
+        <item> مطلقة  </item>
+        <item>أرملة</item>
+    </string-array>
+
+    //Husband Status (For married women)
+    <string-array name="husband_status_en">
+        <item>Select</item>
+        <item>Works</item>
+        <item>Unemployed/Underemployed</item>
+        <item>Partial disability/disease/advancing age</item>
+        <item>Complete Disability</item>
+    </string-array>
+
+    <string-array name="husband_status_ar">
+        <item>يختار</item>
+        <item>يعمل</item>
+        <item>لا يعمل بسبب إعاقة جزئية/مرض/ تقدم بالعمر</item>
+        <item>لا يعمل بسبب إعاقة تامة</item>
+        <item>لا يعمل /  قليل العمل بدون معيق واضح</item>
+    </string-array>
+
+    //Independent Residence
+    <string-array name="independent_residence_en">
         <item>Select</item>
         <item>Yes</item>
         <item>No</item>
     </string-array>
 
-    <string-array name="householdHeadReligion_en">
-        <item>@string/select</item>
-        <item>@string/religion_hindu</item>
-        <item>@string/religion_muslim</item>
-        <item>@string/religion_christian</item>
-        <item>@string/religion_sikh</item>
-        <item>@string/religion_buddhist_neo_buddhist</item>
-        <item>@string/religion_other</item>
-        <item>@string/religion_no_religion</item>
-    </string-array>
-
-    <string-array name="householdHeadCaste_en">
-        <item>@string/select</item>
-        <item>@string/caste_schedule_caste</item>
-        <item>@string/caste_schedule_tribe</item>
-        <item>@string/caste_other_backward_caste</item>
-        <item>@string/caste_VJNT</item>
-        <item>@string/caste_general</item>
-        <item>@string/caste_dont_know</item>
-        <item>@string/caste_refused_to_answer</item>
-
-    </string-array>
-
-    <string-array name="occupation_identification_en">
-        <item>Select</item>
-        <item>Salaried Government Job</item>
-        <item>Salaried Private Job</item>
-        <item>Petty Business or Shop Owner</item>
-        <item>Technician or Craftsman/Other Skilled Work (Driver, Mason etc)</item>
-        <item>Agricultural Farmer</item>
-        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
-        <item>Daily Wage Worker (Unskilled Work)</item>
-        <item>Household Work</item>
-        <item>Student</item>
-        <item>Unemployed</item>
-        <item>Retired (With Pension)</item>
-        <item>Retired (Without Pension)</item>
-        <item>Others (Specify)</item>
-    </string-array>
-
-    <string-array name="occupation_identification_ar">
+    <string-array name="independent_residence_ar">
         <item>يختار</item>
-        <item>Salaried Government Job</item>
-        <item>Salaried Private Job</item>
-        <item>Petty Business or Shop Owner</item>
-        <item>Technician or Craftsman/Other Skilled Work (Driver, Mason etc)</item>
-        <item>Agricultural Farmer</item>
-        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
-        <item>Daily Wage Worker (Unskilled Work)</item>
-        <item>Household Work</item>
-        <item>Student</item>
-        <item>Unemployed</item>
-        <item>Retired (With Pension)</item>
-        <item>Retired (Without Pension)</item>
-        <item>Others (Specify)</item>
+        <item>Yes</item>
+        <item>No</item>
     </string-array>
-    <string-array name="maritual_en">
+
+    //Why HOH
+    <string-array name="why_hoh_en">
         <item>Select</item>
-        <item>Currently married</item>
-        <item>Widowed</item>
-        <item>Divorced</item>
-        <item>Separated</item>
-        <item>Deserted</item>
-        <item>Never married</item>
+        <item>The family has no other breadwinner from the origin</item>
+        <item>Seperation</item>
+        <item>Death (Natural)</item>
+        <item>Death / loss due to violent events</item>
+        <item>Inability</item>
+    </string-array>
+
+    <string-array name="why_hoh_ar">
+        <item>يختار</item>
+        <item>العائلة ليس فيها معيل آخر من الأصل</item>
+        <item>انفصال</item>
+        <item>وفاة (طبيعية)</item>
+        <item>وفاة / فقدان بسبب أحداث العنف</item>
+        <item>عجز</item>
+    </string-array>
+
+    //reason for changing condition
+    <string-array name="reason_for_change_en">
+        <item>Select</item>
+        <item>Marriage</item>
+        <item>Son's work</item>
+        <item>Daughter's work</item>
+    </string-array>
+
+    <string-array name="reason_for_change_ar">
+        <item>يختار</item>
+        <item>زواج</item>
+        <item>عمل ابن</item>
+        <item>غير ذلك</item>
+
+    </string-array>
+
+    //percentage income
+    <string-array name="percentage_income_en">
+        <item>Select</item>
+        <item>25%</item>
+        <item>50-25%</item>
+        <item>50% or more</item>
+    </string-array>
+
+    <string-array name="percentage_income_ar">
+        <item>يختار</item>
+        <item>25%</item>
+        <item>50-25%</item>
+        <item>50% أو أكثر</item>
     </string-array>
 
 
