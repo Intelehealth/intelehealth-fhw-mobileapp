@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/margin_10"
-    android:layout_marginHorizontal="@dimen/margin_5"
-    android:layout_marginTop="@dimen/margin_5"
-    android:layout_marginBottom="24dp"
-    app:cardElevation="@dimen/margin_5" >
+    android:layout_marginHorizontal="@dimen/card_padding"
+    android:layout_marginTop="@dimen/card_padding"
+    android:layout_marginBottom="@dimen/toolbar_margin_left"
+    app:cardElevation="@dimen/card_padding" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,20 +24,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:layout_margin="@dimen/margin_12">
+        android:layout_margin="@dimen/fu_margin_start">
 
-                <ImageView
-                    android:id="@+id/profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentTop="true"
-                    android:background="@null"
-                    android:src="@drawable/ic_red_calendar_icon" />
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="@dimen/search_add_btn_height"
+            android:layout_height="@dimen/search_add_btn_height"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:src="@drawable/ic_red_calendar_icon" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginStart="@dimen/search_presTag_margin_top"
             android:layout_toEndOf="@+id/profile">
 
             <!-- Label -->

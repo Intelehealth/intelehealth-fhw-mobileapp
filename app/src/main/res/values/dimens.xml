@@ -210,6 +210,7 @@
     <dimen name="search_add_btn_height">40dp</dimen>
     <dimen name="search_item_name_width">130dp</dimen>
     <dimen name="notifi_subtitle_size">12sp</dimen>
+    <dimen name="notifi_header_icon">40dp</dimen>
 
 
 </resources>
