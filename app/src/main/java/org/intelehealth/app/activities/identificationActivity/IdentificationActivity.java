@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
 
@@ -135,7 +136,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter,
-    linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, mainTendencyAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
+    linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -414,16 +415,142 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                     //TODO: Arabic language changes
-                    String education = switch_hi_education_edit(patient1.getEducation_level());
+                    String education = patient1.getEducation_level();
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 }
             }
 
-            if (educationAdapter == null) {
-                Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
+            if (patient1 != null && patient1.getOccupation() != null && patient1.getOccupation().equalsIgnoreCase(getString(R.string.not_provided)))
+                mOccupation.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String occupation = patient1.getOccupation();
+                    mOccupation.setSelection(occupationAdapter != null ? occupationAdapter.getPosition(occupation) : 0);
+                } else {
+                    mOccupation.setSelection(occupationAdapter != null ? occupationAdapter.getPosition(patient1.getOccupation()) : 0);
+                }
             }
+
+            if (patient1 != null && patient1.getMaritalstatus() != null && patient1.getMaritalstatus().equalsIgnoreCase(getString(R.string.not_provided)))
+                marital_status_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String maritalStatus = patient1.getMaritalstatus();
+                    marital_status_spinner.setSelection(maritalStatusAdapter != null ? maritalStatusAdapter.getPosition(maritalStatus) : 0);
+                } else {
+                    marital_status_spinner.setSelection(maritalStatusAdapter != null ? maritalStatusAdapter.getPosition(patient1.getMaritalstatus()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getIndependentResidence() != null && patient1.getIndependentResidence().equalsIgnoreCase(getString(R.string.not_provided)))
+                independent_resid_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String independentResid = patient1.getIndependentResidence();
+                    independent_resid_spinner.setSelection(independentResidenceAdapter != null ? independentResidenceAdapter.getPosition(independentResid) : 0);
+                } else {
+                    independent_resid_spinner.setSelection(independentResidenceAdapter != null ? independentResidenceAdapter.getPosition(patient1.getIndependentResidence()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getResidentialComplexNature() != null && patient1.getResidentialComplexNature().equalsIgnoreCase(getString(R.string.not_provided)))
+                residence_nature_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String residenceNature = patient1.getResidentialComplexNature();
+                    residence_nature_spinner.setSelection(residenceNatureAdapter != null ? residenceNatureAdapter.getPosition(residenceNature) : 0);
+                } else {
+                    residence_nature_spinner.setSelection(residenceNatureAdapter != null ? residenceNatureAdapter.getPosition(patient1.getResidentialComplexNature()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getLinkNature() != null && patient1.getLinkNature().equalsIgnoreCase(getString(R.string.not_provided)))
+                link_nature_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String linkNature = patient1.getLinkNature();
+                    link_nature_spinner.setSelection(linkNatureAdapter != null ? linkNatureAdapter.getPosition(linkNature) : 0);
+                } else {
+                    link_nature_spinner.setSelection(linkNatureAdapter != null ? linkNatureAdapter.getPosition(patient1.getLinkNature()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getRelationshiphoh() != null && patient1.getRelationshiphoh().equalsIgnoreCase(getString(R.string.not_provided)))
+                HOH_relation_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String relationHOH = patient1.getRelationshiphoh();
+                    HOH_relation_spinner.setSelection(relationAdapter != null ? relationAdapter.getPosition(relationHOH) : 0);
+                } else {
+                    link_nature_spinner.setSelection(relationAdapter != null ? relationAdapter.getPosition(patient1.getRelationshiphoh()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getHusbandStatus() != null && patient1.getHusbandStatus().equalsIgnoreCase(getString(R.string.not_provided)))
+                husband_status_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String husbandStatus = patient1.getHusbandStatus();
+                    husband_status_spinner.setSelection(husbandStatusAdapter != null ? husbandStatusAdapter.getPosition(husbandStatus) : 0);
+                } else {
+                    husband_status_spinner.setSelection(husbandStatusAdapter != null ? husbandStatusAdapter.getPosition(patient1.getHusbandStatus()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getPercentageOfIncome() != null && patient1.getPercentageOfIncome().equalsIgnoreCase(getString(R.string.not_provided)))
+                percentage_income_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String percentageOfIncome = patient1.getPercentageOfIncome();
+                    percentage_income_spinner.setSelection(percentageIncomeAdapter != null ? percentageIncomeAdapter.getPosition(percentageOfIncome) : 0);
+                } else {
+                    percentage_income_spinner.setSelection(percentageIncomeAdapter != null ? percentageIncomeAdapter.getPosition(patient1.getPercentageOfIncome()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getMainTendency() != null && patient1.getMainTendency().equalsIgnoreCase(getString(R.string.not_provided)))
+                mainTendency_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String mainTendency = patient1.getMainTendency();
+                    mainTendency_spinner.setSelection( independentResidenceAdapter!= null ? independentResidenceAdapter.getPosition(mainTendency) : 0);
+                } else {
+                    mainTendency_spinner.setSelection(independentResidenceAdapter != null ? independentResidenceAdapter.getPosition(patient1.getMainTendency()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getConditionOfSupport() != null && patient1.getConditionOfSupport().equalsIgnoreCase(getString(R.string.not_provided)))
+                changeConditionReason_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String changeCondition = patient1.getConditionOfSupport();
+                    changeConditionReason_spinner.setSelection(changeConditionReasonAdapter!= null ? changeConditionReasonAdapter.getPosition(changeCondition) : 0);
+                } else {
+                    changeConditionReason_spinner.setSelection(changeConditionReasonAdapter != null ? changeConditionReasonAdapter.getPosition(patient1.getConditionOfSupport()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getSinceChangeHappened() != null)
+                sinceChangeHappenedET.setText(patient1.getSinceChangeHappened());
+            else
+                sinceChangeHappenedET.setText("");
+
+            if (patient1 != null && patient1.getSinceWhenMainResponsible() != null)
+                sinceSupportingFamilyET.setText(patient1.getSinceWhenMainResponsible());
+            else
+                sinceSupportingFamilyET.setText("");
 
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
@@ -1143,46 +1270,46 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("working condition")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-               /* if (name.equalsIgnoreCase("Son/wife/daughter")) {
-                    patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+               if (name.equalsIgnoreCase("nature_of_the_residential_complex")) {
+                    patient1.setResidentialComplexNature(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("blockSurvey")) {
-                    patient1.setBlockSurvey(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("link to the place of residence")) {
+                    patient1.setLinkNature(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("villageNameSurvey")) {
-                    patient1.setVillageNameSurvey(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("family situation")) {
+                    patient1.setMaritalstatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("RelationshipStatusHOH")) {
+                if (name.equalsIgnoreCase("family relationship members")) {
                     patient1.setRelationshiphoh(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("MaritualStatus")) {
-                    patient1.setMaritualstatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("status of husband")) {
+                    patient1.setHusbandStatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("PhoneOwnership")) {
-                    patient1.setPhoneownership(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("responsible for family")) {
+                    patient1.setHeadOfHousehold(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("BPchecked")) {
-                    patient1.setBpchecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("percentage of income")) {
+                    patient1.setPercentageOfIncome(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("Sugarchecked")) {
-                    patient1.setSugarchecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("number of years for support")) {
+                    patient1.setSinceWhenMainResponsible(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("HBtest")) {
-                    patient1.setHbtest(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("independent residence ")) {
+                    patient1.setIndependentResidence(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("BMI")) {
-                    patient1.setBmi(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("main official for family's support")) {
+                    patient1.setMainOfficial(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("HealthIssueReported")) {
-                    patient1.setHealthissuereported(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("main tendency for breadwinner")) {
+                    patient1.setMainTendency(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("NoofEpisodes")) {
-                    patient1.setNoepisodes(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("condition of the support")) {
+                    patient1.setConditionOfSupport(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("PrimaryHealthProvider")) {
-                    patient1.setPrimaryhealthprovider(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("change happened years")) {
+                    patient1.setSinceChangeHappened(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("FirstLocation")) {
+                /*if (name.equalsIgnoreCase("FirstLocation")) {
                     patient1.setFirstlocation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("ReferredTo")) {
@@ -1266,7 +1393,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     binding.poViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
                     setViewPagerOffset(binding.poViewPager);
                 } */
-
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
@@ -1851,14 +1977,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("responsible for family"));
-            patientAttributesDTO.setValue(headOfHousehold);
+            String hohInfoValue = headOfHousehold;
+            String hohInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), hohInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+            patientAttributesDTO.setValue(hohInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main official for family's support"));
-            patientAttributesDTO.setValue(whyHOH_spinner.getSelectedItem().toString());
+            String whyHOHInfoValue = StringUtils.getProvided(whyHOH_spinner);
+            String whyHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), whyHOHInfoValue, R.array.why_hoh_en, R.array.why_hoh_ar);
+            patientAttributesDTO.setValue(whyHOHInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1879,35 +2009,45 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main tendency for breadwinner"));
-            patientAttributesDTO.setValue(mainTendency_spinner.getSelectedItem().toString());
+            String mainTendInfoValue = StringUtils.getProvided(mainTendency_spinner);
+            String mainTendInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), mainTendInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+            patientAttributesDTO.setValue(mainTendInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("condition of the support"));
-            patientAttributesDTO.setValue(changeConditionReason_spinner.getSelectedItem().toString());
+            String conditionSupportInfoValue = StringUtils.getProvided(changeConditionReason_spinner);
+            String conditionSupportInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), conditionSupportInfoValue, R.array.reason_for_change_en, R.array.reason_for_change_ar);
+            patientAttributesDTO.setValue(conditionSupportInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("percentage of income"));
-            patientAttributesDTO.setValue(percentage_income_spinner.getSelectedItem().toString());
+            String percIncomeInfoValue = StringUtils.getProvided(percentage_income_spinner);
+            String percIncomeInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), percIncomeInfoValue, R.array.percentage_income_en, R.array.percentage_income_ar);
+            patientAttributesDTO.setValue(percIncomeInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("status of husband"));
-            patientAttributesDTO.setValue(husband_status_spinner.getSelectedItem().toString());
+            String husbandStatusInfoValue = StringUtils.getProvided(husband_status_spinner);
+            String husbandStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), husbandStatusInfoValue, R.array.husband_status_en, R.array.husband_status_ar);
+            patientAttributesDTO.setValue(husbandStatusInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("independent residence"));
-            patientAttributesDTO.setValue(independent_resid_spinner.getSelectedItem().toString());
+            String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
+            String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+            patientAttributesDTO.setValue(indepResidInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1921,21 +2061,27 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nature_of_the_residential_complex"));
-            patientAttributesDTO.setValue(residence_nature_spinner.getSelectedItem().toString());
+            String residenceNatureInfoValue = StringUtils.getProvided(residence_nature_spinner);
+            String residenceNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), residenceNatureInfoValue, R.array.nature_residential_complex_en, R.array.nature_residential_complex_ar);
+            patientAttributesDTO.setValue(residenceNatureInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("working condition"));
-            patientAttributesDTO.setValue(mOccupation.getSelectedItem().toString());
+            String occupationInfoValue = StringUtils.getProvided(mOccupation);
+            String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
+            patientAttributesDTO.setValue(occupationInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("link to the place of residence"));
-            patientAttributesDTO.setValue(link_nature_spinner.getSelectedItem().toString());
+            String linkNatureInfoValue = StringUtils.getProvided(link_nature_spinner);
+            String linkNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), linkNatureInfoValue, R.array.nature_of_link_to_residence_en, R.array.nature_of_link_to_residence_ar);
+            patientAttributesDTO.setValue(linkNatureInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // relationsip hoh
@@ -1943,7 +2089,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family relationship members"));
-            patientAttributesDTO.setValue(HOH_relation_spinner.getSelectedItem().toString());
+            String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
+            String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
+            patientAttributesDTO.setValue(relationHOHInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // marital
@@ -1951,14 +2099,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family situation"));
-            patientAttributesDTO.setValue(marital_status_spinner.getSelectedItem().toString());
+            String maritalStatusInfoValue = StringUtils.getProvided(marital_status_spinner);
+            String maritalStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), maritalStatusInfoValue, R.array.marital_en, R.array.marital_ar);
+            patientAttributesDTO.setValue(maritalStatusInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            String educationInfoValue = StringUtils.getProvided(mEducation);
+            String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_en, R.array.education_ar);
+            patientAttributesDTO.setValue(educationInfoJson);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3021,14 +3173,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("responsible for family"));
-                patientAttributesDTO.setValue(headOfHousehold);
+                String hohInfoValue = headOfHousehold;
+                String hohInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), hohInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+                patientAttributesDTO.setValue(hohInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main official for family's support"));
-                patientAttributesDTO.setValue(whyHOH_spinner.getSelectedItem().toString());
+                String whyHOHInfoValue = StringUtils.getProvided(whyHOH_spinner);
+                String whyHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), whyHOHInfoValue, R.array.why_hoh_en, R.array.why_hoh_ar);
+                patientAttributesDTO.setValue(whyHOHInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -3042,42 +3198,52 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
-                patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
+                patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("main tendency for breadwinner"));
-                patientAttributesDTO.setValue(mainTendency_spinner.getSelectedItem().toString());
+                String mainTendInfoValue = StringUtils.getProvided(mainTendency_spinner);
+                String mainTendInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), mainTendInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+                patientAttributesDTO.setValue(mainTendInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("condition of the support"));
-                patientAttributesDTO.setValue(changeConditionReason_spinner.getSelectedItem().toString());
+                String conditionSupportInfoValue = StringUtils.getProvided(changeConditionReason_spinner);
+                String conditionSupportInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), conditionSupportInfoValue, R.array.reason_for_change_en, R.array.reason_for_change_ar);
+                patientAttributesDTO.setValue(conditionSupportInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("percentage of income"));
-                patientAttributesDTO.setValue(percentage_income_spinner.getSelectedItem().toString());
+                String percIncomeInfoValue = StringUtils.getProvided(percentage_income_spinner);
+                String percIncomeInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), percIncomeInfoValue, R.array.percentage_income_en, R.array.percentage_income_ar);
+                patientAttributesDTO.setValue(percIncomeInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("status of husband"));
-                patientAttributesDTO.setValue(husband_status_spinner.getSelectedItem().toString());
+                String husbandStatusInfoValue = StringUtils.getProvided(husband_status_spinner);
+                String husbandStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), husbandStatusInfoValue, R.array.husband_status_en, R.array.husband_status_ar);
+                patientAttributesDTO.setValue(husbandStatusInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("independent residence"));
-                patientAttributesDTO.setValue(independent_resid_spinner.getSelectedItem().toString());
+                String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
+                String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
+                patientAttributesDTO.setValue(indepResidInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -3091,21 +3257,27 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("nature_of_the_residential_complex"));
-                patientAttributesDTO.setValue(residence_nature_spinner.getSelectedItem().toString());
+                String residenceNatureInfoValue = StringUtils.getProvided(residence_nature_spinner);
+                String residenceNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), residenceNatureInfoValue, R.array.nature_residential_complex_en, R.array.nature_residential_complex_ar);
+                patientAttributesDTO.setValue(residenceNatureInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("working condition"));
-                patientAttributesDTO.setValue(mOccupation.getSelectedItem().toString());
+                String occupationInfoValue = StringUtils.getProvided(mOccupation);
+                String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
+                patientAttributesDTO.setValue(occupationInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("link to the place of residence"));
-                patientAttributesDTO.setValue(link_nature_spinner.getSelectedItem().toString());
+                String linkNatureInfoValue = StringUtils.getProvided(link_nature_spinner);
+                String linkNatureInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), linkNatureInfoValue, R.array.nature_of_link_to_residence_en, R.array.nature_of_link_to_residence_ar);
+                patientAttributesDTO.setValue(linkNatureInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // relationsip hoh
@@ -3113,7 +3285,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family relationship members"));
-                patientAttributesDTO.setValue(HOH_relation_spinner.getSelectedItem().toString());
+                String relationHOHInfoValue = StringUtils.getProvided(HOH_relation_spinner);
+                String relationHOHInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), relationHOHInfoValue, R.array.relationshipHoH_en, R.array.relationshipHoH_ar);
+                patientAttributesDTO.setValue(relationHOHInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // marital
@@ -3121,14 +3295,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("family situation"));
-                patientAttributesDTO.setValue(marital_status_spinner.getSelectedItem().toString());
+                String maritalStatusInfoValue = StringUtils.getProvided(marital_status_spinner);
+                String maritalStatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), maritalStatusInfoValue, R.array.marital_en, R.array.marital_ar);
+                patientAttributesDTO.setValue(maritalStatusInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-                patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+                String educationInfoValue = StringUtils.getProvided(mEducation);
+                String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_en, R.array.education_ar);
+                patientAttributesDTO.setValue(educationInfoJson);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();

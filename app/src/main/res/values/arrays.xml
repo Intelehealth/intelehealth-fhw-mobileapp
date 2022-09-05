@@ -1281,6 +1281,80 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="pasttwoyrs_mr">
+        <item>निवडा</item>
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+    <string-array name="outcomepregnancy_en">
+        <item>Select</item>
+        <item>Born alive</item>
+        <item>Still birth</item>
+        <item>Induced abortion (mtp)</item>
+        <item>Miscarriage</item>
+        <item>Currently pregnant</item>
+    </string-array>
+
+    <string-array name="childalive_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="householdHeadReligion_en">
+        <item>@string/select</item>
+        <item>@string/religion_hindu</item>
+        <item>@string/religion_muslim</item>
+        <item>@string/religion_christian</item>
+        <item>@string/religion_sikh</item>
+        <item>@string/religion_buddhist_neo_buddhist</item>
+        <item>@string/religion_other</item>
+        <item>@string/religion_no_religion</item>
+    </string-array>
+    <string-array name="householdHeadReligion_mr">
+        <item>@string/select</item>
+        <item>@string/religion_hindu</item>
+        <item>@string/religion_muslim</item>
+        <item>@string/religion_christian</item>
+        <item>@string/religion_sikh</item>
+        <item>@string/religion_buddhist_neo_buddhist</item>
+        <item>@string/religion_other</item>
+        <item>@string/religion_no_religion</item>
+    </string-array>
+    <string-array name="outcomepregnancy_mr">
+        <item>निवडा</item>
+        <item>जिवंत जन्मलेला</item>
+        <item>बाळ मृतावस्थेत जन्मले</item>
+        <item>ऐच्छिक गर्भपात/ गर्भधारणेची वैद्यकीय समाप्ती (MTP)</item>
+        <item>गर्भपात</item>
+        <item>सध्या गरोदर आहे</item>
+    </string-array>
+
+    <string-array name="householdHeadCaste_en">
+        <item>@string/select</item>
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+        <item>@string/caste_VJNT</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
+
+    </string-array>
+
+
+    <string-array name="householdHeadCaste_mr">
+        <item>@string/select</item>
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+
+        <item>@string/caste_VJNT</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
+
+    </string-array>
 
     //Occupation
     <string-array name="occupation_identification_en">
@@ -1409,8 +1483,8 @@
     <string-array name="reason_for_change_en">
         <item>Select</item>
         <item>Marriage</item>
-        <item>Son's work</item>
-        <item>Daughter's work</item>
+        <item>Son\'s work</item>
+        <item>Daughter\'s work</item>
     </string-array>
 
     <string-array name="reason_for_change_ar">
@@ -1436,6 +1510,20 @@
         <item>50% أو أكثر</item>
     </string-array>
 
+    <string-array name="caste_en">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="economic_en">
+        <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
 
     <string-array name="phoneownership_en">
         <item>Select</item>
@@ -1520,5 +1608,151 @@
         <item>@string/normal_vaginal_delivery</item>
         <item>@string/cesarean_section_c_section</item>
     </string-array>
+
+    <string-array name="states_philippines">
+        <item>Select State</item>
+        <item>Bukidnon</item>
+    </string-array>
+
+    <string-array name="bukidnon_villages">
+        <item>Adtuyon-Pangantucan</item>
+        <item>Bacusanon-Pangantucan</item>
+        <item>Bangahan-Pangantucan</item>
+        <item>Barandias-Pangantucan</item>
+        <item>Concepcion-Pangantucan</item>
+        <item>Gandingan-Pangantucan</item>
+        <item>Kimanait-Pangantucan</item>
+        <item>Kipadukan-Pangantucan</item>
+        <item>Langcataon-Pangantucan</item>
+        <item>Lantay-Pangantucan</item>
+        <item>Madaya-Pangantucan</item>
+        <item>Malipayon-Pangantucan</item>
+        <item>Mendis-Pangantucan</item>
+        <item>Nabaliwa-Pangantucan</item>
+        <item>New Eden-Pangantucan</item>
+        <item>Payad-Pangantucan</item>
+        <item>Pigtauranan-Pangantucan</item>
+        <item>Poblacion-Pangantucan</item>
+        <item>Portulin-Pangantucan</item>
+        <item></item>
+
+    </string-array>
+
+    <string-array name="states_us">
+        <item>Select State</item>
+        <item>Alabama</item>
+        <item>Alaska</item>
+        <item>Arizona</item>
+        <item>Arkansas</item>
+        <item>California</item>
+        <item>Colorado</item>
+        <item>Connecticut</item>
+        <item>Delaware</item>
+        <item>Florida</item>
+        <item>Georgia</item>
+        <item>Hawaii</item>
+        <item>Idaho</item>
+        <item>Illinois</item>
+        <item>Indiana</item>
+        <item>Iowa</item>
+        <item>Kansas</item>
+        <item>Kentucky</item>
+        <item>Louisiana</item>
+        <item>Maine</item>
+        <item>Maryland</item>
+        <item>Massachusetts</item>
+        <item>Michigan</item>
+        <item>Minnesota</item>
+        <item>Mississippi</item>
+        <item>Missouri</item>
+        <item>Montana</item>
+        <item>Nebraska</item>
+        <item>Nevada</item>
+        <item>New Hampshire</item>
+        <item>New Jersey</item>
+        <item>New Mexico</item>
+        <item>New York</item>
+        <item>North Carolina</item>
+        <item>North Dakota</item>
+        <item>Ohio</item>
+        <item>Oklahoma</item>
+        <item>Oregon</item>
+        <item>Pennsylvania</item>
+        <item>Rhode Island</item>
+        <item>South Carolina</item>
+        <item>South Dakota</item>
+        <item>Tennessee</item>
+        <item>Texas</item>
+        <item>Utah</item>
+        <item>Vermont</item>
+        <item>Virginia</item>
+        <item>Washington</item>
+        <item>West Virginia</item>
+        <item>Wisconsin</item>
+        <item>Wyoming</item>
+    </string-array>
+
+    <string-array name="odisha_villages">
+        <item>Satygaon</item>
+        <item>Bhanjamunda</item>
+        <item>Baidehipur</item>
+        <item>Bhadramunda</item>
+        <item>Patamara</item>
+        <item>Ditikrushnapur</item>
+        <item>Pita Kulha Sahi</item>
+        <item>Kusumapal</item>
+        <item>Paunsia</item>
+        <item>Genjeimuni</item>
+        <item>Sagamanji Sahi</item>
+        <item>Bankhuli</item>
+        <item>Tandiberani</item>
+        <item>Nalasahi</item>
+        <item>Chanapala</item>
+        <item>Magarmuhan</item>
+        <item>Rangamatia</item>
+        <item>Suabasa</item>
+        <item>Kurumula</item>
+        <item>Ghenakani</item>
+        <item>Gopinnathpur</item>
+        <item>Kusubania</item>
+        <item>Hathimunda</item>
+        <item>Dhipasahi</item>
+        <item>Kuchinda</item>
+        <item>Chadakamara</item>
+        <item>Phuljhari</item>
+        <item>Khuntaposi</item>
+        <item>Jenapada</item>
+        <item>Monnakhul</item>
+        <item>Gopinathpur</item>
+        <item>Siarimalia Colony Sai</item>
+        <item>Siarimalia</item>
+        <item>Dangapala</item>
+        <item>Ditikrushnapur</item>
+        <item>Sanadhauragotha</item>
+        <item>Kunjam</item>
+        <item>Padang</item>
+        <item>Khulamunda</item>
+        <item>Priyambadapur</item>
+        <item>Jaganathpur</item>
+        <item>Roghunathpur</item>
+        <item>Muharmuhan</item>
+        <item>Saubasa</item>
+        <item>Bankuli</item>
+        <item>Sagamanghi Sai</item>
+        <item>Rengaromunda</item>
+        <item>Rangiapala</item>
+        <item>Benipathar</item>
+        <item>Debahali</item>
+        <item>Gentunali</item>
+        <item>Kakichanda(Munduribeda)</item>
+        <item>Dipasahi</item>
+        <item>Badasada</item>
+        <item>Kanteikali(Kanteigiri)</item>
+        <item>Purunapani</item>
+        <item>Fingamunda</item>
+        <item>Bijapani</item>
+        <item>Charakmunda</item>
+    </string-array>
+
 
 </resources>

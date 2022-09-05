@@ -784,8 +784,7 @@
                         <Spinner
                             android:id="@+id/spinner_whatisyourrelation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -813,8 +812,7 @@
                         <Spinner
                             android:id="@+id/spinner_maritualstatus"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -842,8 +840,7 @@
                         <Spinner
                             android:id="@+id/spinner_husband_status"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
 
                         <Space
@@ -872,8 +869,7 @@
                         <Spinner
                             android:id="@+id/spinner_independent_residence"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -901,8 +897,7 @@
                         <Spinner
                             android:id="@+id/spinner_main_official"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -930,8 +925,7 @@
                         <Spinner
                             android:id="@+id/spinner_main_tendency_for_breadwinner"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -959,8 +953,7 @@
                         <Spinner
                             android:id="@+id/spinner_reason_changing_condition"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
 
                         <Space
@@ -1019,8 +1012,7 @@
                         <Spinner
                             android:id="@+id/spinner_education"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -1048,8 +1040,7 @@
                         <Spinner
                             android:id="@+id/spinner_occupation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -1077,8 +1068,7 @@
                         <Spinner
                             android:id="@+id/spinner_residence_nature"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -1107,8 +1097,7 @@
                         <Spinner
                             android:id="@+id/spinner_residence_link_nature"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -1258,8 +1247,7 @@
                             <Spinner
                                 android:id="@+id/spinner_pregnantpasttwoyrs"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/pasttwoyrs_en" />
+                                android:layout_height="wrap_content" />
 
                             <Space
                                 android:layout_width="10dp"
