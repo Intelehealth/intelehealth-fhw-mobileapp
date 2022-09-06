@@ -1,45 +1,33 @@
 package org.intelehealth.app.ui2.onboarding;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.material.button.MaterialButton;
-
 import org.intelehealth.app.R;
-
-import java.util.Objects;
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 
 public class SetupPrivacyNoteActivity extends AppCompatActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
     TextView tvTermsAndPrivacy;
-
+    CustomDialog customDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +74,7 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog customDialog = new CustomDialog(SetupPrivacyNoteActivity.this);
+                customDialog = new CustomDialog(SetupPrivacyNoteActivity.this);
                 customDialog.showDialog1();
             }
         });
@@ -165,6 +153,9 @@ public class SetupPrivacyNoteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                    Intent intent = new Intent(SetupPrivacyNoteActivity.this, SetupActivityNew.class);
+                    context.startActivity(intent);
+
                 }
             });
         }

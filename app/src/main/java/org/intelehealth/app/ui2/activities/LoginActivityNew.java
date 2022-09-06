@@ -2,14 +2,8 @@ package org.intelehealth.app.ui2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,7 +38,7 @@ public class LoginActivityNew extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity.class);
+                Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivityNew.class);
                 startActivity(intent);
             }
         });

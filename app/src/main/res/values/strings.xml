@@ -897,7 +897,19 @@
     <string name="next_new">Next</string>
     <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
     <string name="okay">Okay</string>
+    <string name="my_achievements">My achievements</string>
+    <string name="educational_videos">Educational videos</string>
+    <string name="change_lang">Change language &amp; protocol</string>
+    <string name="about_us">About us</string>
+    <string name="log_out">Log-out</string>
 
+    <string name="setup_new">Setup</string>
+    <string name="one_time_setup">Please complete your one\ntime setup activity</string>
+    <string name="enter_following_details">Please enter the following details</string>
+    <string name="location_new">Location</string>
+    <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_success_note">Hurry! You have successfully logged\n in into the demo version of the app</string>
 
 
 

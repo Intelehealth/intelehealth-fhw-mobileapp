@@ -1,51 +1,77 @@
 package org.intelehealth.app.ui2.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ui2.fragments.HomeFragment;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
 
 import me.piruin.quickaction.ActionItem;
 import me.piruin.quickaction.QuickAction;
 import me.piruin.quickaction.QuickIntentAction;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivityNew extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
     ImageView imageViewIsInternet;
     private boolean isConnected = false;
     private static final int ID_DOWN = 2;
     private QuickAction quickAction;
     private QuickAction quickIntent;
+    private DrawerLayout mDrawer;
+    NavigationView navView;
+    SessionManager sessionManager;
+    Dialog dialogLoginSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
 
+        sessionManager = new SessionManager(this);
+
+        Log.d(TAG, "onCreate: selected chw : " + sessionManager.getChwname());
+
+        mDrawer = findViewById(R.id.drawer_layout);
+        TextView tvLocation = findViewById(R.id.tv_user_location_home);
+        tvLocation.setText(sessionManager.getLocationName());
+        //navView = findViewById(R.id.navigationview);
+
         imageViewIsInternet = findViewById(R.id.imageview_is_internet);
+        ImageView ivHamburger = findViewById(R.id.iv_hamburger);
+        ivHamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // navView.setFitsSystemWindows(false);
+                //  mDrawer.setFitsSystemWindows(true);
+                mDrawer.openDrawer(Gravity.LEFT);
+
+            }
+        });
         isNetworkAvailable(this);
 
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +86,12 @@ public class HomeScreenActivity extends AppCompatActivity {
     private void checkForInternet() {
         boolean result = NetworkConnection.isOnline(this);
         Log.d(TAG, "checkForInternet: result : " + result);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     private void isNetworkAvailable(Context context) {
@@ -114,7 +146,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             public void onItemClick(ActionItem item) {
                 //here we can filter which action item was clicked with pos or actionId parameter
                 String title = item.getTitle();
-                Toast.makeText(HomeScreenActivity.this, title + " selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeScreenActivityNew.this, title + " selected", Toast.LENGTH_SHORT).show();
                 if (!item.isSticky()) quickAction.remove(item);
             }
         });
@@ -143,6 +175,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         Fragment fragment = new HomeFragment();
 
         loadFragment(fragment);
+
+        showLoggingInDialog();
     }
 
     private void loadFragment(Fragment fragment) {
@@ -152,5 +186,29 @@ public class HomeScreenActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    public void showLoggingInDialog() {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(HomeScreenActivityNew.this);
+        builder.setCancelable(false);
+        LayoutInflater inflater = LayoutInflater.from(HomeScreenActivityNew.this);
+        View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_login_success, null);
+        builder.setView(customLayout);
+
+        dialogLoginSuccess = builder.create();
+        dialogLoginSuccess.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialogLoginSuccess.show();
+        int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        dialogLoginSuccess.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogLoginSuccess.dismiss();
+            }
+        }, 2000);
+    }
+
 }
 

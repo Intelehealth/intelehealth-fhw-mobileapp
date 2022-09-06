@@ -71,6 +71,7 @@
 
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_7">7dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_15">15dp</dimen>

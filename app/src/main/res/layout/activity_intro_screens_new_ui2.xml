@@ -12,7 +12,7 @@
         android:layout_height="@dimen/back_arrow_intro_height"
         android:layout_marginStart="@dimen/back_arrow_intro_margin_start"
         android:layout_marginTop="@dimen/back_arrow_intro_margin_top"
-        android:src="@drawable/ui2_ic_arrow_right" />
+        android:src="@drawable/ui2_ic_arrow_back_new"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager_intro_screens"

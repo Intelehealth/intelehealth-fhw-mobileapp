@@ -16,7 +16,7 @@
         android:layout_margin="@dimen/home_toolbar_layout_margin">
 
         <ImageView
-            android:id="@+id/imageview_nav_drawer"
+            android:id="@+id/iv_hamburger"
             android:layout_width="@dimen/hamburger_width"
             android:layout_height="@dimen/hamburger_height"
             android:layout_marginStart="@dimen/common_all_card_start_margin"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/home_location_margin_top"
-            android:layout_toEndOf="@+id/imageview_nav_drawer"
+            android:layout_toEndOf="@+id/iv_hamburger"
             android:drawablePadding="@dimen/home_location_drawable_padding"
             android:fontFamily="@font/dm_sans_regular"
             android:text="Ranchi"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_user_location_home"
             android:layout_marginTop="@dimen/find_patient_margin_top"
-            android:layout_toEndOf="@+id/imageview_nav_drawer"
+            android:layout_toEndOf="@+id/iv_hamburger"
             android:fontFamily="@font/dm_sans_regular"
             android:text="Last sync: 12:30 pm, 12 May 2022"
             android:textColor="@color/textColorGray"

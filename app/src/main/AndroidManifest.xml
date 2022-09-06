@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -42,6 +41,14 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.setupActivity.SetupActivityNew"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
+        <activity
             android:name=".ui2.activities.TestDialogsUI2Activity"
             android:exported="false" />
         <activity
@@ -63,7 +70,7 @@
             android:name=".ui2.onboarding.IntroScreensActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
@@ -76,12 +83,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui2.activities.HomeScreenActivity"
+            android:name=".ui2.activities.HomeScreenActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ui2.activities.LoginActivityNew"
             android:exported="true"
@@ -300,9 +305,7 @@
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"

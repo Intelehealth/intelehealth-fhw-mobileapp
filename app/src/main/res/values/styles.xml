@@ -29,11 +29,14 @@
     <!-- UI 2.0 -->
     <style name="AppThemeMaterialNew" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--status bar-->
+        <item name="colorPrimaryDark">@color/colorPrimary</item><!--status bar-->
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorError">@color/colorPrimaryDark2</item>
         <item name="colorPrimaryVariant">@color/colorPrimary2</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="buttonStyle">@style/DefaultButtonStyle</item>
+
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -150,5 +153,11 @@
     <style name="DialogCorners">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="AutocompleteviewStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="hintEnabled">false</item>
+
     </style>
 </resources>

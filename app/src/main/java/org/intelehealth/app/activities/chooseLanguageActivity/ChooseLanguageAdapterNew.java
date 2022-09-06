@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private List<JSONObject> mItemList = new ArrayList<JSONObject>();
+    private List<JSONObject> mItemList;
     int selectedPosition1 = -1;
     SplashScreenActivity.ItemSelectionListener mItemSelectionListener;
 

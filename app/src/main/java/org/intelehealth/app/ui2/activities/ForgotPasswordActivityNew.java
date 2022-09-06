@@ -46,8 +46,8 @@ public class ForgotPasswordActivityNew extends AppCompatActivity {
         imageviewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgotPasswordActivityNew.this, LoginActivityNew.class);
-                startActivity(intent);
+               // Intent intent = new Intent(ForgotPasswordActivityNew.this, LoginActivityNew.class);
+               // startActivity(intent);
             }
         });
 
