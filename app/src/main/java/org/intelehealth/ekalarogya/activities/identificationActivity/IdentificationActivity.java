@@ -1,6 +1,5 @@
 package org.intelehealth.ekalarogya.activities.identificationActivity;
 
-import static org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfCheckboxesEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.checkIfEmpty;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__as_dob;
@@ -8,9 +7,12 @@ import static org.intelehealth.ekalarogya.utilities.StringUtils.en__gu_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getEducationStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getLandOwnedStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMaritalStatusStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getMobilePhoneOwnership;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getOccupationString;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getRadioButtonStrings;
+import static org.intelehealth.ekalarogya.utilities.StringUtils.getReligionStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSelectedCheckboxes;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getSurveyStrings;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.getTestStrings;
@@ -1185,7 +1187,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String education = switch_gu_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String education = switch_as_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
@@ -1226,7 +1228,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String economic = switch_gu_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String economic = switch_as_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
@@ -1235,7 +1237,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste()==null || patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
+            if (patient1.getCaste() == null || patient1.getCaste().equals(getResources().getString(R.string.not_provided))) {
                 mCaste.setSelection(0);
             } else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1247,7 +1249,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String caste = switch_gu_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String caste = switch_as_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else {
@@ -1294,7 +1296,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         //-------------change gujrati language---------------
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[વર્ણન કરો]"));
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         //-------------change assamese language---------------
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[বৰ্ণনা কৰা]"));
                     } else {
@@ -1321,7 +1323,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     bankacc_Transl = StringUtils.switch_gu_bankaccount_edit(patient1.getBank_account());
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     bankacc_Transl = StringUtils.switch_as_bankaccount_edit(patient1.getBank_account());
                 } else {
                     bankacc_Transl = patient1.getBank_account();
@@ -1432,7 +1434,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
 
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {
                         framelayout_vaccination.setVisibility(View.GONE);
@@ -1570,12 +1572,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     String[] splitString = patient1.getHectars_land().split(" ");
                     if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
                         binding.landOwnedEditText.setText(splitString[0].trim());
-                    int spinnerPosition = unitsAdapter.getPosition(getSurveyStrings(splitString[1], updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                    int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1], updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
                     unitsSpinner.setSelection(spinnerPosition);
                 }
 
                 if (patient1.getReligion() != null && !patient1.getReligion().equalsIgnoreCase("")) {
-                    String religionTranslation = getSurveyStrings(patient1.getReligion(), updatedContext, this, sessionManager.getAppLanguage());
+                    String religionTranslation = getReligionStrings(patient1.getReligion(), updatedContext, this, sessionManager.getAppLanguage());
                     int position = religionAdapter.getPosition(religionTranslation);
                     binding.religionDropDown.setSelection(position);
                 }
@@ -1599,16 +1601,16 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
                         !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getWaterSupplyHoursPerDay().split(" ");
-                   if(timeArray.length==2) {
-                       String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                       binding.runningWaterHoursEditText.setText(time);
-                   }
+                    if (timeArray.length == 2) {
+                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                        binding.runningWaterHoursEditText.setText(time);
+                    }
                 }
 
                 if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
                         !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getWaterSupplyDaysPerWeek().split(" ");
-                    if(timeArray.length==2) {
+                    if (timeArray.length == 2) {
                         String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
                         binding.runningWaterDaysEditText.setText(time);
                     }
@@ -1621,7 +1623,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
                         && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getLoadSheddingHoursPerDay().split(" ");
-                    if(timeArray.length==2) {
+                    if (timeArray.length == 2) {
                         String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
                         binding.loadSheddingHoursEditText.setText(time);
                     }
@@ -1630,7 +1632,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 if (patient1.getLoadSheddingDaysPerWeek() != null && !patient1.getLoadSheddingDaysPerWeek().equalsIgnoreCase("")
                         && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
                     String[] timeArray = patient1.getLoadSheddingDaysPerWeek().split(" ");
-                    if(timeArray.length==2) {
+                    if (timeArray.length == 2) {
                         String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
                         binding.loadSheddingDaysEditText.setText(time);
                     }
@@ -1687,7 +1689,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         wateravail_Transl = StringUtils.switch_or_wateravail_edit(patient1.getWater_availability());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         wateravail_Transl = StringUtils.switch_gu_wateravail_edit(patient1.getWater_availability());
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         wateravail_Transl = StringUtils.switch_as_wateravail_edit(patient1.getWater_availability());
                     } else {
                         wateravail_Transl = patient1.getWater_availability();
@@ -1706,7 +1708,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                         toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         toiletfacility_Transl = StringUtils.switch_gu_toiletfacil_edit(patient1.getToilet_facility());
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         toiletfacility_Transl = StringUtils.switch_as_toiletfacil_edit(patient1.getToilet_facility());
                     } else {
                         toiletfacility_Transl = patient1.getToilet_facility();
@@ -2023,7 +2025,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Gujrati...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into assamese...
                 mDOB.setText(dob_text);
             } else {
@@ -2761,7 +2763,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-             if (mPhoneNum.getText().toString().equals("")) {
+            if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
@@ -3362,7 +3364,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
-            patientAttributesDTO.setValue(getSurveyStrings(
+            patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     getBaseContext(),
                     updatedContext,
@@ -3374,7 +3376,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
-            patientAttributesDTO.setValue(getSurveyStrings(
+            patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     getBaseContext(),
                     updatedContext,
@@ -3386,7 +3388,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
-            patientAttributesDTO.setValue(getSurveyStrings(
+            patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     getBaseContext(),
                     updatedContext,
@@ -3587,7 +3589,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
+                patientAttributesDTO.setValue(StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
                         getBaseContext(),
                         updatedContext,
                         sessionManager.getAppLanguage()
@@ -3862,7 +3864,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Family Cultivable Land"));
-                String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getSurveyStrings(
+                String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getLandOwnedStrings(
                         binding.unitsSpinner.getSelectedItem().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -3875,7 +3877,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -4806,7 +4808,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
-            patientAttributesDTO.setValue(getSurveyStrings(
+            patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     getBaseContext(),
                     updatedContext,
@@ -4818,7 +4820,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
-            patientAttributesDTO.setValue(getSurveyStrings(
+            patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     getBaseContext(),
                     updatedContext,
@@ -4830,7 +4832,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
-            patientAttributesDTO.setValue(getSurveyStrings(
+            patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     getBaseContext(),
                     updatedContext,
@@ -5031,7 +5033,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(binding.religionDropDown.getSelectedItem().toString(),
+                patientAttributesDTO.setValue(StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
                         getBaseContext(),
                         updatedContext,
                         sessionManager.getAppLanguage()
@@ -5321,7 +5323,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Family Cultivable Land"));
-                String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getSurveyStrings(
+                String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getLandOwnedStrings(
                         binding.unitsSpinner.getSelectedItem().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -5334,7 +5336,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -5404,7 +5406,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("defecatedInOpen"));
-                patientAttributesDTO.setValue(getSurveyStrings(
+                patientAttributesDTO.setValue(getRadioButtonStrings(
                         ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -5535,7 +5537,8 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
         sessionManager = new SessionManager(this);
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
-        updatedContext = getBaseContext().createConfigurationContext(configuration);
+        Context context = IdentificationActivity.this;
+        updatedContext = context.createConfigurationContext(configuration);
     }
 
     @Override

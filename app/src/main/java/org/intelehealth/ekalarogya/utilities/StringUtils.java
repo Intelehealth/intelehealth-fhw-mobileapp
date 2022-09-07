@@ -167,7 +167,7 @@ public final class StringUtils {
             val = switch_gu_caste(val);
             val = switch_gu_economic(val);
             val = switch_gu_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             val = switch_as_caste(val);
             val = switch_as_economic(val);
             val = switch_as_education(val);
@@ -204,7 +204,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             switch (checkbox_text) {
                 case "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে"://----replace with assamese
                     val = "Declined to answer";
@@ -271,7 +271,7 @@ public final class StringUtils {
             val = switch_gu_en_wateravail(val);
             val = switch_gu_en_toiletfacil(val);
             val = switch_gu_en_housestructure(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             val = switch_as_en_occupation(val);
             val = switch_as_en_bankaccount(val);
             val = switch_as_en_mobile(val);
@@ -3034,7 +3034,7 @@ public final class StringUtils {
                     .replace("নৱেম্বৰ", "November")
                     .replace("ডিচেম্বৰ", "December");
             return dob;
-        }else {
+        } else {
             return dobString;
         }
 
@@ -3267,7 +3267,7 @@ public final class StringUtils {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View childAt = viewGroup.getChildAt(i);
             if (childAt instanceof CheckBox && ((CheckBox) childAt).isChecked()) {
-                text = getSurveyStrings(((CheckBox) childAt).getText().toString(), context, updatedContext, locale);
+                text = getCheckboxesString(((CheckBox) childAt).getText().toString(), context, updatedContext, locale);
 
                 // Handling cases when the user selects any string which relates to Other
                 if (text.equalsIgnoreCase(updatedContext.getString(R.string.other_source_of_income_please_specify))
@@ -3292,12 +3292,12 @@ public final class StringUtils {
             View childAt = viewGroup.getChildAt(i);
             if (childAt instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) childAt;
-                checkBox.setChecked(text.contains(getSurveyStrings(checkBox.getText().toString(), updatedContext, context, locale)));
+                checkBox.setChecked(text.contains(getCheckboxesString(checkBox.getText().toString(), updatedContext, context, locale)));
             }
 
             if (childAt instanceof RadioButton) {
                 RadioButton radioButton = (RadioButton) childAt;
-                if (text.contains(getSurveyStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
+                if (text.contains(getRadioButtonStrings(radioButton.getText().toString(), updatedContext, context, locale))) {
                     radioButton.setChecked(true);
                     break;
                 }
@@ -3321,18 +3321,10 @@ public final class StringUtils {
         return -1;
     }
 
-    public static String getSurveyStrings(String text, Context context, Context updatedContext, String locale) {
+    public static String getReligionStrings(String text, Context context, Context updatedContext, String locale) {
         text = getSurveyValue(text);
         // If the app language is not in English, only in that case will the strings be translated.
         if (!locale.equalsIgnoreCase("en")) {
-            // Translate string Pucca to English
-            if (context.getString(R.string.pucca).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.pucca);
-            }
-            // Translate string Kucha to English
-            if (context.getString(R.string.kucha).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.kucha);
-            }
             // Translate string Hindu to English
             if (context.getString(R.string.hindu).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.hindu);
@@ -3369,74 +3361,14 @@ public final class StringUtils {
             if (context.getString(R.string.no_religion).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_religion);
             }
-            // Translate string Schedule Caste to English
-            if (context.getString(R.string.schedule_caste).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.schedule_caste);
-            }
-            // Translate string Schedule Tribe to English
-            if (context.getString(R.string.schedule_tribe).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.schedule_tribe);
-            }
-            // Translate string Other Backward Caste to English
-            if (context.getString(R.string.survey_other_backward_caste).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_other_backward_caste);
-            }
-            // Translate string General to English
-            if (context.getString(R.string.survey_general).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_general);
-            }
-            // Translate string Sale of Cereal Production to English
-            if (context.getString(R.string.sale_of_cereal_production).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.sale_of_cereal_production);
-            }
-            // Translate string Sale of Animal Or Animal Products to English
-            if (context.getString(R.string.sale_of_animals_or_animal_products).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.sale_of_animals_or_animal_products);
-            }
-            // Translate string Agricultural Wage Labor to English
-            if (context.getString(R.string.agricultural_wage_labor_employed_for_farm_work).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.agricultural_wage_labor_employed_for_farm_work);
-            }
-            // Translate string Salaried Worker to English
-            if (context.getString(R.string.salaried_worker_fixed_monthly_salary).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.salaried_worker_fixed_monthly_salary);
-            }
-            // Translate string Salaried Worker to English
-            if (context.getString(R.string.self_employed_non_agricultural_petty_business).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.self_employed_non_agricultural_petty_business);
-            }
-            // Translate string Salaried Worker to English
-            if (context.getString(R.string.self_employed_non_agricultural_petty_business).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.self_employed_non_agricultural_petty_business);
-            }
-            // Translate string Daily Labor to English
-            if (context.getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.daily_labor_unskilled_work_agricultural_non_agricultural);
-            }
-            // Translate string NREGA to English
-            if (context.getString(R.string.nrega).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.nrega);
-            }
-            // Translate string Seasonal Labor to English
-            if (context.getString(R.string.seasonal_labor).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.seasonal_labor);
-            }
-            // Translate string No Paid Work to English
-            if (context.getString(R.string.no_paid_work).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.no_paid_work);
-            }
-            // Translate string Pension to English
-            if (context.getString(R.string.pension).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.pension);
-            }
-            // Translate string Remittances to English
-            if (context.getString(R.string.remittances_checkbox).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.remittances_checkbox);
-            }
-            // Translate string Other Source Of Income to English
-            if (context.getString(R.string.other_source_of_income_please_specify).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.other_source_of_income_please_specify);
-            }
+        }
+        return text;
+    }
+
+    public static String getRadioButtonStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
             // Translate string Yes to English
             if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.survey_yes);
@@ -3444,6 +3376,10 @@ public final class StringUtils {
             // Translate string No to English
             if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.survey_no);
+            }
+            // Translate string No Expense to English
+            if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.no_expense);
             }
             // Translate string 0 - 1 to English
             if (context.getString(R.string.zero_one).equalsIgnoreCase(text)) {
@@ -3465,26 +3401,6 @@ public final class StringUtils {
             if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_10);
             }
-            // Translate string Bigha to English
-            if (context.getString(R.string.bigha).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.bigha);
-            }
-            // Translate string Gunta to English
-            if (context.getString(R.string.gunta).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.gunta);
-            }
-            // Translate string Acre to English
-            if (context.getString(R.string.acre).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.acre);
-            }
-            // Translate string Hectare to English
-            if (context.getString(R.string.hectare).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.hectare);
-            }
-            // Translate string More Than 10 to English
-            if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.more_than_10);
-            }
             // Translate string More Than 2,50,000 to English
             if (context.getString(R.string.more_than_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_two_lakh_fifty_thousand);
@@ -3492,6 +3408,14 @@ public final class StringUtils {
             // Translate string More Than 25,000 to English
             if (context.getString(R.string.more_than_twenty_five_thousand).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_twenty_five_thousand);
+            }
+            // Translate string Yes to English
+            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_yes);
+            }
+            // Translate string No to English
+            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_no);
             }
             // Translate string Yes, Card Seen to English
             if (context.getString(R.string.yes_card_seen).equalsIgnoreCase(text)) {
@@ -3508,6 +3432,46 @@ public final class StringUtils {
             // Translate string Do Not Know to English
             if (context.getString(R.string.do_not_know).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.do_not_know);
+            }
+        }
+        return text;
+    }
+
+    public static String getLandOwnedStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Bigha to English
+            if (context.getString(R.string.bigha).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.bigha);
+            }
+            // Translate string Gunta to English
+            if (context.getString(R.string.gunta).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.gunta);
+            }
+            // Translate string Acre to English
+            if (context.getString(R.string.acre).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.acre);
+            }
+            // Translate string Hectare to English
+            if (context.getString(R.string.hectare).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.hectare);
+            }
+        }
+        return text;
+    }
+
+    public static String getCheckboxesString(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Yes to English
+            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_yes);
+            }
+            // Translate string No to English
+            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_no);
             }
             // Translate string Electricity to English
             if (context.getString(R.string.electricity).equalsIgnoreCase(text)) {
@@ -3548,10 +3512,6 @@ public final class StringUtils {
             // Translate string Dung Cakes to English
             if (context.getString(R.string.dung_cakes).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.dung_cakes);
-            }
-            // Translate string Other Specify to English
-            if (context.getString(R.string.other_specify).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.other_specify);
             }
             // Translate string Lantern to English
             if (context.getString(R.string.lantern).equalsIgnoreCase(text)) {
@@ -3673,54 +3633,6 @@ public final class StringUtils {
             if (context.getString(R.string.let_it_stand_and_settle).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.let_it_stand_and_settle);
             }
-            // Translate string Flush To Piped Sewer System to English
-            if (context.getString(R.string.flush_to_piped_sewer_system).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.flush_to_piped_sewer_system);
-            }
-            // Translate string Flush To Septic Tank to English
-            if (context.getString(R.string.flush_to_septic_tank).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.flush_to_septic_tank);
-            }
-            // Translate string Flush To Pit Latrine to English
-            if (context.getString(R.string.flush_to_pit_latrine).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.flush_to_pit_latrine);
-            }
-            // Translate string Flush To Somewhere Else to English
-            if (context.getString(R.string.flush_to_somewhere_else).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.flush_to_somewhere_else);
-            }
-            // Translate string Flush Don't Know Where to English
-            if (context.getString(R.string.flush_dont_know_where).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.flush_dont_know_where);
-            }
-            // Translate string Ventilated Improved Pit (VIP) or Biogas Latrine to English
-            if (context.getString(R.string.ventilated_improved_pit_biogas_latrine).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.ventilated_improved_pit_biogas_latrine);
-            }
-            // Translate string Pit Latrine With Slab to English
-            if (context.getString(R.string.pit_latrine_with_slab).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.pit_latrine_with_slab);
-            }
-            // Translate string Pit Latrine Without Slab to English
-            if (context.getString(R.string.pit_latrine_without_slab_open_pit).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.pit_latrine_without_slab_open_pit);
-            }
-            // Translate string Twin Pit Composting Toilet to English
-            if (context.getString(R.string.twin_pit_composting_toilet).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.twin_pit_composting_toilet);
-            }
-            // Translate string Dry Toilet to English
-            if (context.getString(R.string.dry_toilet).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.dry_toilet);
-            }
-            // Translate string No Facility Uses Open Space or Field to English
-            if (context.getString(R.string.no_facility_uses_open_space_or_field).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.no_facility_uses_open_space_or_field);
-            }
-            // Translate string Pit Latrine With Slab to English
-            if (context.getString(R.string.pit_latrine_with_slab).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.pit_latrine_with_slab);
-            }
             // Translate string No Water Available In The Toilet to English
             if (context.getString(R.string.no_water_available_in_the_toilet).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_water_available_in_the_toilet);
@@ -3736,10 +3648,6 @@ public final class StringUtils {
             // Translate string Problem In Toilet Plumbing to English
             if (context.getString(R.string.problem_in_toilet_plumbing).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.problem_in_toilet_plumbing);
-            }
-            // Translate string Other Reasons (Specify) to English
-            if (context.getString(R.string.other_reasons_specify).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.other_reasons_specify);
             }
             // Translate string No Soap Available In The Household to English
             if (context.getString(R.string.no_soap_available_in_the_household).equalsIgnoreCase(text)) {
@@ -3797,6 +3705,23 @@ public final class StringUtils {
             if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_expense);
             }
+        }
+        return text;
+    }
+
+    public static String getSurveyStrings(String text, Context context, Context updatedContext, String locale) {
+        text = getSurveyValue(text);
+        // If the app language is not in English, only in that case will the strings be translated.
+        if (!locale.equalsIgnoreCase("en")) {
+            // Translate string Yes to English
+            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_yes);
+            }
+            // Translate string No to English
+            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.survey_no);
+            }
+
             // Translate string Hours to English
             if (context.getString(R.string.identification_screen_picker_hours).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.identification_screen_picker_hours);
