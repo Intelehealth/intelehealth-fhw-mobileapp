@@ -40,8 +40,21 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+
         <activity
-            android:name=".NotificationActivity"
+            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.NotificationActivity"
             android:exported="false" />
         <activity
             android:name=".activities.followuppatients.FollowUp_VisitDetails"
@@ -55,14 +68,7 @@
             android:exported="true"
             android:label="@string/title_follow_up"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui2.activities.UIDesignActivity"
-            android:exported="true"
-            android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan">
 
-
-        </activity>
         <activity
             android:name=".ui2.activities.TestDialogsUI2Activity"
             android:exported="false" />
@@ -197,6 +203,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
         </activity>
+
         <activity
             android:name=".activities.vitalActivity.VitalsActivity"
             android:configChanges="uiMode"
@@ -300,6 +307,12 @@
             android:theme="@style/AppTheme.NoActionBar">
 
 
+        </activity>
+        <activity
+            android:name=".activities.setupActivity.SetupActivityNew"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name=".activities.setupActivity.SetupActivity"
