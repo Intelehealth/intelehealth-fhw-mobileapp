@@ -40,8 +40,20 @@
     </string-array>
 
     <string-array name="countries_ar">
-        <item>Select Country</item>
-        <item>Syriana</item>
+        <item>حدد الدولة</item>
+        <item>سيريانا</item>
+    </string-array>
+
+    <string-array name="gender_en">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="gender_ar">
+        <item>الذكر</item>
+        <item>أنثى</item>
+        <item>آخر</item>
     </string-array>
 
     <string-array name="education_en">
@@ -72,9 +84,9 @@
     </string-array>
 
     <string-array name="states_syriana_ar">
-        <item>Select</item>
-        <item>As-Sweida</item>
-        <item>Deir-ez-Zor</item>
+        <item>يختار</item>
+        <item>السويداء</item>
+        <item>دير الزور</item>
     </string-array>
 
     <string-array name="units">
@@ -1157,7 +1169,7 @@
     </string-array>
 
     <string-array name="relationshipHoH_ar">
-        <item>Select</item>
+        <item>يختار</item>
         <item>لا أحد</item>
         <item>نفسي</item>
         <item>زوج/ة</item>
@@ -1456,8 +1468,8 @@
 
     <string-array name="independent_residence_ar">
         <item>يختار</item>
-        <item>Yes</item>
-        <item>No</item>
+        <item>نعم</item>
+        <item>رقم</item>
     </string-array>
 
     //Why HOH

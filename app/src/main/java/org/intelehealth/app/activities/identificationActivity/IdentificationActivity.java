@@ -38,11 +38,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
@@ -77,8 +79,10 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -136,19 +140,19 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter, occupationAdapter, countryAdapter, stateAdapter, relationAdapter, maritalStatusAdapter, residenceNatureAdapter,
-    linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
+            linkNatureAdapter, husbandStatusAdapter, independentResidenceAdapter, whyHOHAdapter, changeConditionReasonAdapter, percentageIncomeAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
     Patient patient1 = new Patient();
-    private String patientUuid = "", mGender,patientID_edit, country1, state, uuid = "", mCurrentPhotoPath, privacy_value, headOfHousehold = "No";
+    private String patientUuid = "", mGender, patientID_edit, country1, state, uuid = "", mCurrentPhotoPath, privacy_value, headOfHousehold = "No";
     private int mDOBYear, mDOBMonth, mDOBDay;
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     PatientsDAO patientsDAO = new PatientsDAO();
-    EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mCity, mPostal,countryText, stateText, sinceChangeHappenedET, sinceSupportingFamilyET;
+    EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mCity, mPostal, countryText, stateText, sinceChangeHappenedET, sinceSupportingFamilyET;
     MaterialAlertDialogBuilder mAgePicker;
-    RadioButton mGenderM,mGenderF, mGenderO, yesHOH, noHOH;
+    RadioButton mGenderM, mGenderF, mGenderO, yesHOH, noHOH;
     Spinner mOccupation, mCountry, mState, mEducation;
     LinearLayout countryStateLayout;
     ImageView mImageView;
@@ -161,8 +165,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     int dob_indexValue = 15;
     String mAddress1Value = "", mAddress2Value = "", mPostalValue = "", stateValue = "", countryValue = "", villageValue = "", mRelationshipValue = "";
     Spinner HOH_relation_spinner, marital_status_spinner, husband_status_spinner, residence_nature_spinner, link_nature_spinner, independent_resid_spinner,
-    whyHOH_spinner, mainTendency_spinner, changeConditionReason_spinner, percentage_income_spinner;
+            whyHOH_spinner, mainTendency_spinner, changeConditionReason_spinner, percentage_income_spinner;
     private ActivityIdentificationBinding binding;
+    MaterialCheckBox fhhSurveyCB, generalCB, studentCB, emergencyCB;
+    ArrayList<String> selectedAid_en, selectedAid_ar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -410,6 +416,37 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
 
+            if (patient1 != null && patient1.getPatientAidType() != null)
+            {
+                Log.d("Patient Aid Type", patient1.getPatientAidType());
+                if(patient1.getPatientAidType().toString().contains(getString(R.string.student_aid_survey))) {
+                    studentCB.setChecked(true);
+//                    hideSpinnersBasedOnAid();
+                }
+                if(patient1.getPatientAidType().toString().contains(getString(R.string.emergency_survey))) {
+                    emergencyCB.setChecked(true);
+//                    hideSpinnersBasedOnAid();
+                }
+                if(patient1.getPatientAidType().toString().contains(getString(R.string.fhh_survey))) {
+                    fhhSurveyCB.setChecked(true);
+//                    showSpinnersBasedOnAid();
+                }
+                if(patient1.getPatientAidType().toString().contains(getString(R.string.general_aid_survey))) {
+                    generalCB.setChecked(true);
+//                    showSpinnersBasedOnAid();
+                }
+
+            }
+
+            if(patient1!=null & patient1.getHeadOfHousehold()!=null)
+            {
+                String headOfHousehold = patient1.getHeadOfHousehold();
+                if(headOfHousehold.equalsIgnoreCase(getString(R.string.yes)))
+                    yesHOH.setChecked(true);
+                else
+                    noHOH.setChecked(true);
+
+            }
             if (patient1 != null && patient1.getEducation_level() != null && patient1.getEducation_level().equalsIgnoreCase(getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else {
@@ -490,7 +527,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     String relationHOH = patient1.getRelationshiphoh();
                     HOH_relation_spinner.setSelection(relationAdapter != null ? relationAdapter.getPosition(relationHOH) : 0);
                 } else {
-                    link_nature_spinner.setSelection(relationAdapter != null ? relationAdapter.getPosition(patient1.getRelationshiphoh()) : 0);
+                    HOH_relation_spinner.setSelection(relationAdapter != null ? relationAdapter.getPosition(patient1.getRelationshiphoh()) : 0);
                 }
             }
 
@@ -524,7 +561,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                     //TODO: Arabic language changes
                     String mainTendency = patient1.getMainTendency();
-                    mainTendency_spinner.setSelection( independentResidenceAdapter!= null ? independentResidenceAdapter.getPosition(mainTendency) : 0);
+                    mainTendency_spinner.setSelection(independentResidenceAdapter != null ? independentResidenceAdapter.getPosition(mainTendency) : 0);
                 } else {
                     mainTendency_spinner.setSelection(independentResidenceAdapter != null ? independentResidenceAdapter.getPosition(patient1.getMainTendency()) : 0);
                 }
@@ -536,9 +573,21 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                     //TODO: Arabic language changes
                     String changeCondition = patient1.getConditionOfSupport();
-                    changeConditionReason_spinner.setSelection(changeConditionReasonAdapter!= null ? changeConditionReasonAdapter.getPosition(changeCondition) : 0);
+                    changeConditionReason_spinner.setSelection(changeConditionReasonAdapter != null ? changeConditionReasonAdapter.getPosition(changeCondition) : 0);
                 } else {
                     changeConditionReason_spinner.setSelection(changeConditionReasonAdapter != null ? changeConditionReasonAdapter.getPosition(patient1.getConditionOfSupport()) : 0);
+                }
+            }
+
+            if (patient1 != null && patient1.getMainOfficial() != null && patient1.getMainOfficial().equalsIgnoreCase(getString(R.string.not_provided)))
+                whyHOH_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                    //TODO: Arabic language changes
+                    String whyHOH = patient1.getMainOfficial();
+                    whyHOH_spinner.setSelection(whyHOHAdapter != null ? whyHOHAdapter.getPosition(whyHOH) : 0);
+                } else {
+                    whyHOH_spinner.setSelection(whyHOHAdapter != null ? whyHOHAdapter.getPosition(patient1.getMainOfficial()) : 0);
                 }
             }
 
@@ -638,8 +687,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                             //TODO: Change hindi language to arabic
                             String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                             mDOB.setText(dob_text);
-                        }
-                        else {
+                        } else {
                             mDOB.setText(dobString);
                         }
 
@@ -791,8 +839,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                         String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                         //TODO: Change hindi language to arabic
                         mDOB.setText(dob_text);
-                    }
-                    else {
+                    } else {
                         mDOB.setText(dobString);
                     }
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
@@ -814,8 +861,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v ->
         {
-            if (patientID_edit != null) { onPatientUpdateClicked(patient1); }
-            else { onPatientCreateClicked(); }
+            if (patientID_edit != null) {
+                onPatientUpdateClicked(patient1);
+            } else {
+                onPatientCreateClicked();
+            }
         });
 
     }
@@ -1270,7 +1320,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("working condition")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-               if (name.equalsIgnoreCase("nature_of_the_residential_complex")) {
+                if (name.equalsIgnoreCase("nature_of_the_residential_complex")) {
                     patient1.setResidentialComplexNature(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("link to the place of residence")) {
@@ -1288,13 +1338,16 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("responsible for family")) {
                     patient1.setHeadOfHousehold(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("patient aid type")) {
+                    patient1.setPatientAidType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("percentage of income")) {
                     patient1.setPercentageOfIncome(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("number of years for support")) {
                     patient1.setSinceWhenMainResponsible(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("independent residence ")) {
+                if (name.equalsIgnoreCase("independent residence")) {
                     patient1.setIndependentResidence(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("main official for family's support")) {
@@ -1550,7 +1603,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked())) {
+                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked())
+                && (studentCB.isChecked() || emergencyCB.isChecked() || generalCB.isChecked() || fhhSurveyCB.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1615,6 +1669,26 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             }
 
+            if (!generalCB.isChecked() && !studentCB.isChecked() && !emergencyCB.isChecked() && !fhhSurveyCB.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.identification_screen_required_fields);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+            }
+
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
@@ -1629,7 +1703,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mAddress1.setError(null);
         }
 
-        if (sinceSupportingFamilyET.getText().toString().isEmpty() || sinceSupportingFamilyET.getText().toString().equalsIgnoreCase("")) {
+        /*if (sinceSupportingFamilyET.getVisibility() == View.VISIBLE && (sinceSupportingFamilyET.getText().toString().isEmpty() || sinceSupportingFamilyET.getText().toString().equalsIgnoreCase(""))) {
             sinceSupportingFamilyET.setError(getString(R.string.error_field_required));
             focusView = sinceSupportingFamilyET;
             cancel = true;
@@ -1638,7 +1712,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             sinceSupportingFamilyET.setError(null);
         }
 
-        if (sinceChangeHappenedET.getText().toString().isEmpty() || sinceChangeHappenedET.getText().toString().equalsIgnoreCase("")) {
+        if (sinceChangeHappenedET.getVisibility() == View.VISIBLE && (sinceChangeHappenedET.getText().toString().isEmpty() || sinceChangeHappenedET.getText().toString().equalsIgnoreCase(""))) {
             sinceChangeHappenedET.setError(getString(R.string.error_field_required));
             focusView = sinceChangeHappenedET;
             cancel = true;
@@ -1666,7 +1740,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
         //Roster Insert Validations - Start
-        if (HOH_relation_spinner.getSelectedItemPosition() == 0) {
+        if (HOH_relation_spinner.getVisibility() == View.VISIBLE && (HOH_relation_spinner.getSelectedItemPosition() == 0)) {
             TextView t = (TextView) HOH_relation_spinner.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
@@ -1676,7 +1750,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         }
 
 
-        if (marital_status_spinner.getSelectedItemPosition() == 0) {
+        if (marital_status_spinner.getVisibility() == View.VISIBLE && (marital_status_spinner.getSelectedItemPosition() == 0)) {
             TextView t = (TextView) marital_status_spinner.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
@@ -1685,7 +1759,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             return;
         }
 
-        if (mEducation.getSelectedItemPosition() == 0) {
+        if (mEducation.getVisibility() == View.VISIBLE && (mEducation.getSelectedItemPosition() == 0)) {
             TextView t = (TextView) mEducation.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
@@ -1694,14 +1768,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             return;
         }
 
-        if (mOccupation.getSelectedItemPosition() == 0) {
+        if (mOccupation.getVisibility() == View.VISIBLE && (mOccupation.getSelectedItemPosition() == 0)) {
             TextView t = (TextView) mOccupation.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = mOccupation;
             cancel = true;
             return;
-        }
+        }*/
 
            /*Other
         if (til_whatisyourrelation_other.getVisibility() == View.VISIBLE) {
@@ -1936,8 +2010,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (cancel) {
             focusView.requestFocus();
             Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
@@ -1968,10 +2041,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
-            patientdto.setCountry(StringUtils.getValue("India"));
+            patientdto.setCountry(mCountry.getSelectedItem().toString());
             patientdto.setPatientPhoto(mCurrentPhotoPath);
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+            patientdto.setStateprovince(mState.getSelectedItem().toString());
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("patient aid type"));
+            String aidTypeInJson = getAidTypeInJson();
+            patientAttributesDTO.setValue(aidTypeInJson);
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2002,7 +2082,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
-            patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
+            patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2123,10 +2203,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {
-
                 String HouseHold_UUID = UUID.randomUUID().toString();
                 sessionManager.setHouseholdUuid(HouseHold_UUID);
-
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -2135,7 +2213,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
             } else {
-
                 String HouseHold_UUID = sessionManager.getHouseholdUuid();
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2143,7 +2220,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setPersonAttributeTypeUuid
                         (patientsDAO.getUuidForAttribute("HouseHold"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
-
             }
             //House Hold Registration - End
 
@@ -2184,6 +2260,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+    }
+
+    private String getAidTypeInJson() {
+        if (selectedAid_en != null && selectedAid_ar != null) {
+            Gson gson = new Gson();
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.put("ar", selectedAid_ar.toString());
+            resultMap.put("en", selectedAid_en.toString());
+            return gson.toJson(resultMap);
+        }
+        return "Not Provided";
     }
 
     /*private void insertedit_RosterValuesIntoLocalDB(PatientAttributesDTO patientAttributesDTO,
@@ -2350,7 +2437,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         patientAttributesDTOList.add(patientAttributesDTO);*/
 //        //cost consult
 //
-        //cost medicines
+    //cost medicines
        /* patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
@@ -2414,11 +2501,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
 //        Log.d("HOH", "total family meme: " + binding.edittextNoOfPregnancyOutcomePastTwoYrs.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO); */
-        //no of times pregnant past 2yrs
-        //  }
-        // past two yrs - end
+    //no of times pregnant past 2yrs
+    //  }
+    // past two yrs - end
 
-        // outcome pregnancy
+    // outcome pregnancy
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);
@@ -2436,9 +2523,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 //            patientAttributesDTO.setValue(StringUtils.getChildAlive(spinner_childalive.getSelectedItem().toString(), sessionManager.getAppLanguage()));
 //            //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
-        //       }
+    //       }
 
-        //year of pregnancy
+    //year of pregnancy
 //        patientAttributesDTO = new PatientAttributesDTO();
 //        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //        patientAttributesDTO.setPatientuuid(uuid);
@@ -2913,11 +3000,12 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                     && !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
-                    !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())  && (yesHOH.isChecked() || noHOH.isChecked())) {
-
+                    !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked()) && (yesHOH.isChecked() || noHOH.isChecked()) && (studentCB.isChecked() || emergencyCB.isChecked() ||
+                    generalCB.isChecked() || fhhSurveyCB.isChecked())) {
+                aidSelectionImplementation();
                 Log.v(TAG, "Result");
-
-            } else {
+            }
+            else {
                 if (mFirstName.getText().toString().equals("")) {
                     mFirstName.setError(getString(R.string.error_field_required));
                 }
@@ -2976,6 +3064,26 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 }
 
+                if (!generalCB.isChecked() && !studentCB.isChecked() && !emergencyCB.isChecked() && !fhhSurveyCB.isChecked()) {
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                    alertDialogBuilder.setTitle(R.string.error);
+                    alertDialogBuilder.setMessage(R.string.identification_screen_required_fields);
+                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+                }
+
                 Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
                 return;
             }
@@ -2988,7 +3096,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             } else {
                 countryText.setError(null);
             }
-
 
             if (mState.getSelectedItemPosition() == 0) {
                 stateText.setError(getString(R.string.error_field_required));
@@ -3008,7 +3115,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 mAddress1.setError(null);
             }
 
-            if (HOH_relation_spinner.getSelectedItemPosition() == 0) {
+            /*if (HOH_relation_spinner.getVisibility() == View.VISIBLE && (HOH_relation_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) HOH_relation_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3017,7 +3124,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (marital_status_spinner.getSelectedItemPosition() == 0) {
+            if (marital_status_spinner.getVisibility() == View.VISIBLE && (marital_status_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) marital_status_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3026,7 +3133,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (mEducation.getSelectedItemPosition() == 0) {
+            if (mEducation.getVisibility() == View.VISIBLE && (mEducation.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) mEducation.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3035,7 +3142,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (mOccupation.getSelectedItemPosition() == 0) {
+            if (mOccupation.getVisibility() == View.VISIBLE && (mOccupation.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) mOccupation.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3044,7 +3151,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (link_nature_spinner.getSelectedItemPosition() == 0) {
+            if (link_nature_spinner.getVisibility() == View.VISIBLE && (link_nature_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) link_nature_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3053,7 +3160,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (independent_resid_spinner.getSelectedItemPosition() == 0) {
+            if (independent_resid_spinner.getVisibility() == View.VISIBLE && (independent_resid_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) independent_resid_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3062,7 +3169,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (residence_nature_spinner.getSelectedItemPosition() == 0) {
+            if (residence_nature_spinner.getVisibility() == View.VISIBLE && (residence_nature_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) residence_nature_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3071,7 +3178,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (whyHOH_spinner.getSelectedItemPosition() == 0) {
+            if (whyHOH_spinner.getVisibility() == View.VISIBLE && (whyHOH_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) whyHOH_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3080,7 +3187,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (mainTendency_spinner.getSelectedItemPosition() == 0) {
+            if (mainTendency_spinner.getVisibility() == View.VISIBLE && (mainTendency_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) mainTendency_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3089,7 +3196,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (changeConditionReason_spinner.getSelectedItemPosition() == 0) {
+            if (changeConditionReason_spinner.getVisibility() == View.VISIBLE && (changeConditionReason_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) changeConditionReason_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3098,7 +3205,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (percentage_income_spinner.getSelectedItemPosition() == 0) {
+            if (percentage_income_spinner.getVisibility() == View.VISIBLE && (percentage_income_spinner.getSelectedItemPosition() == 0)) {
                 TextView t = (TextView) percentage_income_spinner.getSelectedView();
                 t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
@@ -3107,7 +3214,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 return;
             }
 
-            if (sinceSupportingFamilyET.getText().toString().isEmpty() || sinceSupportingFamilyET.getText().toString().equalsIgnoreCase("")) {
+            if (sinceSupportingFamilyET.getVisibility() == View.VISIBLE && (sinceSupportingFamilyET.getText().toString().isEmpty() || sinceSupportingFamilyET.getText().toString().equalsIgnoreCase(""))) {
                 sinceSupportingFamilyET.setError(getString(R.string.error_field_required));
                 focusView = sinceSupportingFamilyET;
                 cancel = true;
@@ -3116,21 +3223,20 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 sinceSupportingFamilyET.setError(null);
             }
 
-            if (sinceChangeHappenedET.getText().toString().isEmpty() || sinceChangeHappenedET.getText().toString().equalsIgnoreCase("")) {
+            if (sinceChangeHappenedET.getVisibility() == View.VISIBLE && (sinceChangeHappenedET.getText().toString().isEmpty() || sinceChangeHappenedET.getText().toString().equalsIgnoreCase(""))) {
                 sinceChangeHappenedET.setError(getString(R.string.error_field_required));
                 focusView = sinceChangeHappenedET;
                 cancel = true;
                 return;
             } else {
                 sinceChangeHappenedET.setError(null);
-            }
+            } */
 
 
             if (cancel) {
                 focusView.requestFocus();
                 Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 if (mCurrentPhotoPath == null)
                     mCurrentPhotoPath = patientdto.getPatient_photo();
 
@@ -3165,9 +3271,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
                 patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
                 patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
-                patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+                patientdto.setCountry(mCountry.getSelectedItem().toString());
                 patientdto.setPatient_photo(mCurrentPhotoPath);
-                patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+                patientdto.setState_province(mState.getSelectedItem().toString());
+
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("patient aid type"));
+                String aidTypeInJson = getAidTypeInJson();
+                patientAttributesDTO.setValue(aidTypeInJson);
+                patientAttributesDTOList.add(patientAttributesDTO);
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3198,8 +3312,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("number of years for support"));
-                patientAttributesDTO.setValue(sinceChangeHappenedET.getText().toString());
+                patientAttributesDTO.setValue(sinceSupportingFamilyET.getText().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
+
 
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3316,22 +3431,17 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-
                 //House Hold Registration
                 if (sessionManager.getHouseholdUuid().equals("")) {
-
                     String HouseHold_UUID = UUID.randomUUID().toString();
                     sessionManager.setHouseholdUuid(HouseHold_UUID);
-
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid
                             (patientsDAO.getUuidForAttribute("HouseHold"));
                     patientAttributesDTO.setValue(HouseHold_UUID);
-
                 } else {
-
                     String HouseHold_UUID = sessionManager.getHouseholdUuid();
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3339,13 +3449,13 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     patientAttributesDTO.setPersonAttributeTypeUuid
                             (patientsDAO.getUuidForAttribute("HouseHold"));
                     patientAttributesDTO.setValue(HouseHold_UUID);
-
                 }
+
                 //House Hold Registration - End
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-                patientAttributesDTOList.add(patientAttributesDTO);
                 Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+                Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.toString());
                 Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
 
             }
@@ -3380,49 +3490,185 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     }
 
     private void initUI() {
-            mFirstName = findViewById(R.id.identification_first_name);
-            mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-            mMiddleName = findViewById(R.id.identification_middle_name);
-            mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-            mLastName = findViewById(R.id.identification_last_name);
-            mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-            mDOB = findViewById(R.id.identification_birth_date_text_view);
-            mPhoneNum = findViewById(R.id.identification_phone_number);
-            mAge = findViewById(R.id.identification_age);
-            mAddress1 = findViewById(R.id.identification_address1);
-            mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
-            mAddress2 = findViewById(R.id.identification_address2);
-            mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
-            mCity = findViewById(R.id.identification_city);
-            mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-            stateText = findViewById(R.id.identification_state);
-            mState = findViewById(R.id.spinner_state);
-            mPostal = findViewById(R.id.identification_postal_code);
-            countryText = findViewById(R.id.identification_country);
-            mCountry = findViewById(R.id.spinner_country);
-            mGenderM = findViewById(R.id.identification_gender_male);
-            mGenderF = findViewById(R.id.identification_gender_female);
-            mGenderO = findViewById(R.id.identification_gender_others);
-            mOccupation = findViewById(R.id.spinner_occupation);
-            mEducation = findViewById(R.id.spinner_education);
-            countryStateLayout = findViewById(R.id.identification_llcountry_state);
-            mImageView = findViewById(R.id.imageview_id_picture);
-            HOH_relation_spinner = findViewById(R.id.spinner_whatisyourrelation);
-            marital_status_spinner = findViewById(R.id.spinner_maritualstatus);
-            link_nature_spinner = findViewById(R.id.spinner_residence_link_nature);
-            residence_nature_spinner = findViewById(R.id.spinner_residence_nature);
-            husband_status_spinner = findViewById(R.id.spinner_husband_status);
-            yesHOH = findViewById(R.id.hoh_yes);
-            noHOH = findViewById(R.id.hoh_no);
-            independent_resid_spinner = findViewById(R.id.spinner_independent_residence);
-            whyHOH_spinner = findViewById(R.id.spinner_main_official);
-            mainTendency_spinner = findViewById(R.id.spinner_main_tendency_for_breadwinner);
-            changeConditionReason_spinner = findViewById(R.id.spinner_reason_changing_condition);
-            percentage_income_spinner = findViewById(R.id.spinner_percentage_income);
-            sinceChangeHappenedET = findViewById(R.id.ET_since_change_happened);
-            sinceSupportingFamilyET = findViewById(R.id.et_since_when_supporting_family);
-            roasterCommentedCode();
+        mFirstName = findViewById(R.id.identification_first_name);
+        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mMiddleName = findViewById(R.id.identification_middle_name);
+        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mLastName = findViewById(R.id.identification_last_name);
+        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mDOB = findViewById(R.id.identification_birth_date_text_view);
+        mPhoneNum = findViewById(R.id.identification_phone_number);
+        mAge = findViewById(R.id.identification_age);
+        mAddress1 = findViewById(R.id.identification_address1);
+        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+        mAddress2 = findViewById(R.id.identification_address2);
+        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+        mCity = findViewById(R.id.identification_city);
+        mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+        stateText = findViewById(R.id.identification_state);
+        mState = findViewById(R.id.spinner_state);
+        mPostal = findViewById(R.id.identification_postal_code);
+        countryText = findViewById(R.id.identification_country);
+        mCountry = findViewById(R.id.spinner_country);
+        mGenderM = findViewById(R.id.identification_gender_male);
+        mGenderF = findViewById(R.id.identification_gender_female);
+        mGenderO = findViewById(R.id.identification_gender_others);
+        mOccupation = findViewById(R.id.spinner_occupation);
+        mEducation = findViewById(R.id.spinner_education);
+        countryStateLayout = findViewById(R.id.identification_llcountry_state);
+        mImageView = findViewById(R.id.imageview_id_picture);
+        HOH_relation_spinner = findViewById(R.id.spinner_whatisyourrelation);
+        marital_status_spinner = findViewById(R.id.spinner_maritualstatus);
+        link_nature_spinner = findViewById(R.id.spinner_residence_link_nature);
+        residence_nature_spinner = findViewById(R.id.spinner_residence_nature);
+        husband_status_spinner = findViewById(R.id.spinner_husband_status);
+        yesHOH = findViewById(R.id.hoh_yes);
+        noHOH = findViewById(R.id.hoh_no);
+        independent_resid_spinner = findViewById(R.id.spinner_independent_residence);
+        whyHOH_spinner = findViewById(R.id.spinner_main_official);
+        mainTendency_spinner = findViewById(R.id.spinner_main_tendency_for_breadwinner);
+        changeConditionReason_spinner = findViewById(R.id.spinner_reason_changing_condition);
+        percentage_income_spinner = findViewById(R.id.spinner_percentage_income);
+        sinceChangeHappenedET = findViewById(R.id.ET_since_change_happened);
+        sinceSupportingFamilyET = findViewById(R.id.et_since_when_supporting_family);
+        emergencyCB = findViewById(R.id.cbEmergency);
+        generalCB = findViewById(R.id.cbGeneralAid);
+        studentCB = findViewById(R.id.cbStudentAid);
+        fhhSurveyCB = findViewById(R.id.cbFHHSurvey);
+        selectedAid_en = new ArrayList<>();
+        selectedAid_ar = new ArrayList<>();
+//        hideSpinnersBasedOnAid();
+        aidSelectionImplementation();
+        roasterCommentedCode();
+    }
+
+    private void hideSpinnersBasedOnAid() {
+        link_nature_spinner.setSelection(0);
+        link_nature_spinner.setVisibility(View.GONE);
+        residence_nature_spinner.setSelection(0);
+        residence_nature_spinner.setVisibility(View.GONE);
+        husband_status_spinner.setSelection(0);
+        husband_status_spinner.setVisibility(View.GONE);
+        independent_resid_spinner.setSelection(0);
+        independent_resid_spinner.setVisibility(View.GONE);
+        percentage_income_spinner.setSelection(0);
+        percentage_income_spinner.setVisibility(View.GONE);
+        whyHOH_spinner.setSelection(0);
+        whyHOH_spinner.setVisibility(View.GONE);
+        sinceSupportingFamilyET.setText("");
+        sinceSupportingFamilyET.setVisibility(View.GONE);
+        mainTendency_spinner.setSelection(0);
+        mainTendency_spinner.setVisibility(View.GONE);
+        changeConditionReason_spinner.setSelection(0);
+        changeConditionReason_spinner.setVisibility(View.GONE);
+        sinceChangeHappenedET.setText("");
+        sinceChangeHappenedET.setVisibility(View.GONE);
+    }
+
+    private void showSpinnersBasedOnAid() {
+        link_nature_spinner.setVisibility(View.VISIBLE);
+        residence_nature_spinner.setVisibility(View.VISIBLE);
+        husband_status_spinner.setVisibility(View.VISIBLE);
+        independent_resid_spinner.setVisibility(View.VISIBLE);
+        percentage_income_spinner.setVisibility(View.VISIBLE);
+        whyHOH_spinner.setVisibility(View.VISIBLE);
+        sinceSupportingFamilyET.setVisibility(View.VISIBLE);
+        mainTendency_spinner.setVisibility(View.VISIBLE);
+        changeConditionReason_spinner.setVisibility(View.VISIBLE);
+        sinceChangeHappenedET.setVisibility(View.VISIBLE);
+    }
+
+    private void aidSelectionImplementation() {
+
+        if (emergencyCB.isChecked()) {
+            selectedAid_en.add("Emergency Need Evaluation");
+            selectedAid_ar.add("تقييم الاحتياجات الطارئة");
         }
+        if (generalCB.isChecked()) {
+            selectedAid_en.add("General Aid");
+            selectedAid_ar.add("المساعدة العامة");
+        }
+        if (studentCB.isChecked()) {
+            selectedAid_en.add("Student Aid");
+            selectedAid_ar.add("مساعدة الطلاب");
+        }
+        if (fhhSurveyCB.isChecked()) {
+            selectedAid_en.add("FHH Survey");
+            selectedAid_ar.add("مسح FHH");
+        }
+
+        emergencyCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (emergencyCB.isChecked()) {
+                    selectedAid_en.add("Emergency Need Evaluation");
+                    selectedAid_ar.add("تقييم الاحتياجات الطارئة");
+                } else if (!emergencyCB.isChecked()) {
+                    if (selectedAid_en.contains("Emergency Need Evaluation"))
+                        selectedAid_en.remove("Emergency Need Evaluation");
+                    if (selectedAid_ar.contains("تقييم الاحتياجات الطارئة"))
+                        selectedAid_ar.remove("تقييم الاحتياجات الطارئة");
+
+                }
+            }
+        });
+
+        generalCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (generalCB.isChecked()) {
+                    selectedAid_en.add("General Aid");
+                    selectedAid_ar.add("المساعدة العامة");
+//                    showSpinnersBasedOnAid();
+                } else if (!generalCB.isChecked()) {
+                    if (selectedAid_en.contains("General Aid"))
+                        selectedAid_en.remove("General Aid");
+
+                    if (selectedAid_ar.contains("المساعدة العامة"))
+                        selectedAid_ar.remove("المساعدة العامة");
+
+//                    if (!selectedAid_en.contains("FHH Survey") && !selectedAid_ar.contains("مسح FHH"))
+//                        hideSpinnersBasedOnAid();
+                }
+            }
+        });
+
+        studentCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (studentCB.isChecked()) {
+                    selectedAid_en.add("Student Aid");
+                    selectedAid_ar.add("مساعدة الطلاب");
+                } else if (!studentCB.isChecked()) {
+                    if (selectedAid_en.contains("Student Aid"))
+                        selectedAid_en.remove("Student Aid");
+                    if (selectedAid_ar.contains("مساعدة الطلاب"))
+                        selectedAid_ar.remove("مساعدة الطلاب");
+                }
+            }
+        });
+
+        fhhSurveyCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (fhhSurveyCB.isChecked()) {
+                    selectedAid_en.add("FHH Survey");
+                    selectedAid_ar.add("مسح FHH");
+//                    showSpinnersBasedOnAid();
+                } else if (!fhhSurveyCB.isChecked()) {
+                    if (selectedAid_en.contains("FHH Survey"))
+                        selectedAid_en.remove("FHH Survey");
+
+                    if (selectedAid_ar.contains(" "))
+                        selectedAid_ar.remove("مسح FHH");
+
+//                    if (!selectedAid_en.contains("General Aid") && !selectedAid_ar.contains("المساعدة العامة"))
+//                        hideSpinnersBasedOnAid();
+
+                }
+            }
+        });
+    }
 
     private void commentedRoasterValidations() {
             /*Other
@@ -4912,4 +5158,4 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         setViewPagerOffset(binding.poViewPager);
     } */
-    }
+}

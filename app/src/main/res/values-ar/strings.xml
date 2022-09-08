@@ -1533,5 +1533,10 @@
     <string name="percentage_of_income">باستثناء المساعدة ، ما هي نسبة الدخل التي تقدمها بالنسبة لإجمالي دخل الأسرة؟</string>
     <string name="since_when_you_are_supporting_family">منذ متى وأنت المسؤول الرئيسي عن إعالة أسرتك؟</string>
     <string name="are_you_head_of_the_family">هل انت رب الاسرة؟ *</string>
+    <string name="fhh_survey">مسح FHH</string>
+    <string name="general_aid_survey">المساعدة العامة</string>
+    <string name="student_aid_survey">مساعدة الطلاب</string>
+    <string name="emergency_survey">تقييم الاحتياجات الطارئة</string>
+    <string name="syriana">سيريانا</string>
 
 </resources>

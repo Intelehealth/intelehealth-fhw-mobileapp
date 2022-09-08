@@ -647,28 +647,28 @@
                     android:layout_height="10dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbVaccineGuide"
+                    android:id="@+id/cbFHHSurvey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FHH Survey" />
+                    android:text="@string/fhh_survey" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbCovidConcern"
+                    android:id="@+id/cbGeneralAid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="General Aid" />
+                    android:text="@string/general_aid_survey" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbManagingBreathlessness"
+                    android:id="@+id/cbStudentAid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Student Aid" />
+                    android:text="@string/student_aid_survey" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbManageVoiceIssue"
+                    android:id="@+id/cbEmergency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Emergency need evaluation" />
+                    android:text="@string/emergency_survey" />
 
             </LinearLayout>
 

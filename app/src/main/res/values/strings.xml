@@ -1089,7 +1089,7 @@
     <string name="gender_other">Other</string>
     <string name="enter_in_completed_years">Enter in Completed Years</string>
     <string name="what_is_name_s_marital_status">What is %1$s\'s marital status?</string>
-    <string name="what_is_your_marital_status">What is your marital status?*</string>
+    <string name="what_is_your_marital_status">What is your marital status?</string>
     <string name="currently_married">Currently Married</string>
     <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
     <string name="widowed">Widowed</string>
@@ -1099,7 +1099,7 @@
     <string name="nas_never_married">Never Married</string>
 
     <string name="what_is_name_s_education_status">What is %1$s\'s education status?</string>
-    <string name="what_is_your_education_status">What is your education status?*</string>
+    <string name="what_is_your_education_status">What is your education status?</string>
     <string name="cannot_read_or_write">Cannot Read or Write</string>
     <string name="can_read_and_write">Can Read and Write</string>
     <string name="primary_education_till_class_five">Primary Education (Till Class 5)</string>
@@ -1110,7 +1110,7 @@
     <string name="postgraduate">Graduate</string>
     <string name="nas_none">None</string>
 
-    <string name="nas_occupation">Occupation*</string>
+    <string name="nas_occupation">Occupation</string>
     <string name="phone_ownership">Phone ownership</string>
     <string name="shared">Shared</string>
     <string name="owns_smartphone">Owns Smartphone</string>
@@ -1319,7 +1319,7 @@
 
     <string name="txt_hedingRosters">Rosters</string>
     <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
-    <string name="txt_what_is_your_relationship_with_household_members_you_support">What is your relationship with the household members you support?*</string>
+    <string name="txt_what_is_your_relationship_with_household_members_you_support">What is your relationship with the household members you support?</string>
     <string name="txt_what_is_your_maritual_status">What is your marital status?</string>
     <string name="txt_phone_ownership">Phone Ownership*</string>
     <string name="txt_bp_checked">BP checked</string>
@@ -1539,5 +1539,11 @@
     <string name="percentage_of_income">Excluding aid, what is the percentage of income that you provide in relation to the total income of the family?</string>
     <string name="since_when_you_are_supporting_family">Since when have you been the main responsible for supporting your family?</string>
     <string name="are_you_head_of_the_family">Are you Head of the Family?*</string>
+    <string name="fhh_survey">FHH Survey</string>
+    <string name="general_aid_survey">General Aid</string>
+    <string name="student_aid_survey">Student Aid</string>
+    <string name="emergency_survey">Emergency Need Evaluation</string>
+    <string name="syriana">Syriana</string>
+
 
 </resources>
