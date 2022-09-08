@@ -8,7 +8,7 @@ android {
         applicationId "org.intelehealth.unicef"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 28
+        versionCode 29
         buildToolsVersion('29.0.2')
         versionName "1.8.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
