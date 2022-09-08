@@ -41,7 +41,22 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".activities.setupActivity.SetupActivityNew"
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.followuppatients.FollowUp_VisitDetails"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="@string/title_follow_up"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.followuppatients.FollowUpPatientActivity_New"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="@string/title_follow_up"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui2.activities.UIDesignActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
@@ -57,38 +72,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.TermsAndConditionsActivityNew"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui2.onboarding.SetupPrivacyNoteActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui2.onboarding.IntroScreensActivityNew"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui2.activities.HomeScreenActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui2.activities.LoginActivityNew"
             android:exported="true"
@@ -328,6 +315,11 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
+        <activity
+            android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">

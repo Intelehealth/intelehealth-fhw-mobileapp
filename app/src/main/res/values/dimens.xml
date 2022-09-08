@@ -41,6 +41,7 @@
     <dimen name="physical_exam_img_max_height">125dp</dimen>
 
     <dimen name="text_18sp">18sp</dimen>
+    <dimen name="toolbar_text_size">18sp</dimen>
 
 
     <!--UI2.0-->
@@ -70,6 +71,7 @@
     <dimen name="common_imageview_back_width">40dp</dimen>
     <dimen name="common_imageview_back_height">20dp</dimen>
 
+    <dimen name="margin_4">4dp</dimen>
     <dimen name="common_tv_icon_padding">7dp</dimen>
 
     <dimen name="common_title_margin_top">20dp</dimen>
@@ -80,16 +82,22 @@
 
 
     <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_6.5">6.5dp</dimen>
     <dimen name="margin_7">7dp</dimen>
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
     <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_25">25dp</dimen>
     <dimen name="margin_30">30dp</dimen>
     <dimen name="margin_32">32dp</dimen>
     <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_45">45dp</dimen>
     <dimen name="margin_50">50dp</dimen>
 
     <dimen name="padding_5">5dp</dimen>
@@ -215,6 +223,47 @@
     <dimen name="card_close_visits_margin_top">16dp</dimen>
     <dimen name="bottom_nav_menu_text_size">50sp</dimen>
     <dimen name="bottom_nav_icon_size">25dp</dimen>
+
+    <dimen name="followup_toolbar">84dp</dimen>
+    <dimen name="fu_toolbat_txt_height">24dp</dimen>
+    <dimen name="fu_header_card_height">72dp</dimen>
+    <dimen name="fu_card_margin_sides">24dp</dimen>
+    <dimen name="fu_card_margin_updown">16dp</dimen>
+    <dimen name="fu_image_width">48dp</dimen>
+    <dimen name="fu_margin_start">12dp</dimen>
+    <dimen name="fu_name_txt_size">16sp</dimen>
+    <dimen name="fu_male_margin_start">4dp</dimen>
+    <dimen name="fu_male_textsize">14sp</dimen>
+    <dimen name="fu_pencil_width">14dp</dimen>
+    <dimen name="fu_pencil_height">14dp</dimen>
+    <dimen name="fu_icons_margin_top">18dp</dimen>
+    <dimen name="fu_icon_width">28dp</dimen>
+    <dimen name="fu_icon_height">28dp</dimen>
+    <dimen name="fu_vs_margin_start">8dp</dimen>
+    <dimen name="fu_vs_margin_top">40dp</dimen>
+    <dimen name="fu_date_txt_size">18sp</dimen>
+    <dimen name="fu_btn_size">48dp</dimen>
+    <dimen name="toolbar_margin_left">24dp</dimen>
+    <dimen name="toolbar_margin_top">44dp</dimen>
+    <dimen name="toolbar_margin_right">24dp</dimen>
+    <dimen name="cal_margin_top">6dp</dimen>
+    <dimen name="cal_margnin_start">4dp</dimen>
+    <dimen name="card_padding">5dp</dimen>
+    <dimen name="profile_img_card_size">32dp</dimen>
+    <dimen name="cal_size">16dp</dimen>
+    <dimen name="search_priority_tag">25dp</dimen>
+    <dimen name="search_presTag_margin_top">8dp</dimen>
+    <dimen name="search_toolbar_height">112dp</dimen>
+    <dimen name="search_icon_toolbar">20dp</dimen>
+    <dimen name="search_empty_margin_top">114dp</dimen>
+    <dimen name="search_icon_bg_dimens">100dp</dimen>
+    <dimen name="search_pat_notfound_txtsize">20sp</dimen>
+    <dimen name="search_addbtn_width">176dp</dimen>
+    <dimen name="search_add_btn_height">40dp</dimen>
+    <dimen name="search_item_name_width">130dp</dimen>
+    <dimen name="notifi_subtitle_size">12sp</dimen>
+    <dimen name="notifi_header_icon">40dp</dimen>
+
 
     <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>

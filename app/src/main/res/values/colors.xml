@@ -62,7 +62,7 @@
     <!--UI2.0-->
     <color name="colorPrimary">#2E1E91</color>
     <color name="colorPrimaryDark">#201560</color>
-    <color name="colorAccent">#EFE8FF</color>
+    <color name="colorAccent">#E6FFF3</color>
 
     <color name="colorPrimary1">#0FD197</color>
     <color name="colorPrimaryDark1">#098E66</color>
@@ -97,6 +97,11 @@
 
     <color name="cardTintDarkBlue">#2F1E96</color>
     <color name="cardTintLightGreen">#E6FFF3</color>
+
+    <color name="search_followup">#7F7B92</color>
+    <color name="header_title_color">#1B163A</color>
+    <color name="header_subtitle_color">#7F7B92</color>
+    <color name="notifi_divider_color">#33B2AFBE</color>
 
 
     <!--END-->

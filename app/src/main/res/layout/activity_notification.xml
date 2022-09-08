@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.NotificationActivity">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/notifi_relative"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/followup_toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-24dp"
+        android:background="@drawable/frame_10021">
+
+        <!-- Frame 100167 -->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/frame_10016"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/fu_toolbat_txt_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/toolbar_margin_top"
+            android:layout_marginRight="@dimen/toolbar_margin_right"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <!-- Frame 100116 -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/frame_10011"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:orientation="horizontal">
+
+                <!-- arrow-right -->
+                <ImageButton
+                    android:id="@+id/vector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:padding="@dimen/margin_5"
+                    android:background="@null"
+                    android:src="@drawable/ic_arrow_right" />
+
+                <!-- Label -->
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:gravity="top"
+                    android:lineSpacingExtra="1sp"
+                    android:text="@string/notifi_title"
+                    android:textColor="@null"
+                    android:textSize="@dimen/toolbar_text_size"
+                    android:textAppearance="@style/label"
+                    android:translationY="-0.28sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@drawable/ic_refreshbtn" />
+
+                <ImageButton
+                    android:id="@+id/filter"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@drawable/ic_filter" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!--card view-->
+
+    <RelativeLayout
+        android:id="@+id/relative_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notifi_relative"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/fu_card_margin_updown"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:background="@drawable/notifi_green_header_card">
+
+        <ImageView
+            android:id="@+id/notifi_header_icon"
+            android:layout_width="@dimen/notifi_header_icon"
+            android:layout_height="@dimen/notifi_header_icon"
+            android:layout_alignParentStart="true"
+            android:background="@null"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/fu_margin_start"
+            android:layout_marginBottom="@dimen/fu_margin_start"
+            android:src="@drawable/ic_notifi_header_icon" />
+
+        <TextView
+            android:id="@+id/notifi_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/fu_margin_start"
+            android:layout_toEndOf="@+id/notifi_header_icon"
+            android:text="@string/five_presc_received"
+            android:textColor="@color/header_title_color"
+            android:textSize="@dimen/fu_name_txt_size" />
+
+        <TextView
+            android:id="@+id/notifi_sub_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notifi_header_title"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_toEndOf="@+id/notifi_header_icon"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="2sp"
+            android:background="@null"
+            android:text="@string/notifi_subheader_title"
+            android:textColor="@color/header_subtitle_color"
+            android:textSize="@dimen/fu_male_textsize" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_today"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_icon_toolbar"
+        android:layout_below="@+id/relative_header"
+        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginTop="@dimen/fu_card_margin_sides"
+        android:layout_marginEnd="@dimen/fu_card_margin_sides">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/you_can_add"
+            android:textColor="@color/header_title_color"
+            android:textSize="@dimen/fu_male_textsize" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:src="@drawable/ic_clear_all_icon" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relative_today"
+        android:layout_marginTop="@dimen/fu_card_margin_updown"
+        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        tools:listitem="@layout/notification_list_item"
+        tools:itemCount="3"
+        />
+
+    <TextView
+        android:id="@+id/txt_yesterday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recycler_today"
+        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginTop="@dimen/fu_card_margin_sides"
+        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        android:text="@string/yesterday"
+        android:textColor="@color/header_title_color"
+        android:textSize="@dimen/fu_male_textsize" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_yesterday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_yesterday"
+        android:layout_marginTop="@dimen/fu_card_margin_updown"
+        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        tools:listitem="@layout/notification_list_item"
+        tools:itemCount="1"
+        />
+
+
+
+</RelativeLayout>

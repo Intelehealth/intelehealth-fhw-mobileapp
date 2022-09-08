@@ -12,6 +12,9 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 
 public class LoginActivityNew extends AppCompatActivity {
     TextInputEditText edittextUsername, editTextPassword;

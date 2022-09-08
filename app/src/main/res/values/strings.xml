@@ -917,6 +917,40 @@
 
 
 
+    <!--    Follow-up new screens -->
+    <string name="label">Follow-up visits(9)</string>
+    <string name="you_can_add">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="this_week">This week</string>
+    <string name="this_month">This Month</string>
+    <string name="fu_item_title">Anthony Gonsalves</string>
+    <string name="fu_visit_name">Anthony G.</string>
+    <string name="caption">Follow up on 12 June</string>
+    <string name="misc_txt">M 50</string>
+    <string name="fu_openmrsID">ID-987654jK</string>
+    <string name="details_head1">Headache and body pain</string>
+    <string name="details_head2">Visit ID: 987654jK</string>
+    <string name="fu_detiails_date">21 May 2022</string>
+    <string name="gp_txt">General physician</string>
+    <string name="dr_speciality">Doctor\'s speciality</string>
+    <string name="visitDetails_text">Visit summary</string>
+    <string name="followup_date_txtv">Follow up on 12 June</string>
+    <string name="followup_info">Please take Prajwal Waingankar\'s follow-up visit.</string>
+    <string name="search_txt_enter">Type Patient name or ID</string>
+    <string name="search_hint_text">Previously searched</string>
+    <string name="search_date_txt">24 May, at 3:15 pm</string>
+    <string name="search_gender">M 22</string>
+    <string name="search_stopwatch_text">In 2 minutes</string>
+    <string name="search_pat_not_found_txt">Patient not found!</string>
+    <string name="search_pat_hint_txt">Use correct Username or ID to search or you can a register new patient.</string>
+    <string name="notifi_title">Notification</string>
+    <string name="notifi_header_title">5 prescriptions received</string>
+    <string name="notifi_subheader_title">Send prescriptions to the patients</string>
+    <string name="notifi_card_title"><b>Rishi Prasad\'s</b> appointment starts in \n2 minutes at 6:08 pm.</string>
+    <string name="notifi_reminders">Reminders</string>
+    <string name="notifi_incompl_activity">Incomplete activity</string>
+    <string name="notifi_archived_notifi">Archived notifications</string>
+    <string name="five_presc_received">5 prescriptions received</string>
 
     <!--END-->
 
