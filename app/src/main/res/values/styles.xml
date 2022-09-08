@@ -4,11 +4,19 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+<!--
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+-->
+        <item name="android:textViewStyle">@style/DefaultTextviewStyle</item>
+
         <item name="android:textColor">@color/primary_text</item>
-        <item name="buttonStyle">@style/RobotoButtonStyle</item>
+        <!--
+                <item name="buttonStyle">@style/RobotoButtonStyle</item>
+        -->
+        <item name="buttonStyle">@style/DefaultButtonStyle</item>
+
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="colorSurface">#FFFFFF</item>
@@ -20,6 +28,19 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- UI 2.0 -->
+    <style name="AppThemeMaterialNew" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item><!--status bar-->
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorError">@color/colorPrimaryDark2</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary2</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="buttonStyle">@style/DefaultButtonStyle</item>
+
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -83,6 +104,7 @@
         <item name="fontFamily">@font/lato_medium</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="ScrollingPagerIndicator">
         <item name="spi_dotColor">@android:color/darker_gray</item>
         <item name="spi_dotSelectedColor">@android:color/darker_gray</item>
@@ -97,5 +119,62 @@
     <style name="DatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+
+    <!--UI2.0-->
+
+    <style name="DefaultButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/common_button_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">3sp</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+
+    <style name="DefaultTextviewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+    <style name="TextviewInputTitleStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:lineSpacingExtra">@dimen/common_title_line_spacing</item>
+        <item name="android:letterSpacing">@dimen/common_title_letter_spacing</item>
+        <item name="android:textSize">@dimen/common_label_text_size</item>
+        <item name="android:textColor">@color/textColorGray</item>
+
+    </style>
+
+    <!-- UI2.0 -->
+    <style name="NavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@color/colorPrimary</item>
+        <item name="itemTextAppearanceInactive">@color/iconTintGrayBottomNav</item>
+        <item name="itemTextColor">@color/textColorGray</item>
+
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="AutocompleteviewStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="hintEnabled">false</item>
+
+    </style>
+    <style name="NavigationDrawerItemStyle" parent="AppTheme">
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textSize">@dimen/nav_menus_text_size</item>
+        <item name="android:lineSpacingExtra">@dimen/nav_menus_line_spacing</item>
+        <item name="android:textColor">@color/textColorBlack</item>
+        <item name="android:layout_marginBottom">@dimen/nav_menus_margin_bottom</item>
+
     </style>
 </resources>

@@ -71,6 +71,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     testImplementation 'junit:junit:4.13-beta-2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.0'
@@ -136,5 +138,13 @@ dependencies {
     api 'com.google.android.material:material:1.1.0'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config'
+
+    /* UI2.0*/
+    //for pinview
+    implementation 'com.github.GoodieBag:Pinview:v1.4'
+    //for tooltip
+    implementation 'com.github.piruin:quickaction:2.4.3'
+
+
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

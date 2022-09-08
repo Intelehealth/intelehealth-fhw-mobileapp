@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui2.onboarding.SetupPrivacyNoteActivity"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_setup_privacy_back"
+        android:layout_width="@dimen/back_arrow_demo1_width"
+        android:layout_height="@dimen/back_arrow_demo1_height"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/back_arrow_demo1_margin_start"
+        android:layout_marginTop="@dimen/back_arrow_demo1_margin_top"
+        android:src="@drawable/ic_baseline_arrow_back_24" />
+
+
+    <ImageView
+        android:id="@+id/iv_ayu_icon"
+        android:layout_width="@dimen/demo1_ayu_image_width"
+        android:layout_height="@dimen/demo1_ayu_image_height"
+        android:layout_below="@+id/tv_please_continue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/demo1_ayu_img_margin_top"
+        android:src="@drawable/ui2_ic_ayu_image" />
+
+    <TextView
+        android:id="@+id/tv_hello_ayu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_ayu_icon"
+        android:layout_marginTop="@dimen/setup_title_margin_top"
+        android:fontFamily="@font/dm_sans_regular"
+        android:gravity="center"
+        android:lineHeight="@dimen/setup_title_line_height"
+        android:text="@string/hello_i_am_ayu"
+        android:textColor="@color/textColorWhite"
+        android:textSize="@dimen/setup_privacy_screen_title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_hello_ayu"
+        android:layout_marginTop="@dimen/setup_info_margin_top"
+        android:fontFamily="@font/dm_sans_regular"
+        android:gravity="center"
+        android:lineHeight="@dimen/setup_info_line_height"
+        android:text="@string/ayu_intro"
+        android:textColor="@color/textColorWhite"
+        android:textSize="@dimen/setup_privacy_screen_info" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/conditions_layout_padding_start"
+        android:paddingTop="@dimen/conditions_layout_padding_top"
+        android:paddingEnd="@dimen/conditions_layout_padding_end"
+        android:paddingBottom="@dimen/conditions_layout_padding_bottom">
+
+        <CheckBox
+            android:id="@+id/checkbox_privacy_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/conditions_chkbox_margin_top"
+            android:button="@drawable/ui2_ic_default_checkbox" />
+
+        <TextView
+            android:id="@+id/tv_privacy_notice_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/terms_link_margin_start"
+            android:layout_toEndOf="@+id/checkbox_privacy_policy"
+            android:lineHeight="@dimen/terms_link_line_height"
+            android:text="@string/agree_to_terms"
+            android:textSize="@dimen/terms_link_text_size" />
+
+        <Button
+            android:id="@+id/btn_setup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_privacy_notice_link"
+            android:layout_marginTop="@dimen/button_setup_margin_top"
+            android:layout_marginBottom="@dimen/button_setup_margin_bottom"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:drawableTint="@color/iconTintWhite"
+            android:paddingStart="@dimen/common_button_padding_left"
+            android:paddingTop="@dimen/common_button_padding_top"
+            android:paddingEnd="@dimen/common_button_padding_right"
+            android:paddingBottom="@dimen/common_button_padding_bottom"
+            android:text="@string/setup" />
+
+    </RelativeLayout>
+</RelativeLayout>
+
+

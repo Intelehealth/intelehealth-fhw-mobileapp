@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui2.onboarding.IntroScreensActivityNew">
+
+    <ImageView
+        android:id="@+id/iv_back_arrow"
+        android:layout_width="@dimen/back_arrow_intro_width"
+        android:layout_height="@dimen/back_arrow_intro_height"
+        android:layout_marginStart="@dimen/back_arrow_intro_margin_start"
+        android:layout_marginTop="@dimen/back_arrow_intro_margin_top"
+        android:src="@drawable/ui2_ic_arrow_back_new" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager_intro_screens"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/layoutDots_intro"
+        android:layout_below="@+id/iv_back_arrow"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/layoutDots_intro"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_dots_height"
+        android:layout_marginTop="@dimen/layout_dots_margin_top"
+        android:layout_above="@+id/btn_skip_intro"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <Button
+        android:id="@+id/btn_skip_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/skip_new"
+        android:textAllCaps="false"
+        android:layout_marginStart="@dimen/button_skip_margin_start"
+        android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+        android:lineHeight="@dimen/button_skip_line_height"
+        android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+        android:drawableTint="@color/iconTintWhite"
+        android:textSize="@dimen/common_button_text_size"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:fontFamily="@font/dm_sans_regular"
+        android:layout_marginEnd="@dimen/button_skip_margin_end"
+        android:background="@drawable/ui2_common_primary_bg"
+        android:textColor="@color/white"
+         />
+
+</RelativeLayout>

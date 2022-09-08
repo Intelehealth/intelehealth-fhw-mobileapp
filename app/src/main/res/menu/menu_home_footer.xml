@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ui2_ic_home_icon_bottomnav"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:icon="@drawable/ui2_ic_acheivements_home_bottomnav13"
+        android:title="Achievements" />
+
+    <item
+        android:id="@+id/navigation_subscriptions"
+        android:icon="@drawable/ui2_ic_help_home"
+        android:title="Help" />
+
+    <item
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/ui2_ic_add_patient_home"
+        android:title="Add patient" />
+
+</menu>

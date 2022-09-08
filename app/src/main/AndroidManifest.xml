@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -39,17 +38,87 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="allowBackup"
-        tools:ignore="UnusedAttribute, LockedOrientationActivity">
+        tools:ignore="UnusedAttribute, LockedOrientationActivity"
+        tools:replace="allowBackup">
+        <activity
+            android:name=".activities.setupActivity.SetupActivityNew"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
+        <activity
+            android:name=".ui2.activities.TestDialogsUI2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui2.onboarding.PrivacyPolicyActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui2.onboarding.TermsAndConditionsActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui2.onboarding.SetupPrivacyNoteActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui2.onboarding.IntroScreensActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui2.activities.HomeScreenActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
+        <activity
+            android:name=".ui2.activities.LoginActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
+        <activity
+            android:name=".ui2.activities.ResetPasswordActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui2.activities.ForgotPasswordOtpVerificationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui2.activities.ForgotPasswordActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
-
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
@@ -242,11 +311,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activities.setupActivity.SetupActivity"
@@ -308,7 +374,10 @@
         <!-- </receiver> -->
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" /> <!-- Firebase Realdb -->
+            android:value="false" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
         <receiver
             android:name=".services.firebase_services.CallRTCNotifyReceiver"
             android:exported="false">

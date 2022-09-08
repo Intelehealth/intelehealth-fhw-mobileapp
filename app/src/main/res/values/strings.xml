@@ -842,4 +842,82 @@
     <string name="and">”, and “</string>
     <string name="app_version_string">App Version - %1$s</string>
     <!--Appointment END-->
+
+    <!--UI2.0-->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="please_login">Please login to continue with \nyour work</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="enter_login_details">Please enter your login details</string>
+    <string name="enter_username1">Enter your username</string>
+    <string name="enter_password1">Enter your password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password_instruction">Follow up the instructions below to \nuse your account again</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="enter_username2">Enter username</string>
+    <string name="enter_username_given">Please enter your username provided by \nIntelehealth</string>
+    <string name="login">Login</string>
+    <string name="enter_mobile_no">Enter mobile number</string>
+    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
+    <string name="enter_verification_code">Enter verification code</string>
+    <string name="otp_sent">6-digit OTP sent on your registered number and email.\nPlease check and enter the OTP.</string>
+    <string name="no_otp_received">Didn\'t receive OTP? <font color='#2F1E91'><u>Resend in time</u></font></string>
+    <string name="help"><u>Help</u></string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="new_password">New password</string>
+    <string name="generate_new_password"><u>Generate a new password</u></string>
+    <string name="reenter_new_password">Re-enter new password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="button_continue">Continue</string>
+    <string name="save">Save</string>
+    <string name="reset_password">Reset Password?</string>
+    <string name="please_reset_password">Please reset new password for \nyour account</string>
+    <string name="forgot_password_link"><u>Forgot password</u></string>
+    <string name="prescriptions">Prescriptions</string>
+    <string name="close_visits">Close visits</string>
+    <string name="skip_new">Skip</string>
+    <string name="who_we_are_intro">Intelehealth is a telemedicine application that connects health
+        workers in rural areas and remote areas with remote
+        doctor so they can provide high quality health services for their patients</string>
+    <string name="who_we_are">Who are we?</string>
+    <string name="take_patient_visits">Take patient visits</string>
+    <string name="take_patient_visits_intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin mi etiam faucibus fusce. Ut vitae praesent eu est morbi. Eleifend commodo auctor vestibulum tortor. Sit nibh tincidunt euismod amet integer.</string>
+    <string name="provide_prescriptions">Provide prescriptions</string>
+    <string name="provide_prescriptions_intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin mi etiam faucibus fusce. Ut vitae praesent eu est morbi. Eleifend commodo auctor vestibulum tortor. Sit nibh tincidunt euismod amet integer.</string>
+    <string name="hello_i_am_ayu">Hello, I am AYU!</string>
+    <string name="ayu_intro">I am your digital health assistant.\nHow are you feeling today?</string>
+    <string name="agree_to_terms">Agree to <font color='#2F1E91'><u>terms &amp; conditions</u></font>
+ and <font color='#2F1E91'><u>privacy policy</u></font></string>
+    <string name="setup">Setup</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="decline">Decline</string>
+    <string name="accept_new">Accept</string>
+    <string name="strong_internet_needed">Strong internet needed</string>
+    <string name="next_new">Next</string>
+    <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
+    <string name="okay">Okay</string>
+    <string name="my_achievements">My achievements</string>
+    <string name="educational_videos">Educational videos</string>
+    <string name="change_lang">Change language &amp; protocol</string>
+    <string name="about_us">About us</string>
+    <string name="log_out">Log-out</string>
+    <string name="reset_app_new">Reset app</string>
+
+
+
+    <string name="setup_new">Setup</string>
+    <string name="one_time_setup">Please complete your one\ntime setup activity</string>
+    <string name="enter_following_details">Please enter the following details</string>
+    <string name="location_new">Location</string>
+    <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_success_note">Hurry! You have successfully logged\n in into the demo version of the app</string>
+    <string name="start_typing_location">Start typing or select location</string>
+
+
+
+
+    <!--END-->
+
 </resources>
