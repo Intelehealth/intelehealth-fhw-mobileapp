@@ -3890,7 +3890,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -3903,7 +3903,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -5349,7 +5349,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,
@@ -5362,7 +5362,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         getBaseContext(),
                         updatedContext,

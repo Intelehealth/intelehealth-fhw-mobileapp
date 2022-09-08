@@ -3401,9 +3401,41 @@ public final class StringUtils {
             if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_10);
             }
+            // Translate string 0 - 30000 to English
+            if (context.getString(R.string.zero_three_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.zero_three_thousand);
+            }
+            // Translate string 30000 - 50000 to English
+            if (context.getString(R.string.thirty_fifty_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.thirty_fifty_thousand);
+            }
+            // Translate string 50000 - 100000 to English
+            if (context.getString(R.string.fifty_thousand_one_lakh).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.fifty_thousand_one_lakh);
+            }
+            // Translate string 100000 - 250000 to English
+            if (context.getString(R.string.one_lakh_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.one_lakh_two_lakh_fifty_thousand);
+            }
             // Translate string More Than 2,50,000 to English
             if (context.getString(R.string.more_than_two_lakh_fifty_thousand).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_two_lakh_fifty_thousand);
+            }
+            // Translate string 0 - 3000 to English
+            if (context.getString(R.string.zero_three_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.zero_three_thousand);
+            }
+            // Translate string 3000 - 5000 to English
+            if (context.getString(R.string.three_five_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.three_five_thousand);
+            }
+            // Translate string 5000 - 10000 to English
+            if (context.getString(R.string.five_ten_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.five_ten_thousand);
+            }
+            // Translate string 0 - 3000 to English
+            if (context.getString(R.string.ten_twenty_five_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.ten_twenty_five_thousand);
             }
             // Translate string More Than 25,000 to English
             if (context.getString(R.string.more_than_twenty_five_thousand).equalsIgnoreCase(text)) {
@@ -3750,16 +3782,14 @@ public final class StringUtils {
             if (context.getString(R.string.salaried_government_job).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.salaried_government_job);
             }
+            // Translate string Salaried Private Job to English
+            if (context.getString(R.string.salaried_private_job).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.salaried_private_job);
+            }
             // Translate string Petty Business or Shop Owner to English
             if (context.getString(R.string.petty_business_shop_owner).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.petty_business_shop_owner);
             }
-
-            // Translate string Technician or Craftsman or Other Skilled Work to English
-            if (context.getString(R.string.technician_craftsman_other_skilled_work).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.technician_craftsman_other_skilled_work);
-            }
-
             // Translate string Technician or Craftsman or Other Skilled Work to English
             if (context.getString(R.string.technician_craftsman_other_skilled_work).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.technician_craftsman_other_skilled_work);
@@ -3772,7 +3802,6 @@ public final class StringUtils {
             if (context.getString(R.string.tenant_farmer_agricultural_daily_wage_worker).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.tenant_farmer_agricultural_daily_wage_worker);
             }
-
             // Translate string Daily Wage Worker to English
             if (context.getString(R.string.daily_wage_worker_unskilled_workers).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.daily_wage_worker_unskilled_workers);
@@ -3797,7 +3826,6 @@ public final class StringUtils {
             if (context.getString(R.string.retired_without_pension).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.retired_without_pension);
             }
-
             // Translate string Not Applicable to English
             if (context.getString(R.string.not_applicable).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.not_applicable);
