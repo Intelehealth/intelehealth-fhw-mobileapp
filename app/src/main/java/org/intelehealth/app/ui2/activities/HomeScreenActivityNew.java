@@ -1,27 +1,37 @@
 package org.intelehealth.app.ui2.activities;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
@@ -42,33 +52,50 @@ public class HomeScreenActivityNew extends AppCompatActivity {
     private static final int ID_DOWN = 2;
     private QuickAction quickAction;
     private QuickAction quickIntent;
-    private DrawerLayout mDrawer;
-    NavigationView navView;
+    private DrawerLayout mDrawerLayout;
     SessionManager sessionManager;
     Dialog dialogLoginSuccess;
+    NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        }
+
+        initUI();
+
         sessionManager = new SessionManager(this);
 
-        Log.d(TAG, "onCreate: selected chw : " + sessionManager.getChwname());
 
-        mDrawer = findViewById(R.id.drawer_layout);
-        TextView tvLocation = findViewById(R.id.tv_user_location_home);
-        tvLocation.setText(sessionManager.getLocationName());
-        //navView = findViewById(R.id.navigationview);
+    }
+
+    private void initUI() {
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        TextView tvAppVersion = findViewById(R.id.tv_app_version);
+        LinearLayout menuResetApp = findViewById(R.id.layout_reset_app);
+
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            //drawer is open
+            //  getWindow().setStatusBarColor(Color.CYAN);
+
+        }
+
+
+        // TextView tvLocation = findViewById(R.id.tv_user_location_home);
+        //tvLocation.setText(sessionManager.getLocationName());
 
         imageViewIsInternet = findViewById(R.id.imageview_is_internet);
         ImageView ivHamburger = findViewById(R.id.iv_hamburger);
         ivHamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // navView.setFitsSystemWindows(false);
-                //  mDrawer.setFitsSystemWindows(true);
-                mDrawer.openDrawer(Gravity.LEFT);
+                mDrawerLayout.openDrawer(Gravity.LEFT);
 
             }
         });
@@ -81,6 +108,24 @@ public class HomeScreenActivityNew extends AppCompatActivity {
             }
         });
 
+        //nav header
+        mNavigationView = findViewById(R.id.navigationview);
+        View headerView = mNavigationView.getHeaderView(0);
+        ImageView ivCloseDrawer = headerView.findViewById(R.id.iv_close_drawer);
+        ImageView ivProfileIcon = headerView.findViewById(R.id.iv_profile_icon);
+        TextView tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
+        TextView tvUserId = headerView.findViewById(R.id.tv_userid);
+        TextView tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
+
+
+        ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+
+            }
+        });
+        setupDrawerContent(mNavigationView);
     }
 
     private void checkForInternet() {
@@ -173,7 +218,6 @@ public class HomeScreenActivityNew extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Fragment fragment = new HomeFragment();
-
         loadFragment(fragment);
 
         showLoggingInDialog();
@@ -210,5 +254,54 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         }, 2000);
     }
 
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        switch (menuItem.getItemId()) {
+            case R.id.menu_my_achievements:
+                break;
+            case R.id.menu_video_lib:
+
+                break;
+            case R.id.menu_change_language:
+
+                break;
+            case R.id.menu_about_us:
+
+                break;
+            case R.id.menu_logout:
+
+                break;
+            default:
+        }
+
+      /*  try {
+
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment).commit();
+        String backStateName = fragment.getClass().getName();
+        fragmentTransaction.addToBackStack(backStateName);*/
+
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        mDrawerLayout.closeDrawers();
+    }
 }
 

@@ -1,63 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageview_close_drawer"
-        android:layout_width="20dp"
-        android:layout_height="50dp"
+        android:id="@+id/iv_close_drawer"
+        android:layout_width="@dimen/iv_close_drawer_width"
+        android:layout_height="@dimen/iv_close_drawer_height"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="@dimen/iv_close_drawer_margin_top"
+        android:layout_marginEnd="@dimen/iv_close_drawer_margin_end"
         android:src="@drawable/ui2_ic_close_drawer" />
 
     <ImageView
-        android:id="@+id/imageview_profile_icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/imageview_close_drawer"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:id="@+id/iv_profile_icon"
+        android:layout_width="@dimen/iv_profile_drawer_width"
+        android:layout_height="@dimen/iv_profile_drawer_height"
+        android:layout_below="@+id/iv_close_drawer"
+        android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
+        android:layout_marginTop="@dimen/iv_profile_drawer_margin_top"
         android:src="@drawable/ui2_dummy_profile_icon" />
 
     <TextView
-        android:id="@+id/textview_loggedin_username"
+        android:id="@+id/tv_loggedin_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageview_close_drawer"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_below="@+id/iv_close_drawer"
+        android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:layout_marginTop="@dimen/tv_login_user_margin_top"
+        android:layout_toEndOf="@+id/iv_profile_icon"
         android:fontFamily="@font/lato_regular"
-        android:layout_toEndOf="@+id/imageview_profile_icon"
         android:text="Vivek jain"
-        android:textSize="@dimen/nav_header_username" />
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/nav_header_username"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textview_userid"
+        android:id="@+id/tv_userid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_loggedin_username"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_loggedin_username"
+        android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:layout_marginTop="@dimen/tv_login_userid_margin_top"
+        android:layout_toEndOf="@+id/iv_profile_icon"
         android:fontFamily="@font/lato_regular"
-        android:layout_toEndOf="@+id/imageview_profile_icon"
+        android:lineSpacingExtra="@dimen/tv_reset_app_line_spacing"
         android:text="CHW ID : 987654jK "
+        android:textColor="@color/textColorGray"
         android:textSize="@dimen/nav_header_userid" />
 
     <TextView
-        android:id="@+id/textview_edit_profile"
+        android:id="@+id/tv_edit_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_userid"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/imageview_profile_icon"
+        android:layout_below="@+id/tv_userid"
+        android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:layout_marginTop="@dimen/tv_login_edit_margin_top"
+        android:layout_toEndOf="@+id/iv_profile_icon"
         android:drawableEnd="@drawable/ui2_ic_arrow_right"
-        android:drawablePadding="@dimen/padding_7"
+        android:drawablePadding="@dimen/common_tv_icon_padding"
         android:fontFamily="@font/lato_regular"
-        android:lineHeight="21dp"
+        android:lineHeight="@dimen/tv_login_edit_line_height"
         android:text="Edit Profile"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/nav_header_edit_profile" />
@@ -65,150 +69,12 @@
     <View
         android:id="@+id/view_gray"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/textview_edit_profile"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="28dp"
-        android:background="@color/edittextBorder" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_gray"
-        android:layout_marginStart="40dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ui2_ic_my_achievements" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/lato_regular"
-                android:lineHeight="24dp"
-                android:text="@string/my_achievements"
-                android:textColor="@color/textColorBlack"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view_gray"
-            android:layout_marginTop="28dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ui2_ic_icon_video_library" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/lato_regular"
-                android:lineHeight="24dp"
-                android:text="@string/educational_videos"
-                android:textColor="@color/textColorBlack"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view_gray"
-            android:layout_marginTop="28dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ui2_ic_icon_video_library" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/lato_regular"
-                android:lineHeight="24dp"
-                android:text="@string/change_lang"
-                android:textColor="@color/textColorBlack"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view_gray"
-            android:layout_marginTop="28dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ui2_ic_icon_about_us" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/lato_regular"
-                android:lineHeight="24dp"
-                android:text="@string/about_us"
-                android:textColor="@color/textColorBlack"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view_gray"
-            android:layout_marginTop="28dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ui2_ic_icon_logout" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/lato_regular"
-                android:lineHeight="24dp"
-                android:text="@string/log_out"
-                android:textColor="@color/textColorBlack"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
+        android:layout_height="@dimen/view_header_height"
+        android:layout_below="@+id/tv_edit_profile"
+        android:layout_marginBottom="@dimen/view_header_margin_bottom"
+        android:layout_marginTop="@dimen/view_header_margin_top"
+        android:layout_marginEnd="@dimen/view_header_margin_end"
+        android:background="#80B2AFBE" />
 
 </RelativeLayout>

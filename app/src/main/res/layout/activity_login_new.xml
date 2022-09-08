@@ -14,9 +14,8 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/layout_collapsing"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="@dimen/login_collapsing_layout_height"
             android:fitsSystemWindows="true"
-
             app:contentScrim="@color/gray_0_0"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways"
             app:title="@string/login">
@@ -33,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/welcome_back_top_margin"
-                    android:fontFamily="@font/dm_sans_regular"
+                    android:fontFamily="@font/lato_regular"
                     android:gravity="center_horizontal"
                     android:text="@string/welcome_back"
                     android:textColor="@color/textColorWhite"
@@ -45,18 +44,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_welcome_back"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/tv_please_login_margin_top"
                     android:gravity="center_horizontal"
                     android:text="@string/please_login"
                     android:textColor="@color/textColorWhite"
-                    android:textSize="@dimen/common_hint_text_size" />
+                    android:textSize="@dimen/common_info_text_size" />
 
                 <ImageView
                     android:layout_width="@dimen/image_intelehealth_login_width"
                     android:layout_height="@dimen/image_intelehealth_login_height"
                     android:layout_below="@+id/tv_please_continue"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/image_intelehealth_margin_top"
                     android:src="@drawable/intelehealth_logo_white" />
 
             </RelativeLayout>
@@ -75,23 +74,24 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-17dp"
+        android:layout_marginTop="@dimen/login_scroll_margin_top"
         android:background="@drawable/ui2_common_top_rounded_white_bg"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_collapsing_tollbar_layout">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:orientation="vertical"
-            android:paddingStart="@dimen/padding_25"
-            android:paddingTop="@dimen/padding_40"
-            android:paddingEnd="@dimen/padding_25"
-            android:paddingBottom="@dimen/padding_20">
+            android:paddingStart="@dimen/layout_login_padding_start"
+            android:paddingTop="@dimen/layout_login_padding_top"
+            android:paddingEnd="@dimen/layout_login_padding_end"
+            android:paddingBottom="@dimen/layout_login_padding_bottom">
 
 
             <LinearLayout
+                android:id="@+id/layout_login1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -100,18 +100,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ui2_ic_info_question_mark"
-                    android:drawablePadding="@dimen/padding_7"
-                    android:fontFamily="@font/dm_sans_regular"
+                    android:drawablePadding="@dimen/common_tv_icon_padding"
+                    android:fontFamily="@font/lato_regular"
                     android:text="@string/enter_login_details"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_header_text_size"
                     android:textStyle="bold" />
 
                 <TextView
+                    style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:fontFamily="@font/dm_sans_regular"
+                    android:layout_marginTop="@dimen/tv_login_username_margin_top"
                     android:text="@string/username"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
@@ -119,7 +119,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     app:hintEnabled="false"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@android:color/transparent">
@@ -128,7 +128,7 @@
                         android:id="@+id/edittext_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_common_input_bg"
+                        android:background="@drawable/ui2_background_input_field_new"
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:paddingStart="@dimen/common_edittext_padding_left"
@@ -142,11 +142,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:fontFamily="@font/dm_sans_regular"
-                    android:lineSpacingExtra="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
                     android:text="Password"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
@@ -154,7 +153,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     app:hintEnabled="false"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/iconTintGray">
@@ -163,7 +162,7 @@
                         android:id="@+id/edittext_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_common_input_bg"
+                        android:background="@drawable/ui2_background_input_field_new"
                         android:hint="@string/enter_password1"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
@@ -179,26 +178,38 @@
                     android:id="@+id/tv_forgot_password1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:fontFamily="@font/dm_sans_regular"
+                    android:layout_marginTop="@dimen/common_forgotpass_margin_top"
+                    android:fontFamily="@font/lato_regular"
                     android:gravity="end"
                     android:text="@string/forgot_password_link"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
 
-                <Button
-                    android:id="@+id/button_login"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_50"
-                    android:background="@drawable/ui2_common_primary_bg"
-                    android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-                    android:drawableTint="@color/iconTintWhite"
-                    android:padding="@dimen/padding_15"
-                    android:text="@string/login" />
+
             </LinearLayout>
-        </LinearLayout>
+
+        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_login1"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginStart="@dimen/layout_login_padding_start"
+        android:layout_marginEnd="@dimen/layout_login_padding_end"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/ui2_common_primary_bg"
+        android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+        android:drawableTint="@color/iconTintWhite"
+        android:fitsSystemWindows="true"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/login" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -76,6 +76,13 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
+
+        </activity>
+        <activity
+            android:name=".ui2.activities.HomeScreenActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -83,15 +90,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui2.activities.HomeScreenActivityNew"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity
             android:name=".ui2.activities.LoginActivityNew"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
         <activity
             android:name=".ui2.activities.ResetPasswordActivity"
             android:exported="true"

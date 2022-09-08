@@ -11,12 +11,12 @@
 
     <ImageView
         android:id="@+id/iv_back_arrow"
-        android:layout_width="@dimen/common_imageview_back_width"
-        android:layout_height="@dimen/common_imageview_back_height"
+        android:layout_width="@dimen/setup_back_button_width"
+        android:layout_height="@dimen/setup_back_button_height"
         android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="@dimen/setup_back_button_margin_start"
+        android:layout_marginTop="@dimen/setup_back_button_margin_top"
         android:src="@drawable/ic_baseline_arrow_back_24" />
 
     <TextView
@@ -24,9 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_back_arrow"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/dm_sans_regular"
+        android:layout_marginStart="@dimen/tv_Setup_margin_start"
+        android:layout_marginTop="@dimen/tv_Setup_margin_top"
+
         android:gravity="start"
         android:text="@string/setup_new"
         android:textColor="@color/textColorWhite"
@@ -38,19 +38,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_setup"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginStart="@dimen/tv_setup_note_margin_start"
+        android:layout_marginTop="@dimen/tv_setup_note_margin_top"
         android:gravity="start"
         android:text="@string/one_time_setup"
         android:textColor="@color/textColorWhite"
         android:textSize="@dimen/common_hint_text_size" />
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="@dimen/image_intelehealth_login_height"
+        android:layout_width="@dimen/iv_setup_width"
+        android:layout_height="@dimen/iv_setup_height"
         android:layout_below="@+id/iv_back_arrow"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/iv_setup_margin_top"
         android:src="@drawable/ui2_ic_setup_screen_icon" />
 
 
@@ -59,13 +59,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_setup_note"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="@dimen/layout_setup_margin_top"
         android:background="@drawable/ui2_common_top_rounded_white_bg"
         android:orientation="vertical"
-        android:paddingStart="27dp"
-        android:paddingTop="@dimen/padding_30"
-        android:paddingEnd="27dp"
-        android:paddingBottom="@dimen/padding_20">
+        android:paddingStart="@dimen/layout_setup_padding_start"
+        android:paddingTop="@dimen/layout_setup_padding_top"
+        android:paddingEnd="@dimen/layout_setup_padding_end"
+        android:paddingBottom="@dimen/layout_setup_padding_bottom">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -81,17 +81,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ui2_ic_info_question_mark"
-                    android:drawablePadding="@dimen/padding_7"
+                    android:drawablePadding="@dimen/common_tv_icon_padding"
                     android:text="@string/enter_following_details"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_header_text_size" />
 
                 <TextView
+                    style="@style/TextviewInputTitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:fontFamily="@font/dm_sans_regular"
-                    android:lineSpacingExtra="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/tv_location_margin_top"
                     android:text="@string/location_new"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
@@ -101,22 +100,22 @@
                     style="@style/AutocompleteviewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8">
+                    android:layout_marginTop="@dimen/common_edittext_margin_top">
 
                     <AutoCompleteTextView
                         android:id="@+id/autotv_select_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Start typing or select location"
-                        android:importantForAutofill="no"
                         android:background="@drawable/ui2_background_input_field_new"
+                        android:hint="@string/start_typing_location"
+                        android:importantForAutofill="no"
                         android:maxLines="1"
-                        android:textSize="@dimen/common_hint_text_size"
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
+                        android:textSize="@dimen/common_hint_text_size"
                         app:endIconDrawable="@drawable/ui2_ic_chevron_down"
                         app:endIconMode="custom"
                         tools:ignore="SpeakableTextPresentCheck" />
@@ -126,8 +125,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:fontFamily="@font/dm_sans_regular"
+                    style="@style/TextviewInputTitleStyle"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
                     android:text="@string/username"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
@@ -135,7 +134,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     app:boxStrokeWidth="0dp"
                     app:hintEnabled="false"
                     app:passwordToggleEnabled="true"
@@ -144,6 +143,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
+                        android:text="nurse1"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ui2_background_input_field_new"
                         android:hint="@string/enter_username1"
@@ -161,17 +161,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:fontFamily="@font/dm_sans_regular"
-                    android:lineSpacingExtra="@dimen/margin_10"
-                    android:text="Password"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:text="@string/password"
+                    style="@style/TextviewInputTitleStyle"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     app:hintEnabled="false"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/iconTintGray">
@@ -187,6 +186,7 @@
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
+                        android:text="Nurse123"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
                         android:textSize="@dimen/common_hint_text_size" />
@@ -196,8 +196,8 @@
                     android:id="@+id/tv_forgot_password1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:fontFamily="@font/dm_sans_regular"
+                    android:layout_marginTop="@dimen/common_forgotpass_margin_top"
+
                     android:gravity="end"
                     android:text="@string/forgot_password_link"
                     android:textColor="@color/textColorGray"
@@ -208,12 +208,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
                     android:visibility="gone"
                     app:cardCornerRadius="10sp"
-                    android:layout_marginTop="15dp"
                     app:cardElevation="5sp"
-                    app:cardPreventCornerOverlap="false"
-                    >
+                    app:cardPreventCornerOverlap="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -224,11 +223,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
                             android:text="@string/choose_an_option_for_protocols"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="16sp" />
 
                         <View
                             android:layout_width="match_parent"
@@ -239,47 +238,47 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:textSize="14sp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
                             android:onClick="onRadioClick"
+                            android:text="@string/setup_use_demo_mindmap"
                             android:textAppearance="@style/RobotoTextViewStyle"
-                            android:text="@string/setup_use_demo_mindmap" />
-
+                            android:textSize="14sp" />
 
 
                         <RadioButton
                             android:id="@+id/downloadMindmap"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:onClick="onRadioClick"
-                            android:textSize="14sp"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:onClick="onRadioClick"
+                            android:text="@string/setup_download_mindmap"
                             android:textAppearance="@style/RobotoTextViewStyle"
-                            android:text="@string/setup_download_mindmap" />
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/admin_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_regular"
                         android:hint="@string/prompt_admin_password"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
-                        android:visibility="gone"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textSize="14sp"
-                        android:fontFamily="@font/lato_regular"/>
+                        android:visibility="gone" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -289,8 +288,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginBottom="@dimen/button_setup_margin_bottom"
+                    android:layout_marginTop="@dimen/button_setup1_margin_top"
+                    android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
                     android:background="@drawable/ui2_common_primary_bg"
                     android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                     android:drawableTint="@color/iconTintWhite"
@@ -298,7 +297,8 @@
                     android:paddingTop="@dimen/common_button_padding_top"
                     android:paddingEnd="@dimen/common_button_padding_right"
                     android:paddingBottom="@dimen/common_button_padding_bottom"
-                    android:text="@string/setup" />
+                    android:text="@string/setup"
+                    android:textSize="@dimen/common_button_text_size" />
 
                 <View
                     android:layout_width="match_parent"

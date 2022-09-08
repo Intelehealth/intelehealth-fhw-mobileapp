@@ -902,6 +902,9 @@
     <string name="change_lang">Change language &amp; protocol</string>
     <string name="about_us">About us</string>
     <string name="log_out">Log-out</string>
+    <string name="reset_app_new">Reset app</string>
+
+
 
     <string name="setup_new">Setup</string>
     <string name="one_time_setup">Please complete your one\ntime setup activity</string>
@@ -910,6 +913,8 @@
     <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
     <string name="login_success">Login successful</string>
     <string name="login_success_note">Hurry! You have successfully logged\n in into the demo version of the app</string>
+    <string name="start_typing_location">Start typing or select location</string>
+
 
 
 

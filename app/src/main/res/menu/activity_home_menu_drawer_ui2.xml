@@ -1,4 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_my_achievements"
+            android:icon="@drawable/ui2_ic_my_achievements"
+            android:title="@string/my_achievements" />
+        <item
+            android:id="@+id/menu_video_lib"
+            android:icon="@drawable/ui2_ic_icon_video_library"
+            android:title="@string/educational_videos" />
+
+        <item
+            android:id="@+id/menu_change_language"
+            android:icon="@drawable/ui2_ic_icon_tune"
+            android:title="@string/change_lang" />
+
+        <item
+            android:id="@+id/menu_about_us"
+            android:icon="@drawable/ui2_ic_icon_about_us"
+            android:title="@string/about_us" />
+        <item
+            android:id="@+id/menu_logout"
+            android:icon="@drawable/ui2_ic_icon_logout"
+            android:title="@string/log_out" />
+    </group>
 
 </menu>
