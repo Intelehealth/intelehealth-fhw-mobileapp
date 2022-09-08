@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fu_cardview_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/margin_10"
+    android:layout_marginHorizontal="@dimen/card_padding"
+    android:layout_marginTop="@dimen/card_padding"
+    android:layout_marginBottom="@dimen/toolbar_margin_left"
+    app:cardElevation="@dimen/card_padding" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <!-- Todo: Adjust weight as it is the imp factor here to display delete icon-->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/frame_10014"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_margin="@dimen/fu_margin_start">
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="@dimen/search_add_btn_height"
+            android:layout_height="@dimen/search_add_btn_height"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:src="@drawable/ic_red_calendar_icon" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_presTag_margin_top"
+            android:layout_toEndOf="@+id/profile">
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/search_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="3sp"
+                android:minLines="2"
+                android:text="@string/notifi_card_title"
+                android:textColor="@color/header_subtitle_color"
+                android:textSize="@dimen/fu_male_textsize" />
+
+            <ImageView
+                android:id="@+id/frame_10012"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_name"
+                android:layout_marginTop="@dimen/fu_vs_margin_start"
+                android:src="@drawable/ic_join_nw" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="end"
+        android:background="#FFE8E8" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_red_icon"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:visibility="visible"
+    tools:context=".ui2.activities.HomeScreenActivityNew"
+    tools:openDrawer="start">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/layout_new_app_bar_ui2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            style="@style/NavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ui2_common_top_rounded_white_bg"
+            app:elevation="8dip"
+            app:itemBackground="@drawable/bottom_nav_tab_background"
+            app:itemIconSize="@dimen/bottom_nav_icon_size"
+            app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
+            app:itemRippleColor="@color/colorPrimary2"
+            app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu_home_footer" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationview"
+        app:theme="@style/NavigationDrawerItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/ui2_home_nav_drawer_background"
+        android:fitsSystemWindows="false"
+        app:itemIconPadding="@dimen/itemIconPadding_drawer"
+        app:headerLayout="@layout/nav_header_home_ui2"
+        app:itemIconTint="@color/colorPrimary"
+        app:menu="@menu/activity_home_menu_drawer_ui2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:id="@+id/layout_reset_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/reset_app_margin_start"
+                android:gravity="start"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/reset_app_icon_width"
+                    android:layout_height="@dimen/reset_app_icon_height"
+                    android:padding="@dimen/reset_app_icon_padding"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ui2_ic_no_internet" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginStart="@dimen/tv_reset_app_margin_start"
+                    android:fontFamily="@font/lato_regular"
+                    android:lineHeight="@dimen/tv_reset_app_line_height"
+                    android:lineSpacingExtra="@dimen/tv_reset_app_line_spacing"
+                    android:text="@string/reset_app_new"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/nav_menus_text_size" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_app_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_reset_app"
+                android:layout_gravity="bottom"
+                android:textSize="@dimen/tv_app_version_text_size"
+                android:letterSpacing="@dimen/tv_app_version_letter_spacing"
+                android:textColor="@color/textColorGray"
+                android:layout_marginTop="@dimen/tv_app_version_margin_top"
+                android:gravity="center"
+                android:text="Version 2.0" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+

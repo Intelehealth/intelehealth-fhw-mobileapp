@@ -120,5 +120,10 @@ public class AppConstants {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
+
+    //UI2.0 Constants
+
+    public static final String DEMO_URL = "demo.intelehealth.org";
+
 }
 

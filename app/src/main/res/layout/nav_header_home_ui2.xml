@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_close_drawer"
+        android:layout_width="@dimen/iv_close_drawer_width"
+        android:layout_height="@dimen/iv_close_drawer_height"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/iv_close_drawer_margin_top"
+        android:layout_marginEnd="@dimen/iv_close_drawer_margin_end"
+        android:src="@drawable/ui2_ic_close_drawer" />
+
+    <ImageView
+        android:id="@+id/iv_profile_icon"
+        android:layout_width="@dimen/iv_profile_drawer_width"
+        android:layout_height="@dimen/iv_profile_drawer_height"
+        android:layout_below="@+id/iv_close_drawer"
+        android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
+        android:layout_marginTop="@dimen/iv_profile_drawer_margin_top"
+        android:src="@drawable/ui2_dummy_profile_icon" />
+
+    <TextView
+        android:id="@+id/tv_loggedin_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_close_drawer"
+        android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:layout_marginTop="@dimen/tv_login_user_margin_top"
+        android:layout_toEndOf="@+id/iv_profile_icon"
+        android:fontFamily="@font/lato_regular"
+        android:text="Vivek jain"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/nav_header_username"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_userid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_loggedin_username"
+        android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:layout_marginTop="@dimen/tv_login_userid_margin_top"
+        android:layout_toEndOf="@+id/iv_profile_icon"
+        android:fontFamily="@font/lato_regular"
+        android:lineSpacingExtra="@dimen/tv_reset_app_line_spacing"
+        android:text="CHW ID : 987654jK "
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/nav_header_userid" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_userid"
+        android:layout_marginStart="@dimen/tv_login_user_margin_start"
+        android:layout_marginTop="@dimen/tv_login_edit_margin_top"
+        android:layout_toEndOf="@+id/iv_profile_icon"
+        android:drawableEnd="@drawable/ui2_ic_arrow_right"
+        android:drawablePadding="@dimen/common_tv_icon_padding"
+        android:fontFamily="@font/lato_regular"
+        android:lineHeight="@dimen/tv_login_edit_line_height"
+        android:text="Edit Profile"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/nav_header_edit_profile" />
+
+    <View
+        android:id="@+id/view_gray"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
+        android:layout_height="@dimen/view_header_height"
+        android:layout_below="@+id/tv_edit_profile"
+        android:layout_marginBottom="@dimen/view_header_margin_bottom"
+        android:layout_marginTop="@dimen/view_header_margin_top"
+        android:layout_marginEnd="@dimen/view_header_margin_end"
+        android:background="#80B2AFBE" />
+
+</RelativeLayout>
