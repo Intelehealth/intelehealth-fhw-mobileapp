@@ -308,12 +308,23 @@
 
 
         </activity>
+
+        <activity
+            android:name=".ui2.onboarding.IntroScreensActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.setupActivity.SetupActivityNew"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity
+            android:name=".ui2.onboarding.SetupPrivacyNoteActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"
