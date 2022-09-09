@@ -30,11 +30,11 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -1738,7 +1738,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                new AlertDialog.Builder(VisitSummaryActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
             }
         });
     }
