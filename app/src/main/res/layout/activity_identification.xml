@@ -591,8 +591,90 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
 
-                <!--                Rosters - start-->
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:srcCompat="@drawable/svg_other_details"></ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:ems="10"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="Aid Type"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_aid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10sp"
+                app:cardElevation="3dp"
+                app:cardPreventCornerOverlap="false">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="5dp"
+                    android:text="Select Patient's aid type"
+                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbFHHSurvey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fhh_survey" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbGeneralAid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_aid_survey" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbStudentAid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student_aid_survey" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbEmergency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/emergency_survey" />
+
+            </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -652,24 +734,24 @@
                         <RadioGroup
                             android:id="@+id/hoh_radio_group"
                             android:layout_width="match_parent"
-                            android:weightSum="2"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:weightSum="2">
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:id="@+id/hoh_yes"
                                 android:layout_width="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/yes"
                                 android:textSize="14sp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:id="@+id/hoh_no"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/no"
                                 android:textSize="14sp" />
@@ -692,7 +774,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="@string/txt_what_is_your_relationship_with_head_of_household"
+                            android:text="@string/txt_what_is_your_relationship_with_household_members_you_support"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -702,34 +784,11 @@
                         <Spinner
                             android:id="@+id/spinner_whatisyourrelation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_whatisyourrelation_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
-                            <!--On the Left or Right of textview or Editext-->
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_whatisyourrelation_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -753,8 +812,179 @@
                         <Spinner
                             android:id="@+id/spinner_maritualstatus"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:paddingStart="5dp"
+                            android:text="@string/husband_status"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_husband_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/do_you_stay_independent_residence"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_independent_residence"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/what_made_you_main_official"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_main_official"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/family_needed_you_as_main_tendency"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_main_tendency_for_breadwinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/reason_changing_condition_for_support"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_reason_changing_condition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/since_change_happened"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <EditText
+                            android:id="@+id/ET_since_change_happened"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+
 
                         <Space
                             android:layout_width="10dp"
@@ -782,8 +1012,7 @@
                         <Spinner
                             android:id="@+id/spinner_education"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -811,34 +1040,11 @@
                         <Spinner
                             android:id="@+id/spinner_occupation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_occupation_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
-                            <!--On the Left or Right of textview or Editext-->
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_occupation_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -862,8 +1068,7 @@
                         <Spinner
                             android:id="@+id/spinner_residence_nature"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -892,38 +1097,7 @@
                         <Spinner
                             android:id="@+id/spinner_residence_link_nature"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <TextView
-                            android:id="@+id/identification_family_member_count"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/family_member_count"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <EditText
-                            android:id="@+id/et_family_member_count"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_number"
-                            android:inputType="number" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -949,12 +1123,10 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <EditText
-                            android:id="@+id/et_percentage_income"
+                        <Spinner
+                            android:id="@+id/spinner_percentage_income"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_number"
-                            android:inputType="number" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -1075,8 +1247,7 @@
                             <Spinner
                                 android:id="@+id/spinner_pregnantpasttwoyrs"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/pasttwoyrs_en" />
+                                android:layout_height="wrap_content" />
 
                             <Space
                                 android:layout_width="10dp"

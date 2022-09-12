@@ -1,5 +1,7 @@
 package org.intelehealth.app.models;
 
+import org.intelehealth.app.utilities.StringUtils;
+
 public class Patient {
     private String uuid;
     private String openmrs_id;
@@ -17,17 +19,14 @@ public class Patient {
     private String gender;
     private String patient_photo;
     private String sdw;
-    private String occupation;
     private String economic_status;
-    private String education_level;
     private String caste;
     private String emergency;
     private String villageNameSurvey;
     private String blockSurvey;
 
     // Roster
-    private String relationshiphoh;
-    private String maritualstatus;
+
     private String phoneownership;
     private String bpchecked;
     private String sugarchecked;
@@ -60,6 +59,24 @@ public class Patient {
     private String plannedpregnancy;
     private String highriskpregnancy;
     private String complications;
+
+    //new syriana questions
+    private String headOfHousehold;
+    private String relationshiphoh;
+    private String maritalstatus;
+    private String patientAidType;
+    private String husbandStatus;
+    private String independentResidence;
+    private String mainOfficial;
+    private String mainTendency;
+    private String conditionOfSupport;
+    private String sinceChangeHappened;
+    private String occupation;
+    private String education_level;
+    private String residentialComplexNature;
+    private String linkNature;
+    private String percentageOfIncome;
+    private String sinceWhenMainResponsible;
 
 
     public String getUuid() {
@@ -184,6 +201,7 @@ public class Patient {
 
     public String getGender() {
         return gender;
+
     }
 
     public void setGender(String gender) {
@@ -207,7 +225,7 @@ public class Patient {
     }
 
     public String getOccupation() {
-        return occupation;
+        return StringUtils.getValueForAppLanguage(occupation);
     }
 
     public void setOccupation(String occupation) {
@@ -223,7 +241,7 @@ public class Patient {
     }
 
     public String getEducation_level() {
-        return education_level;
+        return StringUtils.getValueForAppLanguage(education_level);
     }
 
     public void setEducation_level(String education_level) {
@@ -247,19 +265,19 @@ public class Patient {
     }
 
     public String getRelationshiphoh() {
-        return relationshiphoh;
+        return StringUtils.getValueForAppLanguage(relationshiphoh);
     }
 
     public void setRelationshiphoh(String relationshiphoh) {
         this.relationshiphoh = relationshiphoh;
     }
 
-    public String getMaritualstatus() {
-        return maritualstatus;
+    public String getMaritalstatus() {
+        return StringUtils.getValueForAppLanguage(maritalstatus);
     }
 
-    public void setMaritualstatus(String maritualstatus) {
-        this.maritualstatus = maritualstatus;
+    public void setMaritalstatus(String maritalstatus) {
+        this.maritalstatus = maritalstatus;
     }
 
     public String getPhoneownership() {
@@ -508,5 +526,101 @@ public class Patient {
 
     public void setNoOfPregnancyOutcomeTwoYrs(String noOfPregnancyOutcomeTwoYrs) {
         this.noOfPregnancyOutcomeTwoYrs = noOfPregnancyOutcomeTwoYrs;
+    }
+
+    public String getHeadOfHousehold() {
+        return StringUtils.getValueForAppLanguage(headOfHousehold);
+    }
+
+    public void setHeadOfHousehold(String headOfHousehold) {
+        this.headOfHousehold = headOfHousehold;
+    }
+
+    public String getPatientAidType() {
+        return StringUtils.getValueForAppLanguage(patientAidType);
+    }
+
+    public void setPatientAidType(String patientAidType) {
+        this.patientAidType = patientAidType;
+    }
+
+    public String getHusbandStatus() {
+        return StringUtils.getValueForAppLanguage(husbandStatus);
+    }
+
+    public void setHusbandStatus(String husbandStatus) {
+        this.husbandStatus = husbandStatus;
+    }
+
+    public String getIndependentResidence() {
+        return StringUtils.getValueForAppLanguage(independentResidence);
+    }
+
+    public void setIndependentResidence(String independentResidence) {
+        this.independentResidence = independentResidence;
+    }
+
+    public String getMainOfficial() {
+        return StringUtils.getValueForAppLanguage(mainOfficial);
+    }
+
+    public void setMainOfficial(String mainOfficial) {
+        this.mainOfficial = mainOfficial;
+    }
+
+    public String getMainTendency() {
+        return StringUtils.getValueForAppLanguage(mainTendency);
+    }
+
+    public void setMainTendency(String mainTendency) {
+        this.mainTendency = mainTendency;
+    }
+
+    public String getConditionOfSupport() {
+        return StringUtils.getValueForAppLanguage(conditionOfSupport);
+    }
+
+    public void setConditionOfSupport(String conditionOfSupport) {
+        this.conditionOfSupport = conditionOfSupport;
+    }
+
+    public String getSinceChangeHappened() {
+        return StringUtils.getValueForAppLanguage(sinceChangeHappened);
+    }
+
+    public void setSinceChangeHappened(String sinceChangeHappened) {
+        this.sinceChangeHappened = sinceChangeHappened;
+    }
+
+    public String getResidentialComplexNature() {
+        return StringUtils.getValueForAppLanguage(residentialComplexNature);
+    }
+
+    public void setResidentialComplexNature(String residentialComplexNature) {
+        this.residentialComplexNature = residentialComplexNature;
+    }
+
+    public String getLinkNature() {
+        return StringUtils.getValueForAppLanguage(linkNature);
+    }
+
+    public void setLinkNature(String linkNature) {
+        this.linkNature = linkNature;
+    }
+
+    public String getPercentageOfIncome() {
+        return StringUtils.getValueForAppLanguage(percentageOfIncome);
+    }
+
+    public void setPercentageOfIncome(String percentageOfIncome) {
+        this.percentageOfIncome = percentageOfIncome;
+    }
+
+    public String getSinceWhenMainResponsible() {
+        return StringUtils.getValueForAppLanguage(sinceWhenMainResponsible);
+    }
+
+    public void setSinceWhenMainResponsible(String sinceWhenMainResponsible) {
+        this.sinceWhenMainResponsible = sinceWhenMainResponsible;
     }
 }

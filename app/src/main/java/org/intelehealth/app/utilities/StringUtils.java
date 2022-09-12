@@ -26,17 +26,26 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
+    private static Gson gson = new Gson();
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -179,16 +188,12 @@ public final class StringUtils {
         String val = "-";
         if (spinner.getSelectedItemPosition() == 0)
             val = "Not provided";
-
-
         else if (spinner.getSelectedItem() == null) {
             val = "Not provided";
-
         } else {
             val = spinner.getSelectedItem().toString();
         }
-
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        /*SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
@@ -233,8 +238,7 @@ public final class StringUtils {
             val = switch_ta_caste(val);
             val = switch_ta_economic(val);
             val = switch_ta_education(val);
-        }
-
+        }*/
         return val;
     }
 
@@ -6733,5 +6737,60 @@ public final class StringUtils {
                 value = updatedContext.getString(R.string.more_than_twenty_km);
         }
         return value;
+    }
+
+    public static String arrayValueInLocale(Context context, String value, @ArrayRes int sourceArrayId, @ArrayRes int targetArrayId) {
+        String[] sourceArray = context.getResources().getStringArray(sourceArrayId);
+        String[] targetArray = context.getResources().getStringArray(targetArrayId);
+        if (sourceArray == null && targetArray == null)
+            return null;
+        for (int i = 0; i < sourceArray.length; i++) {
+            if (sourceArray[i].equalsIgnoreCase(value))
+                return targetArray[i];
+        }
+        return null;
+    }
+
+
+    public static String arrayValueInJson(Context context, String appLanguage, String value, @ArrayRes int array_en, @ArrayRes int array_ar) {
+        int sourceArray, targetArray;
+        String targetValue = "", targetLanguage;
+        sourceArray = array_en;
+        targetArray = array_ar;
+        targetLanguage = "ar";
+
+        Map<String, String> resultMap = new HashMap<>();
+        targetValue = arrayValueInLocale(context, value, sourceArray, targetArray);
+        if (targetValue == null) {
+            targetValue = arrayValueInLocale(context, value, targetArray, sourceArray);
+            if (targetValue != null) {
+                resultMap.put("en", targetValue);
+                resultMap.put(appLanguage, value);
+            } else {
+                resultMap.put("en", value);
+            }
+        }
+        else {
+
+//        resultMap.put(appLanguage,value);
+            resultMap.put("en", value);
+            resultMap.put(targetLanguage, targetValue);
+        }
+        return gson.toJson(resultMap);
+    }
+
+    public static String getValueForAppLanguage(String string) {
+        try {
+            SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+            String appLanguage = sessionManager.getAppLanguage();
+            JSONObject jsonObject = new JSONObject(string);
+            String s = jsonObject.optString(appLanguage);
+            if (s == null)
+                return string;
+            else
+                return s;
+        } catch (Exception e) {
+            return string;
+        }
     }
 }
