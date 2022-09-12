@@ -6,7 +6,7 @@
 
     <string-array name="language_names">
         <item>English</item>
-        <item>Arabic</item>
+        <item>عربي</item>
     </string-array>
 
     <string-array name="language_values">

@@ -588,14 +588,14 @@
     <string name="age_11_years_5_months">العمر: 11 سنة ، 5 أشهر</string>
     <string name="active_defaultTag">نشيط</string>
     <string name="since_when_have_you_had_this_symptom">منذ متى كان لديك هذا الأعراض؟</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \\ n \\ n أنا أيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \\ n \\ n أنا أيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \n أنا أيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \n أنا أيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
     <string name="hello_my_name_is">\"مرحبا اسمي \"</string>
     <string name="i_need_assistance">\"وأنا بحاجة إلى بعض المساعدة.\"</string>
     <string name="economic_values_missing">القيم الاقتصادية مفقودة</string>
     <string name="education_values_missing">قيم التعليم مفقودة</string>
     <string name="intelehealth_a_telemedicine_platform">InteleHealth هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">Syriana هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">سوريانا هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
     <string name="intelehealth_name">intelehealth</string>
     <string name="Ayu_name">أيو</string>
     <string name="close_button">قريب</string>
@@ -1541,5 +1541,7 @@
     <string name="previous">سابق</string>
     <string name="select_for">حدد لـ : %1$s</string>
     <string name="enter_value">أدخل القيمة</string>
+    <string name="aid_type">نوع المساعدة</string>
+    <string name="patient_aid_type">حدد نوع مساعدة المريض</string>
 
 </resources>

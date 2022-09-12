@@ -154,6 +154,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
+                                android:textAlignment="viewStart"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -187,6 +188,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
+                                android:textAlignment="viewStart"
                                 android:layout_weight="2"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -220,6 +222,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:layout_weight="2"
+                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -253,6 +256,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:paddingBottom="4dp"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -286,6 +290,7 @@
                                 android:includeFontPadding="false"
                                 android:layout_weight="2"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -319,6 +324,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -382,6 +388,7 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
+                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -412,6 +419,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="2"
                                 android:layout_height="wrap_content"
+                                android:textAlignment="viewStart"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -451,6 +459,7 @@
                                 android:includeFontPadding="false"
                                 android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:paddingRight="5dp"
                                 android:text="@string/identification_screen_prompt_relationship"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -464,6 +473,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -496,6 +506,7 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
+                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -529,6 +540,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:layout_weight="2"
+                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -561,6 +573,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:layout_weight="2"
+                                android:textAlignment="viewStart"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 

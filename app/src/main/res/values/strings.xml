@@ -1544,8 +1544,9 @@
     <string name="student_aid_survey">Student Aid</string>
     <string name="emergency_survey">Emergency Need Evaluation</string>
     <string name="syriana">Syriana</string>
- <string name="txt_what_is_your_relationship_with_head_of_household">What is your family relationship with the household members you support?</string>
-
+    <string name="txt_what_is_your_relationship_with_head_of_household">What is your family relationship with the household members you support?</string>
+    <string name="aid_type">Aid Type</string>
+    <string name="patient_aid_type">Select Patient\'s aid type</string>
         <string name="previous">Previous</string>
     <string name="select_for">Select for : %1$s</string>
     <string name="enter_value">Enter Value</string>

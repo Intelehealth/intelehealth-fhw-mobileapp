@@ -613,7 +613,7 @@
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
-                        android:text="Aid Type"
+                        android:text="@string/aid_type"
                         android:textSize="@dimen/card_content_text_size" />
 
                 </LinearLayout>
@@ -639,7 +639,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="Select Patient's aid type"
+                    android:text="@string/patient_aid_type"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
                 <Space
