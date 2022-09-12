@@ -126,7 +126,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "", patientLName = "", patientFName = "";
+                String end_date = "", dob = "", mGender = "", patientName = "", patientLName = "", patientFName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
@@ -135,7 +135,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                                 idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
                         patientFName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name"));
                         patientLName = idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
-                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
+                        dob = idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
                     } while (idCursor.moveToNext());
                 }
                 idCursor.close();
@@ -183,7 +183,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                     past_visit = true;
                 }
 
-                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
+                float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dob);
 
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
@@ -223,7 +223,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         boolean enableEndVisit = false;
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (activePatientModels.get(position).getHasPrescription()) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
                 enableEndVisit = true;
