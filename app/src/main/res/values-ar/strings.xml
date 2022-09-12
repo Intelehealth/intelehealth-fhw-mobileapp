@@ -1543,5 +1543,6 @@
     <string name="enter_value">أدخل القيمة</string>
     <string name="aid_type">نوع المساعدة</string>
     <string name="patient_aid_type">حدد نوع مساعدة المريض</string>
+    <string name="household_survey_saved">تم حفظ مسح الأسرة!</string>
 
 </resources>

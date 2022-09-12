@@ -1317,7 +1317,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient1.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("working condition")) {
+                if (name.equalsIgnoreCase("Employment status")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("nature_of_the_residential_complex")) {
@@ -1347,7 +1347,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 if (name.equalsIgnoreCase("number of years for support")) {
                     patient1.setSinceWhenMainResponsible(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("independent residence")) {
+                if (name.equalsIgnoreCase("Do you have an independent residence")) {
                     patient1.setIndependentResidence(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("main official for family's support")) {
@@ -2124,7 +2124,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("independent residence"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Do you have an independent residence"));
             String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
             String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
             patientAttributesDTO.setValue(indepResidInfoJson);
@@ -2149,7 +2149,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("working condition"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Employment status"));
             String occupationInfoValue = StringUtils.getProvided(mOccupation);
             String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
             patientAttributesDTO.setValue(occupationInfoJson);
@@ -2209,7 +2209,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("HouseHold"));
+                        (patientsDAO.getUuidForAttribute("Household ID Number"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
             } else {
@@ -2218,7 +2218,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("HouseHold"));
+                        (patientsDAO.getUuidForAttribute("Household ID Number"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
             }
             //House Hold Registration - End
@@ -3355,7 +3355,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("independent residence"));
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Do you have an independent residence"));
                 String indepResidInfoValue = StringUtils.getProvided(independent_resid_spinner);
                 String indepResidInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), indepResidInfoValue, R.array.independent_residence_en, R.array.independent_residence_ar);
                 patientAttributesDTO.setValue(indepResidInfoJson);
@@ -3380,7 +3380,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("working condition"));
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Employment status"));
                 String occupationInfoValue = StringUtils.getProvided(mOccupation);
                 String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), occupationInfoValue, R.array.occupation_identification_en, R.array.occupation_identification_ar);
                 patientAttributesDTO.setValue(occupationInfoJson);
@@ -3439,7 +3439,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid
-                            (patientsDAO.getUuidForAttribute("HouseHold"));
+                            (patientsDAO.getUuidForAttribute("Household ID Number"));
                     patientAttributesDTO.setValue(HouseHold_UUID);
                 } else {
                     String HouseHold_UUID = sessionManager.getHouseholdUuid();
@@ -3447,7 +3447,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid
-                            (patientsDAO.getUuidForAttribute("HouseHold"));
+                            (patientsDAO.getUuidForAttribute("Household ID Number"));
                     patientAttributesDTO.setValue(HouseHold_UUID);
                 }
 

@@ -167,7 +167,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         }
         try {
             patientsDAO.insertPatientAttributes(attributesDTOList, null);
-            Toast.makeText(context, "Household Survey Saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
             finish();
         } catch (DAOException e) {
             e.printStackTrace();
