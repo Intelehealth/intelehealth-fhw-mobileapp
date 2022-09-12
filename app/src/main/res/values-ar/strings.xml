@@ -824,7 +824,7 @@
     <string name="type_to_search">اكتب للبحث..</string>
 
     <!--    Questions for HoH -->
-    <string name="select">Select</string>
+    <string name="select">يختار</string>
 
     <string name="name_of_investigator">Name of Investigator*</string>
     <string name="village">Village*</string>
@@ -833,18 +833,18 @@
     <string name="district_nashik">Nashik</string>
     <string name="state_Maharastra">Maharastra</string>
     <string name="date_of_visit">Date of Visit</string>
-    <string name="name_of_primary_respondent">Name of Primary Respondent*</string>
-    <string name="household_number">Household No.*</string>
-    <string name="household_structure_type">Household structure type*</string>
-    <string name="kucha">Kucha</string>
-    <string name="pucca">Pucca</string>
-    <string name="result_of_visit">Result of Visit*</string>
-    <string name="available_and_accepted">Available and accepted</string>
-    <string name="available_and_deferred">Available and deferred</string>
-    <string name="not_available_at_time_of_the_survey">Not available at time of the survey</string>
-    <string name="not_available_on_the_second_visit">Not available on the second visit</string>
-    <string name="not_available_on_the_third_visit">Not available on the third visit</string>
-    <string name="refused_to_participate">Refused to participate</string>
+    <string name="name_of_primary_respondent">اسم المستجيب الرئيسي *</string>
+    <string name="household_number">رقم الأسرة *</string>
+    <string name="household_structure_type">نوع هيكل الأسرة *</string>
+    <string name="kucha">كوتشا</string>
+    <string name="pucca">بوكا</string>
+    <string name="result_of_visit">نتيجة الزيارة *</string>
+    <string name="available_and_accepted">متاح ومقبول</string>
+    <string name="available_and_deferred">متاح ومؤجل</string>
+    <string name="not_available_at_time_of_the_survey">غير متوفر في وقت المسح</string>
+    <string name="not_available_on_the_second_visit">غير متوفر في الزيارة الثانية</string>
+    <string name="not_available_on_the_third_visit">غير متوفر في الزيارة الثالثة</string>
+    <string name="refused_to_participate">رفض المشاركة</string>
 
     <string name="household_identification_for_survey">Household Identification for Survey</string>
     <string name="nasik_district">Nasik</string>
@@ -1357,7 +1357,7 @@
     <string name="txt_when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?*</string>
     <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
 
-    <string name="household_survey">Household Survey</string>
+    <string name="household_survey">مسح الأسر المعيشية</string>
     <string name="rice_roti_bread">(Rice, Roti, Bread, Pressed rice, Muri, Potato, sweet potato, arbi, Cassava, Banana, any other roots and tubers, noodles, pasta)</string>
     <string name="beans_peas_mung_dal_chana_dal">(Beans, peas, Mung dal, Chana dal, Arahar dal, Urad dal, kidney beans, Matter dal, other pulse and Soybeans, Seem, mustard)</string>
     <string name="groundnut_apricort_almond_pista">(Groundnut, Apricort, Almond, Pista, Coconut, Seesam seed, lotus seed, Jackfruit seed, cashew nut, walnut, mustard seed, sunflower seed, pumpkin seeds )</string>
@@ -1533,5 +1533,8 @@
     <string name="percentage_of_income">باستثناء المساعدة ، ما هي نسبة الدخل التي تقدمها بالنسبة لإجمالي دخل الأسرة؟</string>
     <string name="since_when_you_are_supporting_family">منذ متى وأنت المسؤول الرئيسي عن إعالة أسرتك؟</string>
     <string name="are_you_head_of_the_family">هل انت رب الاسرة؟ *</string>
+    <string name="previous">سابق</string>
+    <string name="select_for">حدد لـ : %1$s</string>
+    <string name="enter_value">أدخل القيمة</string>
 
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/common_padding">
+
+    <TextView
+        android:id="@+id/tvParamName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/common_padding"
+        android:text="Param name"
+        android:textColor="@color/gray_6"
+        android:textSize="@dimen/content_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:background="@drawable/round_corner_gray_stroke_light"
+        android:drawableEnd="@drawable/ic_baseline_expand_more_24"
+        android:gravity="center_vertical"
+        android:hint="@string/select"
+        android:padding="@dimen/common_padding"
+        android:textColor="@color/gray_6"
+        android:textSize="@dimen/content_text_size" />
+
+</LinearLayout>

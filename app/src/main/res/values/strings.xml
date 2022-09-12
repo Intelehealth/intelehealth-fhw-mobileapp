@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <string name="app_name">Syriana</string>
+    <string name="app_name">Syriana</string>
     <string name="notification_title">Realtime sync is ON!</string>
     <!--//Generic-->
     <string name="generic_the_flipping_word_next">Next</string>
@@ -22,7 +22,7 @@
     <string name="generic_deleted">Deleted</string>
 
 
-   <!-- //Database Schema Names-->
+    <!-- //Database Schema Names-->
     <string name="db_first_name" translatable="false">first_name</string>
     <string name="db_middle_name" translatable="false">middle_name</string>
     <string name="db_last_name" translatable="false">last_name</string>
@@ -1534,5 +1534,8 @@
     <string name="percentage_of_income">Excluding aid, what is the percentage of income that you provide in relation to the total income of the family?</string>
     <string name="since_when_you_are_supporting_family">Since when have you been the main responsible for supporting your family?</string>
     <string name="are_you_head_of_the_family">Are you Head of the Family?*</string>
+    <string name="previous">Previous</string>
+    <string name="select_for">Select for : %1$s</string>
+    <string name="enter_value">Enter Value</string>
 
 </resources>

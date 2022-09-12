@@ -383,6 +383,9 @@ public class PatientsDAO {
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
         boolean isInserted = true;
         ContentValues values = new ContentValues();
+        if (db == null) {
+            db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        }
         db.beginTransaction();
         try {
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
@@ -418,6 +421,7 @@ public class PatientsDAO {
             for (int i = 0; i < patientAttributeTypeMasterDTOS.size(); i++) {
                 values.put("uuid", patientAttributeTypeMasterDTOS.get(i).getUuid());
                 values.put("name", patientAttributeTypeMasterDTOS.get(i).getName());
+                values.put("description", patientAttributeTypeMasterDTOS.get(i).getDescription());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "TRUE");
                 db.insertWithOnConflict("tbl_patient_attribute_master", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -438,6 +442,25 @@ public class PatientsDAO {
         String attributeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+
+        return attributeUuid;
+    }
+
+    /**
+     * Get the PatientAttributeUUID by the description value
+     * @param desc
+     * @return
+     */
+    public String getUuidForAttributeByDesc(String desc) {
+        String attributeUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where description = ? COLLATE NOCASE", new String[]{desc});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));

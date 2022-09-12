@@ -6,9 +6,155 @@
     android:layout_height="match_parent"
     tools:context=".activities.householdSurvey.Fragments.FirstScreenFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <RelativeLayout
+        android:id="@+id/footer_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_0"
+        android:elevation="8dip"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
+        android:paddingVertical="8dip">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="16dip"
+            android:background="@drawable/round_corner_16_blue_light"
+            android:drawableEnd="@drawable/ic_baseline_navigate_next_24"
+            android:minWidth="140dip"
+            android:paddingHorizontal="8dip"
+            android:text="@string/next"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="16dip"
+            android:background="@drawable/round_corner_16_blue_light"
+            android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
+            android:minWidth="140dip"
+            android:paddingHorizontal="8dip"
+            android:text="@string/previous"
+            android:textAllCaps="true" android:visibility="visible"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dip">
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="1"
+
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:background="@drawable/ic_baseline_lens_24"
+            android:gravity="center"
+            android:text="2"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="3"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="4"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="5"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="6"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="7"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="8"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="9"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:background="@drawable/ic_baseline_lens_24_1"
+            android:gravity="center"
+            android:text="10"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/header_layout"
         android:background="@color/transparent"
         android:paddingStart="15sp"
         android:paddingEnd="15dp"
@@ -17,17 +163,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/investigator_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:hint="@string/name_of_investigator">
+                android:hint="@string/name_of_investigator"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/investigator_name_edit_text"
@@ -74,9 +221,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/district_layout"
-                android:visibility="gone"
+                android:layout_marginTop="5dp"
 
-                android:layout_marginTop="5dp">
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -147,166 +294,277 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/primary_respondent_name_layout"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/village_block_linear_layout"
-                android:layout_marginTop="10dp">
+                android:background="@color/white"
+                app:cardCornerRadius="8dip"
+                app:cardElevation="8dip"
+                app:cardUseCompatPadding="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/primary_respondent_name_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins"
-                    android:hint="@string/name_of_primary_respondent"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:id="@+id/tvSectionName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="@dimen/common_padding"
+                        android:text="@string/name_of_primary_respondent"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/header_text_size"
+                        android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/household_number_layout"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvSectionName"
+                        android:orientation="vertical"
+                        android:padding="@dimen/common_padding">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/primary_respondent_name_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/round_corner_16_gray_light">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/primary_respondent_name_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/poppins"
+                                android:hint=""
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:minHeight="36dip"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/primary_respondent_name_layout"
-                android:layout_marginTop="10dp">
+                android:background="@color/white"
+                app:cardCornerRadius="8dip"
+                app:cardElevation="8dip"
+                app:cardUseCompatPadding="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/household_number_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins"
-                    android:hint="@string/household_number"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textSize="14sp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:id="@+id/tvSectionName1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="@dimen/common_padding"
+                        android:text="@string/household_number"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/header_text_size"
+                        android:textStyle="bold" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/household_structure_text_view"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvSectionName1"
+                        android:orientation="vertical"
+                        android:padding="@dimen/common_padding">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/household_number_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/round_corner_16_gray_light">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/household_number_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/poppins"
+                                android:hint=""
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:minHeight="36dip"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/household_number_layout"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="15sp"
-                android:alpha="0.6"
-                android:fontFamily="@font/poppins"
-                android:text="@string/household_structure_type"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
+                android:background="@color/white"
+                app:cardCornerRadius="8dip"
+                app:cardElevation="8dip"
+                app:cardUseCompatPadding="true">
 
-            <RadioGroup
-                android:id="@+id/household_structure_radio_group"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvSectionName2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="@dimen/common_padding"
+                        android:text="@string/household_structure_type"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/header_text_size"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvSectionName2"
+                        android:orientation="vertical"
+                        android:padding="@dimen/common_padding">
+
+                        <RadioGroup
+                            android:id="@+id/household_structure_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15sp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/kuchaRadioButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text="@string/kucha"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/puccaRadioButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text="@string/pucca"
+                                android:textSize="14sp" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/household_structure_text_view"
-                android:layout_marginTop="15sp"
-                android:orientation="horizontal">
+                android:background="@color/white"
+                app:cardCornerRadius="8dip"
+                app:cardElevation="8dip"
+                app:cardUseCompatPadding="true">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/kuchaRadioButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/kucha"
-                    android:textSize="14sp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/puccaRadioButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/pucca"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tvSectionName3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="@dimen/common_padding"
+                        android:text="@string/result_of_visit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/header_text_size"
+                        android:textStyle="bold" />
 
-            </RadioGroup>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvSectionName3"
+                        android:orientation="vertical"
+                        android:padding="@dimen/common_padding">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/result_of_visit_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/household_structure_radio_group"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="25dp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/result_of_visit"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
+                        <RadioGroup
+                            android:id="@+id/result_of_visit_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/result_of_visit_radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/result_of_visit_text_view"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/availableAccepted"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/available_and_accepted"
+                                android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/availableAccepted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/available_and_accepted"
-                    android:textSize="13sp" />
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/availableDeferred"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/available_and_deferred"
+                                android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/availableDeferred"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/available_and_deferred"
-                    android:textSize="13sp" />
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/notavailableSurvey"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/not_available_at_time_of_the_survey"
+                                android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/notavailableSurvey"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/not_available_at_time_of_the_survey"
-                    android:textSize="13sp" />
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/notavailableSecondVisit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/not_available_on_the_second_visit"
+                                android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/notavailableSecondVisit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/not_available_on_the_second_visit"
-                    android:textSize="13sp" />
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/notavailableThirdVisit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/not_available_on_the_third_visit"
+                                android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/notavailableThirdVisit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/not_available_on_the_third_visit"
-                    android:textSize="13sp" />
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/RefusedParticipate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/refused_to_participate"
+                                android:textSize="13sp" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/RefusedParticipate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/refused_to_participate"
-                    android:textSize="13sp" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
-            </RadioGroup>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -315,7 +573,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/next_button_text"
@@ -336,7 +595,7 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

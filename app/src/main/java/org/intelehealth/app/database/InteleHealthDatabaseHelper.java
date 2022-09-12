@@ -157,6 +157,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute_master (" +
             "uuid TEXT PRIMARY KEY," +
             "name TEXT," +
+            "description TEXT," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
