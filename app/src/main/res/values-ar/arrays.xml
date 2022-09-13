@@ -34,7 +34,7 @@
         <item>Please select country first</item>
     </string-array>
 
-    <string-array name="countries_en">
+    <string-array name="countries">
         <item>Select Country</item>
         <item>Syriana</item>
     </string-array>
@@ -73,8 +73,10 @@
 
     <string-array name="states_syriana">
         <item>Select</item>
-        <item>@string/state_Maharastra</item>
+        <item>As-Sweida</item>
+        <item>Deir-ez-Zor</item>
     </string-array>
+
 
     <string-array name="states_philippines">
         <item>Select State</item>

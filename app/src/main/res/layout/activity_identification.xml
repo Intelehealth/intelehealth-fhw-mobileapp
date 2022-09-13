@@ -123,6 +123,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_first_name"
+                                        android:textAlignment="viewStart"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
@@ -147,6 +148,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_middle_name"
+                                        android:textAlignment="viewStart"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
@@ -173,6 +175,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_last_name"
+                                        android:textAlignment="viewStart"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
@@ -264,6 +267,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_birthday"
+                                android:textAlignment="viewStart"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
@@ -291,6 +295,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_age"
+                                android:textAlignment="viewStart"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
@@ -318,6 +323,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
+                                android:textAlignment="viewStart"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="phone"
                                 android:maxLength="10"
@@ -430,6 +436,7 @@
                                             android:id="@+id/spinner_country"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
+                                            android:textAlignment="viewStart"
                                             android:layout_weight="2" />
 
                                     </LinearLayout>
@@ -481,6 +488,7 @@
                                         <Spinner
                                             android:id="@+id/spinner_state"
                                             android:layout_width="match_parent"
+                                            android:textAlignment="viewStart"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="2" />
                                     </LinearLayout>
@@ -541,6 +549,7 @@
                                             android:id="@+id/spinner_village"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
+                                            android:textAlignment="viewStart"
                                             android:layout_weight="2" />
                                     </LinearLayout>
 
@@ -568,6 +577,7 @@
                                 android:hint="@string/identification_screen_prompt_address"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
+                                android:textAlignment="viewStart"
                                 android:maxLength="50"
                                 android:maxLines="2"
                                 android:singleLine="false"
@@ -596,6 +606,7 @@
                                 android:maxLength="50"
                                 android:maxLines="2"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -618,6 +629,7 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="number"
                                 android:maxLength="9"
+                                android:textAlignment="viewStart"
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -1019,6 +1031,7 @@
                         <EditText
                             android:id="@+id/ET_since_change_happened"
                             android:layout_width="match_parent"
+                            android:textAlignment="viewStart"
                             android:layout_height="wrap_content"
                             android:inputType="number" />
 
@@ -1192,6 +1205,7 @@
                         <EditText
                             android:id="@+id/et_since_when_supporting_family"
                             android:layout_width="match_parent"
+                            android:textAlignment="viewStart"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_duration" />
 

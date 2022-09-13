@@ -895,7 +895,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
             mState.setAdapter(stateAdapter);
             mState.setSelection(stateAdapter.getPosition(sessionManager.getStateName()));
-//            mState.setEnabled(false);
+            mState.setEnabled(false);
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
