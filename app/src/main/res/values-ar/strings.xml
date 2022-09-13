@@ -1545,4 +1545,13 @@
     <string name="patient_aid_type">حدد نوع مساعدة المريض</string>
     <string name="household_survey_saved">تم حفظ مسح الأسرة!</string>
 
+    //-------setup Location string-----
+    <string name="setup_select_state_str">اختر ولايه</string>
+    <string name="setup_select_dropdown_state_msg">حدد الولاية من القائمة المنسدلة</string>
+    <string name="setup_select_district_str">حدد المنطقة</string>
+    <string name="setup_select_dropdown_district_msg">حدد المنطقة من القائمة المنسدلة</string>
+    <string name="setup_select_village_str">اختر القرية</string>
+    <string name="setup_select_dropdown_village_msg">حدد القرية من القائمة المنسدلة</string>
+
+
 </resources>
