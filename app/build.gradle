@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: "org.sonarqube"
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -74,11 +73,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-    }
-}
-sonarqube {
-    properties {
-
     }
 }
 
