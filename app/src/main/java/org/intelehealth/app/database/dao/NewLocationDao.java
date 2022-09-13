@@ -38,58 +38,22 @@ public class NewLocationDao {
                         for (int j = 0; j < districtList.size(); j++) {
                             String districtName = districtList.get(j).getName();
                             uuid = districtList.get(j).getUuid();
-                            List<Setup_SanchModel> sanchList = districtList.get(j).getSanchs();
-                            List<Setup_TehsilModel> tehsilList = districtList.get(j).getTehsils();
                             List<Setup_VillageModel> villageList = districtList.get(j).getVillages();
-                            if (sanchList != null && sanchList.size() > 0) {
-                                for (int k = 0; k < sanchList.size(); k++) {
-                                    String sanchName = sanchList.get(k).getName();
-                                    uuid = sanchList.get(k).getUuid();
-                                    List<Setup_VillageModel> villageList1 = sanchList.get(k).getVillages();
-                                    if (villageList1 != null && villageList1.size() > 0) {
-                                        for (int n = 0; n < villageList1.size(); n++) {
-                                            String villageName = villageList1.get(n).getName();
-                                            uuid = villageList1.get(n).getUuid();
-                                            //------enter into db with name and state, district, sanch and village only----
-                                            createSetupLocation(stateName, districtName, sanchName, villageName, uuid, db);
-                                        }
-                                    } else {
-                                        //------enter into db with name and state, district and sanch only----
-                                        createSetupLocation(stateName, districtName, sanchName, "", uuid, db);
-                                    }
-                                }
-                            } else if (tehsilList != null && tehsilList.size() > 0) {
-                                for (int k = 0; k < tehsilList.size(); k++) {
-                                    String tehsilName = tehsilList.get(k).getName();
-                                    uuid = tehsilList.get(k).getUuid();
-                                    List<Setup_VillageModel> villageList1 = tehsilList.get(k).getVillages();
-                                    if (villageList1 != null && villageList1.size() > 0) {
-                                        for (int n = 0; n < villageList1.size(); n++) {
-                                            String villageName = villageList1.get(n).getName();
-                                            uuid = villageList1.get(n).getUuid();
-                                            //------enter into db with name and state, district, sanch and village only----
-                                            createSetupLocation(stateName, districtName, tehsilName, villageName, uuid, db);
-                                        }
-                                    } else {
-                                        //------enter into db with name and state, district and sanch only----
-                                        createSetupLocation(stateName, districtName, tehsilName, "", uuid, db);
-                                    }
-                                }
-                            } else if (villageList != null && villageList.size() > 0) {
+                             if (villageList != null && villageList.size() > 0) {
                                 for (int n = 0; n < villageList.size(); n++) {
                                     String villageName = villageList.get(n).getName();
                                     uuid = villageList.get(n).getUuid();
                                     //------enter into db with name and state, district and village only----
-                                    createSetupLocation(stateName, districtName, "", villageName, uuid, db);
+                                    createSetupLocation(stateName, districtName, villageName, uuid, db);
                                 }
                             } else {
                                 //------enter into db with name and state and district only----
-                                createSetupLocation(stateName, districtName, "", "", uuid, db);
+                                createSetupLocation(stateName, districtName, "", uuid, db);
                             }
                         }
                     } else {
                         //------enter into db with name and stateonly----
-                        createSetupLocation(stateName, "", "", "", uuid, db);
+                        createSetupLocation(stateName, "", "", uuid, db);
                     }
                 }
             }
@@ -107,7 +71,7 @@ public class NewLocationDao {
     }
 
     //------------------sanch and tehsil both are same--------------------------
-    private boolean createSetupLocation(String stateName, String districtName, String sanchName, String villageName, String uuid, SQLiteDatabase db) throws DAOException {
+    private boolean createSetupLocation(String stateName, String districtName, String villageName, String uuid, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         try {
@@ -116,13 +80,7 @@ public class NewLocationDao {
                 values.put("name", villageName);
                 values.put("state", stateName);
                 values.put("district", districtName);
-                values.put("tehsil", sanchName);
                 values.put("village", villageName);
-            } else if (sanchName.length() > 0) {
-                values.put("name", districtName);
-                values.put("state", stateName);
-                values.put("district", districtName);
-                values.put("tehsil", sanchName);
             } else if (districtName.length() > 0) {
                 values.put("name", stateName);
                 values.put("state", stateName);
@@ -174,7 +132,7 @@ public class NewLocationDao {
         return district_locations;
     }
 
-    public List<String> getSanchList(String stateName, String districtName,Context context) {
+    /*public List<String> getSanchList(String stateName, String districtName,Context context) {
         List<String> sanch_locations = new ArrayList<String>();
         sanch_locations.add(context.getResources().getString(R.string.setup_select_sanch_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -189,13 +147,13 @@ public class NewLocationDao {
         }
         cursor.close();
         return sanch_locations;
-    }
+    }*/
 
-    public List<String> getVillageList(String stateName, String districtName, String sanchName, Context context) {
+    public List<String> getVillageList(String stateName, String districtName/*, String sanchName*/, Context context) {
         List<String> village_locations = new ArrayList<String>();
         village_locations.add(context.getResources().getString(R.string.setup_select_village_str));
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT village FROM tbl_location_new where state = ? AND district=? AND tehsil=? COLLATE NOCASE", new String[]{stateName, districtName, sanchName});
+        Cursor cursor = db.rawQuery("SELECT DISTINCT village FROM tbl_location_new where state = ? AND district=? /*AND tehsil=?*/ COLLATE NOCASE", new String[]{stateName, districtName/*, sanchName*/});
         Log.d("count", "count: " + cursor.getCount());
 
         if (cursor.getCount() != 0) {
@@ -208,11 +166,11 @@ public class NewLocationDao {
         return village_locations;
     }
 
-    public String getVillageUuid(String stateName, String districtName, String sanchName,String villageName) {
+    public String getVillageUuid(String stateName, String districtName/*, String sanchName*/,String villageName) {
         String villageUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT locationuuid FROM tbl_location_new where state = ? AND district=? AND tehsil=? AND village=? COLLATE NOCASE",
-                new String[]{stateName, districtName, sanchName,villageName});
+        Cursor cursor = db.rawQuery("SELECT DISTINCT locationuuid FROM tbl_location_new where state = ? AND district=? /*AND tehsil=?*/ AND village=? COLLATE NOCASE",
+                new String[]{stateName, districtName/*, sanchName*/,villageName});
         Log.d("count", "count: " + cursor.getCount());
 
         if (cursor.getCount() != 0) {

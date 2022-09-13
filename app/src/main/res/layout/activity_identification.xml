@@ -491,28 +491,65 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <LinearLayout
+                            android:id="@+id/identification_lldistrict_village"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp">
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/identification_city"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/home_icon"
-                                android:drawableLeft="@drawable/home_icon"
-                                android:drawablePadding="10dp"
-                                android:fontFamily="@font/lato_regular"
-                                android:freezesText="true"
-                                android:hint="@string/identification_screen_prompt_city"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="textCapWords"
-                                android:maxLength="25"
-                                android:maxLines="1"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:weightSum="4">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:paddingBottom="2dp">
+
+                                        <EditText
+                                            android:id="@+id/identification_village"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2"
+                                            android:clickable="false"
+                                            android:cursorVisible="false"
+                                            android:drawableStart="@drawable/state_list_icon"
+                                            android:drawableLeft="@drawable/state_list_icon"
+                                            android:drawablePadding="10dp"
+                                            android:focusable="false"
+                                            android:focusableInTouchMode="false"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:freezesText="true"
+                                            android:imeOptions="actionUnspecified"
+                                            android:inputType="textCapWords"
+                                            android:maxLines="1"
+                                            android:text="@string/village"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                        <Spinner
+                                            android:id="@+id/spinner_village"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2" />
+                                    </LinearLayout>
+
+
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"

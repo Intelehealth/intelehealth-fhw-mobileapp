@@ -52,6 +52,10 @@ public class SessionManager {
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String NO_OFCLICKS = "NO_OFCLICKS";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
+    private static final String COUNTRYNAME = "COUNTRYNAME";
+    private static final String STATENAME = "STATENAME";
+    private static final String DISTRICTNAME = "DISTRICTNAME";
+    private static final String VILLAGENAME = "VILLAGENAME";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -178,6 +182,42 @@ public class SessionManager {
 
     public void setChwname(String chwname) {
         editor.putString(CHWNAME, chwname);
+        editor.commit();
+    }
+
+    public String getCountryName() {
+        return pref.getString(COUNTRYNAME, "");
+    }
+
+    public void setCountryName(String countryName) {
+        editor.putString(COUNTRYNAME, countryName);
+        editor.commit();
+    }
+
+    public String getStateName() {
+        return pref.getString(STATENAME, "");
+    }
+
+    public void setStateName(String stateName) {
+        editor.putString(STATENAME, stateName);
+        editor.commit();
+    }
+
+    public String getDistrictName() {
+        return pref.getString(DISTRICTNAME, "");
+    }
+
+    public void setDistrictName(String districtName) {
+        editor.putString(DISTRICTNAME, districtName);
+        editor.commit();
+    }
+
+    public String getVillageName() {
+        return pref.getString(VILLAGENAME, "");
+    }
+
+    public void setVillageName(String villageName) {
+        editor.putString(VILLAGENAME, villageName);
         editor.commit();
     }
 

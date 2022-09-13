@@ -20,6 +20,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -49,11 +50,13 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
+import org.intelehealth.app.database.dao.NewLocationDao;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.ActivityIdentificationBinding;
@@ -150,10 +153,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     PatientsDAO patientsDAO = new PatientsDAO();
-    EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mCity, mPostal, countryText, stateText, sinceChangeHappenedET, sinceSupportingFamilyET;
+    EditText mFirstName, mMiddleName, mLastName, mDOB, mPhoneNum, mAge, mAddress1, mAddress2, mPostal, countryText, stateText, sinceChangeHappenedET, sinceSupportingFamilyET;
     MaterialAlertDialogBuilder mAgePicker;
     RadioButton mGenderM, mGenderF, mGenderO, yesHOH, noHOH;
-    Spinner mOccupation, mCountry, mState, mEducation;
+    Spinner mOccupation, mCountry, mState, mEducation, mVillage;
     LinearLayout countryStateLayout;
     ImageView mImageView;
     PatientDTO patientdto = new PatientDTO();
@@ -251,7 +254,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         if (patientID_edit == null) {
             mAddress1.setText(mAddress1Value);
             mAddress2.setText(mAddress2Value);
-            mCity.setText(villageValue);
 
             //TODO: Support for state and country
 
@@ -358,11 +360,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         } else {
             mAddress1.setText(patient1.getAddress1());
             mAddress2.setText(patient1.getAddress2());
-            mCity.setText(patient1.getCity_village());
-
-            //TODO: Support for state and country
-
-
             if (!patient1.getPostal_code().equalsIgnoreCase("-"))
                 mPostal.setText(patient1.getPostal_code());
         }
@@ -873,7 +870,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private void setAdapterToSpinners() {
         Resources res = getResources();
         try {
-            String countriesLanguage = "countries_" + sessionManager.getAppLanguage();
+            String countriesLanguage = "countries";
             int countries = res.getIdentifier(countriesLanguage, "array", getApplicationContext().getPackageName());
             if (countries != 0) {
                 countryAdapter = ArrayAdapter.createFromResource(this,
@@ -881,13 +878,15 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             }
             mCountry.setAdapter(countryAdapter);
+            mCountry.setSelection(countryAdapter.getPosition(sessionManager.getCountryName()));
+            mCountry.setEnabled(false);
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
 
         try {
-            String stateLanguage = "states_syriana_" + sessionManager.getAppLanguage();
+            String stateLanguage = "states_syriana";
             int states = res.getIdentifier(stateLanguage, "array", getApplicationContext().getPackageName());
             if (states != 0) {
                 stateAdapter = ArrayAdapter.createFromResource(this,
@@ -895,6 +894,8 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             }
             mState.setAdapter(stateAdapter);
+            mState.setSelection(stateAdapter.getPosition(sessionManager.getStateName()));
+//            mState.setEnabled(false);
         } catch (Exception e) {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -925,7 +926,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
-
         try {
             String residNatureLanguage = "nature_residential_complex_" + sessionManager.getAppLanguage();
             int residNature = res.getIdentifier(residNatureLanguage, "array", getApplicationContext().getPackageName());
@@ -1036,6 +1036,19 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             Toast.makeText(this, R.string.occupation_values_missing, Toast.LENGTH_SHORT).show();
         }
 
+        NewLocationDao newLocationDao = new NewLocationDao();
+        List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(), sessionManager.getDistrictName(), context);
+        if (villageList.size() > 1) {
+            LocationArrayAdapter locationArrayAdapter =
+                    new LocationArrayAdapter(IdentificationActivity.this, villageList);
+            mVillage.setAdapter(locationArrayAdapter);
+            mVillage.setEnabled(false);
+            if (patientID_edit != null) {
+                mVillage.setSelection(locationArrayAdapter.getPosition(patient1.getCity_village()));
+            } else {
+                mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
+            }
+        }
     }
 
     private void configureViewsFromConfig() {
@@ -1096,11 +1109,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             } else {
                 mAddress2.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("mCity")) {
-                mCity.setVisibility(View.VISIBLE);
-            } else {
-                mCity.setVisibility(View.GONE);
-            }
 
             if (obj.getBoolean("countryStateLayout")) {
                 countryStateLayout.setVisibility(View.VISIBLE);
@@ -1125,7 +1133,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             }
 
             country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
+            state = sessionManager.getStateName();
 
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
@@ -1625,10 +1633,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
-            }
-
             if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -2039,7 +2043,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValueForStateCity(mCity.getText().toString()));
+            patientdto.setCityvillage(mVillage.getSelectedItem().toString());
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(mCountry.getSelectedItem().toString());
             patientdto.setPatientPhoto(mCurrentPhotoPath);
@@ -2985,7 +2989,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
@@ -3020,10 +3023,6 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 if (mAge.getText().toString().equals("")) {
                     mAge.setError(getString(R.string.error_field_required));
-                }
-
-                if (mCity.getText().toString().equals("")) {
-                    mCity.setError(getString(R.string.error_field_required));
                 }
 
                 if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
@@ -3269,7 +3268,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
                 patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-                patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+                patientdto.setCity_village(mVillage.getSelectedItem().toString());
                 patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
                 patientdto.setCountry(mCountry.getSelectedItem().toString());
                 patientdto.setPatient_photo(mCurrentPhotoPath);
@@ -3503,10 +3502,9 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
         mAddress2 = findViewById(R.id.identification_address2);
         mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
-        mCity = findViewById(R.id.identification_city);
-        mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
+        mVillage = findViewById(R.id.spinner_village);
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);

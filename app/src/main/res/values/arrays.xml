@@ -34,14 +34,9 @@
         <item>Please select country first</item>
     </string-array>
 
-    <string-array name="countries_en">
+    <string-array name="countries">
         <item>Select Country</item>
         <item>Syriana</item>
-    </string-array>
-
-    <string-array name="countries_ar">
-        <item>حدد الدولة</item>
-        <item>سيريانا</item>
     </string-array>
 
     <string-array name="gender_en">
@@ -77,17 +72,12 @@
     </string-array>
 
 
-    <string-array name="states_syriana_en">
+    <string-array name="states_syriana">
         <item>Select</item>
         <item>As-Sweida</item>
         <item>Deir-ez-Zor</item>
     </string-array>
 
-    <string-array name="states_syriana_ar">
-        <item>يختار</item>
-        <item>السويداء</item>
-        <item>دير الزور</item>
-    </string-array>
 
     <string-array name="units">
         <item>per Hour</item>

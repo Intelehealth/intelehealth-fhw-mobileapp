@@ -12,7 +12,6 @@ public class Setup_StateModel {
     @SerializedName("name")
     @Expose
     private String name;
-
     @SerializedName("uuid")
     @Expose
     private String uuid;

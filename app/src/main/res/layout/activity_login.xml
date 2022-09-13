@@ -18,9 +18,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_bg_rounded_corners"
         android:padding="5dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/intelehealth_i_icon_only" />
 
     <LinearLayout
         android:id="@+id/ll_center"

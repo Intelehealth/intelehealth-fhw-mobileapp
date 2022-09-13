@@ -129,8 +129,9 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mAdminPasswordView;
     private EditText mUrlField;
     private Button mLoginButton;
-//    private Spinner mDropdownLocation;
-    private Spinner spinner_state, spinner_district, spinner_sanch, spinner_village;
+    //    private Spinner mDropdownLocation;
+    private Spinner spinner_state, spinner_district, /*spinner_sanch,*/
+            spinner_village;
     private TextView mAndroidIdTextView;
     private RadioButton r1;
     private RadioButton r2;
@@ -146,8 +147,10 @@ public class SetupActivity extends AppCompatActivity {
     boolean value = false;
     String base_url;
     Map.Entry<String, String> village_name;
-    int state_count = 0, district_count = 0, sanch_count = 0, village_count = 0;
-    private String selectedState = "", selectedDistrict = "", selectedSanch = "", selectedVillage = "";
+    int state_count = 0, district_count = 0, /*sanch_count = 0,*/
+            village_count = 0;
+    private String selectedState = "", selectedDistrict = "", /*selectedSanch = "",*/
+            selectedVillage = "";
     NewLocationDao newLocationDao = null;
 
     @Override
@@ -195,12 +198,12 @@ public class SetupActivity extends AppCompatActivity {
 //        mDropdownLocation = findViewById(R.id.spinner_location);
         spinner_state = findViewById(R.id.spinner_state);
         spinner_district = findViewById(R.id.spinner_district);
-        spinner_sanch = findViewById(R.id.spinner_sanch);
+//        spinner_sanch = findViewById(R.id.spinner_sanch);
         spinner_village = findViewById(R.id.spinner_village);
 
         spinner_state.setEnabled(false);
         spinner_district.setEnabled(false);
-        spinner_sanch.setEnabled(false);
+//        spinner_sanch.setEnabled(false);
         spinner_village.setEnabled(false);
 
 
@@ -216,7 +219,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        String deviceID = getString(R.string.device_ID)+ IntelehealthApplication.getAndroidId();
+        String deviceID = getString(R.string.device_ID) + IntelehealthApplication.getAndroidId();
         mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -227,6 +230,16 @@ public class SetupActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+
+        if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+            if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
+                if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
+                    value = getLocationFromServer(BASE_URL); //state wise locations...
+                else
+                    Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+            }
+        }
 
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
@@ -243,7 +256,7 @@ public class SetupActivity extends AppCompatActivity {
                 mEmailView.setError(null);
                 state_count = 0;
                 district_count = 0;
-                sanch_count = 0;
+//                sanch_count = 0;
                 village_count = 0;
                 empty_spinner("url");
             }
@@ -262,7 +275,7 @@ public class SetupActivity extends AppCompatActivity {
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                             String BASE_URL = "https://" + mUrlField.getText().toString() + ":3004/api/openmrs/";
-                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched&& !BASE_URL.contains("?"))
+                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
                                 value = getLocationFromServer(BASE_URL); //state wise locations...
                             else
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
@@ -294,6 +307,7 @@ public class SetupActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -305,7 +319,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
-                if (position != 0) {
+                /*if (position != 0) {
                     String district_uuid = "";
                     selectedDistrict = spinner_district.getSelectedItem().toString();
                     List<String> sanch_locations = newLocationDao.getSanchList(selectedState, selectedDistrict, context);
@@ -317,6 +331,18 @@ public class SetupActivity extends AppCompatActivity {
                         spinner_sanch.setAlpha(1);
                         spinner_sanch.setAdapter(locationArrayAdapter);
                         isLocationFetched = true;
+                    }*/
+                if (position != 0) {
+                    String sanch_uuid = "";
+                    selectedDistrict = spinner_district.getSelectedItem().toString();
+                    List<String> village_locations = newLocationDao.getVillageList(selectedState, selectedDistrict/*, selectedSanch*/, context);
+                    if (village_locations.size() > 1) {
+                        LocationArrayAdapter locationArrayAdapter =
+                                new LocationArrayAdapter(SetupActivity.this, village_locations);
+                        spinner_village.setEnabled(true);
+                        spinner_village.setAlpha(1);
+                        spinner_village.setAdapter(locationArrayAdapter);
+                        isLocationFetched = true;
                     } else {
                         empty_spinner("district");
                     }
@@ -324,6 +350,7 @@ public class SetupActivity extends AppCompatActivity {
                     empty_spinner("district");
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -331,80 +358,81 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 //        this will give Villages...
-        spinner_sanch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //sanch wise locations...
-
-                if (position != 0) {
-                    String sanch_uuid = "";
-                    selectedSanch = spinner_sanch.getSelectedItem().toString();
-                    List<String> village_locations = newLocationDao.getVillageList(selectedState, selectedDistrict, selectedSanch, context);
-                    if (village_locations.size() > 1) {
-                        LocationArrayAdapter locationArrayAdapter =
-                                new LocationArrayAdapter(SetupActivity.this, village_locations);
-
-                        spinner_village.setEnabled(true);
-                        spinner_village.setAlpha(1);
-                        spinner_village.setAdapter(locationArrayAdapter);
-                        isLocationFetched = true;
-                    } else {
-                        empty_spinner("sanch");
-                    }
-                } else {
-                    empty_spinner("sanch");
-                }
-
-                /*String sanch_uuid = "";
-
-                if (sanch_count == 0) {
-                    if (value && parent.getSelectedItemPosition() > 0) {
-                        for (Map.Entry<String, String> entry : hashMap3.entrySet()) {
-                            String list = entry.getValue();
-                            // Do things with the list
-                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
-                                sanch_uuid = entry.getKey();
-                            }
-                        }
-                        value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
-                        sanch_count = parent.getSelectedItemPosition();
-                    }
-                } else if (sanch_count == parent.getSelectedItemPosition()) {
-                    if (value && parent.getSelectedItemPosition() > 0) {
-                        for (Map.Entry<String, String> entry : hashMap3.entrySet()) {
-                            String list = entry.getValue();
-                            // Do things with the list
-                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
-                                sanch_uuid = entry.getKey();
-                            }
-                        }
-                        value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
-                    }
-                } else {
-//                    Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
-//                    mUrlField.getText().clear();
-                    empty_spinner("sanch");
-                    if (value && parent.getSelectedItemPosition() > 0) {
-                        for (Map.Entry<String, String> entry : hashMap3.entrySet()) {
-                            String list = entry.getValue();
-                            // Do things with the list
-                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
-                                sanch_uuid = entry.getKey();
-                            }
-                        }
-                        value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
-                    }
-
-                }*/
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spinner_sanch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                //sanch wise locations...
+//
+//                if (position != 0) {
+//                    String sanch_uuid = "";
+//                    selectedSanch = spinner_sanch.getSelectedItem().toString();
+//                    List<String> village_locations = newLocationDao.getVillageList(selectedState, selectedDistrict/*, selectedSanch*/, context);
+//                    if (village_locations.size() > 1) {
+//                        LocationArrayAdapter locationArrayAdapter =
+//                                new LocationArrayAdapter(SetupActivity.this, village_locations);
+//
+//                        spinner_village.setEnabled(true);
+//                        spinner_village.setAlpha(1);
+//                        spinner_village.setAdapter(locationArrayAdapter);
+//                        isLocationFetched = true;
+//                    } else {
+//                        empty_spinner("sanch");
+//                    }
+//                } else {
+//                    empty_spinner("sanch");
+//                }
+//
+//                /*String sanch_uuid = "";
+//
+//                if (sanch_count == 0) {
+//                    if (value && parent.getSelectedItemPosition() > 0) {
+//                        for (Map.Entry<String, String> entry : hashMap3.entrySet()) {
+//                            String list = entry.getValue();
+//                            // Do things with the list
+//                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+//                                sanch_uuid = entry.getKey();
+//                            }
+//                        }
+//                        value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
+//                        sanch_count = parent.getSelectedItemPosition();
+//                    }
+//                } else if (sanch_count == parent.getSelectedItemPosition()) {
+//                    if (value && parent.getSelectedItemPosition() > 0) {
+//                        for (Map.Entry<String, String> entry : hashMap3.entrySet()) {
+//                            String list = entry.getValue();
+//                            // Do things with the list
+//                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+//                                sanch_uuid = entry.getKey();
+//                            }
+//                        }
+//                        value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
+//                    }
+//                } else {
+////                    Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
+////                    mUrlField.getText().clear();
+//                    empty_spinner("sanch");
+//                    if (value && parent.getSelectedItemPosition() > 0) {
+//                        for (Map.Entry<String, String> entry : hashMap3.entrySet()) {
+//                            String list = entry.getValue();
+//                            // Do things with the list
+//                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+//                                sanch_uuid = entry.getKey();
+//                            }
+//                        }
+//                        value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
+//                    }
+//
+//                }*/
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
 //        to fetch village and pass as locations to location-api
+
         spinner_village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -414,7 +442,7 @@ public class SetupActivity extends AppCompatActivity {
                     if (position != 0) {
                         String village_uuid = "";
                         selectedVillage = spinner_village.getSelectedItem().toString();
-                        village_uuid = newLocationDao.getVillageUuid(selectedState, selectedDistrict, selectedSanch, selectedVillage);
+                        village_uuid = newLocationDao.getVillageUuid(selectedState, selectedDistrict/*, selectedSanch*/, selectedVillage);
                         hashMap4 = new HashMap<>();
                         hashMap4.put(village_uuid, selectedVillage);
                         for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
@@ -455,6 +483,7 @@ public class SetupActivity extends AppCompatActivity {
                     empty_spinner("village");
                 }*/
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -463,7 +492,7 @@ public class SetupActivity extends AppCompatActivity {
 
         showProgressbar();
 
-        if(LocaleHelper.isArabic(this)){
+        if (LocaleHelper.isArabic(this)) {
             mUrlField.setGravity(Gravity.END);
         }
     }
@@ -478,12 +507,12 @@ public class SetupActivity extends AppCompatActivity {
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
             spinner_district.setAdapter(adapter_district);
 
-            List<String> list_sanch = new ArrayList<>();
+            /*List<String> list_sanch = new ArrayList<>();
             list_sanch.add("Select Sanch");
             spinner_sanch.setEnabled(false);
             spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
-            spinner_sanch.setAdapter(adapter_sanch);
+            spinner_sanch.setAdapter(adapter_sanch);*/
 
             List<String> list_village = new ArrayList<>();
             list_village.add("Select Village");
@@ -492,12 +521,12 @@ public class SetupActivity extends AppCompatActivity {
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
         } else if (value.equalsIgnoreCase("district")) {
-            List<String> list_sanch = new ArrayList<>();
+            /*List<String> list_sanch = new ArrayList<>();
             list_sanch.add("Select Sanch");
             spinner_sanch.setEnabled(false);
             spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
-            spinner_sanch.setAdapter(adapter_sanch);
+            spinner_sanch.setAdapter(adapter_sanch);*/
 
             List<String> list_village = new ArrayList<>();
             list_village.add("Select Village");
@@ -505,14 +534,14 @@ public class SetupActivity extends AppCompatActivity {
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
-        } else if (value.equalsIgnoreCase("sanch")) {
+        } /*else if (value.equalsIgnoreCase("sanch")) {
             List<String> list_village = new ArrayList<>();
             list_village.add("Select Village");
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
-        } else if (value.equalsIgnoreCase("village")) {
+        }*/ else if (value.equalsIgnoreCase("village")) {
             //do nothing
         } else {
             List<String> list_state = new ArrayList<>();
@@ -529,12 +558,12 @@ public class SetupActivity extends AppCompatActivity {
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
             spinner_district.setAdapter(adapter_district);
 
-            List<String> list_sanch = new ArrayList<>();
+            /*List<String> list_sanch = new ArrayList<>();
             list_sanch.add("Select Sanch");
             spinner_sanch.setEnabled(false);
             spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
-            spinner_sanch.setAdapter(adapter_sanch);
+            spinner_sanch.setAdapter(adapter_sanch);*/
 
             List<String> list_village = new ArrayList<>();
             list_village.add("Select Village");
@@ -612,14 +641,14 @@ public class SetupActivity extends AppCompatActivity {
             focusView.setEnabled(true);
             t.setTextColor(Color.RED);
             Toast.makeText(SetupActivity.this, "Select District from dropdown", Toast.LENGTH_LONG).show();
-        } else if (spinner_sanch.getSelectedItemPosition() <= 0) {
+        } /*else if (spinner_sanch.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_sanch;
             TextView t = (TextView) spinner_sanch.getSelectedView();
             t.setError("Select Sanch");
             t.setTextColor(Color.RED);
             Toast.makeText(SetupActivity.this, "Select Sanch from dropdown", Toast.LENGTH_LONG).show();
-        } else if (spinner_village.getSelectedItemPosition() <= 0) {
+        }*/ else if (spinner_village.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_village;
             TextView t = (TextView) spinner_village.getSelectedView();
@@ -880,9 +909,9 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
-                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             }
                             customProgressDialog.dismiss();
@@ -1009,6 +1038,7 @@ public class SetupActivity extends AppCompatActivity {
 //        return value;
 //    }
 //
+
     /**
      * Returns list of locations.
      *
@@ -1244,6 +1274,12 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
+
+                                            //Storing State Name
+                                            sessionManager.setCountryName("Syriana");
+                                            sessionManager.setStateName(selectedState);
+                                            sessionManager.setDistrictName(selectedDistrict);
+                                            sessionManager.setVillageName(selectedVillage);
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
