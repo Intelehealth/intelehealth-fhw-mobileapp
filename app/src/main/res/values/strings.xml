@@ -1552,4 +1552,14 @@
     <string name="enter_value">Enter Value</string>
     <string name="household_survey_saved">Household Survey Saved!</string>
 
+    //-------setup Location string-----
+    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
+    <string name="setup_select_district_str">Select District</string>
+    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
+    <string name="setup_select_sanch_str">Select Sanch</string>
+    <string name="setup_select_dropdown_sanch_msg">Select Sanch from dropdown</string>
+    <string name="setup_select_village_str">Select Village</string>
+    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+
 </resources>

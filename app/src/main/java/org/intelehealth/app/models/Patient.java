@@ -623,4 +623,5 @@ public class Patient {
     public void setSinceWhenMainResponsible(String sinceWhenMainResponsible) {
         this.sinceWhenMainResponsible = sinceWhenMainResponsible;
     }
+
 }

@@ -259,6 +259,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
+        db.execSQL(CREATE_LOCATION_NEW);
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
         uuidInsert(db);
@@ -291,4 +292,21 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         else
             return getWritableDatabase();
     }
+
+    public static final String CREATE_LOCATION_NEW= "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
+            "location_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
+            "country TEXT," +
+            "state TEXT," +
+            "district TEXT," +
+            "tehsil TEXT," +
+            "village TEXT," +
+            "latitude TEXT," +
+            "longitude TEXT," +
+            "parent_location integer(11)," +
+            "locationuuid TEXT," +
+            "modified_date TEXT," +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
+            ")";
 }

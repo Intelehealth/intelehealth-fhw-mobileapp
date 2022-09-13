@@ -18,6 +18,7 @@ import org.intelehealth.app.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
+import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.models.statewise_location.State;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -131,4 +132,7 @@ public interface ApiInterface {
             @Url String url,
             @Header("Authorization") String authHeader);
 
+    //-SetupLocation
+    @GET("getLocations")
+    Observable<Setup_LocationModel> SETUP_LOCATIONOBSERVABLE();
 }
