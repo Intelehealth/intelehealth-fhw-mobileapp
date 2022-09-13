@@ -106,6 +106,7 @@
                         android:id="@+id/autotv_select_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="Remote"
                         android:background="@drawable/ui2_background_input_field_new"
                         android:hint="@string/start_typing_location"
                         android:importantForAutofill="no"

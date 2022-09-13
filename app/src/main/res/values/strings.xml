@@ -914,6 +914,12 @@
     <string name="login_success">Login successful</string>
     <string name="login_success_note">Hurry! You have successfully logged\n in into the demo version of the app</string>
     <string name="start_typing_location">Start typing or select location</string>
+    <string name="patients_added">Patients added by\nyou</string>
+    <string name="visits_completed_by_you">Visits completed\nby you</string>
+    <string name="your_patient_score">Your patient\nsatisfactions score</string>
+    <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
+    <string name="your_time_spent_today">Your time spent\ntoday</string>
+
 
 
 

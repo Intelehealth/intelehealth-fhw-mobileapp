@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_badge"
+        android:layout_width="@dimen/achievements_badge_width"
+        android:layout_height="@dimen/achievements_badge_height"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="@dimen/achievements_badge_margin_start"
+        android:layout_marginTop="@dimen/achievements_badge_margin_top"
+        android:src="@drawable/ui2_ic_achievements_badge" />
+
+    <TextView
+        android:id="@+id/tv_user_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/achievements_userlevel_margin_start"
+        android:layout_marginTop="@dimen/achievements_userlevel_margin_top"
+        android:layout_toEndOf="@+id/iv_badge"
+        android:text="Level1"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_user_points"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_user_level"
+        android:layout_marginStart="@dimen/achievements_user_score_margin_start"
+        android:layout_marginTop="@dimen/achievements_user_score_margin_top"
+        android:layout_toEndOf="@+id/iv_badge"
+        android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+        android:text="1200 Points"
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/common_info_text_size" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout_achievements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_user_points"
+        android:layout_marginStart="@dimen/achievements_tab_margin_start"
+        android:layout_marginTop="@dimen/achievements_tab_margin_top"
+        android:layout_marginEnd="@dimen/achievements_tab_margin_end"
+        android:background="@drawable/ui2_bg_tablayout_achievements"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:tabMode="auto"
+        app:tabSelectedTextColor="@color/textColorBlack"
+        app:tabTextAppearance="@style/CustomTabText" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager_achievements"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tablayout_achievements"
+        android:layout_alignBottom="@id/app_bar"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+</RelativeLayout>

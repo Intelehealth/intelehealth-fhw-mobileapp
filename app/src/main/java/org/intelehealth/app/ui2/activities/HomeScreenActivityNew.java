@@ -23,11 +23,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -48,12 +46,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -61,14 +57,13 @@ import androidx.work.WorkManager;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.fragments.HomeFragment;
+import org.intelehealth.app.achievements.fragments.MyAchievementsFragmentNew;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -106,6 +101,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
     SyncUtils syncUtils = new SyncUtils();
     int i = 5;
     Context context;
+    TextView tvTitleHomeScreenCommon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +119,6 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         initUI();
 
 
-
     }
 
     private void initUI() {
@@ -138,10 +133,18 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         }
 
 
-         TextView tvLocation = findViewById(R.id.tv_user_location_home);
-        tvLocation.setText(sessionManager.getLocationName());
+        View toolbarHome = findViewById(R.id.toolbar_home);
 
-        imageViewIsInternet = findViewById(R.id.imageview_is_internet);
+        tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
+        tvTitleHomeScreenCommon.setText(sessionManager.getLocationName());
+        tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivityNew.this, LoginActivityNew.class);
+                startActivity(intent);
+            }
+        });
+        imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         ImageView ivHamburger = findViewById(R.id.iv_hamburger);
         ivHamburger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -359,6 +362,9 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         Class fragmentClass = null;
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
+                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                 fragment = new MyAchievementsFragmentNew();
+
                 break;
             case R.id.menu_video_lib:
 
@@ -375,14 +381,14 @@ public class HomeScreenActivityNew extends AppCompatActivity {
             default:
         }
 
-      /*  try {
+        try {
 
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        loadFragment(fragment);
+       /*  FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment).commit();
         String backStateName = fragment.getClass().getName();

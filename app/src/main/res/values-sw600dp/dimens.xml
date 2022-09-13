@@ -386,5 +386,53 @@
     <dimen name="notifi_subtitle_size">14sp</dimen>
     <dimen name="notifi_header_icon">60dp</dimen>
 
+    <!--My Achievements UI2.0-->
+    <dimen name="achievements_badge_width">90dp</dimen>
+    <dimen name="achievements_badge_height">90dp</dimen>
+
+    <dimen name="achievements_badge_margin_start">30dp</dimen>
+    <dimen name="achievements_badge_margin_top">22dp</dimen>
+    <dimen name="achievements_userlevel_margin_start">15dp</dimen>
+    <dimen name="achievements_userlevel_margin_top">25dp</dimen>
+    <dimen name="achievements_user_score_margin_start">15dp</dimen>
+    <dimen name="achievements_user_score_margin_top">5dp</dimen>
+    <dimen name="achievements_user_score_line_Spacing">3sp</dimen>
+    <dimen name="achievements_tab_margin_start">21dp</dimen>
+    <dimen name="achievements_tab_margin_end">21dp</dimen>
+    <dimen name="achievements_tab_margin_top">32dp</dimen>
+    <dimen name="layout_parent_achi_margin_top">30dp</dimen>
+    <dimen name="card_common_achieve_padding">18dp</dimen>
+    <dimen name="card1_achieve_margin_end">13dp</dimen>
+    <dimen name="card1_achieve_margin_start">13dp</dimen>
+    <dimen name="card_achieve_icon_width">40dp</dimen>
+    <dimen name="card_achieve_icon_height">45dp</dimen>
+    <dimen name="card_achieve_title_margin_top">14dp</dimen>
+    <dimen name="card_achieve_value_margin_top">8dp</dimen>
+    <dimen name="card_achieve_value_line_spacing">4sp</dimen>
+    <dimen name="card_achieve_value_textsize">24sp</dimen>
+    <dimen name="card_achieve_value_line_height">30dp</dimen>
+    <dimen name="card1_common_achieve_margin_start">26dp</dimen>
+    <dimen name="card1_common_achieve_margin_end">26dp</dimen>
+    <dimen name="card1_common_achieve_margin_bottom">26dp</dimen>
+    <dimen name="card2_common_achieve_margin_start">26dp</dimen>
+    <dimen name="card2_common_achieve_margin_end">26dp</dimen>
+    <dimen name="date_frag_parent_margin_top">32dp</dimen>
+    <dimen name="date_frag_layout_margin_start">26dp</dimen>
+    <dimen name="date_frag_layout_margin_end">26dp</dimen>
+    <dimen name="date_frag_layout_text_size">18sp</dimen>
+    <dimen name="date_frag_date_text_size">18sp</dimen>
+    <dimen name="date_frag_date_margin_top">10dp</dimen>
+    <dimen name="date_frag_date_padding_end">22dp</dimen>
+    <dimen name="date_frag_layout2_margin_start">16dp</dimen>
+    <dimen name="card_daily_frag_margin_top">18dp</dimen>
+    <dimen name="date_frag_text_margin_start">26dp</dimen>
+    <dimen name="date_frag_text_size">20sp</dimen>
+    <dimen name="date_frag_daily_parent_margin_top">32dp</dimen>
+    <dimen name="achieve_tab_title_text_size">20sp</dimen>
+    <dimen name="daily_tab_date_margin_start">10dp</dimen>
+    <dimen name="daily_tab_icon_width">30dp</dimen>
+    <dimen name="daily_tab_icon_height">30dp</dimen>
+    <dimen name="layout_cards_date_range_margin_top">20dp</dimen>
+
 
 </resources>
