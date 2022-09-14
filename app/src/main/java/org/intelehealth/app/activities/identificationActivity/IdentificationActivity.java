@@ -49,6 +49,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.householdSurvey.model.AidTypeAnswerValue;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
@@ -2266,13 +2267,24 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
     }
 
-    private String getAidTypeInJson() {
+    /*private String getAidTypeInJson() {
         if (selectedAid_en != null && selectedAid_ar != null) {
             Gson gson = new Gson();
             Map<String, String> resultMap = new HashMap<>();
             resultMap.put("ar", selectedAid_ar.toString());
             resultMap.put("en", selectedAid_en.toString());
             return gson.toJson(resultMap);
+        }
+        return "Not Provided";
+    }*/
+
+    private String getAidTypeInJson() {
+        if (selectedAid_en != null && selectedAid_ar != null) {
+            Gson gson = new Gson();
+            AidTypeAnswerValue answerValue = new AidTypeAnswerValue();
+            answerValue.setEnValues(selectedAid_en);
+            answerValue.setArValues(selectedAid_ar);
+            return gson.toJson(answerValue);
         }
         return "Not Provided";
     }
