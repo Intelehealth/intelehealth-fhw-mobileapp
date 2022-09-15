@@ -50,6 +50,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AidTypeAnswerValue;
+import org.intelehealth.app.activities.householdSurvey.model.AidTypeAnswerValue;
+import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
@@ -414,32 +416,30 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
 
-            if (patient1 != null && patient1.getPatientAidType() != null)
-            {
+            if (patient1 != null && patient1.getPatientAidType() != null) {
                 Log.d("Patient Aid Type", patient1.getPatientAidType());
-                if(patient1.getPatientAidType().toString().contains(getString(R.string.student_aid_survey))) {
+                if (patient1.getPatientAidType().toString().contains(getString(R.string.student_aid_survey))) {
                     studentCB.setChecked(true);
 //                    hideSpinnersBasedOnAid();
                 }
-                if(patient1.getPatientAidType().toString().contains(getString(R.string.emergency_survey))) {
+                if (patient1.getPatientAidType().toString().contains(getString(R.string.emergency_survey))) {
                     emergencyCB.setChecked(true);
 //                    hideSpinnersBasedOnAid();
                 }
-                if(patient1.getPatientAidType().toString().contains(getString(R.string.fhh_survey))) {
+                if (patient1.getPatientAidType().toString().contains(getString(R.string.fhh_survey))) {
                     fhhSurveyCB.setChecked(true);
 //                    showSpinnersBasedOnAid();
                 }
-                if(patient1.getPatientAidType().toString().contains(getString(R.string.general_aid_survey))) {
+                if (patient1.getPatientAidType().toString().contains(getString(R.string.general_aid_survey))) {
                     generalCB.setChecked(true);
 //                    showSpinnersBasedOnAid();
                 }
 
             }
 
-            if(patient1!=null & patient1.getHeadOfHousehold()!=null)
-            {
+            if (patient1 != null & patient1.getHeadOfHousehold() != null) {
                 String headOfHousehold = patient1.getHeadOfHousehold();
-                if(headOfHousehold.equalsIgnoreCase(getString(R.string.yes)))
+                if (headOfHousehold.equalsIgnoreCase(getString(R.string.yes)))
                     yesHOH.setChecked(true);
                 else
                     noHOH.setChecked(true);
@@ -3019,8 +3019,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                     generalCB.isChecked() || fhhSurveyCB.isChecked())) {
                 aidSelectionImplementation();
                 Log.v(TAG, "Result");
-            }
-            else {
+            } else {
                 if (mFirstName.getText().toString().equals("")) {
                     mFirstName.setError(getString(R.string.error_field_required));
                 }

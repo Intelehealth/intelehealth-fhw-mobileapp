@@ -6,38 +6,34 @@ package org.intelehealth.app.activities.householdSurvey;
  * Github: prajwalmw
  */
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.householdSurvey.Fragments.FirstScreenFragment;
+import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.householdSurvey.model.Questions;
 import org.intelehealth.app.activities.householdSurvey.model.SurveyData;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.databinding.ActivityHouseholdSurveyBinding;
-import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.RTLUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -55,6 +51,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     private ActivityHouseholdSurveyBinding mScreenBinding;
     private String mPatientUUid = "";
     private String mPatientAIDType = "";
+    private List<String> mPatientAidTypes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +70,21 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         }*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPatientUUid = getIntent().getStringExtra("patientUuid");
-        mPatientAIDType = "";// get aid typed from patient attributes;
+        String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
+        try {
+            String value = new PatientsDAO().getPatientAttributeValueByTypeUUID(mPatientUUid, attributeTypeUuidForAidType);
+            AnswerValue answerValue = new Gson().fromJson(value, AnswerValue.class);
+            Log.v("answerValue", answerValue.getEnValue());
+            String[] userArray = new Gson().fromJson(answerValue.getEnValue(), String[].class);
+            mPatientAidTypes = Arrays.asList(userArray);
+            Log.v("answerValue", mPatientAidTypes+"");
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
         mIsEditMode = getIntent().getBooleanExtra("isEditMode", false);
         context = HouseholdSurveyActivity.this;
         if (mIsEditMode) {
-            //getSupportActionBar().setTitle("Edit : History Collection");
-            /*mSaveTextView.setText("Update");*/
+
         }
         mScreenBinding.rvQuery.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mSurveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "survery_data.json").toString(), SurveyData.class);

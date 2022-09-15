@@ -610,4 +610,24 @@ public class PatientsDAO {
         return gender;
     }
 
+    public String getPatientAttributeValueByTypeUUID(String patientUuid, String typeUuid) throws DAOException {
+        String value = null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? ", new String[]{patientUuid, typeUuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        }
+        idCursor.close();
+
+        return value;
+    }
+
 }
