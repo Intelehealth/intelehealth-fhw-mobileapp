@@ -547,9 +547,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ") || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("জড়িত লক্ষণগুলি")))) {
+                    .equalsIgnoreCase("الأعراض المرافقة"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
@@ -596,31 +594,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("id", "ID_294177528");
                 assoSympObj.put("text", "Associated symptoms");
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
-                assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
-                assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
-                assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
-                assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
-                assoSympObj.put("display-te", "మీకు ఈ క్రింది లక్షణం (లు) ఉన్నాయా?");
-                assoSympObj.put("display-mr", "तुम्हाला खालील लक्षणे आहेत का?");
-                assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
-                assoSympObj.put("display-ml", "നിങ്ങൾക്ക് ഇനിപ്പറയുന്ന രോഗലക്ഷണം ഉണ്ടോ?");
-                assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত লক্ষণগুলি রয়েছে?");
-                assoSympObj.put("display-ta", "பின்வரும் அறிகுறி (கள்) உங்களிடம் உள்ளதா?");
+                assoSympObj.put("display-ar", "هل لديك أحد الأعراض التالية؟");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
-                finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
-                finalAssoSympObj.put("display-ml", "ബന്ധപ്പെട്ട രോഗലക്ഷണങ്ങൾ");
-                finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
-                finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
-                finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
-                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
-                finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
-                finalAssoSympObj.put("display-ta", "தொடர்புடைய அறிகுறிகள்");
-                finalAssoSympObj.put("display-bn", "জড়িত লক্ষণগুলি");
-                finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
+                finalAssoSympObj.put("display-ar", "الأعراض المرافقة");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -660,33 +640,33 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
-                    .replace("Patient reports -", "रुग्ण अहवाल-")
-                    .replace("Patient denies -", "रुग्ण नकार देतो-")
-                    .replace("Hours", "तास")
-                    .replace("Days", "दिवस")
-                    .replace("Weeks", "आठवडे")
-                    .replace("Months", "महिने")
-                    .replace("Years", "वर्षे")
-                    .replace("times per hour", "प्रति तास")
-                    .replace("time per day", "दररोज वेळा")
-                    .replace("times per week", "आठवड्यातून काही वेळा")
-                    .replace("times per month", "दरमहा वेळा")
-                    .replace("times per year", "दरवर्षी वेळा")
-                    .replace("Jan", "जानेवारी")
-                    .replace("Feb", "फेब्रुवारी")
-                    .replace("Mar", "मार्च")
-                    .replace("Apr", "एप्रिल")
-                    .replace("May", "मे")
-                    .replace("Jun", "जून")
-                    .replace("Jul", "जुलै")
-                    .replace("Aug", "ऑगस्ट")
-                    .replace("Sept", "सप्टेंबर")
-                    .replace("Oct", "ऑक्टोबर")
-                    .replace("Nov", "नोव्हेंबर")
-                    .replace("Dec", "डिसेंबर")
+                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                    .replace("Patient reports -", "يقر المريض ب-")
+                    .replace("Patient denies -", "ينفي المريض ب-")
+                    .replace("Hours", "ساعات")
+                    .replace("Days", "أيام")
+                    .replace("Weeks", "أسابيع")
+                    .replace("Months", "شهور")
+                    .replace("Years", "سنوات")
+                    .replace("times per hour", "مرات في الساعة")
+                    .replace("time per day", "الوقت في اليوم")
+                    .replace("times per week", "مرات بالأسبوع")
+                    .replace("times per month", "مرات في الشهر")
+                    .replace("times per year", "مرات في السنة")
+                    .replace("Jan", "كانون الثاني")
+                    .replace("Feb", "شهر شباط")
+                    .replace("Mar", "شهر اذار")
+                    .replace("Apr", "أشهر نيسان")
+                    .replace("May", "شهر أيار")
+                    .replace("Jun", "شهر حزيران")
+                    .replace("Jul", "شهر تموز")
+                    .replace("Aug", "شهر أب")
+                    .replace("Sept", "شهر أيلول")
+                    .replace("Oct", "شهر تشرين الأول")
+                    .replace("Nov", "شهر تشرين الثاني")
+                    .replace("Dec", "شهر كانون الأول")
             ));
 
         }  else {

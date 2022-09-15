@@ -415,6 +415,7 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
         ImageView imageView = convertView.findViewById(R.id.dialog_subquestion_image_view);
+
         if (node.isAidAvailable()) {
             if (node.getJobAidType().equals("image")) {
                 String drawableName = node.getJobAidFile();
@@ -708,22 +709,9 @@ public class Node implements Serializable {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
-                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                            (associatedTest.trim().equals("H/o specific illness")) ||
-                            (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("الأعراض المرافقة"))) {
 
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
-                                (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                                (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
-                                (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                                || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                                || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("الأعراض المرافقة")) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -751,12 +739,7 @@ public class Node implements Serializable {
                 } else {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                            || associatedTest.trim().equals("الأعراض المرافقة"))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             raw = raw.substring(6);
@@ -1212,25 +1195,24 @@ public class Node implements Serializable {
 
     private static String ar_en(String unit) {
 
-        //TODO: Add arabic translations
         switch (unit) {
-            case "घंटे":
+            case "ساعات":
                 unit = "Hours";
                 break;
 
-            case "दिन":
+            case "أيام":
                 unit = "Days";
                 break;
 
-            case "हफ्तों":
+            case "أسابيع":
                 unit = "Weeks";
                 break;
 
-            case "महीने":
+            case "شهور":
                 unit = "Months";
                 break;
 
-            case "वर्षों":
+            case "سنوات":
                 unit = "Years";
                 break;
 
@@ -2126,9 +2108,7 @@ public class Node implements Serializable {
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("الأعراض المرافقة"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
@@ -2160,11 +2140,7 @@ public class Node implements Serializable {
                 }
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("الأعراض المرافقة")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);

@@ -381,8 +381,8 @@ public class DateAndTimeUtils {
                     calendar.set(year, monthOfYear, dayOfMonth);
                     String format = simpleDateFormat.format(calendar.getTime());
 
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        etFollowUpDate.setText(StringUtils.en__mr_dob(format));
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                        etFollowUpDate.setText(StringUtils.en_ar_dob(format));
                     } else {
                         etFollowUpDate.setText(format);
                     }

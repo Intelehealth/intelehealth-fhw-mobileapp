@@ -378,14 +378,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)
-                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
-                    .replace("Hours", "तास")
-                    .replace("Years", "वर्षे")
-                    .replace("Days", "दिवस")
-                    .replace("Weeks", "आठवडे")
-                    .replace("Months", "महिने")
+                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                    .replace("Hours", "ساعات")
+                    .replace("Days", "أيام")
+                    .replace("Weeks", "أسابيع")
+                    .replace("Months", "شهور")
+                    .replace("Years", "سنوات")
             ));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)));

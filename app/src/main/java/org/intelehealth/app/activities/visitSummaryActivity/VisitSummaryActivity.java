@@ -2132,10 +2132,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
 
-        if (mComplaint.contains("जुड़े लक्षण")) {
+        if (mComplaint.contains("الأعراض المرافقة")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+                mComplaint = mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3);
             }
         } else {
 
@@ -4763,10 +4763,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
 
-        if (mComplaint.contains("जुड़े लक्षण")) {
+        if (mComplaint.contains("الأعراض المرافقة")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+                mComplaint = mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3);
             }
         } else {
 

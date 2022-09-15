@@ -19,6 +19,8 @@
         android:focusable="false"
         android:fontFamily="@font/lato_regular"
         android:textStyle="normal"
+        android:gravity="start"
+        android:textAlignment="viewStart"
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"
         android:textSize="@dimen/card_content_text_size"
