@@ -227,7 +227,7 @@
     <dimen name="followup_toolbar">84dp</dimen>
     <dimen name="fu_toolbat_txt_height">24dp</dimen>
     <dimen name="fu_header_card_height">72dp</dimen>
-    <dimen name="fu_card_margin_sides">24dp</dimen>
+    <dimen name="fu_card_margin_sides">12dp</dimen>
     <dimen name="fu_card_margin_updown">16dp</dimen>
     <dimen name="fu_image_width">48dp</dimen>
     <dimen name="fu_margin_start">12dp</dimen>

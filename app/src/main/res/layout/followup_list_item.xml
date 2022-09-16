@@ -30,7 +30,7 @@
                 android:layout_margin="@dimen/margin_12">
 
                 <ImageView
-                    android:id="@+id/profile"
+                    android:id="@+id/fu_profile_imgv"
                     android:layout_width="@dimen/profile_img_card_size"
                     android:layout_height="@dimen/profile_img_card_size"
                     android:layout_alignParentTop="true"
@@ -40,12 +40,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/profile"
+                    android:layout_toEndOf="@+id/fu_profile_imgv"
                     android:layout_marginStart="@dimen/fu_margin_start">
 
-                    <!-- Label -->
+                    <!-- fu_patname_txtview -->
                     <TextView
-                        android:id="@+id/label"
+                        android:id="@+id/fu_patname_txtview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -59,21 +59,21 @@
                         android:id="@+id/fu_item_calendar"
                         android:layout_width="@dimen/cal_size"
                         android:layout_height="@dimen/cal_size"
-                        android:layout_below="@+id/label"
+                        android:layout_below="@+id/fu_patname_txtview"
                         android:layout_marginTop="@dimen/cal_margin_top"
                         android:src="@drawable/followup_item_calendar" />
 
                     <TextView
-                        android:id="@+id/caption"
+                        android:id="@+id/fu_date_txtview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/label"
+                        android:layout_below="@+id/fu_patname_txtview"
                         android:layout_marginStart="@dimen/cal_margnin_start"
                         android:layout_marginTop="@dimen/cal_margnin_start"
                         android:layout_toEndOf="@+id/fu_item_calendar"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="3sp"
-                        android:text="@string/caption"
+                        android:text="@string/fu_card_item_date"
                         android:textAppearance="@style/caption"
                         android:textColor="@null"
                         android:textSize="@dimen/fu_male_textsize" />
@@ -83,7 +83,7 @@
             </RelativeLayout>
 
             <ImageView
-                android:id="@+id/you_can_add"
+                android:id="@+id/fu_priority_tag"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="@dimen/fu_card_margin_updown"

@@ -22,6 +22,7 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ui2.activities.HomeScreenActivityNew;
 import org.intelehealth.app.ui2.onboarding.IntroScreensActivityNew;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
@@ -68,7 +69,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         btnNextToIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setLocale(sessionManager.getAppLanguage());
+              /*  setLocale(sessionManager.getAppLanguage());
                 if (sessionManager.isFirstTimeLaunch()) {
                     Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivityNew.class);
                     startActivity(intent);
@@ -80,8 +81,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intent.putExtra("password", "");
                     startActivity(intent);
                 }
-                finish();
+                finish();*/ // TODO: uncomment
 
+                Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivityNew.class);
+                startActivity(intent);
 
             }
         });

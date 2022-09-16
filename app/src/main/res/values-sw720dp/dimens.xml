@@ -77,7 +77,7 @@
     <!--Text Size-->
     <dimen name="toolbar_text_size">22sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
-    <dimen name="fu_card_margin_sides">34dp</dimen>
+    <dimen name="fu_card_margin_sides">24dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
     <dimen name="fu_image_width">58dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>
