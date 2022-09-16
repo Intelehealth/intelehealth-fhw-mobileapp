@@ -503,22 +503,22 @@ public final class StringUtils {
     public static String switch_as_toiletfacil_edit(String val) {
         switch (val) {
             case "Declined to answer":
-                val = "Declined to answer";//-------replace with assamese
+                val = "উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে";
                 break;
             case "No facility /uses open space or field":
-                val = "No facility /uses open space or field";
+                val = "কোনো সুবিধাই /মুকলি ঠাই বা পথাৰ ব্যৱহাৰ নকৰে";
                 break;
             case "Own toilet":
-                val = "Own toilet";
+                val = "নিজা শৌচাগাৰ";
                 break;
             case "Community toilet":
-                val = "Community toilet";
+                val = "কমিউনিটি টয়লেট";
                 break;
             case "Shared toilet with other household":
-                val = "Shared toilet with other household";
+                val = "আন ঘৰৰ সৈতে শ্বেয়াৰ টয়লেট";
                 break;
             case "Other [Enter]":
-                val = "Other [Enter]";
+                val = "અન્ય [દાખલ કરો]";
                 break;
             default:
                 return val;
@@ -3403,9 +3403,13 @@ public final class StringUtils {
             if (context.getString(R.string.more_than_10).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.more_than_10);
             }
+            // Translate string 1 - 3000 to English
+            if (context.getString(R.string.one_three_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.one_three_thousand);
+            }
             // Translate string 0 - 30000 to English
-            if (context.getString(R.string.zero_three_thousand).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.zero_three_thousand);
+            if (context.getString(R.string.zero_thirty_thousand).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.zero_thirty_thousand);
             }
             // Translate string 30000 - 50000 to English
             if (context.getString(R.string.thirty_fifty_thousand).equalsIgnoreCase(text)) {

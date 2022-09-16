@@ -176,7 +176,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        setupTranslationTools();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail);
@@ -194,6 +193,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
+        setupTranslationTools();
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
