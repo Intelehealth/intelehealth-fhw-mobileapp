@@ -137,7 +137,7 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
 
         if(period.getYears() > 0) {
-            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+            tyears = String.valueOf(period.getYears());
         }
 
         age = tyears;
