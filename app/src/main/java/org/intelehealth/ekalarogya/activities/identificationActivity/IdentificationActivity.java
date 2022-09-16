@@ -1205,7 +1205,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             if (patient1.getEducation_level() != null && !patient1.getEducation_level().equalsIgnoreCase("")) {
-                String education = getEducationStrings(patient1.getEducation_level(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                String education = getEducationStrings(patient1.getEducation_level(), updatedContext, context, sessionManager.getAppLanguage());
                 int position = educationAdapter.getPosition(education);
                 mEducation.setSelection(position);
 
@@ -1282,7 +1282,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     occupation_Transl = patient1.getOccupation();
                 }*/
 
-                occupation_Transl = getOccupationString(patient1.getOccupation(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                occupation_Transl = getOccupationString(patient1.getOccupation(), updatedContext, context, sessionManager.getAppLanguage());
                 int spinner_position = occupation_adapt.getPosition(occupation_Transl);
                 if (spinner_position >= 0) {
                     occupation_spinner.setSelection(spinner_position); //user selected value items from spinner
@@ -1346,7 +1346,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     mobile_Transl = patient1.getMobile_type();
                 }*/
 
-                mobile_Transl = getMobilePhoneOwnership(patient1.getMobile_type(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                mobile_Transl = getMobilePhoneOwnership(patient1.getMobile_type(), updatedContext, context, sessionManager.getAppLanguage());
                 int spinner_position = mobile_adapt.getPosition(mobile_Transl);
                 mobilephone_spinner.setSelection(spinner_position);
             }
@@ -1366,7 +1366,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 //                int spinner_position = whatsapp_adapt.getPosition(whatsapp_Transl);
 //                whatsapp_spinner.setSelection(spinner_position);
 
-                String whatsAppTranslation = getWhatsAppStrings(patient1.getWhatsapp_mobile(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                String whatsAppTranslation = getWhatsAppStrings(patient1.getWhatsapp_mobile(), updatedContext, context, sessionManager.getAppLanguage());
                 int whatsAppPosition = whatsapp_adapt.getPosition(whatsAppTranslation);
                 whatsapp_spinner.setSelection(whatsAppPosition);
             }
@@ -1480,44 +1480,44 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
             // Set data for marital spinner
             if (patient1.getMaritalStatus() != null && !patient1.getMaritalStatus().equalsIgnoreCase("")) {
-                int spinnerPosition = maritalAdapter.getPosition(getMaritalStatusStrings(patient1.getMaritalStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                int spinnerPosition = maritalAdapter.getPosition(getMaritalStatusStrings(patient1.getMaritalStatus(), updatedContext, context, sessionManager.getAppLanguage()));
                 maritalStatusSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for bp spinner
             if (patient1.getBpChecked() != null && !patient1.getBpChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = bp_adapt.getPosition(getTestStrings(patient1.getBpChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                int spinnerPosition = bp_adapt.getPosition(getTestStrings(patient1.getBpChecked(), updatedContext, context, sessionManager.getAppLanguage()));
                 bpSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for sugar level spinner
             if (patient1.getSugarLevelChecked() != null && !patient1.getSugarLevelChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = sugar_adapt.getPosition(getTestStrings(patient1.getSugarLevelChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                int spinnerPosition = sugar_adapt.getPosition(getTestStrings(patient1.getSugarLevelChecked(), updatedContext, context, sessionManager.getAppLanguage()));
                 sugarLevelSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for hb checked spinner
             if (patient1.getHbChecked() != null && !patient1.getHbChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = hbLevel_adapt.getPosition(getTestStrings(patient1.getHbChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                int spinnerPosition = hbLevel_adapt.getPosition(getTestStrings(patient1.getHbChecked(), updatedContext, context, sessionManager.getAppLanguage()));
                 hbLevelSpinner.setSelection(spinnerPosition);
             }
 
             // Set data for bmi checked spinner
             if (patient1.getBmiChecked() != null && !patient1.getBmiChecked().equalsIgnoreCase("")) {
-                int spinnerPosition = bmi_adapt.getPosition(getTestStrings(patient1.getBmiChecked(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                int spinnerPosition = bmi_adapt.getPosition(getTestStrings(patient1.getBmiChecked(), updatedContext, context, sessionManager.getAppLanguage()));
                 bmiLevelSpinner.setSelection(spinnerPosition);
             }
 
             if (patient1.getAyushmanCardStatus() != null && !patient1.getAyushmanCardStatus().equalsIgnoreCase("")) {
-                setSelectedCheckboxes(binding.ayushmanRadioGroup, patient1.getAyushmanCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+                setSelectedCheckboxes(binding.ayushmanRadioGroup, patient1.getAyushmanCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
             }
 
             if (patient1.getMgnregaCardStatus() != null && !patient1.getMgnregaCardStatus().equalsIgnoreCase("")) {
-                setSelectedCheckboxes(binding.mgnregaRadioGroup, patient1.getMgnregaCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+                setSelectedCheckboxes(binding.mgnregaRadioGroup, patient1.getMgnregaCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
             }
 
             if (patient1.getRationCardStatus() != null && !patient1.getRationCardStatus().equalsIgnoreCase("")) {
-                setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, this, sessionManager.getAppLanguage());
+                setSelectedCheckboxes(binding.rationCardRadioGroup, patient1.getRationCardStatus(), updatedContext, context, sessionManager.getAppLanguage());
             }
 
             // Set data for head of household
@@ -1526,7 +1526,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 binding.cardviewHousehold.setVisibility(View.GONE);
                 binding.cardviewHohRelationship.setVisibility(View.VISIBLE);
 
-                int spinnerPosition = hohRelationshipAdapter.getPosition(hohRelationship(patient1.getHeadOfHousehold(), updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                int spinnerPosition = hohRelationshipAdapter.getPosition(hohRelationship(patient1.getHeadOfHousehold(), updatedContext, context, sessionManager.getAppLanguage()));
                 hohRelationshipSpinner.setSelection(spinnerPosition);
             }
 
@@ -1555,7 +1555,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     setSelectedCheckboxes(binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
                             patient1.getSource_of_water(),
                             updatedContext,
-                            getBaseContext(),
+                            context,
                             sessionManager.getAppLanguage()
                     );
                 }
@@ -1564,7 +1564,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     setSelectedCheckboxes(binding.householdMakeSafeWaterCheckboxLinearLayout,
                             patient1.getWater_safe(),
                             updatedContext,
-                            getBaseContext(),
+                            context,
                             sessionManager.getAppLanguage());
                 }
 
@@ -1572,12 +1572,12 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     String[] splitString = patient1.getHectars_land().split(" ");
                     if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
                         binding.landOwnedEditText.setText(splitString[0].trim());
-                    int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1], updatedContext, getBaseContext(), sessionManager.getAppLanguage()));
+                    int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[1], updatedContext, context, sessionManager.getAppLanguage()));
                     unitsSpinner.setSelection(spinnerPosition);
                 }
 
                 if (patient1.getReligion() != null && !patient1.getReligion().equalsIgnoreCase("")) {
-                    String religionTranslation = getReligionStrings(patient1.getReligion(), updatedContext, this, sessionManager.getAppLanguage());
+                    String religionTranslation = getReligionStrings(patient1.getReligion(), updatedContext, context, sessionManager.getAppLanguage());
                     int position = religionAdapter.getPosition(religionTranslation);
                     binding.religionDropDown.setSelection(position);
                 }
@@ -1595,7 +1595,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 }
 
                 if (patient1.getWaterSupplyStatus() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, patient1.getWaterSupplyStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, patient1.getWaterSupplyStatus(), updatedContext, context, sessionManager.getAppLanguage());
                 }
 
                 if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
@@ -1617,7 +1617,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 }
 
                 if (patient1.getElectricityStatus() != null && !patient1.getElectricityStatus().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.householdElectricityRadioGroup, patient1.getElectricityStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.householdElectricityRadioGroup, patient1.getElectricityStatus(), updatedContext, context, sessionManager.getAppLanguage());
                 }
 
                 if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
@@ -1659,7 +1659,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 }
 
                 if (patient1.getOpenDefecationStatus() != null && !patient1.getOpenDefecationStatus().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.openDefecationRadioGroup, patient1.getOpenDefecationStatus(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.openDefecationRadioGroup, patient1.getOpenDefecationStatus(), updatedContext, context, sessionManager.getAppLanguage());
                     if (patient1.getOpenDefecationStatus().equalsIgnoreCase(getString(R.string.survey_yes)))
                         binding.llReasonForOpenDefecation.setVisibility(View.VISIBLE);
                     else
@@ -1668,15 +1668,15 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 if (binding.llReasonForOpenDefecation.getVisibility() == View.VISIBLE &&
                         patient1.getReasonForOpenDefecation() != null && !patient1.getReasonForOpenDefecation().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout, patient1.getReasonForOpenDefecation(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.reasonForOpenDefecationCheckboxLinearLayout, patient1.getReasonForOpenDefecation(), updatedContext, context, sessionManager.getAppLanguage());
                 }
 
                 if (patient1.getHandWashOccasion() != null && !patient1.getHandWashOccasion().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.handWashOccasionLinearLayout, patient1.getHandWashOccasion(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.handWashOccasionLinearLayout, patient1.getHandWashOccasion(), updatedContext, context, sessionManager.getAppLanguage());
                 }
 
                 if (patient1.getFoodPreparedInTwentyFourHours() != null && !patient1.getFoodPreparedInTwentyFourHours().equalsIgnoreCase("")) {
-                    setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, patient1.getFoodPreparedInTwentyFourHours(), updatedContext, getBaseContext(), sessionManager.getAppLanguage());
+                    setSelectedCheckboxes(binding.foodCookedInTwentyFourHoursLinearLayout, patient1.getFoodPreparedInTwentyFourHours(), updatedContext, context, sessionManager.getAppLanguage());
                 }
 
                 if (patient1.getWater_availability() != null && !patient1.getWater_availability()
@@ -3021,7 +3021,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validation for number of smartphones field
-            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
+            if (checkIfEmpty(context, Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
                 binding.numberOfSmartphonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfSmartphonesEditText;
                 cancel = true;
@@ -3029,7 +3029,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validation for number of feature phones field
-            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
+            if (checkIfEmpty(context, Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
                 binding.numberOfFeaturePhonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfFeaturePhonesEditText;
                 cancel = true;
@@ -3037,7 +3037,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validation for number of earning members field
-            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
+            if (checkIfEmpty(context, Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
                 binding.noOfEarningMembersEditText.setError(getString(R.string.enter_number));
                 focusView = binding.noOfEarningMembersEditText;
                 cancel = true;
@@ -3053,7 +3053,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Load Shedding Hours Edit Text
-            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
                 binding.loadSheddingHoursEditText.setError(getString(R.string.enter_number));
                 focusView = binding.loadSheddingHoursEditText;
                 cancel = true;
@@ -3061,7 +3061,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Load Shedding Days Edit Text
-            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
                 binding.loadSheddingDaysEditText.setError(getString(R.string.enter_number));
                 focusView = binding.loadSheddingDaysEditText;
                 cancel = true;
@@ -3077,7 +3077,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Running Water Hours Edit Text
-            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
                 binding.runningWaterHoursEditText.setError(getString(R.string.enter_number));
                 focusView = binding.runningWaterHoursEditText;
                 cancel = true;
@@ -3085,7 +3085,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Running Water Days Edit Text
-            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterDaysEditText.getText()).toString())) {
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.runningWaterDaysEditText.getText()).toString())) {
                 binding.runningWaterDaysEditText.setError(getString(R.string.enter_number));
                 focusView = binding.runningWaterDaysEditText;
                 cancel = true;
@@ -3366,7 +3366,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    getBaseContext(),
+                    context,
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
@@ -3378,7 +3378,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    getBaseContext(),
+                    context,
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
@@ -3390,7 +3390,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    getBaseContext(),
+                    context,
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
@@ -3407,7 +3407,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3457,7 +3457,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
                 //patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getOccupationString(occupation_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(getOccupationString(occupation_spinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
@@ -3479,7 +3479,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
 //            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
-            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3489,7 +3489,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Use WhatsApp"));
             // patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3527,7 +3527,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
-            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Check if the ll18 linearlayout is visible or not
@@ -3537,7 +3537,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
-                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Sugar Level Checked
@@ -3545,7 +3545,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
-                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -3554,7 +3554,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
-            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // BMI Checked Adapter
@@ -3562,7 +3562,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
-            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             if (hohRadioGroup.getCheckedRadioButtonId() == hohNo.getId()) {
@@ -3570,7 +3570,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
-                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -3590,7 +3590,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
                 patientAttributesDTO.setValue(StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3646,7 +3646,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3701,7 +3701,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3757,7 +3757,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -3773,7 +3773,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.householdMakeSafeWaterCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -3866,7 +3866,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Family Cultivable Land"));
                 String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getLandOwnedStrings(
                         binding.unitsSpinner.getSelectedItem().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage());
                 patientAttributesDTO.setValue(cultivableLand);
@@ -3879,7 +3879,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
                 patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3892,7 +3892,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
                 patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3905,7 +3905,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
                 patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3918,7 +3918,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.householdCookingFuelCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -3932,7 +3932,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.mainSourceOfLightingCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -3946,7 +3946,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("defecatedInOpen"));
                 patientAttributesDTO.setValue(getSurveyStrings(
                         ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -3960,7 +3960,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("reasonForOpenDefecation"));
                     patientAttributesDTO.setValue(getSelectedCheckboxes(
                             binding.reasonForOpenDefecationCheckboxLinearLayout,
-                            getBaseContext(),
+                            context,
                             updatedContext,
                             sessionManager.getAppLanguage(),
                             "-"
@@ -3975,7 +3975,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("soapHandWashingOccasion"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.handWashOccasionLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -3989,7 +3989,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHours"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.foodCookedInTwentyFourHoursLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -4464,7 +4464,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validation for number of smartphones field
-            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
+            if (checkIfEmpty(context, Objects.requireNonNull(binding.numberOfSmartphonesEditText.getText()).toString())) {
                 binding.numberOfSmartphonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfSmartphonesEditText;
                 cancel = true;
@@ -4472,7 +4472,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validation for number of feature phones field
-            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
+            if (checkIfEmpty(context, Objects.requireNonNull(binding.numberOfFeaturePhonesEditText.getText()).toString())) {
                 binding.numberOfFeaturePhonesEditText.setError(getString(R.string.enter_number));
                 focusView = binding.numberOfFeaturePhonesEditText;
                 cancel = true;
@@ -4480,7 +4480,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validation for number of earning members field
-            if (checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
+            if (checkIfEmpty(context, Objects.requireNonNull(binding.noOfEarningMembersEditText.getText()).toString())) {
                 binding.noOfEarningMembersEditText.setError(getString(R.string.enter_number));
                 focusView = binding.noOfEarningMembersEditText;
                 cancel = true;
@@ -4496,7 +4496,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Load Shedding Hours Edit Text
-            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.loadSheddingHoursEditText.getText()).toString())) {
                 binding.loadSheddingHoursEditText.setError(getString(R.string.enter_number));
                 focusView = binding.loadSheddingHoursEditText;
                 cancel = true;
@@ -4504,7 +4504,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Load Shedding Days Edit Text
-            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
+            if (binding.householdElectricityYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.loadSheddingDaysEditText.getText()).toString())) {
                 binding.loadSheddingDaysEditText.setError(getString(R.string.enter_number));
                 focusView = binding.loadSheddingDaysEditText;
                 cancel = true;
@@ -4520,7 +4520,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Running Water Hours Edit Text
-            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.runningWaterHoursEditText.getText()).toString())) {
                 binding.runningWaterHoursEditText.setError(getString(R.string.enter_number));
                 focusView = binding.runningWaterHoursEditText;
                 cancel = true;
@@ -4528,7 +4528,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             }
 
             // Validations for Running Water Days Edit Text
-            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(getBaseContext(), Objects.requireNonNull(binding.runningWaterDaysEditText.getText()).toString())) {
+            if (binding.waterSupplyYes.isChecked() && checkIfEmpty(context, Objects.requireNonNull(binding.runningWaterDaysEditText.getText()).toString())) {
                 binding.runningWaterDaysEditText.setError(getString(R.string.enter_number));
                 focusView = binding.runningWaterDaysEditText;
                 cancel = true;
@@ -4810,7 +4810,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.ayushmanRadioGroup.findViewById(binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    getBaseContext(),
+                    context,
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
@@ -4822,7 +4822,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.mgnregaRadioGroup.findViewById(binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    getBaseContext(),
+                    context,
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
@@ -4834,7 +4834,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
             patientAttributesDTO.setValue(getRadioButtonStrings(
                     ((RadioButton) binding.rationCardRadioGroup.findViewById(binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                    getBaseContext(),
+                    context,
                     updatedContext,
                     sessionManager.getAppLanguage()
             ));
@@ -4851,7 +4851,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getEducationStrings(StringUtils.getProvided(mEducation), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -4902,7 +4902,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
                 //patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getOccupationString(occupation_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(getOccupationString(occupation_spinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
@@ -4924,7 +4924,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
 //            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
-            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4934,7 +4934,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Use WhatsApp"));
             // patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4972,7 +4972,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("martialStatus"));
-            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getMaritalStatusStrings(maritalStatusSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // Check if the ll18 linearlayout is visible or not
@@ -4982,7 +4982,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bpChecked"));
-                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(getTestStrings(bpSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Sugar Level Checked
@@ -4990,7 +4990,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("sugarChecked"));
-                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(getTestStrings(sugarLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -4999,7 +4999,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hbChecked"));
-            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getTestStrings(hbLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             // BMI Checked Adapter
@@ -5007,7 +5007,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("bmiChecked"));
-            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+            patientAttributesDTO.setValue(getTestStrings(bmiLevelSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             if (hohRadioGroup.getCheckedRadioButtonId() == hohNo.getId()) {
@@ -5015,7 +5015,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("hohRelationship"));
-                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), getBaseContext(), updatedContext, sessionManager.getAppLanguage()));
+                patientAttributesDTO.setValue(hohRelationship(hohRelationshipSpinner.getSelectedItem().toString(), context, updatedContext, sessionManager.getAppLanguage()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -5034,7 +5034,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
                 patientAttributesDTO.setValue(StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5090,7 +5090,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5145,7 +5145,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
                 patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5159,7 +5159,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -5217,7 +5217,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -5232,7 +5232,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.householdMakeSafeWaterCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -5325,7 +5325,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Family Cultivable Land"));
                 String cultivableLand = binding.landOwnedEditText.getText().toString() + " " + getLandOwnedStrings(
                         binding.unitsSpinner.getSelectedItem().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage());
                 patientAttributesDTO.setValue(cultivableLand);
@@ -5338,7 +5338,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
                 patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5351,7 +5351,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnHealth"));
                 patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.annualHealthExpenditureRadioGroup.findViewById(binding.annualHealthExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5364,7 +5364,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageExpenditureOnEducation"));
                 patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
                         ((RadioButton) binding.educationExpenditureRadioGroup.findViewById(binding.educationExpenditureRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5380,7 +5380,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.householdCookingFuelCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -5394,7 +5394,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.mainSourceOfLightingCheckboxLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -5408,7 +5408,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("defecatedInOpen"));
                 patientAttributesDTO.setValue(getRadioButtonStrings(
                         ((RadioButton) binding.openDefecationRadioGroup.findViewById(binding.openDefecationRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage()
                 ));
@@ -5422,7 +5422,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("reasonForOpenDefecation"));
                     patientAttributesDTO.setValue(getSelectedCheckboxes(
                             binding.reasonForOpenDefecationCheckboxLinearLayout,
-                            getBaseContext(),
+                            context,
                             updatedContext,
                             sessionManager.getAppLanguage(),
                             "-"
@@ -5437,7 +5437,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("soapHandWashingOccasion"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.handWashOccasionLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
@@ -5451,7 +5451,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("foodItemsPreparedInTwentyFourHours"));
                 patientAttributesDTO.setValue(getSelectedCheckboxes(
                         binding.foodCookedInTwentyFourHoursLinearLayout,
-                        getBaseContext(),
+                        context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"

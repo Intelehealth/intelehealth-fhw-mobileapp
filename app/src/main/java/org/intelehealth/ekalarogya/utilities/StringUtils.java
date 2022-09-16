@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
@@ -660,6 +661,7 @@ public final class StringUtils {
             case "ନା":
                 val = "No";
                 break;
+            case "ଜାଣିନାହିଁ / ଜାଣେନାହିଁ":
             case "ଜାଣ ନାହିଁ":
                 val = "Don\'t know";
                 break;
@@ -2136,7 +2138,7 @@ public final class StringUtils {
                 val = "ନା";
                 break;
             case "Don\'t know":
-                val = "ଜାଣ ନାହିଁ";
+                val = "ଜାଣିନାହିଁ / ଜାଣେନାହିଁ";
                 break;
             default:
                 return val;
@@ -3494,6 +3496,9 @@ public final class StringUtils {
     }
 
     public static String getCheckboxesString(String text, Context context, Context updatedContext, String locale) {
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale(locale));
+
         text = getSurveyValue(text);
         // If the app language is not in English, only in that case will the strings be translated.
         if (!locale.equalsIgnoreCase("en")) {

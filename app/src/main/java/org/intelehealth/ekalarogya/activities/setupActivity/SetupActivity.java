@@ -987,9 +987,9 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
-                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             }
                             customProgressDialog.dismiss();
@@ -1071,9 +1071,9 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
-                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             }
                             customProgressDialog.dismiss();
@@ -1562,9 +1562,9 @@ public class SetupActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
                             Log.e("MindMapURL", " " + e);
-                            if(e.getLocalizedMessage().contains("Unable to resolve host")) {
+                            if (e.getLocalizedMessage().contains("Unable to resolve host")) {
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
                             }
                         }
@@ -1624,11 +1624,11 @@ public class SetupActivity extends AppCompatActivity {
     private void getDataFromRadioButtons() {
         Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
         configuration.setLocale(new Locale("en"));
-        Context updatedContext = getBaseContext().createConfigurationContext(configuration);
+        Context updatedContext = SetupActivity.this.createConfigurationContext(configuration);
 
         String subCenterDistance = getDistanceStrings(
                 ((RadioButton) subCentreRadioGroup.findViewById(subCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1637,7 +1637,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String primaryHealthCenterDistance = getDistanceStrings(
                 ((RadioButton) primaryCentreRadioGroup.findViewById(primaryCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1646,7 +1646,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String communityHealthCenterDistance = getDistanceStrings(
                 ((RadioButton) communityHealthCentreRadioGroup.findViewById(communityHealthCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1655,7 +1655,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String districtHospital = getDistanceStrings(
                 ((RadioButton) districtHospitalRadioGroup.findViewById(districtHospitalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1664,7 +1664,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String medicalStore = getDistanceStrings(
                 ((RadioButton) medicalStoreRadioGroup.findViewById(medicalStoreRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1673,7 +1673,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String pathologicalLab = getDistanceStrings(
                 ((RadioButton) pathologicalLabRadioGroup.findViewById(pathologicalLabRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1682,7 +1682,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String privateClinicWithMbbsDoctorDistance = getDistanceStrings(
                 ((RadioButton) privateClinicWithMbbsDoctorRadioGroup.findViewById(privateClinicWithMbbsDoctorRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1691,7 +1691,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String privateClinicWithAlternateDoctorDistance = getDistanceStrings(
                 ((RadioButton) privateClinicWithAlternateMedicalRadioGroup.findViewById(privateClinicWithAlternateMedicalRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
@@ -1700,7 +1700,7 @@ public class SetupActivity extends AppCompatActivity {
 
         String jalJeevanYojana = getDistanceStrings(
                 ((RadioButton) jalJeevanYojanaSchemeRadioGroup.findViewById(jalJeevanYojanaSchemeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
-                getBaseContext(),
+                context,
                 updatedContext,
                 sessionManager.getAppLanguage()
         );
