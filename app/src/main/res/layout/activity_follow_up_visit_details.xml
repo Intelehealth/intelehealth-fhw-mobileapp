@@ -130,7 +130,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/label_name"
+                            android:id="@+id/patname_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -143,12 +143,12 @@
                             android:textSize="@dimen/fu_name_txt_size" />
 
                         <TextView
-                            android:id="@+id/label_misc"
+                            android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
-                            android:layout_toEndOf="@+id/label_name"
+                            android:layout_toEndOf="@+id/patname_txt"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="-2sp"
                             android:text="@string/misc_txt"
@@ -162,14 +162,14 @@
                             android:layout_height="@dimen/fu_pencil_height"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
-                            android:layout_toEndOf="@id/label_misc"
+                            android:layout_toEndOf="@id/gender_age_txt"
                             android:background="@drawable/ic_icno8_edit" />
 
                     </LinearLayout>
 
                     <!-- Caption -->
                     <TextView
-                        android:id="@+id/caption"
+                        android:id="@+id/openmrsID_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginTop="@dimen/margin_4"
@@ -230,6 +230,7 @@
             android:layout_marginTop="@dimen/fu_card_margin_updown">
 
             <ImageView
+                android:id="@+id/priority_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -237,7 +238,7 @@
                 android:src="@drawable/frame_priority" />
 
             <TextView
-                android:id="@+id/details_head1"
+                android:id="@+id/chief_complaint_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -249,14 +250,14 @@
                 android:textSize="@dimen/fu_name_txt_size" />
 
             <TextView
-                android:id="@+id/details_head2"
+                android:id="@+id/visitID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/details_head1"
+                android:layout_below="@+id/chief_complaint_txt"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
-                android:text="@string/details_head2"
+                android:text="@string/visitID"
                 android:textAppearance="@style/details_head2"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
@@ -265,7 +266,7 @@
                 android:id="@+id/fu_progress_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/details_head2"
+                android:layout_below="@id/visitID"
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:background="@null"
@@ -287,7 +288,7 @@
                     android:src="@drawable/followup_item_calendar" />
 
                 <TextView
-                    android:id="@+id/fu_detiails_date"
+                    android:id="@+id/visit_startDate"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_6"
@@ -346,11 +347,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/gp_txt"
+                            android:id="@+id/visit_speciality"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="-3sp"
-                            android:text="@string/gp_txt"
+                            tools:text="@string/gp_txt"
                             android:textAppearance="@style/details_head1"
                             android:textColor="@null"
                             android:textSize="@dimen/fu_name_txt_size" />
@@ -496,7 +497,7 @@
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                android:background="@drawable/icon_followup_disabled" />
+                android:background="@drawable/icon_followup_enabled" />
 
         </RelativeLayout>
 

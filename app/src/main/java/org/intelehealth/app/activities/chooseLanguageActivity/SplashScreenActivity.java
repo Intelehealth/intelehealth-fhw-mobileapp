@@ -83,7 +83,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
                 finish();*/ // TODO: uncomment
 
-                Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivityNew.class);
+                Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivityNew.class);
                 startActivity(intent); // TODO: remove this intent code later.
 
             }

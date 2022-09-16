@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.FollowUpModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ import java.util.List;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPatientAdapter_New.Myholder>{
+public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPatientAdapter_New.Myholder> {
     List<FollowUpModel> patients;
     Context context;
 
@@ -44,28 +47,46 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
         // Patient Name section
         if (model != null) {
-            if (model.getOpenmrs_id() != null)
+            if (model.getOpenmrs_id() != null) {
                 holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name() + ", " + model.getOpenmrs_id());
-            else
+            }
+            else {
                 holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name());
-
-            // Followup Date section
-            if(!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
-                holder.fu_date_txtview.setText("Follow up on " + model.getFollowup_date());
             }
 
-
+        // Followup Date section
+        if (!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
+            holder.fu_date_txtview.setText("Follow up on " + model.getFollowup_date());
         }
 
-        holder.cardView.setOnClickListener(v -> { // TODO: This is just for testing purpose added later remove.
+        // Emergency/Priority tag code.
+            if (model.isEmergency())
+                holder.fu_priority_tag.setVisibility(View.VISIBLE);
+            else
+                holder.fu_priority_tag.setVisibility(View.GONE);
+        }
+
+        // Patient Age
+        String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
+
+        holder.cardView.setOnClickListener(v -> {
             Intent i = new Intent(context, FollowUp_VisitDetails.class);
+            i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(1,1) + "."); // Eg. Prajwal W.
+            i.putExtra("gender", model.getGender());
+            i.putExtra("age", age);
+            i.putExtra("openmrsID", model.getOpenmrs_id());
+            i.putExtra("chief_complaint", "-"); // TODO: need to fetch this...
+            i.putExtra("priority_tag", model.isEmergency());
+            i.putExtra("visit_ID", model.getUuid());
+            i.putExtra("visit_startDate", model.getVisit_start_date());
+            i.putExtra("visit_speciality", model.getVisit_speciality());
+            i.putExtra("followup_date", model.getFollowup_date());
             context.startActivity(i);
         });
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return patients.size();
     }
 

@@ -21,6 +21,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -47,6 +48,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     SessionManager sessionManager = null;
     private SQLiteDatabase db;
     private int offset = 0;
+    private EncounterDAO encounterDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +150,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 */
 
         // TODO: encounter is not null -- statement is removed | Add this later...
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, SUBSTR(o.value,1,10) AS value_date " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, a.enddate, b.uuid, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
@@ -160,7 +162,35 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             do {
                 try {
-                    modelList.add(new FollowUpModel(
+                    // Fetch encounters who have emergency set and udpate modelist.
+                    String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                    String emergencyUuid = "";
+                    encounterDAO = new EncounterDAO();
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
+
+                    if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                        modelList.add(new FollowUpModel(
+                                visitUuid,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                true)); // ie. visit is emergency visit.
+                    }
+                    else {
+                        modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
@@ -168,10 +198,13 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("value_date")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync"))));
-
+                                cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                false)); // ie. visit is NOT emergency visit.
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -201,8 +234,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 "o.value is NOT NULL GROUP BY a.patientuuid";
 */
         // TODO: end date is removed later add it again.
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, a.enddate, b.uuid, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
@@ -214,18 +247,49 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             do {
                 try {
-                    //   String followUpDate = cursor.getString(cursor.getColumnIndexOrThrow("value")).substring(0, 10);
-                    modelList.add(new FollowUpModel(
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                            cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("sync"))));
+                    // Fetch encounters who have emergency set and udpate modelist.
+                    String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                    String emergencyUuid = "";
+                    encounterDAO = new EncounterDAO();
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
+
+                    if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                        modelList.add(new FollowUpModel(
+                                visitUuid,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                true)); // ie. visit is emergency visit.
+                    }
+                    else {
+                        modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                false)); // ie. visit is NOT emergency visit.
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -257,8 +321,8 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 "o.value is NOT NULL GROUP BY a.patientuuid";
 */
         // TODO: end date is removed later add it again.
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, a.enddate, b.uuid, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
@@ -270,19 +334,49 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             do {
                 try {
-                    //   String followUpDate = cursor.getString(cursor.getColumnIndexOrThrow("value")).substring(0, 10);
-                    modelList.add(new FollowUpModel(
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                            cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("sync"))));
+                    // Fetch encounters who have emergency set and udpate modelist.
+                    String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                    String emergencyUuid = "";
+                    encounterDAO = new EncounterDAO();
+                        try {
+                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            emergencyUuid = "";
+                        }
 
+                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                            modelList.add(new FollowUpModel(
+                                    visitUuid,
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    true)); // ie. visit is emergency visit.
+                        }
+                        else {
+                            modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
+                                    cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("value_text")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    false)); // ie. visit is NOT emergency visit.
+                        }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
