@@ -508,6 +508,7 @@
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:paddingTop="@dimen/padding_card"
+                    android:textAlignment="viewStart"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
 
@@ -582,6 +583,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_physicalExam"
                     android:fontFamily="@font/lato_regular"
+                    android:textAlignment="viewStart"
                     android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -660,6 +662,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_patHist"
+                    android:textAlignment="viewStart"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />
@@ -721,6 +724,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_famHist"
+                    android:textAlignment="viewStart"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_sub_text_size" />

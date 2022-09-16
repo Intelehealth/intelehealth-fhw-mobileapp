@@ -1178,13 +1178,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+            complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
         if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            famHistView.setText(Node.bullet + Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
         if (patHistory.getValue() != null)
-            patHistView.setText(Html.fromHtml(patHistory.getValue()));
+            patHistView.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
         if (phyExam.getValue() != null)
-            physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+            physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1214,7 +1214,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                    famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                 famHistText.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1225,7 +1225,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -1236,8 +1236,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
 
                                 if (famHistory.getValue() != null) {
-                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
-                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
+                                    famHistView.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
@@ -1318,7 +1318,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                    complaintText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                 }
                 complaintText.setEnabled(false);
 
@@ -1329,7 +1329,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null) {
-                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                         } else {
                             dialogEditText.setText("");
                         }
@@ -1339,8 +1339,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+//                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -1428,7 +1428,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
                 if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                    physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1448,8 +1448,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                                 phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (phyExam.getValue() != null) {
-                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
-                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
@@ -1538,7 +1538,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
                 if (patHistory.getValue() != null)
-                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                    historyText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                 historyText.setEnabled(false);
 
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1548,7 +1548,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (patHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
+                            dialogEditText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -1559,8 +1559,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 patHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
 
                                 if (patHistory.getValue() != null) {
-                                    historyText.setText(Html.fromHtml(patHistory.getValue()));
-                                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+                                    historyText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
+                                    patHistView.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(patHistory.getValue(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
@@ -3429,11 +3429,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             patHistory.setValue(medHistText);
 
             if (medHistText != null && !medHistText.isEmpty()) {
-
                 medHistory = patHistory.getValue();
-
-
-                medHistory = medHistory.replace("\"", "");
+//                medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
                 do {
                     medHistory = medHistory.replace("  ", "");

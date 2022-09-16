@@ -16,6 +16,8 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,8 +47,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import org.intelehealth.app.R;
@@ -419,6 +423,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         if (intentTag != null && intentTag.equals("edit")) {
             if (patientHistoryMap.anySubSelected()) {
                 patientHistory = patientHistoryMap.generateLanguage();
+                String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
+                Map<String, String> patientHistoryData = new HashMap<>();
+                patientHistoryData.put("en", patientHistory);
+                patientHistoryData.put("ar", patientHistoryArabic);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                patientHistory = gson.toJson(patientHistoryData);
                 updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
             }
 
@@ -435,18 +445,21 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
             startActivity(intent);
-        } else {
-
+        }
+        else {
             //  if(patientHistoryMap.anySubSelected()){
             patientHistory = patientHistoryMap.generateLanguage();
+            String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
+            Map<String, String> patientHistoryData = new HashMap<>();
+            patientHistoryData.put("en", patientHistory);
+            patientHistoryData.put("ar", patientHistoryArabic);
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            patientHistory = gson.toJson(patientHistoryData);
 
             if (flag == true) { // only if OK clicked, collect this new info (old patient)
                 phistory = phistory + patientHistory; // only PMH updated
                 sessionManager.setReturning(true);
-
-
                 insertDb(phistory);
-
                 // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
             } else  // new patient, directly insert into database
             {

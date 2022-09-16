@@ -16,6 +16,8 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,8 +48,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import org.intelehealth.app.R;
@@ -162,7 +166,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             textView.setSingleLine(false);
             Log.v(TAG, new_result);
 
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 textView.setText(Html.fromHtml(getUpdateTranslations(new_result)));
             } else {
                 textView.setText(Html.fromHtml(new_result));
@@ -406,8 +410,14 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         if (familyHistoryMap.anySubSelected()) {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = node.generateLanguage();
-                    String toInsert = node.getText() + " : " + familyString;
+                    String familyString = Node.bullet + node.getText() + " : " + node.generateLanguage();
+                    String familyStringArabic = Node.bullet + node.getDisplay_arabic() + " : " + node.generateLanguage("ar");
+                    Map<String, String> complaintData = new HashMap<>();
+                    complaintData.put("en", familyString);
+                    complaintData.put("ar", familyStringArabic);
+                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                    familyString = gson.toJson(complaintData);
+                    String toInsert = familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
@@ -422,7 +432,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         for (int i = 0; i < insertionList.size(); i++) {
             if (i == 0) {
-                insertion = Node.bullet + insertionList.get(i);
+                insertion = insertionList.get(i);
             } else {
                 insertion = insertion + " " + Node.bullet + insertionList.get(i);
             }
@@ -596,20 +606,20 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private String getUpdateTranslations(String text) {
         text = text
-                .replace("High BP", "उच्च रक्तदाब")
-                .replace("Heart Disease", "हृदयरोग")
-                .replace("Stroke", "अर्धांगवायू")
-                .replace("Diabetes", "मधुमेह")
-                .replace("Asthma", "दमा")
-                .replace("Tuberculosis", "क्षयरोग")
-                .replace("Jaundice", "काविळ")
-                .replace("Cancer", "कर्करोग")
-                .replace("Other", "इतर")
-                .replace("Mother", "आई")
-                .replace("Father", "वडील")
-                .replace("Sister", "बहीण")
-                .replace("Brother", "भाऊ")
-                .replace("Do you have a family history of any of the following?", "तुमच्या कुटुंबात खालीलपैकी कोणत्याही आजाराचा इतिहास आहे का?");
+                .replace("High BP", "ارتفاع ضغط الدم")
+                .replace("Heart Disease", "مرض قلبي بسن < 50")
+                .replace("Stroke", " سكتة دماغية")
+                .replace("Diabetes", "داء السكري")
+                .replace("Asthma", "الربو")
+                .replace("Tuberculosis", "مرض السل")
+                .replace("Jaundice", "يرقان")
+                .replace("Cancer", "سرطان")
+                .replace("Other", "أمراض أخرى")
+                .replace("Mother", "الأم")
+                .replace("Father", "أب")
+                .replace("Sister", "أخت")
+                .replace("Brother", "أخ")
+                .replace("Do you have a family history of any of the following?", "هل لديك قصة عائلية لأي من الأمراض التالية ؟");
 
         return text;
     }
