@@ -383,4 +383,16 @@ public class DateAndTimeUtils {
         return result;
     }
 
+    public static String followup_dates_formatter(String dateString, String format) {
+        String formattedDate = null;
+        try {
+            DateFormat originalFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+            Date date = originalFormat.parse(dateString);
+            formattedDate = targetFormat.format(date);
+        } catch (Exception ex) {
+            FirebaseCrashlytics.getInstance().recordException(ex);
+        }
+        return formattedDate;
+    }
 }

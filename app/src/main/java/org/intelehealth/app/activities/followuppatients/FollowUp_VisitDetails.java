@@ -3,9 +3,11 @@ package org.intelehealth.app.activities.followuppatients;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import org.intelehealth.app.R;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 /**
  * Created by Prajwal Waingankar on 16/09/2022.
@@ -53,15 +55,21 @@ public class FollowUp_VisitDetails extends AppCompatActivity {
         chiefComplaint_txt.setText(chiefComplaint);
 
         visitID_txt = findViewById(R.id.visitID);
-        visitID_txt.setText(visitID);
+        String hideVisitUUID = visitID;
+        hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
+        visitID_txt.setText("Visit ID XXXX" + hideVisitUUID);
 
         visit_startDate_txt = findViewById(R.id.visit_startDate);
-        visit_startDate_txt.setText("Visit ID " + visit_startDate);
+        Log.v("Followup", "actual date: " + visit_startDate);
+        visit_startDate = DateAndTimeUtils.followup_dates_formatter(visit_startDate, "yyyy-MM-dd");
+        Log.v("Followup", "foramted date: " + visit_startDate);
+        visit_startDate_txt.setText(visit_startDate);
 
         visit_speciality_txt = findViewById(R.id.visit_speciality);
         visit_speciality_txt.setText(visit_speciality);
 
         followupDate_txt = findViewById(R.id.followup_date_txtv);
+        followupDate = DateAndTimeUtils.followup_dates_formatter(followupDate, "dd-MM-yyyy");
         followupDate_txt.setText("Follow up on " + followupDate);
 
         followup_info = findViewById(R.id.followup_info);
