@@ -670,7 +670,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));

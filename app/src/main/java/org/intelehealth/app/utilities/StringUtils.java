@@ -1815,6 +1815,25 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_ar_dob(String dob) {
+        //TODO:English dob is replaced to arabic text.
+        String mdob_text = dob
+                .replace("January", "كانون الثاني")
+                .replace("February", "شهر شباط")
+                .replace("March", "شهر اذار")
+                .replace("April", "أشهر نيسان")
+                .replace("May", "شهر أيار")
+                .replace("June", "شهر حزيران")
+                .replace("July", "شهر تموز")
+                .replace("August", "شهر أب")
+                .replace("September", "شهر أيلول")
+                .replace("October", "شهر تشرين الأول")
+                .replace("November", "شهر تشرين الثاني")
+                .replace("December", "شهر كانون الأول");
+
+        return mdob_text;
+    }
+
     public static String en__as_dob(String dob) { //English dob is replaced to marathi text.
         String mdob_text = dob
                 .replace("January", "জানুৱাৰী")
