@@ -613,7 +613,10 @@ public class PatientsDAO {
     public String getPatientAttributeValueByTypeUUID(String patientUuid, String typeUuid) throws DAOException {
         String value = null;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? ", new String[]{patientUuid, typeUuid});
+        // @Lincon changes on 15/09/2022
+        // modified the query for getting the latest record. bcz patient attributes are inserting duplicate record for one attibute type
+        //
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? order by modified_date desc limit 1", new String[]{patientUuid, typeUuid});
         try {
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {

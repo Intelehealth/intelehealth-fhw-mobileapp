@@ -1552,6 +1552,8 @@
     <string name="setup_select_dropdown_district_msg">حدد المنطقة من القائمة المنسدلة</string>
     <string name="setup_select_village_str">اختر القرية</string>
     <string name="setup_select_dropdown_village_msg">حدد القرية من القائمة المنسدلة</string>
+    <string name="triage_survey">مسح الفرز</string>
+    <string name="empty_survey">الرجاء إدخال / تحديد البيانات للمسح!</string>
 
 
 </resources>

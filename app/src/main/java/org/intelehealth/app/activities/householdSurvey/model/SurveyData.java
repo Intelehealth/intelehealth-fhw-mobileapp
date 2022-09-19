@@ -12,6 +12,10 @@ public class SurveyData implements Parcelable {
     @SerializedName("survey_questions")
     private List<Survey> surveyQuestions;
 
+    public SurveyData() {
+
+    }
+
     protected SurveyData(Parcel in) {
         surveyQuestions = in.createTypedArrayList(Survey.CREATOR);
     }

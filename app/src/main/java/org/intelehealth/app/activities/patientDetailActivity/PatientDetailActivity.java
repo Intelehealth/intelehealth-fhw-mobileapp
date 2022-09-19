@@ -148,7 +148,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit, button_householdSurvey;
+    Button newVisit, button_householdSurvey, mTriageSurveyButton;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -191,6 +191,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
         button_householdSurvey = findViewById(R.id.button_householdSurvey);
+        mTriageSurveyButton = findViewById(R.id.button_triageSurvey);
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -275,6 +276,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentsurvey = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentsurvey.putExtra("patientUuid", patientUuid);
+                startActivity(intentsurvey);
+            }
+        });
+        mTriageSurveyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentsurvey = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentsurvey.putExtra("patientUuid", patientUuid);
+                intentsurvey.putExtra("IsTriageMode", true);
                 startActivity(intentsurvey);
             }
         });

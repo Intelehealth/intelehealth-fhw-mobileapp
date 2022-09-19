@@ -21,15 +21,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.householdSurvey.model.AidTypeAnswerValue;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.householdSurvey.model.Questions;
+import org.intelehealth.app.activities.householdSurvey.model.Survey;
 import org.intelehealth.app.activities.householdSurvey.model.SurveyData;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.databinding.ActivityHouseholdSurveyBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     private String mPatientUUid = "";
     private String mPatientAIDType = "";
     private List<String> mPatientAidTypes = new ArrayList<>();
+    private boolean mIsTriageMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +75,16 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         }*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPatientUUid = getIntent().getStringExtra("patientUuid");
+        mIsTriageMode = getIntent().getBooleanExtra("IsTriageMode", false);
+
         String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
         try {
             String value = new PatientsDAO().getPatientAttributeValueByTypeUUID(mPatientUUid, attributeTypeUuidForAidType);
-            AnswerValue answerValue = new Gson().fromJson(value, AnswerValue.class);
-            Log.v("answerValue", answerValue.getEnValue());
-            String[] userArray = new Gson().fromJson(answerValue.getEnValue(), String[].class);
-            mPatientAidTypes = Arrays.asList(userArray);
-            Log.v("answerValue", mPatientAidTypes+"");
+            AidTypeAnswerValue answerValue = new Gson().fromJson(value, AidTypeAnswerValue.class);
+            Log.v("answerValue", answerValue.getEnValues().get(0));
+
+            mPatientAidTypes = answerValue.getEnValues();
+            Log.v("answerValue", mPatientAidTypes + "");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -87,7 +94,36 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
         }
         mScreenBinding.rvQuery.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        mSurveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "survery_data.json").toString(), SurveyData.class);
+        if (mIsTriageMode) {
+            mSurveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "triage_survery_data.json").toString(), SurveyData.class);
+
+            mScreenBinding.headerLayout.setVisibility(View.GONE);
+            mScreenBinding.tvSurveySectionName.setVisibility(View.GONE);
+            setTitle(getString(R.string.triage_survey));
+        } else {
+            SurveyData surveyData   = new Gson().fromJson(FileUtils.encodeJSON(this, "survery_data.json").toString(), SurveyData.class);
+            mScreenBinding.headerLayout.setVisibility(View.VISIBLE);
+
+            mSurveyData = new SurveyData();
+            List<Survey> surveyQuestions = new ArrayList<>();
+            mSurveyData.setSurveyQuestions(surveyQuestions);
+            for (int i = 0; i < surveyData.getSurveyQuestions().size(); i++) {
+                Survey survey = surveyData.getSurveyQuestions().get(i);
+                Log.v("answerValue", survey.getTitle());
+                List<Questions> questions = new ArrayList<Questions>();
+                for (int j = 0; j < survey.getQuestions().size(); j++) {
+                    for (int k = 0; k < survey.getQuestions().get(j).getAids().size(); k++) {
+                        if (mPatientAidTypes.contains(survey.getQuestions().get(j).getAids().get(k))) {
+                            questions.add(survey.getQuestions().get(j));
+                            Log.v("answerValue", survey.getQuestions().get(j).getQuestion());
+                        }
+                    }
+                }
+                survey.setQuestions(questions);
+                if (!questions.isEmpty())
+                    mSurveyData.getSurveyQuestions().add(survey);
+            }
+        }
 
         mTotalStages = mSurveyData.getSurveyQuestions().size();
         showPage();
@@ -129,11 +165,14 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         mScreenBinding.btnPrev.setText(getString(R.string.previous));
         mScreenBinding.btnNext.setText(getString(R.string.next));
 
+
         if (mStageNumber == 1) {
             mScreenBinding.btnPrev.setVisibility(View.INVISIBLE);
-        } else if (mStageNumber == mTotalStages) {
+        }
+        if (mStageNumber == mTotalStages) {
             mScreenBinding.btnNext.setText(getString(R.string.submit));
         }
+
     }
 
 
@@ -172,7 +211,17 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
         }
         try {
-            patientsDAO.insertPatientAttributes(attributesDTOList, null);
+            if(attributesDTOList.isEmpty()){
+                Toast.makeText(context, getString(R.string.empty_survey), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            patientsDAO.SurveyupdatePatientToDB(mPatientUUid, attributesDTOList);
+            if (NetworkConnection.isOnline(this)) {
+                SyncDAO syncDAO = new SyncDAO();
+                syncDAO.pushDataApi();
+
+            }
+
             Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
             finish();
         } catch (DAOException e) {
