@@ -51,11 +51,6 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activities.devicesActivity.DevicesActivity"
-            android:exported="false"
-            android:label="@string/devices"
-            android:parentActivityName=".activities.homeActivity.HomeActivity" />
-        <activity
             android:name=".activities.householdSurvey.DraftSurveyActivity"
             android:exported="false"
             android:label="@string/draft_survey_title" />

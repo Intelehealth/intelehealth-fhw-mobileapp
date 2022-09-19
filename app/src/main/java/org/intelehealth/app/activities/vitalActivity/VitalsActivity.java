@@ -1,11 +1,6 @@
 package org.intelehealth.app.activities.vitalActivity;
 
-import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
-import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
-import static com.healthcubed.ezdxlib.model.TestName.CHOLESTEROL;
-import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
-import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
-import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
+
 
 import static org.intelehealth.app.app.AppConstants.key;
 
@@ -21,13 +16,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
-import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothStatus;
-import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
-import com.healthcubed.ezdxlib.model.EzdxData;
-import com.healthcubed.ezdxlib.model.HCDeviceData;
-import com.healthcubed.ezdxlib.model.Status;
-import com.healthcubed.ezdxlib.model.TestName;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -128,7 +117,7 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-        EzdxBT.authenticate(key); // Authenticate Key before starting the test.
+        //EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
 
 //        Setting the title

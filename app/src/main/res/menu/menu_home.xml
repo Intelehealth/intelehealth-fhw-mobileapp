@@ -20,11 +20,11 @@
             android:orderInCategory="101"
             android:title="@string/update_protocols" />
 
-        <item
+        <!--<item
             android:id="@+id/devicesOption"
             android:orderInCategory="103"
             android:visible="false"
-            android:title="@string/devices" />
+            android:title="@string/devices" />-->
 
         <item
             android:id="@+id/settingsOption"

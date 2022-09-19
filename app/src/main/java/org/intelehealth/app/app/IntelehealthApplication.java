@@ -17,20 +17,18 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
 import com.parse.Parse;
+import com.rt.printerlibrary.printer.RTPrinter;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.apprtc.data.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
-import com.rt.printerlibrary.printer.RTPrinter;
 
 //Extend Application class with MultiDexApplication for multidex support
 public class IntelehealthApplication extends MultiDexApplication implements
@@ -77,7 +75,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
         // keeping the base url in one singleton object for using in apprtc module
 
         // Initialize
-        EzdxBT.initialize(getApplicationContext());
+        //EzdxBT.initialize(getApplicationContext());
         configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
