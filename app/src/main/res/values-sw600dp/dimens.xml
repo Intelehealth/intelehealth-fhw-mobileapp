@@ -8,7 +8,8 @@
     <dimen name="common_button_height">48dp</dimen>
     <dimen name="common_button_width">312dp</dimen>
     <dimen name="common_button_text_size">18sp</dimen>
-    <dimen name="common_header_text_size">21sp</dimen>
+
+    <dimen name="common_header_text_size">22sp</dimen>
     <dimen name="common_label_text_size">18sp</dimen>
     <dimen name="common_hint_text_size">19sp</dimen>
     <dimen name="title_text_size">28sp</dimen>
@@ -434,5 +435,20 @@
     <dimen name="daily_tab_icon_height">30dp</dimen>
     <dimen name="layout_cards_date_range_margin_top">20dp</dimen>
 
+    <!--Change Password UI2.0-->
+    <dimen name="parent_change_pass_padding_top">0dp</dimen>
+    <dimen name="parent_change_pass_padding_end">25dp</dimen>
+    <dimen name="parent_change_pass_padding_bottom">20dp</dimen>
+    <dimen name="new_pass_margin_top">26dp</dimen>
+    <dimen name="new_pass_line_spacing">10dp</dimen>
+    <dimen name="et_new_pass_margin_top">7dp</dimen>
+    <dimen name="tv_new_pass_margin_top">20dp</dimen>
+    <dimen name="btn_save_pass_padding_start">25dp</dimen>
+
+    <!--Custom toolbar UI2.0-->
+
+    <dimen name="custom_tool_margin_start">10dp</dimen>
+    <dimen name="custom_tool_margin_top">8dp</dimen>
+    <dimen name="custom_tool_title_margin_top">23dp</dimen>
 
 </resources>

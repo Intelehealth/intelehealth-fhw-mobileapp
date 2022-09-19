@@ -12,15 +12,13 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
 
-import java.time.LocalDate;
-
 public class DateRangeAchievementsFragment extends Fragment {
     View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_frag_date_range_achievements_ui2, container, false);
+        view = inflater.inflate(R.layout.fragment_date_range_achievements_ui2, container, false);
         initUI();
         return view;
     }

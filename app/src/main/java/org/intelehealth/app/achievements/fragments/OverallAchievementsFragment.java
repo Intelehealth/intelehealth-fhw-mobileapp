@@ -15,7 +15,7 @@ public class OverallAchievementsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_frag_overall_achievements_ui2, container, false);
+        view = inflater.inflate(R.layout.fragment_overall_achievements_ui2, container, false);
 
         return view;
     }

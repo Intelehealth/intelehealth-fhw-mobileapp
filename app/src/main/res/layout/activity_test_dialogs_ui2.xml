@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/layout_panel"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_panel"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_below="@+id/layout_child1"
     android:background="@drawable/ui2_common_top_rounded_white_bg"
     android:orientation="vertical"
@@ -9,48 +11,15 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/layout_child1"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:layout_constraintTop_toBottomOf="@+id/layout_child1">
 
-    <View
-        android:id="@+id/view1"
+    <ImageView
+        android:id="@+id/iv_test_tooltip"
         android:layout_width="50dp"
-        android:layout_height="5dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:background="@color/solidViewLightGray" />
+        android:layout_height="50dp"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ui2_ic_internet_available" />
 
-    <TextView
-        android:id="@+id/tv_select_lang"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/view1"
-        android:fontFamily="@font/dm_sans_regular"
-        android:gravity="center"
-        android:lineHeight="24dp"
-        android:text="Select language"
-        android:textSize="@dimen/select_language" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_select_language"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/tv_select_lang"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="8dp"
-        android:scrollbars="vertical" />
-    <Button
-        android:id="@+id/button_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ui2_common_primary_bg"
-        android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-        android:drawableTint="@color/iconTintWhite"
-        android:padding="@dimen/padding_15"
-        android:layout_alignParentBottom="true"
-        android:text="@string/login" />
 </RelativeLayout>

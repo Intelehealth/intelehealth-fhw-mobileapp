@@ -49,7 +49,7 @@
         android:background="@drawable/ui2_bg_tablayout_achievements"
         android:gravity="center"
         android:textAlignment="center"
-        app:tabMode="auto"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/textColorBlack"
         app:tabTextAppearance="@style/CustomTabText" />
 

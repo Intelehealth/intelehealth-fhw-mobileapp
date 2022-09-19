@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.activities;
+package org.intelehealth.app.activities.homeActivity;
 
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -46,6 +46,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -62,7 +63,10 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.ui2.fragments.HomeFragment;
+import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
+import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
+import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.achievements.fragments.MyAchievementsFragmentNew;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -79,17 +83,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import me.piruin.quickaction.ActionItem;
-import me.piruin.quickaction.QuickAction;
-import me.piruin.quickaction.QuickIntentAction;
 
-public class HomeScreenActivityNew extends AppCompatActivity {
+public class HomeScreenActivity_New extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
-    ImageView imageViewIsInternet;
+    ImageView imageViewIsInternet, ivHamburger;
     private boolean isConnected = false;
     private static final int ID_DOWN = 2;
-    private QuickAction quickAction;
-    private QuickAction quickIntent;
+    private QuickActionCustom quickAction;
+    private QuickActionCustom quickIntent;
     private DrawerLayout mDrawerLayout;
     SessionManager sessionManager;
     Dialog dialogLoginSuccess;
@@ -107,7 +108,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
-        context = HomeScreenActivityNew.this;
+        context = HomeScreenActivity_New.this;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
@@ -140,12 +141,13 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenActivityNew.this, LoginActivityNew.class);
+                Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
                 startActivity(intent);
             }
         });
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
-        ImageView ivHamburger = findViewById(R.id.iv_hamburger);
+        ivHamburger = findViewById(R.id.iv_hamburger);
+
         ivHamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +188,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+/*
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,9 +208,10 @@ public class HomeScreenActivityNew extends AppCompatActivity {
 //                }
             }
         });
+*/
         //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivityNew.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
@@ -253,7 +257,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
                             if (imageViewIsInternet != null) {
                                 imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
                                 flag = 1;
-                                //  setTooltipForInternet("Good internet.\nRefresh");
+                                  setTooltipForInternet("Good internet.\nRefresh");
 
                             }
                         }
@@ -266,7 +270,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
             if (imageViewIsInternet != null) {
                 imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-                //  setTooltipForInternet("No internet");
+                 setTooltipForInternet("No internet");
             }
 
         }
@@ -274,11 +278,11 @@ public class HomeScreenActivityNew extends AppCompatActivity {
     }
 
     private void setTooltipForInternet(String message) {
-        QuickAction.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
-        QuickAction.setDefaultTextColor(Color.BLACK);
+        QuickActionCustom.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.red, null));
+        QuickActionCustom.setDefaultTextColor(Color.BLACK);
 
-        ActionItem nextItem = new ActionItem(ID_DOWN, message);
-        quickAction = new QuickAction(this, QuickAction.HORIZONTAL);
+        ActionItemCustom nextItem = new ActionItemCustom(ID_DOWN, message);
+        quickAction = new QuickActionCustom(this, QuickActionCustom.HORIZONTAL);
         quickAction.setColorRes(R.color.white);
         quickAction.setTextColorRes(R.color.textColorBlack);
         quickAction.addActionItem(nextItem);
@@ -286,17 +290,17 @@ public class HomeScreenActivityNew extends AppCompatActivity {
 
 
         //Set listener for action item clicked
-        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+        quickAction.setOnActionItemClickListener(new QuickActionCustom.OnActionItemClickListener() {
             @Override
-            public void onItemClick(ActionItem item) {
+            public void onItemClick(ActionItemCustom item) {
                 //here we can filter which action item was clicked with pos or actionId parameter
                 String title = item.getTitle();
-                Toast.makeText(HomeScreenActivityNew.this, title + " selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeScreenActivity_New.this, title + " selected", Toast.LENGTH_SHORT).show();
                 if (!item.isSticky()) quickAction.remove(item);
             }
         });
 
-        quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+        quickAction.setOnDismissListener(new QuickActionCustom.OnDismissListener() {
             @Override
             public void onDismiss() {
                 // Toast.makeText(HomeScreenActivity.this, "Dismissed", Toast.LENGTH_SHORT).show();
@@ -308,10 +312,10 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
         sendIntent.setType("text/plain");
 
-        quickIntent = new QuickIntentAction(this)
+        quickIntent = new QuickIntentActionCustom(this)
                 .setActivityIntent(sendIntent)
                 .create();
-        quickIntent.setAnimStyle(QuickAction.Animation.REFLECT);
+        quickIntent.setAnimStyle(QuickActionCustom.Animation.REFLECT);
     }
 
 
@@ -325,9 +329,9 @@ public class HomeScreenActivityNew extends AppCompatActivity {
 
     public void showLoggingInDialog() {
         AlertDialog.Builder builder
-                = new AlertDialog.Builder(HomeScreenActivityNew.this);
+                = new AlertDialog.Builder(HomeScreenActivity_New.this);
         builder.setCancelable(false);
-        LayoutInflater inflater = LayoutInflater.from(HomeScreenActivityNew.this);
+        LayoutInflater inflater = LayoutInflater.from(HomeScreenActivity_New.this);
         View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_login_success, null);
         builder.setView(customLayout);
 
@@ -363,7 +367,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                 fragment = new MyAchievementsFragmentNew();
+                fragment = new MyAchievementsFragmentNew();
 
                 break;
             case R.id.menu_video_lib:
@@ -401,7 +405,9 @@ public class HomeScreenActivityNew extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Fragment fragment = new HomeFragment();
+        ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
+
+        Fragment fragment = new HomeFragment_New();
         loadFragment(fragment);
 
         showLoggingInDialog();
@@ -449,9 +455,9 @@ public class HomeScreenActivityNew extends AppCompatActivity {
                         if (latestVersionCode > versionCode) {
                             android.app.AlertDialog.Builder builder;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                builder = new android.app.AlertDialog.Builder(HomeScreenActivityNew.this, android.R.style.Theme_Material_Dialog_Alert);
+                                builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
                             } else {
-                                builder = new android.app.AlertDialog.Builder(HomeScreenActivityNew.this);
+                                builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this);
                             }
 
 
@@ -506,7 +512,7 @@ public class HomeScreenActivityNew extends AppCompatActivity {
                         hideSyncProgressBar(false);
                         /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
                         finish();*/
-                        new AlertDialog.Builder(HomeScreenActivityNew.this)
+                        new AlertDialog.Builder(HomeScreenActivity_New.this)
                                 .setMessage(R.string.failed_initial_synced)
                                 .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                                     @Override

@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.onboarding;
+package org.intelehealth.app.activities.IntroActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +18,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
+import org.intelehealth.app.ui2.onboarding.SetupPrivacyNoteActivity_New;
 
-public class IntroScreensActivityNew extends AppCompatActivity {
+public class IntroScreensActivity_New extends AppCompatActivity {
     private static final String TAG = "IntroScreensActivityNew";
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -30,7 +30,7 @@ public class IntroScreensActivityNew extends AppCompatActivity {
     private int[] layouts;
     private int page = 0;
     private Handler handler;
-    private int delay = 3000; //milliseconds
+    private int delay = 3000;
 
     Runnable runnable = new Runnable() {
         public void run() {
@@ -55,7 +55,7 @@ public class IntroScreensActivityNew extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntroScreensActivityNew.this, SetupPrivacyNoteActivity.class);
+                Intent intent = new Intent(IntroScreensActivity_New.this, SetupPrivacyNoteActivity_New.class);
                 startActivity(intent);
                finish();
             }
@@ -65,7 +65,7 @@ public class IntroScreensActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: ");
-                Intent intent = new Intent(IntroScreensActivityNew.this, SetupPrivacyNoteActivity.class);
+                Intent intent = new Intent(IntroScreensActivity_New.this, SetupPrivacyNoteActivity_New.class);
                 startActivity(intent);
                 finish();
             }

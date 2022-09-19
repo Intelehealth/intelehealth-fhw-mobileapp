@@ -351,7 +351,7 @@
     <dimen name="title_margin_top">24dp</dimen>
     <dimen name="title_margin_line_height">24dp</dimen>
     <dimen name="content_margin_start">24dp</dimen>
-    <dimen name="content_margin_top">24dp</dimen>
+    <dimen name="content_margin_top">30dp</dimen>
     <dimen name="content_line_height">24dp</dimen>
     <dimen name="content_text_size">28sp</dimen>
     <dimen name="buttons_layout_margin_bottom">24dp</dimen>
@@ -536,5 +536,20 @@
     <dimen name="daily_tab_icon_height">20dp</dimen>
     <dimen name="layout_cards_date_range_margin_top">16dp</dimen>
 
+    <!--Change Password UI2.0-->
+    <dimen name="parent_change_pass_padding_top">0dp</dimen>
+    <dimen name="parent_change_pass_padding_end">25dp</dimen>
+    <dimen name="parent_change_pass_padding_bottom">20dp</dimen>
+    <dimen name="new_pass_margin_top">20dp</dimen>
+    <dimen name="new_pass_line_spacing">10dp</dimen>
+    <dimen name="et_new_pass_margin_top">7dp</dimen>
+    <dimen name="tv_new_pass_margin_top">16dp</dimen>
+    <dimen name="btn_save_pass_padding_start">25dp</dimen>
+
+    <!--Custom toolbar UI2.0-->
+
+    <dimen name="custom_tool_margin_start">10dp</dimen>
+    <dimen name="custom_tool_margin_top">8dp</dimen>
+    <dimen name="custom_tool_title_margin_top">17dp</dimen>
 
 </resources>

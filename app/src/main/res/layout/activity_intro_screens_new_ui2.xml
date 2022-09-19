@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui2.onboarding.IntroScreensActivityNew">
+    tools:context=".activities.IntroActivity.IntroScreensActivity_New">
 
     <ImageView
         android:id="@+id/iv_back_arrow"
@@ -47,7 +47,6 @@
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
-        android:fontFamily="@font/dm_sans_regular"
         android:layout_marginEnd="@dimen/button_skip_margin_end"
         android:background="@drawable/ui2_common_primary_bg"
         android:textColor="@color/white"

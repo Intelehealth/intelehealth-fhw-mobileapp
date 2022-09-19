@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.activities;
+package org.intelehealth.app.activities.forgotPasswordNew;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 
-public class ForgotPasswordActivityNew extends AppCompatActivity {
+public class ForgotPasswordActivity_New extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     String[] textArray = {"+91", "+00", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
@@ -77,7 +77,7 @@ public class ForgotPasswordActivityNew extends AppCompatActivity {
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgotPasswordActivityNew.this, ForgotPasswordOtpVerificationActivity.class);
+                Intent intent = new Intent(ForgotPasswordActivity_New.this, ForgotPasswordOtpVerificationActivity_New.class);
                 startActivity(intent);
             }
         });

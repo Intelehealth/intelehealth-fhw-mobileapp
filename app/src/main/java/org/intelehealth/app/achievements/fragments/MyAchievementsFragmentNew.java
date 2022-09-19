@@ -21,12 +21,13 @@ import org.intelehealth.app.achievements.adapters.MyAchievementsPagerAdapter;
 import java.util.Objects;
 
 public class MyAchievementsFragmentNew extends Fragment {
+    private static final String TAG = "MyAchievementsFragmentN";
     View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_frag_my_achievements_ui2, container, false);
+        view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
 
         initUI();
         return view;
@@ -40,7 +41,13 @@ public class MyAchievementsFragmentNew extends Fragment {
         ImageView ivIsInternet = layoutToolbar.findViewById(R.id.imageview_is_internet);
         ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
         ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
-
+       /* ivBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = activity.getFragmentManager();
+                fm.popBackStack();
+            }
+        });*/
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
@@ -87,6 +94,5 @@ public class MyAchievementsFragmentNew extends Fragment {
 
         });
     }
-
 
 }

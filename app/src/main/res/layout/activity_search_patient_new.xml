@@ -117,7 +117,6 @@
                 android:layout_below="@+id/search_bg_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
-                android:fontFamily="@font/dm_sans_bold"
                 android:lineSpacingExtra="4sp"
                 android:text="@string/search_pat_not_found_txt"
                 android:textAppearance="@style/you_can_add"

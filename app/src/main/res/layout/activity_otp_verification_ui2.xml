@@ -27,7 +27,6 @@
         android:drawableEnd="@drawable/ui2_ic_outline_info_24"
         android:drawablePadding="5dp"
         android:drawableTint="@color/iconTintWhite"
-        android:fontFamily="@font/dm_sans_regular"
         android:text="@string/help"
         android:textColor="@color/textColorWhite"
         android:textSize="@dimen/common_hint_text_size" />
@@ -37,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/forgot_password_top_margin"
-        android:fontFamily="@font/dm_sans_regular"
         android:gravity="center_horizontal"
         android:text="@string/forgot_password"
         android:textColor="@color/textColorWhite"
@@ -94,7 +92,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_25"
-                        android:fontFamily="@font/dm_sans_regular"
                         android:text="@string/enter_verification_code"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/common_button_text_size"
@@ -106,7 +103,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textview_enter_mobileno"
                         android:layout_marginTop="@dimen/margin_20"
-                        android:fontFamily="@font/dm_sans_regular"
                         android:text="@string/otp_sent"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />
@@ -136,7 +132,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/pinview_otp"
                         android:layout_marginTop="@dimen/margin_20"
-                        android:fontFamily="@font/dm_sans_regular"
                         android:text="@string/no_otp_received"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />

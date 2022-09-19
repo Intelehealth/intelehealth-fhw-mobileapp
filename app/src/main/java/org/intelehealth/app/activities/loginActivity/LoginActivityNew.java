@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.activities;
+package org.intelehealth.app.activities.loginActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 
 public class LoginActivityNew extends AppCompatActivity {
     TextInputEditText edittextUsername, editTextPassword;
@@ -22,7 +21,7 @@ public class LoginActivityNew extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_new);
+        setContentView(R.layout.activity_login_new_ui2);
 
 
         TextView textviewPassword = findViewById(R.id.tv_forgot_password1);
@@ -34,14 +33,14 @@ public class LoginActivityNew extends AppCompatActivity {
         textviewPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivityNew.class);
+                Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
                 startActivity(intent);
             }
         });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivityNew.class);
+                Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity_New.class);
                 startActivity(intent);
             }
         });
