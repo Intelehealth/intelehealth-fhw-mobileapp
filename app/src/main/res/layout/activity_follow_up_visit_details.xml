@@ -108,12 +108,20 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <ImageView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
-                    android:layout_width="@dimen/fu_image_width"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:src="@drawable/fu_profile_item" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:elevation="0dp"
+                    app:cardCornerRadius="20dp">
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/avatar1" />
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"

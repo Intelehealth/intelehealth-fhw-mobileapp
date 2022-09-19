@@ -383,11 +383,11 @@ public class DateAndTimeUtils {
         return result;
     }
 
-    public static String followup_dates_formatter(String dateString, String format) {
+    public static String followup_dates_formatter(String dateString, String format, String result_format) {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat(format, Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat(result_format, Locale.ENGLISH);
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {

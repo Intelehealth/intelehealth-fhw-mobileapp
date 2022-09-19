@@ -29,13 +29,21 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_12">
 
-                <ImageView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/fu_profile_imgv"
-                    android:layout_width="@dimen/profile_img_card_size"
-                    android:layout_height="@dimen/profile_img_card_size"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentTop="true"
-                    android:background="@null"
-                    android:src="@drawable/fu_profile_item" />
+                    android:elevation="0dp"
+                    app:cardCornerRadius="20dp">
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/avatar1" />
+                </androidx.cardview.widget.CardView>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"

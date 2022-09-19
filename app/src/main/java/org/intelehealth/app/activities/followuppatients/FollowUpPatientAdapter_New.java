@@ -12,7 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
@@ -45,8 +49,23 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         final FollowUpModel model = patients.get(position);
         holder.setIsRecyclable(false);
 
-        // Patient Name section
         if (model != null) {
+
+            // Patient Photo
+            if (model.getPatient_photo() != null) {
+                Glide.with(context)
+                        .load(model.getPatient_photo())
+                        .thumbnail(0.3f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(holder.profile_image);
+            }
+            else {
+                holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+            }
+
+            // Patient Name section
             if (model.getOpenmrs_id() != null) {
                 holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name() + ", " + model.getOpenmrs_id());
             }
@@ -56,7 +75,9 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
         // Followup Date section
         if (!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
-            holder.fu_date_txtview.setText("Follow up on " + model.getFollowup_date());
+            String followupDate = model.getFollowup_date();
+            followupDate = DateAndTimeUtils.followup_dates_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
+            holder.fu_date_txtview.setText("Follow up on " + followupDate);
         }
 
         // Emergency/Priority tag code.
@@ -81,6 +102,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             i.putExtra("visit_startDate", model.getVisit_start_date());
             i.putExtra("visit_speciality", model.getVisit_speciality());
             i.putExtra("followup_date", model.getFollowup_date());
+            i.putExtra("patient_photo", model.getPatient_photo());
+            i.putExtra("chief_complaint", model.getChiefComplaint());
             context.startActivity(i);
         });
     }
@@ -94,7 +117,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         CardView cardView;
         private View rootView;
         TextView fu_patname_txtview, fu_date_txtview;
-        ImageView fu_priority_tag;
+        ImageView fu_priority_tag, profile_image;
 
         public Myholder(View itemView) {
             super(itemView);
@@ -103,6 +126,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
         }
 
