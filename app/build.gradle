@@ -10,6 +10,7 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     compileSdkVersion 30
     dataBinding {
@@ -29,8 +30,8 @@ android {
         archivesBaseName = "Intelehealth " + versionName + " - " + getDateTime()
     }
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -58,7 +59,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = true
+            enableSplit = true
         }
         abi {
             enableSplit = true
