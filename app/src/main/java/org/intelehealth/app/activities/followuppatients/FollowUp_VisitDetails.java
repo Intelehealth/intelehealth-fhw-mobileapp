@@ -3,7 +3,9 @@ package org.intelehealth.app.activities.followuppatients;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,12 +23,13 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
  */
 
 public class FollowUp_VisitDetails extends AppCompatActivity {
-    private String patientName, gender, age, openmrsID, chiefComplaint,
+    private String patientName, gender, age, openmrsID,
     visitID, visit_startDate, visit_speciality, followupDate, patient_photo_path, chief_complaint_value;
     private boolean isEmergency;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt,
     visit_startDate_txt, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt;
     private ImageView priorityTag, profile_image;
+    public static final String TAG = "FollowUp_visitDetails";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,6 @@ public class FollowUp_VisitDetails extends AppCompatActivity {
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
             openmrsID = intent.getStringExtra("openmrsID");
-            chiefComplaint = intent.getStringExtra("chief_complaint");
             visitID = intent.getStringExtra("visit_ID");
             visit_startDate = intent.getStringExtra("visit_startDate");
             visit_speciality = intent.getStringExtra("visit_speciality");
@@ -78,11 +80,16 @@ public class FollowUp_VisitDetails extends AppCompatActivity {
         else
             priorityTag.setVisibility(View.GONE);
 
-        chiefComplaint_txt = findViewById(R.id.chief_complaint_txt);
-        chiefComplaint_txt.setText(chiefComplaint);
-
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
-        chief_complaint_txt.setText(chief_complaint_value);
+        int first = chief_complaint_value.indexOf("<b>");
+        int last = chief_complaint_value.indexOf("</b>");
+        chief_complaint_value = chief_complaint_value.substring(first, last + 4);
+        Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
+        Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
+        chief_complaint_txt.setTextColor(getResources().getColor(R.color.headline_text_color));
+        chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
+        chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+
 
         visitID_txt = findViewById(R.id.visitID);
         String hideVisitUUID = visitID;

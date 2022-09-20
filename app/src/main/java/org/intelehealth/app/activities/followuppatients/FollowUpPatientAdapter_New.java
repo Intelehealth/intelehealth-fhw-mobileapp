@@ -96,7 +96,6 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             i.putExtra("gender", model.getGender());
             i.putExtra("age", age);
             i.putExtra("openmrsID", model.getOpenmrs_id());
-            i.putExtra("chief_complaint", "-"); // TODO: need to fetch this...
             i.putExtra("priority_tag", model.isEmergency());
             i.putExtra("visit_ID", model.getUuid());
             i.putExtra("visit_startDate", model.getVisit_start_date());
