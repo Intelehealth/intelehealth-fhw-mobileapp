@@ -329,7 +329,20 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-            String physicalStringArabic = physicalExamMap.generateFindings("ar");
+            String physicalStringArabic = physicalExamMap.generateFindings("ar")
+                    .replace("Eyes: Pallor", "العيون: شحوب")
+                    .replace("Arm", "ذراع")
+                    .replace("Head", "رأس")
+                    .replace("Mouth", "فم")
+                    .replace("Abdomen", "البطن")
+                    .replace("Joint", "مشترك")
+                    .replace("Any Location", "اي موقع")
+                    .replace("Arm", "ذراع")
+                    .replace("Nail abnormality", "آفات الأظافر")
+                    .replace("Nail anemia", "فقر دم الأظافر")
+                    .replace("Ankle",  "كاحل")
+                    .replace("Skin Rash",  "الطفح الجلدي")
+                    .replace("Eyes: Jaundice", "العيون: اليرقان");
             Map<String, String> physicalStringMap = new HashMap<>();
             physicalStringMap.put("en", physicalString);
             physicalStringMap.put("ar", physicalStringArabic);
@@ -682,7 +695,21 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+            String arabicPhysicalExam = String.valueOf(Html.fromHtml(physicalExamMap.generateFindings("ar")))
+                    .replace("Eyes: Pallor", "العيون: شحوب")
+                    .replace("Arm", "ذراع")
+                    .replace("Head", "رأس")
+                    .replace("Mouth", "فم")
+                    .replace("Abdomen", "البطن")
+                    .replace("Joint", "مشترك")
+                    .replace("Any Location", "اي موقع")
+                    .replace("Arm", "ذراع")
+                    .replace("Nail abnormality", "آفات الأظافر")
+                    .replace("Nail anemia", "فقر دم الأظافر")
+                    .replace("Ankle",  "كاحل")
+                    .replace("Skin Rash",  "الطفح الجلدي")
+                    .replace("Eyes: Jaundice", "العيون: اليرقان");
+            alertDialogBuilder.setMessage(arabicPhysicalExam);
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
         }

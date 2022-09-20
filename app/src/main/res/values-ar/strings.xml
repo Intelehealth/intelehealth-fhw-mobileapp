@@ -1513,7 +1513,7 @@
     <string name="_main_connected_fail">فشل الاتصال</string>
     <string name="_main_disconnect">\" انقطع الاتصال\"</string>
     <string name="printing">جار الطباعة</string>
-    <string name="visit_confirmation">\"هل أنت متأكد من أنك تريد بدء الزيارة؟\"</string>
+    <string name="visit_confirmation">هل أنت متأكد من أنك تريد بدء الزيارة؟</string>
     <string name="save_prescription">حفظ وصفة طبية</string>
 
     //Syriana

@@ -384,7 +384,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     .replace("Jun", "شهر حزيران")
                     .replace("Jul", "شهر تموز")
                     .replace("Aug", "شهر أب")
-                    .replace("Sept", "شهر أيلول")
+                    .replace("Sep", "شهر أيلول")
                     .replace("Oct", "شهر تشرين الأول")
                     .replace("Nov", "شهر تشرين الثاني")
                     .replace("Dec", "شهر كانون الأول")

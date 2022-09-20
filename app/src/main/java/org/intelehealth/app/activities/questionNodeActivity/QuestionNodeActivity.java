@@ -336,7 +336,32 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
             String complaintString = currentNode.generateLanguage();
-            String complaintStringArabic = currentNode.generateLanguage("ar");
+            String complaintStringArabic = currentNode.generateLanguage("ar")
+                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                    .replace("Patient reports -", "يقر المريض ب-")
+                    .replace("Patient denies -", "ينفي المريض ب-")
+                    .replace("Hours", "ساعات")
+                    .replace("Days", "أيام")
+                    .replace("Weeks", "أسابيع")
+                    .replace("Months", "شهور")
+                    .replace("Years", "سنوات")
+                    .replace("times per hour", "مرات في الساعة")
+                    .replace("time per day", "الوقت في اليوم")
+                    .replace("times per week", "مرات بالأسبوع")
+                    .replace("times per month", "مرات في الشهر")
+                    .replace("times per year", "مرات في السنة")
+                    .replace("Jan", "كانون الثاني")
+                    .replace("Feb", "شهر شباط")
+                    .replace("Mar", "شهر اذار")
+                    .replace("Apr", "أشهر نيسان")
+                    .replace("May", "شهر أيار")
+                    .replace("Jun", "شهر حزيران")
+                    .replace("Jul", "شهر تموز")
+                    .replace("Aug", "شهر أب")
+                    .replace("Sep", "شهر أيلول")
+                    .replace("Oct", "شهر تشرين الأول")
+                    .replace("Nov", "شهر تشرين الثاني")
+                    .replace("Dec", "شهر كانون الأول");
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
@@ -682,7 +707,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Jun", "شهر حزيران")
                     .replace("Jul", "شهر تموز")
                     .replace("Aug", "شهر أب")
-                    .replace("Sept", "شهر أيلول")
+                    .replace("Sep", "شهر أيلول")
                     .replace("Oct", "شهر تشرين الأول")
                     .replace("Nov", "شهر تشرين الثاني")
                     .replace("Dec", "شهر كانون الأول")
