@@ -66,6 +66,13 @@ android {
         }
     }
 }
+
+sonarqube {
+    properties {
+
+    }
+}
+
 dependencies {
     implementation project(':webrtc')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
