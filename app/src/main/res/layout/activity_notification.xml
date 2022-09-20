@@ -178,12 +178,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relative_today"
-        android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/fu_card_margin_sides"
-        tools:listitem="@layout/notification_list_item"
         tools:itemCount="3"
-        />
+        tools:listitem="@layout/notification_list_item" />
 
     <TextView
         android:id="@+id/txt_yesterday"
@@ -202,12 +201,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_yesterday"
-        android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/fu_card_margin_sides"
-        tools:listitem="@layout/notification_list_item"
         tools:itemCount="1"
-        />
+        tools:listitem="@layout/notification_list_item" />
 
 
 

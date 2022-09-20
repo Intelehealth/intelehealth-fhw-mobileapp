@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.followuppatients;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -447,22 +449,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     }
 
 
-    private String phoneNumber(String patientuuid) throws DAOException {
-        String phone = null;
-        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " +
-                "person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
-        try {
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-                }
-            }
-        } catch (SQLException s) {
-            FirebaseCrashlytics.getInstance().recordException(s);
-        }
-        idCursor.close();
-        return phone;
-    }
 
 
 }

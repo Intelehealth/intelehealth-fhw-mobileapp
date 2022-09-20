@@ -230,4 +230,5 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 });
     }
 
+
 }
