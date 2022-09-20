@@ -97,8 +97,8 @@
                             android:layout_width="1dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
@@ -122,8 +122,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
@@ -147,8 +147,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
@@ -172,8 +172,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
@@ -196,9 +196,9 @@
                             android:id="@+id/textView_visit_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="viewStart"
                             android:layout_weight="3"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
@@ -269,19 +269,20 @@
 
                         <TextView
                             android:id="@+id/textView_height"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_height_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
+                            android:text="100"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Weight-->
@@ -289,19 +290,22 @@
 
                         <TextView
                             android:id="@+id/textView_weight"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_weight"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_weight_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
+                            android:text="100"
+                            android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
@@ -309,19 +313,20 @@
 
                         <TextView
                             android:id="@+id/textView_bmi"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bmi"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_bmi_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
+                            android:text="100"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Blood Pressure-->
@@ -329,27 +334,22 @@
 
                         <TextView
                             android:id="@+id/textView_bp"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bp"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+
+                        <TextView
+                            android:id="@+id/textView_bp_value"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/textView_bp_value"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_regular"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-                        </LinearLayout>
+                            android:text="100"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
                     <!--Pulse-->
@@ -357,18 +357,19 @@
 
                         <TextView
                             android:id="@+id/textView_pulse"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_pulse"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_pulse_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="100"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -376,9 +377,9 @@
                     <TableRow>
 
                         <RelativeLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="2">
 
                             <TextView
                                 android:id="@+id/textView_temp"
@@ -400,9 +401,10 @@
 
                         <TextView
                             android:id="@+id/textView_temp_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="100"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -411,18 +413,19 @@
 
                         <TextView
                             android:id="@+id/textView_pulseox"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_pulseox"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_pulseox_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="100"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -431,18 +434,19 @@
 
                         <TextView
                             android:id="@+id/textView_respiratory"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/respiratory_rate"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_respiratory_value"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="100"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
@@ -583,8 +587,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_physicalExam"
                     android:fontFamily="@font/lato_regular"
-                    android:textAlignment="viewStart"
                     android:padding="@dimen/padding_card"
+                    android:textAlignment="viewStart"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -662,9 +666,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_patHist"
-                    android:textAlignment="viewStart"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
+                    android:textAlignment="viewStart"
                     android:textSize="@dimen/card_content_sub_text_size" />
             </RelativeLayout>
 
@@ -724,9 +728,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_famHist"
-                    android:textAlignment="viewStart"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
+                    android:textAlignment="viewStart"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
             </RelativeLayout>
@@ -1148,17 +1152,17 @@
                         android:background="@color/titleBar_cardview"
                         android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/title_doctor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/titleBar_cardview"
-                        android:paddingVertical="12dp"
-                        android:layout_gravity="end"
-                        android:paddingStart="20dp"
-                        android:text="@string/doctor"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/card_content_text_size" />
+                        <TextView
+                            android:id="@+id/title_doctor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:background="@color/titleBar_cardview"
+                            android:paddingVertical="12dp"
+                            android:paddingStart="20dp"
+                            android:text="@string/doctor"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/card_content_text_size" />
 
                     </RelativeLayout>
 
@@ -1196,18 +1200,18 @@
                     android:layout_height="wrap_content"
                     android:background="@color/titleBar_cardview">
 
-                <TextView
-                    android:id="@+id/title_health_worker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/titleBar_cardview"
-                    android:fontFamily="@font/lato_bold"
-                    android:layout_alignParentStart="true"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/health_worker"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
+                    <TextView
+                        android:id="@+id/title_health_worker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/titleBar_cardview"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/health_worker"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
 
                 </RelativeLayout>
 
@@ -1218,8 +1222,8 @@
                     android:layout_below="@+id/layout_healthWorker"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
-                    android:textAlignment="viewStart"
                     android:text="nurse1"
+                    android:textAlignment="viewStart"
                     android:textSize="@dimen/card_content_sub_text_size" />
 
             </LinearLayout>
@@ -1251,9 +1255,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:background="@color/titleBar_cardview"
                         android:fontFamily="@font/lato_bold"
-                        android:layout_alignParentStart="true"
                         android:paddingVertical="12dp"
                         android:paddingStart="20dp"
                         android:text="@string/speciality_cardview_title"
@@ -1314,8 +1318,8 @@
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:fontFamily="@font/lato_bold"
                     android:padding="12dp"
-                    android:textAlignment="viewStart"
                     android:text="@string/book_appointment"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size"
                     android:visibility="visible"
@@ -1337,19 +1341,19 @@
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/padding_card">
 
-                <RelativeLayout
-                    android:id="@+id/layout_emergency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/layout_emergency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/flag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
                     android:layout_weight="0.9"
                     android:fontFamily="@font/lato_bold"
-                    android:layout_alignParentStart="true"
                     android:paddingVertical="12dp"
                     android:paddingStart="5dp"
                     android:text="@string/priority"
@@ -1365,7 +1369,7 @@
                     android:fontFamily="@font/lato_regular"
                     android:textSize="20sp" />
 
-                </RelativeLayout>
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->

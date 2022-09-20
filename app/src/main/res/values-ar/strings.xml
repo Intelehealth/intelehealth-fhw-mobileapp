@@ -363,14 +363,14 @@
 
     <string name="weight_error">يجب أن يكون الوزن أقل من 500 كغ</string>
     <string name="height_error">يجب أن يكون الارتفاع بين 0 و 220 سم</string>
-    <string name="spo2_error">يجب أن تكون درجة اشباع الاوكسجين ما بين1-100 %</string>
-    <string name="pulse_error">يجب أن يكون النبض بين 10-300</string>
-    <string name="bpsys_error">يجب أن يكون الضغط الانقباضي بين 50-250</string>
-    <string name="bpdia_error">يجب أن يكون الضغط الانبساطي بين30-200</string>
-    <string name="resp_error">يجب أن يكون معدل الجهاز التنفسي بين 1-50</string>
-    <string name="temp_error">يجب أن تكون درجة الحرارة بين 30-45</string>
-    <string name="glucose_non_fasting_validation">يجب أن يكون نسبة سكر الدم (غير الصيامي) بين ٪ 1 $ s و ٪ 2 $ s</string>
-    <string name="glucose_fasting_validation">يجب أن يكون سكر الدم (الصيام) بين ٪ 1 $ s و ٪ 2 $ s</string>
+    <string name="spo2_error">يجب أن تكون درجة اشباع الاوكسجين ما بين %1$s و %2$s</string>
+    <string name="pulse_error">يجب أن يكون النبض بين %1$s و %2$s</string>
+    <string name="bpsys_error">يجب أن يكون الضغط الانقباضي بين %1$s و %2$s</string>
+    <string name="bpdia_error">يجب أن يكون الضغط الانبساطي بين %1$s و %2$s</string>
+    <string name="resp_error">يجب أن يكون معدل الجهاز التنفسي بين %1$s و %2$s</string>
+    <string name="temp_error">يجب أن تكون درجة الحرارة بين %1$s و %2$s</string>
+    <string name="glucose_non_fasting_validation">يجب أن يكون نسبة سكر الدم (غير الصيامي) بين %1$s و %2$s</string>
+    <string name="glucose_fasting_validation">يجب أن يكون سكر الدم (الصيام) بين %1$s و %2$s</string>
 
     <string name="not_provided">غير مزود</string>
 
