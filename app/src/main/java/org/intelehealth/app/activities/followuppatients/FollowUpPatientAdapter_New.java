@@ -14,13 +14,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 /**
  * Created by Prajwal Waingankar on 21/08/22.
@@ -30,6 +45,10 @@ import java.util.List;
 public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPatientAdapter_New.Myholder> {
     List<FollowUpModel> patients;
     Context context;
+    ImagesDAO imagesDAO = new ImagesDAO();
+    String profileImage = "";
+    String profileImage1 = "";
+    SessionManager sessionManager;
 
     public FollowUpPatientAdapter_New(List<FollowUpModel> patients, Context context) {
         this.patients = patients;
@@ -52,6 +71,25 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         if (model != null) {
 
             // Patient Photo
+            //1.
+            try {
+                profileImage = imagesDAO.getPatientProfileChangeTime(model.getPatientuuid());
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            //2.
+            if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
+                if (NetworkConnection.isOnline(context)) {
+                    profilePicDownloaded(model, holder);
+                }
+            }
+            //3.
+            if (!profileImage.equalsIgnoreCase(profileImage1)) {
+                if (NetworkConnection.isOnline(context)) {
+                    profilePicDownloaded(model, holder);
+                }
+            }
+
             if (model.getPatient_photo() != null) {
                 Glide.with(context)
                         .load(model.getPatient_photo())
@@ -133,4 +171,63 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             return rootView;
         }
     }
+
+    public void profilePicDownloaded(FollowUpModel model, Myholder holder) {
+        sessionManager = new SessionManager(context);
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(model.getPatientuuid());
+        Logger.logD("TAG", "profileimage url" + url);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, model.getPatientuuid());
+                        Logger.logD("TAG", file.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("TAG", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD("TAG", "complete" + model.getPatient_photo());
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        boolean updated = false;
+                        try {
+                            updated = patientsDAO.updatePatientPhoto(model.getPatientuuid(),
+                                    AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg");
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                        if (updated) {
+                            Glide.with(context)
+                                    .load(AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg")
+                                    .thumbnail(0.3f)
+                                    .centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(holder.profile_image);
+                        }
+                        ImagesDAO imagesDAO = new ImagesDAO();
+                        boolean isImageDownloaded = false;
+                        try {
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
+                                    AppConstants.IMAGE_PATH + model.getPatientuuid() + ".jpg", model.getPatientuuid());
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+//                        if (isImageDownloaded)
+//                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
+//                        else
+//                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
+                    }
+                });
+    }
+
 }
