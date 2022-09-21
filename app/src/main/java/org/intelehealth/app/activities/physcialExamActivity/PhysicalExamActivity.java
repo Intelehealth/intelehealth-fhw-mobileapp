@@ -13,6 +13,8 @@ import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -50,9 +52,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -321,9 +325,29 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
+
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
+            String physicalStringArabic = physicalExamMap.generateFindings("ar")
+                    .replace("Eyes: Pallor", "العيون: شحوب")
+                    .replace("Arm", "ذراع")
+                    .replace("Head", "رأس")
+                    .replace("Mouth", "فم")
+                    .replace("Abdomen", "البطن")
+                    .replace("Joint", "مشترك")
+                    .replace("Any Location", "اي موقع")
+                    .replace("Arm", "ذراع")
+                    .replace("Nail abnormality", "آفات الأظافر")
+                    .replace("Nail anemia", "فقر دم الأظافر")
+                    .replace("Ankle",  "كاحل")
+                    .replace("Skin Rash",  "الطفح الجلدي")
+                    .replace("Eyes: Jaundice", "العيون: اليرقان");
+            Map<String, String> physicalStringMap = new HashMap<>();
+            physicalStringMap.put("en", physicalString);
+            physicalStringMap.put("ar", physicalStringArabic);
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            String physicalStringJson = gson.toJson(physicalStringMap);
 
             List<String> imagePathList = physicalExamMap.getImagePathList();
 
@@ -334,7 +358,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             }
 
             if (intentTag != null && intentTag.equals("edit")) {
-                updateDatabase(physicalString);
+                updateDatabase(physicalStringJson);
                 Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
@@ -355,7 +379,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 // intent.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent);
             } else {
-                boolean obsId = insertDb(physicalString);
+                boolean obsId = insertDb(physicalStringJson);
                 Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
@@ -671,7 +695,21 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+            String arabicPhysicalExam = String.valueOf(Html.fromHtml(physicalExamMap.generateFindings("ar")))
+                    .replace("Eyes: Pallor", "العيون: شحوب")
+                    .replace("Arm", "ذراع")
+                    .replace("Head", "رأس")
+                    .replace("Mouth", "فم")
+                    .replace("Abdomen", "البطن")
+                    .replace("Joint", "مشترك")
+                    .replace("Any Location", "اي موقع")
+                    .replace("Arm", "ذراع")
+                    .replace("Nail abnormality", "آفات الأظافر")
+                    .replace("Nail anemia", "فقر دم الأظافر")
+                    .replace("Ankle",  "كاحل")
+                    .replace("Skin Rash",  "الطفح الجلدي")
+                    .replace("Eyes: Jaundice", "العيون: اليرقان");
+            alertDialogBuilder.setMessage(arabicPhysicalExam);
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
         }

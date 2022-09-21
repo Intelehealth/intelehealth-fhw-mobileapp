@@ -50,6 +50,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1271,8 +1272,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         final Boolean past_visit;
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        visitString = org.intelehealth.app.utilities.StringUtils.en_ar_dob(visitString);
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
@@ -1490,6 +1491,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         famHistCursor.close();
                     }
 
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(famHistValue);
+                    famHistValue = obsDTO.getValue(sessionManager.getAppLanguage());
                     if (famHistValue != null && !famHistValue.equals("")) {
                         famHistView.setText(Html.fromHtml(famHistValue));
                     } else {
@@ -1562,6 +1566,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         medHistCursor.close();
                     }
 
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(medHistValue);
+                    medHistValue = obsDTO.getValue(sessionManager.getAppLanguage());
                     Log.v(TAG, medHistValue);
                     if (medHistValue != null && !medHistValue.equals("")) {
                         medHistView.setText(Html.fromHtml(medHistValue));
@@ -1620,6 +1627,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (previsitCursor.moveToLast() && previsitCursor != null) {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        ObsDTO obsDTO = new ObsDTO();
+                        obsDTO.setValue(visitValue);
+                        visitValue = obsDTO.getValue(sessionManager.getAppLanguage());
                         if (visitValue != null && !visitValue.isEmpty()) {
 
                             visitValue = visitValue.replace("?<b>", Node.bullet_arrow);

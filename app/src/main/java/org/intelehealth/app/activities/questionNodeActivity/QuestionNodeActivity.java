@@ -12,6 +12,8 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +47,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -333,15 +336,56 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
             String complaintString = currentNode.generateLanguage();
+            String complaintStringArabic = currentNode.generateLanguage("ar")
+                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                    .replace("Patient reports -", "يقر المريض ب-")
+                    .replace("Patient denies -", "ينفي المريض ب-")
+                    .replace("Hours", "ساعات")
+                    .replace("Days", "أيام")
+                    .replace("Weeks", "أسابيع")
+                    .replace("Months", "شهور")
+                    .replace("Years", "سنوات")
+                    .replace("times per hour", "مرات في الساعة")
+                    .replace("time per day", "الوقت في اليوم")
+                    .replace("times per week", "مرات بالأسبوع")
+                    .replace("times per month", "مرات في الشهر")
+                    .replace("times per year", "مرات في السنة")
+                    .replace("Jan", "كانون الثاني")
+                    .replace("Feb", "شهر شباط")
+                    .replace("Mar", "شهر اذار")
+                    .replace("Apr", "أشهر نيسان")
+                    .replace("May", "شهر أيار")
+                    .replace("Jun", "شهر حزيران")
+                    .replace("Jul", "شهر تموز")
+                    .replace("Aug", "شهر أب")
+                    .replace("Sep", "شهر أيلول")
+                    .replace("Oct", "شهر تشرين الأول")
+                    .replace("Nov", "شهر تشرين الثاني")
+                    .replace("Dec", "شهر كانون الأول");
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
-                //    complaintDetails.put(complaint, complaintFormatted);
-
-//                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+                ObsDTO obsDTO = new ObsDTO();
+                obsDTO.setValue(insertion);
+                insertion = obsDTO.getValue(null);
+                String insertionArabic = obsDTO.getValue("ar");
+                if (insertion.equalsIgnoreCase(insertionArabic)) {
+                    insertionArabic = Node.bullet_arrow + "<b>" + currentNode.getDisplay_arabic() + "</b>" + ": " +
+                            Node.next_line + complaintStringArabic + " ";
+                } else {
+                    insertionArabic = insertionArabic.concat(Node.bullet_arrow + "<b>" + currentNode.getDisplay_arabic() + "</b>" + ": " +
+                            Node.next_line + complaintStringArabic + " ");
+                }
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+
+                Map<String, String> complaintData = new HashMap<>();
+                complaintData.put("en", insertion);
+                complaintData.put("ar", insertionArabic);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                insertion = gson.toJson(complaintData);
+
             } else {
                 String complaint = currentNode.getText();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
@@ -663,7 +707,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Jun", "شهر حزيران")
                     .replace("Jul", "شهر تموز")
                     .replace("Aug", "شهر أب")
-                    .replace("Sept", "شهر أيلول")
+                    .replace("Sep", "شهر أيلول")
                     .replace("Oct", "شهر تشرين الأول")
                     .replace("Nov", "شهر تشرين الثاني")
                     .replace("Dec", "شهر كانون الأول")

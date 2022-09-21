@@ -43,7 +43,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -809,6 +811,14 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mBpSys.getText() != null) {
                     results.setBpsys((mBpSys.getText().toString()));
                 }
+
+                if (mResp.getText() != null) {
+                    results.setResp((mResp.getText().toString()));
+                }
+                if (mSpo2.getText() != null) {
+                    results.setSpo2((mSpo2.getText().toString()));
+                }
+
                 if (mTemperature.getText() != null) {
 
                     if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
@@ -821,12 +831,7 @@ public class VitalsActivity extends AppCompatActivity {
                     }
 
                 }
-                if (mResp.getText() != null) {
-                    results.setResp((mResp.getText().toString()));
-                }
-                if (mSpo2.getText() != null) {
-                    results.setSpo2((mSpo2.getText().toString()));
-                }
+
 
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -885,7 +890,22 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpdia());
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIASTOLIC_BP));
+                obsDAO.updateObs(obsDTO);
 
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getResp());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
+                obsDAO.updateObs(obsDTO);
+
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getSpo2());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                 obsDAO.updateObs(obsDTO);
 
                 obsDTO = new ObsDTO();
@@ -897,22 +917,6 @@ public class VitalsActivity extends AppCompatActivity {
 
                 obsDAO.updateObs(obsDTO);
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getResp());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-
-                obsDAO.updateObs(obsDTO);
-
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getSpo2());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
-                obsDAO.updateObs(obsDTO);
 
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -1005,18 +1009,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
             obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getTemperature());
-
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -1033,6 +1025,18 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(results.getSpo2());
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getTemperature());
+
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
@@ -1058,30 +1062,48 @@ public class VitalsActivity extends AppCompatActivity {
     private String ConvertFtoC(String temperature) {
 
         if (temperature != null && temperature.length() > 0) {
-            String result = "";
+            /*String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
             Log.i(TAG, "uploadTemperatureInC: " + cTemp);
             DecimalFormat dtime = new DecimalFormat("#.##");
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.valueOf(cTemp);
-            return result;
+            return result;*/
+
+            //This new code has been added as previous throwing errors for Arabic language: By Nishita
+            String resultVal;
+            NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+            double a = Double.parseDouble(temperature);
+            double b = ((a - 32) * 5 / 9);
+            resultVal = nf.format(b);
+            return resultVal;
         }
         return "";
 
     }
 
-    private String convertCtoF(String temperature) {
-
+    //This code commented out not working properly for Arabic Translation and thus the new code written below; BY Nishita
+    /*private String convertCtoF(String temperature) {
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;
-
         DecimalFormat dtime = new DecimalFormat("#.##");
         b = Double.parseDouble(dtime.format(b));
-
         result = String.valueOf(b);
         return result;
+    }*/
+
+    private String convertCtoF(String temperature) {
+
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
 
     }
 
