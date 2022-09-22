@@ -424,7 +424,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     if (StringUtils.right(toInsert, 2).equals(", ")) {
                         toInsert = toInsert.substring(0, toInsert.length() - 2);
                     }
-                    toInsert = toInsert + ".<br/>";
+                    //this is not requiring for this as we are storing data in json format and parsing is not possible after appending this.
+//                    toInsert = toInsert + ".<br/>";
                     insertionList.add(toInsert);
                 }
             }

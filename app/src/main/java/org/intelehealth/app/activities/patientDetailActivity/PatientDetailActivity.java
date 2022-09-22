@@ -1273,7 +1273,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
-        visitString = org.intelehealth.app.utilities.StringUtils.en_ar_dob(visitString);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            visitString = org.intelehealth.app.utilities.StringUtils.en_ar_dob(visitString);
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
