@@ -90,6 +90,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
@@ -504,7 +505,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }
-            prescription1 = obj.getString("presciptionHeader1");
+
+            prescription1 = obj.getString("presciptionHeader0") + "<br/> " + obj.getString("presciptionHeader1");
 
             prescription2 = obj.getString("presciptionHeader2");
 
@@ -578,8 +580,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             @Override
             public void onClick(View v) {
                 doQuery();
-                if (speciality_selected == null || speciality_selected.isEmpty() || "Select Specialization".equalsIgnoreCase(speciality_selected))
-                {
+                if (speciality_selected == null || speciality_selected.isEmpty() || "Select Specialization".equalsIgnoreCase(speciality_selected)) {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -1083,7 +1084,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } else {
                 genderView.setText(gender_tv);
             }
-        }  else {
+        } else {
             genderView.setText(gender_tv);
         }
 
@@ -1984,13 +1985,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
     private String stringToWeb(String input) {
+        Log.v("VS", input);
         String formatted = "";
         if (input != null && !input.isEmpty()) {
+            AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
+            String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
 
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
             formatted = para_open + Node.big_bullet +
-                    input.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    _input.replaceAll("\n", para_close + para_open + Node.big_bullet)
                     + para_close;
         }
 
@@ -2094,7 +2098,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getString(R.string.prescription_temp_f) + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
@@ -2102,8 +2106,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-        String mComplaint = complaint.getValue();
-
+        AnswerValue answerValue = new Gson().fromJson(complaint.getValue(), AnswerValue.class);
+        String mComplaint = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+        Log.v("complaints", mComplaint);
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
@@ -2111,6 +2116,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String mComplaint_new = "";
         if (complaints != null) {
             for (String comp : complaints) {
+                Log.v("complaints", comp);
                 if (!comp.trim().isEmpty()) {
                     mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
 
@@ -2298,16 +2304,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     /* doctorDetailStr +*/
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
+                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_age) + ": %s | " + getString(R.string.prescription_gender) + ": %s  </p>" +
+                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_address_contact) + ": %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_patient_id) + ": %s | " + getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
+                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getString(R.string.prescription_vitals) + "</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getString(R.string.prescription_ht) + ": %s | " + getString(R.string.prescription_wt) + ": %s | " + getString(R.string.prescription_bmi) + ": %s | " + getString(R.string.prescription_bp) + ": %s | " + getString(R.string.prescription_pulse) + ": %s | %s | " + getString(R.string.prescription_rr) + ": %s |  %s </p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_pre_comp) + "</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>"
 
                             , heading, heading2, heading3, mPatientName, age, mGender, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
@@ -2315,27 +2321,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             /*pat_hist, fam_hist,*/ mComplaint);
 
             if (!diagnosis_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_diagnosis) + "</p></b></u>" +
                         "%s<br>", diagnosis_web));
             }
 
             if (!rx_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_med_plan) + "</p></b></u>" +
                         "%s<br>", rx_web));
             }
 
             if (!tests_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_rec_investigation) + "</p></b></u>" +
                         "%s<br>", tests_web));
             }
 
             if (!advice_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + "</p></b></u>" +
                         "%s<br>", advice_web));
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                         "%s<br>", followUp_web));
             }
 
@@ -2346,6 +2352,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                     "</div>", doctor_web));
 
+            if (LocaleHelper.isArabic(this))
+                htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -2354,16 +2362,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_age) + ": %s | " + getString(R.string.prescription_gender) + ": %s  </p>" +
+                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_address_contact) + ": %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_patient_id) + ": %s | " + getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
+                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getString(R.string.prescription_vitals) + "</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getString(R.string.prescription_ht) + ": %s | " + getString(R.string.prescription_wt) + ": %s | " + getString(R.string.prescription_bmi) + ": %s | " + getString(R.string.prescription_bp) + ": %s | " + getString(R.string.prescription_pulse) + ": %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_pre_comp) + "</p></b>" +
+
                                     para_open + "%s" + para_close + "<br><br>"
 
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
@@ -2372,27 +2381,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
             if (!diagnosis_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_diagnosis) + "</p></b></u>" +
                         "%s<br>", diagnosis_web));
             }
 
             if (!rx_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_med_plan) + "</p></b></u>" +
                         "%s<br>", rx_web));
             }
 
             if (!tests_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_rec_investigation) + "</p></b></u>" +
                         "%s<br>", tests_web));
             }
 
             if (!advice_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + "</p></b></u>" +
                         "%s<br>", advice_web));
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                         "%s<br>", followUp_web));
             }
 
@@ -2401,7 +2410,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     doctorDetailStr +
                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                     "</div>", doctor_web));
-
+            if (LocaleHelper.isArabic(this))
+                htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
@@ -4624,7 +4634,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No:" +
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                     objClsDoctorDetails.getRegistrationNumber() : "";
 
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
@@ -4906,36 +4916,36 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
                         "<br><br>" +
                         "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
-                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
+                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">"+ getString(R.string.prescription_age) +": %s | "+ getString(R.string.prescription_gender) +": %s  </b>" +
                         "<br><br>", heading, heading2, mPatientName, age, mGender);
 
         // If the Diagnosis is not empty, only then the details will be displayed in the Prescription
         if (!diagnosis_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_diagnosis) + " <br>" +
                     "%s </b><br>", diagnosis_web));
         }
 
         // If the Medication Plan provided is not empty, only then will the details be displayed in the Prescription
         if (!rx_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_med_plan) + " <br>" +
                     "%s </b><br>", rx_web));
         }
 
         // If the Tests provided is not empty, only then will the details be displayed in the Prescription
         if (!tests_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_rec_investigation) + " <br>" +
                     "%s " + "</b><br>", tests_web));
         }
 
         // If the Advice provided is not empty, only then will the details be displayed in the Prescription
         if (!advice_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + " <br>" +
                     "%s" + "</b><br>", advice_web));
         }
 
         // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription
         if (!followUp_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_follow_up_date) + " <br>" +
                     "%s" + "</b><br>", followUp_web));
         }
 
@@ -5013,10 +5023,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String formatted = "";
         if (input != null && !input.isEmpty()) {
 
+            AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
+            String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+
             String para_open = "<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</b><br>";
             formatted = para_open + "- " +
-                    input.replaceAll("\n", para_close + para_open + "- ")
+                    _input.replaceAll("\n", para_close + para_open + "- ")
                     + para_close;
         }
         return formatted;

@@ -733,13 +733,13 @@
     <string name="prescription_ht">الطول (سم)</string>
     <string name="prescription_pre_comp">تقديم الشكاوى (s)</string>
     <string name="prescription_diagnosis">تشخيص</string>
-    <string name="prescription_med_plan">خطة الأدوية (الأدوية)</string>
+    <string name="prescription_med_plan">خطة الأدوية </string>
     <string name="prescription_rec_investigation">التحقيقات الموصى بها</string>
     <string name="prescription_general_advice">نصيحة عامة</string>
     <string name="prescription_follow_up_date">متابعة التاريخ</string>
     <string name="prescription_temp_c">درجة الحرارة المئوية</string>
     <string name="prescription_temp_f">درجة الحرارة بالفهرنهايت</string>
-
+    <string name="prescription_spo2">نسبة الاكسجة: </string>
     <string name="intro_text_1">\"يتيح تطبيق التطبيب عن بُعد استشارات الطبيب المتخصصة للسكان الريفيين القادمين إلى الرعاية الصحية الأولية. يساعد في إنقاذ المرضى من السفر للأميال للرعاية الصحية.   \\ n \\ n   يتيح تطبيق التطبيب عن بُعد للموظفين الصحيين جمع شكاوى وأعراض تفصيلية للمريض وتوليد تاريخ سريري شامل. يتيح التطبيق لهم أيضًا التقاط تفاصيل الأدوية السابقة والتشخيصات والوصفات الطبية والعلاج.\"</string>
 
     <string name="book_appointment">حجز موعد</string>

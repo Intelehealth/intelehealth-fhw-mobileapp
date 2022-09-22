@@ -79,6 +79,7 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.TimeRecordUtils;
 import org.json.JSONObject;
@@ -887,5 +888,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         }
 
         return text;
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 }

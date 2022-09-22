@@ -743,6 +743,8 @@
     <string name="prescription_follow_up_date">Follow Up Date</string>
     <string name="prescription_temp_c">Temperature (C) : </string>
     <string name="prescription_temp_f">Temperature (F) : </string>
+    <string name="prescription_spo2">SpO2(%): </string>
+
 
     <string name="intro_text_1">
         Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare.

@@ -9,6 +9,7 @@ package org.intelehealth.app.activities.householdSurvey;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,7 +102,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
             mScreenBinding.tvSurveySectionName.setVisibility(View.GONE);
             setTitle(getString(R.string.triage_survey));
         } else {
-            SurveyData surveyData   = new Gson().fromJson(FileUtils.encodeJSON(this, "survery_data.json").toString(), SurveyData.class);
+            SurveyData surveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "survery_data.json").toString(), SurveyData.class);
             mScreenBinding.headerLayout.setVisibility(View.VISIBLE);
 
             mSurveyData = new SurveyData();
@@ -129,6 +130,15 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         showPage();
         mScreenBinding.btnNext.setOnClickListener(this);
         mScreenBinding.btnPrev.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void showPage() {
@@ -211,7 +221,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
         }
         try {
-            if(attributesDTOList.isEmpty()){
+            if (attributesDTOList.isEmpty()) {
                 Toast.makeText(context, getString(R.string.empty_survey), Toast.LENGTH_SHORT).show();
                 return;
             }
