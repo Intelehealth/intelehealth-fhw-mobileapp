@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -164,6 +165,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+    ArrayList<String> selectedAid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -539,6 +541,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Employment status")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("patient aid type")) {
+                    patient_new.setPatientAidType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("blockSurvey")) {
                     patient_new.setBlockSurvey(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -577,7 +582,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
+        TextView aidTypeView = findViewById(R.id.textView_aid_type);
         TableRow occuRow = findViewById(R.id.tableRow_Occupation);
+        TableRow aidTypeRow = findViewById(R.id.tableRow_aid_type);
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
@@ -1118,19 +1125,23 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if (patient_new.getOccupation() != null) {
             if (patient_new.getOccupation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                education_statusView.setText("नहीं दिया गया");
+                    sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                education_statusView.setText("غير مزود");
             } else {
-                String occupation = getOccupationsIdentification_Edit(patient_new.getOccupation(), sessionManager.getAppLanguage());
+                String occupation = patient_new.getOccupation();
                 occuView.setText(occupation);
             }
         }
-//        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-//            occuView.setText(patient_new.getOccupation());
-//        } else {
-//           occuRow.setVisibility(View.GONE);
-//            occuView.setText("");
-//        }
+
+        if (patient_new.getPatientAidType() != null) {
+            if (patient_new.getPatientAidType().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                aidTypeView.setText("غير مزود");
+            } else {
+                String rawAidType = patient_new.getPatientAidType();
+                aidTypeView.setText(rawAidType.substring(1,rawAidType.length()-1));
+            }
+        }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);
@@ -1179,7 +1190,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+91" + phoneView.getText().toString();
+                String phoneNumberWithCountryCode = "+963" + phoneView.getText().toString();
 //                String message =
 //                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
 //                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);

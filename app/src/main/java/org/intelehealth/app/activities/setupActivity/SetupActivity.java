@@ -1276,7 +1276,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setSetupComplete(true);
 
                                             //Storing State Name
-                                            sessionManager.setCountryName("Syriana");
+                                            sessionManager.setCountryName("Syria");
                                             sessionManager.setStateName(selectedState);
                                             sessionManager.setDistrictName(selectedDistrict);
                                             sessionManager.setVillageName(selectedVillage);

@@ -721,7 +721,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                        String phoneNumber = "+91" + editText.getText().toString();
+                                        String phoneNumber = "+963" + editText.getText().toString();
                                         String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                                 + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 

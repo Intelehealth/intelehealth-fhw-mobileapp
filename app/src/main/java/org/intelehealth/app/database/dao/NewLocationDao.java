@@ -75,7 +75,7 @@ public class NewLocationDao {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         try {
-            values.put("country", "Syriana");
+            values.put("country", "Syria");
             if (villageName.length() > 0) {
                 values.put("name", villageName);
                 values.put("state", stateName);

@@ -3590,28 +3590,38 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private void aidSelectionImplementation() {
 
         if (emergencyCB.isChecked()) {
-            selectedAid_en.add("Emergency Need Evaluation");
-            selectedAid_ar.add("تقييم الاحتياجات الطارئة");
+            if (!selectedAid_en.contains("Emergency Need Evaluation"))
+                selectedAid_en.add("Emergency Need Evaluation");
+            if (!selectedAid_ar.contains("تقييم الاحتياجات الطارئة"))
+                selectedAid_ar.add("تقييم الاحتياجات الطارئة");
         }
         if (generalCB.isChecked()) {
-            selectedAid_en.add("General Aid");
-            selectedAid_ar.add("المساعدة العامة");
+            if (!selectedAid_en.contains("General Aid"))
+                selectedAid_en.add("General Aid");
+            if (!selectedAid_ar.contains("المساعدة العامة"))
+                selectedAid_ar.add("المساعدة العامة");
         }
         if (studentCB.isChecked()) {
-            selectedAid_en.add("Student Aid");
-            selectedAid_ar.add("مساعدة الطلاب");
+            if (!selectedAid_en.contains("Student Aid"))
+                selectedAid_en.add("Student Aid");
+            if (!selectedAid_ar.contains("مساعدة الطلاب"))
+                selectedAid_ar.add("مساعدة الطلاب");
         }
         if (fhhSurveyCB.isChecked()) {
-            selectedAid_en.add("FHH Survey");
-            selectedAid_ar.add("مسح FHH");
+            if (!selectedAid_en.contains("FHH Survey"))
+                selectedAid_en.add("FHH Survey");
+            if (!selectedAid_ar.contains("مسح FHH"))
+                selectedAid_ar.add("مسح FHH");
         }
 
         emergencyCB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (emergencyCB.isChecked()) {
-                    selectedAid_en.add("Emergency Need Evaluation");
-                    selectedAid_ar.add("تقييم الاحتياجات الطارئة");
+                    if (!selectedAid_en.contains("Emergency Need Evaluation"))
+                        selectedAid_en.add("Emergency Need Evaluation");
+                    if (!selectedAid_ar.contains("تقييم الاحتياجات الطارئة"))
+                        selectedAid_ar.add("تقييم الاحتياجات الطارئة");
                 } else if (!emergencyCB.isChecked()) {
                     if (selectedAid_en.contains("Emergency Need Evaluation"))
                         selectedAid_en.remove("Emergency Need Evaluation");
@@ -3626,13 +3636,14 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             @Override
             public void onClick(View view) {
                 if (generalCB.isChecked()) {
-                    selectedAid_en.add("General Aid");
-                    selectedAid_ar.add("المساعدة العامة");
+                    if (!selectedAid_en.contains("General Aid"))
+                        selectedAid_en.add("General Aid");
+                    if (!selectedAid_ar.contains("المساعدة العامة"))
+                        selectedAid_ar.add("المساعدة العامة");
 //                    showSpinnersBasedOnAid();
                 } else if (!generalCB.isChecked()) {
                     if (selectedAid_en.contains("General Aid"))
                         selectedAid_en.remove("General Aid");
-
                     if (selectedAid_ar.contains("المساعدة العامة"))
                         selectedAid_ar.remove("المساعدة العامة");
 
@@ -3646,8 +3657,10 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             @Override
             public void onClick(View view) {
                 if (studentCB.isChecked()) {
-                    selectedAid_en.add("Student Aid");
-                    selectedAid_ar.add("مساعدة الطلاب");
+                    if (!selectedAid_en.contains("Student Aid"))
+                        selectedAid_en.add("Student Aid");
+                    if (!selectedAid_ar.contains("مساعدة الطلاب"))
+                        selectedAid_ar.add("مساعدة الطلاب");
                 } else if (!studentCB.isChecked()) {
                     if (selectedAid_en.contains("Student Aid"))
                         selectedAid_en.remove("Student Aid");
@@ -3661,14 +3674,16 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             @Override
             public void onClick(View view) {
                 if (fhhSurveyCB.isChecked()) {
-                    selectedAid_en.add("FHH Survey");
-                    selectedAid_ar.add("مسح FHH");
+                    if (!selectedAid_en.contains("FHH Survey"))
+                        selectedAid_en.add("FHH Survey");
+                    if (!selectedAid_ar.contains("مسح FHH"))
+                        selectedAid_ar.add("مسح FHH");
 //                    showSpinnersBasedOnAid();
                 } else if (!fhhSurveyCB.isChecked()) {
                     if (selectedAid_en.contains("FHH Survey"))
                         selectedAid_en.remove("FHH Survey");
 
-                    if (selectedAid_ar.contains(" "))
+                    if (selectedAid_ar.contains("مسح FHH"))
                         selectedAid_ar.remove("مسح FHH");
 
 //                    if (!selectedAid_en.contains("General Aid") && !selectedAid_ar.contains("المساعدة العامة"))
