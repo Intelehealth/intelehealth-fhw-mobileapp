@@ -43,7 +43,8 @@ public class AppointmentListingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_listing);
-        setLocale(this);
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//        setLocale(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.appointment_listing_title);
         rvAppointments = findViewById(R.id.rvAppointments);

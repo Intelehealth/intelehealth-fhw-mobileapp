@@ -77,11 +77,10 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                 holder.linearLayout.setVisibility(View.GONE);
                 holder.indicatorTextView.setVisibility(View.GONE);
             }
-            if(patinet.getVisit_speciality().equalsIgnoreCase("TLD Query") || patinet.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
-                    patinet.getVisit_speciality().contains("Gynecologist") || patinet.getVisit_speciality().contains("Ayurvedic Physician"))
+            if(patinet.getVisit_speciality()!=null)
                 holder.speciality_tag.setText(patinet.getVisit_speciality());
             else
-                holder.speciality_tag.setText("Agent Resolution");
+                holder.speciality_tag.setVisibility(View.GONE);
         }
 
         holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));

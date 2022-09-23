@@ -3391,32 +3391,19 @@ public final class StringUtils {
     }
 
     public static String getAppointmentBookStatus(String val, String locale) {
-        if (locale.equalsIgnoreCase("ru")) {
+        if (locale.equalsIgnoreCase("ar")) {
             switch (val.toLowerCase()) {
                 case "booked":
-                    val = "забронировано";
+                    val = "حجز";
                     break;
                 case "cancelled":
-                    val = "отменен";
-                    break;
-                default:
-                    return val;
-            }
-
-        } else if (locale.equalsIgnoreCase("mr")) {
-            switch (val.toLowerCase()) {
-                case "booked":
-                    val = "बुक केले";
-                    break;
-                case "cancelled":
-                    val = "रद्द केले";
+                    val = "ألغيت";
                     break;
                 default:
                     return val;
             }
 
         }
-
         return val;
     }
 

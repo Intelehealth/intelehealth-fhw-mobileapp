@@ -1990,7 +1990,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (input != null && !input.isEmpty()) {
             AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
             String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
-
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
             formatted = para_open + Node.big_bullet +

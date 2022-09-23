@@ -75,17 +75,9 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         TextView specialityTextView = findViewById(R.id.tvSpeciality);
         specialityTextView.setText(speciality);
 
-        if (sessionManager.getAppLanguage().equals("ru")) {
-            if (speciality.equalsIgnoreCase("Infectionist")) {
-                specialityTextView.setText("Инфекционист");
-            } else if (speciality.equalsIgnoreCase("Neurologist")) {
-                specialityTextView.setText("Невролог");
-            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
-                specialityTextView.setText("Семейный врач");
-            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
-                specialityTextView.setText("Педиатр");
-            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
-                specialityTextView.setText("Неонатолог");
+        if (sessionManager.getAppLanguage().equals("ar")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("طبيب عام");
             }
         }
 
