@@ -379,7 +379,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                new AlertDialog.Builder(MedicalAdviceExistingPatientsActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
             }
         });
     }

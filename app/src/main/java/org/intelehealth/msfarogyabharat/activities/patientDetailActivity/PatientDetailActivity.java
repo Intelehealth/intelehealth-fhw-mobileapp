@@ -253,8 +253,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             Logger.logD(TAG, "Intent Tag: " + intentTag);
             Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
 
-            if(intentTag2!= null && intentTag2.equalsIgnoreCase("findPatient") && intentTag1!=null && intentTag1.equalsIgnoreCase("editDetails"))
-            {
+            if (intentTag2 != null && intentTag2.equalsIgnoreCase("findPatient") && intentTag1 != null && intentTag1.equalsIgnoreCase("editDetails")) {
                 newAdvice.setVisibility(View.VISIBLE);
                 newAdvice.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -316,7 +315,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
 
-        if(MedicalAdvice == true) {
+        if (MedicalAdvice == true) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PatientDetailActivity.this)
                     .setMessage(R.string.text_patient_and_advice_created)
                     .setCancelable(false)
@@ -340,10 +339,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 saveButton.setText(getResources().getString(R.string.button_save));
-                if(i==R.id.identification_incoming) {
+                if (i == R.id.identification_incoming) {
                     mCallType = "Incoming";
-                }
-                else if(i==R.id.identification_outgoing){
+                } else if (i == R.id.identification_outgoing) {
                     mCallType = "Outgoing";
                 }
                 saveButton.setEnabled(true);
@@ -363,7 +361,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(callAction.equalsIgnoreCase("Incoming") && callStatus.equalsIgnoreCase("Incoming") && callStartTime.equalsIgnoreCase("Incoming"))
+                if (callAction.equalsIgnoreCase("Incoming") && callStatus.equalsIgnoreCase("Incoming") && callStartTime.equalsIgnoreCase("Incoming"))
                     storeCallData(callStatus, callAction, remark);
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
@@ -475,7 +473,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(callAction.equalsIgnoreCase("Incoming") && callStatus.equalsIgnoreCase("Incoming") && callStartTime.equalsIgnoreCase("Incoming"))
+                    if (callAction.equalsIgnoreCase("Incoming") && callStatus.equalsIgnoreCase("Incoming") && callStartTime.equalsIgnoreCase("Incoming"))
                         storeCallData(callStatus, callAction, remark);
                     MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
                 }
@@ -501,8 +499,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (NetworkConnection.isOnline(getApplication())) {
                 SyncDAO syncDAO = new SyncDAO();
                 boolean ispush = syncDAO.pushDataApi();
-                if(ispush)
-                {
+                if (ispush) {
                     saveButton.setText(getResources().getString(R.string.saved));
                     saveButton.setTextColor(getResources().getColor(R.color.scale_5));
                 }
@@ -518,7 +515,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             return;
         }
 
-        if(((Activity) context).isFinishing())
+        if (((Activity) context).isFinishing())
             return;
 
         if (TextUtils.isEmpty(phoneNumber))
@@ -652,7 +649,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     patient_new.setCallType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
-               if (name.equalsIgnoreCase("caste")) {
+                if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Telephone Number")) {
@@ -889,7 +886,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         phoneView.setText(patient_new.getPhone_number());
 
-        if(patient_new.getCallType()!=null) {
+        if (patient_new.getCallType() != null) {
             mCallType = patient_new.getCallType();
             if (patient_new.getCallType().equals("Outgoing")) {
                 mOutgoing.setChecked(true);
@@ -900,8 +897,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (mOutgoing.isChecked())
                     mOutgoing.setChecked(false);
             }
-        }
-        else {
+        } else {
             mIncoming.setChecked(false);
             mOutgoing.setChecked(false);
         }
@@ -976,12 +972,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             sdwRow.setVisibility(View.GONE);
         }*/
 //
-      if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
+        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
 //            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
 //                String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
 //                occuView.setText(occupation);
 //            } else {
-                occuView.setText(patient_new.getOccupation());
+            occuView.setText(patient_new.getOccupation());
 //            }
         } else {
 //            occuRow.setVisibility(View.GONE);
@@ -1298,8 +1294,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
      * This method is called when patient has no prior visits.
      *
@@ -1536,7 +1530,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
                                         Log.d("colon", "colon: " + comp);
-                                        if (comp != null && comp.indexOf(colon) <  comp.length()) {
+                                        if (comp != null && comp.indexOf(colon) < comp.length()) {
                                             visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
                                         } else {
                                             visitValue = visitValue + Node.bullet_arrow + comp;
@@ -1663,6 +1657,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
+
     //This function will ask the user that whether the call was success or not, based on the answer, the other dialog will show up.
     private void storeCallResponse() {
         final int[] checkedItems = {0};
@@ -1672,8 +1667,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                String[] items = {getString(R.string.patient_counselled), getString(R.string.patient_denied_counselling), getString(R.string.medical_advice_provided),getString(R.string.reschedule_call) };
-                showOptionDialog(items,checkedItems, true);
+                String[] items = {getString(R.string.patient_counselled), getString(R.string.patient_denied_counselling), getString(R.string.medical_advice_provided), getString(R.string.reschedule_call)};
+                showOptionDialog(items, checkedItems, true);
             }
         });
         alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -1681,7 +1676,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 String[] items = {getString(R.string.not_valid_number), getString(R.string.not_reachable), getString(R.string.not_picked_up)};
-                showOptionDialog(items,checkedItems, false);
+                showOptionDialog(items, checkedItems, false);
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -1708,12 +1703,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 //                    selectedItem[0] = org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils.switch_hi_en_call_reason(selectedItem[0]);
 
                 dialogInterface.dismiss();
-                if(!success) {
+                if (!success) {
                     callStatus = "Unable to reach patient";
                     callAction = selectedItem[0];
                     storeCallData(callStatus, callAction, remark); //these strings has to be sent in same format and in english only
-                }
-                else {
+                } else {
                     callStatus = "Able to reach patient";
                     callAction = selectedItem[0];
                     storeCallData(callStatus, callAction, remark); //these strings has to be sent in same format and in english only
@@ -1746,16 +1740,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         sendCallData.callStartTime = callStartTime;
         sendCallData.facility = "Unknown"; //facility column needs to be send to maintain dashboard attributes but this value is of no use and also not getting it anywhere in our data thus sending "Unknown"
 
-        if(callAction.equalsIgnoreCase("Patient Counselled") || callAction.equalsIgnoreCase("Medical advice provided")) {
+        if (callAction.equalsIgnoreCase("Patient Counselled") || callAction.equalsIgnoreCase("Medical advice provided")) {
             //if the patient asks for counselling then it means that the data needs to be pushed to the imocalls api after uploading visit so thus we are storing info temporarily in a separate table.
             try {
                 sendCallDataDAO.insertCallData(sendCallData);
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        } else {
             SimpleDateFormat startFormat = new SimpleDateFormat("dd-MM-yyyy' 'HH:mm", Locale.ENGLISH);
             Calendar today = Calendar.getInstance();
             today.add(Calendar.MINUTE, -1);
@@ -1766,7 +1758,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             UrlModifiers urlModifiers = new UrlModifiers();
             ApiInterface apiInterface = AppConstants.apiInterface;
             String sendDataUrl = urlModifiers.sendCallData();
-            apiInterface.callPatientData(sendDataUrl,sendCallData).enqueue(new Callback<ResponseBody>() {
+            apiInterface.callPatientData(sendDataUrl, sendCallData).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(PatientDetailActivity.this, getString(R.string.data_stored_successfully), Toast.LENGTH_LONG).show();
@@ -1776,7 +1768,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                    new AlertDialog.Builder(PatientDetailActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
                 }
             });
             onBackPressed();
