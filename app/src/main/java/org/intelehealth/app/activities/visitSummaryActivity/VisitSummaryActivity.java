@@ -1988,12 +1988,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.v("VS", input);
         String formatted = "";
         if (input != null && !input.isEmpty()) {
-            AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
-            String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+            //AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
+            //String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
             formatted = para_open + Node.big_bullet +
-                    _input.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    input.replaceAll("\n", para_close + para_open + Node.big_bullet)
                     + para_close;
         }
 
@@ -2105,8 +2106,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-        AnswerValue answerValue = new Gson().fromJson(complaint.getValue(), AnswerValue.class);
-        String mComplaint = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+        //AnswerValue answerValue = new Gson().fromJson(complaint.getValue(), AnswerValue.class);
+        String mComplaint = complaint.getValue();//LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
         Log.v("complaints", mComplaint);
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -3459,7 +3460,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        parseData(dbConceptID, dbValue);
+                        if(dbValue.startsWith("{")) {
+                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                        }else{
+                            parseData(dbConceptID, dbValue);
+                        }
                     } while (visitCursor.moveToNext());
                 }
                 if (visitCursor != null) {
@@ -3478,7 +3484,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    if(dbValue.startsWith("{")) {
+                        AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                    }else{
+                        parseData(dbConceptID, dbValue);
+                    }
                 } while (encountercursor.moveToNext());
             }
             if (encountercursor != null) {
@@ -4186,7 +4197,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
-                        parseData(dbConceptID, dbValue);
+                        if(dbValue.startsWith("{")) {
+                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                        }else{
+                            parseData(dbConceptID, dbValue);
+                        }
                     } while (visitCursor.moveToNext());
                 }
                 visitCursor.close();
@@ -4240,7 +4256,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
-                parseData(dbConceptID, dbValue);
+                if(dbValue.startsWith("{")) {
+                    AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                }else{
+                    parseData(dbConceptID, dbValue);
+                }
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
@@ -4915,7 +4936,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
                         "<br><br>" +
                         "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
-                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">"+ getString(R.string.prescription_age) +": %s | "+ getString(R.string.prescription_gender) +": %s  </b>" +
+                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_age) + ": %s | " + getString(R.string.prescription_gender) + ": %s  </b>" +
                         "<br><br>", heading, heading2, mPatientName, age, mGender);
 
         // If the Diagnosis is not empty, only then the details will be displayed in the Prescription
