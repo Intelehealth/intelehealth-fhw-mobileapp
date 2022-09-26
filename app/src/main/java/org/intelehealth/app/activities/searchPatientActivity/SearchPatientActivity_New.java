@@ -166,7 +166,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 //  2. startdate added.
                 String visit_start_date = DateAndTimeUtils.date_formatter(visitDTO.getStartdate(),
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-                        "dd MMMM yyyy 'at' HH:mm a");
+                        "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
                 Log.v("SearchPatient", "date: " + visit_start_date);
                 patientDTOList.get(i).setVisit_startdate(visit_start_date);
 

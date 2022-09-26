@@ -35,6 +35,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentTop="true"
                     android:elevation="0dp"
+                    android:layout_margin="2dp"
                     app:cardCornerRadius="20dp">
 
                     <ImageView

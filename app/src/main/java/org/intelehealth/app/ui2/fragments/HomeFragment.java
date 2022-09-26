@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
         });
 
         followup_cardview.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), IdentificationActivity.class);
+            Intent intent = new Intent(getActivity(), FollowUpPatientActivity_New.class);
             startActivity(intent);
         });
     }

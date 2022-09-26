@@ -583,6 +583,8 @@ public class PatientsDAO {
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty
                                     (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -612,6 +614,8 @@ public class PatientsDAO {
                         model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                         model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                         model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                        model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+
                         modelList.add(model);
                     } while (searchCursor.moveToNext());
                 }
