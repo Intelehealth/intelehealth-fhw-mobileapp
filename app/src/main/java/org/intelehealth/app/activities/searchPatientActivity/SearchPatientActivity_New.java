@@ -20,6 +20,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.List;
 
@@ -37,16 +38,21 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     boolean fullyLoaded = false;
     FrameLayout view_nopatientfound;
     public static final String TAG = "SearchPatient_New";
+    private SearchRecentSuggestions suggestions;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
 
+        sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
         search_txt_enter = findViewById(R.id.search_txt_enter);
         search_hint_text = findViewById(R.id.search_hint_text);
         view_nopatientfound = findViewById(R.id.view_nopatientfound);
+
+        previous_SearchResults();
 
         search_txt_enter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -61,9 +67,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                     search_hint_text.setText("Results for \"" + s + "\"");
                     search_txt_enter.setTextColor(getResources().getColor(R.color.white));
                     String text = search_txt_enter.getText().toString();
-//                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity_New.this,
-//                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-//                    suggestions.clearHistory();
+                    sessionManager.setPreviousSearchQuery(text); // previous search feature.
                     query = text;
                     doQuery(text);
                 }
@@ -85,6 +89,15 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         });
 */
 
+    }
+
+    private void previous_SearchResults() {
+        if (search_txt_enter.getText().toString().isEmpty() ||
+                search_txt_enter.getText().toString().equalsIgnoreCase("")) {
+            if (sessionManager != null && !sessionManager.getPreviousSearchQuery().equalsIgnoreCase("")) {
+                doQuery(sessionManager.getPreviousSearchQuery());
+            }
+        }
     }
 
     private void doQuery(String query) {
