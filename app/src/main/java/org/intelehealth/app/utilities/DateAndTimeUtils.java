@@ -49,11 +49,11 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if(period.getYears() > 0)
+        if (period.getYears() > 0)
             xyears = period.getYears();
         else
             xyears = 0;
-        if(period.getMonths() > 0)
+        if (period.getMonths() > 0)
             xmonths = period.getMonths();
         else
             xmonths = 0;
@@ -112,6 +112,7 @@ public class DateAndTimeUtils {
         }
 
     }
+
     public static String getAge_FollowUp(String s, Context context) {
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -136,7 +137,7 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "", tmonth = "", tdays = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
         }
 
@@ -176,22 +177,21 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
-        if(period.getMonths() > 0) {
+        if (period.getMonths() > 0) {
             tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
             //xmonths = String.valueOf(period.getMonths());
         }
-        if(period.getDays() > 0)
+        if (period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
         age = tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
-
 
 
     public static String getAgeInYearMonth(String s) {
@@ -219,14 +219,14 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if(period.getYears() > 0)
-            tyears = ""+period.getYears();
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears();
 
-        if(period.getMonths() > 0)
-            tmonth = ""+period.getMonths();
+        if (period.getMonths() > 0)
+            tmonth = "" + period.getMonths();
 
-        if(period.getDays() > 0)
-            tdays = ""+period.getDays();
+        if (period.getDays() > 0)
+            tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -262,7 +262,7 @@ public class DateAndTimeUtils {
         String tyears = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }

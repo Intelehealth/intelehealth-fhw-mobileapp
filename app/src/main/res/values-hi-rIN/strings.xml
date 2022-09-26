@@ -828,4 +828,5 @@
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 </resources>

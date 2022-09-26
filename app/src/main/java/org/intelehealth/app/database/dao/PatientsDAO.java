@@ -286,7 +286,7 @@ public class PatientsDAO {
                 while (cursor.moveToNext()) {
                     FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
@@ -542,7 +542,7 @@ public class PatientsDAO {
         List<String> patientUUID_List = new ArrayList<>();
 
         final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
-                new String[] {search} );
+                new String[]{search});
         /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
          * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
          * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
@@ -558,15 +558,15 @@ public class PatientsDAO {
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        Log.d("patientUUID_list", "list: "+ patientUUID_List);
-        if(patientUUID_List.size() != 0) {
+        Log.d("patientUUID_list", "list: " + patientUUID_List);
+        if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                                " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
-                                "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
-                                "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
-                                "(first_name || last_name) LIKE '%" + search + "%' OR openmrs_id " +
-                                "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
+                        " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
+                        "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
+                        "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
+                        "(first_name || last_name) LIKE '%" + search + "%' OR openmrs_id " +
+                        "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
                     if (searchCursor.moveToFirst()) {
@@ -590,13 +590,12 @@ public class PatientsDAO {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
-        }
-        else { // no mobile number was added in search text.
+        } else { // no mobile number was added in search text.
             final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
-                            "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
-                            "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
-                            "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR " +
-                            "openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
+                    "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
+                    "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
+                    "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR " +
+                    "openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
 
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {
@@ -641,7 +640,7 @@ public class PatientsDAO {
         return phone;
     }
 
-    public static VisitDTO isVisitPresentForPatient_fetchVisitValues (String patientUUID) {
+    public static VisitDTO isVisitPresentForPatient_fetchVisitValues(String patientUUID) {
         VisitDTO visitDTO = new VisitDTO();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit WHERE patientuuid = ?", new String[]{patientUUID});
@@ -653,8 +652,7 @@ public class PatientsDAO {
                 }
                 while (idCursor.moveToNext());
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
         }
 

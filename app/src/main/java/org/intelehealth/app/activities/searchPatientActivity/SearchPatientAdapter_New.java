@@ -23,8 +23,8 @@ import java.util.List;
  * Email: prajwalwaingankar@gmail.com
  */
 public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatientAdapter_New.SearchHolderView> {
-   private Context context;
-   private List<PatientDTO> patientDTOS;
+    private Context context;
+    private List<PatientDTO> patientDTOS;
 
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
@@ -60,10 +60,9 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             if (model.getVisit_startdate() != null) {
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);
                 holder.search_date_relative.setText(model.getVisit_startdate());
-            }
-            else {
+            } else {
                 holder.fu_item_calendar.setVisibility(View.GONE);
-                holder.search_date_relative.setText("No visit created");
+                holder.search_date_relative.setText(R.string.no_visit_created);
             }
 
             //  5. Prescription received/pending tag display.

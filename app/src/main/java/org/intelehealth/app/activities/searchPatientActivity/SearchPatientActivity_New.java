@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Created by: Prajwal Waingankar On: 29/Aug/2022
  * Github: prajwalmw
- * */
+ */
 
 public class SearchPatientActivity_New extends AppCompatActivity {
     RecyclerView search_recycelview;
@@ -69,9 +69,11 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (!search_txt_enter.getText().toString().isEmpty()) {
@@ -128,8 +130,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 Logger.logE("doquery", "doquery", e);
             }
-        }
-        else {
+        } else {
             searchData_Unavailable();
         }
     }
@@ -158,8 +159,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 }
                 if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
                     patientDTOList.get(i).setEmergency(true);
-                }
-                else { //ie. visit not emergency.
+                } else { //ie. visit not emergency.
                     patientDTOList.get(i).setEmergency(false);
                 }
 
@@ -174,12 +174,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
                 if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
                     patientDTOList.get(i).setPrescription_exists(true);
-                }
-                else {
+                } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
-            }
-            else {
+            } else {
                 /**
                  * no visit for this patient.
                  * dont add startvisitdate value into this model keep it null and later check for null check and add logic

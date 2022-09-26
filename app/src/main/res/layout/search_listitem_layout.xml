@@ -94,7 +94,7 @@
                         android:textSize="@dimen/fu_male_textsize" />
 
                     <ImageView
-                        android:id="@+id/frame_10012"
+                        android:id="@+id/presc_tag_imgview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/search_date_relative"
@@ -106,7 +106,7 @@
             </RelativeLayout>
 
             <ImageView
-                android:id="@+id/you_can_add"
+                android:id="@+id/priority_tag_imgview"
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
                 android:layout_height="@dimen/search_priority_tag"
