@@ -78,7 +78,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             if (model.isEmergency())
                 holder.priority_tag_imgview.setVisibility(View.VISIBLE);
             else
-                holder.priority_tag_imgview.setVisibility(View.VISIBLE);
+                holder.priority_tag_imgview.setVisibility(View.GONE);
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
