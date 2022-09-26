@@ -289,7 +289,8 @@ public class EncounterDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
+            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND " +
+                    "encounter_type_uuid = ? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -336,12 +337,13 @@ public class EncounterDAO {
     }
 
 
-    public String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
+    public static String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
         String encounterUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ? AND sync = ?",
-                new String[]{visitUUID, ENCOUNTER_VISIT_NOTE, "true"});
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND " +
+                        "encounter_type_uuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE",
+                new String[]{visitUUID, ENCOUNTER_VISIT_NOTE});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
@@ -382,7 +384,9 @@ public class EncounterDAO {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
             //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
 
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e') ", new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
+                    "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e')",
+                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
             EncounterDTO encounterDTO = new EncounterDTO();
             if (idCursor.getCount() != 0) {
                 return true;

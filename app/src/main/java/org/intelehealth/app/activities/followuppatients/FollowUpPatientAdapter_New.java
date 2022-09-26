@@ -114,7 +114,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         // Followup Date section
         if (!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
             String followupDate = model.getFollowup_date();
-            followupDate = DateAndTimeUtils.followup_dates_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
+            followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
             holder.fu_date_txtview.setText("Follow up on " + followupDate);
         }
 

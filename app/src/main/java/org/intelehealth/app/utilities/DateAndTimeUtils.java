@@ -383,7 +383,7 @@ public class DateAndTimeUtils {
         return result;
     }
 
-    public static String followup_dates_formatter(String dateString, String format, String result_format) {
+    public static String date_formatter(String dateString, String format, String result_format) {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -392,7 +392,9 @@ public class DateAndTimeUtils {
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
             FirebaseCrashlytics.getInstance().recordException(ex);
+            Log.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;
     }
+
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,12 +43,34 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public void onBindViewHolder(@NonNull SearchPatientAdapter_New.SearchHolderView holder, int position) {
         final PatientDTO model = patientDTOS.get(position);
         if (model != null) {
-            //1. Age
+            //  1. Age
             String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
             holder.search_gender.setText(model.getGender() + " " + age);
 
-            //2. Name
+            //  2. Name
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname());
+
+            //  3. Priority Tag
+            if (model.isEmergency())
+                holder.priority_tag_imgview.setVisibility(View.VISIBLE);
+            else
+                holder.priority_tag_imgview.setVisibility(View.GONE);
+
+            //  4. Visit Start Date else No visit created text display.
+            if (model.getVisit_startdate() != null) {
+                holder.fu_item_calendar.setVisibility(View.VISIBLE);
+                holder.search_date_relative.setText(model.getVisit_startdate());
+            }
+            else {
+                holder.fu_item_calendar.setVisibility(View.GONE);
+                holder.search_date_relative.setText("No visit created");
+            }
+
+            //  5. Prescription received/pending tag display.
+            if (model.isPrescription_exists())
+                holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
+            else
+                holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
 
         }
     }
@@ -58,13 +81,18 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
-        TextView search_gender, search_name;
+        TextView search_gender, search_name, search_date_relative;
+        ImageView priority_tag_imgview, fu_item_calendar, presc_tag_imgview;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
+            priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
+            fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
+            search_date_relative = itemView.findViewById(R.id.search_date_relative);
+            presc_tag_imgview = itemView.findViewById(R.id.presc_tag_imgview);
         }
     }
 }

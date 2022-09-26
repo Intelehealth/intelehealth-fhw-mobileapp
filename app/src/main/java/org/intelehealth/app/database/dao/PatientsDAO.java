@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -640,5 +641,23 @@ public class PatientsDAO {
         return phone;
     }
 
+    public static VisitDTO isVisitPresentForPatient_fetchVisitValues (String patientUUID) {
+        VisitDTO visitDTO = new VisitDTO();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit WHERE patientuuid = ?", new String[]{patientUUID});
+        try {
+            if (idCursor.moveToFirst()) {
+                do {
+                    visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                }
+                while (idCursor.moveToNext());
+            }
+        }
+        catch (SQLException e) {
 
+        }
+
+        return visitDTO;
+    }
 }

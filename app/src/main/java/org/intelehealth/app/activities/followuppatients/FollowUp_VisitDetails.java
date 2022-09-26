@@ -98,7 +98,7 @@ public class FollowUp_VisitDetails extends AppCompatActivity {
 
         visit_startDate_txt = findViewById(R.id.visit_startDate);
         Log.v("Followup", "actual date: " + visit_startDate);
-        visit_startDate = DateAndTimeUtils.followup_dates_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
+        visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
         Log.v("Followup", "foramted date: " + visit_startDate);
         visit_startDate_txt.setText(visit_startDate);
 
@@ -106,7 +106,7 @@ public class FollowUp_VisitDetails extends AppCompatActivity {
         visit_speciality_txt.setText(visit_speciality);
 
         followupDate_txt = findViewById(R.id.followup_date_txtv);
-        followupDate = DateAndTimeUtils.followup_dates_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
+        followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
         followupDate_txt.setText("Follow up on " + followupDate);
 
         followup_info = findViewById(R.id.followup_info);

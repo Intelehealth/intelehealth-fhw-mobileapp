@@ -1,10 +1,14 @@
 package org.intelehealth.app.activities.searchPatientActivity;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
+import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
@@ -18,9 +22,15 @@ import android.widget.TextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.List;
 
@@ -40,6 +50,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +112,12 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void doQuery(String query) {
-        List<PatientDTO> patientDTOList = getQueryPatients(query);
-        Log.v(TAG, "size: " + patientDTOList.size());
-        if (patientDTOList.size() > 0) { //ie. the entered text is present in db
+        List<PatientDTO> patientDTOList = getQueryPatients(query);  // fetches all the list of patients.
+
+        if (patientDTOList.size() > 0) { // ie. the entered text is present in db
+            patientDTOList = fetchDataforTags(patientDTOList);
+            Log.v(TAG, "size: " + patientDTOList.size());
+
             searchData_Available();
             try {
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
@@ -118,6 +132,62 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         else {
             searchData_Unavailable();
         }
+    }
+
+    private List<PatientDTO> fetchDataforTags(List<PatientDTO> patientDTOList) {
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        /**
+         * 1. Check first if visit is present for this patient or not if yes than do other code logic.
+         */
+        for (int i = 0; i < patientDTOList.size(); i++) {
+            VisitDTO visitDTO = isVisitPresentForPatient_fetchVisitValues(patientDTOList.get(i).getUuid());
+
+            /**
+             * 2. now check if only visit is present than only proceed to get value for priority tag, presc tag, startdate tag.
+             */
+            if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
+                //  1. Priority Tag.
+                EncounterDAO encounterDAO = new EncounterDAO();
+                String emergencyUuid = "";
+                try {
+                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitDTO.getUuid(), encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    emergencyUuid = "";
+                }
+                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                    patientDTOList.get(i).setEmergency(true);
+                }
+                else { //ie. visit not emergency.
+                    patientDTOList.get(i).setEmergency(false);
+                }
+
+                //  2. startdate added.
+                String visit_start_date = DateAndTimeUtils.date_formatter(visitDTO.getStartdate(),
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                        "dd MMMM yyyy 'at' HH:mm a");
+                Log.v("SearchPatient", "date: " + visit_start_date);
+                patientDTOList.get(i).setVisit_startdate(visit_start_date);
+
+                //  3. prescription received/pending tag logic.
+                String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
+                if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
+                    patientDTOList.get(i).setPrescription_exists(true);
+                }
+                else {
+                    patientDTOList.get(i).setPrescription_exists(false);
+                }
+            }
+            else {
+                /**
+                 * no visit for this patient.
+                 * dont add startvisitdate value into this model keep it null and later check for null check and add logic
+                 */
+            }
+        }
+
+        return patientDTOList;
     }
 
     private void searchData_Available() {
