@@ -35,6 +35,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -60,6 +61,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.activePatientsActivity.ActivePatientActivity;
@@ -80,6 +83,7 @@ import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.OfflineLogin;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -107,8 +111,8 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-   // CardView c1, c2, c3, c4, c5, c6;
-   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c8, cvMissedCall;
+    // CardView c1, c2, c3, c4, c5, c6;
+    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c8, cvMissedCall;
     private String key = null;
     private String licenseUrl = null;
 
@@ -150,14 +154,14 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        checkAppVer();  //auto-update feature.
+//        checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-       // c1 = findViewById(R.id.cardview_newpat);
+        // c1 = findViewById(R.id.cardview_newpat);
         c1_doctor = findViewById(R.id.cardview_newpat);
         c1_medadvice = findViewById(R.id.cardview_newpat_1);
         c2 = findViewById(R.id.cardview_find_patient);
@@ -197,7 +201,7 @@ public class HomeActivity extends AppCompatActivity {
                 String phoneNumberWithCountryCode = "+919503692181";
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance)  + " (" + getString(R.string.app_name) + ")";
+                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance) + " (" + getString(R.string.app_name) + ")";
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(
@@ -685,6 +689,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
     public void dailyPerformance() {
         Intent intent = new Intent(this, DailyPerformanceActivity.class);
         startActivity(intent);
@@ -738,7 +743,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         //IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         //registerReceiver(syncBroadcastReceiver, filter);
-        checkAppVer();  //auto-update feature.
+//        checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
                 && Locale.getDefault().toString().equals("en")) {
@@ -756,11 +761,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showFollowUpBadge() {
-        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-        if (followUpCount > 0) {
-            tvFollowUpBadge.setVisibility(View.VISIBLE);
-            tvFollowUpBadge.setText(String.valueOf(followUpCount));
-        }
+        Executor mainExecutor = ContextCompat.getMainExecutor(this);    // executor to run on the main thread
+        Executor backgroundExecutor = Executors.newSingleThreadExecutor();     // executor to run on the background thread
+
+        backgroundExecutor.execute(() -> {
+            long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+
+            mainExecutor.execute(() -> {
+                if (followUpCount > 0) {
+                    tvFollowUpBadge.setVisibility(View.VISIBLE);
+                    tvFollowUpBadge.setText(String.valueOf(followUpCount));
+                }
+            });
+        });
     }
 
     @Override
