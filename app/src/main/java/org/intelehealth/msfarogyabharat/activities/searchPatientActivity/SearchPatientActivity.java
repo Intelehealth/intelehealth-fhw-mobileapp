@@ -12,8 +12,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +61,6 @@ import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgres
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -76,6 +79,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     boolean fullyLoaded = false;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     CustomProgressDialog customProgressDialog;
+    ImageView toolbarSearch, toolbarClear;
+    EditText toolbarEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //        toolbar.setOverflowIcon(drawable);
 
         customProgressDialog = new CustomProgressDialog(SearchPatientActivity.this);
+        toolbarSearch = findViewById(R.id.toolbar_search);
+        toolbarClear = findViewById(R.id.toolbar_clear);
+        toolbarEditText = findViewById(R.id.toolbar_ET);
 
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -155,6 +163,48 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
         }
+
+        toolbarEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    toolbarSearch.setVisibility(View.GONE);
+                    toolbarClear.setVisibility(View.GONE);
+                } else {
+                    toolbarSearch.setVisibility(View.VISIBLE);
+                    toolbarClear.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        toolbarClear.setOnClickListener(v -> {
+            toolbarEditText.setText(null);
+            toolbarEditText.clearFocus();
+            toolbarClear.setVisibility(View.GONE);
+            toolbarSearch.setVisibility(View.GONE);
+            firstQuery();
+        });
+
+        toolbarSearch.setOnClickListener(v -> {
+            toolbarEditText.clearFocus();
+            String text = toolbarEditText.getText().toString();
+            if (text != null || !text.isEmpty() || text.equalsIgnoreCase(" ")) {
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                suggestions.clearHistory();
+                query = text;
+                doQuery(query);
+            }
+        });
 
         new_patient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,34 +293,38 @@ public class SearchPatientActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search, menu);
-        inflater.inflate(R.menu.today_filter, menu);
+//        inflater.inflate(R.menu.menu_search, menu);
+//        inflater.inflate(R.menu.today_filter, menu);
 //        inflater.inflate(R.menu.today_filter, menu);
         // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
-
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-                suggestions.clearHistory();
-                doQuery(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    firstQuery();
-                }
-                return false;
-            }
-        });
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//        searchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
+//
+//        // Assumes current activity is the searchable activity
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+//                suggestions.clearHistory();
+//                doQuery(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if (TextUtils.isEmpty(newText)) {
+//                    toolbarSearch.setVisibility(View.GONE);
+//                    firstQuery();
+//                } else {
+//                    query = newText;
+//                    toolbarSearch.setVisibility(View.VISIBLE);
+//                }
+//                return false;
+//            }
+//        });
 
         return super.onCreateOptionsMenu(menu);
     }
