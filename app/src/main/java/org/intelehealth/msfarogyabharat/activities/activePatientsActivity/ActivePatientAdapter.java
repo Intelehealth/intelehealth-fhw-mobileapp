@@ -3,7 +3,9 @@ package org.intelehealth.msfarogyabharat.activities.activePatientsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +68,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 //            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
         }
 
-        if (activePatientModel.getSync().equalsIgnoreCase("0")){
+        if (activePatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -111,7 +113,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         });
 
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (activePatientModels.get(position).getHasPrescription()) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
             }

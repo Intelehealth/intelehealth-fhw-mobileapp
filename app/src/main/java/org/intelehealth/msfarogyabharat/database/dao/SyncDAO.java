@@ -32,6 +32,7 @@ import org.intelehealth.msfarogyabharat.utilities.NotificationID;
 import org.intelehealth.msfarogyabharat.utilities.PatientsFrameJson;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -346,6 +347,7 @@ public class SyncDAO {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    boolean hasPrescription = getHasPrescription(cursor);
                     activePatientList.add(new ActivePatientModel(
                             cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
                             cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
@@ -357,7 +359,8 @@ public class SyncDAO {
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                             "",
-                            ""
+                            "",
+                            hasPrescription
                     ));
                 } while (cursor.moveToNext());
             }
@@ -475,5 +478,18 @@ public class SyncDAO {
         finalTime = time + " " + context.getString(R.string.ago);
 
         sessionManager.setLastTimeAgo(finalTime);
+    }
+
+    private Boolean getHasPrescription(Cursor cursor) {
+        boolean hasPrescription = false;
+        String query1 = "Select count(*) from tbl_encounter where encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND visituuid = ?";
+        Cursor mCount = db.rawQuery(query1, new String[]{cursor.getString(cursor.getColumnIndexOrThrow("uuid"))});
+        mCount.moveToFirst();
+        int count = mCount.getInt(0);
+        mCount.close();
+        if (count == 1)
+            hasPrescription = true;
+
+        return hasPrescription;
     }
 }

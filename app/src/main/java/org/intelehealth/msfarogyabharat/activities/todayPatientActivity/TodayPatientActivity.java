@@ -229,6 +229,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    boolean hasPrescription = getHasPrescription(cursor);
                     try {
                         todayPatientList.add(new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
@@ -241,7 +242,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                hasPrescription)
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -372,6 +374,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    boolean hasPrescription = getHasPrescription(cursor);
                     try {
                         todayPatientList.add(new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
@@ -384,7 +387,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                hasPrescription)
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -484,7 +488,18 @@ public class TodayPatientActivity extends AppCompatActivity {
         return phone;
     }
 
+    private Boolean getHasPrescription(Cursor cursor) {
+        boolean hasPrescription = false;
+        String query1 = "Select count(*) from tbl_encounter where encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND visituuid = ?";
+        Cursor mCount = db.rawQuery(query1, new String[]{cursor.getString(cursor.getColumnIndexOrThrow("uuid"))});
+        mCount.moveToFirst();
+        int count = mCount.getInt(0);
+        mCount.close();
+        if (count == 1)
+            hasPrescription = true;
 
+        return hasPrescription;
+    }
 }
 
 
