@@ -83,8 +83,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_sort_white_24dp);
 //        toolbar.setOverflowIcon(drawable);
 
         customProgressDialog = new CustomProgressDialog(SearchPatientActivity.this);
@@ -147,8 +146,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
         } else {
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                    SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
             if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
@@ -218,6 +216,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     private void firstQuery() {
         executorService.execute(() -> {
             runOnUiThread(() -> customProgressDialog.show());
+
             List<PatientDTO> patientDTOList = getAllPatientsFromDB(offset);
 
             runOnUiThread(() -> {
@@ -250,8 +249,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
-                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
 
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -259,21 +257,20 @@ public class SearchPatientActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                suggestions.clearHistory();
+                doQuery(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("Hack", "in query text change");
-                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
-                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-                suggestions.clearHistory();
-                query = newText;
-                doQuery(newText);
-                return true;
+                if (TextUtils.isEmpty(newText)) {
+                    firstQuery();
+                }
+                return false;
             }
         });
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -302,9 +299,7 @@ public class SearchPatientActivity extends AppCompatActivity {
      * @param query   variable of type String
      */
     public void noneFound(ListView lvItems, String query) {
-        ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
-                R.layout.list_item_search,
-                R.id.list_item_head, new ArrayList<String>());
+        ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this, R.layout.list_item_search, R.id.list_item_head, new ArrayList<String>());
         String errorMessage = getString(R.string.alert_none_found).replace("_", query);
         searchAdapter.add(errorMessage);
         lvItems.setAdapter(searchAdapter);
@@ -341,21 +336,14 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         int failedUploads = 0;
 
-        String query = "SELECT tbl_visit.patientuuid, tbl_visit.enddate, tbl_visit.uuid," +
-                "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name FROM tbl_visit, tbl_patient WHERE" +
-                " tbl_visit.patientuid = tbl_patient.uuid AND tbl_visit.enddate IS NULL OR tbl_visit.enddate = ''";
+        String query = "SELECT tbl_visit.patientuuid, tbl_visit.enddate, tbl_visit.uuid," + "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name FROM tbl_visit, tbl_patient WHERE" + " tbl_visit.patientuid = tbl_patient.uuid AND tbl_visit.enddate IS NULL OR tbl_visit.enddate = ''";
 
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    boolean result = endVisit(
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
-                    );
+                    boolean result = endVisit(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                     if (!result) failedUploads++;
                 } while (cursor.moveToNext());
             }
@@ -369,8 +357,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-            alertDialogBuilder.setMessage("Unable to end " + failedUploads +
-                    " visits.Please upload visit before attempting to end the visit.");
+            alertDialogBuilder.setMessage("Unable to end " + failedUploads + " visits.Please upload visit before attempting to end the visit.");
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -463,8 +450,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         List<String> patientUUID_List = new ArrayList<>();
 
-        final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
-                new String[]{search});
+        final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?", new String[]{search});
         /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
          * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
          * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
@@ -473,10 +459,8 @@ public class SearchPatientActivity extends AppCompatActivity {
         try {
             if (search_mobile_cursor.moveToFirst()) {
                 do {
-                    patientUUID_List.add(search_mobile_cursor.getString
-                            (search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
-                }
-                while (search_mobile_cursor.moveToNext());
+                    patientUUID_List.add(search_mobile_cursor.getString(search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
+                } while (search_mobile_cursor.moveToNext());
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -487,8 +471,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
 
-                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
-                        new String[]{patientUUID_List.get(i)});
+                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
                     if (searchCursor.moveToFirst()) {
@@ -513,8 +496,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
         } else {
-            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
-                    null);
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {
                 if (searchCursor.moveToFirst()) {
@@ -583,10 +565,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     private void doQueryWithProviders(String querytext, List<String> providersuuids) {
         if (querytext == null) {
             List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
-            String query =
-                    "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
-                            "('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                            "group by a.uuid order by b.uuid ASC";
+            String query = "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " + "('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " + "group by a.uuid order by b.uuid ASC";
             Logger.logD(TAG, query);
             final Cursor cursor = db.rawQuery(query, null);
             Logger.logD(TAG, "Cursour count" + cursor.getCount());
@@ -632,16 +611,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         } else {
             String search = querytext.trim().replaceAll("\\s", "");
             List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-            String query =
-                    "select   b.openmrs_id,b.firstname,b.last_name,b.middle_name,b.uuid,b.date_of_birth  from tbl_visit a, tbl_patient b, tbl_encounter c WHERE" +
-                            "first_name LIKE " + "'%" + search +
-                            "%' OR middle_name LIKE '%" + search +
-                            "%' OR last_name LIKE '%" + search +
-                            "%' OR openmrs_id LIKE '%" + search +
-                            "%' " +
-                            "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                            "AND  a.patientuuid = b.uuid  AND c.visituuid=a.uuid " +
-                            "group by a.uuid order by b.uuid ASC";
+            String query = "select   b.openmrs_id,b.firstname,b.last_name,b.middle_name,b.uuid,b.date_of_birth  from tbl_visit a, tbl_patient b, tbl_encounter c WHERE" + "first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " + "AND  a.patientuuid = b.uuid  AND c.visituuid=a.uuid " + "group by a.uuid order by b.uuid ASC";
             Logger.logD(TAG, query);
             final Cursor cursor = db.rawQuery(query, null);
             Logger.logD(TAG, "Cursour count" + cursor.getCount());
