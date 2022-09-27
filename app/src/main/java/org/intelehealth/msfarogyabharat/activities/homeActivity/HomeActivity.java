@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.R;
@@ -126,6 +127,7 @@ public class HomeActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, myCases_textView, missedCallRecordingTV;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -761,13 +763,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showFollowUpBadge() {
-        Executor mainExecutor = ContextCompat.getMainExecutor(this);    // executor to run on the main thread
-        Executor backgroundExecutor = Executors.newSingleThreadExecutor();     // executor to run on the background thread
-
-        backgroundExecutor.execute(() -> {
+        executorService.execute(() -> {
             long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
 
-            mainExecutor.execute(() -> {
+            runOnUiThread(() -> {
                 if (followUpCount > 0) {
                     tvFollowUpBadge.setVisibility(View.VISIBLE);
                     tvFollowUpBadge.setText(String.valueOf(followUpCount));
@@ -1050,5 +1049,11 @@ public class HomeActivity extends AppCompatActivity {
     public void onFollowUpClick(View view) {
         Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdownNow();
     }
 }

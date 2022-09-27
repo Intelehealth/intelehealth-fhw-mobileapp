@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -52,6 +54,7 @@ import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
 
 public class ActivePatientActivity extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
@@ -67,6 +70,8 @@ public class ActivePatientActivity extends AppCompatActivity {
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private ActivePatientAdapter mActivePatientAdapter;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+    CustomProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +93,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 
-
+        customProgressDialog = new CustomProgressDialog(ActivePatientActivity.this);
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.ic_sort_white_24dp);
 //        mToolbar.setOverflowIcon(drawable);
@@ -112,27 +117,43 @@ public class ActivePatientActivity extends AppCompatActivity {
                 if (mActivePatientAdapter.activePatientModels != null && mActivePatientAdapter.activePatientModels.size() < limit) {
                     return;
                 }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
-                    Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-                    offset += limit;
-                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
-                    if (allPatientsFromDB.size() < limit) {
-                        fullyLoaded = true;
-                    }
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
+                    executorService.execute(() -> {
 
-                    mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
-                    mActivePatientAdapter.notifyDataSetChanged();
+                        runOnUiThread(() -> Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show());
+
+                        offset += limit;
+                        List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
+                        if (allPatientsFromDB.size() < limit) {
+                            fullyLoaded = true;
+                        }
+
+                        runOnUiThread(() -> {
+                            mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
+                            mActivePatientAdapter.notifyDataSetChanged();
+                        });
+                    });
                 }
             }
         });
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
-            textView.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            List<ActivePatientModel> activePatientModels = doQuery(offset);
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID);
-            recyclerView.setAdapter(mActivePatientAdapter);
+            executorService.execute(() -> {
+                runOnUiThread(() -> {
+                    customProgressDialog.show();
+                    textView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                });
+
+                List<ActivePatientModel> activePatientModels = doQuery(offset);
+
+                runOnUiThread(() -> {
+                    customProgressDialog.dismiss();
+                    mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID);
+                    recyclerView.setAdapter(mActivePatientAdapter);
+                });
+            });
         }
 
         getVisits();
@@ -142,49 +163,51 @@ public class ActivePatientActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         recyclerView.clearOnScrollListeners();
+        executorService.shutdownNow();
     }
 
 
     private void getVisits() {
+        executorService.execute(() -> {
+            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+            HashSet<String> hsPatientUUID = new HashSet<String>();
 
-        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-        HashSet<String> hsPatientUUID = new HashSet<String>();
+            //Get all Visits
+            VisitsDAO visitsDAO = new VisitsDAO();
+            List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();
 
-        //Get all Visits
-        VisitsDAO visitsDAO = new VisitsDAO();
-        List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();
+            //Get all Encounters
+            EncounterDAO encounterDAO = new EncounterDAO();
+            List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
 
-        //Get all Encounters
-        EncounterDAO encounterDAO = new EncounterDAO();
-        List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
-
-        //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
-        if (encounterDTOList.size() > 0) {
-            for (int i = 0; i < encounterDTOList.size(); i++) {
-                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
-                    encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
+            //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
+            if (encounterDTOList.size() > 0) {
+                for (int i = 0; i < encounterDTOList.size(); i++) {
+                    if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                        encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
+                    }
                 }
             }
-        }
 
-        //Get patientUUID from visitList
-        for (int i = 0; i < encounterVisitUUID.size(); i++) {
+            //Get patientUUID from visitList
+            for (int i = 0; i < encounterVisitUUID.size(); i++) {
 
-            for (int j = 0; j < visitsDTOList.size(); j++) {
+                for (int j = 0; j < visitsDTOList.size(); j++) {
 
-                if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
-                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                    if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
+                        listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                    }
                 }
             }
-        }
 
-        if (listPatientUUID.size() > 0) {
+            if (listPatientUUID.size() > 0) {
 
-            hsPatientUUID.addAll(listPatientUUID);
-            listPatientUUID.clear();
-            listPatientUUID.addAll(hsPatientUUID);
+                hsPatientUUID.addAll(listPatientUUID);
+                listPatientUUID.clear();
+                listPatientUUID.addAll(hsPatientUUID);
 
-        }
+            }
+        });
     }
 
     /**
@@ -199,7 +222,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {

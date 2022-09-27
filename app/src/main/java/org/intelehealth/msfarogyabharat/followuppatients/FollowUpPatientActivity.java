@@ -30,6 +30,7 @@ import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -41,6 +42,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.getCurrentDate;
 import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.mGetDaysAccording;
@@ -58,8 +62,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     //    FloatingActionButton new_patient;
     int limit = Integer.MAX_VALUE, offset = 0;
-//    boolean fullyLoaded = false;
-
+    //    boolean fullyLoaded = false;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+    CustomProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +95,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
+        customProgressDialog = new CustomProgressDialog(FollowUpPatientActivity.this);
 
         if (sessionManager.isPullSyncFinished()) {
             msg.setVisibility(View.GONE);
@@ -108,13 +114,21 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     }
 
     private void firstQuery() {
-        try {
-            recycler = new FollowUpPatientAdapter(getAllPatientsFromDB(offset), FollowUpPatientActivity.this);
-            recyclerView.setAdapter(recycler);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("firstquery", "exception", e);
-        }
+        executorService.execute(() -> {
+            runOnUiThread(() -> customProgressDialog.show());
+            List<FollowUpModel> followUpList = getAllPatientsFromDB(offset);
+
+            runOnUiThread(() -> {
+                customProgressDialog.dismiss();
+                try {
+                    recycler = new FollowUpPatientAdapter(followUpList, FollowUpPatientActivity.this);
+                    recyclerView.setAdapter(recycler);
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Logger.logE("firstquery", "exception", e);
+                }
+            });
+        });
     }
 
     public List<FollowUpModel> getAllPatientsFromDB(int offset) {
@@ -134,15 +148,14 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 try {
                     String visitStartDateFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate"));
                     String visitFollowup = "";
-                    if(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).contains(" Do you want us to follow-up? - Yes")){
+                    if (searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).contains(" Do you want us to follow-up? - Yes")) {
                         visitType = "Diabetes Follow-up";
                         visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(68, 79);
-                        visitFollowup = visitFollowup.replaceAll("/","-");
-                        Date requiredFormat =  new SimpleDateFormat("dd-MMM-yyyy").parse(visitFollowup);
+                        visitFollowup = visitFollowup.replaceAll("/", "-");
+                        Date requiredFormat = new SimpleDateFormat("dd-MMM-yyyy").parse(visitFollowup);
                         SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                         visitFollowup = outputDateFormat.format(requiredFormat);
-                    }
-                    else {
+                    } else {
                         visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
                     }
 
@@ -154,8 +167,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
                     int value = followUp.compareTo(currentD);
 
-                    if(visitType.equalsIgnoreCase("Diabetes Follow-up"))
-                    {
+                    if (visitType.equalsIgnoreCase("Diabetes Follow-up")) {
                         if (value == -1 || value == 0) {
                             modelList.add(new FollowUpModel(
                                     searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
@@ -171,14 +183,11 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                     "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid"))),
                                     "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
                         }
-                    }
-                    else
-                    {
+                    } else {
                         String mSeverityValue = getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")));
                         int days = mGetDaysAccording(newStartDate);
                         String mValue = "";
-                        if(!mSeverityValue.contains("Do you want us to follow-up?"))
-                        {
+                        if (!mSeverityValue.contains("Do you want us to follow-up?")) {
                             String[] arrSplit_2 = mSeverityValue.split("-");
                             mValue = arrSplit_2[arrSplit_2.length - 1];
                         }
@@ -205,8 +214,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                                 "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value
                                         ));
 
-                                    }
-                                    else if (mValue.trim().contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
+                                    } else if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
                                         modelList.add(new FollowUpModel(
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -222,8 +230,39 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                                 , "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
 
 
+                                    } else {
+                                        modelList.add(new FollowUpModel(
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
+                                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
+                                                visitFollowup,
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
+                                                "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid"))),
+                                                "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
+
                                     }
-                                    else {
+                                } else {
+                                    if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        modelList.add(new FollowUpModel(
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
+                                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
+                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
+                                                "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")))
+                                                , "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
+
+                                    } else {
                                         modelList.add(new FollowUpModel(
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -240,43 +279,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
                                     }
                                 }
-                                else {
-                                    if (mValue.trim().contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
-                                        modelList.add(new FollowUpModel(
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-                                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
-                                                "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")))
-                                                , "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
 
-                                    }
-                                    else {
-                                        modelList.add(new FollowUpModel(
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-                                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-                                                visitFollowup,
-                                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
-                                                "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid"))),
-                                                "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
-
-                                    }
-                                }
-
-                            }
-                            else {
+                            } else {
                                 modelList.add(new FollowUpModel(
                                         searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                         searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -292,8 +296,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                         "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
 
                             }
-                        }
-                        else if (value > 0) {
+                        } else if (value > 0) {
 
                             if (days > 0 && days < 11 && days != 0) {
                                 Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
@@ -317,8 +320,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                                 startDate.toString(), value));
 
 
-                                    }
-                                    else if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                    } else if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
                                         modelList.add(new FollowUpModel(
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -334,12 +336,10 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                                 "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"))),
                                                 startDate.toString(), value));
 
-                                    }
-                                    else {
+                                    } else {
 // todo No need to added
                                     }
-                                }
-                                else {
+                                } else {
                                     if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
                                         modelList.add(new FollowUpModel(
                                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
@@ -361,8 +361,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 }
 
                             }
-                        }
-                        else {
+                        } else {
                             modelList.add(new FollowUpModel(
                                     searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                     searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -380,9 +379,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                         }
                     }
 
-                }
-
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -543,8 +540,10 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdownNow();
+    }
 }
-
-
-
-

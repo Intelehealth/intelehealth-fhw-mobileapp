@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -52,6 +54,7 @@ import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
 
 public class TodayPatientActivity extends AppCompatActivity {
     private static final String TAG = TodayPatientActivity.class.getSimpleName();
@@ -60,6 +63,8 @@ public class TodayPatientActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     RecyclerView mTodayPatientList;
     MaterialAlertDialogBuilder dialogBuilder;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+    CustomProgressDialog customProgressDialog;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
@@ -91,6 +96,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 R.drawable.ic_sort_white_24dp);
 //        toolbar.setOverflowIcon(drawable);
 
+        customProgressDialog = new CustomProgressDialog(TodayPatientActivity.this);
 
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -108,25 +114,40 @@ public class TodayPatientActivity extends AppCompatActivity {
                 if (mActivePatientAdapter.todayPatientModelList != null && mActivePatientAdapter.todayPatientModelList.size() < limit) {
                     return;
                 }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
-                    Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-                    offset += limit;
-                    List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
-                    if (allPatientsFromDB.size() < limit) {
-                        fullyLoaded = true;
-                    }
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
+                    executorService.execute(() -> {
+                        runOnUiThread(() -> {
+                            Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                            offset += limit;
+                        });
 
-                    mActivePatientAdapter.todayPatientModelList.addAll(allPatientsFromDB);
-                    mActivePatientAdapter.notifyDataSetChanged();
+                        List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
+                        if (allPatientsFromDB.size() < limit) {
+                            fullyLoaded = true;
+                        }
+
+                        runOnUiThread(() -> {
+                            mActivePatientAdapter.todayPatientModelList.addAll(allPatientsFromDB);
+                            mActivePatientAdapter.notifyDataSetChanged();
+                        });
+                    });
                 }
             }
         });
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
-            List<TodayPatientModel> todayPatientModels = doQuery(offset);
-            mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this, listPatientUUID);
-            mTodayPatientList.setAdapter(mActivePatientAdapter);
+            executorService.execute(() -> {
+                runOnUiThread(() -> customProgressDialog.show());
+
+                List<TodayPatientModel> todayPatientModels = doQuery(offset);
+
+                runOnUiThread(() -> {
+                    customProgressDialog.dismiss();
+                    mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this, listPatientUUID);
+                    mTodayPatientList.setAdapter(mActivePatientAdapter);
+                });
+            });
         }
 
         getVisits();
@@ -137,48 +158,50 @@ public class TodayPatientActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mTodayPatientList.clearOnScrollListeners();
+        executorService.shutdownNow();
     }
 
     private void getVisits() {
+        executorService.execute(() -> {
+            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+            HashSet<String> hsPatientUUID = new HashSet<String>();
 
-        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-        HashSet<String> hsPatientUUID = new HashSet<String>();
+            //Get all Visits
+            VisitsDAO visitsDAO = new VisitsDAO();
+            List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();
 
-        //Get all Visits
-        VisitsDAO visitsDAO = new VisitsDAO();
-        List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();
+            //Get all Encounters
+            EncounterDAO encounterDAO = new EncounterDAO();
+            List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
 
-        //Get all Encounters
-        EncounterDAO encounterDAO = new EncounterDAO();
-        List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
-
-        //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
-        if (encounterDTOList.size() > 0) {
-            for (int i = 0; i < encounterDTOList.size(); i++) {
-                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
-                    encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
+            //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
+            if (encounterDTOList.size() > 0) {
+                for (int i = 0; i < encounterDTOList.size(); i++) {
+                    if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                        encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
+                    }
                 }
             }
-        }
 
-        //Get patientUUID from visitList
-        for (int i = 0; i < encounterVisitUUID.size(); i++) {
+            //Get patientUUID from visitList
+            for (int i = 0; i < encounterVisitUUID.size(); i++) {
 
-            for (int j = 0; j < visitsDTOList.size(); j++) {
+                for (int j = 0; j < visitsDTOList.size(); j++) {
 
-                if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
-                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                    if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
+                        listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                    }
                 }
             }
-        }
 
-        if (listPatientUUID.size() > 0) {
+            if (listPatientUUID.size() > 0) {
 
-            hsPatientUUID.addAll(listPatientUUID);
-            listPatientUUID.clear();
-            listPatientUUID.addAll(hsPatientUUID);
+                hsPatientUUID.addAll(listPatientUUID);
+                listPatientUUID.clear();
+                listPatientUUID.addAll(hsPatientUUID);
 
-        }
+            }
+        });
     }
 
 
@@ -192,7 +215,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
         Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -451,6 +474,8 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         return phone;
     }
+
+
 }
 
 

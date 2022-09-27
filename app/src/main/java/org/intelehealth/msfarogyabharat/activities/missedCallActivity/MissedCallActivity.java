@@ -39,6 +39,8 @@ import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgres
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,6 +60,7 @@ public class MissedCallActivity extends AppCompatActivity {
     private SearchPatientAdapter adapter;
     TextView errorTV;
     CustomProgressDialog customProgressDialog;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,6 @@ public class MissedCallActivity extends AppCompatActivity {
         fetchAllMissedNum();
 
 //        populateList(allPatientList, requiredNumList);
-
     }
 
     private void populateList(List<PatientDTO> requiredPatientList) {
@@ -107,63 +109,77 @@ public class MissedCallActivity extends AppCompatActivity {
     }
 
     private void fetchAllMissedNum() {
+        executorService.execute(() -> {
 
-        if (!NetworkConnection.isOnline(this)) {
-            customProgressDialog.dismiss();
-            Toast.makeText(MissedCallActivity.this, R.string.no_network, Toast.LENGTH_LONG).show();
-            return;
-        }
+            if (!NetworkConnection.isOnline(this)) {
+                runOnUiThread(() -> {
+                    customProgressDialog.dismiss();
+                    Toast.makeText(MissedCallActivity.this, R.string.no_network, Toast.LENGTH_LONG).show();
+                });
+                return;
+            }
 
-        customProgressDialog.show();
-        List<String> missedCallNumList = new ArrayList<>();
-        //String encoded = sessionManager.getEncoded();
-        Base64Utils base64Utils = new Base64Utils();
-        String encoded = base64Utils.encoded("nurse1", "Nurse123");
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String url = urlModifiers.getMissedCallsUrl();
-        Single<MissedCallModel> missedCallRequest = AppConstants.apiInterface.MISSED_CALL(url, "Basic "/*bnVyc2UxOk51cnNlMTIz"*/ + encoded);
-        missedCallRequest.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<MissedCallModel>() {
-                    @Override
-                    public void onSuccess(MissedCallModel missedCallModel) {
-                        if (missedCallModel != null && missedCallModel.getData() != null) {
-                            for (int i = 0; i < missedCallModel.getData().size(); i++) {
-                                missedCallNumList.add(missedCallModel.getData().get(i).getNoanswer());
-                                Log.d("Missed Call Number: ", missedCallModel.getData().get(i).getNoanswer());
-                            }
-                            if (missedCallNumList.size() > 0) {
-                                requiredPatientList = getAllPatientsFromDB(missedCallNumList);
-                                if (requiredPatientList.size() > 0) {
-                                    customProgressDialog.dismiss();
-                                    errorTV.setVisibility(View.GONE);
-                                    recyclerView.setVisibility(View.VISIBLE);
-                                    LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-                                    recyclerView.setLayoutManager(reLayoutManager);
-                                    adapter = new SearchPatientAdapter(requiredPatientList, MissedCallActivity.this);
-                                    recyclerView.setAdapter(adapter);
+            runOnUiThread(() -> customProgressDialog.show());
+
+            List<String> missedCallNumList = new ArrayList<>();
+            //String encoded = sessionManager.getEncoded();
+            Base64Utils base64Utils = new Base64Utils();
+            String encoded = base64Utils.encoded("nurse1", "Nurse123");
+            UrlModifiers urlModifiers = new UrlModifiers();
+            String url = urlModifiers.getMissedCallsUrl();
+            Single<MissedCallModel> missedCallRequest = AppConstants.apiInterface.MISSED_CALL(url, "Basic "/*bnVyc2UxOk51cnNlMTIz"*/ + encoded);
+            missedCallRequest.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<MissedCallModel>() {
+                        @Override
+                        public void onSuccess(MissedCallModel missedCallModel) {
+                            if (missedCallModel != null && missedCallModel.getData() != null) {
+                                for (int i = 0; i < missedCallModel.getData().size(); i++) {
+                                    missedCallNumList.add(missedCallModel.getData().get(i).getNoanswer());
+                                    Log.d("Missed Call Number: ", missedCallModel.getData().get(i).getNoanswer());
+                                }
+                                if (missedCallNumList.size() > 0) {
+                                    requiredPatientList = getAllPatientsFromDB(missedCallNumList);
+                                    if (requiredPatientList.size() > 0) {
+                                        runOnUiThread(() -> {
+                                            customProgressDialog.dismiss();
+                                            errorTV.setVisibility(View.GONE);
+                                            recyclerView.setVisibility(View.VISIBLE);
+                                            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+                                            recyclerView.setLayoutManager(reLayoutManager);
+                                            adapter = new SearchPatientAdapter(requiredPatientList, MissedCallActivity.this);
+                                            recyclerView.setAdapter(adapter);
+                                        });
+                                    } else {
+                                        runOnUiThread(() -> {
+                                            customProgressDialog.dismiss();
+                                            errorTV.setVisibility(View.VISIBLE);
+                                        });
+                                    }
                                 } else {
-                                    customProgressDialog.dismiss();
-                                    errorTV.setVisibility(View.VISIBLE);
+                                    runOnUiThread(() -> {
+                                        customProgressDialog.dismiss();
+                                        errorTV.setVisibility(View.VISIBLE);
+                                    });
                                 }
                             } else {
+                                runOnUiThread(() -> {
+                                    customProgressDialog.dismiss();
+                                    errorTV.setVisibility(View.VISIBLE);
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            runOnUiThread(() -> {
                                 customProgressDialog.dismiss();
                                 errorTV.setVisibility(View.VISIBLE);
-                            }
-                        } else {
-                            customProgressDialog.dismiss();
-                            errorTV.setVisibility(View.VISIBLE);
+                                System.out.println(e);
+                            });
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        customProgressDialog.dismiss();
-                        errorTV.setVisibility(View.VISIBLE);
-                        System.out.println(e);
-
-                    }
-                });
+                    });
+        });
     }
 
     @Override
@@ -231,5 +247,11 @@ public class MissedCallActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdownNow();
     }
 }

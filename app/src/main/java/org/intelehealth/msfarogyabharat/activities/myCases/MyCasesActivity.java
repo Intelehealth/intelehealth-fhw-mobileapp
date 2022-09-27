@@ -33,10 +33,13 @@ import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MyCasesActivity extends AppCompatActivity {
 
@@ -54,6 +57,8 @@ public class MyCasesActivity extends AppCompatActivity {
     List<String> ngoSelected = new ArrayList<>();
     TextView no_records_found_textview;
     String chw_name = "";
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+    CustomProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class MyCasesActivity extends AppCompatActivity {
         context = MyCasesActivity.this;
         no_records_found_textview = findViewById(R.id.no_records_found_textview);
         chw_name = sessionManager.getProviderID();
+        customProgressDialog = new CustomProgressDialog(MyCasesActivity.this);
 
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -116,28 +122,38 @@ public class MyCasesActivity extends AppCompatActivity {
     }
 
     private void firstQuery() {
-        try {
-            List<MyCasesModel> allPatients = getAllPatientsFromDB(chw_name, offset);
-            if (allPatients.size() > 0) {
-                myCasesAdapter = new MyCasesAdapter(allPatients, MyCasesActivity.this);
-                recyclerView.setAdapter(myCasesAdapter);
-                no_records_found_textview.setVisibility(View.GONE);
-            } else {
-                myCasesAdapter = new MyCasesAdapter(allPatients, MyCasesActivity.this);
-                recyclerView.setAdapter(myCasesAdapter);
-                no_records_found_textview.setVisibility(View.VISIBLE);
-                no_records_found_textview.setHint(R.string.no_cases);
+        executorService.execute(() -> {
+            runOnUiThread(() -> customProgressDialog.show());
+
+            try {
+                List<MyCasesModel> allPatients = getAllPatientsFromDB(chw_name, offset);
+
+                runOnUiThread(() -> {
+                    if (allPatients.size() > 0) {
+                        myCasesAdapter = new MyCasesAdapter(allPatients, MyCasesActivity.this);
+                        recyclerView.setAdapter(myCasesAdapter);
+                        no_records_found_textview.setVisibility(View.GONE);
+                    } else {
+                        myCasesAdapter = new MyCasesAdapter(allPatients, MyCasesActivity.this);
+                        recyclerView.setAdapter(myCasesAdapter);
+                        no_records_found_textview.setVisibility(View.VISIBLE);
+                        no_records_found_textview.setHint(R.string.no_cases);
+                    }
+                });
+
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Logger.logE("firstquery", "exception", e);
             }
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("firstquery", "exception", e);
-        }
+
+            runOnUiThread(() -> customProgressDialog.dismiss());
+        });
     }
 
     public List<MyCasesModel> getAllPatientsFromDB(String userUuid, int offset) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
         String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = 'ee0d5b25-f44c-4573-8cbe-4ac2dd88287f' AND c.value = ? GROUP BY c.patientuuid ORDER BY b.first_name";
-        final Cursor searchCursor = db.rawQuery(query,new String[]{userUuid} );
+        final Cursor searchCursor = db.rawQuery(query, new String[]{userUuid});
         if (searchCursor.moveToFirst()) {
             do {
                 String query1 = "Select count(*) from tbl_visit where patientuuid = ?";
@@ -214,7 +230,7 @@ public class MyCasesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(creator_names.length==0) { //no dialog should show up when none of the HWs have cases assigned to them.
+        if (creator_names.length == 0) { //no dialog should show up when none of the HWs have cases assigned to them.
             Toast.makeText(MyCasesActivity.this, "No HWs have cases assigned to them.", Toast.LENGTH_LONG).show();
             return null;
         }
@@ -286,7 +302,7 @@ public class MyCasesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(ngos_names.length==0) { //no dialog should show up when none of the HWs have cases assigned to them.
+        if (ngos_names.length == 0) { //no dialog should show up when none of the HWs have cases assigned to them.
             Toast.makeText(MyCasesActivity.this, "No NGOs have cases associated to them.", Toast.LENGTH_LONG).show();
             return null;
         }
@@ -416,12 +432,12 @@ public class MyCasesActivity extends AppCompatActivity {
         String[] filter_by = {"NGO", "Creator"};
         dialogBuilder = new MaterialAlertDialogBuilder(MyCasesActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by));
-        dialogBuilder.setSingleChoiceItems(filter_by, -1 , new DialogInterface.OnClickListener() {
+        dialogBuilder.setSingleChoiceItems(filter_by, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                if(filter_by[which].equalsIgnoreCase("NGO"))
+                if (filter_by[which].equalsIgnoreCase("NGO"))
                     showNGOSelectionDialog();
-                else if(filter_by[which].equalsIgnoreCase("Creator")) {
+                else if (filter_by[which].equalsIgnoreCase("Creator")) {
                     showCreatorSelectionDialog();
                 }
             }
@@ -448,27 +464,24 @@ public class MyCasesActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
-                if(selectedItems.size()==1 && selectedItems.contains("NGO") && !ngoSelected.isEmpty())
-                {
+                if (selectedItems.size() == 1 && selectedItems.contains("NGO") && !ngoSelected.isEmpty()) {
                     List<MyCasesModel> requiredPatients = doQueryWithNGOs(ngoSelected);
                     myCasesAdapter = new MyCasesAdapter(requiredPatients, MyCasesActivity.this);
-                    if(requiredPatients.size()>0)
+                    if (requiredPatients.size() > 0)
                         no_records_found_textview.setVisibility(View.GONE);
-                    else
-                    {
+                    else {
                         no_records_found_textview.setVisibility(View.VISIBLE);
                         no_records_found_textview.setHint(R.string.no_records_found);
                     }
-                }
-                else if(selectedItems.size()==1 && selectedItems.contains("Creator") && !creatorsSelected.isEmpty())
-                {
+                } else if (selectedItems.size() == 1 && selectedItems.contains("Creator") && !creatorsSelected.isEmpty()) {
                     List<MyCasesModel> requiredPatients = doQueryWithProviders(creatorsSelected);
                     myCasesAdapter = new MyCasesAdapter(requiredPatients, MyCasesActivity.this);
-                    if(requiredPatients.size()>0)
+                    if (requiredPatients.size() > 0)
                         no_records_found_textview.setVisibility(View.GONE);
-                    else
-                    {   no_records_found_textview.setVisibility(View.VISIBLE);
-                        no_records_found_textview.setHint(R.string.no_records_found); }
+                    else {
+                        no_records_found_textview.setVisibility(View.VISIBLE);
+                        no_records_found_textview.setHint(R.string.no_records_found);
+                    }
                 }
 //                else if(selectedItems.size()==2 && selectedItems.contains("NGO") && selectedItems.contains("Creator") && !ngoSelected.isEmpty() && !creatorsSelected.isEmpty())
 //                {
@@ -522,4 +535,9 @@ public class MyCasesActivity extends AppCompatActivity {
         return ngosList;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdownNow();
+    }
 }
