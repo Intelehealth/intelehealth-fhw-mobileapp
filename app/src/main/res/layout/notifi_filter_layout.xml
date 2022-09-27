@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="end"
     app:cardCornerRadius="10dp"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginStart="@dimen/margin_10"
+    android:layout_marginBottom="@dimen/margin_10"
+    android:layout_marginEnd="@dimen/margin_30"
     app:cardElevation="5dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginStart="@dimen/margin_12"
@@ -42,9 +47,10 @@
             android:background="@color/notifi_divider_color" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/notifi_archived_notifi"
+            android:paddingEnd="@dimen/margin_50"
             android:layout_marginTop="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
             android:textColor="@color/header_title_color"/>

@@ -12,7 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -35,10 +37,11 @@ import java.util.Locale;
 public class NotificationActivity extends AppCompatActivity {
     private SessionManager sessionManager;
     private SQLiteDatabase db;
-    private ImageButton backbtn, clearAll_btn;
+    private ImageButton backbtn, clearAll_btn, refresh, filter;
     private RecyclerView recycler_today, recycler_yesterday;
     private NotificationAdapter adapter;
     public static final String TAG = NotificationActivity.class.getSimpleName();
+    private FrameLayout filter_framelayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,35 +75,16 @@ public class NotificationActivity extends AppCompatActivity {
     private void initViews() {
         backbtn = findViewById(R.id.backbtn);
         clearAll_btn = findViewById(R.id.clearAll_btn);
+        refresh = findViewById(R.id.refresh);
+        filter = findViewById(R.id.filter);
         recycler_today = findViewById(R.id.recycler_today);
         recycler_yesterday = findViewById(R.id.recycler_yesterday);
+        filter_framelayout = findViewById(R.id.filter_framelayout);
     }
 
     private void clickListeners() {
-        // current date
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        String currentDate = dateFormat.format(cal.getTime());
-
-        // current date
-        DateFormat dateFormat_yesterday = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal_yesterday = Calendar.getInstance();
-        cal_yesterday.add(Calendar.DATE, -1);
-        String yesterdayDate = dateFormat_yesterday.format(cal_yesterday.getTime());
-
-//        Date cDate = new Date();
-//        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        Log.v("Notifi_Activity", "todaysDate: " + currentDate);
-        Log.v("Notifi_Activity", "yesterdaysDate: " + yesterdayDate);
-
-        List<PatientDTO> todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
-        List<PatientDTO> yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
-
-        adapter = new NotificationAdapter(this, todayPresc_list);
-        recycler_today.setAdapter(adapter);
-
-        adapter = new NotificationAdapter(this, yesterdayPresc_list);
-        recycler_yesterday.setAdapter(adapter);
+        todays_Presc_notification();
+        yesterdays_Presc_notification();
 
         backbtn.setOnClickListener(v -> {
             finish();
@@ -110,6 +94,46 @@ public class NotificationActivity extends AppCompatActivity {
             // clears the recyclerview for both today and yesterday.
         });
 
+        refresh.setOnClickListener(v -> {
+            // refresh data.
+            todays_Presc_notification();
+            yesterdays_Presc_notification();
+            Toast.makeText(this, "Refreshed Successfully", Toast.LENGTH_SHORT).show();
+        });
+
+        filter.setOnClickListener(v -> {
+            // filter options
+            if (filter_framelayout.getVisibility() == View.VISIBLE)
+                filter_framelayout.setVisibility(View.GONE);
+            else
+                filter_framelayout.setVisibility(View.VISIBLE);
+        });
+
+    }
+
+    private void todays_Presc_notification() {
+        // current date
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        String currentDate = dateFormat.format(cal.getTime());
+        Log.v("Notifi_Activity", "todaysDate: " + currentDate);
+
+        List<PatientDTO> todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
+        adapter = new NotificationAdapter(this, todayPresc_list);
+        recycler_today.setAdapter(adapter);
+    }
+
+    private void yesterdays_Presc_notification() {
+        // yesterdays date
+        DateFormat dateFormat_yesterday = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal_yesterday = Calendar.getInstance();
+        cal_yesterday.add(Calendar.DATE, -1);
+        String yesterdayDate = dateFormat_yesterday.format(cal_yesterday.getTime());
+        Log.v("Notifi_Activity", "yesterdaysDate: " + yesterdayDate);
+
+        List<PatientDTO> yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
+        adapter = new NotificationAdapter(this, yesterdayPresc_list);
+        recycler_yesterday.setAdapter(adapter);
     }
 
 }

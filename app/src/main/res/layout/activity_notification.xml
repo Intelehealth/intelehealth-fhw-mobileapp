@@ -83,7 +83,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:layout_marginEnd="@dimen/margin_10"
+                    android:layout_marginEnd="@dimen/margin_20"
                     android:src="@drawable/ic_refreshbtn" />
 
                 <ImageButton
@@ -97,6 +97,7 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
     <!--card view-->
 
     <ScrollView
@@ -110,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <RelativeLayout
+            <RelativeLayout
         android:id="@+id/relative_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,6 +119,16 @@
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
         android:background="@drawable/notifi_green_header_card">
+
+        <ImageButton
+            android:id="@+id/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
+            android:src="@drawable/arrow_right_icon8"
+            android:layout_centerVertical="true"/>
 
         <ImageView
             android:id="@+id/notifi_header_icon"
@@ -155,14 +166,6 @@
             android:text="@string/notifi_subheader_title"
             android:textColor="@color/header_subtitle_color"
             android:textSize="@dimen/fu_male_textsize" />
-
-        <ImageButton
-            android:id="@+id/arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/arrow_right_icon8"
-            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 
@@ -229,5 +232,18 @@
 
         </RelativeLayout>
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/filter_framelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="@dimen/margin_45"
+        android:layout_alignParentEnd="true">
+
+        <include layout="@layout/notifi_filter_layout" />
+
+    </FrameLayout>
 
 </RelativeLayout>

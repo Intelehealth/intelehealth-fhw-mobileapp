@@ -113,5 +113,6 @@
     <dimen name="search_item_name_width">150dp</dimen>
     <dimen name="notifi_subtitle_size">14sp</dimen>
     <dimen name="notifi_header_icon">60dp</dimen>
+    <dimen name="notifi_arrow_margin_end">14dp</dimen>
 
 </resources>
