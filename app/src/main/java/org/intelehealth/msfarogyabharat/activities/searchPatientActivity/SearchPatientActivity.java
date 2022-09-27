@@ -17,10 +17,12 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -164,6 +166,21 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         }
 
+        toolbarEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    toolbarEditText.clearFocus();
+                    String text = toolbarEditText.getText().toString();
+                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                    suggestions.clearHistory();
+                    query = text;
+                    doQuery(query);
+                }
+                return false;
+            }
+        });
+
         toolbarEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -175,6 +192,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(s.toString())) {
                     toolbarSearch.setVisibility(View.GONE);
                     toolbarClear.setVisibility(View.GONE);
+                    firstQuery();
                 } else {
                     toolbarSearch.setVisibility(View.VISIBLE);
                     toolbarClear.setVisibility(View.VISIBLE);
