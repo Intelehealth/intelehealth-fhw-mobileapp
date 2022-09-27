@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activities.NotificationActivity">
+    tools:context=".activities.notification.NotificationActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notifi_relative"
@@ -43,7 +43,7 @@
 
                 <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/vector"
+                    android:id="@+id/backbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"

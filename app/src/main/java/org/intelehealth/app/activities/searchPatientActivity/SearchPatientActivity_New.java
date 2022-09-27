@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -51,6 +52,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
     private SQLiteDatabase db;
+    private ImageButton backbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         search_txt_enter = findViewById(R.id.search_txt_enter);
         search_hint_text = findViewById(R.id.search_hint_text);
         view_nopatientfound = findViewById(R.id.view_nopatientfound);
+        backbtn = findViewById(R.id.backbtn);
 
         previous_SearchResults();
 
@@ -101,6 +104,9 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
         });
 */
+        backbtn.setOnClickListener(v -> {
+            finish();
+        });
 
     }
 

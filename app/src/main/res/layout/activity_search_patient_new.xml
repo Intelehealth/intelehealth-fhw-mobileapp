@@ -30,8 +30,9 @@
             android:layout_marginBottom="@dimen/margin_20"
             android:layout_marginRight="@dimen/toolbar_margin_right">
 
-            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/arrow_right"
+            <ImageButton
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/backbtn"
                 android:layout_width="@dimen/toolbar_margin_left"
                 android:layout_height="@dimen/toolbar_margin_left"
                 android:layout_centerVertical="true"
@@ -43,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_margin_top"
                 android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_toEndOf="@+id/arrow_right"
+                android:layout_toEndOf="@+id/backbtn"
                 android:background="@drawable/search_edittext_vector">
 
                 <ImageView

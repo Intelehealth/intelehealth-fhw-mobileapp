@@ -54,7 +54,8 @@
         </activity>
 
         <activity
-            android:name=".activities.NotificationActivity"
+            android:name=".activities.notification.NotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".activities.followuppatients.FollowUp_VisitDetails"
