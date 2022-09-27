@@ -65,6 +65,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     CustomProgressDialog customProgressDialog;
+    private boolean shouldAllowBack = true;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
@@ -137,6 +138,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
+            shouldAllowBack = false;
             executorService.execute(() -> {
                 runOnUiThread(() -> customProgressDialog.show());
 
@@ -146,6 +148,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                     customProgressDialog.dismiss();
                     mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this, listPatientUUID);
                     mTodayPatientList.setAdapter(mActivePatientAdapter);
+                    shouldAllowBack = true;
                 });
             });
         }
@@ -159,6 +162,12 @@ public class TodayPatientActivity extends AppCompatActivity {
         super.onDestroy();
         mTodayPatientList.clearOnScrollListeners();
         executorService.shutdownNow();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (shouldAllowBack)
+            super.onBackPressed();
     }
 
     private void getVisits() {

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     //    boolean fullyLoaded = false;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     CustomProgressDialog customProgressDialog;
+    LinearLayout llToolbar;
+
+    private boolean shouldAllowBack = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
+        llToolbar = findViewById(R.id.ll_toolbar);
+        llToolbar.setVisibility(View.GONE);
+
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
@@ -114,6 +121,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     }
 
     private void firstQuery() {
+        shouldAllowBack = false;
+
         executorService.execute(() -> {
             runOnUiThread(() -> customProgressDialog.show());
             List<FollowUpModel> followUpList = getAllPatientsFromDB(offset);
@@ -127,6 +136,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                     Logger.logE("firstquery", "exception", e);
                 }
+
+                shouldAllowBack = true;
             });
         });
     }
@@ -545,5 +556,11 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executorService.shutdownNow();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (shouldAllowBack)
+            super.onBackPressed();
     }
 }

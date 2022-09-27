@@ -84,6 +84,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     ImageView toolbarSearch, toolbarClear;
     EditText toolbarEditText;
 
+    private boolean shouldAllowBack = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,7 +252,15 @@ public class SearchPatientActivity extends AppCompatActivity {
         executorService.shutdownNow();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (shouldAllowBack)
+            super.onBackPressed();
+    }
+
     private void doQuery(String query) {
+        shouldAllowBack = false;
+
         executorService.execute(() -> {
             List<PatientDTO> patientDTOList = getQueryPatients(query);
 
@@ -282,6 +292,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     }
 
     private void firstQuery() {
+        shouldAllowBack = false;
+
         executorService.execute(() -> {
             runOnUiThread(() -> customProgressDialog.show());
 
@@ -304,6 +316,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                     Logger.logE("firstquery", "exception", e);
                 }
             });
+
+            shouldAllowBack = true;
         });
     }
 

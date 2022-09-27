@@ -59,6 +59,7 @@ public class MyCasesActivity extends AppCompatActivity {
     String chw_name = "";
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     CustomProgressDialog customProgressDialog;
+    private boolean shouldAllowBack = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +123,10 @@ public class MyCasesActivity extends AppCompatActivity {
     }
 
     private void firstQuery() {
+        shouldAllowBack = false;
+
         executorService.execute(() -> {
+
             runOnUiThread(() -> customProgressDialog.show());
 
             try {
@@ -146,7 +150,10 @@ public class MyCasesActivity extends AppCompatActivity {
                 Logger.logE("firstquery", "exception", e);
             }
 
-            runOnUiThread(() -> customProgressDialog.dismiss());
+            runOnUiThread(() -> {
+                customProgressDialog.dismiss();
+                shouldAllowBack = true;
+            });
         });
     }
 
@@ -539,5 +546,11 @@ public class MyCasesActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executorService.shutdownNow();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (shouldAllowBack)
+            super.onBackPressed();
     }
 }

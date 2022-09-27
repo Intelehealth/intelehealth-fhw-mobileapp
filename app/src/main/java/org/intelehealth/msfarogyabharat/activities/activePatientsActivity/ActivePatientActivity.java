@@ -73,6 +73,8 @@ public class ActivePatientActivity extends AppCompatActivity {
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     CustomProgressDialog customProgressDialog;
 
+    private boolean shouldAllowBack = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
