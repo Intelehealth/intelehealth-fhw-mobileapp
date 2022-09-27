@@ -90,10 +90,16 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             }
 
             //  5. Prescription received/pending tag display.
-            if (model.isPrescription_exists())
-                holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
-            else
-                holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
+            if (model.getVisit_startdate() != null) {
+                holder.presc_tag_imgview.setVisibility(View.VISIBLE);
+                if (model.isPrescription_exists())
+                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
+                else
+                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
+            }
+            else {
+                holder.presc_tag_imgview.setVisibility(View.GONE);
+            }
 
             //  6. Patient Profile Pic
             //1.
