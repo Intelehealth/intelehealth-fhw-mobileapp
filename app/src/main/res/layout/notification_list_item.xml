@@ -32,7 +32,7 @@
             android:layout_height="@dimen/search_add_btn_height"
             android:layout_alignParentTop="true"
             android:background="@null"
-            android:src="@drawable/ic_red_calendar_icon" />
+            android:src="@drawable/ic_green_calenar_icon" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/search_name"
                 android:layout_marginTop="@dimen/fu_vs_margin_start"
-                android:src="@drawable/ic_join_nw" />
+                android:src="@drawable/ic_open_presc_icon" />
 
         </RelativeLayout>
 

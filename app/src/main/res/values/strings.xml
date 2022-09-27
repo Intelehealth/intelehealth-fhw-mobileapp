@@ -946,7 +946,7 @@
     <string name="notifi_title">Notification</string>
     <string name="notifi_header_title">5 prescriptions received</string>
     <string name="notifi_subheader_title">Send prescriptions to the patients</string>
-    <string name="notifi_card_title"><b>Rishi Prasad\'s</b> appointment starts in \n2 minutes at 6:08 pm.</string>
+    <string name="notifi_card_title"><b>Muskan Kala\'s</b> prescription has been received!</string>
     <string name="notifi_reminders">Reminders</string>
     <string name="notifi_incompl_activity">Incomplete activity</string>
     <string name="notifi_archived_notifi">Archived notifications</string>

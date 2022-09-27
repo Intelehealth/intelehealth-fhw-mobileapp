@@ -207,8 +207,10 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 */
 
         // TODO: encounter is not null -- statement is removed | Add this later... " a.enddate is NOT NULL "
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, b.patient_photo, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text " +
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " +
+                "b.patient_photo, a.enddate, b.uuid, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, " +
+                "SUBSTR(o.value,1,10) AS value_text " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
                 "a.uuid = c.visit_uuid AND a.patientuuid = b.uuid AND " +
                 "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +

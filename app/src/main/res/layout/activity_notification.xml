@@ -83,6 +83,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:layout_marginEnd="@dimen/margin_10"
                     android:src="@drawable/ic_refreshbtn" />
 
                 <ImageButton
@@ -96,14 +97,23 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-
     <!--card view-->
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/notifi_relative"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/relative_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/notifi_relative"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -146,6 +156,14 @@
             android:textColor="@color/header_subtitle_color"
             android:textSize="@dimen/fu_male_textsize" />
 
+        <ImageButton
+            android:id="@+id/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/arrow_right_icon8"
+            android:layout_centerVertical="true"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -153,9 +171,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_icon_toolbar"
         android:layout_below="@+id/relative_header"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
-        android:layout_marginTop="@dimen/fu_card_margin_sides"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides">
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left">
 
         <TextView
             android:layout_width="wrap_content"
@@ -165,6 +183,7 @@
             android:textSize="@dimen/fu_male_textsize" />
 
         <ImageButton
+            android:id="@+id/clearAll_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
@@ -178,10 +197,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relative_today"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
         tools:itemCount="3"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/notification_list_item" />
 
     <TextView
@@ -189,9 +209,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recycler_today"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
-        android:layout_marginTop="@dimen/fu_card_margin_sides"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
         android:text="@string/yesterday"
         android:textColor="@color/header_title_color"
         android:textSize="@dimen/fu_male_textsize" />
@@ -201,12 +220,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_yesterday"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
         tools:itemCount="1"
         tools:listitem="@layout/notification_list_item" />
 
-
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.ContentValues;
@@ -16,6 +17,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -334,6 +336,34 @@ public class EncounterDAO {
         }
 
         return isUpdated;
+    }
+
+    public static List<PatientDTO> check_visit_is_VISIT_COMPLETE_ENC(String currentDate) {
+        List<PatientDTO> patientDTOList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
+                        "tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o WHERE " +
+                        "p.uuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
+                        "e.encounter_type_uuid = ? AND obs_server_modified_date = ? AND " +
+                        "(e.sync = '1' OR e.sync = 'true' OR e.sync = 'TRUE') COLLATE NOCASE",
+                new String[]{ENCOUNTER_VISIT_COMPLETE, currentDate});
+
+        try {
+            if (idCursor.moveToFirst()) {
+                do {
+                PatientDTO model = new PatientDTO();
+                model.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                model.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patientDTOList.add(model);
+                }
+                while (idCursor.moveToNext());
+            }
+        } catch (SQLException e) {
+
+        }
+
+        idCursor.close();
+        return patientDTOList;
     }
 
 
