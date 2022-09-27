@@ -42,6 +42,7 @@ public class NotificationActivity extends AppCompatActivity {
     private NotificationAdapter adapter;
     public static final String TAG = NotificationActivity.class.getSimpleName();
     private FrameLayout filter_framelayout;
+    private List<PatientDTO> todayPresc_list, yesterdayPresc_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,8 @@ public class NotificationActivity extends AppCompatActivity {
 
         clearAll_btn.setOnClickListener(v -> {
             // clears the recyclerview for both today and yesterday.
+            todayPresc_list.clear();
+            adapter.notifyDataSetChanged();
         });
 
         refresh.setOnClickListener(v -> {
@@ -118,7 +121,7 @@ public class NotificationActivity extends AppCompatActivity {
         String currentDate = dateFormat.format(cal.getTime());
         Log.v("Notifi_Activity", "todaysDate: " + currentDate);
 
-        List<PatientDTO> todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
+        todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
         adapter = new NotificationAdapter(this, todayPresc_list);
         recycler_today.setAdapter(adapter);
     }
@@ -131,7 +134,7 @@ public class NotificationActivity extends AppCompatActivity {
         String yesterdayDate = dateFormat_yesterday.format(cal_yesterday.getTime());
         Log.v("Notifi_Activity", "yesterdaysDate: " + yesterdayDate);
 
-        List<PatientDTO> yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
+        yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
         adapter = new NotificationAdapter(this, yesterdayPresc_list);
         recycler_yesterday.setAdapter(adapter);
     }
