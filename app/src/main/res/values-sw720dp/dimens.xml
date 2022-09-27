@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <dimen name="physical_exam_img_max_height">200dp</dimen>
 
@@ -18,7 +18,7 @@
     <dimen name="hamburger_height">40dp</dimen>
     <dimen name="hamburger_margin_end">15dp</dimen>
     <dimen name="hamburger_margin_top">20dp</dimen>
-    <dimen name="home_location_margin_top">20dp</dimen>
+    <dimen name="home_location_margin_top">17dp</dimen>
     <dimen name="home_location_drawable_padding">14dp</dimen>
     <dimen name="text_last_updated_home_top_margin">5dp</dimen>
     <dimen name="image_home_toolbar_icon_height">45dp</dimen>
@@ -114,4 +114,347 @@
     <dimen name="notifi_subtitle_size">14sp</dimen>
     <dimen name="notifi_header_icon">60dp</dimen>
 
+
+    <dimen name="design_bottom_navigation_text_size"
+        tools:override="true">18sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size"
+        tools:override="true">18sp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">75dp</dimen>
+
+
+    <!-- splash screen -->
+
+    <dimen name="select_language">20sp</dimen>
+    <dimen name="intelehealth_logo_height">100dp</dimen>
+    <dimen name="intelehealth_logo_margin_top">20dp</dimen>
+    <dimen name="iv_intele_logo_height">120dp</dimen>
+    <dimen name="iv_intele_logo_margin_top">25dp</dimen>
+    <dimen name="iv_intele_logo_margin_start">25dp</dimen>
+    <dimen name="iv_intele_logo_margin_end">25dp</dimen>
+    <dimen name="tv_desc_line_height">28dp</dimen>
+    <dimen name="view_splash_height">7dp</dimen>
+    <dimen name="view_splash_width">80dp</dimen>
+    <dimen name="view_splash_margin_top">10dp</dimen>
+    <dimen name="tv_select_lang_padding">20dp</dimen>
+    <dimen name="tv_select_lang_margin_top">20dp</dimen>
+    <dimen name="tv_desc_line_spacing">6dp</dimen>
+    <dimen name="rv_select_lang_margin_end">15dp</dimen>
+    <dimen name="rv_select_lang_margin_bottom">30dp</dimen>
+    <dimen name="rv_select_lang_margin_start">15dp</dimen>
+    <dimen name="rv_select_lang_margin_top">13dp</dimen>
+    <dimen name="btn_next_lang_margin_top">70dp</dimen>
+    <dimen name="btn_next_lang_margin_start">38dp</dimen>
+    <dimen name="btn_next_lang_margin_end">30dp</dimen>
+
+    <!-- onboarding -->
+    <dimen name="sub_heading_text_size">20sp</dimen>
+    <dimen name="introscreen_title">24sp</dimen>
+    <dimen name="introscreen_content">22sp</dimen>
+
+    <!-- choose language -->
+    <dimen name="parent_layout_padding_start">25dp</dimen>
+    <dimen name="rb_width_select_lang">220dp</dimen>
+    <dimen name="rb_select_lang_padding">20dp</dimen>
+    <dimen name="rb_select_lang_line_height">28dp</dimen>
+    <dimen name="rb_select_lang_text_size">20sp</dimen>
+
+
+    <!-- Intro screens -->
+    <dimen name="back_arrow_intro_height">28dp</dimen>
+    <dimen name="back_arrow_intro_width">28dp</dimen>
+    <dimen name="back_arrow_intro_margin_start">28dp</dimen>
+    <dimen name="back_arrow_intro_margin_top">48dp</dimen>
+    <dimen name="layout_dots_height">60dp</dimen>
+    <dimen name="layout_dots_margin_top">32dp</dimen>
+    <dimen name="button_skip_margin_start">28dp</dimen>
+    <dimen name="button_skip_margin_bottom">40dp</dimen>
+    <dimen name="button_skip_line_height">28dp</dimen>
+    <dimen name="button_skip_margin_end">28dp</dimen>
+    <dimen name="intro_image_height">300dp</dimen>
+    <dimen name="intro_image_margin_top">40dp</dimen>
+    <dimen name="intro_heading_margin_top">44dp</dimen>
+    <dimen name="intro_heading_line_height">34dp</dimen>
+    <dimen name="intro_description_margin_top">38dp</dimen>
+    <dimen name="intro_description_margin_end">28dp</dimen>
+    <dimen name="intro_description_margin_start">28dp</dimen>
+    <dimen name="intro_description_line_height">26dp</dimen>
+
+    <!-- ayu first screen -demo -->
+    <dimen name="back_arrow_demo1_height">30dp</dimen>
+    <dimen name="back_arrow_demo1_width">30dp</dimen>
+    <dimen name="back_arrow_demo1_margin_start">27dp</dimen>
+    <dimen name="back_arrow_demo1_margin_top">36dp</dimen>
+    <dimen name="demo1_ayu_image_height">180dp</dimen>
+    <dimen name="demo1_ayu_image_width">180dp</dimen>
+    <dimen name="demo1_ayu_img_margin_top">170dp</dimen>
+    <dimen name="setup_privacy_screen_title">28sp</dimen>
+    <dimen name="setup_privacy_screen_info">20sp</dimen>
+    <dimen name="setup_title_margin_top">36dp</dimen>
+    <dimen name="setup_title_line_height">38dp</dimen>
+    <dimen name="setup_info_margin_top">26dp</dimen>
+    <dimen name="setup_info_line_height">27dp</dimen>
+    <dimen name="conditions_layout_padding_top">35dp</dimen>
+    <dimen name="conditions_layout_padding_bottom">25dp</dimen>
+    <dimen name="conditions_layout_padding_start">30dp</dimen>
+    <dimen name="conditions_layout_padding_end">30dp</dimen>
+    <dimen name="conditions_chkbox_margin_top">4dp</dimen>
+
+    <dimen name="button_setup_margin_top">30dp</dimen>
+    <dimen name="button_setup_margin_end">24dp</dimen>
+    <dimen name="button_setup_margin_bottom">20dp</dimen>
+    <dimen name="button_setup_padding">18dp</dimen>
+    <dimen name="terms_link_margin_start">15dp</dimen>
+    <dimen name="terms_link_text_size">20sp</dimen>
+    <dimen name="terms_link_line_height">22dp</dimen>
+
+
+    <!-- dialog boxes for demo version -->
+
+    <dimen name="internet_warning_title">22sp</dimen>
+    <dimen name="internet_warning_title_margin_top">24dp</dimen>
+    <dimen name="internet_warning_note">20sp</dimen>
+    <dimen name="iv_icon_height">130dp</dimen>
+    <dimen name="iv_icon_margin_top">36dp</dimen>
+    <dimen name="tv_internet_title_margin_top">28dp</dimen>
+    <dimen name="tv_internet_title_line_spacing">6dp</dimen>
+    <dimen name="tv_internet_title_line_height">3dp</dimen>
+    <dimen name="internet_dialog_width">400dp</dimen>
+    <dimen name="tv_internet_desc_line_height">28dp</dimen>
+    <dimen name="tv_internet_desc_line_spacing">5dp</dimen>
+    <dimen name="tv_internet_desc_margin_top">16dp</dimen>
+    <dimen name="btn_okay_internet_padding_top">14dp</dimen>
+    <dimen name="btn_okay_internet_padding_start">24dp</dimen>
+    <dimen name="btn_okay_internet_padding_end">26dp</dimen>
+    <dimen name="btn_okay_internet_padding_bottom">34dp</dimen>
+    <dimen name="btn_okay_internet_margin_top">32dp</dimen>
+    <dimen name="btn_okay_internet_margin_bottom">34dp</dimen>
+    <dimen name="btn_okay_text_size">18sp</dimen>
+
+
+    <!--Setup Screen UI2.0-->
+    <dimen name="setup_back_button_width">28dp</dimen>
+    <dimen name="setup_back_button_height">28dp</dimen>
+    <dimen name="setup_back_button_margin_start">27dp</dimen>
+    <dimen name="setup_back_button_margin_top">35dp</dimen>
+    <dimen name="tv_Setup_margin_start">33dp</dimen>
+    <dimen name="tv_Setup_margin_top">35dp</dimen>
+    <dimen name="tv_setup_note_margin_start">33dp</dimen>
+    <dimen name="tv_setup_note_margin_top">12dp</dimen>
+    <dimen name="iv_setup_width">200dp</dimen>
+    <dimen name="iv_setup_height">120dp</dimen>
+    <dimen name="iv_setup_margin_top">28dp</dimen>
+    <dimen name="layout_setup_margin_top">70dp</dimen>
+    <dimen name="layout_setup_padding_start">30dp</dimen>
+    <dimen name="layout_setup_padding_top">30dp</dimen>
+    <dimen name="layout_setup_padding_end">27dp</dimen>
+    <dimen name="layout_setup_padding_bottom">20dp</dimen>
+    <dimen name="tv_location_margin_top">28dp</dimen>
+    <dimen name="et_location_margin_top">8dp</dimen>
+    <dimen name="button_setup1_margin_bottom">15dp</dimen>
+    <dimen name="button_setup1_margin_top">70dp</dimen>
+
+
+    <!--Forgot password Screen UI2.0-->
+
+    <dimen name="forgot_password_top_margin">60dp</dimen>
+    <dimen name="forgot_pass_note_margin_top">20dp</dimen>
+    <dimen name="forgot_pass_iv_margin_top">30dp</dimen>
+    <dimen name="layout_forgot_padding_start">25dp</dimen>
+    <dimen name="layout_forgot_padding_top">40dp</dimen>
+    <dimen name="layout_forgot_padding_end">30dp</dimen>
+    <dimen name="layout_forgot_padding_bottom">25dp</dimen>
+    <dimen name="btn_username_margin_end">15dp</dimen>
+    <dimen name="btn_mobile_margin_start">10dp</dimen>
+    <dimen name="btn_options_text_Size">16sp</dimen>
+    <dimen name="btn_continue_margin_top">50dp</dimen>
+    <dimen name="iv_back_forgot_margin_top">28dp</dimen>
+    <dimen name="iv_back_forgot_margin_start">10dp</dimen>
+    <dimen name="title_options_margin_top">25dp</dimen>
+    <dimen name="info_options_margin_top">20dp</dimen>
+    <dimen name="spinner_countries_margin_top">15dp</dimen>
+    <dimen name="spinner_countries_margin_end">15dp</dimen>
+    <dimen name="et_mobile_pass_margin_top">13dp</dimen>
+    <dimen name="spinner_countries_margin">13dp</dimen>
+    <dimen name="options_button_padding_top">20dp</dimen>
+    <dimen name="options_button_padding_end">14dp</dimen>
+    <dimen name="options_button_padding_bottom">20dp</dimen>
+    <dimen name="options_button_padding_start">14dp</dimen>
+    <dimen name="info_options_text_size">18sp</dimen>
+
+    <!--Navigation drawer UI2.0-->
+
+    <dimen name="itemIconPadding_drawer">20dp</dimen>
+    <dimen name="reset_app_margin_start">12dp</dimen>
+    <dimen name="reset_app_icon_height">40dp</dimen>
+    <dimen name="reset_app_icon_width">40dp</dimen>
+    <dimen name="reset_app_icon_padding">5dp</dimen>
+    <dimen name="tv_reset_app_margin_start">12dp</dimen>
+    <dimen name="tv_reset_app_line_height">24dp</dimen>
+    <dimen name="tv_reset_app_line_spacing">3sp</dimen>
+    <dimen name="tv_reset_app_text_size">14sp</dimen>
+    <dimen name="tv_app_version_text_size">16sp</dimen>
+    <dimen name="tv_app_version_letter_spacing">0.02</dimen>
+    <dimen name="tv_app_version_margin_top">40dp</dimen>
+    <dimen name="iv_close_drawer_width">25dp</dimen>
+    <dimen name="iv_close_drawer_height">55dp</dimen>
+    <dimen name="iv_close_drawer_margin_top">15dp</dimen>
+    <dimen name="iv_close_drawer_margin_end">35dp</dimen>
+    <dimen name="iv_profile_drawer_width">140dp</dimen>
+    <dimen name="iv_profile_drawer_height">140dp</dimen>
+    <dimen name="iv_profile_drawer_margin_start">20dp</dimen>
+    <dimen name="iv_profile_drawer_margin_top">20dp</dimen>
+    <dimen name="tv_login_user_margin_start">15dp</dimen>
+    <dimen name="tv_login_user_margin_top">25dp</dimen>
+    <dimen name="tv_login_userid_margin_top">0dp</dimen>
+    <dimen name="tv_login_edit_margin_top">0dp</dimen>
+    <dimen name="tv_login_edit_line_height">21dp</dimen>
+    <dimen name="view_header_height">0.6dp</dimen>
+    <dimen name="view_header_margin_top">45dp</dimen>
+    <dimen name="view_header_margin_end">28dp</dimen>
+    <dimen name="view_header_margin_bottom">10dp</dimen>
+    <dimen name="nav_header_username">22sp</dimen>
+    <dimen name="nav_header_userid">18sp</dimen>
+    <dimen name="nav_header_edit_profile">18sp</dimen>
+    <dimen name="nav_menus_text_size">20sp</dimen>
+    <dimen name="nav_menus_line_spacing">5sp</dimen>
+    <dimen name="nav_menus_margin_bottom">12dp</dimen>
+
+    <dimen name="design_navigation_icon_size" tools:override="true">30dp</dimen>
+    <!--My Achievements UI2.0-->
+    <dimen name="achievements_badge_width">90dp</dimen>
+    <dimen name="achievements_badge_height">90dp</dimen>
+
+    <dimen name="achievements_badge_margin_start">30dp</dimen>
+    <dimen name="achievements_badge_margin_top">22dp</dimen>
+    <dimen name="achievements_userlevel_margin_start">15dp</dimen>
+    <dimen name="achievements_userlevel_margin_top">25dp</dimen>
+    <dimen name="achievements_user_score_margin_start">15dp</dimen>
+    <dimen name="achievements_user_score_margin_top">10dp</dimen>
+    <dimen name="achievements_user_score_line_Spacing">3sp</dimen>
+    <dimen name="achievements_tab_margin_start">21dp</dimen>
+    <dimen name="achievements_tab_margin_end">21dp</dimen>
+    <dimen name="achievements_tab_margin_top">32dp</dimen>
+    <dimen name="layout_parent_achi_margin_top">30dp</dimen>
+    <dimen name="card_common_achieve_padding">18dp</dimen>
+    <dimen name="card1_achieve_margin_end">13dp</dimen>
+    <dimen name="card1_achieve_margin_start">13dp</dimen>
+    <dimen name="card_achieve_icon_width">40dp</dimen>
+    <dimen name="card_achieve_icon_height">45dp</dimen>
+    <dimen name="card_achieve_title_margin_top">14dp</dimen>
+    <dimen name="card_achieve_value_margin_top">8dp</dimen>
+    <dimen name="card_achieve_value_line_spacing">4sp</dimen>
+    <dimen name="card_achieve_value_textsize">24sp</dimen>
+    <dimen name="card_achieve_value_line_height">30dp</dimen>
+    <dimen name="card1_common_achieve_margin_start">26dp</dimen>
+    <dimen name="card1_common_achieve_margin_end">26dp</dimen>
+    <dimen name="card1_common_achieve_margin_bottom">26dp</dimen>
+    <dimen name="card2_common_achieve_margin_start">26dp</dimen>
+    <dimen name="card2_common_achieve_margin_end">26dp</dimen>
+    <dimen name="date_frag_parent_margin_top">32dp</dimen>
+    <dimen name="date_frag_layout_margin_start">26dp</dimen>
+    <dimen name="date_frag_layout_margin_end">26dp</dimen>
+    <dimen name="date_frag_layout_text_size">18sp</dimen>
+    <dimen name="date_frag_date_text_size">18sp</dimen>
+    <dimen name="date_frag_date_margin_top">10dp</dimen>
+    <dimen name="date_frag_date_padding_end">22dp</dimen>
+    <dimen name="date_frag_layout2_margin_start">16dp</dimen>
+    <dimen name="card_daily_frag_margin_top">18dp</dimen>
+    <dimen name="date_frag_text_margin_start">26dp</dimen>
+    <dimen name="date_frag_text_size">20sp</dimen>
+    <dimen name="date_frag_daily_parent_margin_top">32dp</dimen>
+    <dimen name="achieve_tab_title_text_size">20sp</dimen>
+    <dimen name="daily_tab_date_margin_start">10dp</dimen>
+    <dimen name="daily_tab_icon_width">30dp</dimen>
+    <dimen name="daily_tab_icon_height">30dp</dimen>
+    <dimen name="layout_cards_date_range_margin_top">20dp</dimen>
+
+    <!--Change Password UI2.0-->
+    <dimen name="parent_change_pass_padding_top">0dp</dimen>
+    <dimen name="parent_change_pass_padding_end">25dp</dimen>
+    <dimen name="parent_change_pass_padding_bottom">20dp</dimen>
+    <dimen name="new_pass_margin_top">26dp</dimen>
+    <dimen name="new_pass_line_spacing">10dp</dimen>
+    <dimen name="et_new_pass_margin_top">7dp</dimen>
+    <dimen name="tv_new_pass_margin_top">20dp</dimen>
+    <dimen name="btn_save_pass_padding_start">25dp</dimen>
+
+    <!--Custom toolbar UI2.0-->
+
+    <dimen name="custom_tool_margin_start">10dp</dimen>
+    <dimen name="custom_tool_margin_top">8dp</dimen>
+    <dimen name="custom_tool_title_margin_top">23dp</dimen>
+    <dimen name="toolbar_home_tv_title_size">26sp</dimen>
+
+
+    <!--My Profile UI2.0-->
+    <dimen name="profile_tv_label_margin_top">28dp</dimen>
+    <dimen name="iv_camera_width">35dp</dimen>
+    <dimen name="iv_camera_height">35dp</dimen>
+    <dimen name="tv_pass_margin_start">-3dp</dimen>
+    <dimen name="tv_pass_margin_end">-3dp</dimen>
+    <dimen name="tv_pass_margin_top">40dp</dimen>
+    <dimen name="tv_change_pass_margin_start">8dp</dimen>
+    <dimen name="tv_change_pass_margin_top">5dp</dimen>
+    <dimen name="radio_gender_margin_end">15dp</dimen>
+    <dimen name="radio_gender_icon_padding">-40dp</dimen>
+    <dimen name="radio_gender_padding">10dp</dimen>
+    <dimen name="radio_gender_padding_end">10dp</dimen>
+    <dimen name="profile_text_line_spacing">3sp</dimen>
+    <dimen name="dob_age_margin_start">20dp</dimen>
+    <dimen name="dob_date_padding_start">20dp</dimen>
+    <dimen name="dob_date_padding_end">20dp</dimen>
+    <dimen name="layout_profile_padding">30dp</dimen>
+    <dimen name="profile_username_margin_top">30dp</dimen>
+
+
+    <!--Help UI2.0-->
+    <dimen name="tv_common_line_spacing1">3sp</dimen>
+    <dimen name="tv_common_line_spacing2">2sp</dimen>
+    <dimen name="tv_common_line_height">24sp</dimen>
+    <dimen name="layout_help_margin_top">10dp</dimen>
+    <dimen name="layout_help_padding_end">24dp</dimen>
+    <dimen name="layout_help_padding_start">24dp</dimen>
+    <dimen name="layout_help_padding_bottom">24dp</dimen>
+    <dimen name="tv_most_searched_margin_top">30dp</dimen>
+    <dimen name="tv_searched_more_padding_start">8dp</dimen>
+    <dimen name="tv_searched_more_padding_top">4dp</dimen>
+    <dimen name="rv_help_videos_margin_top">12dp</dimen>
+    <dimen name="tv_faq_margin_top">50dp</dimen>
+    <dimen name="rv_help_faq_margin_top">20dp</dimen>
+    <dimen name="fab_help_chat_margin_top">16dp</dimen>
+    <dimen name="fab_help_chat_margin_bottom">0dp</dimen>
+    <dimen name="fab_help_chat_margin_start">16dp</dimen>
+    <dimen name="fab_help_chat_margin_end">16dp</dimen>
+    <dimen name="fab_help_chat_custom_size">60dp</dimen>
+    <dimen name="fab_help_chat_max_size">25dp</dimen>
+
+    <dimen name="rv_videos_item_margin_end">20dp</dimen>
+    <dimen name="rv_videos_item_card_width">300dp</dimen>
+    <dimen name="rv_videos_item_card_height">150dp</dimen>
+    <dimen name="rv_videos_item_tv_margin_top">8dp</dimen>
+    <dimen name="rv_faq_down_icon_width">50dp</dimen>
+    <dimen name="rv_faq_down_icon_height">30dp</dimen>
+    <dimen name="rv_faq_tv_desc_margin_top">5dp</dimen>
+    <dimen name="rv_faq_tv_desc_margin_bottom">10dp</dimen>
+
+    <dimen name="help_options_margin_top">25dp</dimen>
+    <dimen name="help_options_button_margin_top">14dp</dimen>
+    <dimen name="help_options_button_padding_top">8dp</dimen>
+    <dimen name="help_options_button_padding_start">10dp</dimen>
+    <dimen name="help_options_button_padding_bottom">10dp</dimen>
+    <dimen name="help_options_button_padding_end">10dp</dimen>
+
+    <dimen name="help_parent_videos_padding_end">24dp</dimen>
+    <dimen name="help_parent1_videos_margin_top">12dp</dimen>
+    <dimen name="help_parent1_videos_padding_bottom">24dp</dimen>
+    <dimen name="help_parent1_videos_padding_start">24dp</dimen>
+    <dimen name="help_rv_videos1_margin_top">32dp</dimen>
+    <dimen name="fab_more_videos_margin_top">16dp</dimen>
+    <dimen name="fab_more_videos_margin_start">16dp</dimen>
+    <dimen name="fab_more_videos_margin_bottom">33dp</dimen>
+    <dimen name="item_video_card_width">250dp</dimen>
+    <dimen name="item_video_card_height">150dp</dimen>
+    <dimen name="item_video_card_margin_end">12dp</dimen>
+    <dimen name="tv_video_desc_margin_top">4dp</dimen>
+    <dimen name="video_list_view_margin_top">16dp</dimen>
 </resources>

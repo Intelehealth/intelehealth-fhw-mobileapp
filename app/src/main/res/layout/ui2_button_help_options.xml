@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:scrollbars="none"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/help_options_margin_top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_all_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/help_options_button_margin_top"
+            android:background="@drawable/ui2_bg_help_tabs_selected"
+            android:paddingStart="@dimen/help_options_button_padding_start"
+            android:paddingTop="@dimen/help_options_button_padding_top"
+            android:paddingEnd="@dimen/help_options_button_padding_end"
+            android:paddingBottom="@dimen/help_options_button_padding_bottom"
+            android:text="@string/all_help"
+            android:textAlignment="center"
+            android:textColor="@color/textColorWhite"
+            android:textSize="@dimen/btn_okay_text_size" />
+
+        <TextView
+            android:id="@+id/btn_checkup_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/ui2_bg_help_tabs_default"
+            android:lineHeight="@dimen/tv_common_line_height"
+            android:paddingStart="@dimen/help_options_button_padding_start"
+            android:paddingTop="@dimen/help_options_button_padding_top"
+            android:paddingEnd="@dimen/help_options_button_padding_end"
+            android:paddingBottom="@dimen/help_options_button_padding_bottom"
+            android:text="@string/check_up"
+            android:textAlignment="center"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/btn_okay_text_size" />
+
+        <TextView
+            android:id="@+id/btn_checkup_appointment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/ui2_bg_help_tabs_default"
+            android:lineHeight="@dimen/tv_common_line_height"
+            android:paddingStart="@dimen/help_options_button_padding_start"
+            android:paddingTop="@dimen/help_options_button_padding_top"
+            android:paddingEnd="@dimen/help_options_button_padding_end"
+            android:paddingBottom="@dimen/help_options_button_padding_bottom"
+            android:text="@string/appointment"
+            android:textAlignment="center"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/btn_okay_text_size" />
+
+        <TextView
+            android:id="@+id/btn_checkup_registration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/ui2_bg_help_tabs_default"
+            android:lineHeight="@dimen/tv_common_line_height"
+            android:paddingStart="@dimen/help_options_button_padding_start"
+            android:paddingTop="@dimen/help_options_button_padding_top"
+            android:paddingEnd="@dimen/help_options_button_padding_end"
+            android:paddingBottom="@dimen/help_options_button_padding_bottom"
+            android:text="@string/registration"
+            android:textAlignment="center"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/btn_okay_text_size" />
+
+        <TextView
+            android:id="@+id/btn_checkup_visit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/ui2_bg_help_tabs_default"
+            android:lineHeight="@dimen/tv_common_line_height"
+            android:paddingStart="@dimen/help_options_button_padding_start"
+            android:paddingTop="@dimen/help_options_button_padding_top"
+            android:paddingEnd="@dimen/help_options_button_padding_end"
+            android:paddingBottom="@dimen/help_options_button_padding_bottom"
+            android:text="@string/visit"
+            android:textAlignment="center"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/btn_okay_text_size" />
+    </LinearLayout>
+</HorizontalScrollView>
+

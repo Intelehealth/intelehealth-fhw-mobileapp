@@ -1,5 +1,7 @@
 package org.intelehealth.app.achievements.fragments;
 
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.achievements.adapters.MyAchievementsPagerAdapter;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 
 import java.util.Objects;
 
@@ -29,8 +34,14 @@ public class MyAchievementsFragmentNew extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
 
-        initUI();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initUI();
+
     }
 
     private void initUI() {
@@ -38,24 +49,23 @@ public class MyAchievementsFragmentNew extends Fragment {
         TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
         TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
         ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
-        ImageView ivIsInternet = layoutToolbar.findViewById(R.id.imageview_is_internet);
         ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
         ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
-       /* ivBackArrow.setOnClickListener(new View.OnClickListener() {
+        ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = activity.getFragmentManager();
+               /* Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
+                startActivity(intent);*/
+                FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
                 fm.popBackStack();
             }
-        });*/
+        });
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIsInternet.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_END);
-        ivIsInternet.setLayoutParams(params);
-
-
+        tvLocation.setText(getResources().getString(R.string.my_achievements));
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
         configureTabLayout();
 
     }
@@ -69,7 +79,7 @@ public class MyAchievementsFragmentNew extends Fragment {
 
         ViewPager viewPager = view.findViewById(R.id.pager_achievements);
         PagerAdapter adapter = new MyAchievementsPagerAdapter
-                (getFragmentManager(), tabLayout.getTabCount(), getActivity());
+                (getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
         viewPager.setAdapter(adapter);
         int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
 

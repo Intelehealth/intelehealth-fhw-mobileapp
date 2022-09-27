@@ -44,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -51,16 +52,20 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.help.fragment.HelpFragment_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
+import org.intelehealth.app.profile.MyProfileFragment_New;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
@@ -103,12 +108,18 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     int i = 5;
     Context context;
     TextView tvTitleHomeScreenCommon;
+    BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
+
+        loadFragment(new HomeFragment_New());
+       // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+       // tx.replace(R.id.fragment_container, new HomeFragment_New());
+       // tx.commit();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
@@ -137,7 +148,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         View toolbarHome = findViewById(R.id.toolbar_home);
 
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
-        tvTitleHomeScreenCommon.setText(sessionManager.getLocationName());
         tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +182,16 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         TextView tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
         TextView tvUserId = headerView.findViewById(R.id.tv_userid);
         TextView tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
+        tvEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
 
+                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
+                Fragment fragment = new MyProfileFragment_New();
+                loadFragment(fragment);
+            }
+        });
 
         ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,6 +249,11 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             syncUtils.syncForeground("");
         }*/
 
+        //bottom nav
+        bottomNav = findViewById(R.id.bottom_nav_home);
+        bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        bottomNav.setItemIconTintList(null);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
     }
 
     private void checkForInternet() {
@@ -239,9 +263,17 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        //HomeFragment_New
+        //MyAchievementsFragmentNew
+
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (backStackEntryCount == 1) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
+
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;
@@ -257,7 +289,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                             if (imageViewIsInternet != null) {
                                 imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
                                 flag = 1;
-                                  setTooltipForInternet("Good internet.\nRefresh");
+                                setTooltipForInternet("Good internet.\nRefresh");
 
                             }
                         }
@@ -270,7 +302,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             if (imageViewIsInternet != null) {
                 imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
-                 setTooltipForInternet("No internet");
+                setTooltipForInternet("No internet");
             }
 
         }
@@ -321,10 +353,24 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     private void loadFragment(Fragment fragment) {
         String tag = fragment.getClass().getSimpleName();
+        Log.d(TAG, "loadFragment: tag : "+tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+    private void loadFragmentForBottomNav(Fragment fragment) {
+        String tag = fragment.getClass().getSimpleName();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, tag);
+       // transaction.addToBackStack(null);
+       // transaction.commit();
+        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate (tag, 0);
+
+        if (!fragmentPopped){
+            transaction.addToBackStack(tag);
+            transaction.commit();
+        }
     }
 
     public void showLoggingInDialog() {
@@ -407,16 +453,18 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     protected void onResume() {
         ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
-        Fragment fragment = new HomeFragment_New();
-        loadFragment(fragment);
-
-        showLoggingInDialog();
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
+        }
+            //UI2.0 if first time login then only show popup
+        if(sessionManager.getIsLoggedIn()){
+            sessionManager.setIsLoggedIn(false);
+            showLoggingInDialog();
+
         }
 
 
@@ -426,6 +474,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: 11");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         //showBadge();
@@ -643,6 +692,40 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
+
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment fragment;
+
+                    switch (item.getItemId()) {
+                        case R.id.bottom_nav_home_menu:
+                            Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
+                            fragment = new HomeFragment_New();
+                            loadFragment(fragment);
+                            return true;
+                        case R.id.bottom_nav_achievements:
+                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                            fragment = new MyAchievementsFragmentNew();
+                            loadFragmentForBottomNav(fragment);
+
+                            return true;
+                        case R.id.bottom_nav_help:
+                            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
+                            fragment = new HelpFragment_New();
+                            loadFragmentForBottomNav(fragment);
+
+                            return true;
+                        case R.id.bottom_nav_add_patient:
+
+                            return true;
+                    }
+
+                    return false;
+                }
+            };
 
 }
 

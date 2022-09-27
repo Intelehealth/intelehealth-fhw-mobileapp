@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/title_margin_start"
         android:layout_marginTop="@dimen/title_margin_top"
-        android:layout_toEndOf="@+id/iv_back_arrow_privacy"
+        android:layout_toEndOf="@+id/iv_back_arrow_terms"
         android:lineHeight="@dimen/title_margin_line_height"
         android:text="@string/terms_of_use"
         android:textSize="@dimen/setup_privacy_screen_info" />
@@ -34,6 +34,9 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarSize="10dp"
+            android:fadeScrollbars="false"
             android:layout_height="wrap_content">
 
             <TextView

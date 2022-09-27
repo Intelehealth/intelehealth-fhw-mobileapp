@@ -21,7 +21,7 @@
             android:layout_height="match_parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
+            android:id="@+id/bottom_nav_home"
             style="@style/NavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,11 +30,14 @@
             app:elevation="8dip"
             app:itemBackground="@drawable/bottom_nav_tab_background"
             app:itemIconSize="@dimen/bottom_nav_icon_size"
-            app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
+            android:foregroundTint="@color/colorPrimary"
             app:itemRippleColor="@color/colorPrimary2"
             app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/menu_home_footer" />
+<!--
+        app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
+-->
 
     </RelativeLayout>
 

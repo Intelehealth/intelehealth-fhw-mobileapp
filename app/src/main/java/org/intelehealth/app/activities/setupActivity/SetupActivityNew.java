@@ -96,7 +96,7 @@ public class SetupActivityNew extends AppCompatActivity {
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
     private String mindmapURL = "";
-    AlertDialog dialogLoggingIn;
+    ///   AlertDialog dialogLoggingIn;
 
 
     @Override
@@ -155,7 +155,6 @@ public class SetupActivityNew extends AppCompatActivity {
                 return false;
             }
         });
-
 
 
     }
@@ -261,7 +260,7 @@ public class SetupActivityNew extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        showLoggingInDialog();
+        //    showLoggingInDialog();
 
              /* ProgressDialog progress;
         progress = new ProgressDialog(SetupActivityNew.this, R.style.AlertDialogStyle);
@@ -363,6 +362,8 @@ public class SetupActivityNew extends AppCompatActivity {
                                                     sqLiteDatabase.endTransaction();
                                                 }
                                                 Log.i(TAG, "onPostExecute: Parse init");
+                                                sessionManager.setIsLoggedIn(true);
+
                                                 Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                 intent.putExtra("setup", true);
                                                 //  if (r2.isChecked()) {
@@ -378,7 +379,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                                 // }
-                                              //  progress.dismiss();
+                                                //  progress.dismiss();
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -391,8 +392,8 @@ public class SetupActivityNew extends AppCompatActivity {
                                 @Override
                                 public void onError(Throwable e) {
                                     Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                 ///   progress.dismiss();
-                                    dismissLoggingInDialog();
+                                    ////   progress.dismiss();
+                                    // dismissLoggingInDialog();
                                 }
 
                                 @Override
@@ -407,7 +408,7 @@ public class SetupActivityNew extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 // progress.dismiss();
-                dismissLoggingInDialog();
+                ///  dismissLoggingInDialog();
                 DialogUtils dialogUtils = new DialogUtils();
                 dialogUtils.showerrorDialog(SetupActivityNew.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
                 etUsername.requestFocus();
@@ -766,7 +767,7 @@ public class SetupActivityNew extends AppCompatActivity {
         Log.e("DOWNLOAD", "isSTARTED");
 
     }
-    public void showLoggingInDialog() {
+ /*   public void showLoggingInDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(SetupActivityNew.this);
         builder.setCancelable(false);
@@ -781,8 +782,8 @@ public class SetupActivityNew extends AppCompatActivity {
 
         dialogLoggingIn.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-    }
-    public void dismissLoggingInDialog() {
+    }*/
+  /*  public void dismissLoggingInDialog() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -790,5 +791,12 @@ public class SetupActivityNew extends AppCompatActivity {
             }
         }, 3000);
     }
+*/
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //temporary added
+        sessionManager.setIsLoggedIn(false);
+    }
 }

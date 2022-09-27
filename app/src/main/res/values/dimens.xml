@@ -54,6 +54,7 @@
     <dimen name="common_hint_text_size">16sp</dimen>
     <dimen name="title_text_size">24sp</dimen>
     <dimen name="common_info_text_size">16sp</dimen>
+    <dimen name="common_sub_info_text_size">12sp</dimen>
 
     <dimen name="common_edittext_padding_top">10dp</dimen>
     <dimen name="common_edittext_padding_right">12dp</dimen>
@@ -130,7 +131,9 @@
     <dimen name="layout_login_padding_bottom">20dp</dimen>
     <dimen name="tv_login_username_margin_top">20dp</dimen>
     <dimen name="button_login_margin_top">50dp</dimen>
-
+  <!--  &lt;!&ndash;UI2.0 New Toolbar&ndash;&gt;
+    <dimen name="home_toolbar_layout_margin">8dp</dimen>
+-->
     <!--Home Screen UI2.0-->
     <dimen name="home_toolbar_layout_margin">8dp</dimen>
     <dimen name="hamburger_width">25dp</dimen>
@@ -144,7 +147,7 @@
     <dimen name="text_last_updated_home_top_margin">5dp</dimen>
     <dimen name="image_home_toolbar_icon_height">30dp</dimen>
     <dimen name="image_home_toolbar_icon_width">25dp</dimen>
-    <dimen name="image_home_toolbar_icon_margintop">15dp</dimen>
+    <dimen name="image_home_toolbar_icon_margintop">12dp</dimen>
     <dimen name="image_home_toolbar_icon_marginend">10dp</dimen>
     <!--Home Screen - Home fragment UI2.0-->
     <dimen name="home_parent_layout_padding">8dp</dimen>
@@ -222,7 +225,7 @@
     <dimen name="options_sub_heading_margin_top">5dp</dimen>
     <dimen name="card_close_visits_margin_top">16dp</dimen>
     <dimen name="bottom_nav_menu_text_size">50sp</dimen>
-    <dimen name="bottom_nav_icon_size">25dp</dimen>
+    <dimen name="bottom_nav_icon_size">22dp</dimen>
 
     <dimen name="followup_toolbar">84dp</dimen>
     <dimen name="fu_toolbat_txt_height">24dp</dimen>
@@ -466,8 +469,8 @@
     <dimen name="iv_close_drawer_height">50dp</dimen>
     <dimen name="iv_close_drawer_margin_top">10dp</dimen>
     <dimen name="iv_close_drawer_margin_end">30dp</dimen>
-    <dimen name="iv_profile_drawer_width">100dp</dimen>
-    <dimen name="iv_profile_drawer_height">100dp</dimen>
+    <dimen name="iv_profile_drawer_width">90dp</dimen>
+    <dimen name="iv_profile_drawer_height">90dp</dimen>
     <dimen name="iv_profile_drawer_margin_start">10dp</dimen>
     <dimen name="iv_profile_drawer_margin_top">20dp</dimen>
     <dimen name="tv_login_user_margin_start">15dp</dimen>
@@ -551,5 +554,78 @@
     <dimen name="custom_tool_margin_start">10dp</dimen>
     <dimen name="custom_tool_margin_top">8dp</dimen>
     <dimen name="custom_tool_title_margin_top">17dp</dimen>
+    <dimen name="toolbar_home_tv_title_size">18sp</dimen>
+
+    <!--My Profile UI2.0-->
+    <dimen name="profile_tv_label_margin_top">24dp</dimen>
+    <dimen name="iv_camera_width">25dp</dimen>
+    <dimen name="iv_camera_height">25dp</dimen>
+    <dimen name="tv_pass_margin_start">-3dp</dimen>
+    <dimen name="tv_pass_margin_end">-3dp</dimen>
+    <dimen name="tv_pass_margin_top">35dp</dimen>
+    <dimen name="tv_change_pass_margin_start">5dp</dimen>
+    <dimen name="tv_change_pass_margin_top">3dp</dimen>
+    <dimen name="radio_gender_margin_end">15dp</dimen>
+    <dimen name="radio_gender_icon_padding">-40dp</dimen>
+    <dimen name="radio_gender_padding">5dp</dimen>
+    <dimen name="radio_gender_padding_end">5dp</dimen>
+    <dimen name="profile_text_line_spacing">3sp</dimen>
+    <dimen name="dob_age_margin_start">20dp</dimen>
+    <dimen name="dob_date_padding_start">20dp</dimen>
+    <dimen name="dob_date_padding_end">20dp</dimen>
+    <dimen name="layout_profile_padding">24dp</dimen>
+    <dimen name="profile_username_margin_top">25dp</dimen>
+
+    <!--Help UI2.0-->
+    <dimen name="tv_common_line_spacing1">3sp</dimen>
+    <dimen name="tv_common_line_spacing2">2sp</dimen>
+    <dimen name="tv_common_line_height">24dp</dimen>
+    <dimen name="layout_help_margin_top">0dp</dimen>
+    <dimen name="layout_help_padding_end">20dp</dimen>
+    <dimen name="layout_help_padding_start">20dp</dimen>
+    <dimen name="layout_help_padding_bottom">15dp</dimen>
+    <dimen name="tv_most_searched_margin_top">26dp</dimen>
+    <dimen name="tv_searched_more_padding_start">4dp</dimen>
+    <dimen name="tv_searched_more_padding_top">2dp</dimen>
+    <dimen name="rv_help_videos_margin_top">10dp</dimen>
+    <dimen name="tv_faq_margin_top">30dp</dimen>
+    <dimen name="rv_help_faq_margin_top">5dp</dimen>
+    <dimen name="fab_help_chat_margin_top">16dp</dimen>
+    <dimen name="fab_help_chat_margin_bottom">0dp</dimen>
+    <dimen name="fab_help_chat_margin_start">16dp</dimen>
+    <dimen name="fab_help_chat_margin_end">16dp</dimen>
+    <dimen name="fab_help_chat_custom_size">40dp</dimen>
+    <dimen name="fab_help_chat_max_size">15dp</dimen>
+
+    <dimen name="rv_videos_item_margin_end">20dp</dimen>
+    <dimen name="rv_videos_item_card_width">220dp</dimen>
+    <dimen name="rv_videos_item_card_height">120dp</dimen>
+    <dimen name="rv_videos_item_tv_margin_top">8dp</dimen>
+    <dimen name="rv_faq_down_icon_width">30dp</dimen>
+    <dimen name="rv_faq_down_icon_height">20dp</dimen>
+    <dimen name="rv_faq_tv_desc_margin_top">5dp</dimen>
+    <dimen name="rv_faq_tv_desc_margin_bottom">7dp</dimen>
+
+    <dimen name="help_options_margin_top">20dp</dimen>
+    <dimen name="help_options_button_margin_top">14dp</dimen>
+    <dimen name="help_options_button_padding_top">8dp</dimen>
+    <dimen name="help_options_button_padding_start">10dp</dimen>
+    <dimen name="help_options_button_padding_bottom">8dp</dimen>
+    <dimen name="help_options_button_padding_end">10dp</dimen>
+
+    <dimen name="help_parent_videos_padding_end">16dp</dimen>
+    <dimen name="help_parent1_videos_margin_top">12dp</dimen>
+    <dimen name="help_parent1_videos_padding_bottom">24dp</dimen>
+    <dimen name="help_parent1_videos_padding_start">16dp</dimen>
+    <dimen name="help_rv_videos1_margin_top">32dp</dimen>
+    <dimen name="fab_more_videos_margin_top">16dp</dimen>
+    <dimen name="fab_more_videos_margin_start">16dp</dimen>
+    <dimen name="fab_more_videos_margin_bottom">33dp</dimen>
+    <dimen name="item_video_card_width">200dp</dimen>
+    <dimen name="item_video_card_height">100dp</dimen>
+    <dimen name="item_video_card_margin_end">12dp</dimen>
+    <dimen name="tv_video_desc_margin_top">4dp</dimen>
+    <dimen name="video_list_view_margin_top">16dp</dimen>
+
 
 </resources>

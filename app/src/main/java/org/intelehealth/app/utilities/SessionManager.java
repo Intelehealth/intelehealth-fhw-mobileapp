@@ -60,6 +60,10 @@ public class SessionManager {
     // Shared pref mode
     private int PRIVATE_MODE = 0;
 
+    //UI2.0
+    private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
+
+
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -454,4 +458,18 @@ public class SessionManager {
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
+
+    // UI2.0 newly added
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
+        editor.commit();
+
+    }
+
+    public boolean getIsLoggedIn() {
+
+        return pref.getBoolean(IS_LOGGED_IN, false);
+    }
+
+
 }

@@ -901,6 +901,8 @@
     <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
     <string name="okay">Okay</string>
     <string name="my_achievements">My achievements</string>
+    <string name="my_profile">My profile</string>
+
     <string name="educational_videos">Educational videos</string>
     <string name="change_lang">Change language &amp; protocol</string>
     <string name="about_us">About us</string>
@@ -1368,7 +1370,7 @@ The disclosure of personal information to third parties shall be only for identi
         Intelehealth service on the website does not imply that such
         product or service is or will be available in your location.\n\n
 
-        <font color='#201560' size = '16'><b>CONDITIONS OF USE</b></font>\n
+        <font color='#201560' size='16'><b>CONDITIONS OF USE</b></font>\n
         You must be 18 years of age or older to register, use the
         Services, or visit or use or install or access the Website
         in any manner. By registering, visiting and using the Website
@@ -1377,7 +1379,7 @@ The disclosure of personal information to third parties shall be only for identi
         authority and capacity to use the Website and the Services available
         through the Website, and agree to and abide by this Agreement.
 
-       \n\n <font color='#201560' size = '16'><b>TERMS OF USE APPLICABLE TO USERS RELATING TO USER ACCOUNT</b></font>\n
+       \n\n <font color='#201560' size='16'><b>TERMS OF USE APPLICABLE TO USERS RELATING TO USER ACCOUNT</b></font>\n
 END-USER ACCOUNT AND DATA PRIVACY\nThe terms \npersonal information\n and \nsensitive personal data or information\n are defined under the Rules framed under the Information Technology Act 2000\n\n
 
         Intelehealth may by its Services collect personal information
@@ -1393,7 +1395,7 @@ END-USER ACCOUNT AND DATA PRIVACY\nThe terms \npersonal information\n and \nsens
         if so submitted and or permitted by the User, for communication
         purpose so as to provide the User services accordingly.
 
-        \n\n<font color='#201560' size = '16'><b>The Privacy Policy sets out, inter-alia:</b></font>
+        \n\n<font color='#201560' size='16'><b>The Privacy Policy sets out, inter-alia:</b></font>
 
  \n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. The type of information collected from Users, including sensitive personal data or information;
 \n\u0020\u0020\u0020\u0020\u0020\u0020\u0020ii. The purpose, means and modes of usage of such information;
@@ -1430,7 +1432,7 @@ END-USER ACCOUNT AND DATA PRIVACY\nThe terms \npersonal information\n and \nsens
 In the course of availing the services you may be provided access to certain services for which you may see a ‘show number’ option. When you choose this option, you choose to call the numbers telephone provided on the Website, and the records of such calls are recorded and stored in Intelehealth’s servers. Such call may also have have an IVR message stating the purpose of recording your calls and your consent to such recordings which are dealt with as per the Privacy Policy. Such records may be accessed by Intelehealth or its associated or partner entities/organisations or medical practitioners or health workers for quality control and support related purposes or to provide educational guidance or provide consultation by Registered Medical Practitioners and are dealt with only in accordance with the terms of the Privacy Policy. Such call facility provided to you by Intelehealth should be used at your own discretion and any consultation or educational information provided by the recipient of the call to the User, Intelehealth accepts no liability Intelehealth shall not be liable for any advice/consultation provided on such call/communication. In case you choose to not provide your consent to recording your calls that may have personal information required for the said purposes, Intelehealth reserves the right to not provide the Services for which such personal information is sought.
 
 
-        \n\n<font color='#201560' size = '16'><b>LISTING CONTENT AND DISSEMINATING INFORMATION</b></font>
+        \n\n<font color='#201560' size='16'><b>LISTING CONTENT AND DISSEMINATING INFORMATION</b></font>
 
 
         \nIntelehealth collects, directly or indirectly, and displays on the Website, relevant information regarding services offered by Intelehealth, educational information regarding viruses, epidemics, etc., and provide links to third party websites including websites of government bodies, non profit organisations, global health organisations etc.. This Website contains links to websites operated by other parties and Intelehealth does not control such websites and Intelehealth take no responsibility for, and will not incur any liability in respect of, their content. Our inclusion of links to such websites does not imply any endorsement of views, statements or information contained in such websites. Intelehealth takes reasonable efforts to ensure that such information is updated at frequent intervals.
@@ -1473,7 +1475,7 @@ The Services provided by Intelehealth or any of its licensors or service provide
 
         Users may be allowed to provide feedback about the Services, the User shall ensure that, the same is provided in accordance with applicable law. User however understands that, Intelehealth shall not be obliged to act in such manner as may be required to give effect to the content of Users feedback.
 
-         \n\n<font color='#201560' size = '16'><b>NO DOCTOR-PATIENT RELATIONSHIP</b></font>
+         \n\n<font color='#201560' size='16'><b>NO DOCTOR-PATIENT RELATIONSHIP</b></font>
 
         \n\nPlease note that the content, text, data, graphics, images,
         information, suggestions, guidance, and other material (collectively, \"Information\") that may be available on the Website (including information provided in direct response to your questions or postings) may be provided basis our analysis and or by individuals in the medical profession. The provision of such Information does not create a medical professional/patient relationship of whatsoever nature, between Intelehealth and you and does not constitute an opinion, medical advice, or diagnosis or treatment of any particular condition, but is only provided to assist you with locating or identifying appropriate medical care from a qualified practitioner and to provide you an option to be educated if you so desire on certain medical conditions and treatment from health workers, BDS, MDS etc.. Intelehealth is a technological platform rendering Services and may facilitate a User if he so desires to connect with identified registered medical practitioners and we do not provide any medical advisory/ consultation services whatsoever in our own capacity.
@@ -1482,7 +1484,7 @@ The Services provided by Intelehealth or any of its licensors or service provide
 
         \n\nThe Services are not intended to be a substitute for getting in touch with healthcare.
 
-         \n\n<font color='#201560' size = '16'><b>CONTENT OWNERSHIP AND COPYRIGHT CONDITIONS OF ACCESS</b></font>
+         \n\n<font color='#201560' size='16'><b>CONTENT OWNERSHIP AND COPYRIGHT CONDITIONS OF ACCESS</b></font>
 
         \n\nThe contents listed on the Website are (i) User generated content, or (ii) belong to Intelehealth or its associates, partner entities, licensors etc. . The information that is collected by Intelehealth directly or indirectly from the Users shall belong to Intelehealth. Copying of the copyrighted content published by Intelehealth on the Website for any commercial purpose or for the purpose of earning profit will be a violation of copyright and Intelehealth reserves its rights under applicable law accordingly.
 
@@ -1495,7 +1497,7 @@ The Services provided by Intelehealth or any of its licensors or service provide
         \n\nThe source code of all component labelled as \'Free Software\' will contain the following lines – \'This program is free software; you can redistribute it and/or modify it under the terms of theMozilla Public License 2.0 and additional Healthcare disclaimer. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
         of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\'
 
-                 \n\n<font color='#201560' size = '16'><b>HEALTHCARE DISCLAIMER FOR FOSS SOFTWARE</b></font>
+                 \n\n<font color='#201560' size='16'><b>HEALTHCARE DISCLAIMER FOR FOSS SOFTWARE</b></font>
 
         \n\nIn the United States, or any other jurisdictions where they may apply, the following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
 
@@ -1507,7 +1509,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
         \n\nUser shall not access the Services for purposes of monitoring their availability, performance or functionality, or for any other benchmarking or competitive purposes.
 
         \n\nAny communication or material you transmit to the Website by electronic mail or otherwise, including any data, questions, feedback, ideas, queries, comments, suggestions or the like is, and will be treated as, non-confidential and non-proprietary. Anything you transmit or post becomes the property of Intelehealth or its affiliates and may be used for any purpose, including, but not limited to, reproduction, disclosure, transmission, publication, broadcast and posting. Furthermore, Intelehealth is free to use any ideas, concepts, know-how, or techniques contained in any communication you send to the Website for any purpose whatsoever including, but not limited to, developing, manufacturing and marketing products using such information.
-                         \n\n<font color='#201560' size = '16'><b>REVIEWS AND FEEDBACK</b></font>
+                         \n\n<font color='#201560' size='16'><b>REVIEWS AND FEEDBACK</b></font>
 \n\nBy using this Website, you agree that any information shared by you with Intelehealth will be subject to our Privacy Policy.
 
 
@@ -1515,11 +1517,11 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
         \n\nYou hereby agree not to post or publish any content on the Website that (a) infringes any third-party intellectual property or publicity or privacy rights, or (b) violates any applicable law or regulation, including but not limited to the provisions of applicable laws. Intelehealth, at its sole discretion, may choose not to publish your reviews and feedback, if so required by applicable law.
 
-                         \n\n<font color='#201560' size = '16'><b>RECORDS</b></font>
+                         \n\n<font color='#201560' size='16'><b>RECORDS</b></font>
         \nIntelehealth may as part of the Services offered retain medical records and may provide access to registered medical practitioners, government authorities or health organisations analysis or records of the users in order to comply with applicable guidelines, improve and or analyse the data to take appropriate steps in relation to public health.
 
-                                 \n\n<font color='#201560' size = '16'><b>INTELEHEALTH MEDICINE INFORMATION</b></font>
-        \n\n<font color='#201560' size = '16'><b>Intelehealth Q&amp;A</b></font>
+                                 \n\n<font color='#201560' size='16'><b>INTELEHEALTH MEDICINE INFORMATION</b></font>
+        \n\n<font color='#201560' size='16'><b>Intelehealth Q&amp;A</b></font>
 
         \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. The Q&amp;A Platform is a platform for exchange of information which is of general nature in a question and answer format.
 
@@ -1532,7 +1534,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
         \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. Any liability arising out of the response as result of the User answering questioner will be borne solely by the User. &amp; Platform is only a platform interface provided by Intelehealth for sharing and exchanging information purposes.
          \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020vi. The personally identifiable information of the User may be anonymized by Intelehealth prior to analysing the answers to the questioner;
 
-        \n\n<font color='#201560' size = '18'><b>RIGHTS AND OBLIGATIONS RELATING TO CONTENT</b></font>
+        \n\n<font color='#201560' size='18'><b>RIGHTS AND OBLIGATIONS RELATING TO CONTENT</b></font>
         \n As mandated by applicable Regulation, Intelehealth hereby informs Users that they are not permitted to host, display, upload, modify, publish, transmit, update or share any information that:
 
         \n\n\u0020\u0020\u0020\u0020\u0020\u0020\u0020i. belongs to another person and to which the User does not have any right to;
@@ -1564,7 +1566,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
         \n\nIntelehealth respects the intellectual property rights of others and we do not hold any responsibility for any violations of any intellectual property rights
 
-        \n\n<font color='#201560' size = '16'><b>REPRESENTATIONS OF DOCTORS/ REGISTERED MEDICAL PRACTITIONERS USING THE INTELEHEALTH PLATFORM</b></font>
+        \n\n<font color='#201560' size='16'><b>REPRESENTATIONS OF DOCTORS/ REGISTERED MEDICAL PRACTITIONERS USING THE INTELEHEALTH PLATFORM</b></font>
 
         \n\nthat they are duly registered with the national councils or respective state medical council/s and comply with their relevant provisions.
 
@@ -1576,7 +1578,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
         \n\nthat they have completed the mandatory online/ offline courses and trainings offered by Intelehealth.
 
-         \n\n<font color='#201560' size = '16'><b>INDEMNIFICATION</b></font>
+         \n\n<font color='#201560' size='16'><b>INDEMNIFICATION</b></font>
 
 \n\nYou agree to defend, indemnify and hold us and our affiliates and
         our affiliates, directors, officers, employees and agents harmless
@@ -1590,6 +1592,25 @@ Under no circumstances and under no legal theory, whether tort (including neglig
         with our defense of such claim.
     </string>
 
+    <!-- My Profile UI2.0-->
+    <string name="change_photo"><u>Change photo</u></string>
+    <string name="first_name">First name</string>
+    <string name="middle_name">Middle name</string>
+    <string name="last_name">Last name</string>
+    <string name="enter_first_name">Enter your first name</string>
+    <string name="enter_middle_name">Enter your middle name</string>
+    <string name="enter_last_name">Enter your last name</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="age">Age</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="phone_number">Phone number</string>
+    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email">Enter your email</string>
+
 
     <!--  Change Password UI2.0-->
 
@@ -1597,6 +1618,21 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="confirm_new_password_1">Confirm new password</string>
     <string name="enter_current_password">Enter current password</string>
     <string name="change_password">Change password</string>
+
+    <!--  Help UI2.0-->
+    <string name="search_for_help">Search for help</string>
+    <string name="all_help">All</string>
+    <string name="check_up">Check-up</string>
+    <string name="appointment">Appointment</string>
+    <string name="registration">Registration</string>
+    <string name="visit_help">Visit</string>
+    <string name="most_searched">Most Searched</string>
+    <string name="more">More</string>
+    <string name="frequently_asked_ques">Frequently asked questions</string>
+    <string name="videos">Videos</string>
+    <string name="faq">FAQ</string>
+    <string name="search_for_videos">Search for videos</string>
+    <string name="search_for_faq">Search for FAQ</string>
 
 
     <!--    Follow-up new screens -->

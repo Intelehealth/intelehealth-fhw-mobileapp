@@ -33,6 +33,9 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarSize="10dp"
+            android:fadeScrollbars="false"
             android:layout_height="wrap_content">
 
             <TextView

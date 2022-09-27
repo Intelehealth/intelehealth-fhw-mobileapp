@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ui2_ic_home_icon_bottomnav"
+        android:id="@+id/bottom_nav_home_menu"
+        android:icon="@drawable/ui2_selector_home_nav"
         android:title="Home" />
 
     <item
-        android:id="@+id/navigation_explore"
-        android:icon="@drawable/ui2_ic_acheivements_home_bottomnav13"
+        android:id="@+id/bottom_nav_achievements"
+        android:icon="@drawable/ui2_selector_acievements_nav"
         android:title="Achievements" />
 
     <item
-        android:id="@+id/navigation_subscriptions"
-        android:icon="@drawable/ui2_ic_help_home"
+        android:id="@+id/bottom_nav_help"
+        android:icon="@drawable/ui2_selector_help_nav"
         android:title="Help" />
 
     <item
-        android:id="@+id/navigation_library"
-        android:icon="@drawable/ui2_ic_add_patient_home"
+        android:id="@+id/bottom_nav_add_patient"
+        android:icon="@drawable/ui2_selector_nav_add_patient"
         android:title="Add patient" />
 
 </menu>
