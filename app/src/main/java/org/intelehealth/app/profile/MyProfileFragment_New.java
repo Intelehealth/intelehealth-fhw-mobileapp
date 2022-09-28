@@ -50,9 +50,11 @@ public class MyProfileFragment_New extends Fragment {
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIsInternet.getLayoutParams();
+
+        //comment temoprary
+     /*   RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIsInternet.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
-        ivIsInternet.setLayoutParams(params);
+        ivIsInternet.setLayoutParams(params);*/
 
         Spinner spinner = view.findViewById(R.id.spinner_countries_profile);
 

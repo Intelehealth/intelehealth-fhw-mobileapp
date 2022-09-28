@@ -23,8 +23,6 @@ import androidx.transition.TransitionManager;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
-import org.intelehealth.app.ui2.activities.HomeScreenActivityNew;
-import org.intelehealth.app.ui2.onboarding.IntroScreensActivityNew;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
