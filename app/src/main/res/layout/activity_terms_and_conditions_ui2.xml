@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui2.onboarding.TermsAndConditionsActivity_New">
+    tools:context=".onboarding.TermsAndConditionsActivity_New">
 
     <ImageView
         android:id="@+id/iv_back_arrow_terms"

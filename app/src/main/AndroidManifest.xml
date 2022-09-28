@@ -88,12 +88,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.PrivacyPolicyActivity_New"
+            android:name=".onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.TermsAndConditionsActivity_New"
+            android:name=".onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -326,7 +326,7 @@
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.SetupPrivacyNoteActivity_New"
+            android:name=".onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />

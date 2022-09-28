@@ -1,12 +1,7 @@
-package org.intelehealth.app.ui2.onboarding;
+package org.intelehealth.app.onboarding;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,9 +15,6 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Objects;
 
 public class TermsAndConditionsActivity_New extends AppCompatActivity {
