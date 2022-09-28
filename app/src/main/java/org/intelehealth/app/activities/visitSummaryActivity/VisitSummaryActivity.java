@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -624,8 +625,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
 
         //get from encountertbl from the encounter
-        EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
-        visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        visitnoteencounteruuid = getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3718,8 +3718,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     {
         //get from encountertbl from the encounter
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
-            EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
-            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+            visitnoteencounteruuid = getStartVisitNoteEncounterByVisitUUID(visitUuid);
         }
 
         if (downloadPrescriptionService == null) {

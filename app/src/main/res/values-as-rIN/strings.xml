@@ -856,5 +856,6 @@
     <string name="format_description">%1$dx%2$d @ %3$d এফপিএছ</string>
 
     <string name="app_version_string">এপ সংস্কৰণ - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>

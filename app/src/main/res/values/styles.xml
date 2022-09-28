@@ -178,7 +178,7 @@
 
     <style name="details_head1">
         <item name="android:textColor">
-            #1B163A
+            @color/headline_text_color
         </item>
 
     </style>
@@ -276,4 +276,35 @@
         <item name="android:layout_marginBottom">@dimen/nav_menus_margin_bottom</item>
 
     </style>
+
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorColor">@color/colorPrimary2</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabSelectedTextColor">@color/textColorBlack</item>
+        <item name="android:textAppearance">@style/TabLayoutTextStyle</item>
+
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textAllCaps">false</item>
+
+    </style>
+    <style name="CustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/achieve_tab_title_text_size</item>
+        <item name="android:textColor">@color/textColorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:lineHeight">21dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="tabSelectedTextColor">@color/textColorBlack</item>
+
+
+    </style>
+
+
 </resources>

@@ -22,7 +22,7 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.ui2.onboarding.IntroScreensActivityNew;
+import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,18 +70,20 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setLocale(sessionManager.getAppLanguage());
                 if (sessionManager.isFirstTimeLaunch()) {
-                    Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivityNew.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivity_New.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);
                 } else {
-                    Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivityNew.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivity_New.class);
                     intent.putExtra("from", "splash");
                     intent.putExtra("username", "");
                     intent.putExtra("password", "");
                     startActivity(intent);
                 }
-                finish();
+                finish(); // TODO: uncomment
 
+//                Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivityNew.class);
+//                startActivity(intent); // TODO: remove this intent code later.
 
             }
         });

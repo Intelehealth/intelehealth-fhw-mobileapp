@@ -49,11 +49,11 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if(period.getYears() > 0)
+        if (period.getYears() > 0)
             xyears = period.getYears();
         else
             xyears = 0;
-        if(period.getMonths() > 0)
+        if (period.getMonths() > 0)
             xmonths = period.getMonths();
         else
             xmonths = 0;
@@ -112,6 +112,41 @@ public class DateAndTimeUtils {
         }
 
     }
+
+    public static String getAge_FollowUp(String s, Context context) {
+        if (s == null) return "";
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = originalFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+        String[] components = formattedDate.split("\\-");
+
+        int year = Integer.parseInt(components[2]);
+        int month = Integer.parseInt(components[1]);
+        int day = Integer.parseInt(components[0]);
+
+        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+
+        String age = "";
+        String tyears = "", tmonth = "", tdays = "";
+
+        if (period.getYears() > 0) {
+            tyears = String.valueOf(period.getYears());
+        }
+
+        age = tyears;
+
+        return age;
+    }
+
+
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
@@ -142,22 +177,21 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
-        if(period.getMonths() > 0) {
+        if (period.getMonths() > 0) {
             tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
             //xmonths = String.valueOf(period.getMonths());
         }
-        if(period.getDays() > 0)
+        if (period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
         age = tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
-
 
 
     public static String getAgeInYearMonth(String s) {
@@ -185,14 +219,14 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if(period.getYears() > 0)
-            tyears = ""+period.getYears();
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears();
 
-        if(period.getMonths() > 0)
-            tmonth = ""+period.getMonths();
+        if (period.getMonths() > 0)
+            tmonth = "" + period.getMonths();
 
-        if(period.getDays() > 0)
-            tdays = ""+period.getDays();
+        if (period.getDays() > 0)
+            tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -228,7 +262,7 @@ public class DateAndTimeUtils {
         String tyears = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
@@ -347,6 +381,20 @@ public class DateAndTimeUtils {
             sdf1 = null;
         }
         return result;
+    }
+
+    public static String date_formatter(String dateString, String format, String result_format) {
+        String formattedDate = null;
+        try {
+            DateFormat originalFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat(result_format, Locale.ENGLISH);
+            Date date = originalFormat.parse(dateString);
+            formattedDate = targetFormat.format(date);
+        } catch (Exception ex) {
+            FirebaseCrashlytics.getInstance().recordException(ex);
+            Log.v("SearchPatient", "date_ex: " + ex);
+        }
+        return formattedDate;
     }
 
 }

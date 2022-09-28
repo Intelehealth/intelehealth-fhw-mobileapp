@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/date_frag_daily_parent_margin_top"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/date_frag_text_margin_start"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ui2_ic_calendar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_regular"
+                android:text="1 March, 2022"
+                android:layout_marginStart="@dimen/daily_tab_date_margin_start"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/date_frag_text_size"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card1_common_achieve_margin_start"
+            android:layout_marginTop="@dimen/card_daily_frag_margin_top"
+            android:layout_marginEnd="@dimen/card1_common_achieve_margin_end"
+            android:layout_marginBottom="@dimen/card1_common_achieve_margin_bottom"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/card1_achieve_margin_end"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_patients_card_bg_1"
+                android:orientation="vertical"
+                android:padding="@dimen/card_common_achieve_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/card_achieve_icon_width"
+                    android:layout_height="@dimen/card_achieve_icon_height"
+                    android:src="@drawable/ui2_icon_user_add" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                    android:text="@string/patients_added"
+                    android:textSize="@dimen/date_frag_layout_text_size" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                    android:gravity="top"
+                    android:lineHeight="@dimen/card_achieve_value_line_height"
+                    android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                    android:text="3"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/card_achieve_value_textsize"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card1_achieve_margin_start"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_patients_card_bg_blue"
+                android:orientation="vertical"
+                android:padding="@dimen/card_common_achieve_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/card_achieve_icon_width"
+                    android:layout_height="@dimen/card_achieve_icon_height"
+                    android:src="@drawable/ui2_ic_icon_visits_completed" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                    android:text="@string/visits_completed_by_you"
+                    android:textSize="@dimen/date_frag_layout_text_size" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                    android:gravity="top"
+                    android:lineHeight="@dimen/card_achieve_value_line_height"
+                    android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                    android:text="4"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/card_achieve_value_textsize"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card2_common_achieve_margin_start"
+            android:layout_marginEnd="@dimen/card2_common_achieve_margin_end"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/card1_achieve_margin_end"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_patients_card_bg_green"
+                android:orientation="vertical"
+                android:padding="@dimen/card_common_achieve_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/card_achieve_icon_width"
+                    android:layout_height="@dimen/card_achieve_icon_height"
+                    android:src="@drawable/ui2_ic_star_score" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                    android:text="@string/your_patient_score"
+                    android:textSize="@dimen/date_frag_layout_text_size" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                    android:gravity="top"
+                    android:lineHeight="@dimen/card_achieve_value_line_height"
+                    android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                    android:text="4.2"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/card_achieve_value_textsize"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card1_achieve_margin_start"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_patients_card_bg_1"
+                android:orientation="vertical"
+                android:padding="@dimen/card_common_achieve_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/card_achieve_icon_width"
+                    android:layout_height="@dimen/card_achieve_icon_height"
+                    android:src="@drawable/ui2_ic_time_spent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                    android:text="@string/your_time_spent_today"
+                    android:textSize="@dimen/date_frag_layout_text_size" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                    android:lineHeight="@dimen/card_achieve_value_line_height"
+                    android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                    android:text="1h 40m"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/card_achieve_value_textsize"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </LinearLayout>
+</ScrollView>

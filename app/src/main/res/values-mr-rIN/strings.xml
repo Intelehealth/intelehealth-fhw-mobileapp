@@ -809,5 +809,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">त्यानंतर प्रोटोकॉल डाउनलोड केला जातो। प्रोटोकॉल डाउनलोडची पुनरावृत्ती करण्यासाठी \'होय\' दाबा। डेमो प्रोटोकॉलसह सातत्यासाठी \'नाही\' दाबा।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>

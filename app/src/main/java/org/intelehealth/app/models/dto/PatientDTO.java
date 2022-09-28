@@ -56,10 +56,7 @@ public class PatientDTO {
     @SerializedName("gender")
     @Expose
     private String gender;
-
-
     private String patientPhoto;
-
     private List<PatientAttributesDTO> patientAttributesDTOList;
     @SerializedName("dead")
     @Expose
@@ -67,6 +64,11 @@ public class PatientDTO {
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+
+    // for search tags...
+    private boolean emergency = false;
+    private String visit_startdate;
+    private boolean prescription_exists = false;
 
     public String getUuid() {
         return uuid;
@@ -227,5 +229,29 @@ public class PatientDTO {
 
     public void setPatientPhoto(String patientPhoto) {
         this.patientPhoto = patientPhoto;
+    }
+
+    public boolean isEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(boolean emergency) {
+        this.emergency = emergency;
+    }
+
+    public String getVisit_startdate() {
+        return visit_startdate;
+    }
+
+    public void setVisit_startdate(String visit_startdate) {
+        this.visit_startdate = visit_startdate;
+    }
+
+    public boolean isPrescription_exists() {
+        return prescription_exists;
+    }
+
+    public void setPrescription_exists(boolean prescription_exists) {
+        this.prescription_exists = prescription_exists;
     }
 }

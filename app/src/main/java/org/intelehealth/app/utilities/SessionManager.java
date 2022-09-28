@@ -51,6 +51,7 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
+    public static final String PREVIOUS_SEARCH_QUERY = "PREVIOUS_SEARCH_QUERY";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -60,12 +61,24 @@ public class SessionManager {
     // Shared pref mode
     private int PRIVATE_MODE = 0;
 
+    //UI2.0
+    private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
+
+
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
 
+    public String getPreviousSearchQuery() {
+        return pref.getString(PREVIOUS_SEARCH_QUERY, "");
+    }
+
+    public void setPreviousSearchQuery (String query) {
+        editor.putString(PREVIOUS_SEARCH_QUERY, query);
+        editor.commit();
+    }
 
     public String getVisitId() {
         return pref.getString(VISIT_ID, "");
@@ -454,4 +467,18 @@ public class SessionManager {
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
+
+    // UI2.0 newly added
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
+        editor.commit();
+
+    }
+
+    public boolean getIsLoggedIn() {
+
+        return pref.getBoolean(IS_LOGGED_IN, false);
+    }
+
+
 }

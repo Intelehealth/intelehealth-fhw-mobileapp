@@ -664,6 +664,7 @@
     <string name="error_login_title">ଲଗଇନ୍ କରିବା ସମୟରେ ତ୍ରୁଟି</string>
     <string name="answer_following_questions">ବାଧ୍ୟତାମୂଳକ ପ୍ରଶ୍ନଗୁଡ଼ିକ ନିମ୍ନରେ ଦିଆଯାଇଛି, ଦୟାକରି ସେମାନଙ୍କୁ ଉତ୍ତର ଦିଅ |</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 
 </resources>

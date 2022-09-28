@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,10 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/intro_heading_margin_top"
-            android:fontFamily="@font/dm_sans_regular"
             android:gravity="center"
             android:lineHeight="@dimen/intro_heading_line_height"
-            android:text="@string/take_patient_visits"
+            android:text="@string/collect_patient_info"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/introscreen_title"
             android:textStyle="bold" />
@@ -32,7 +32,6 @@
             android:layout_marginStart="@dimen/intro_description_margin_start"
             android:layout_marginTop="@dimen/intro_description_margin_top"
             android:layout_marginEnd="@dimen/intro_description_margin_end"
-            android:fontFamily="@font/dm_sans_regular"
             android:gravity="center"
             android:lineHeight="@dimen/intro_description_line_height"
             android:text="@string/take_patient_visits_intro"

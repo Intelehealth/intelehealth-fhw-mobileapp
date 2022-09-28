@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activities.NotificationActivity">
+    tools:context=".activities.notification.NotificationActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notifi_relative"
@@ -43,7 +43,7 @@
 
                 <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/vector"
+                    android:id="@+id/backbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -83,6 +83,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:layout_marginEnd="@dimen/margin_20"
                     android:src="@drawable/ic_refreshbtn" />
 
                 <ImageButton
@@ -99,15 +100,35 @@
 
     <!--card view-->
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/notifi_relative"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
         android:id="@+id/relative_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/notifi_relative"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
         android:background="@drawable/notifi_green_header_card">
+
+        <ImageButton
+            android:id="@+id/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
+            android:src="@drawable/arrow_right_icon8"
+            android:layout_centerVertical="true"/>
 
         <ImageView
             android:id="@+id/notifi_header_icon"
@@ -153,9 +174,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_icon_toolbar"
         android:layout_below="@+id/relative_header"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
-        android:layout_marginTop="@dimen/fu_card_margin_sides"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides">
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left">
 
         <TextView
             android:layout_width="wrap_content"
@@ -165,6 +186,7 @@
             android:textSize="@dimen/fu_male_textsize" />
 
         <ImageButton
+            android:id="@+id/clearAll_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
@@ -178,21 +200,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relative_today"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides"
-        tools:listitem="@layout/notification_list_item"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
         tools:itemCount="3"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/notification_list_item" />
 
     <TextView
         android:id="@+id/txt_yesterday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recycler_today"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
-        android:layout_marginTop="@dimen/fu_card_margin_sides"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
         android:text="@string/yesterday"
         android:textColor="@color/header_title_color"
         android:textSize="@dimen/fu_male_textsize" />
@@ -202,13 +223,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_yesterday"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
-        android:layout_marginStart="@dimen/fu_card_margin_sides"
-        android:layout_marginEnd="@dimen/fu_card_margin_sides"
-        tools:listitem="@layout/notification_list_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
         tools:itemCount="1"
-        />
+        tools:listitem="@layout/notification_list_item" />
 
+        </RelativeLayout>
+    </ScrollView>
 
+    <FrameLayout
+        android:id="@+id/filter_framelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="gone"
+        android:layout_marginTop="@dimen/margin_45"
+        android:layout_alignParentEnd="true">
+
+        <include layout="@layout/notifi_filter_layout" />
+
+    </FrameLayout>
 
 </RelativeLayout>

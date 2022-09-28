@@ -56,7 +56,7 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/label"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_10"
@@ -82,6 +82,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:layout_marginEnd="@dimen/margin_10"
                     android:src="@drawable/ic_refreshbtn" />
 
                 <ImageButton
@@ -127,6 +128,19 @@
                 android:textSize="@dimen/fu_male_textsize" />
 
             <!-- Frame 100314 -->
+            <TextView
+                android:id="@+id/today_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/you_can_add"
+                android:gravity="center"
+                android:padding="@dimen/card_padding"
+                android:text="No follow up data"
+                android:visibility="gone"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_male_textsize" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_today"
                 android:layout_width="match_parent"
@@ -148,6 +162,19 @@
                 android:lineSpacingExtra="3sp"
                 android:text="@string/this_week"
                 android:textAppearance="@style/you_can_add"
+                android:textSize="@dimen/fu_male_textsize" />
+
+            <TextView
+                android:id="@+id/week_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/this_week"
+                android:gravity="center"
+                android:padding="@dimen/card_padding"
+                android:visibility="gone"
+                android:text="No follow up data"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -172,6 +199,19 @@
                 android:lineSpacingExtra="3sp"
                 android:text="@string/this_month"
                 android:textAppearance="@style/you_can_add"
+                android:textSize="@dimen/fu_male_textsize" />
+
+            <TextView
+                android:id="@+id/month_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/this_month"
+                android:gravity="center"
+                android:padding="@dimen/card_padding"
+                android:visibility="gone"
+                android:text="No follow up data"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
 
             <androidx.recyclerview.widget.RecyclerView

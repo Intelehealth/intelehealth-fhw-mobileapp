@@ -1,35 +1,11 @@
 package org.intelehealth.app.activities.setupActivity;
 
-import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
-
-import android.animation.ObjectAnimator;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -53,8 +29,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -63,10 +37,8 @@ import com.google.gson.Gson;
 import com.parse.Parse;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.Results;
@@ -74,10 +46,8 @@ import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
-import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.ui2.activities.ForgotPasswordActivityNew;
-import org.intelehealth.app.ui2.activities.HomeScreenActivityNew;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -88,8 +58,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -98,15 +66,12 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class SetupActivityNew extends AppCompatActivity {
@@ -131,13 +96,13 @@ public class SetupActivityNew extends AppCompatActivity {
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
     private String mindmapURL = "";
-    AlertDialog dialogLoggingIn;
+    ///   AlertDialog dialogLoggingIn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setup_new);
+        setContentView(R.layout.activity_setup_new_ui2);
 
         sessionManager = new SessionManager(this);
         context = SetupActivityNew.this;
@@ -159,7 +124,7 @@ public class SetupActivityNew extends AppCompatActivity {
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivityNew.class);
+                Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
                 startActivity(intent);
             }
         });
@@ -190,7 +155,6 @@ public class SetupActivityNew extends AppCompatActivity {
                 return false;
             }
         });
-
 
 
     }
@@ -296,7 +260,7 @@ public class SetupActivityNew extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        showLoggingInDialog();
+        //    showLoggingInDialog();
 
              /* ProgressDialog progress;
         progress = new ProgressDialog(SetupActivityNew.this, R.style.AlertDialogStyle);
@@ -398,7 +362,9 @@ public class SetupActivityNew extends AppCompatActivity {
                                                     sqLiteDatabase.endTransaction();
                                                 }
                                                 Log.i(TAG, "onPostExecute: Parse init");
-                                                Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivityNew.class);
+                                                sessionManager.setIsLoggedIn(true);
+
+                                                Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                 intent.putExtra("setup", true);
                                                 //  if (r2.isChecked()) {
                                                /* if (!sessionManager.getLicenseKey().isEmpty()) {
@@ -413,7 +379,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                                 // }
-                                              //  progress.dismiss();
+                                                //  progress.dismiss();
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -426,8 +392,8 @@ public class SetupActivityNew extends AppCompatActivity {
                                 @Override
                                 public void onError(Throwable e) {
                                     Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                 ///   progress.dismiss();
-                                    dismissLoggingInDialog();
+                                    ////   progress.dismiss();
+                                    // dismissLoggingInDialog();
                                 }
 
                                 @Override
@@ -442,7 +408,7 @@ public class SetupActivityNew extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 // progress.dismiss();
-                dismissLoggingInDialog();
+                ///  dismissLoggingInDialog();
                 DialogUtils dialogUtils = new DialogUtils();
                 dialogUtils.showerrorDialog(SetupActivityNew.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
                 etUsername.requestFocus();
@@ -801,7 +767,7 @@ public class SetupActivityNew extends AppCompatActivity {
         Log.e("DOWNLOAD", "isSTARTED");
 
     }
-    public void showLoggingInDialog() {
+ /*   public void showLoggingInDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(SetupActivityNew.this);
         builder.setCancelable(false);
@@ -816,8 +782,8 @@ public class SetupActivityNew extends AppCompatActivity {
 
         dialogLoggingIn.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-    }
-    public void dismissLoggingInDialog() {
+    }*/
+  /*  public void dismissLoggingInDialog() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -825,5 +791,12 @@ public class SetupActivityNew extends AppCompatActivity {
             }
         }, 3000);
     }
+*/
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //temporary added
+        sessionManager.setIsLoggedIn(false);
+    }
 }

@@ -23,11 +23,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -48,12 +46,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -61,8 +57,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
+import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.CheckAppUpdateRes;
@@ -90,7 +85,7 @@ import me.piruin.quickaction.QuickIntentAction;
 
 public class HomeScreenActivityNew extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
-    ImageView imageViewIsInternet;
+    ImageView imageViewIsInternet, imageview_notifications_home;
     private boolean isConnected = false;
     private static final int ID_DOWN = 2;
     private QuickAction quickAction;
@@ -130,13 +125,13 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         TextView tvAppVersion = findViewById(R.id.tv_app_version);
         LinearLayout menuResetApp = findViewById(R.id.layout_reset_app);
+        imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             //drawer is open
             //  getWindow().setStatusBarColor(Color.CYAN);
 
         }
-
 
          TextView tvLocation = findViewById(R.id.tv_user_location_home);
         tvLocation.setText(sessionManager.getLocationName());
@@ -168,12 +163,15 @@ public class HomeScreenActivityNew extends AppCompatActivity {
         TextView tvUserId = headerView.findViewById(R.id.tv_userid);
         TextView tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
 
+        imageview_notifications_home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NotificationActivity.class);
+            startActivity(intent);
+        });
 
         ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-
             }
         });
         setupDrawerContent(mNavigationView);

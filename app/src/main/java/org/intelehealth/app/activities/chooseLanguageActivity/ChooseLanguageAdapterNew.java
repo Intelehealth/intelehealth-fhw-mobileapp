@@ -1,26 +1,18 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.ui2.onboarding.SetupPrivacyNoteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

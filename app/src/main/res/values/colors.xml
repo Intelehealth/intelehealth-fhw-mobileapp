@@ -79,6 +79,7 @@
     <color name="textColorBlue">#2F1E91</color>
     <color name="textColorGray1">#CCFFFFFF</color>
 
+    <color name="colorAccentCloseVisit">#EFE8FF</color>
 
 
     <!--BG colors-->
@@ -103,6 +104,7 @@
     <color name="header_subtitle_color">#7F7B92</color>
     <color name="notifi_divider_color">#33B2AFBE</color>
 
+    <color name="headline_text_color">#1B163A</color>
 
     <!--END-->
 </resources>

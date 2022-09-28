@@ -42,6 +42,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:id="@+id/toolbar_clear"
                         android:visibility="gone"
+                        tools:visibility="visible"
                          />
 
                     <ImageView
@@ -52,6 +53,7 @@
                         android:id="@+id/toolbar_search"
                         android:paddingHorizontal="5dp"
                         android:visibility="gone"
+                        tools:visibility="visible"
                          />
 
                     <ImageView
@@ -60,7 +62,8 @@
                         app:srcCompat="@drawable/ic_baseline_filter_alt_24"
                         android:layout_marginHorizontal="5dp"
                         android:id="@+id/toolbar_filter"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
 
 
