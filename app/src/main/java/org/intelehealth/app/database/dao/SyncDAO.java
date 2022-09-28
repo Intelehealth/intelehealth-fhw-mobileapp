@@ -257,6 +257,7 @@ public class SyncDAO {
                             ArrayList<String> listPatientUUID = new ArrayList<String>();
                             List<VisitDTO> listVisitDTO = new ArrayList<>();
                             ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+
                             for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
                                 if (response.body().getData().getEncounterDTO().get(i)
                                         .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
@@ -312,7 +313,6 @@ public class SyncDAO {
     }
 
     private void triggerVisitNotification(ArrayList<String> listPatientUUID) {
-
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         getPatients(activePatientList);
 
@@ -321,8 +321,11 @@ public class SyncDAO {
                 for (int j = 0; j < activePatientList.size(); j++) {
                     if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
                         Log.e("GET-ID", "" + NotificationID.getID());
-                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(),
-                                IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription), NotificationID.getID(), IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " +
+                                        activePatientList.get(j).getFirst_name() + " " +
+                                        activePatientList.get(j).getLast_name(),
+                                IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription),
+                                NotificationID.getID(), IntelehealthApplication.getAppContext());
                     }
                 }
             }

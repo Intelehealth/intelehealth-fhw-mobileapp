@@ -51,6 +51,7 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
+    public static final String PREVIOUS_SEARCH_QUERY = "PREVIOUS_SEARCH_QUERY";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -70,6 +71,14 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    public String getPreviousSearchQuery() {
+        return pref.getString(PREVIOUS_SEARCH_QUERY, "");
+    }
+
+    public void setPreviousSearchQuery (String query) {
+        editor.putString(PREVIOUS_SEARCH_QUERY, query);
+        editor.commit();
+    }
 
     public String getVisitId() {
         return pref.getString(VISIT_ID, "");

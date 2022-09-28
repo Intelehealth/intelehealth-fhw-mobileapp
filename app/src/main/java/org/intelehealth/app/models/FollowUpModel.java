@@ -9,9 +9,34 @@ public class FollowUpModel {
     String last_name;
     String date_of_birth;
     String phone_number;
+    String gender;
+    String visit_start_date;
     String visit_speciality;
     String followup_date;
     String sync;
+    boolean emergency;
+    String patient_photo;
+    String chiefComplaint;
+
+    public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name,
+                         String last_name, String date_of_birth, String phone_number, String gender,
+                         String visit_start_date,
+                         String visit_speciality, String followup_date, String sync, boolean emergency, String patient_photo) {
+        this.uuid = uuid;
+        this.patientuuid = patientuuid;
+        this.openmrs_id = openmrs_id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.date_of_birth = date_of_birth;
+        this.phone_number = phone_number;
+        this.gender = gender;
+        this.visit_start_date = visit_start_date;
+        this.visit_speciality = visit_speciality;
+        this.followup_date = followup_date;
+        this.sync = sync;
+        this.emergency = emergency;
+        this.patient_photo = patient_photo;
+    }
 
     public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String visit_speciality, String followup_date, String sync) {
         this.uuid = uuid;
@@ -26,17 +51,6 @@ public class FollowUpModel {
         this.sync = sync;
     }
 
-    public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String followup_date, String sync) {
-        this.uuid = uuid;
-        this.patientuuid = patientuuid;
-        this.openmrs_id = openmrs_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.date_of_birth = date_of_birth;
-        this.phone_number = phone_number;
-        this.followup_date = followup_date;
-        this.sync = sync;
-    }
 
     public String getUuid() {
         return uuid;
@@ -116,5 +130,33 @@ public class FollowUpModel {
 
     public void setSync(String sync) {
         this.sync = sync;
+    }
+
+    public boolean isEmergency() {
+        return emergency;
+    }
+
+//    public void setEmergency(boolean emergency) {
+//        this.emergency = emergency;
+//    }
+
+    public String getVisit_start_date() {
+        return visit_start_date;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getPatient_photo() {
+        return patient_photo;
+    }
+
+    public String getChiefComplaint() {
+        return chiefComplaint;
+    }
+
+    public void setChiefComplaint(String chiefComplaint) {
+        this.chiefComplaint = chiefComplaint;
     }
 }

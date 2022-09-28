@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/home_parent_layout_padding">
 
-
         <TextView
             android:id="@+id/textlayout_find_patient"
             android:layout_width="match_parent"
@@ -267,7 +266,7 @@
                 app:cardElevation="@dimen/card_appointment_card_elevation"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/cardView5"
+                app:layout_constraintEnd_toStartOf="@+id/followup_cardview"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
@@ -321,9 +320,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView5"
+                android:id="@+id/followup_cardview"
                 app:cardMaxElevation="8dp"
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card_followup_margin_start"

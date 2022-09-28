@@ -2,4 +2,5 @@
 <resources>
     <string name="app_version_string">App Version - %1$s</string>
     <string name="five_presc_received">5 prescriptions received</string>
+    <string name="no_visit_created">No visit created</string>
 </resources>

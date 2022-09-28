@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.ContentValues;
@@ -16,6 +17,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -289,7 +291,8 @@ public class EncounterDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
+            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND " +
+                    "encounter_type_uuid = ? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -335,13 +338,42 @@ public class EncounterDAO {
         return isUpdated;
     }
 
+    public static List<PatientDTO> check_visit_is_VISIT_COMPLETE_ENC(String currentDate) {
+        List<PatientDTO> patientDTOList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
+                        "tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o WHERE " +
+                        "p.uuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
+                        "e.encounter_type_uuid = ? AND obs_server_modified_date = ? AND " +
+                        "(e.sync = '1' OR e.sync = 'true' OR e.sync = 'TRUE') COLLATE NOCASE",
+                new String[]{ENCOUNTER_VISIT_COMPLETE, currentDate});
 
-    public String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
+        try {
+            if (idCursor.moveToFirst()) {
+                do {
+                PatientDTO model = new PatientDTO();
+                model.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                model.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patientDTOList.add(model);
+                }
+                while (idCursor.moveToNext());
+            }
+        } catch (SQLException e) {
+
+        }
+
+        idCursor.close();
+        return patientDTOList;
+    }
+
+
+    public static String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
         String encounterUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ? AND sync = ?",
-                new String[]{visitUUID, ENCOUNTER_VISIT_NOTE, "true"});
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND " +
+                        "encounter_type_uuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE",
+                new String[]{visitUUID, ENCOUNTER_VISIT_NOTE});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
@@ -382,7 +414,9 @@ public class EncounterDAO {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
             //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
 
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e') ", new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
+                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e')",
+                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
             EncounterDTO encounterDTO = new EncounterDTO();
             if (idCursor.getCount() != 0) {
                 return true;

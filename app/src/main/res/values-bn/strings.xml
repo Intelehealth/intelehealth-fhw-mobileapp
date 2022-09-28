@@ -679,5 +679,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">প্রোটোকলটি উপলব্ধ তারপর ডাউনলোড করা হয়। প্রোটোকল ডাউনলোডটি পুনরায় চালু করতে \'হ্যাঁ\' টিপুন। ডেমো প্রোটোকলের সাথে ধারাবাহিকতার জন্য \'না\' টিপুন।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>

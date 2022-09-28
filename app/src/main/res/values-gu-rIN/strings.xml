@@ -802,5 +802,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">પ્રોટોકોલ ઉપલબ્ધ છે પછી ડાઉનલોડ થાય છે । પ્રોટોકોલ ડાઉનલોડ ફરીથી લખવા માટે \'હા\' દબાવો । ડેમો પ્રોટોકોલ સાથે સાતત્ય માટે \'ના\' દબાવો ।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>

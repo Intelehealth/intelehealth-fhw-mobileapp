@@ -46,34 +46,33 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
 
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
-        final FollowUpModel patinet = patients.get(position);
+        final FollowUpModel model = patients.get(position);
         holder.setIsRecyclable(false);
-        if (patinet != null) {
-
-            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDate_of_birth(), context);
-            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
-
-            if (patinet.getOpenmrs_id() != null)
-                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name()
-                        + ", " + patinet.getOpenmrs_id());
+        if (model != null) {
+            if (model.getOpenmrs_id() != null)
+                holder.headTextView.setText(model.getFirst_name() + " " + model.getLast_name()
+                        + ", " + model.getOpenmrs_id());
             else
-                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
+                holder.headTextView.setText(model.getFirst_name() + " " + model.getLast_name());
 
+            String age = DateAndTimeUtils.getAgeInYearMonth(model.getDate_of_birth(), context);
+            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
             holder.bodyTextView.setText(body);
 
-            if(!patinet.getFollowup_date().equalsIgnoreCase("null")) {
+            if(!model.getFollowup_date().equalsIgnoreCase("null")) { // followup date is before of todays date
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.lite_red));
-                holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
+                holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + model.getFollowup_date().substring(0, 10));
             }
-            else
+            else // followup date and todays date is same.
             {
                 holder.linearLayout.setVisibility(View.GONE);
                 holder.indicatorTextView.setVisibility(View.GONE);
             }
-            if(patinet.getVisit_speciality().equalsIgnoreCase("TLD Query") || patinet.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
-                    patinet.getVisit_speciality().contains("Gynecologist") || patinet.getVisit_speciality().contains("Ayurvedic Physician"))
-                holder.speciality_tag.setText(patinet.getVisit_speciality());
+
+            if(model.getVisit_speciality().equalsIgnoreCase("TLD Query") || model.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
+                    model.getVisit_speciality().contains("Gynecologist") || model.getVisit_speciality().contains("Ayurvedic Physician"))
+                holder.speciality_tag.setText(model.getVisit_speciality());
             else
                 holder.speciality_tag.setText("Agent Resolution");
         }
@@ -85,7 +84,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             public void onClick(View v) {
                 String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getUuid());
+                intent.putExtra("patientUuid", model.getUuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
                 intent.putExtra("hasPrescription", "true");

@@ -809,5 +809,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">Протокол доступен, после чего загружается। Нажмите \'Да\', чтобы подтвердить загрузку протокола। Нажмите \'Нет\' для продолжения работы с демонстрационным протоколом।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>

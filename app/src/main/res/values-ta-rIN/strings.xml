@@ -683,6 +683,7 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">நெறிமுறை பின்னர் பதிவிறக்கம் செய்யப்படுகிறது । நெறிமுறை பதிவிறக்கத்தை மறுஉண்மைசெய்ய \'ஆம்\' அழுத்தவும் । டெமோ நெறிமுறையுடன் தொடர்ச்சிக்கு \'இல்லை\' அழுத்தவும் ।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>
 

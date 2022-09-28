@@ -698,5 +698,6 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">ప్రోటోకాల్ లభ్యం అవుతుంది, తరువాత డౌన్ లోడ్ చేయబడుతుంది  । ప్రోటోకాల్ డౌన్ లోడ్ ని తిరిగి సత్యం చేయడం కొరకు \'అవును\' ప్రెస్ చేయండి । డెమో ప్రోటోకాల్ తో కంటిన్యూటీకి \'నో\' నొక్కండి ।</string>
     <string name="app_version_string">App Version - %1$s</string>
+    <string name="no_visit_created">No visit created</string>
 
 </resources>
