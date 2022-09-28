@@ -42,6 +42,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -2283,11 +2284,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-
+            String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + doctSp + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
@@ -3460,10 +3461,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        if(dbValue.startsWith("{")) {
+                        if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
                             parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                        }else{
+                        } else {
                             parseData(dbConceptID, dbValue);
                         }
                     } while (visitCursor.moveToNext());
@@ -3484,10 +3485,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    if(dbValue.startsWith("{")) {
+                    if (dbValue.startsWith("{")) {
                         AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
                         parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                    }else{
+                    } else {
                         parseData(dbConceptID, dbValue);
                     }
                 } while (encountercursor.moveToNext());
@@ -3571,6 +3572,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 diagnosisTextView.setText(diagnosisReturned);
                 //checkForDoctor();
+                if (LocaleHelper.isArabic(this)) {
+                    diagnosisTextView.setGravity(Gravity.END);
+                }
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
@@ -3587,6 +3591,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 prescriptionTextView.setText(rxReturned);
                 //checkForDoctor();
+                if (LocaleHelper.isArabic(this)) {
+                    prescriptionTextView.setGravity(Gravity.END);
+                }
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -3630,6 +3637,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
                 Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
                 //checkForDoctor();
+                if (LocaleHelper.isArabic(this)) {
+                    medicalAdviceTextView.setGravity(Gravity.END);
+                }
                 break;
             }
             case UuidDictionary.REQUESTED_TESTS: {
@@ -3640,6 +3650,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
+                }
+                if (LocaleHelper.isArabic(this)) {
+                    requestedTestsTextView.setGravity(Gravity.END);
                 }
                 requestedTestsTextView.setText(testsReturned);
                 //checkForDoctor();
@@ -3701,17 +3714,20 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             frameLayout_doctor.setVisibility(View.VISIBLE);
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
-
+            String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
-                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? doctSp : "") + "</span><br>" +
                     // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
-
+            if (LocaleHelper.isArabic(this)) {
+                doctorDetailStr = "<html dir=\"rtl\" lang=\"\"><body>" + doctorDetailStr + "</body></html>";
+                mDoctorName.setGravity(Gravity.END);
+            }
             mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
         }
     }
@@ -4197,10 +4213,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
-                        if(dbValue.startsWith("{")) {
+                        if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
                             parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                        }else{
+                        } else {
                             parseData(dbConceptID, dbValue);
                         }
                     } while (visitCursor.moveToNext());
@@ -4256,10 +4272,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
-                if(dbValue.startsWith("{")) {
+                if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
                     parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                }else{
+                } else {
                     parseData(dbConceptID, dbValue);
                 }
             } while (visitCursor.moveToNext());
@@ -4653,7 +4669,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // String docDigitallySign = "";
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
-
+            String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                     objClsDoctorDetails.getRegistrationNumber() : "";
 
@@ -4661,7 +4677,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                     "<br><span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
                             "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
-                            + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                            + " " + doctSp + "</span><br>" +
                             doctrRegistartionNum;
 
             Log.e("precs", "htmlpresc_doctor: " + Html.fromHtml(doctorDetailStr).toString());
