@@ -353,7 +353,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     private void loadFragment(Fragment fragment) {
         String tag = fragment.getClass().getSimpleName();
-        Log.d(TAG, "loadFragment: tag : "+tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);

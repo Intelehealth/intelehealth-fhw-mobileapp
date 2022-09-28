@@ -1,7 +1,9 @@
 package org.intelehealth.app.profile;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +21,12 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 
 import java.util.Objects;
 
@@ -30,7 +36,6 @@ public class MyProfileFragment_New extends Fragment {
     String[] textArray = {"+91", "+00", "+20", "+22"};
     Integer[] imageArray = {R.drawable.ui2_ic_country_flag_india, R.drawable.ic_flag_black_24dp,
             R.drawable.ic_account_box_black_24dp, R.drawable.ic_done_24dp};
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,13 +56,33 @@ public class MyProfileFragment_New extends Fragment {
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
 
-        //comment temoprary
+        ivBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+           /*     FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
+                fm.popBackStack();*/
+                Intent intent  =new Intent(getActivity(), HomeScreenActivity_New.class);
+                startActivity(intent);
+            }
+        });
+
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        bottomNav.setVisibility(View.GONE);
+        //commented temporary
      /*   RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIsInternet.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
         ivIsInternet.setLayoutParams(params);*/
 
         Spinner spinner = view.findViewById(R.id.spinner_countries_profile);
 
+        RelativeLayout layoutChangePassword = view.findViewById(R.id.view_change_password);
+        layoutChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity_New.class);
+                startActivity(intent);
+            }
+        });
         SpinnerAdapter adapter = new SpinnerAdapter(getActivity(), R.layout.spinner_value_layout, textArray, imageArray);
         spinner.setAdapter(adapter);
 

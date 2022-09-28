@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui2.onboarding;
+package org.intelehealth.app.onboarding;
 
 import android.content.Context;
 import android.content.Intent;
