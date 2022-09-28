@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_help_margin_top"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/layout_help_padding_start"
+            android:paddingEnd="@dimen/layout_help_padding_end"
+            android:paddingBottom="@dimen/layout_help_padding_bottom">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autotv_select_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                    android:drawablePadding="@dimen/find_patient_icon_padding"
+                    android:drawableTint="@color/iconTintGrayBottomNav"
+                    android:hint="@string/search_for_help"
+                    android:importantForAutofill="no"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size"
+                    app:endIconDrawable="@drawable/ui2_ic_chevron_down"
+                    app:endIconMode="custom"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <include
+                android:id="@+id/layout_buttons_options_help"
+                layout="@layout/ui2_button_help_options" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tv_most_searched_margin_top">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+                    android:text="@string/most_searched"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_more_videos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ui2_tv_bg_white_rounded"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:lineSpacingExtra="@dimen/tv_common_line_spacing2"
+                    android:paddingStart="@dimen/tv_searched_more_padding_start"
+                    android:paddingTop="@dimen/tv_searched_more_padding_top"
+                    android:paddingEnd="@dimen/tv_searched_more_padding_start"
+                    android:paddingBottom="@dimen/tv_searched_more_padding_top"
+                    android:text="@string/more"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_sub_info_text_size" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_most_searched_videos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/rv_help_videos_margin_top" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tv_faq_margin_top">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+                    android:text="@string/frequently_asked_ques"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_faq_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ui2_tv_bg_white_rounded"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:lineSpacingExtra="@dimen/tv_common_line_spacing2"
+                    android:paddingStart="4dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4dp"
+                    android:paddingBottom="2dp"
+                    android:text="@string/more"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_sub_info_text_size" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_faq1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/rv_help_faq_margin_top" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/fab_help_chat_margin_start"
+        android:layout_marginTop="@dimen/fab_help_chat_margin_top"
+        android:layout_marginEnd="@dimen/fab_help_chat_margin_end"
+        android:background="@color/colorPrimary1"
+        android:backgroundTint="@color/colorPrimary1"
+        android:contentDescription="@string/app_name"
+        android:elevation="0dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ui2_ic_help_chat_support"
+        app:elevation="0dp"
+        app:fabCustomSize="@dimen/fab_help_chat_custom_size"
+        app:maxImageSize="@dimen/fab_help_chat_max_size" />
+
+</RelativeLayout>

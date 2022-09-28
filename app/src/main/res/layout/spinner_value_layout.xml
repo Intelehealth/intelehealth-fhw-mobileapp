@@ -18,7 +18,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.2"
-        android:fontFamily="@font/dm_sans_regular"
         android:textSize="@dimen/common_button_text_size" />
 
 </LinearLayout><!--

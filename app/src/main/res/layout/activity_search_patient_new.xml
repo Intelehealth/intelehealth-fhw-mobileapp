@@ -86,7 +86,7 @@
         android:lineSpacingExtra="3sp"
         android:text="@string/search_hint_text"
         android:textSize="@dimen/fu_male_textsize"
-        android:visibility="gone"
+        android:visibility="visible"
         android:textAppearance="@style/search_hint_text"
         android:textColor="@null" />
 
@@ -94,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_relative"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
         android:layout_marginTop="@dimen/search_empty_margin_top">
 
@@ -117,7 +117,6 @@
                 android:layout_below="@+id/search_bg_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
-                android:fontFamily="@font/dm_sans_bold"
                 android:lineSpacingExtra="4sp"
                 android:text="@string/search_pat_not_found_txt"
                 android:textAppearance="@style/you_can_add"
@@ -163,7 +162,7 @@
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:listitem="@layout/search_listitem_layout" />
 
 </RelativeLayout>

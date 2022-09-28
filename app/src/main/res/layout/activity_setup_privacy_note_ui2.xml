@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui2.onboarding.SetupPrivacyNoteActivity"
+    tools:context=".ui2.onboarding.SetupPrivacyNoteActivity_New"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
@@ -33,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_ayu_icon"
         android:layout_marginTop="@dimen/setup_title_margin_top"
-        android:fontFamily="@font/dm_sans_regular"
         android:gravity="center"
         android:lineHeight="@dimen/setup_title_line_height"
         android:text="@string/hello_i_am_ayu"
@@ -46,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_hello_ayu"
         android:layout_marginTop="@dimen/setup_info_margin_top"
-        android:fontFamily="@font/dm_sans_regular"
         android:gravity="center"
         android:lineHeight="@dimen/setup_info_line_height"
         android:text="@string/ayu_intro"

@@ -40,7 +40,21 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-
+        <activity
+            android:name=".help.activities.FAQActivity_New"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".help.activities.MostSearchedVideosActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.forgotPasswordNew.ChangePasswordActivity_New"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
@@ -52,7 +66,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.NotificationActivity"
             android:exported="false" />
@@ -68,40 +81,43 @@
             android:exported="true"
             android:label="@string/title_follow_up"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".ui2.activities.TestDialogsUI2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".ui2.onboarding.PrivacyPolicyActivityNew"
+            android:name=".ui2.TestDialogsUI2Activity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.activities.HomeScreenActivityNew"
+            android:name=".ui2.onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.activities.LoginActivityNew"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-
-        </activity>
-        <activity
-            android:name=".ui2.activities.ResetPasswordActivity"
+            android:name=".ui2.onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.activities.ForgotPasswordOtpVerificationActivity"
+            android:name=".activities.homeActivity.HomeScreenActivity_New"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.loginActivity.LoginActivityNew"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.forgotPasswordNew.ResetPasswordActivity_New"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.activities.ForgotPasswordActivityNew"
+            android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -203,7 +219,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.vitalActivity.VitalsActivity"
             android:configChanges="uiMode"
@@ -293,24 +308,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.app.activities.homeActivity.HomeActivity" />
-
-            <intent-filter>
-                <action android:name="FCM_PLUGIN_HOME_ACTIVITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui2.onboarding.IntroScreensActivityNew"
+            android:name=".activities.IntroActivity.IntroScreensActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -318,10 +323,9 @@
             android:name=".activities.setupActivity.SetupActivityNew"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.SetupPrivacyNoteActivity"
+            android:name=".ui2.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />

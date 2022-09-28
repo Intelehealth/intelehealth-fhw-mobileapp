@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui2.onboarding.PrivacyPolicyActivityNew">
+    tools:context=".ui2.onboarding.PrivacyPolicyActivity_New">
 
     <ImageView
         android:id="@+id/iv_back_arrow_privacy"
@@ -11,7 +11,7 @@
         android:layout_height="@dimen/back_arrow_height"
         android:layout_marginStart="@dimen/back_arrow_margin_start"
         android:layout_marginTop="@dimen/back_arrow_margin_top"
-        android:src="@drawable/ui2_ic_arrow_right" />
+        android:src="@drawable/ui2_ic_arrow_back_new" />
 
     <TextView
         android:id="@+id/tv_title_privacy"
@@ -24,28 +24,43 @@
         android:text="@string/privacy_policy"
         android:textSize="@dimen/setup_privacy_screen_info" />
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/layout_button_privacy"
         android:layout_below="@+id/tv_title_privacy">
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_start"
-            android:layout_marginTop="@dimen/content_margin_top"
-            android:layout_toEndOf="@+id/iv_back_arrow_terms"
-            android:lineHeight="@dimen/content_line_height"
-            android:text="Not Complete Policy"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:scrollbars="vertical"
+            android:scrollbarSize="10dp"
+            android:fadeScrollbars="false"
+            android:layout_height="wrap_content">
 
-    </ScrollView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/content_margin_start"
+                android:layout_marginTop="@dimen/content_margin_top"
+                android:fontFamily="@font/lato_regular"
+                android:layout_toEndOf="@+id/iv_back_arrow_terms"
+                android:lineHeight="@dimen/content_line_height"
+                android:text="@string/privacy_policy_content"
+                android:textSize="14sp" />
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
 
     <LinearLayout
+        android:id="@+id/layout_button_privacy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="@dimen/buttons_layout_margin_bottom"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -58,7 +73,6 @@
             android:layout_marginEnd="@dimen/decline_button_margin_end"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg_disabled"
-            android:fontFamily="@font/dm_sans_regular"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/padding_15"
             android:text="@string/decline"
@@ -75,7 +89,6 @@
             android:layout_marginEnd="@dimen/accept_button_margin_end"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg"
-            android:fontFamily="@font/dm_sans_regular"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/padding_15"
             android:text="@string/accept_new"

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/layout_profile_padding">
+
+            <FrameLayout
+                android:layout_width="@dimen/iv_profile_drawer_width"
+                android:layout_height="@dimen/iv_profile_drawer_height"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/profilePic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:src="@drawable/ui2_dummy_profile_icon" />
+
+                <ImageView
+                    android:id="@+id/iv_camera"
+                    android:layout_width="@dimen/iv_camera_width"
+                    android:layout_height="@dimen/iv_camera_height"
+                    android:layout_gravity="bottom|right"
+                    android:src="@drawable/ui2_ic_camera_edit" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_user_points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/achievements_user_score_margin_top"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+                android:text="@string/change_photo"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/tv_pass_margin_start"
+                android:layout_marginEnd="@dimen/tv_pass_margin_end"
+                android:layout_marginTop="@dimen/tv_pass_margin_top">
+
+                <ImageView
+                    android:id="@+id/iv_icon1"
+                    android:layout_width="@dimen/iv_camera_width"
+                    android:layout_height="@dimen/iv_camera_height"
+                    android:src="@drawable/ui2_ic_icons8_forgot_password" />
+
+                <TextView
+                    android:id="@+id/tv_user_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/tv_change_pass_margin_start"
+                    android:layout_marginTop="@dimen/tv_change_pass_margin_top"
+                    android:layout_toEndOf="@+id/iv_icon1"
+                    android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+                    android:text="@string/change_password"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_info_text_size" />
+
+                <ImageView
+                    android:id="@+id/iv_icon2"
+                    android:layout_width="@dimen/iv_camera_width"
+                    android:layout_height="@dimen/iv_camera_height"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ui2_ic_chevron_right" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_username_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:text="@string/username"
+                android:letterSpacing="0.02"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:hint="@string/enter_username1"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.02"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:text="@string/first_name"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:hint="@string/enter_first_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:letterSpacing="0.02"
+                android:text="@string/middle_name"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:hint="@string/enter_middle_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:text="@string/last_name"
+                android:letterSpacing="0.02"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:hint="@string/enter_last_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:text="@string/gender"
+                android:letterSpacing="0.02"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                    android:layout_weight="1"
+                    android:button="@drawable/ui2_ic_circle"
+                    android:drawableEnd="@drawable/ui2_ic_icons8_user_male_1"
+                    android:drawablePadding="@dimen/radio_gender_icon_padding"
+                    android:padding="@dimen/radio_gender_padding"
+                    android:paddingEnd="@dimen/radio_gender_padding_end"
+                    android:text="@string/male"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_info_text_size" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:button="@drawable/ui2_ic_circle"
+                    android:drawableEnd="@drawable/ui2_ic_icons8_female_user_1"
+                    android:drawablePadding="@dimen/radio_gender_icon_padding"
+                    android:padding="@dimen/radio_gender_padding"
+                    android:paddingEnd="@dimen/radio_gender_padding_end"
+                    android:text="@string/female"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_info_text_size"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:button="@drawable/ui2_ic_circle"
+                    android:drawableEnd="@drawable/ui2_ic_frame_2608678"
+                    android:drawablePadding="@dimen/radio_gender_icon_padding"
+                    android:padding="@dimen/radio_gender_padding"
+                    android:paddingEnd="@dimen/radio_gender_padding_end"
+                    android:text="@string/other"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_info_text_size" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/date_of_birth"
+                    android:letterSpacing="0.02"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/age"
+                    android:layout_marginStart="@dimen/dob_age_margin_start"
+                    android:letterSpacing="0.02"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:drawableEnd="@drawable/ui2_ic_calendar"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:paddingStart="@dimen/dob_date_padding_start"
+                    android:paddingEnd="@dimen/dob_date_padding_end"
+                    android:text="May 10, 2022"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_info_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dob_age_margin_start"
+                    android:layout_weight="0.4"
+                    android:drawableEnd="@drawable/ui2_ic_calendar"
+                    android:drawableTint="@color/transparent"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:paddingStart="@dimen/dob_date_padding_start"
+                    android:text="28"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/common_info_text_size" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:text="@string/phone_number"
+                android:textColor="@color/textColorGray"
+                android:letterSpacing="0.02"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layout_spinner_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textview_mobile_no_note"
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                    android:layout_marginEnd="@dimen/spinner_countries_margin_end"
+                    android:background="@drawable/ui2_spinner_background">
+
+                    <Spinner
+                        android:id="@+id/spinner_countries_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/spinner_countries_margin" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                    android:layout_toEndOf="@+id/layout_spinner_bg"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edittext_mobile_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ui2_background_input_field_new"
+                        android:hint="@string/enter_phone_number"
+                        android:imeOptions="actionNext"
+                        android:lineSpacingExtra="3sp"
+                        android:paddingStart="@dimen/common_edittext_padding_left"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingEnd="@dimen/common_edittext_padding_right"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                        android:singleLine="true"
+                        android:textSize="@dimen/common_hint_text_size" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:text="@string/email"
+                android:letterSpacing="0.02"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/common_label_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:hint="@string/enter_your_email"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_setup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_privacy_notice_link"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:paddingStart="@dimen/common_button_padding_left"
+                android:paddingTop="@dimen/common_button_padding_top"
+                android:paddingEnd="@dimen/common_button_padding_right"
+                android:paddingBottom="@dimen/common_button_padding_bottom"
+                android:text="@string/save"
+                android:textSize="@dimen/common_button_text_size" />
+        </LinearLayout>
+
+</ScrollView>

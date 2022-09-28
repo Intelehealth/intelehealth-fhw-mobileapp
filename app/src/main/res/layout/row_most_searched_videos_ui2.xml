@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginEnd="@dimen/rv_videos_item_margin_end"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/rv_videos_item_card_width"
+        android:layout_height="@dimen/rv_videos_item_card_height"
+        app:cardCornerRadius="@dimen/common_card_corner_radius"
+        app:cardElevation="0dp"
+        android:elevation="0dp"
+        android:background="@color/textColorGray"
+        android:backgroundTint="@color/iconTintGrayBottomNav" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/rv_videos_item_tv_margin_top"
+        android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+        android:text="How to register new a patient?"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/common_label_text_size" />
+
+</LinearLayout>
