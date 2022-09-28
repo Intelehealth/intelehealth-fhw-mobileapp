@@ -113,7 +113,7 @@
                                                 android:ems="10"
                                                 android:includeFontPadding="false"
                                                 android:textSize="16sp"
-                                                android:text="Locations"
+                                                android:text="@string/location"
                                                 android:fontFamily="@font/lato_bold" />
 
                                             <Space

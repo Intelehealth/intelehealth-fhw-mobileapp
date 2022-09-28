@@ -693,36 +693,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
             dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String dob_text = en__te_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String dob_text = en__mr_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String dob_text = en__as_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String dob_text = en__ml_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String dob_text = en__kn_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String dob_text = en__ru_dob(dob); //to show text of English into Russian...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-            dobView.setText(dob_text);
         } else {
             dobView.setText(dob);
         }
@@ -731,7 +701,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
             genderView.setVisibility(View.GONE);
         } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 if (patient_new.getGender().equalsIgnoreCase("M")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
@@ -739,87 +709,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else {
+            }  else {
                 genderView.setText(patient_new.getGender());
             }
 

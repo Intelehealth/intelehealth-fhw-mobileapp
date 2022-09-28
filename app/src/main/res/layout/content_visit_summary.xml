@@ -813,6 +813,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -850,6 +851,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -905,6 +907,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -957,6 +960,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -1009,6 +1013,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textAlignment="viewStart"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -1115,6 +1120,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
+                            android:textAlignment="viewStart"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -1171,6 +1177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/title_doctor"
+                        android:textAlignment="viewStart"
                         android:padding="@dimen/padding_card"
                         android:textSize="16sp" />
 
