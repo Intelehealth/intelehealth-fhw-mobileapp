@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fu_cardview_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,9 +9,10 @@
     android:layout_marginHorizontal="@dimen/card_padding"
     android:layout_marginTop="@dimen/card_padding"
     android:layout_marginBottom="@dimen/card_padding"
-    app:cardElevation="@dimen/card_padding" >
+    app:cardElevation="@dimen/card_padding">
 
     <LinearLayout
+        android:id="@+id/scroll_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,10 +21,10 @@
         <!-- Todo: Adjust weight as it is the imp factor here to display delete icon-->
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/frame_10014"
+        android:id="@+id/scroll_relative"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="1.5"
         android:layout_margin="@dimen/fu_margin_start">
 
         <ImageView
@@ -66,9 +67,12 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/delete_relative"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_weight="0.5"
         android:layout_gravity="end"
         android:background="#FFE8E8" >
 

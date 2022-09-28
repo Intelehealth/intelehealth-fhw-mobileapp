@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,26 +57,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         TextView search_name;
         LinearLayout scroll_layout;
         CardView fu_cardview_item;
-        RelativeLayout delete_relative;
+        RelativeLayout delete_relative, scroll_relative;
+        ImageView profile;
 
         public MyHolderView(@NonNull View itemView) {
             super(itemView);
             search_name = itemView.findViewById(R.id.search_name);
             delete_relative = itemView.findViewById(R.id.delete_relative);
             scroll_layout = itemView.findViewById(R.id.scroll_layout);
+            scroll_relative = itemView.findViewById(R.id.scroll_relative);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
+            profile = itemView.findViewById(R.id.profile);
 
             scroll_layout.setOnTouchListener(new OnSwipeTouchListener(context) {
                 @Override
                 public void onSwipeLeft() {
                     super.onSwipeLeft();
                     delete_relative.setVisibility(View.VISIBLE);
-//                    Toast.makeText(MainActivity.this, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show();
+                    scroll_relative.setTranslationX(-100);
+//                    user is scroll towards left side from right side.
                 }
                 @Override
                 public void onSwipeRight() {
                     super.onSwipeRight();
                     delete_relative.setVisibility(View.GONE);
+                    scroll_relative.setTranslationX(10);
 //                    Toast.makeText(MainActivity.this, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show();
                 }
             });
