@@ -42,6 +42,7 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <RelativeLayout
+                android:id="@+id/view_change_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/tv_pass_margin_start"
@@ -58,14 +59,14 @@
                     android:id="@+id/tv_user_points"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginStart="@dimen/tv_change_pass_margin_start"
                     android:layout_marginTop="@dimen/tv_change_pass_margin_top"
                     android:layout_toEndOf="@+id/iv_icon1"
                     android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
                     android:text="@string/change_password"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/common_info_text_size" />
+                    android:textSize="@dimen/common_info_text_size"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/iv_icon2"
