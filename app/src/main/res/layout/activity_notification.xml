@@ -127,6 +127,7 @@
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
+            android:layout_marginStart="@dimen/notifi_arrow_margin_end"
             android:src="@drawable/arrow_right_icon8"
             android:layout_centerVertical="true"/>
 
@@ -195,7 +196,21 @@
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+            <TextView
+                android:id="@+id/today_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relative_today"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:padding="@dimen/card_padding"
+                android:text="No prescription"
+                android:visibility="visible"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_male_textsize" />
+
+            <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_today"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -203,7 +218,8 @@
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
-        tools:itemCount="3"
+        android:layout_marginBottom="@dimen/toolbar_margin_left"
+        tools:itemCount="0"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/notification_list_item" />
 
@@ -218,16 +234,31 @@
         android:textColor="@color/header_title_color"
         android:textSize="@dimen/fu_male_textsize" />
 
-    <androidx.recyclerview.widget.RecyclerView
+            <TextView
+                android:id="@+id/yesterday_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_yesterday"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/card_padding"
+                android:layout_marginTop="@dimen/fu_card_margin_updown"
+                android:text="No prescription"
+                android:visibility="visible"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_male_textsize" />
+
+            <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_yesterday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_yesterday"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
+        android:layout_marginBottom="@dimen/toolbar_margin_left"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
-        tools:itemCount="1"
+        tools:itemCount="0"
         tools:listitem="@layout/notification_list_item" />
 
         </RelativeLayout>

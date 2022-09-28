@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.app.R;
@@ -37,8 +38,9 @@ import java.util.Locale;
 public class NotificationActivity extends AppCompatActivity {
     private SessionManager sessionManager;
     private SQLiteDatabase db;
-    private ImageButton backbtn, clearAll_btn, refresh, filter;
+    private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;
     private RecyclerView recycler_today, recycler_yesterday;
+    private TextView notifi_header_title, today_nodata, yesterday_nodata;
     private NotificationAdapter adapter;
     public static final String TAG = NotificationActivity.class.getSimpleName();
     private FrameLayout filter_framelayout;
@@ -70,23 +72,33 @@ public class NotificationActivity extends AppCompatActivity {
         }
 
         initViews();
+        viewsActions();
         clickListeners();
+    }
+
+    private void viewsActions() {
+        todays_Presc_notification();
+        yesterdays_Presc_notification();
+
+        int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
+        notifi_header_title.setText(getString(R.string.five_presc_received,total_presc_count));
     }
 
     private void initViews() {
         backbtn = findViewById(R.id.backbtn);
         clearAll_btn = findViewById(R.id.clearAll_btn);
+        arrow_right = findViewById(R.id.arrow_right);
+        notifi_header_title = findViewById(R.id.notifi_header_title);
         refresh = findViewById(R.id.refresh);
         filter = findViewById(R.id.filter);
         recycler_today = findViewById(R.id.recycler_today);
         recycler_yesterday = findViewById(R.id.recycler_yesterday);
         filter_framelayout = findViewById(R.id.filter_framelayout);
+        today_nodata = findViewById(R.id.today_nodata);
+        yesterday_nodata = findViewById(R.id.yesterday_nodata);
     }
 
     private void clickListeners() {
-        todays_Presc_notification();
-        yesterdays_Presc_notification();
-
         backbtn.setOnClickListener(v -> {
             finish();
         });
@@ -94,6 +106,11 @@ public class NotificationActivity extends AppCompatActivity {
         clearAll_btn.setOnClickListener(v -> {
             // clears the recyclerview for both today and yesterday.
             todayPresc_list.clear();
+            yesterdayPresc_list.clear();
+
+            today_nodata.setVisibility(View.VISIBLE);
+            yesterday_nodata.setVisibility(View.VISIBLE);
+
             adapter.notifyDataSetChanged();
         });
 
@@ -112,6 +129,15 @@ public class NotificationActivity extends AppCompatActivity {
                 filter_framelayout.setVisibility(View.VISIBLE);
         });
 
+        arrow_right.setOnClickListener(v -> {
+            // call api and pass mobile no and presc link so that this link can be passed to all the users.
+            apicall_tosend_presclink();
+        });
+
+    }
+
+    private void apicall_tosend_presclink() {
+        // TODO: need to implement this later.
     }
 
     private void todays_Presc_notification() {
@@ -122,8 +148,15 @@ public class NotificationActivity extends AppCompatActivity {
         Log.v("Notifi_Activity", "todaysDate: " + currentDate);
 
         todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
-        adapter = new NotificationAdapter(this, todayPresc_list);
-        recycler_today.setAdapter(adapter);
+        if (todayPresc_list.size() < 0) {
+            today_nodata.setVisibility(View.VISIBLE);
+        }
+        else {
+            today_nodata.setVisibility(View.GONE);
+            adapter = new NotificationAdapter(this, todayPresc_list);
+            recycler_today.setAdapter(adapter);
+        }
+
     }
 
     private void yesterdays_Presc_notification() {
@@ -135,8 +168,15 @@ public class NotificationActivity extends AppCompatActivity {
         Log.v("Notifi_Activity", "yesterdaysDate: " + yesterdayDate);
 
         yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
-        adapter = new NotificationAdapter(this, yesterdayPresc_list);
-        recycler_yesterday.setAdapter(adapter);
+        if (yesterdayPresc_list.size() < 0) {
+            yesterday_nodata.setVisibility(View.VISIBLE);
+        }
+        else {
+            yesterday_nodata.setVisibility(View.GONE);
+            adapter = new NotificationAdapter(this, yesterdayPresc_list);
+            recycler_yesterday.setAdapter(adapter);
+        }
+
     }
 
 }
