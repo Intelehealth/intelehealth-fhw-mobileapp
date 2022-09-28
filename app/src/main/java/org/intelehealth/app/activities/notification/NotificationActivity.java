@@ -35,7 +35,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity implements NotificationInterface{
     private SessionManager sessionManager;
     private SQLiteDatabase db;
     private ImageButton backbtn, clearAll_btn, refresh, filter, arrow_right;
@@ -179,4 +179,16 @@ public class NotificationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void deleteItem(List<PatientDTO> patientDTOList, int position) {
+        patientDTOList.remove(position);
+//        if (patientDTOList.size() < 0) {
+//            today_nodata.setVisibility(View.VISIBLE);
+//            yesterday_nodata.setVisibility(View.VISIBLE);
+//        }
+//        else {
+//            today_nodata.setVisibility(View.GONE);
+//            yesterday_nodata.setVisibility(View.GONE);
+//        }
+    }
 }

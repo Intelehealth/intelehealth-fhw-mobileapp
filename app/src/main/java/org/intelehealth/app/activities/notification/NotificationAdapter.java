@@ -26,6 +26,7 @@ import java.util.List;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolderView> {
     private Context context;
     List<PatientDTO> patientDTOList;
+    NotificationInterface notificationInterface = new NotificationActivity();
 
     public NotificationAdapter(Context context, List<PatientDTO> patientDTOList) {
         this.context = context;
@@ -45,6 +46,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         PatientDTO model = patientDTOList.get(position);
         if (model != null) {
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname() + "\'s prescription was received!");
+
+            holder.delete_imgview.setOnClickListener(v -> {
+                notificationInterface.deleteItem(patientDTOList, position);
+                notifyDataSetChanged();
+            });
         }
     }
 
@@ -58,7 +64,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         LinearLayout scroll_layout;
         CardView fu_cardview_item;
         RelativeLayout delete_relative, scroll_relative;
-        ImageView profile;
+        ImageView delete_imgview;
 
         public MyHolderView(@NonNull View itemView) {
             super(itemView);
@@ -66,8 +72,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             delete_relative = itemView.findViewById(R.id.delete_relative);
             scroll_layout = itemView.findViewById(R.id.scroll_layout);
             scroll_relative = itemView.findViewById(R.id.scroll_relative);
-            fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
-            profile = itemView.findViewById(R.id.profile);
+            delete_imgview = itemView.findViewById(R.id.delete_imgview);
 
             scroll_layout.setOnTouchListener(new OnSwipeTouchListener(context) {
                 @Override
