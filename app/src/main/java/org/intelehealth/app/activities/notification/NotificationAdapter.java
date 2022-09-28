@@ -4,11 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.OnSwipeTouchListener;
+
 import java.util.List;
 
 /**
@@ -49,10 +54,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class MyHolderView extends RecyclerView.ViewHolder {
         TextView search_name;
+        LinearLayout scroll_layout;
+        CardView fu_cardview_item;
+        RelativeLayout delete_relative;
 
         public MyHolderView(@NonNull View itemView) {
             super(itemView);
             search_name = itemView.findViewById(R.id.search_name);
+            delete_relative = itemView.findViewById(R.id.delete_relative);
+            scroll_layout = itemView.findViewById(R.id.scroll_layout);
+            fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
+
+            scroll_layout.setOnTouchListener(new OnSwipeTouchListener(context) {
+                @Override
+                public void onSwipeLeft() {
+                    super.onSwipeLeft();
+                    delete_relative.setVisibility(View.VISIBLE);
+//                    Toast.makeText(MainActivity.this, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onSwipeRight() {
+                    super.onSwipeRight();
+                    delete_relative.setVisibility(View.GONE);
+//                    Toast.makeText(MainActivity.this, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
