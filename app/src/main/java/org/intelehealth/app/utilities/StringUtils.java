@@ -3330,65 +3330,46 @@ public final class StringUtils {
 
     public static String getTranslatedDays(String val, String locale) {
 
-        if (locale.equalsIgnoreCase("ru")) {
+        if (locale.equalsIgnoreCase("ar")) {
             switch (val) {
                 case "Sunday":
-                    val = "Воскресенье";
+                    val = "الأحد";
                     break;
                 case "Monday":
-                    val = "понедельник";
+                    val = "الاثنين";
                     break;
                 case "Tuesday":
-                    val = "вторник";
+                    val = "يوم الثلاثاء";
                     break;
                 case "Wednesday":
-                    val = "среда";
+                    val = "الأربعاء";
                     break;
-
                 case "Thursday":
-                    val = "Четверг";
+                    val = "يوم الخميس";
                     break;
                 case "Friday":
-                    val = "Пятница";
+                    val = "جمعة";
                     break;
                 case "Saturday":
-                    val = "Суббота";
+                    val = "السبت";
                     break;
                 default:
                     return val;
             }
-
-        } else if (locale.equalsIgnoreCase("mr")) {
-            switch (val) {
-                case "Sunday":
-                    val = "रविवार";
-                    break;
-                case "Monday":
-                    val = "सोमवार";
-                    break;
-                case "Tuesday":
-                    val = "मंगळवार";
-                    break;
-                case "Wednesday":
-                    val = "बुधवार";
-                    break;
-                case "Thursday":
-                    val = "गुरुवार";
-                    break;
-                case "Friday":
-                    val = "शुक्रवार";
-                    break;
-                case "Saturday":
-                    val = "शनिवार";
-                    break;
-                default:
-                    return val;
-            }
-
         }
 
         return val;
     }
+
+    public static String getTranslatedSlot(String val, String locale) {
+        if (locale.equalsIgnoreCase("ar")) {
+            if(val.contains("AM"))
+                val = val.replaceAll("AM","ص");
+            if(val.contains("PM"))
+                val = val.replaceAll("PM"," م");
+            }
+        return val;
+        }
 
     public static String getAppointmentBookStatus(String val, String locale) {
         if (locale.equalsIgnoreCase("ar")) {

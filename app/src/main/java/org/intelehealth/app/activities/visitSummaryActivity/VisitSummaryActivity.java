@@ -4520,7 +4520,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
                                         org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
                                         mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
-                                        mAppointmentDetailsResponse.getData().getSlotTime()
+                                        org.intelehealth.app.utilities.StringUtils.getTranslatedSlot(mAppointmentDetailsResponse.getData().getSlotTime(), new SessionManager(VisitSummaryActivity.this).getAppLanguage())
                                 );
 
                             } catch (Exception e) {
