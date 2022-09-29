@@ -648,41 +648,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
             speciality_spinner.setEnabled(false);
 
         //spinner is being populated with the speciality values...
-        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+//        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
 
-        List<String> items = providerAttributeLIstDAO.getAllValues();
-        if (items != null) //According to ticket MHM-124,129 the three specialities are no longer required and need to be removed: By Nishita
-        {
-            if (items.contains("MSF MD")) {
-                items.remove(items.indexOf("MSF MD"));
-            }
-            if (items.contains("Doctor not needed")) {
-                items.remove(items.indexOf("Doctor not needed"));
-            }
-            if (items.contains("All")) {
-                items.remove(items.indexOf("All"));
-            }
-        }
-        Log.d("specc", "spec: " + visitUuid);
+//        List<String> items = providerAttributeLIstDAO.getAllValues();
+//        if (items != null) //According to ticket MHM-124,129 the three specialities are no longer required and need to be removed: By Nishita
+//        {
+//            if (items.contains("MSF MD")) {
+//                items.remove(items.indexOf("MSF MD"));
+//            }
+//            if (items.contains("Doctor not needed")) {
+//                items.remove(items.indexOf("Doctor not needed"));
+//            }
+//            if (items.contains("All")) {
+//                items.remove(items.indexOf("All"));
+//            }
+//        }
+//        Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
-        if (items != null) {
-            items.add(0, "Select Specialization");
-            stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item, items);
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        } else {
-            stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item,
-                                    getResources().getStringArray(R.array.speciality_values));
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }
+//        if (items != null) {
+//            items.add(0, "Select Specialization");
+//            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//            speciality_spinner.setAdapter(stringArrayAdapter);
+//        } else {
+        stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
+        speciality_spinner.setAdapter(stringArrayAdapter);
+//        }
 
 
         if (special_value != null) {

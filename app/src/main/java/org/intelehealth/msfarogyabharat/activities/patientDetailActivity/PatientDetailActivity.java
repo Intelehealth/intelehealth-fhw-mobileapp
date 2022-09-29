@@ -1768,7 +1768,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    new AlertDialog.Builder(PatientDetailActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                    Toast.makeText(PatientDetailActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+//                    if (!PatientDetailActivity.this.isDestroyed())
+//                        new AlertDialog.Builder(PatientDetailActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
                 }
             });
             onBackPressed();

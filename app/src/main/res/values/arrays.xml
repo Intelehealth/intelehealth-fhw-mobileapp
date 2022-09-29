@@ -2,36 +2,37 @@
 
 
     <string-array name="language_names">
-<!--        <item>Hindi</item>-->
+        <!--        <item>Hindi</item>-->
         <item>English</item>
-<!--        <item>Marathi</item>-->
-<!--        <item>Kannada</item>-->
-<!--        <item>Gujarati</item>-->
-<!--        <item>Odiya</item>-->
-<!--        <item>Assamese</item>-->
-<!--        <item>Tamil</item>-->
-<!--        <item>Telugu</item>-->
-<!--        <item>Bengali</item>-->
-<!--        <item>Malyalam</item>-->
+        <!--        <item>Marathi</item>-->
+        <!--        <item>Kannada</item>-->
+        <!--        <item>Gujarati</item>-->
+        <!--        <item>Odiya</item>-->
+        <!--        <item>Assamese</item>-->
+        <!--        <item>Tamil</item>-->
+        <!--        <item>Telugu</item>-->
+        <!--        <item>Bengali</item>-->
+        <!--        <item>Malyalam</item>-->
     </string-array>
 
     <string-array name="language_values">
-<!--        <item>hi</item>-->
+        <!--        <item>hi</item>-->
         <item>en</item>
-<!--        <item>mr</item>-->
-<!--        <item>kn</item>-->
-<!--        <item>gu</item>-->
-<!--        <item>or</item>-->
-<!--        <item>as</item>-->
-<!--        <item>ta</item>-->
-<!--        <item>te</item>-->
-<!--        <item>bn</item>-->
-<!--        <item>ml</item>-->
+        <!--        <item>mr</item>-->
+        <!--        <item>kn</item>-->
+        <!--        <item>gu</item>-->
+        <!--        <item>or</item>-->
+        <!--        <item>as</item>-->
+        <!--        <item>ta</item>-->
+        <!--        <item>te</item>-->
+        <!--        <item>bn</item>-->
+        <!--        <item>ml</item>-->
     </string-array>
 
     <string-array name="speciality_values">
         <item>Select Specialization</item>
-        <item>General Physician</item>
+        <item>Dietician</item>
+        <item>Diabetes</item>
     </string-array>
 
     <string-array name="pref_example_list_titles">
@@ -451,7 +452,7 @@
         <item>[Describe]</item>
     </string-array>
 
-<!--    Hindi Occupation-->
+    <!--    Hindi Occupation-->
     <string-array name="occupation_spinner_hi">
         <item>चुनते हैं</item>
         <item>जवाब देने के लिए मना कर दिया</item>
