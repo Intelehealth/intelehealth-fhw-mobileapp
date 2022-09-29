@@ -26,11 +26,12 @@ import java.util.List;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolderView> {
     private Context context;
     List<PatientDTO> patientDTOList;
-    NotificationInterface notificationInterface = new NotificationActivity();
+    private NotificationInterface anInterface;
 
-    public NotificationAdapter(Context context, List<PatientDTO> patientDTOList) {
+    public NotificationAdapter(Context context, List<PatientDTO> patientDTOList, NotificationInterface anInterface) {
         this.context = context;
         this.patientDTOList = patientDTOList;
+        this.anInterface = anInterface;
     }
 
     @NonNull
@@ -48,7 +49,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname() + "\'s prescription was received!");
 
             holder.delete_imgview.setOnClickListener(v -> {
-                notificationInterface.deleteItem(patientDTOList, position);
+                anInterface.deleteItem(patientDTOList, position);
                 notifyDataSetChanged();
             });
         }

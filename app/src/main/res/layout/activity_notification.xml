@@ -205,7 +205,6 @@
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:padding="@dimen/card_padding"
                 android:text="No prescription"
-                android:visibility="visible"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />
@@ -243,7 +242,6 @@
                 android:padding="@dimen/card_padding"
                 android:layout_marginTop="@dimen/fu_card_margin_updown"
                 android:text="No prescription"
-                android:visibility="visible"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize" />

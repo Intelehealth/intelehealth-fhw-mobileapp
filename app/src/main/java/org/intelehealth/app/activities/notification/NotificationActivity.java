@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.check_visit_is_VISI
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -148,12 +149,12 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         Log.v("Notifi_Activity", "todaysDate: " + currentDate);
 
         todayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(currentDate);
-        if (todayPresc_list.size() < 0) {
+        if (todayPresc_list.size() <= 0) {
             today_nodata.setVisibility(View.VISIBLE);
         }
         else {
             today_nodata.setVisibility(View.GONE);
-            adapter = new NotificationAdapter(this, todayPresc_list);
+            adapter = new NotificationAdapter(this, todayPresc_list, this);
             recycler_today.setAdapter(adapter);
         }
 
@@ -168,27 +169,26 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         Log.v("Notifi_Activity", "yesterdaysDate: " + yesterdayDate);
 
         yesterdayPresc_list = check_visit_is_VISIT_COMPLETE_ENC(yesterdayDate);
-        if (yesterdayPresc_list.size() < 0) {
+        if (yesterdayPresc_list.size() <= 0) {
             yesterday_nodata.setVisibility(View.VISIBLE);
         }
         else {
             yesterday_nodata.setVisibility(View.GONE);
-            adapter = new NotificationAdapter(this, yesterdayPresc_list);
+            adapter = new NotificationAdapter(this, yesterdayPresc_list, this);
             recycler_yesterday.setAdapter(adapter);
         }
-
     }
 
     @Override
     public void deleteItem(List<PatientDTO> patientDTOList, int position) {
         patientDTOList.remove(position);
-//        if (patientDTOList.size() < 0) {
-//            today_nodata.setVisibility(View.VISIBLE);
-//            yesterday_nodata.setVisibility(View.VISIBLE);
-//        }
-//        else {
-//            today_nodata.setVisibility(View.GONE);
-//            yesterday_nodata.setVisibility(View.GONE);
-//        }
+        if (patientDTOList.size() <= 0) {
+            today_nodata.setVisibility(View.VISIBLE);
+            yesterday_nodata.setVisibility(View.VISIBLE);
+        }
+        else {
+            today_nodata.setVisibility(View.GONE);
+            yesterday_nodata.setVisibility(View.GONE);
+        }
     }
 }
