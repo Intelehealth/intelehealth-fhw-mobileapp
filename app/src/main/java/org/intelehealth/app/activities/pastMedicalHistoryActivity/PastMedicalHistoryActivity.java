@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
-
+    JSONObject jsonObject = new JSONObject();
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
 
@@ -157,7 +158,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
             if (edit_PatHist == null)
-                new_result = getPastMedicalVisitData();
+                new_result = getValue(getPastMedicalVisitData(), sessionManager.getAppLanguage());
         }
 
         boolean past = sessionManager.isReturning();
@@ -179,7 +180,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
             Log.v(TAG, new_result);
 
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 textView.setText(Html.fromHtml(new_result));
             } else {
                 textView.setText(Html.fromHtml(new_result));
@@ -342,6 +343,17 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         });*/
     }
 
+    public String getValue(String value, String language) {
+        try {
+            jsonObject = new JSONObject(value);
+            if (TextUtils.isEmpty(language))
+                return jsonObject.optString("en");
+            else
+                return jsonObject.optString(language);
+        } catch (Exception e) {
+            return value;
+        }
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {

@@ -111,6 +111,7 @@ public class SurveyCommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void showUserInputBox(final View tempView, final int position, final String paramDateType) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         EditText dataEditText = tempView.findViewById(R.id.etvData);
+        dataEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         paramNameTextView.setText(LocaleHelper.isArabic(mContext) ? mItemList.get(position).getQuestionAr() : mItemList.get(position).getQuestion());
         if (mItemList.get(position).getAnswerValue() != null) {
             dataEditText.setText(String.valueOf(LocaleHelper.isArabic(mContext) ? mItemList.get(position).getAnswerValue().getArValue() : mItemList.get(position).getAnswerValue().getEnValue()));

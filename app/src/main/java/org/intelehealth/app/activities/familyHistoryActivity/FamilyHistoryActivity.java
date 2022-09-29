@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,7 +83,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
-
+    JSONObject jsonObject = new JSONObject();
     ArrayList<String> physicalExams;
     String mFileName = "famHist.json";
     int lastExpandedPosition = -1;
@@ -143,7 +144,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
             if (edit_FamHist == null)
-                new_result = getFamilyHistoryVisitData();
+                new_result = getValue(getFamilyHistoryVisitData(), sessionManager.getAppLanguage());
         }
 
         boolean past = sessionManager.isReturning();
@@ -623,6 +624,18 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 .replace("Do you have a family history of any of the following?", "هل لديك قصة عائلية لأي من الأمراض التالية ؟");
 
         return text;
+    }
+
+    public String getValue(String value, String language) {
+        try {
+            jsonObject = new JSONObject(value);
+            if (TextUtils.isEmpty(language))
+                return jsonObject.optString("en");
+            else
+                return jsonObject.optString(language);
+        } catch (Exception e) {
+            return value;
+        }
     }
 }
 
