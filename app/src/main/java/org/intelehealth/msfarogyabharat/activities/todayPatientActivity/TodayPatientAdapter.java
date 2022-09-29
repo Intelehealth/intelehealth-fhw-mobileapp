@@ -99,14 +99,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             }
         });
 
-        for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (todayPatientModelList.get(position).getHasPrescription()) {
-                holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
-                holder.ivPriscription.setTag("1");
-            }
+//        for (int i = 0; i < listPatientUUID.size(); i++) {
+        if (todayPatientModelList.get(position).getHasPrescription()) {
+            holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
+            holder.ivPriscription.setTag("1");
         }
-
-
+//        }
     }
 
     @Override
