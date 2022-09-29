@@ -49,8 +49,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname() + "\'s prescription was received!");
 
             holder.delete_imgview.setOnClickListener(v -> {
-                anInterface.deleteItem(patientDTOList, position);
-                notifyDataSetChanged();
+                anInterface.deleteItem(patientDTOList, holder.getLayoutPosition());
+                notifyItemRemoved(holder.getLayoutPosition());
             });
         }
     }
@@ -75,7 +75,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             scroll_relative = itemView.findViewById(R.id.scroll_relative);
             delete_imgview = itemView.findViewById(R.id.delete_imgview);
 
-            scroll_layout.setOnTouchListener(new OnSwipeTouchListener(context) {
+            search_name.setOnTouchListener(new OnSwipeTouchListener(context) {
                 @Override
                 public void onSwipeLeft() {
                     super.onSwipeLeft();
