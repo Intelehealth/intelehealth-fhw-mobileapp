@@ -316,20 +316,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
-
                 if (isNetworkConnected()) {
                     Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+                    executorService.execute(() -> runOnUiThread(() -> syncUtils.syncForeground("home")));
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
-
-                syncUtils.syncForeground("home");
-//                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
-//                }
             }
         });
+
         if (sessionManager.isFirstTimeLaunched()) {
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
@@ -734,6 +729,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
 
+        executorService.shutdown();
         SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
@@ -1054,6 +1050,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executorService.shutdownNow();
+        executorService.shutdown();
     }
 }
