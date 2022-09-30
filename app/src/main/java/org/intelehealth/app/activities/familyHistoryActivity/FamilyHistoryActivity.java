@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.familyHistoryActivity;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -44,6 +46,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.utilities.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -501,19 +504,21 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     public boolean insertDb(String value) {
-        ObsDAO obsDAO = new ObsDAO();
-        ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-        obsDTO.setEncounteruuid(encounterAdultIntials);
-        obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
         boolean isInserted = false;
-        try {
-            isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
+        if (!value.isEmpty() && !value.equalsIgnoreCase("") && !value.equalsIgnoreCase(" ")) {
+            ObsDAO obsDAO = new ObsDAO();
+            ObsDTO obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
+            try {
+                isInserted = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
-
         return isInserted;
     }
 
@@ -530,27 +535,32 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private void updateDatabase(String string) {
 
-        ObsDTO obsDTO = new ObsDTO();
-        ObsDAO obsDAO = new ObsDAO();
-        try {
-            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-            obsDTO.setEncounteruuid(encounterAdultIntials);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
-
-            obsDAO.updateObs(obsDTO);
-
-        } catch (DAOException dao) {
-            FirebaseCrashlytics.getInstance().recordException(dao);
+        //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
+        if (!string.isEmpty() && !string.equalsIgnoreCase("") && !string.equalsIgnoreCase(" ")) {
+            ObsDTO obsDTO = new ObsDTO();
+            ObsDAO obsDAO = new ObsDAO();
+            try {
+                obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                obsDTO.setEncounteruuid(encounterAdultIntials);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(string);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
+                obsDAO.updateObs(obsDTO);
+            } catch (DAOException dao) {
+                FirebaseCrashlytics.getInstance().recordException(dao);
+            }
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+                encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
-
-        EncounterDAO encounterDAO = new EncounterDAO();
-        try {
-            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
-            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        else
+        {
+            //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
+            //update previous obs value's void = 1
         }
     }
 
