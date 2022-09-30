@@ -26,6 +26,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.models.FollowUpModel;
 import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
+import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
@@ -137,6 +138,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     Logger.logE("firstquery", "exception", e);
                 }
 
+                getFollowUpCount();
                 shouldAllowBack = true;
             });
         });
@@ -547,6 +549,11 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         return phone;
     }
 
+    private void getFollowUpCount() {
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        sessionManager.setFollowUpVisit(String.valueOf(followUpCount));
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -555,7 +562,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executorService.shutdownNow();
+        executorService.shutdown();
     }
 
     @Override

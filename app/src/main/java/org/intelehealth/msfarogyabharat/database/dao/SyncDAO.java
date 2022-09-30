@@ -8,15 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -27,11 +22,20 @@ import org.intelehealth.msfarogyabharat.models.dto.ResponseDTO;
 import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
 import org.intelehealth.msfarogyabharat.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.msfarogyabharat.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.NotificationID;
 import org.intelehealth.msfarogyabharat.utilities.PatientsFrameJson;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -79,6 +83,11 @@ public class SyncDAO {
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+
+            Executors.newSingleThreadExecutor().execute(() -> {
+                long value = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+                sessionManager.setFollowUpVisit(String.valueOf(value));
+            });
 //            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());

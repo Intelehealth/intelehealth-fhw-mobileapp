@@ -53,7 +53,7 @@ public class SessionManager {
     private static final String STATENAME = "STATENAME";
     private static final String PROVIDER_PHONENO = "PROVIDER_PHONENO";
     private static final String COMPLAINT = "complaint_";
-
+    private static final String FOLLOW_UP_VISIT = "FOLLOW_UP_VISIT";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -222,7 +222,10 @@ public class SessionManager {
         editor.putString(PROVIDER_PHONENO, providerPhoneNo);
         editor.commit();
     }
-    public String getProviderPhoneno() { return pref.getString(PROVIDER_PHONENO, ""); }
+
+    public String getProviderPhoneno() {
+        return pref.getString(PROVIDER_PHONENO, "");
+    }
 
     public String getHouseholdUuid() {
         return pref.getString(HOUSEHOLD_UUID, "");
@@ -486,5 +489,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void setFollowUpVisit(String followUpVisit) {
+        editor.putString(FOLLOW_UP_VISIT, followUpVisit);
+        editor.commit();
+    }
 
+    public String getFollowUpVisit() {
+        return pref.getString(FOLLOW_UP_VISIT, "0");
+    }
 }

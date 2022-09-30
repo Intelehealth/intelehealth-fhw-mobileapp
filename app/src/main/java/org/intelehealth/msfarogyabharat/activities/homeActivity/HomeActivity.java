@@ -36,6 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -48,6 +49,7 @@ import org.intelehealth.msfarogyabharat.activities.missedCallActivity.MissedCall
 import org.intelehealth.msfarogyabharat.activities.myCases.MyCasesActivity;
 import org.intelehealth.msfarogyabharat.activities.recordings.RecordingsActivity;
 import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity;
+import org.intelehealth.msfarogyabharat.database.dao.SyncDAO;
 import org.intelehealth.msfarogyabharat.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
@@ -230,8 +232,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 */
-
-
         cvMissedCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -318,7 +318,13 @@ public class HomeActivity extends AppCompatActivity {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
                 if (isNetworkConnected()) {
                     Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-                    executorService.execute(() -> runOnUiThread(() -> syncUtils.syncForeground("home")));
+
+                    executorService.execute(() -> runOnUiThread(() -> {
+                        manualSyncButton.setEnabled(false);
+                        syncUtils.syncForeground("home");
+                        manualSyncButton.setEnabled(true);
+                    }));
+
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
@@ -759,16 +765,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showFollowUpBadge() {
-        executorService.execute(() -> {
-            long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-
-            runOnUiThread(() -> {
-                if (followUpCount > 0) {
-                    tvFollowUpBadge.setVisibility(View.VISIBLE);
-                    tvFollowUpBadge.setText(String.valueOf(followUpCount));
-                }
-            });
-        });
+        String followUpCount = sessionManager.getFollowUpVisit();
+        if (!followUpCount.equalsIgnoreCase("0")) {
+            tvFollowUpBadge.setVisibility(View.VISIBLE);
+            tvFollowUpBadge.setText(String.valueOf(followUpCount));
+        }
     }
 
     @Override
