@@ -192,6 +192,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:background="@null"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:src="@drawable/ic_clear_all_icon" />
 
     </RelativeLayout>

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.OnSwipeTouchListener;
 
@@ -25,10 +26,10 @@ import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolderView> {
     private Context context;
-    List<PatientDTO> patientDTOList;
+    List<NotificationModel> patientDTOList;
     private NotificationInterface anInterface;
 
-    public NotificationAdapter(Context context, List<PatientDTO> patientDTOList, NotificationInterface anInterface) {
+    public NotificationAdapter(Context context, List<NotificationModel> patientDTOList, NotificationInterface anInterface) {
         this.context = context;
         this.patientDTOList = patientDTOList;
         this.anInterface = anInterface;
@@ -44,9 +45,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationAdapter.MyHolderView holder, int position) {
-        PatientDTO model = patientDTOList.get(position);
+        NotificationModel model = patientDTOList.get(position);
         if (model != null) {
-            holder.search_name.setText(model.getFirstname() + " " + model.getLastname() + "\'s prescription was received!");
+            holder.search_name.setText(model.getFirst_name() + " " + model.getLast_name() + "\'s prescription was received!");
 
             holder.delete_imgview.setOnClickListener(v -> {
                 anInterface.deleteItem(patientDTOList, holder.getLayoutPosition());

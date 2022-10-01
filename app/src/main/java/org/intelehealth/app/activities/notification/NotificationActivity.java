@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.notification;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.check_visit_is_VISIT_COMPLETE_ENC;
+import static org.intelehealth.app.database.dao.NotificationDAO.insertNotifications;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +21,9 @@ import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,7 +47,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     private NotificationAdapter adapter;
     public static final String TAG = NotificationActivity.class.getSimpleName();
     private FrameLayout filter_framelayout;
-    private List<PatientDTO> todayPresc_list, yesterdayPresc_list;
+    private List<NotificationModel> todayPresc_list, yesterdayPresc_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +79,17 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         clickListeners();
     }
 
-    private void viewsActions() {
-        todays_Presc_notification();
-        yesterdays_Presc_notification();
+    private void showNotifications() {
+        try {
+            todays_Presc_notification();
+            yesterdays_Presc_notification();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void viewsActions() {
+        showNotifications();
         int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
         notifi_header_title.setText(getString(R.string.five_presc_received,total_presc_count));
     }
@@ -117,8 +126,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
         refresh.setOnClickListener(v -> {
             // refresh data.
-            todays_Presc_notification();
-            yesterdays_Presc_notification();
+            showNotifications();
             Toast.makeText(this, "Refreshed Successfully", Toast.LENGTH_SHORT).show();
         });
 
@@ -141,7 +149,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         // TODO: need to implement this later.
     }
 
-    private void todays_Presc_notification() {
+    private void todays_Presc_notification() throws DAOException {
         // current date
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
@@ -153,6 +161,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
             today_nodata.setVisibility(View.VISIBLE);
         }
         else {
+            insertNotifications(todayPresc_list);
             today_nodata.setVisibility(View.GONE);
             adapter = new NotificationAdapter(this, todayPresc_list, this);
             recycler_today.setAdapter(adapter);
@@ -160,7 +169,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
     }
 
-    private void yesterdays_Presc_notification() {
+    private void yesterdays_Presc_notification() throws DAOException {
         // yesterdays date
         DateFormat dateFormat_yesterday = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal_yesterday = Calendar.getInstance();
@@ -173,6 +182,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
             yesterday_nodata.setVisibility(View.VISIBLE);
         }
         else {
+            insertNotifications(yesterdayPresc_list);
             yesterday_nodata.setVisibility(View.GONE);
             adapter = new NotificationAdapter(this, yesterdayPresc_list, this);
             recycler_yesterday.setAdapter(adapter);
@@ -180,7 +190,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     }
 
     @Override
-    public void deleteItem(List<PatientDTO> patientDTOList, int position) {
+    public void deleteItem(List<NotificationModel> patientDTOList, int position) {
         patientDTOList.remove(position);
         if (patientDTOList.size() <= 0) {
             today_nodata.setVisibility(View.VISIBLE);

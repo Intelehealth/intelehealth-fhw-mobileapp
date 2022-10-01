@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -338,22 +339,31 @@ public class EncounterDAO {
         return isUpdated;
     }
 
-    public static List<PatientDTO> check_visit_is_VISIT_COMPLETE_ENC(String currentDate) {
-        List<PatientDTO> patientDTOList = new ArrayList<>();
+    public static List<NotificationModel> check_visit_is_VISIT_COMPLETE_ENC(String currentDate) {
+        List<NotificationModel> patientDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
+        Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, p.uuid as patientuuid, " +
+                        "substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
                         "tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o WHERE " +
-                        "p.uuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
+                        "patientuuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
                         "e.encounter_type_uuid = ? AND obs_server_modified_date = ? AND " +
                         "(e.sync = '1' OR e.sync = 'true' OR e.sync = 'TRUE') COLLATE NOCASE",
-                new String[]{ENCOUNTER_VISIT_COMPLETE, currentDate});
+                new String[]{ENCOUNTER_VISIT_COMPLETE, currentDate});   // notification type: Prescription.
 
         try {
             if (idCursor.moveToFirst()) {
                 do {
-                PatientDTO model = new PatientDTO();
-                model.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
-                model.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                    NotificationModel model = new NotificationModel();
+
+                    model.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                    model.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+
+                model.setUuid(UUID.randomUUID().toString());
+                model.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                model.setDescription(model.getFirst_name() + " " + model.getLast_name() + "\'s prescription was received!");
+                model.setObs_server_modified_date(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_server_modified_date")));
+                model.setNotification_type("Prescription");
+                model.setSync("TRUE");
                 patientDTOList.add(model);
                 }
                 while (idCursor.moveToNext());
