@@ -65,6 +65,7 @@ android {
             enableSplit = true
         }
     }
+    namespace 'org.intelehealth.app'
 }
 dependencies {
     implementation project(':webrtc')
@@ -140,3 +141,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-config'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
+apply from: "$project.rootDir/app/jacoco.gradle"
