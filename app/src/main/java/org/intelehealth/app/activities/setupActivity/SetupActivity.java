@@ -501,7 +501,7 @@ public class SetupActivity extends AppCompatActivity {
 
         if (value.equalsIgnoreCase("state")) {
             List<String> list_district = new ArrayList<>();
-            list_district.add("Select District");
+            list_district.add(getString(R.string.setup_select_district_str));
             spinner_district.setEnabled(false);
             spinner_district.setAlpha(0.4F);
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
@@ -515,7 +515,7 @@ public class SetupActivity extends AppCompatActivity {
             spinner_sanch.setAdapter(adapter_sanch);*/
 
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
@@ -529,7 +529,7 @@ public class SetupActivity extends AppCompatActivity {
             spinner_sanch.setAdapter(adapter_sanch);*/
 
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
@@ -545,14 +545,14 @@ public class SetupActivity extends AppCompatActivity {
             //do nothing
         } else {
             List<String> list_state = new ArrayList<>();
-            list_state.add("Select State");
+            list_state.add(getString(R.string.setup_select_state_str));
             spinner_state.setEnabled(false);
             spinner_state.setAlpha(0.4F);
             LocationArrayAdapter adapter_state = new LocationArrayAdapter(SetupActivity.this, list_state);
             spinner_state.setAdapter(adapter_state);
 
             List<String> list_district = new ArrayList<>();
-            list_district.add("Select District");
+            list_district.add(getString(R.string.setup_select_district_str));
             spinner_district.setEnabled(false);
             spinner_district.setAlpha(0.4F);
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
@@ -566,7 +566,7 @@ public class SetupActivity extends AppCompatActivity {
             spinner_sanch.setAdapter(adapter_sanch);*/
 
             List<String> list_village = new ArrayList<>();
-            list_village.add("Select Village");
+            list_village.add(getString(R.string.setup_select_village_str));
             spinner_village.setEnabled(false);
             spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
@@ -630,17 +630,17 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
             focusView = spinner_state;
             TextView t = (TextView) spinner_state.getSelectedView();
-            t.setError("Select State");
+            t.setError(getString(R.string.setup_select_state_str));
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select State from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getString(R.string.setup_select_dropdown_state_msg), Toast.LENGTH_LONG).show();
         } else if (spinner_district.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_district;
             TextView t = (TextView) spinner_district.getSelectedView();
-            t.setError("Select District");
+            t.setError(getString(R.string.setup_select_district_str));
             focusView.setEnabled(true);
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select District from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getString(R.string.setup_select_dropdown_district_msg), Toast.LENGTH_LONG).show();
         } /*else if (spinner_sanch.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_sanch;
@@ -652,9 +652,9 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
             focusView = spinner_village;
             TextView t = (TextView) spinner_village.getSelectedView();
-            t.setError("Select Village");
+            t.setError(getString(R.string.setup_select_village_str));
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select Village from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getString(R.string.setup_select_dropdown_village_msg), Toast.LENGTH_LONG).show();
         }
 
         //spinner-end...
@@ -665,7 +665,7 @@ public class SetupActivity extends AppCompatActivity {
             if (focusView != null) {
                 if (TextUtils.isEmpty(url)) {
                     mUrlField.requestFocus();
-                    mUrlField.setError("Enter Url");
+                    mUrlField.setError(getString(R.string.enter_url));
                 }
 
                 focusView.requestFocus();
@@ -1375,6 +1375,7 @@ public class SetupActivity extends AppCompatActivity {
                 dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
+                mLoginButton.setEnabled(true );
             }
 
             @Override

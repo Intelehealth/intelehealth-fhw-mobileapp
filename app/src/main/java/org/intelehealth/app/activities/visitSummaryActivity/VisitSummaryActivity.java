@@ -701,6 +701,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         }
                     };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                        partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrlArabic();
                     String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
