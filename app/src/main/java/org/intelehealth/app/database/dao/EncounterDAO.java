@@ -345,7 +345,7 @@ public class EncounterDAO {
         Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, p.uuid as patientuuid, " +
                         "substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
                         "tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o WHERE " +
-                        "patientuuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
+                        "p.uuid = v.patientuuid AND v.uuid = e.visituuid AND e.uuid = o.encounteruuid AND " +
                         "e.encounter_type_uuid = ? AND obs_server_modified_date = ? AND " +
                         "(e.sync = '1' OR e.sync = 'true' OR e.sync = 'TRUE') COLLATE NOCASE",
                 new String[]{ENCOUNTER_VISIT_COMPLETE, currentDate});   // notification type: Prescription.

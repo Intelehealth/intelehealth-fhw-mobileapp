@@ -41,7 +41,7 @@ public class NotificationDAO {
 
         ContentValues values = new ContentValues();
         try {
-            values.put("uuid", UUID.randomUUID().toString());
+          //  values.put("uuid", UUID.randomUUID().toString());
             values.put("patientuuid", model.getPatientuuid());
             values.put("description", model.getDescription());
             values.put("obs_server_modified_date", model.getObs_server_modified_date());
@@ -49,7 +49,7 @@ public class NotificationDAO {
             values.put("sync", model.getSync());
 
             createdRecordsCount = db.insertWithOnConflict("tbl_notifications",
-                    null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                    null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
