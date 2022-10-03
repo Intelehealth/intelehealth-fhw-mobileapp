@@ -58,4 +58,21 @@ public class NotificationDAO {
         return isCreated;
     }
 
+    public static void deleteNotification(NotificationModel models) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            db.delete("tbl_notifications", "patientuuid = ? AND notification_type = ?",
+                    new String[] {models.getPatientuuid(), models.getNotification_type()});
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e) {
+            Log.v("dd", "error: " + e.getMessage());
+        }
+        finally {
+            db.endTransaction();
+        }
+
+    }
+
 }

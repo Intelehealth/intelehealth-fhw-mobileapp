@@ -54,8 +54,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "description TEXT," +
             "obs_server_modified_date TEXT," +
             "notification_type TEXT," +
-            "sync TEXT )";
-
+            "sync TEXT)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +

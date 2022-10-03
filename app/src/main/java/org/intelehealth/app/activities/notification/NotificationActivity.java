@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.notification;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.check_visit_is_VISIT_COMPLETE_ENC;
+import static org.intelehealth.app.database.dao.NotificationDAO.deleteNotification;
 import static org.intelehealth.app.database.dao.NotificationDAO.insertNotifications;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -191,6 +192,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
     @Override
     public void deleteItem(List<NotificationModel> patientDTOList, int position) {
+        deleteNotification(patientDTOList.get(position));
         patientDTOList.remove(position);
         if (patientDTOList.size() <= 0) {
             today_nodata.setVisibility(View.VISIBLE);
