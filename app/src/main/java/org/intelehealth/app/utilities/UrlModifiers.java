@@ -72,6 +72,13 @@ public class UrlModifiers {
         return BASE_URL;
     }
 
+    public String setwhatsappPresciptionUrlArabic() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl() +
+                "/preApi/index-ar.jsp?v=";
+        return BASE_URL;
+    }
+
     public String setDeletePrescItemUrl(String obsUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";

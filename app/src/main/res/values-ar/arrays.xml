@@ -261,11 +261,11 @@
     </array>
 
     <string-array name="location_state">
-        <item>Select State</item>
+        <item>اختر ولايه</item>
     </string-array>
 
     <string-array name="location_district">
-        <item>Select District</item>
+        <item>حدد المنطقة</item>
     </string-array>
 
     <string-array name="location_sanch">
@@ -273,7 +273,7 @@
     </string-array>
 
     <string-array name="location_village">
-        <item>Select Village</item>
+        <item>اختر القرية</item>
     </string-array>
 
 
