@@ -302,9 +302,44 @@
         <item name="android:lineHeight">21dp</item>
         <item name="textAllCaps">false</item>
         <item name="tabSelectedTextColor">@color/textColorBlack</item>
-
-
     </style>
+
+    <style name="personal_txtview">
+        <item name="android:textSize">
+            12sp
+        </item>
+        <item name="android:textColor">
+            #1B163A
+        </item>
+    </style>
+
+    <style name="blur_txtview">
+        <item name="android:textSize">
+            14sp
+        </item>
+        <item name="android:textColor">
+            #7F7B92
+        </item>
+    </style>
+
+    <style name="edittext_hint">
+        <item name="android:textSize">
+            14sp
+        </item>
+        <item name="android:textColor">
+            #1B163A
+        </item>
+    </style>
+
+    <style name="registr_error_msg">
+        <item name="android:textSize">
+            14sp
+        </item>
+        <item name="android:textColor">
+            #FF475D
+        </item>
+    </style>
+
 
 
 </resources>

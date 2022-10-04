@@ -1671,6 +1671,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="five_presc_received">%1$d prescriptions received</string>
     <string name="no_visit_created">No visit created</string>
 
+    <string name="add_new_patient">Add new patient</string>
+
+
     <!--END-->
 
 </resources>

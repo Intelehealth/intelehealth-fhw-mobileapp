@@ -41,6 +41,14 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.identificationActivity.IdentificationActivity_New"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".help.activities.FAQActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
@@ -68,8 +76,8 @@
         </activity>
         <activity
             android:name=".activities.notification.NotificationActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.followuppatients.FollowUp_VisitDetails"
             android:configChanges="uiMode"
@@ -427,6 +435,9 @@
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
