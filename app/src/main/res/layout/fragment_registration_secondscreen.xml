@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
+    android:layout_marginTop="@dimen/margin_16">
+
+    <!--Postal code and Country-->
+    <LinearLayout
+        android:id="@+id/postal_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/postalcode_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Postal code*"
+            android:textAppearance="@style/blur_txtview"
+            android:textColor="@null"
+            android:textSize="@null"
+            android:lineSpacingExtra="3sp"
+            />
+
+        <EditText
+            android:id="@+id/postalcode_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/edittext_border"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            style="@style/edittext_hint"
+            android:hint="Enter Postal code"
+            android:textColor="@null"
+            android:textSize="16sp"
+            android:paddingStart="@dimen/margin_12" />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/margin_16">
+
+            <TextView
+                android:id="@+id/country_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country*"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/country_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:hint="India"
+                android:textColor="@null"
+                android:textSize="16sp"
+                android:drawablePadding="@dimen/margin_8"
+                android:drawableStart="@drawable/india_flag_svg"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/postal_country">
+
+        <TextView
+            android:id="@+id/state_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="State*"
+            android:textAppearance="@style/blur_txtview"
+            android:textColor="@null"
+            android:textSize="@null"
+            android:lineSpacingExtra="3sp"
+            />
+
+        <EditText
+            android:id="@+id/state_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/edittext_border"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            style="@style/edittext_hint"
+            android:text="Maharashtra"
+            android:textSize="16sp"
+            android:drawableEnd="@drawable/ui2_ic_chevron_down"
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_12" />
+    </LinearLayout>
+
+    <!--District & City-->
+    <LinearLayout
+        android:id="@+id/linear_distr_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_state"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/district_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="District*"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/district_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:text="Nashik"
+                android:textSize="16sp"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/margin_16">
+
+            <TextView
+                android:id="@+id/city_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Village/Town/City*"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/city_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:text="Sinnar"
+                android:textSize="16sp"
+                android:drawablePadding="@dimen/margin_8"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--Address 1-->
+    <LinearLayout
+        android:id="@+id/linear_address1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_distr_city"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/address1_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Corresponding Address 1*"
+            android:textAppearance="@style/blur_txtview"
+            android:textColor="@null"
+            android:textSize="@null"
+            android:lineSpacingExtra="3sp"
+            />
+
+        <EditText
+            android:id="@+id/address1_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/edittext_border"
+            style="@style/edittext_hint"
+            android:hint="Enter patient address"
+            android:textColor="@null"
+            android:textSize="16sp"
+            android:paddingStart="@dimen/margin_12" />
+    </LinearLayout>
+
+    <!--Address 2-->
+    <LinearLayout
+        android:id="@+id/linear_address2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_address1"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/address2_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Corresponding Address 2"
+            android:textAppearance="@style/blur_txtview"
+            android:textColor="@null"
+            android:textSize="@null"
+            android:lineSpacingExtra="3sp"
+            />
+
+        <EditText
+            android:id="@+id/address2_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/edittext_border"
+            style="@style/edittext_hint"
+            android:hint="Enter patient address"
+            android:textColor="@null"
+            android:textSize="16sp"
+            android:paddingStart="@dimen/margin_12" />
+    </LinearLayout>
+
+
+
+</RelativeLayout>

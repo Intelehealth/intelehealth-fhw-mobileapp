@@ -156,6 +156,7 @@
         android:layout_below="@+id/icons_grp"
         android:orientation="horizontal"
         android:layout_alignStart="@+id/icons_grp"
+        android:layout_marginBottom="@dimen/margin_16"
         android:layout_alignEnd="@+id/icons_grp">
 
           <TextView
@@ -213,7 +214,7 @@
         android:layout_above="@id/relative_btn">
 
         <include
-            layout="@layout/fragment_registration_firstscreen"/>
+            layout="@layout/fragment_registration_secondscreen"/>
 
     </FrameLayout>
 

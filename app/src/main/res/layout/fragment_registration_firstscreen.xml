@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/addpat_profile_img"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_32"/>
+        android:layout_marginTop="@dimen/margin_16"/>
 
     <TextView
         android:id="@+id/add_picture"
@@ -72,7 +72,7 @@
                     style="@style/edittext_hint"
                     android:hint="Enter first name"
                     android:textColor="@null"
-                    android:textSize="@null"
+                    android:textSize="16sp"
                     android:paddingStart="@dimen/margin_12" />
             </LinearLayout>
 
@@ -107,7 +107,7 @@
                     style="@style/edittext_hint"
                     android:hint="Enter middle name"
                     android:textColor="@null"
-                    android:textSize="@null"
+                    android:textSize="16sp"
                     android:paddingStart="@dimen/margin_12" />
 
             </LinearLayout>
@@ -143,7 +143,7 @@
                     style="@style/edittext_hint"
                     android:hint="Enter surname"
                     android:textColor="@null"
-                    android:textSize="@null"
+                    android:textSize="16sp"
                     android:paddingStart="@dimen/margin_12" />
 
                 <TextView
@@ -251,7 +251,7 @@
                     style="@style/edittext_hint"
                     android:hint="Enter Date of Birth"
                     android:textColor="@null"
-                    android:textSize="@null"
+                    android:textSize="16sp"
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingStart="@dimen/margin_12" />
@@ -289,7 +289,7 @@
                     style="@style/edittext_hint"
                     android:hint="Enter Age"
                     android:textColor="@null"
-                    android:textSize="@null"
+                    android:textSize="16sp"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingStart="@dimen/margin_12" />
             </LinearLayout>
@@ -332,7 +332,7 @@
                         style="@style/edittext_hint"
                         android:hint="+91"
                         android:textColor="@null"
-                        android:textSize="@null"
+                        android:textSize="16sp"
                         android:drawablePadding="@dimen/margin_8"
                         android:drawableStart="@drawable/india_flag_svg"
                         android:drawableEnd="@drawable/ui2_ic_chevron_down"
@@ -352,7 +352,7 @@
                         style="@style/edittext_hint"
                         android:hint="7304154312"
                         android:textColor="@null"
-                        android:textSize="@null"
+                        android:textSize="16sp"
                         android:paddingEnd="@dimen/margin_16"
                         android:paddingStart="@dimen/margin_12" />
                 </LinearLayout>
