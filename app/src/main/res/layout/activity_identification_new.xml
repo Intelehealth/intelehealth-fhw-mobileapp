@@ -209,9 +209,10 @@
     <FrameLayout
         android:id="@+id/frame_firstscreen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_16"
         android:layout_below="@+id/title_text"
-        android:layout_above="@id/relative_btn">
+        android:layout_above="@id/relative_firstscreen_nxt_btn">
 
         <include
             layout="@layout/fragment_registration_secondscreen"/>
@@ -220,21 +221,50 @@
 
 
     <RelativeLayout
-        android:id="@+id/relative_btn"
+        android:id="@+id/relative_firstscreen_nxt_btn"
         android:layout_width="match_parent"
-        android:layout_height="84dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
         android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/nxt_btn"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/registr_nxt_btn"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_secondscreen_nxt_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/btn_back_firstscreen"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:background="@drawable/back_btn_patregistra"/>
 
         <ImageButton
             android:id="@+id/btn_nxt_firstscreen"
             android:layout_width="match_parent"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginTop="@dimen/margin_12"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/registr_nxt_btn"/>
+            android:layout_toEndOf="@+id/btn_back_firstscreen"
+            android:background="@drawable/nxt_btn_secondscreen"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

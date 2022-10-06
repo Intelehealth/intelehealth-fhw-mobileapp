@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     android:layout_marginTop="@dimen/margin_16">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <!--Postal code and Country-->
     <LinearLayout
@@ -264,5 +270,5 @@
     </LinearLayout>
 
 
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
