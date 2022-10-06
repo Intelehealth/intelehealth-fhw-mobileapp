@@ -1874,6 +1874,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "FROM tbl_visit a " +
                     "WHERE a.uuid = '" + visitUUID + "'";
 
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             final Cursor cursor = db.rawQuery(query, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -4305,10 +4306,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (downloadPrescriptionService != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
+
+        //In onStop() it will check and unregister the receiver...
+        //This is done in onStop as we are registering them in onStart()
         if (receiver != null) {
             unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            receiver = null;
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        isReceiverRegistered = false;
+
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

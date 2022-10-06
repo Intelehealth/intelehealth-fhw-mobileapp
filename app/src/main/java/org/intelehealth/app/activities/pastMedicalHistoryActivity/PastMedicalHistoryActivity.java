@@ -395,33 +395,38 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)
-                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
-                    .replace("since", "حيث")
-                    .replace("Hours", "ساعات")
-                    .replace("Days", "أيام")
-                    .replace("Weeks", "أسابيع")
-                    .replace("Months", "شهور")
-                    .replace("Years", "سنوات")
-                    .replace("Jan", "كانون الثاني")
-                    .replace("Feb", "شهر شباط")
-                    .replace("Mar", "شهر اذار")
-                    .replace("Apr", "أشهر نيسان")
-                    .replace("May", "شهر أيار")
-                    .replace("Jun", "شهر حزيران")
-                    .replace("Jul", "شهر تموز")
-                    .replace("Aug", "شهر أب")
-                    .replace("Sep", "شهر أيلول")
-                    .replace("Oct", "شهر تشرين الأول")
-                    .replace("Nov", "شهر تشرين الثاني")
-                    .replace("Dec", "شهر كانون الأول")
-                    .replace("Frequency", "تكرار")
-                    .replace("Medication name 1", "اسم الدواء 1")
-                    .replace("Medication name 2", "اسم الدواء 2")
-                    .replace("Medication name 3", "اسم الدواء 3")
-                    .replace("Medication name 4", "اسم الدواء 4")
-                    .replace("Medication name 5", "اسم الدواء 5")
-            ));
+            String message = Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)).toString();
+            //changes done to handle null pointer exception crash
+            if(message!=null || !message.isEmpty())
+            {
+                message = message
+                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                        .replace("since", "حيث")
+                        .replace("Hours", "ساعات")
+                        .replace("Days", "أيام")
+                        .replace("Weeks", "أسابيع")
+                        .replace("Months", "شهور")
+                        .replace("Years", "سنوات")
+                        .replace("Jan", "كانون الثاني")
+                        .replace("Feb", "شهر شباط")
+                        .replace("Mar", "شهر اذار")
+                        .replace("Apr", "أشهر نيسان")
+                        .replace("May", "شهر أيار")
+                        .replace("Jun", "شهر حزيران")
+                        .replace("Jul", "شهر تموز")
+                        .replace("Aug", "شهر أب")
+                        .replace("Sep", "شهر أيلول")
+                        .replace("Oct", "شهر تشرين الأول")
+                        .replace("Nov", "شهر تشرين الثاني")
+                        .replace("Dec", "شهر كانون الأول")
+                        .replace("Frequency", "تكرار")
+                        .replace("Medication name 1", "اسم الدواء 1")
+                        .replace("Medication name 2", "اسم الدواء 2")
+                        .replace("Medication name 3", "اسم الدواء 3")
+                        .replace("Medication name 4", "اسم الدواء 4")
+                        .replace("Medication name 5", "اسم الدواء 5");
+            }
+            alertDialogBuilder.setMessage(message);
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)));
         }
@@ -454,32 +459,37 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         if (intentTag != null && intentTag.equals("edit")) {
             if (patientHistoryMap.anySubSelected()) {
                 patientHistory = patientHistoryMap.generateLanguage();
-                String patientHistoryArabic = patientHistoryMap.generateLanguage("ar")
-                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
-                        .replace("since", "حيث")
-                        .replace("Hours", "ساعات")
-                        .replace("Days", "أيام")
-                        .replace("Weeks", "أسابيع")
-                        .replace("Months", "شهور")
-                        .replace("Years", "سنوات")
-                        .replace("Jan", "كانون الثاني")
-                        .replace("Feb", "شهر شباط")
-                        .replace("Mar", "شهر اذار")
-                        .replace("Apr", "أشهر نيسان")
-                        .replace("May", "شهر أيار")
-                        .replace("Jun", "شهر حزيران")
-                        .replace("Jul", "شهر تموز")
-                        .replace("Aug", "شهر أب")
-                        .replace("Sep", "شهر أيلول")
-                        .replace("Oct", "شهر تشرين الأول")
-                        .replace("Nov", "شهر تشرين الثاني")
-                        .replace("Dec", "شهر كانون الأول")
-                        .replace("Frequency", "تكرار")
-                        .replace("Medication name 1", "اسم الدواء 1")
-                        .replace("Medication name 2", "اسم الدواء 2")
-                        .replace("Medication name 3", "اسم الدواء 3")
-                        .replace("Medication name 4", "اسم الدواء 4")
-                        .replace("Medication name 5", "اسم الدواء 5");
+                String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
+
+                //changes done to handle null pointer exception crash
+                if(patientHistoryArabic!=null || !patientHistoryArabic.isEmpty()) {
+                    patientHistoryArabic = patientHistoryArabic
+                            .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                            .replace("since", "حيث")
+                            .replace("Hours", "ساعات")
+                            .replace("Days", "أيام")
+                            .replace("Weeks", "أسابيع")
+                            .replace("Months", "شهور")
+                            .replace("Years", "سنوات")
+                            .replace("Jan", "كانون الثاني")
+                            .replace("Feb", "شهر شباط")
+                            .replace("Mar", "شهر اذار")
+                            .replace("Apr", "أشهر نيسان")
+                            .replace("May", "شهر أيار")
+                            .replace("Jun", "شهر حزيران")
+                            .replace("Jul", "شهر تموز")
+                            .replace("Aug", "شهر أب")
+                            .replace("Sep", "شهر أيلول")
+                            .replace("Oct", "شهر تشرين الأول")
+                            .replace("Nov", "شهر تشرين الثاني")
+                            .replace("Dec", "شهر كانون الأول")
+                            .replace("Frequency", "تكرار")
+                            .replace("Medication name 1", "اسم الدواء 1")
+                            .replace("Medication name 2", "اسم الدواء 2")
+                            .replace("Medication name 3", "اسم الدواء 3")
+                            .replace("Medication name 4", "اسم الدواء 4")
+                            .replace("Medication name 5", "اسم الدواء 5");
+                }
 
                 Map<String, String> patientHistoryData = new HashMap<>();
                 patientHistoryData.put("en", patientHistory);
@@ -506,32 +516,37 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         else {
             //  if(patientHistoryMap.anySubSelected()){
             patientHistory = patientHistoryMap.generateLanguage();
-            String patientHistoryArabic = patientHistoryMap.generateLanguage("ar")
-                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
-                    .replace("since", "حيث")
-                    .replace("Hours", "ساعات")
-                    .replace("Days", "أيام")
-                    .replace("Weeks", "أسابيع")
-                    .replace("Months", "شهور")
-                    .replace("Years", "سنوات")
-                    .replace("Jan", "كانون الثاني")
-                    .replace("Feb", "شهر شباط")
-                    .replace("Mar", "شهر اذار")
-                    .replace("Apr", "أشهر نيسان")
-                    .replace("May", "شهر أيار")
-                    .replace("Jun", "شهر حزيران")
-                    .replace("Jul", "شهر تموز")
-                    .replace("Aug", "شهر أب")
-                    .replace("Sep", "شهر أيلول")
-                    .replace("Oct", "شهر تشرين الأول")
-                    .replace("Nov", "شهر تشرين الثاني")
-                    .replace("Dec", "شهر كانون الأول")
-                    .replace("Frequency", "تكرار")
-                    .replace("Medication name 1", "اسم الدواء 1")
-                    .replace("Medication name 2", "اسم الدواء 2")
-                    .replace("Medication name 3", "اسم الدواء 3")
-                    .replace("Medication name 4", "اسم الدواء 4")
-                    .replace("Medication name 5", "اسم الدواء 5");
+            String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
+
+            //changes done to handle null pointer exception crash
+            if(patientHistoryArabic!=null || !patientHistoryArabic.isEmpty()) {
+                patientHistoryArabic = patientHistoryArabic
+                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                        .replace("since", "حيث")
+                        .replace("Hours", "ساعات")
+                        .replace("Days", "أيام")
+                        .replace("Weeks", "أسابيع")
+                        .replace("Months", "شهور")
+                        .replace("Years", "سنوات")
+                        .replace("Jan", "كانون الثاني")
+                        .replace("Feb", "شهر شباط")
+                        .replace("Mar", "شهر اذار")
+                        .replace("Apr", "أشهر نيسان")
+                        .replace("May", "شهر أيار")
+                        .replace("Jun", "شهر حزيران")
+                        .replace("Jul", "شهر تموز")
+                        .replace("Aug", "شهر أب")
+                        .replace("Sep", "شهر أيلول")
+                        .replace("Oct", "شهر تشرين الأول")
+                        .replace("Nov", "شهر تشرين الثاني")
+                        .replace("Dec", "شهر كانون الأول")
+                        .replace("Frequency", "تكرار")
+                        .replace("Medication name 1", "اسم الدواء 1")
+                        .replace("Medication name 2", "اسم الدواء 2")
+                        .replace("Medication name 3", "اسم الدواء 3")
+                        .replace("Medication name 4", "اسم الدواء 4")
+                        .replace("Medication name 5", "اسم الدواء 5");
+            }
             Map<String, String> patientHistoryData = new HashMap<>();
             patientHistoryData.put("en", patientHistory);
             patientHistoryData.put("ar", patientHistoryArabic);
