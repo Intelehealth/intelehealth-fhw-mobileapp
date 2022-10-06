@@ -69,7 +69,7 @@
 
     <!--//Home Screen (after login)-->
     <string name="title_home_screen">Home</string>
-    <string name="button_new_pt">New Patient</string>
+    <string name="button_new_pt">New/Search Patient</string>
     <string name="button_find_pt">Find Patient</string>
     <string name="button_diagnostic_tests">Diagnostic Tests</string>
     <string name="button_active_pt">Active Patients</string>
@@ -1329,7 +1329,7 @@
     <string name="txt_hb_test">HB test</string>
     <string name="do_you_stay_independent_residence">Do you have an independent residence ?</string>
     <string name="what_made_you_main_official">What made you the main breadwinner in your family?</string>
-    <string name="family_needed_you_as_main_tendency">Has your family needed you as a main tendency to have another breadwinner?</string>
+    <string name="family_needed_you_as_main_tendency">Did your status as the main breadwinner in the family changes recently?</string>
     <string name="husband_status">For married women, what is the status of the husband?</string>
     <string name="reason_changing_condition_for_support">What is the reason for the change in your status as the main breadwinner?</string>
     <string name="since_change_happened">Since when did this change happen? (Years)</string>
@@ -1563,5 +1563,6 @@
     <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
     <string name="triage_survey">Triage Survey</string>
     <string name="empty_survey">Please enter/select the data for survey!</string>
+    <string name="new_patient_fab_label">*Create a new record if you can\'t find a previous record</string>
 
 </resources>

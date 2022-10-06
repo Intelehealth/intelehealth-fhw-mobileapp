@@ -95,12 +95,31 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/new_patient"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add_24dp"
-        />
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/new_patient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_add_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:text="@string/new_patient_fab_label"
+            android:gravity="center_vertical"
+            android:layout_marginVertical="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="80dp"
+            android:layout_alignParentStart="true"/>
+
+    </RelativeLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

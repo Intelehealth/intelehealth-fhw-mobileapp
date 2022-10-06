@@ -68,7 +68,7 @@
 
     <!--//Home Screen (after login)-->
     <string name="title_home_screen">الصفحة الرئيسية</string>
-    <string name="button_new_pt">مريض جديد</string>
+    <string name="button_new_pt">انشاء بحث عن سجل</string>
     <string name="button_find_pt">ابحث عن المريض</string>
     <string name="button_diagnostic_tests">الاختبارات التشخيصية</string>
     <string name="button_active_pt">المرضى قيد المتابعة</string>
@@ -93,7 +93,7 @@
     <string name="identification_screen_prompt_birthday">تاريخ الولادة*</string>
     <string name="identification_screen_prompt_age">سن:</string>
     <string name="identification_screen_prompt_city">القرية/المدينة/المدينة *</string>
-    <string name="identification_screen_prompt_state">المحافظة</string>
+    <string name="identification_screen_prompt_state">السويداء</string>
     <string name="identification_screen_prompt_caste">الطبقة</string>
     <string name="identification_screen_prompt_economic_status">الحالة الاقتصادية</string>
     <string name="identification_screen_prompt_education">مستوى التعليم</string>
@@ -1534,7 +1534,7 @@
     <string name="txt_what_is_your_relationship_with_household_members_you_support">ما هي علاقتك العائلية بأفراد الأسرة الذين تدعمهم؟</string>
     <string name="do_you_stay_independent_residence">هل تقيم/ين بمسكن مستقل عن أي معيلين آخرين؟</string>
     <string name="what_made_you_main_official">ما هو السبب الذي جعلك  المسؤولة الرئيسية عن إعالة أسرتك؟</string>
-    <string name="family_needed_you_as_main_tendency">بشكل عام ، ما هو مزود الصحة الأولية التي تفاعلت معها لهذه القضية الصحية؟</string>
+    <string name="family_needed_you_as_main_tendency">هل تغيرت حاجة أسرتك إليكي كمعيل رئيسي بوجود معيل آخر؟</string>
     <string name="husband_status">للمتزوجات, ما هو وضع الزوج؟</string>
     <string name="reason_changing_condition_for_support">ما هو سبب تغير حالة الاعالة؟</string>
     <string name="since_change_happened">منذ منتى حصل هذا التغيير؟ (سنين)\n</string>
@@ -1555,6 +1555,8 @@
     <string name="setup_select_dropdown_village_msg">حدد القرية من القائمة المنسدلة</string>
     <string name="triage_survey">مسح الفرز</string>
     <string name="empty_survey">الرجاء إدخال / تحديد البيانات للمسح!</string>
+    <string name="new_patient_fab_label">*أنشئ سجل جديد في حال لم تجد سجل سابق</string>
+
 
 
 </resources>
