@@ -1874,6 +1874,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "FROM tbl_visit a " +
                     "WHERE a.uuid = '" + visitUUID + "'";
 
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             final Cursor cursor = db.rawQuery(query, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {

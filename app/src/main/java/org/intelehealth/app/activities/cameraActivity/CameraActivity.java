@@ -324,6 +324,7 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (mCameraView != null) {
+                        mFab.setEnabled(false); //app crashing on multi clicks
                         mCameraView.takePicture();
                     }
                 }
