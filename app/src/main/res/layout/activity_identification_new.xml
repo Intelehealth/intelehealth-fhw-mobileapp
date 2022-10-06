@@ -105,48 +105,48 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/margin_10"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="2dp"
             android:src="@drawable/addpatient_icon" />
 
-        <View
+        <ImageView
             android:id="@+id/line_1"
             android:layout_width="66dp"
-            android:layout_height="1dp"
+            android:layout_height="5dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/addpatient_icon"
-            android:background="@drawable/line_dotted" />
+            android:src="@drawable/line_11" />
 
 
         <ImageView
             android:id="@+id/addresslocation_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="2dp"
             android:layout_toEndOf="@+id/line_1"
-            android:src="@drawable/addresslocation_icon" />
+            android:src="@drawable/addresslocation_icon_unselected" />
 
-        <View
+        <ImageView
             android:id="@+id/line_2"
             android:layout_width="66dp"
-            android:layout_height="1dp"
+            android:layout_height="5dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/addresslocation_icon"
-            android:background="@drawable/line_dotted" />
+            android:src="@drawable/line_11" />
 
         <ImageView
             android:id="@+id/other_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="@dimen/margin_10"
             android:layout_marginBottom="2dp"
             android:layout_toEndOf="@+id/line_2"
-            android:src="@drawable/other_icon" />
+            android:src="@drawable/other_icon_unselected" />
     </RelativeLayout>
     
     <LinearLayout
@@ -212,21 +212,26 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin_16"
         android:layout_below="@+id/title_text"
-        android:layout_above="@id/relative_firstscreen_nxt_btn">
+        android:layout_above="@id/frame_nxtbtn_viewgrp">
 
         <include
-            layout="@layout/fragment_registration_secondscreen"/>
+            layout="@layout/fragment_registration_thirdscreen"/>
 
     </FrameLayout>
 
+
+    <FrameLayout
+        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true" >
 
     <RelativeLayout
         android:id="@+id/relative_firstscreen_nxt_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true">
+        android:visibility="gone" >
 
         <ImageButton
             android:id="@+id/nxt_btn"
@@ -242,10 +247,8 @@
         android:id="@+id/linear_secondscreen_nxt_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true">
+        android:visibility="visible" >
 
         <ImageButton
             android:id="@+id/btn_back_firstscreen"
@@ -264,7 +267,7 @@
             android:layout_marginEnd="24dp"
             android:layout_toEndOf="@+id/btn_back_firstscreen"
             android:background="@drawable/nxt_btn_secondscreen"/>
-
     </LinearLayout>
+    </FrameLayout>
 
 </RelativeLayout>

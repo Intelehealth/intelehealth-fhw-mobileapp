@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:layout_marginTop="@dimen/margin_16"
+    android:layout_marginBottom="@dimen/margin_16" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/linear_relation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/relation_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Son/Daughter/Wife of"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/relation_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                style="@style/edittext_hint"
+                android:text="Rakesh Kaka"
+                android:hint="Enter patient address"
+                android:textSize="16sp"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+
+        <!--Occupation-->
+        <LinearLayout
+            android:id="@+id/linear_occupation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:layout_below="@+id/linear_relation">
+
+            <TextView
+                android:id="@+id/occupation_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Occupation"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/occupation_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:hint="Type occupation or select"
+                android:textSize="16sp"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+
+        <!--Caste-->
+        <LinearLayout
+            android:id="@+id/linear_caste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:layout_below="@+id/linear_occupation">
+
+            <TextView
+                android:id="@+id/caste_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Caste"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/caste_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:hint="Type caste or select"
+                android:textSize="16sp"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+
+        <!--Education-->
+        <LinearLayout
+            android:id="@+id/linear_education"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:layout_below="@+id/linear_caste">
+
+            <TextView
+                android:id="@+id/education_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Education"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/education_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:hint="Type education or select"
+                android:textSize="16sp"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12" />
+        </LinearLayout>
+
+        <!--Economic Status-->
+        <LinearLayout
+            android:id="@+id/linear_economicstatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:layout_below="@+id/linear_education">
+
+            <TextView
+                android:id="@+id/economicstatus_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Economic status"
+                android:textAppearance="@style/blur_txtview"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:lineSpacingExtra="3sp"
+                />
+
+            <EditText
+                android:id="@+id/economicstatus_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/edittext_border"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                style="@style/edittext_hint"
+                android:hint="Type economic or select"
+                android:textSize="16sp"
+                android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                android:paddingEnd="@dimen/margin_16"
+                android:paddingStart="@dimen/margin_12"
+                android:layout_marginBottom="@dimen/margin_10"
+                />
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+</ScrollView>
