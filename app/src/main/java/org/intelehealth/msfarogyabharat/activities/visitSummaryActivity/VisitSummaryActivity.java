@@ -257,6 +257,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
+    private String defaultAdvice;
 
     NetworkChangeReceiver receiver;
     private boolean isConnected = false;
@@ -452,6 +453,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             setLocale(appLanguage);
         }
 //        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        defaultAdvice = "Limit oil intake to 3 teaspoon per day that is 500ml per person per month./तेल का सेवन प्रतिदिनी ३ चम्मच, अर्थात* ५०० मिलि प्रति व्यक्ति प्रति माह तक सीमित करें\n" +
+                "Do not consume simple sugar in the diet. Avoid honey/ jiggery. Instead can use artificial sweeteners like stevia./आहार में साधारण चीनी का सेवन न करें। शहद/गुड़ से परहेज करें। इसके बजाय स्टीविया जैसे कृत्रिम मिठास का उपयोग कर सकते हैं।\n" +
+                "Avoid hydrogenated oil, Dalda, and animal fat. Consume sunflower oil/ Corn oil/ ground nut oil./हाइड्रोजनीकृत तेल, डालडा और पशु वसा से बचें। सूरजमुखी तेल/मकई का तेल/मूंगफली के तेल का सेवन करें।\n" +
+                "Avoid large gaps between the meals. Eat small and frequent meals./छोटे-छोटे अंतरालों में थोडी-थोडी मात्रा में आहार लें\n" +
+                "Limit salt intake to 4gram per day./नमक का सेवन प्रतिदिन 4 ग्राम तक सीमित करें।\n" +
+                "Avoid processed and refined food products like maida and maida products, toast, khaari, biscuits, white breads. Avoid Namkeens, bakery items./मैदा और मैदा उत्पाद, टोस्ट, खारी, बिस्कुट, सफेद ब्रेड जैसे प्रसंस्कृत और परिष्कृत खाद्य उत्पादों से बचें। नमकीन, बेकरी आइटम से बचें।\n" +
+                "Hypoglycaemia most often occurs due to reasons such as inadequate meal intake, too much exercise without proper carbohydrate intake. This can lead to blurred vision, confused thinking, giddiness,sweating, restlnessness, drowsiness, slurred speech./हाइपोग्लाइसीमिया अक्सर अपर्याप्त भोजन सेवन, उचित कार्बोहाइड्रेट सेवन के बिना बहुत अधिक व्यायाम जैसे कारणों से होता है। इससे धुंधली दृष्टि, भ्रमित सोच, चक्कर आना, पसीना आना, बेचैनी, उनींदापन, गंदी बोली हो सकती है |\n" +
+                "Treatment- Have 15 grams of carbohydrate and check it after 15 minutes. If it’s still below 70 mg/dL, have another dose of 15g carbohydrate. Carbohydrate sources to include- Sugar or glucon- 1Tbsp (15g), 150-200ml of fruit juice./उपचार- 15 ग्राम कार्बोहाइड्रेट लें और 15 मिनट बाद चेक करें। यदि यह अभी भी 70 मिलीग्राम / डीएल से नीचे है, तो 15 ग्राम कार्बोहाइड्रेट की एक और खुराक लें। शामिल करने के लिए कार्बोहाइड्रेट स्रोत- चीनी या ग्लूकॉन- 1 बड़ा चम्मच (15 ग्राम), 150-200 मिलीलीटर फलों का रस|";
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -3656,6 +3666,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                medicalAdvice_string = medicalAdvice_string.concat("\n").concat(defaultAdvice);
                 Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
