@@ -69,8 +69,8 @@
 
     <!--//Home Screen (after login)-->
     <string name="title_home_screen">Home</string>
-    <string name="button_new_pt">New/Search Patient</string>
-    <string name="button_find_pt">Find Patient</string>
+    <string name="button_new_pt">New Patient</string>
+    <string name="button_find_pt">Find/Create Patient</string>
     <string name="button_diagnostic_tests">Diagnostic Tests</string>
     <string name="button_active_pt">Active Patients</string>
     <string name="menu_option_sync">Refresh Data</string>
@@ -346,7 +346,7 @@
     <string name="show_text">SHOW</string>
 
     <string name="new_patient">New Patient</string>
-    <string name="find_patient">Find Patients</string>
+    <string name="find_patient">Find/Create Patients</string>
     <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
@@ -1564,5 +1564,6 @@
     <string name="triage_survey">Triage Survey</string>
     <string name="empty_survey">Please enter/select the data for survey!</string>
     <string name="new_patient_fab_label">*Create a new record if you can\'t find a previous record</string>
+    <string name="livelihood_needs_assessment">Livelihood Needs Assessment</string>
 
 </resources>

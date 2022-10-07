@@ -68,8 +68,8 @@
 
     <!--//Home Screen (after login)-->
     <string name="title_home_screen">الصفحة الرئيسية</string>
-    <string name="button_new_pt">انشاء بحث عن سجل</string>
-    <string name="button_find_pt">ابحث عن المريض</string>
+    <string name="button_new_pt">مريض جديد</string>
+    <string name="button_find_pt"> انشاء\بحث عن سجل</string>
     <string name="button_diagnostic_tests">الاختبارات التشخيصية</string>
     <string name="button_active_pt">المرضى قيد المتابعة</string>
     <string name="menu_option_sync">تحديث البيانات</string>
@@ -342,7 +342,7 @@
     <string name="show_text">إظهار</string>
 
     <string name="new_patient">مريض جديد</string>
-    <string name="find_patient">البحث عن المرضى</string>
+    <string name="find_patient"> انشاء\بحث عن سجل</string>
     <string name="video_library">مكتبة الفيديو</string>
 
     <string name="error_no_sd">هذه الميزة متاحة فقط للأجهزة مع بطاقات SD.</string>
@@ -1528,7 +1528,7 @@
     <string name="fhh_survey">مسح FHH</string>
     <string name="general_aid_survey">المساعدة العامة</string>
     <string name="student_aid_survey">مساعدة الطلاب</string>
-    <string name="emergency_survey">تقييم الاحتياجات الطارئة</string>
+    <string name="emergency_survey">تقييم الاحتياجات الطبية الطارئة</string>
     <string name="syriana">سيريانا</string>
     <string name="table_pulse">النبض (نبضة/دقيقة)</string>
     <string name="txt_what_is_your_relationship_with_household_members_you_support">ما هي علاقتك العائلية بأفراد الأسرة الذين تدعمهم؟</string>
@@ -1553,9 +1553,10 @@
     <string name="setup_select_dropdown_district_msg">حدد المنطقة من القائمة المنسدلة</string>
     <string name="setup_select_village_str">اختر القرية</string>
     <string name="setup_select_dropdown_village_msg">حدد القرية من القائمة المنسدلة</string>
-    <string name="triage_survey">مسح الفرز</string>
+    <string name="triage_survey">تقييم امكانية الاستطباب عن بعد</string>
     <string name="empty_survey">الرجاء إدخال / تحديد البيانات للمسح!</string>
     <string name="new_patient_fab_label">*أنشئ سجل جديد في حال لم تجد سجل سابق</string>
+    <string name="livelihood_needs_assessment">تقييم الحاجات المعيشية</string>
 
 
 

@@ -891,7 +891,7 @@
                     android:fontFamily="@font/lato_bold"
                     tools:foreground="?android:attr/selectableItemBackground"
                     android:background="@color/orange3"
-                    android:text="@string/household_survey" />
+                    android:text="@string/livelihood_needs_assessment" />
 
             </androidx.cardview.widget.CardView>
 
