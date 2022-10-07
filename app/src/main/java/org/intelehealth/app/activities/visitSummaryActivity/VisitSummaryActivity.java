@@ -4163,6 +4163,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 EncounterDAO encounterDAO = new EncounterDAO();
                 String encounterIDSelection = "visituuid = ? AND voided = ?";
                 String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
