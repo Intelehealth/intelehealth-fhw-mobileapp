@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/margin_16"
+    app:cardElevation="@dimen/margin_8">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/dialog_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:clipToOutline="true"
+            android:layout_marginTop="@dimen/margin_32"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/close_patient_svg"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_icon"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_centerHorizontal="true" >
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Close patient registration?"
+            android:textAppearance="@style/dialog_title"
+            android:lineSpacingExtra="4sp"
+            android:textSize="@null"
+            android:textColor="@null"
+            android:gravity="center_horizontal|center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_title"
+            android:text="Are you sure you want to close the patient registration?"
+            android:textAppearance="@style/dialog_subtitle"
+            android:textSize="@null"
+            android:textColor="@null"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:lineSpacingExtra="3sp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_subtitle"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin_32"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/negative_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_bg_button"
+                android:text="Yes"
+                android:paddingHorizontal="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_12"
+                style="@style/negative_btn"
+                 />
+
+            <Button
+                android:id="@+id/positive_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_20"
+                android:background="@drawable/darkblue_bg_button"
+                android:text="No"
+                style="@style/positive_btn"
+                />
+        </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

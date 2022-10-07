@@ -215,7 +215,7 @@
         android:layout_above="@id/frame_nxtbtn_viewgrp">
 
         <include
-            layout="@layout/fragment_registration_thirdscreen"/>
+            layout="@layout/fragment_registration_firstscreen"/>
 
     </FrameLayout>
 
