@@ -492,9 +492,9 @@ public class SetupActivity extends AppCompatActivity {
 
         showProgressbar();
 
-        if (LocaleHelper.isArabic(this)) {
-            mUrlField.setGravity(Gravity.END);
-        }
+        /*if (LocaleHelper.isArabic(this)) {
+            mUrlField.setGravity(Gravity.START);
+        }*/
     }
 
     private void empty_spinner(String value) {

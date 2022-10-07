@@ -337,6 +337,7 @@
                         <TableRow
                             android:id="@+id/tableRow_addr2"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -873,48 +874,72 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/button_householdSurvey"
-                style="@style/SelectableItemBackground"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="10dp"
-                android:elevation="5dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_bold"
-                tools:foreground="?android:attr/selectableItemBackground"
-                android:background="@color/orange3"
-                android:text="@string/household_survey" />
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp">
 
-            <Button
-                android:id="@+id/button_triageSurvey"
-                style="@style/SelectableItemBackground"
+                <Button
+                    android:id="@+id/button_householdSurvey"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/orange3"
+                    android:text="@string/livelihood_needs_assessment" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="10dp"
-                android:elevation="5dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_bold"
-                tools:foreground="?android:attr/selectableItemBackground"
-                android:background="@color/green"
-                android:text="@string/triage_survey" />
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/button_triageSurvey"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    tools:foreground="?android:attr/selectableItemBackground"
+                    android:background="@color/green"
+                    android:text="@string/triage_survey" />
 
 
-            <Button
-                android:id="@+id/button_new_visit"
-                style="@style/SelectableItemBackground"
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="10dp"
-                android:elevation="5dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_bold"
-                android:foreground="?android:attr/selectableItemBackground"
-                tools:background="@color/orange3"
-                android:text="@string/button_new_visit" />
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/button_new_visit"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    tools:background="@color/colorPrimary"
+                    android:text="@string/button_new_visit" />
+
+
+            </androidx.cardview.widget.CardView>
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_previous_visits"
