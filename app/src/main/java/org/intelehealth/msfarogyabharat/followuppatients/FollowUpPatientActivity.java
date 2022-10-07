@@ -123,11 +123,10 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
     private void firstQuery() {
         shouldAllowBack = false;
-
         executorService.execute(() -> {
             runOnUiThread(() -> customProgressDialog.show());
-            List<FollowUpModel> followUpList = getAllPatientsFromDB(offset);
 
+            List<FollowUpModel> followUpList = getAllPatientsFromDB(offset);
             runOnUiThread(() -> {
                 try {
                     recycler = new FollowUpPatientAdapter(followUpList, FollowUpPatientActivity.this);
@@ -140,8 +139,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 customProgressDialog.dismiss();
             });
 
-            getFollowUpCount();
             shouldAllowBack = true;
+            getFollowUpCount();
         });
     }
 
