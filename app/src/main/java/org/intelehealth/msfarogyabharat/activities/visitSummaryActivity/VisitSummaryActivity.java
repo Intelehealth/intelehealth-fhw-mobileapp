@@ -1743,7 +1743,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                new AlertDialog.Builder(VisitSummaryActivity.this).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
