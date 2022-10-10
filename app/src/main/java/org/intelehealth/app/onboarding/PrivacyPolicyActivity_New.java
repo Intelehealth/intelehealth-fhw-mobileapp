@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 
 public class PrivacyPolicyActivity_New extends AppCompatActivity {
     private static final String TAG = "PrivacyPolicyActivityNe";
@@ -41,7 +40,7 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
         });
 
         btn_accept_privacy.setOnClickListener(v -> {
-            Intent intent = new Intent(this, PatientDetailActivity2.class);
+            Intent intent = new Intent(this, IdentificationActivity_New.class);
             startActivity(intent);
         });
 
