@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Syriana</string>
+    <string name="app_name">Sila</string>
     <string name="notification_title">Realtime sync is ON!</string>
     <!--//Generic-->
     <string name="generic_the_flipping_word_next">Next</string>
@@ -42,7 +42,7 @@
 
     <!--//Login Screen-->
     <!--    <string name="title_activity_login">Intelehealth</string>-->
-    <string name="title_activity_login">Syriana</string>
+    <string name="title_activity_login">Sila</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -599,7 +599,7 @@
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
     <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">Syriana is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">Sila is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
     <string name="intelehealth_name">Intelehealth</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
@@ -1532,7 +1532,7 @@
     <string name="save_prescription">Save Prescription</string>
 
 
-    //Syriana
+    //Sila
     <string name="what_is_residence_nature">What is the nature of your residential complex?</string>
     <string name="what_is_residence_link_nature">What is the nature of the link to the place of residence?</string>
     <string name="family_member_count">How many family member(s) live in the same dwelling?</string>
@@ -1545,7 +1545,7 @@
     <string name="general_aid_survey">General Aid</string>
     <string name="student_aid_survey">Student Aid</string>
     <string name="emergency_survey">Emergency Need Evaluation</string>
-    <string name="syriana">Syriana</string>
+    <string name="syriana">Sila</string>
     <string name="txt_what_is_your_relationship_with_head_of_household">What is your family relationship with the household members you support?</string>
     <string name="aid_type">Aid Type</string>
     <string name="patient_aid_type">Select Patient\'s aid type*</string>
@@ -1564,6 +1564,6 @@
     <string name="triage_survey">Triage Survey</string>
     <string name="empty_survey">Please enter/select the data for survey!</string>
     <string name="new_patient_fab_label">*Create a new record if you can\'t find a previous record</string>
-    <string name="livelihood_needs_assessment">Livelihood Needs Assessment</string>
+    <string name="livelihood_needs_assessment">Needs Assessment</string>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">سوريانا</string>
+    <string name="app_name">صلة</string>
     <string name="notification_title">المطابقة الزمنية مفعلة!</string>
     <!--//Generic-->
     <string name="generic_the_flipping_word_next">التالي</string>
@@ -42,7 +42,7 @@
 
     <!--//Login Screen-->
     <!--    <string name="title_activity_login">Intelehealth</string>-->
-    <string name="title_activity_login">سوريانا</string>
+    <string name="title_activity_login">صلة</string>
     <string name="prompt_email">اسم المستخدم</string>
     <string name="prompt_password">كلمة المرور</string>
     <string name="prompt_admin_password">كلمة سر المشرف</string>
@@ -63,8 +63,8 @@
     <string name="identification_screen_picker_hours" translatable="false">الساعات</string>
     <string name="identification_screen_picker_minute" translatable="false">الدقائق</string>
     <string name="cant_login_user">لا يمكن تسجيل الدخول؟</string>
-    <string name="email_link">يرجى الاتصال بمسؤول النظام الخاص بك لإعادة تعيين كلمة المرور الخاصة بك أو إرسال بريد إلكتروني إلى support@intelehealth.io</string>
-    <string name="contact_whatsapp">يرجى الاتصال بمسؤول النظام الخاص بك لإعادة تعيين كلمة المرور الخاصة بك</string>
+    <string name="email_link">يرجى الاتصال بمسؤول التطبيق الخاص بك لإعادة تعيين كلمة المرور الخاصة بك أو إرسال بريد إلكتروني إلى support@intelehealth.io</string>
+    <string name="contact_whatsapp">يرجى الاتصال بمسؤول التطبيق الخاص بك لإعادة تعيين كلمة المرور الخاصة بك</string>
 
     <!--//Home Screen (after login)-->
     <string name="title_home_screen">الصفحة الرئيسية</string>
@@ -87,11 +87,11 @@
     <string name="identification_screen_prompt_address2">العنوان السطر 2</string>
     <string name="identification_screen_prompt_phone_number">رقم الهاتف</string>
     <string name="admin_password_dialog_heading">أدخل كلمة مرور المسؤول</string>
-    <string name="identification_screen_prompt_gender">جنس *</string>
+    <string name="identification_screen_prompt_gender">الجنس *</string>
     <string name="identification_screen_checkbox_male">ذكر</string>
     <string name="identification_screen_checkbox_female">أنثى</string>
     <string name="identification_screen_prompt_birthday">تاريخ الولادة*</string>
-    <string name="identification_screen_prompt_age">سن:</string>
+    <string name="identification_screen_prompt_age">السن:</string>
     <string name="identification_screen_prompt_city">القرية/المدينة/المدينة *</string>
     <string name="identification_screen_prompt_state">السويداء</string>
     <string name="identification_screen_prompt_caste">الطبقة</string>
@@ -101,10 +101,10 @@
     <string name="identification_screen_prompt_postal_code">رمز بريدي</string>
     <string name="identification_screen_prompt_relationship">الابن/الابنة/زوجة</string>
     <string name="identification_screen_prompt_occupation">المهنة</string>
-    <string name="identification_screen_snack_patient_created">تم إنشاء سجل مريض! جاري التحميل إلى الخادم.</string>
+    <string name="identification_screen_snack_patient_created">تم إنشاء سجل حالة! جاري التحميل إلى المخدم.</string>
     <string name="identification_screen_error_data_fields">خطأ: حقول البيانات غير مصاغة بشكل صحيح</string>
-    <string name="identification_screen_dialog_age">الرجاء ادخال العمر في السنوات</string>
-    <string name="identification_screen_dialog_error_dob">تم تعيين تاريخ الميلاد للتاريخ بعد اليوم</string>
+    <string name="identification_screen_dialog_age">الرجاء ادخال العمر يالسنوات</string>
+    <string name="identification_screen_dialog_error_dob">تم تعيين تاريخ الميلاد لتاريخ بعد اليوم</string>
     <string name="identification_screen_dialog_error_gender">لم يتم اختيار الجنس</string>
     <string name="identification_screen_required_fields">الرجاء إدخال الحقول المطلوبة</string>
     <string name="identification_screen_error_dob">أدخل تاريخ ميلاد صحيح</string>
@@ -118,8 +118,8 @@
     <string name="title_activity_active_patient">زيارات قيد العمل</string>
 
     <!--//Patient History Screen-->
-    <string name="title_activity_get_patient_history">تاريخ المريض</string>
-    <string name="title_activity_search_patient">البحث عن مريض</string>
+    <string name="title_activity_get_patient_history">تاريخ الحالة</string>
+    <string name="title_activity_search_patient">البحث عن حالة</string>
 
     <!--//Complaint Node Screen-->
     <string name="title_activity_complaint_select">حدد الشكاوى</string>
@@ -158,7 +158,7 @@
     <string name="table_spo2">نسبة الاكسجة</string>
 
     <!--//Patient Search Screen-->
-    <string name="search_hint">اكتب للبحث عن المريض بالاسم ...</string>
+    <string name="search_hint">اكتب للبحث عن الحالة بالاسم ...</string>
     <string name="action_search">بحث</string>
     <string name="alert_none_found">يرجى التحقق</string>
 
@@ -196,7 +196,7 @@
     <string name="visit_summary_button_upload">رفع البيانات</string>
     <string name="name_button_download">زر التحميل</string>
     <string name="visit_summary_follow_up_date">تاريخ المتابعة القادمة</string>
-    <string name="visit_summary_follow_up_reminder">يرجى تذكير المريض بتاريخ المتابعة القادمة:</string>
+    <string name="visit_summary_follow_up_reminder">يرجى تذكير الحالة بتاريخ المتابعة القادمة:</string>
     <string name="visit_summary_upload_reminder">يرجى التحميل أولاً قبل محاولة إنهاء الزيارة.</string>
 
 
@@ -208,16 +208,16 @@
 
 
     <!--//Patient Detail Screen-->
-    <string name="header_patient_detail">معلومات المريض</string>
-    <string name="button_history">تاريخ المريض</string>
-    <string name="title_activity_patient_detail">تفاصيل المريض</string>
+    <string name="header_patient_detail">معلومات الحالة</string>
+    <string name="button_history">تاريخ الحالة</string>
+    <string name="title_activity_patient_detail">تفاصيل الحالة</string>
     <string name="header_medical_history">السوابق المرضية</string>
     <string name="button_new_visit">ابدأ زيارة جديدة</string>
     <string name="header_previous_visits">الزيارات السابقة</string>
     <string name="header_patient_history">السوابق المرضية</string>
     <string name="header_family_history">السوابق المرضية العائلية</string>
     <string name="string_no_hist">لا يوجد قصة مرض سابق</string>
-    <string name="row_patient_id">رقم المريض</string>
+    <string name="row_patient_id">رقم الحالة</string>
     <string name="row_dob">تاريخ الميلاد</string>
     <string name="row_age">العمر</string>
     <string name="row_gender">الجنس</string>
@@ -305,15 +305,15 @@
     <string name="setup_download_mindmap">تحميل بروتوكولات</string>
 
     <string name="please_wait_progress">الرجاء الإنتظار</string>
-    <string name="downloading_protocols">تنزيل بروتوكولات</string>
+    <string name="downloading_protocols">تحميل بروتوكولات</string>
     <string name="logging_in">تسجيل الدخول</string>
-    <string name="error_downloading_protocols">خطأ تنزيل الخرائط الذهنية</string>
+    <string name="error_downloading_protocols">خطأ في تحميل الخرائط الذهنية</string>
 
     <!--//Sync strings-->
     <string name="sync_stopped">متوقف</string>
     <string name="sync_in_progress">جاري العمل</string>
     <string name="sync_complete">مكتمل</string>
-    <string name="sync_error">خطأ: لا يوجد مثل هذه الحالة</string>
+    <string name="sync_error">خطأ: لا يوجد معلومات عن هذه الحالة</string>
 
     <string name="id_number">رقم الهوية</string>
     <string name="uploading">رفع البيانات</string>
@@ -321,13 +321,13 @@
 
     <string name="visit">زيارة</string>
     <string name="visit_update">تحديثات الزيارة</string>
-    <string name="patient">المريض</string>
-    <string name="patient_update">مستجدات المريض</string>
-    <string name="patient_images">صورة ملف تعريف المريض</string>
+    <string name="patient">الحالة</string>
+    <string name="patient_update">مستجدات الحالة</string>
+    <string name="patient_images">صورة ملف تعريف الحالة</string>
     <string name="visit_images">صورة الزيارة</string>
     <string name="prescription">وصفة طبية</string>
 
-    <string name="error_no_data">يرجى التنزيل أولاً قبل محاولة إنهاء الزيارة.</string>
+    <string name="error_no_data">يرجى التحميل أولاً قبل محاولة إنهاء الزيارة.</string>
     <string name="error_phone_number">لا يمكن أن يكون رقم الهاتف فارغًا</string>
     <string name="action_end_visit">إنهاء الزيارة</string>
 
@@ -341,8 +341,8 @@
     <string name="hide_text">إخفاء</string>
     <string name="show_text">إظهار</string>
 
-    <string name="new_patient">مريض جديد</string>
-    <string name="find_patient"> انشاء\بحث عن سجل</string>
+    <string name="new_patient">حالة جديدة</string>
+    <string name="find_patient">البحث عن الحالات</string>
     <string name="video_library">مكتبة الفيديو</string>
 
     <string name="error_no_sd">هذه الميزة متاحة فقط للأجهزة مع بطاقات SD.</string>
@@ -354,8 +354,8 @@
     <string name="success_offline_login">نجاح تسجيل الدخول بدون إنترنت</string>
     <string name="invalidate_offline_login">تسجيل الدخول بدون إنترنت</string>
 
-    <string name="patient_upload_error">لم يتم تحميل المريض</string>
-    <string name="patient_not_registered">المريض غير مسجل</string>
+    <string name="patient_upload_error">لم يتم رفع بيانات الحالة</string>
+    <string name="patient_not_registered">الحالة غير مسجلة</string>
 
     <string name="action_sync_all">تحديث البيانات</string>
 
@@ -411,13 +411,13 @@
     <string name="db_file_write_error">خطأ في تدوين ملف النسخ الاحتياطي</string>
 
     <string name="local_restore_alert_title">استرجاع النسخة الاحتياطية</string>
-    <string name="local_restore_alert_message">تم العثور على نسخة احتياطية محلية. هل تريد استعادة؟</string>
+    <string name="local_restore_alert_message">تم العثور على نسخة احتياطية محلية. هل تريد استعادتها؟</string>
 
 
     <!--Image Download Service-->
     <string name="image_downloading_service_title">جارى التحميل</string>
-    <string name="image_downloading_service_message">تنزيل بيانات الصورة</string>
-    <string name="image_downloading_service_complete_title">تنزيل بيانات الصورة كاملة</string>
+    <string name="image_downloading_service_message">تحميل بيانات الصورة</string>
+    <string name="image_downloading_service_complete_title">تحميل بيانات الصورة كاملة</string>
     <string name="image_downloading_service_complete_message">تم تنزيل جميع ملفات الصور</string>
     <string name="image_downloading_service_process_message">تم التنزيل</string>
     <string name="error_img_unavailable">الصورة غير متاحة</string>
@@ -447,7 +447,7 @@
     <string name="lastsync">آخر مطابقة زمنية</string>
     <string name="enter_password">ادخل رقمك السري</string>
     <string name="enter_username">أدخل اسم المستخدم الخاص بك</string>
-    <string name="patient_denies">ينفي المريض ب</string>
+    <string name="patient_denies">ينفي الشخص </string>
     <string name="patient_reports">يقر المريض ب</string>
 
     <string name="associated_symptoms">الأعراض المرافقة</string>
@@ -457,7 +457,7 @@
     <string name="years">سنوات</string>
     <string name="months">شهور</string>
     <string name="please_wait_till_sync_is_completed">يرجى الانتظار حتى يكتمل التحديث</string>
-    <string name="patient_name">اسم المريض</string>
+    <string name="patient_name">اسم الحالة</string>
     <string name="son_daughter_wife_of">الابن/الابنة/زوجة</string>
     <string name="occupation">المهنة</string>
     <string name="economic_status">الحالة الاقتصادية</string>
@@ -489,7 +489,7 @@
     <string name="cancel">يلغي</string>
     <string name="unable_to_end">غير قادر على إنهاء</string>
     <string name="upload_before_end_visit_active">زيارات. pplease قم بزيارة قبل محاولة إنهاء الزيارة.</string>
-    <string name="active">نشيط</string>
+    <string name="active">جارية</string>
     <string name="closed">مغلق</string>
 
     <string name="syncInProgress">تحديث في التقدم</string>
@@ -503,11 +503,11 @@
     <string name="sure_to_exit">هل أنت متأكد أنك تريد الخروج؟</string>
     <string name="sure_to_logout">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
     <string name="lastsync_normal">آخر تحديث</string>
-    <string name="update_patient_identification">تحديث المريض</string>
+    <string name="update_patient_identification">تحديث الحالة</string>
     <string name="are_you_want_go_back">هل أنت متأكد أنك تريد العودة؟</string>
     <string name="error">خطأ</string>
-    <string name="patient_data_upload">تحميل بيانات المريض</string>
-    <string name="patient_image_download_notifi">تنزيل صورة المريض</string>
+    <string name="patient_data_upload">تحميل بيانات الحالة</string>
+    <string name="patient_image_download_notifi">تحميل صورة الحالة</string>
     <string name="image_download_complete_notifi">تحميل صورة \\ كاملة.</string>
     <string name="no_prior_visits">لا زيارات سابقة.</string>
     <string name="end_visit_notif">زيارة نهاية</string>
@@ -524,10 +524,10 @@
     <string name="prescription_downloaded">وصفة طبية</string>
     <string name="downloading_prescription">تنزيل الوصفة الطبية</string>
     <string name="visit_data_failed">فشل زيارة البيانات</string>
-    <string name="patient_data_failed">فشلت بيانات المريض</string>
+    <string name="patient_data_failed">فشل الحصوب على بيانات الحالة</string>
     <string name="privacy_notice_title">إشعار الخصوصية</string>
     <string name="no_data_active_patients">لم يتم العثور على سجلات مريض لهذا العامل الصحي.</string>
-    <string name="syncing_visitDialog">منعش</string>
+    <string name="syncing_visitDialog">تحديث</string>
     <string name="successfully_synced_notif">نجحت في تحديث</string>
     <string name="languages">اللغات</string>
     <string name="change_languages">تغيير اللغات</string>
@@ -555,20 +555,20 @@
 
     <string name="end_visit_msg">هل أنت متأكد أنك تريد إنهاء الزيارة؟</string>
     <string name="prescription_not_downloaded_check_internet">وصفة طبية لم يتم تنزيلها ، تحقق من اتصال الإنترنت</string>
-    <string name="privacy_reject_toast">لا يمكنك تسجيل مريض دون موافقة</string>
+    <string name="privacy_reject_toast">لا يمكنك تسجيل حالة دون موافقة</string>
     <string name="not_answered">بلا جواب</string>
     <string name="new_update_available">تحديث جديد متاح</string>
     <string name="update_app_note">إصدار جديد متاح بميزات جديدة ، يرجى تحديث التطبيق</string>
     <string name="update">تحديث</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"مرحبًا ، شكرًا لك على استخدام InteleHealth. لتنزيل الوصفة الطبية الخاصة بك ، يرجى النقر هنا\"</string>
-    <string name="and_enter_your_patient_id">\"وأدخل معرف المريض -\"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"مرحبًا ، شكرًا لك على استخدام صلة. لتحميل الوصفة الطبية الخاصة بك ، يرجى النقر هنا"</string>
+    <string name="and_enter_your_patient_id">"وأدخل معرف الحالة -"</string>
 
 
     <!--New Ayu Related Changes-->
     <string name="what_is_the_reason_for_your_visit">ما هو سبب زيارتك؟</string>
-    <string name="swipe_down_to_return">انقلب لأسفل للمرة السابقة / لأعلى.</string>
-    <string name="swipe_up">انقلب على ما يصل إلى التالي</string>
-    <string name="swipe_down">انقلب إلى أسفل لصالح السابق</string>
+    <string name="swipe_down_to_return">اسحب للأسفل للسابق و اسحب للأعلى للتالي.</string>
+    <string name="swipe_up">اسحب للأعلى للتالي.</string>
+    <string name="swipe_down">اسحب للأسفل للسابق</string>
     <string name="have_symptom">هل لديك هذا العرض؟</string>
 
     <!--New UI changes 2.1-->
@@ -578,8 +578,8 @@
     <string name="do_you_need_help_please_contact_us">هل تحتاج مساعدة؟ الرجاء التواصل معنا!</string>
     <string name="whatsapp_helpline">خط المساعدة Whatsapp</string>
     <string name="Whatsapp_Help_Cardview">مساعدة</string>
-    <string name="skip">يتخطى</string>
-    <string name="start">بداية</string>
+    <string name="skip">تجاوز</string>
+    <string name="start">ابدأ </string>
     <string name="who_is_this_napplication_for">لمن هذا التطبيق ؟</string>
     <string name="custom_setup">اقامة</string>
     <string name="demo_version">النسخة التجريبية</string>
@@ -588,14 +588,14 @@
     <string name="age_11_years_5_months">العمر: 11 سنة ، 5 أشهر</string>
     <string name="active_defaultTag">نشيط</string>
     <string name="since_when_have_you_had_this_symptom">منذ متى كان لديك هذا الأعراض؟</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \n أنا أيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \n أنا أيو ، مساعد الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">مرحبًا \ n \ n أنا صلة ، مساعدة الصحة الرقمية. هيا بنا نبدأ!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">مرحبًا \ n \ n أنا صلة  ، مساعدة الصحة الرقمية. هيا بنا نبدأ!</string>
     <string name="hello_my_name_is">\"مرحبا اسمي \"</string>
     <string name="i_need_assistance">\"وأنا بحاجة إلى بعض المساعدة.\"</string>
     <string name="economic_values_missing">القيم الاقتصادية مفقودة</string>
     <string name="education_values_missing">قيم التعليم مفقودة</string>
     <string name="intelehealth_a_telemedicine_platform">InteleHealth هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">سوريانا هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">صلة هو تطبيق عن بعد يربط العاملين الصحيين في المناطق الريفية والنائية مع أطباء عن بُعد حتى يتمكنوا من توفير خدمات صحية عالية الجودة لمرضاهم.</string>
     <string name="intelehealth_name">intelehealth</string>
     <string name="Ayu_name">أيو</string>
     <string name="close_button">قريب</string>
@@ -611,14 +611,14 @@
     <string name="temperature_C">\"درجة الحرارة المئوية:\"</string>
     <string name="temperature_F">\"درجة الحرارة بالفهرنهايت:\"</string>
     <string name="no_history_family_found">لا يوجد تاريخ للمرض في الأسرة المقدمة.</string>
-    <string name="no_history_patient_illness_found">لا يوجد تاريخ لمرض المريض.</string>
+    <string name="no_history_patient_illness_found">لا يوجد تاريخ لمرض الحالة.</string>
     <string name="dr_registration_no">رقم التسجيل:</string>
     <string name="dr_phone_number">رقم الهاتف:</string>
     <string name="dr_email">البريد الإلكتروني:</string>
     <string name="_visit_summary">زيارة ملخص</string>
-    <string name="patient_id_">رقم المريض:</string>
-    <string name="patient_name_title">اسم المريض:</string>
-    <string name="patient_DOB">تاريخ ولادة المريض</string>
+    <string name="patient_id_">رقم الحالة:</string>
+    <string name="patient_name_title">اسم الحالة:</string>
+    <string name="patient_DOB">تاريخ ولادة الحالة</string>
     <string name="error_non_decimal_no_added">خطأ: تم إدخال الرقم غير عشري.</string>
     <string name="download_protocols">تنزيل البروتوكولات</string>
     <string name="mindmap_internect_connection">لتنزيل Mindmaps ، تحتاج إلى اتصال بالإنترنت ، يرجى تشغيل الإنترنت الخاص بك</string>
@@ -630,13 +630,13 @@
     <string name="share">مشاركة</string>
     <string name="please_enter_mobile_number">الرجاء إدخال رقم الهاتف النقال</string>
     <string name="download_prescription_first_before_sharing">قم بتنزيل الوصفة الطبية أولاً قبل المشاركة</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*أنا (العامل الصحي) أؤكد أنني قرأت إشعار الخصوصية والموافقة على المريض.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*أنا (العامل الصحي) أؤكد أنني قرأت إشعار الخصوصية والموافقة على الحالة و حصلت على موافقته.</string>
     <string name="enter_10_digits">أدخل 10 أرقام</string>
     <string name="enter_9_digits">أدخل 9 أرقام</string>
     <string name="please_read_out_privacy_consent_first">يرجى قراءة موافقة الخصوصية أولاً.</string>
     <string name="view_print">عرض/طباعة</string>
     <string name="refresh">ينعش</string>
-    <string name="family_member">أحد أفراد الأسرة</string>
+    <string name="family_member">أفراد الأسرة</string>
     <string name="no_family_member_registered">لم يتم تسجيل أي فرد من أفراد الأسرة</string>
     <string name="question_not_answered">سؤال لم يتم الإجابة عليه</string>
     <string name="version_settings">الإصدار 1.3</string>
@@ -663,7 +663,7 @@
     <string name="speciality_cardview_title">تخصص</string>
     <string name="select_specialization_text">حدد التخصص</string>
     <string name="please_select_specialization_msg">الرجاء تحديد التخصص</string>
-    <string name="chat_fab">دردشة القوات المسلحة البوروندية</string>
+    <string name="chat_fab">دردشة</string>
 
     <string name="visit_closed">زيارة مغلقة</string>
     <string name="ok_close_now">حسنًا ، أغلقه</string>
@@ -701,7 +701,7 @@
 
     //Language Screen
     <string name="choose_lang_title">اختر لغتك</string>
-    <string name="save_button">يحفظ</string>
+    <string name="save_button">حفظ</string>
     <string name="selectLanguageToast">الرجاء تحديد اللغة</string>
     <string name="config_not_found_alert_message">لم يتم العثور على سمة التكوين</string>
     <string name="error_login_title">تسجيل الدخول خطأ</string>
@@ -740,7 +740,9 @@
     <string name="prescription_temp_c">درجة الحرارة المئوية</string>
     <string name="prescription_temp_f">درجة الحرارة بالفهرنهايت</string>
     <string name="prescription_spo2">نسبة الاكسجة: </string>
-    <string name="intro_text_1">\"يتيح تطبيق التطبيب عن بُعد استشارات الطبيب المتخصصة للسكان الريفيين القادمين إلى الرعاية الصحية الأولية. يساعد في إنقاذ المرضى من السفر للأميال للرعاية الصحية.   \\ n \\ n   يتيح تطبيق التطبيب عن بُعد للموظفين الصحيين جمع شكاوى وأعراض تفصيلية للمريض وتوليد تاريخ سريري شامل. يتيح التطبيق لهم أيضًا التقاط تفاصيل الأدوية السابقة والتشخيصات والوصفات الطبية والعلاج.\"</string>
+    <string name="intro_text_1">"يتيح تطبيق التطبيب عن بُعد استشارات الطبيب المتخصصة للسكان الريفيين القادمين إلى الرعاية الصحية الأولية. يساعد في إنقاذ المرضى من السفر للأميال للرعاية الصحية.
+  \ n \ n
+  يتيح تطبيق التطبيب عن بُعد للموظفين الصحيين جمع شكاوى وأعراض تفصيلية للحالة وتوليد تاريخ سريري شامل. يتيح التطبيق لهم أيضًا التقاط تفاصيل الأدوية السابقة والتشخيصات والوصفات الطبية والعلاج."</string>
 
     <string name="book_appointment">حجز موعد</string>
     <string name="reschedule_appointment">اعادة جدولة الموعد</string>
@@ -767,8 +769,8 @@
     <string name="postal_code_invalid_txt">الرجاء إدخال رمز بريدي صالح</string>
     <string name="failed_to_cancel_appointment">فشل في إلغاء الموعد!</string>
     <string name="appointment_cancelled_success_txt">تم إلغاء الموعد بنجاح!</string>
-    <string name="have_you_spoken_with_the_patient_directly">هل تحدثت مع المريض مباشرة؟</string>
-    <string name="patient_interaction">تفاعل المريض</string>
+    <string name="have_you_spoken_with_the_patient_directly">هل تحدثت مع الحالة مباشرة؟</string>
+    <string name="patient_interaction">تفاعل الحالة</string>
 
     <string name="diagnosis">تشخيص</string>
     <string name="primary">الأولية</string>
@@ -786,9 +788,9 @@
     <string name="recommended_tests">الاختبارات الموصى بها</string>
     <string name="test">اختبار</string>
 
-    <string name="advice_or_refer_patient">نصيحة أو إحالة المريض</string>
+    <string name="advice_or_refer_patient">نصيحة أو إحالة الحالة</string>
     <string name="notes">ملحوظات</string>
-    <string name="notes_not_shared_with_the_patient">ملاحظات (لم يتم مشاركتها مع المريض)</string>
+    <string name="notes_not_shared_with_the_patient">ملاحظات (لم يتم مشاركتها مع الحالة)</string>
     <string name="follow_up">متابعة</string>
     <string name="sign_and_submit">تسجيل وإرسال</string>
     <string name="add_test">أضف الاختبار</string>
@@ -816,7 +818,7 @@
     <string name="type_to_search">اكتب للبحث..</string>
 
     <!--    Questions for HoH -->
-    <string name="select">يختار</string>
+    <string name="select">اختر</string>
 
     <string name="name_of_investigator">اسم المحقق*</string>
     <string name="village">قرية*</string>
@@ -878,7 +880,7 @@
     <string name="other_please_specify">غير ذلك (يرجى التحديد)</string>
     <string name="other_sources_of_income">مصادر أخرى للدخل</string>
     <string name="does_the_house_have_electricity">هل يتمتع المنزل بالكهرباء؟</string>
-    <string name="number_of_hours_of_load_shedding_per_day">عدد ساعان التقنين الكهربائي يوميًا</string>
+    <string name="number_of_hours_of_load_shedding_per_day">عدد ساعات التقنين الكهربائي يوميًا</string>
     <string name="number_of_days_with_load_shedding_per_week">عدد أيام التقنين الكهربائي في الأسبوع</string>
     <string name="is_there_running_water_available_in_the_house">هل هناك مياه جارية متوفرة في المنزل؟</string>
     <string name="what_is_the_primary_source_of_water_for_the_household">ما هو المصدر الرئيسي للمياه للأسرة؟</string>
@@ -1081,7 +1083,7 @@
     <string name="gender_other">آخر</string>
     <string name="enter_in_completed_years">أدخل في السنوات المكتملة</string>
     <string name="what_is_name_s_marital_status">ما هو ٪ 1 $ S \\\'s Mitor Mistrital؟</string>
-    <string name="what_is_your_marital_status">ما هو وضعك العائلي؟*</string>
+    <string name="what_is_your_marital_status">ما هي الحالة الاجتماعية </string>
     <string name="currently_married">متزوج حاليا</string>
     <string name="married_gauna_not_performed">متزوج ، لم يتم تنفيذ Gauna</string>
     <string name="widowed">مرمل</string>
@@ -1556,7 +1558,7 @@
     <string name="triage_survey">تقييم امكانية الاستطباب عن بعد</string>
     <string name="empty_survey">الرجاء إدخال / تحديد البيانات للمسح!</string>
     <string name="new_patient_fab_label">*أنشئ سجل جديد في حال لم تجد سجل سابق</string>
-    <string name="livelihood_needs_assessment">تقييم الحاجات المعيشية</string>
+    <string name="livelihood_needs_assessment">تقييم الحاجات </string>
 
 
 

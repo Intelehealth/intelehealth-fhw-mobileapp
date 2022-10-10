@@ -123,12 +123,12 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_first_name"
-                                        android:textAlignment="viewStart"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
                                         android:singleLine="true"
+                                        android:textAlignment="viewStart"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -148,13 +148,13 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_middle_name"
-                                        android:textAlignment="viewStart"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
+                                        android:textAlignment="viewStart"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -175,12 +175,12 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_last_name"
-                                        android:textAlignment="viewStart"
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
                                         android:singleLine="true"
+                                        android:textAlignment="viewStart"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -238,13 +238,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:visibility="gone"
                                 android:drawableStart="@drawable/female_icon"
                                 android:drawableLeft="@drawable/female_icon"
                                 android:fontFamily="@font/lato_regular"
                                 android:maxLines="1"
                                 android:text="@string/other"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:visibility="gone" />
 
                         </RadioGroup>
 
@@ -268,11 +268,11 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_birthday"
-                                android:textAlignment="viewStart"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
                                 android:singleLine="true"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
@@ -296,11 +296,11 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_age"
-                                android:textAlignment="viewStart"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
                                 android:singleLine="true"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -324,13 +324,13 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
-                                android:textAlignment="viewStart"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -399,8 +399,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="1"
-                                android:visibility="gone"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
@@ -438,8 +438,8 @@
                                             android:id="@+id/spinner_country"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
-                                            android:textAlignment="viewStart"
-                                            android:layout_weight="2" />
+                                            android:layout_weight="2"
+                                            android:textAlignment="viewStart" />
 
                                     </LinearLayout>
 
@@ -489,9 +489,9 @@
                                         <Spinner
                                             android:id="@+id/spinner_state"
                                             android:layout_width="match_parent"
-                                            android:textAlignment="viewStart"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="2" />
+                                            android:layout_weight="2"
+                                            android:textAlignment="viewStart" />
                                     </LinearLayout>
 
 
@@ -541,8 +541,8 @@
                                             android:id="@+id/spinner_village"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:textAlignment="viewStart"
-                                            android:layout_weight="2" />
+                                            android:layout_weight="2"
+                                            android:textAlignment="viewStart" />
                                     </LinearLayout>
 
 
@@ -570,19 +570,19 @@
                                 android:hint="@string/identification_screen_prompt_address"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
-                                android:textAlignment="viewStart"
                                 android:maxLength="50"
                                 android:maxLines="2"
                                 android:singleLine="false"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_address2"
@@ -623,9 +623,9 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="number"
                                 android:maxLength="9"
-                                android:textAlignment="viewStart"
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
@@ -661,61 +661,62 @@
 
                 </LinearLayout>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_aid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="10sp"
-                app:cardElevation="3dp"
-                app:cardPreventCornerOverlap="false">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <TextView
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_aid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="5dp"
-                    android:text="@string/patient_aid_type"
-                    android:textSize="@dimen/card_content_sub_text_size" />
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false">
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbFHHSurvey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/fhh_survey" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbGeneralAid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/general_aid_survey" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/patient_aid_type"
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbStudentAid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/student_aid_survey" />
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbEmergency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/emergency_survey" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbGeneralAid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_aid_survey" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbEmergency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/emergency_survey" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbStudentAid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/student_aid_survey" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbFHHSurvey"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fhh_survey" />
 
-            </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
 
                 <LinearLayout
@@ -724,7 +725,8 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -746,11 +748,66 @@
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview401"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false">
+                <LinearLayout android:padding="8dip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:text="@string/are_you_head_of_the_family"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/hoh_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/hoh_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:text="@string/yes"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/hoh_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:text="@string/no"
+                            android:textSize="14sp" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardview4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false">
@@ -762,7 +819,7 @@
                         android:orientation="vertical"
                         android:padding="8dp">
 
-                        <TextView
+                       <!-- <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
@@ -800,7 +857,7 @@
                                 android:textSize="14sp" />
 
                         </RadioGroup>
-
+-->
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
@@ -1025,9 +1082,9 @@
                         <EditText
                             android:id="@+id/ET_since_change_happened"
                             android:layout_width="match_parent"
-                            android:textAlignment="viewStart"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textAlignment="viewStart" />
 
 
                         <Space
@@ -1199,9 +1256,9 @@
                         <EditText
                             android:id="@+id/et_since_when_supporting_family"
                             android:layout_width="match_parent"
-                            android:textAlignment="viewStart"
                             android:layout_height="wrap_content"
-                            android:hint="@string/enter_duration" />
+                            android:hint="@string/enter_duration"
+                            android:textAlignment="viewStart" />
 
 
                     </LinearLayout>
