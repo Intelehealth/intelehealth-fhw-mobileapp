@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_below="@+id/personal_card"
     android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
     android:layout_marginTop="@dimen/margin_20"
+    android:layout_marginEnd="24dp"
     app:cardCornerRadius="@dimen/margin_8"
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12"
         android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginTop="@dimen/margin_12"
         android:layout_marginEnd="@dimen/margin_12"
-        android:layout_marginBottom="@dimen/margin_16" >
+        android:layout_marginBottom="@dimen/margin_16">
 
 
         <!--Personal Header-->
@@ -36,21 +35,20 @@
                 android:id="@+id/label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/personal_info_icon"
-                android:text="Address"
-                android:layout_marginStart="@dimen/margin_8"
                 android:layout_centerVertical="true"
-                android:textAppearance="@style/patdetail_header1"
-                android:lineSpacingExtra="3sp"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
-                />
+                android:lineSpacingExtra="3sp"
+                android:text="Address"
+                android:textAppearance="@style/patdetail_header1" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chevron_up"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/chevron_up" />
 
         </RelativeLayout>
 
@@ -74,19 +72,18 @@
                 android:id="@+id/details_personal_txtview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:lineSpacingExtra="-3sp"
                 android:text="Details"
                 android:textAppearance="@style/patdetail_header1"
-                android:lineSpacingExtra="-3sp"
                 android:textColor="@null"
-                android:textSize="@null"
-                />
+                android:textSize="@null" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/edit_change_patdetail"
                 android:layout_alignParentEnd="true"
-                android:background="@null" />
+                android:background="@null"
+                android:src="@drawable/edit_change_patdetail" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -108,24 +105,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Postal Code"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/postalcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="422101"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Gender-->
@@ -138,24 +135,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Country"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="India"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Date of birth-->
@@ -168,24 +165,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  State"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Maharashtra"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Age-->
@@ -198,24 +195,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  District"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Nashik"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Phone number-->
@@ -228,27 +225,27 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Village/Town/City"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/village"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Dwarka"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
-               <!-- Address 1-->
+                <!-- Address 1-->
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -258,28 +255,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Corresponding \n  Address 1"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/address1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="444, Kathe lane, Dwarka, Nasik"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
-
-
-
 
 
             </TableLayout>

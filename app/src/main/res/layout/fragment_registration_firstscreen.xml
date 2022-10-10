@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,35 +7,34 @@
         android:id="@+id/img_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/addpat_profile_img"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_16"/>
+        android:layout_marginTop="@dimen/margin_16"
+        android:src="@drawable/addpat_profile_img" />
 
     <TextView
         android:id="@+id/add_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a picture"
         android:layout_below="@+id/img_profile"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_8"
+        android:gravity="top"
+        android:lineSpacingExtra="3sp"
+        android:text="Add a picture"
         android:textAppearance="@style/blur_txtview"
         android:textColor="@null"
         android:textSize="@null"
-        android:lineSpacingExtra="3sp"
-        android:translationY="-1.39sp"
-        android:gravity="top"
-        />
+        android:translationY="-1.39sp" />
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_marginTop="24dp"
         android:layout_above="@+id/relative_btn"
-        android:layout_below="@+id/add_picture">
+        android:layout_below="@+id/add_picture"
+        android:layout_marginTop="24dp"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <!--Firstname-->
         <RelativeLayout
@@ -56,24 +54,23 @@
                     android:id="@+id/firstname_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
                     android:text="First Name*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/firstname_edittext"
+                    style="@style/edittext_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
-                    style="@style/edittext_hint"
                     android:hint="Enter first name"
+                    android:paddingStart="@dimen/margin_12"
                     android:textColor="@null"
-                    android:textSize="16sp"
-                    android:paddingStart="@dimen/margin_12" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!--Middlename-->
@@ -81,34 +78,33 @@
                 android:id="@+id/linear_middlename"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linear_firstname"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:layout_below="@+id/linear_firstname">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/middlename_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
                     android:text="Middle Name*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/firstname_edittext"
+                    style="@style/edittext_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
+                    android:hint="Enter middle name"
+                    android:paddingStart="@dimen/margin_12"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
-                    style="@style/edittext_hint"
-                    android:hint="Enter middle name"
                     android:textColor="@null"
-                    android:textSize="16sp"
-                    android:paddingStart="@dimen/margin_12" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -117,47 +113,45 @@
                 android:id="@+id/linear_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linear_middlename"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:layout_below="@+id/linear_middlename">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lastname_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
                     android:text="Last Name*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/lastname_edittext"
+                    style="@style/edittext_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
+                    android:hint="Enter surname"
+                    android:paddingStart="@dimen/margin_12"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
-                    style="@style/edittext_hint"
-                    android:hint="Enter surname"
                     android:textColor="@null"
-                    android:textSize="16sp"
-                    android:paddingStart="@dimen/margin_12" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/surnamefield_mandatory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:lineSpacingExtra="0sp"
-                    android:layout_gravity="end"
-                    />
+                    android:textSize="@null" />
 
             </LinearLayout>
 
@@ -166,56 +160,55 @@
                 android:id="@+id/linear_gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linear_lastname"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:layout_below="@+id/linear_lastname">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lastname_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Gender*"
                     android:gravity="center"
+                    android:lineSpacingExtra="3sp"
+                    android:text="Gender*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:weightSum="3"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <RadioButton
                         android:id="@+id/gender_male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Male"
                         android:layout_gravity="start"
-                        android:drawableEnd="@drawable/gender_male_svg"/>
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/gender_male_svg"
+                        android:text="Male" />
 
                     <RadioButton
                         android:id="@+id/gender_female"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Female"
-                        android:layout_weight="1"
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
-                        android:drawableEnd="@drawable/gender_female_svg"/>
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/gender_female_svg"
+                        android:text="Female" />
 
                     <RadioButton
                         android:id="@+id/gender_female"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Other"
-                        android:layout_weight="1"
                         android:layout_gravity="end"
-                        android:drawableEnd="@drawable/gender_other_svg"/>
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/gender_other_svg"
+                        android:text="Other" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -225,36 +218,35 @@
                 android:id="@+id/linear_dob"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linear_gender"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:layout_below="@+id/linear_gender">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/dob_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
                     android:text="Date of Birth*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/dob_edittext"
+                    style="@style/edittext_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingBottom="@dimen/margin_10"
-                    style="@style/edittext_hint"
-                    android:hint="Enter Date of Birth"
-                    android:textColor="@null"
-                    android:textSize="16sp"
                     android:drawableEnd="@drawable/followup_item_calendar"
+                    android:hint="Enter Date of Birth"
+                    android:paddingStart="@dimen/margin_12"
+                    android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
-                    android:paddingStart="@dimen/margin_12" />
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textColor="@null"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -263,35 +255,34 @@
                 android:id="@+id/linear_age"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linear_dob"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:layout_below="@+id/linear_dob">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/age_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
                     android:text="Age*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/age_edittext"
+                    style="@style/edittext_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingBottom="@dimen/margin_10"
-                    style="@style/edittext_hint"
                     android:hint="Enter Age"
-                    android:textColor="@null"
-                    android:textSize="16sp"
+                    android:paddingStart="@dimen/margin_12"
+                    android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
-                    android:paddingStart="@dimen/margin_12" />
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textColor="@null"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!--Phone number-->
@@ -299,21 +290,20 @@
                 android:id="@+id/linear_phoneno"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linear_age"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:orientation="vertical"
-                android:layout_below="@+id/linear_age">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/phoneno_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
                     android:text="Phone Number*"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
-                    android:textSize="@null"
-                    android:lineSpacingExtra="3sp"
-                    />
+                    android:textSize="@null" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -322,39 +312,39 @@
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
+                        style="@style/edittext_hint"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
+                        android:layout_weight="1"
                         android:background="@drawable/edittext_border"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingBottom="@dimen/margin_10"
-                        style="@style/edittext_hint"
-                        android:hint="+91"
-                        android:textColor="@null"
-                        android:textSize="16sp"
-                        android:drawablePadding="@dimen/margin_8"
                         android:drawableStart="@drawable/india_flag_svg"
                         android:drawableEnd="@drawable/ui2_ic_chevron_down"
+                        android:drawablePadding="@dimen/margin_8"
+                        android:hint="+91"
+                        android:paddingStart="@dimen/margin_12"
+                        android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
-                        android:paddingStart="@dimen/margin_12" />
+                        android:paddingBottom="@dimen/margin_10"
+                        android:textColor="@null"
+                        android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:layout_marginStart="@dimen/margin_16"
-                        android:background="@drawable/edittext_border"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingBottom="@dimen/margin_10"
                         style="@style/edittext_hint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_border"
                         android:hint="7304154312"
-                        android:textColor="@null"
-                        android:textSize="16sp"
+                        android:paddingStart="@dimen/margin_12"
+                        android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
-                        android:paddingStart="@dimen/margin_12" />
+                        android:paddingBottom="@dimen/margin_10"
+                        android:textColor="@null"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </LinearLayout>

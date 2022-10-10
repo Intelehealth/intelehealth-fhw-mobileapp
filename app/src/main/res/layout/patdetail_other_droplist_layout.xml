@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_below="@+id/address_card"
     android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
     android:layout_marginTop="@dimen/margin_20"
+    android:layout_marginEnd="24dp"
     app:cardCornerRadius="@dimen/margin_8"
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12"
         android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginTop="@dimen/margin_12"
         android:layout_marginEnd="@dimen/margin_12"
-        android:layout_marginBottom="@dimen/margin_16" >
+        android:layout_marginBottom="@dimen/margin_16">
 
 
         <!--Personal Header-->
@@ -36,21 +35,20 @@
                 android:id="@+id/label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/personal_info_icon"
-                android:text="Other details"
-                android:layout_marginStart="@dimen/margin_8"
                 android:layout_centerVertical="true"
-                android:textAppearance="@style/patdetail_header1"
-                android:lineSpacingExtra="3sp"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
-                />
+                android:lineSpacingExtra="3sp"
+                android:text="Other details"
+                android:textAppearance="@style/patdetail_header1" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chevron_up"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/chevron_up" />
 
         </RelativeLayout>
 
@@ -74,19 +72,18 @@
                 android:id="@+id/details_personal_txtview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:lineSpacingExtra="-3sp"
                 android:text="Details"
                 android:textAppearance="@style/patdetail_header1"
-                android:lineSpacingExtra="-3sp"
                 android:textColor="@null"
-                android:textSize="@null"
-                />
+                android:textSize="@null" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/edit_change_patdetail"
                 android:layout_alignParentEnd="true"
-                android:background="@null" />
+                android:background="@null"
+                android:src="@drawable/edit_change_patdetail" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -108,24 +105,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Son/Daughter/ \n  Wife of"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/son_daughter_wife"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Not mentioned"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Gender-->
@@ -138,24 +135,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Occupation"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/occupation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Diabetes - 20 May 2021 | Current medication - Not taking any | Last measured blood sugar and HbA1C - Not known"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Date of birth-->
@@ -168,24 +165,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Caste"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/caste"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Not mentioned"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Age-->
@@ -198,24 +195,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Education"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/education"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Graduation"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!--Phone number-->
@@ -228,26 +225,26 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:text="  Economic status"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
-                        android:textColor="@color/hint_text_color" />
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/economicstatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="APL"
                         android:textAppearance="@style/caption"
-                        android:textSize="14sp"
                         android:textColor="@color/textview_color"
-                        />
+                        android:textSize="14sp" />
                 </TableRow>
-                
+
             </TableLayout>
 
         </RelativeLayout>

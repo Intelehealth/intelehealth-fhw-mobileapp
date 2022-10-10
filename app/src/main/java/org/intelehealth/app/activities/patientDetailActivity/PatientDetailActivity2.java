@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.intelehealth.app.R;
 
 public class PatientDetailActivity2 extends AppCompatActivity {
+    TextView name, district;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +25,10 @@ public class PatientDetailActivity2 extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
+        name = findViewById(R.id.name);
+        district = findViewById(R.id.district);
+
+        name.setText("Prajwal Waingankar");
+        district.setText("Thane");
     }
 }

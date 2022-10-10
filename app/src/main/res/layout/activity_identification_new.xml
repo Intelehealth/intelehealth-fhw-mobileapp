@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.identificationActivity.IdentificationActivity_New"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activities.identificationActivity.IdentificationActivity_New">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/fu_toolbat_txt_height"
@@ -38,11 +36,11 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:padding="@dimen/margin_5"
                 android:background="@null"
+                android:padding="@dimen/margin_5"
+                android:src="@drawable/ic_arrow_right"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:src="@drawable/ic_arrow_right" />
+                tools:visibility="visible" />
 
             <!-- Label -->
             <TextView
@@ -53,9 +51,9 @@
                 android:gravity="top"
                 android:lineSpacingExtra="1sp"
                 android:text="@string/add_new_patient"
+                android:textAppearance="@style/label"
                 android:textColor="@null"
                 android:textSize="@dimen/toolbar_text_size"
-                android:textAppearance="@style/label"
                 android:translationY="-0.28sp" />
 
         </LinearLayout>
@@ -63,17 +61,17 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
             android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_weight="0.2"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_20"
                 android:layout_weight="1"
                 android:background="@null"
-                android:layout_marginEnd="@dimen/margin_20"
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
@@ -148,27 +146,27 @@
             android:layout_toEndOf="@+id/line_2"
             android:src="@drawable/other_icon_unselected" />
     </RelativeLayout>
-    
+
     <LinearLayout
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icons_grp"
-        android:orientation="horizontal"
         android:layout_alignStart="@+id/icons_grp"
+        android:layout_alignEnd="@+id/icons_grp"
         android:layout_marginBottom="@dimen/margin_16"
-        android:layout_alignEnd="@+id/icons_grp">
+        android:orientation="horizontal">
 
-          <TextView
+        <TextView
             android:id="@+id/personal_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-              android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_5"
             android:layout_marginTop="8dp"
+            android:layout_weight="1"
             android:gravity="start"
             android:lineSpacingExtra="2sp"
             android:text="Personal"
-              android:layout_marginStart="@dimen/margin_5"
             android:textAppearance="@style/personal_txtview"
             android:textColor="@null"
             android:textSize="@null"
@@ -178,11 +176,11 @@
             android:id="@+id/address_icon_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_5"
+            android:layout_weight="1"
             android:gravity="center"
             android:lineSpacingExtra="2sp"
-            android:layout_marginEnd="@dimen/margin_5"
             android:text="Address"
             android:textAppearance="@style/personal_txtview"
             android:textColor="@null"
@@ -193,11 +191,11 @@
             android:id="@+id/other_icon_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_10"
+            android:layout_weight="1"
             android:gravity="end"
             android:lineSpacingExtra="2sp"
-            android:layout_marginEnd="@dimen/margin_10"
             android:text="Other"
             android:textAppearance="@style/personal_txtview"
             android:textColor="@null"
@@ -210,9 +208,9 @@
         android:id="@+id/frame_firstscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_16"
+        android:layout_above="@id/frame_nxtbtn_viewgrp"
         android:layout_below="@+id/title_text"
-        android:layout_above="@id/frame_nxtbtn_viewgrp">
+        android:layout_marginBottom="@dimen/margin_16">
 
         <include layout="@layout/fragment_registration_firstscreen" />
 
@@ -223,50 +221,50 @@
         android:id="@+id/frame_nxtbtn_viewgrp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp">
 
-    <RelativeLayout
-        android:id="@+id/relative_firstscreen_nxt_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" >
-
-        <Button
-            android:id="@+id/nxt_btn"
+        <RelativeLayout
+            android:id="@+id/relative_firstscreen_nxt_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/registr_nxt_btn"/>
+            android:visibility="gone">
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/nxt_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/registr_nxt_btn" />
 
-    <LinearLayout
-        android:id="@+id/linear_secondscreen_nxt_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="visible" >
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/btn_back_firstscreen"
+        <LinearLayout
+            android:id="@+id/linear_secondscreen_nxt_btn"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="@dimen/margin_16"
-            android:background="@drawable/back_btn_patregistra"/>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="visible">
 
-        <Button
-            android:id="@+id/btn_nxt_firstscreen"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="24dp"
-            android:layout_toEndOf="@+id/btn_back_firstscreen"
-            android:background="@drawable/nxt_btn_secondscreen"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_back_firstscreen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:layout_weight="1"
+                android:background="@drawable/back_btn_patregistra" />
+
+            <Button
+                android:id="@+id/btn_nxt_firstscreen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="24dp"
+                android:layout_toEndOf="@+id/btn_back_firstscreen"
+                android:layout_weight="1"
+                android:background="@drawable/nxt_btn_secondscreen" />
+        </LinearLayout>
     </FrameLayout>
 
 </RelativeLayout>
