@@ -43,6 +43,7 @@
 
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

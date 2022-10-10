@@ -105,6 +105,8 @@
     <color name="notifi_divider_color">#33B2AFBE</color>
 
     <color name="headline_text_color">#1B163A</color>
+    <color name="hint_text_color">#7F7B92</color>
+    <color name="textview_color">#1B163A</color>
 
     <!--END-->
 </resources>

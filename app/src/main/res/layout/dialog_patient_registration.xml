@@ -15,7 +15,7 @@
             android:id="@+id/dialog_icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:clipToOutline="true"
+            
             android:layout_marginTop="@dimen/margin_32"
             android:layout_centerHorizontal="true"
             android:src="@drawable/close_patient_svg"
