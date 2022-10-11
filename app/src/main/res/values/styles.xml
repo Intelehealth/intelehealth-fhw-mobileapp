@@ -306,7 +306,7 @@
 
     <style name="personal_txtview">
         <item name="android:textSize">
-            12sp
+            @dimen/notifi_subtitle_size
         </item>
         <item name="android:textColor">
             #1B163A

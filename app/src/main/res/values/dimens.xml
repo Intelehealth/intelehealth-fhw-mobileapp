@@ -628,6 +628,9 @@
     <dimen name="tv_video_desc_margin_top">4dp</dimen>
     <dimen name="video_list_view_margin_top">16dp</dimen>
     <dimen name="margin_24">24dp</dimen>
+    <dimen name="icon_36dp">36dp</dimen>
+    <dimen name="line_66dp">66dp</dimen>
+    <dimen name="patregis_icon_text">10dp</dimen>
 
 
 </resources>

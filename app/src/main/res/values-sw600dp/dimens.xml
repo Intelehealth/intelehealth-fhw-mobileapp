@@ -354,7 +354,7 @@
     <dimen name="design_navigation_icon_size" tools:override="true">30dp</dimen>
 
     <!--Text Size-->
-    <dimen name="toolbar_text_size">22sp</dimen>
+    <dimen name="toolbar_text_size">24sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
     <dimen name="fu_card_margin_sides">24dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
@@ -533,4 +533,8 @@
     <dimen name="video_list_view_margin_top">16dp</dimen>
     <dimen name="margin_24">34dp</dimen>
     <dimen name="content_margin_start">34dp</dimen>
+    <dimen name="margin_10">14dp</dimen>
+    <dimen name="icon_36dp">56dp</dimen>
+    <dimen name="line_66dp">76dp</dimen>
+    <dimen name="patregis_icon_text">20dp</dimen>
 </resources>

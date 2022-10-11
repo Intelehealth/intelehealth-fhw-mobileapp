@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginStart="@dimen/toolbar_margin_left"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/common_title_margin_top"
         android:layout_marginEnd="@dimen/toolbar_margin_right"
         android:orientation="horizontal"
         android:weightSum="1">
@@ -69,7 +69,7 @@
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/common_title_margin_top"
                 android:layout_weight="1"
                 android:background="@null"
                 android:src="@drawable/ic_refreshbtn" />
@@ -93,13 +93,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_centerInParent="true"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/margin_24"
         android:background="#00000000">
 
         <ImageView
             android:id="@+id/addpatient_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_36dp"
+            android:layout_height="@dimen/icon_36dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/margin_10"
             android:layout_marginTop="2dp"
@@ -109,7 +109,7 @@
 
         <ImageView
             android:id="@+id/line_1"
-            android:layout_width="66dp"
+            android:layout_width="@dimen/line_66dp"
             android:layout_height="5dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/addpatient_icon"
@@ -118,18 +118,18 @@
 
         <ImageView
             android:id="@+id/addresslocation_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="2dp"
+            android:layout_width="@dimen/icon_36dp"
+            android:layout_height="@dimen/icon_36dp"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginTop="@dimen/card_appointment_card_elevation"
+            android:layout_marginEnd="@dimen/common_edittext_margin_top"
+            android:layout_marginBottom="@dimen/card_appointment_card_elevation"
             android:layout_toEndOf="@+id/line_1"
             android:src="@drawable/addresslocation_icon_unselected" />
 
         <ImageView
             android:id="@+id/line_2"
-            android:layout_width="66dp"
+            android:layout_width="@dimen/line_66dp"
             android:layout_height="5dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/addresslocation_icon"
@@ -137,12 +137,12 @@
 
         <ImageView
             android:id="@+id/other_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_width="@dimen/icon_36dp"
+            android:layout_height="@dimen/icon_36dp"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginTop="@dimen/card_appointment_card_elevation"
             android:layout_marginEnd="@dimen/margin_10"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="@dimen/card_appointment_card_elevation"
             android:layout_toEndOf="@+id/line_2"
             android:src="@drawable/other_icon_unselected" />
     </RelativeLayout>
@@ -154,14 +154,14 @@
         android:layout_below="@+id/icons_grp"
         android:layout_alignStart="@+id/icons_grp"
         android:layout_alignEnd="@+id/icons_grp"
-        android:layout_marginBottom="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/card_close_visits_margin_top"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/personal_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginStart="@dimen/image_intelehealth_margin_bottom"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:gravity="start"
@@ -177,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/image_intelehealth_margin_bottom"
             android:layout_weight="1"
             android:gravity="center"
             android:lineSpacingExtra="2sp"
@@ -192,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/margin_10"
+            android:layout_marginEnd="@dimen/patregis_icon_text"
             android:layout_weight="1"
             android:gravity="end"
             android:lineSpacingExtra="2sp"
@@ -210,7 +210,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/frame_nxtbtn_viewgrp"
         android:layout_below="@+id/title_text"
-        android:layout_marginBottom="@dimen/margin_16">
+        android:layout_marginBottom="@dimen/fu_card_margin_updown">
 
         <include layout="@layout/fragment_registration_firstscreen" />
 
@@ -222,20 +222,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="@dimen/margin_24">
 
         <RelativeLayout
             android:id="@+id/relative_firstscreen_nxt_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/nxt_btn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
                 android:background="@drawable/registr_nxt_btn" />
 
         </RelativeLayout>
@@ -245,22 +245,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/btn_back_firstscreen"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="@dimen/margin_16"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/fu_card_margin_updown"
                 android:layout_weight="1"
                 android:background="@drawable/back_btn_patregistra" />
 
             <Button
                 android:id="@+id/btn_nxt_firstscreen"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="24dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginEnd="@dimen/margin_24"
                 android:layout_toEndOf="@+id/btn_back_firstscreen"
                 android:layout_weight="1"
                 android:background="@drawable/nxt_btn_secondscreen" />
