@@ -531,4 +531,6 @@
     <dimen name="item_video_card_margin_end">12dp</dimen>
     <dimen name="tv_video_desc_margin_top">4dp</dimen>
     <dimen name="video_list_view_margin_top">16dp</dimen>
+    <dimen name="margin_24">34dp</dimen>
+    <dimen name="content_margin_start">34dp</dimen>
 </resources>

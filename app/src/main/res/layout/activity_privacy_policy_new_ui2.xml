@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginStart="@dimen/toolbar_margin_left"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/common_title_margin_top"
         android:layout_marginEnd="@dimen/toolbar_margin_right"
         android:orientation="horizontal"
         android:weightSum="1">
@@ -64,11 +64,10 @@
 
         <ImageButton
             android:id="@+id/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/margin_24"
+            android:layout_height="@dimen/margin_24"
             android:background="@null"
             android:src="@drawable/ic_refreshbtn" />
-
     </LinearLayout>
     </LinearLayout>
     <!--toolbar end-->
@@ -83,7 +82,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:scrollbars="vertical"
-            android:scrollbarSize="10dp"
             android:fadeScrollbars="false"
             android:layout_height="wrap_content">
 
@@ -96,13 +94,10 @@
                 android:layout_marginBottom="@dimen/content_margin_start"
                 android:fontFamily="@font/lato_regular"
                 android:layout_toEndOf="@+id/iv_back_arrow_terms"
-                android:lineHeight="@dimen/content_line_height"
+                android:lineHeight="@dimen/margin_24"
                 android:text="@string/privacy_policy_content"
-                android:textSize="14sp" />
-
+                android:textSize="@dimen/info_options_text_size" />
         </ScrollView>
-
-
     </LinearLayout>
 
 
@@ -111,8 +106,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="@dimen/buttons_layout_margin_bottom"
+        android:layout_marginTop="@dimen/common_title_margin_top"
+        android:layout_marginBottom="@dimen/margin_24"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -120,12 +115,13 @@
             android:id="@+id/btn_decline_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/decline_button_margin_start"
-            android:layout_marginEnd="@dimen/decline_button_margin_end"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/common_edittext_margin_top"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg_disabled"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/padding_15"
+            android:padding="@dimen/hamburger_margin_top"
             android:text="@string/decline"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
@@ -135,14 +131,15 @@
             android:id="@+id/btn_accept_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/accept_button_margin_start"
-            android:layout_marginEnd="@dimen/accept_button_margin_end"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginEnd="@dimen/margin_24"
             android:layout_weight="1"
             android:textColor="@color/white"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/padding_15"
+            android:padding="@dimen/hamburger_margin_top"
             android:text="@string/accept_new"
             android:textSize="@dimen/common_button_text_size" />
 
