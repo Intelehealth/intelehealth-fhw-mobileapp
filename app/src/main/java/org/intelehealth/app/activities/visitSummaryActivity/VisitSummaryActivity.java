@@ -4590,6 +4590,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         CancelRequest request = new CancelRequest();
                         request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
                         request.setId(mAppointmentDetailsResponse.getData().getId());
+                        request.setHwUuid((new SessionManager(VisitSummaryActivity.this).getProviderID()));
+                        request.setReason("Patient not available");
                         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
                         ApiClientAppointment.getInstance(baseurl).getApi()
                                 .cancelAppointment(request)

@@ -159,9 +159,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setSlotDuration(slotInfo.getSlotDuration());
         request.setSlotDurationUnit(slotInfo.getSlotDurationUnit());
         request.setSlotTime(slotInfo.getSlotTime());
-
         request.setSpeciality(slotInfo.getSpeciality());
-
         request.setUserUuid(slotInfo.getUserUuid());
         request.setDrName(slotInfo.getDrName());
         request.setVisitUuid(visitUuid);
@@ -170,6 +168,13 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setOpenMrsId(openMrsId);
         request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
+
+        //doing the below changes for the new push packet created for sila.swaida.org server
+        if (appointmentId == 0) {
+            request.setReason("Patient needs consultation");
+        } else {
+            request.setReason("Patient not available");
+        }
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
