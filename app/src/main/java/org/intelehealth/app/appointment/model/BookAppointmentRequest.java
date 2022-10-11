@@ -52,6 +52,9 @@ public class BookAppointmentRequest implements Serializable {
     @SerializedName("hwUUID")
     private String hwUUID;
 
+    @SerializedName("reason")
+    private String reason;
+
 
     public String getSlotDay() {
         return slotDay;
@@ -172,5 +175,13 @@ public class BookAppointmentRequest implements Serializable {
 
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
