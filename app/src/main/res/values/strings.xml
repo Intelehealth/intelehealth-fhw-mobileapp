@@ -785,6 +785,7 @@ bread
     <string name="select_ngo">Select an NGO you are referred by</string>
     <string name="call_over">Are you done with the call?</string>
     <string name="type_to_search">Type to search</string>
+    <string name="prescription_not_found">Prescription not found</string>
 
 
 </resources>
