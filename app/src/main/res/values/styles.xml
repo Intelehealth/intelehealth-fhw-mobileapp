@@ -322,7 +322,7 @@
         </item>
     </style>
 
-    <style name="edittext_hint">
+    <style name="edittext_textcolor">
         <item name="android:textSize">
             14sp
         </item>

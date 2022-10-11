@@ -31,7 +31,7 @@
 
             <EditText
                 android:id="@+id/relation_edittext"
-                style="@style/edittext_hint"
+                style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
@@ -63,7 +63,7 @@
 
             <EditText
                 android:id="@+id/occupation_edittext"
-                style="@style/edittext_hint"
+                style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
@@ -98,7 +98,7 @@
 
             <EditText
                 android:id="@+id/caste_edittext"
-                style="@style/edittext_hint"
+                style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
@@ -133,7 +133,7 @@
 
             <EditText
                 android:id="@+id/education_edittext"
-                style="@style/edittext_hint"
+                style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
@@ -168,7 +168,7 @@
 
             <EditText
                 android:id="@+id/economicstatus_edittext"
-                style="@style/edittext_hint"
+                style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"

@@ -23,7 +23,7 @@
         android:background="@drawable/edittext_border"
         android:paddingTop="@dimen/margin_10"
         android:paddingBottom="@dimen/margin_10"
-        style="@style/edittext_hint"
+        style="@style/edittext_textcolor"
         android:hint="Enter First Name"
         android:textColor="@null"
         android:textSize="@null"

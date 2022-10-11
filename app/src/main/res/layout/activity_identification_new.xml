@@ -228,7 +228,7 @@
             android:id="@+id/relative_firstscreen_nxt_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/nxt_btn"
@@ -245,7 +245,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_back_firstscreen"

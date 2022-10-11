@@ -107,6 +107,7 @@
     <color name="headline_text_color">#1B163A</color>
     <color name="hint_text_color">#7F7B92</color>
     <color name="textview_color">#1B163A</color>
+    <color name="edittext_hint_color">#B0ADBE</color>
 
     <!--END-->
 </resources>

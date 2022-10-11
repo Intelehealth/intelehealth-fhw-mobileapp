@@ -41,7 +41,7 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
         });
 
         btn_accept_privacy.setOnClickListener(v -> {
-            Intent intent = new Intent(this, PatientDetailActivity2.class);
+            Intent intent = new Intent(this, IdentificationActivity_New.class);
             startActivity(intent);
         });
 

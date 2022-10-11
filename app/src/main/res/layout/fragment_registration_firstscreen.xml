@@ -22,7 +22,7 @@
         android:lineSpacingExtra="3sp"
         android:text="Add a picture"
         android:textAppearance="@style/blur_txtview"
-        android:textColor="@null"
+        
         android:textSize="@null"
         android:translationY="-1.39sp" />
 
@@ -57,19 +57,20 @@
                     android:lineSpacingExtra="3sp"
                     android:text="First Name*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/firstname_edittext"
-                    style="@style/edittext_hint"
+                    style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter first name"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/margin_12"
-                    android:textColor="@null"
+                    
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -89,21 +90,22 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Middle Name*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/firstname_edittext"
-                    style="@style/edittext_hint"
+                    style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter middle name"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/margin_12"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
-                    android:textColor="@null"
+                    
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -124,21 +126,22 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Last Name*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/lastname_edittext"
-                    style="@style/edittext_hint"
+                    style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter surname"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/margin_12"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
-                    android:textColor="@null"
+                    
                     android:textSize="16sp" />
 
                 <TextView
@@ -148,9 +151,10 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/margin_8"
                     android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
                     android:text="This field is mandatory"
                     android:textAppearance="@style/registr_error_msg"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
             </LinearLayout>
@@ -172,7 +176,7 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Gender*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <RadioGroup
@@ -229,23 +233,24 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Date of Birth*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/dob_edittext"
-                    style="@style/edittext_hint"
+                    style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:hint="Enter Date of Birth"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/margin_12"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingBottom="@dimen/margin_10"
-                    android:textColor="@null"
+                    
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -266,22 +271,23 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Age*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/age_edittext"
-                    style="@style/edittext_hint"
+                    style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter Age"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/margin_12"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingBottom="@dimen/margin_10"
-                    android:textColor="@null"
+                    
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -302,7 +308,7 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Phone Number*"
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
+                    
                     android:textSize="@null" />
 
                 <LinearLayout
@@ -312,7 +318,7 @@
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
-                        style="@style/edittext_hint"
+                        style="@style/edittext_textcolor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
@@ -321,29 +327,27 @@
                         android:drawableStart="@drawable/india_flag_svg"
                         android:drawableEnd="@drawable/ui2_ic_chevron_down"
                         android:drawablePadding="@dimen/margin_8"
-                        android:hint="+91"
+                        android:text="+91"
                         android:paddingStart="@dimen/margin_12"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textColor="@null"
                         android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
-                        style="@style/edittext_hint"
+                        style="@style/edittext_textcolor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_16"
                         android:layout_marginTop="@dimen/margin_8"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_border"
-                        android:hint="7304154312"
+                        android:text="7304154312"
                         android:paddingStart="@dimen/margin_12"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textColor="@null"
                         android:textSize="16sp" />
                 </LinearLayout>
 

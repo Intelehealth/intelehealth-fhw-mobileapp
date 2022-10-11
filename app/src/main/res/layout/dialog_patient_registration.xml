@@ -17,7 +17,7 @@
             android:layout_height="64dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_32"
-            android:src="@drawable/close_patient_svg" />
+            android:src="@drawable/dialog_icon_complete" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
                 android:lineSpacingExtra="4sp"
-                android:text="Close patient registration?"
+                android:text="Patient Registered!"
                 android:textAppearance="@style/dialog_title"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -49,7 +49,7 @@
                 android:layout_marginEnd="24dp"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
-                android:text="Are you sure you want to close the patient registration?"
+                android:text="Does the patient want to start the \n visit now?"
                 android:textAppearance="@style/dialog_subtitle"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -72,7 +72,7 @@
                     android:layout_marginEnd="@dimen/margin_12"
                     android:background="@drawable/white_bg_button"
                     android:paddingHorizontal="@dimen/margin_20"
-                    android:text="Yes" />
+                    android:text="Cancel" />
 
                 <Button
                     android:id="@+id/positive_btn"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/darkblue_bg_button"
                     android:paddingHorizontal="@dimen/margin_20"
-                    android:text="No" />
+                    android:text="Continue" />
             </LinearLayout>
 
 

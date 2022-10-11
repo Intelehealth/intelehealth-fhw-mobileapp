@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,7 +16,7 @@ import org.intelehealth.app.activities.homeActivity.HomeFragment_New;
 import org.intelehealth.app.utilities.CustomEditText;
 
 public class IdentificationActivity_New extends AppCompatActivity {
-    ImageButton btn_nxt_firstscreen;
+    Button btn_nxt_firstscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
