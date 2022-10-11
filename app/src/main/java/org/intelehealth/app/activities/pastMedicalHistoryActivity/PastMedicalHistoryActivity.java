@@ -397,7 +397,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String message = Html.fromHtml(patientHistoryMap.formQuestionAnswer(0)).toString();
             //changes done to handle null pointer exception crash
-            if(message!=null || !message.isEmpty())
+            if(message!=null && !message.isEmpty())
             {
                 message = message
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
@@ -462,7 +462,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
 
                 //changes done to handle null pointer exception crash
-                if(patientHistoryArabic!=null || !patientHistoryArabic.isEmpty()) {
+                if(patientHistoryArabic!=null && !patientHistoryArabic.isEmpty()) {
                     patientHistoryArabic = patientHistoryArabic
                             .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                             .replace("since", "حيث")
@@ -519,7 +519,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             String patientHistoryArabic = patientHistoryMap.generateLanguage("ar");
 
             //changes done to handle null pointer exception crash
-            if(patientHistoryArabic!=null || !patientHistoryArabic.isEmpty()) {
+            if(patientHistoryArabic!=null && !patientHistoryArabic.isEmpty()) {
                 patientHistoryArabic = patientHistoryArabic
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("since", "حيث")

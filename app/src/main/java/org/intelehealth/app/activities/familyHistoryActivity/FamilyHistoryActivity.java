@@ -366,33 +366,37 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         // Depending on the app language, our alert dialog text will be translated
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)
-                    .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
-                    .replace("Patient reports -", "يقر المريض ب-")
-                    .replace("Patient denies -", "ينفي المريض ب-")
-                    .replace("Hours", "ساعات")
-                    .replace("Days", "أيام")
-                    .replace("Weeks", "أسابيع")
-                    .replace("Months", "شهور")
-                    .replace("Years", "سنوات")
-                    .replace("times per hour", "مرات في الساعة")
-                    .replace("time per day", "الوقت في اليوم")
-                    .replace("times per week", "مرات بالأسبوع")
-                    .replace("times per month", "مرات في الشهر")
-                    .replace("times per year", "مرات في السنة")
-                    .replace("Jan", "كانون الثاني")
-                    .replace("Feb", "شهر شباط")
-                    .replace("Mar", "شهر اذار")
-                    .replace("Apr", "أشهر نيسان")
-                    .replace("May", "شهر أيار")
-                    .replace("Jun", "شهر حزيران")
-                    .replace("Jul", "شهر تموز")
-                    .replace("Aug", "شهر أب")
-                    .replace("Sep", "شهر أيلول")
-                    .replace("Oct", "شهر تشرين الأول")
-                    .replace("Nov", "شهر تشرين الثاني")
-                    .replace("Dec", "شهر كانون الأول")
-            ));
+            String message = Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)).toString();
+            //changes done to handle null pointer exception crash
+            if(message!=null && !message.isEmpty()) {
+                message = message
+                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                        .replace("Patient reports -", "يقر المريض ب-")
+                        .replace("Patient denies -", "ينفي المريض ب-")
+                        .replace("Hours", "ساعات")
+                        .replace("Days", "أيام")
+                        .replace("Weeks", "أسابيع")
+                        .replace("Months", "شهور")
+                        .replace("Years", "سنوات")
+                        .replace("times per hour", "مرات في الساعة")
+                        .replace("time per day", "الوقت في اليوم")
+                        .replace("times per week", "مرات بالأسبوع")
+                        .replace("times per month", "مرات في الشهر")
+                        .replace("times per year", "مرات في السنة")
+                        .replace("Jan", "كانون الثاني")
+                        .replace("Feb", "شهر شباط")
+                        .replace("Mar", "شهر اذار")
+                        .replace("Apr", "أشهر نيسان")
+                        .replace("May", "شهر أيار")
+                        .replace("Jun", "شهر حزيران")
+                        .replace("Jul", "شهر تموز")
+                        .replace("Aug", "شهر أب")
+                        .replace("Sep", "شهر أيلول")
+                        .replace("Oct", "شهر تشرين الأول")
+                        .replace("Nov", "شهر تشرين الثاني")
+                        .replace("Dec", "شهر كانون الأول");
+            }
+            alertDialogBuilder.setMessage(message);
         } else {
             // Else case handles the English language
             alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)));
@@ -617,22 +621,23 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     private String getUpdateTranslations(String text) {
-        text = text
-                .replace("High BP", "ارتفاع ضغط الدم")
-                .replace("Heart Disease", "مرض قلبي بسن < 50")
-                .replace("Stroke", " سكتة دماغية")
-                .replace("Diabetes", "داء السكري")
-                .replace("Asthma", "الربو")
-                .replace("Tuberculosis", "مرض السل")
-                .replace("Jaundice", "يرقان")
-                .replace("Cancer", "سرطان")
-                .replace("Other", "أمراض أخرى")
-                .replace("Mother", "الأم")
-                .replace("Father", "أب")
-                .replace("Sister", "أخت")
-                .replace("Brother", "أخ")
-                .replace("Do you have a family history of any of the following?", "هل لديك قصة عائلية لأي من الأمراض التالية ؟");
-
+        if(text!=null && !text.isEmpty()) {
+            text = text
+                    .replace("High BP", "ارتفاع ضغط الدم")
+                    .replace("Heart Disease", "مرض قلبي بسن < 50")
+                    .replace("Stroke", " سكتة دماغية")
+                    .replace("Diabetes", "داء السكري")
+                    .replace("Asthma", "الربو")
+                    .replace("Tuberculosis", "مرض السل")
+                    .replace("Jaundice", "يرقان")
+                    .replace("Cancer", "سرطان")
+                    .replace("Other", "أمراض أخرى")
+                    .replace("Mother", "الأم")
+                    .replace("Father", "أب")
+                    .replace("Sister", "أخت")
+                    .replace("Brother", "أخ")
+                    .replace("Do you have a family history of any of the following?", "هل لديك قصة عائلية لأي من الأمراض التالية ؟");
+        }
         return text;
     }
 
