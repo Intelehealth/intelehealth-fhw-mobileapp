@@ -339,7 +339,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             String complaintStringArabic = currentNode.generateLanguage("ar");
 
             //changes done to handle null pointer exception crash
-            if(complaintStringArabic!=null || !complaintStringArabic.isEmpty()) {
+            if(complaintStringArabic!=null && !complaintStringArabic.isEmpty()) {
                 complaintStringArabic = complaintStringArabic
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("Patient reports -", "يقر المريض ب-")
@@ -692,7 +692,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             String message = Html.fromHtml(currentNode.formQuestionAnswer(0)).toString();
             //changes done to handle null pointer exception crash
-            if(message!=null || !message.isEmpty()) {
+            if(message!=null && !message.isEmpty()) {
                 message = message
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("Patient reports -", "يقر المريض ب-")

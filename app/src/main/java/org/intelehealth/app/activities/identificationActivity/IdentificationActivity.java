@@ -2046,7 +2046,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(mVillage.getSelectedItem().toString());
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(mCountry.getSelectedItem().toString());
+            patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
             patientdto.setPatientPhoto(mCurrentPhotoPath);
             patientdto.setStateprovince(mState.getSelectedItem().toString());
 
@@ -3281,7 +3281,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
                 patientdto.setCity_village(mVillage.getSelectedItem().toString());
                 patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
-                patientdto.setCountry(mCountry.getSelectedItem().toString());
+                patientdto.setCountry("Syria"); //hardcoding this as this field is important to send in the db but partner asked to remove this field from patient registration.
                 patientdto.setPatient_photo(mCurrentPhotoPath);
                 patientdto.setState_province(mState.getSelectedItem().toString());
 
