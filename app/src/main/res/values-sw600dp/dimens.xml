@@ -32,7 +32,7 @@
     <dimen name="common_imageview_back_height">30dp</dimen>
 
     <dimen name="common_tv_icon_padding">10dp</dimen>
-    <dimen name="common_title_margin_top">23dp</dimen>
+    <dimen name="common_title_margin_top">24dp</dimen>
     <dimen name="common_edittext_margin_top">10dp</dimen>
     <dimen name="common_title_line_spacing">14sp</dimen>
     <dimen name="common_forgotpass_margin_top">12dp</dimen>
@@ -145,7 +145,7 @@
     <dimen name="bottom_nav_menu_text_size">40sp</dimen>
     <dimen name="bottom_nav_icon_size">34dp</dimen>
     <dimen name="followup_toolbar">94dp</dimen>
-    <dimen name="fu_toolbat_txt_height">34dp</dimen>
+    <dimen name="fu_toolbat_txt_height">44dp</dimen>
 
     <dimen name="design_bottom_navigation_text_size"
         tools:override="true">18sp</dimen>
@@ -354,7 +354,7 @@
     <dimen name="design_navigation_icon_size" tools:override="true">30dp</dimen>
 
     <!--Text Size-->
-    <dimen name="toolbar_text_size">24sp</dimen>
+    <dimen name="toolbar_text_size">28sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
     <dimen name="fu_card_margin_sides">24dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
@@ -371,7 +371,7 @@
     <dimen name="fu_vs_margin_start">12dp</dimen>
     <dimen name="fu_vs_margin_top">50dp</dimen>
     <dimen name="fu_date_txt_size">22sp</dimen>
-    <dimen name="fu_btn_size">68dp</dimen>
+    <dimen name="fu_btn_size">78dp</dimen>
     <dimen name="toolbar_margin_left">34dp</dimen>
     <dimen name="toolbar_margin_top">54dp</dimen>
     <dimen name="toolbar_margin_right">34dp</dimen>
@@ -536,5 +536,13 @@
     <dimen name="margin_10">14dp</dimen>
     <dimen name="icon_36dp">56dp</dimen>
     <dimen name="line_66dp">76dp</dimen>
+    <dimen name="patregist_profileimg_icon">104dp</dimen>
     <dimen name="patregis_icon_text">20dp</dimen>
+    <dimen name="margin_16dp">32dp</dimen>
+    <dimen name="gender_margin">94dp</dimen>
+    <dimen name="edittext_height_44dp">64dp</dimen>
+    <dimen name="edittext_textsize_16sp">24sp</dimen>
+    <dimen name="country_flag_icon_width">33dp</dimen>
+    <dimen name="country_flag_icon_height">26dp</dimen>
+    <dimen name="patregist_icon_title">18sp</dimen>
 </resources>

@@ -23,15 +23,16 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/frame_10011"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.8"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <!-- arrow-right -->
             <ImageButton
                 android:id="@+id/backbtn"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
@@ -48,13 +49,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_10"
-                android:gravity="top"
                 android:lineSpacingExtra="1sp"
+                android:gravity="center_vertical"
                 android:text="@string/add_new_patient"
                 android:textAppearance="@style/label"
                 android:textColor="@null"
-                android:textSize="@dimen/toolbar_text_size"
-                android:translationY="-0.28sp" />
+                android:textSize="@dimen/toolbar_text_size" />
 
         </LinearLayout>
 
@@ -68,18 +68,20 @@
             <ImageButton
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/common_title_margin_top"
                 android:layout_weight="1"
                 android:background="@null"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
                 android:id="@+id/cancelbtn"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
+                android:layout_gravity="center"
                 android:src="@drawable/cancel_btn_cross" />
 
         </LinearLayout>

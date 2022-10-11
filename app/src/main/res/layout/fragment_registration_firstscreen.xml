@@ -5,10 +5,10 @@
 
     <ImageView
         android:id="@+id/img_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/patregist_profileimg_icon"
+        android:layout_height="@dimen/patregist_profileimg_icon"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16dp"
         android:src="@drawable/addpat_profile_img" />
 
     <TextView
@@ -17,13 +17,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/img_profile"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginTop="@dimen/common_edittext_margin_top"
         android:gravity="top"
         android:lineSpacingExtra="3sp"
         android:text="Add a picture"
         android:textAppearance="@style/blur_txtview"
-        
         android:textSize="@null"
+        android:textColor="@null"
         android:translationY="-1.39sp" />
 
     <ScrollView
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/relative_btn"
         android:layout_below="@+id/add_picture"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/margin_24"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -41,8 +41,8 @@
             android:id="@+id/relative_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp">
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
 
             <LinearLayout
                 android:id="@+id/linear_firstname"
@@ -57,21 +57,19 @@
                     android:lineSpacingExtra="3sp"
                     android:text="First Name*"
                     android:textAppearance="@style/blur_txtview"
-                    
                     android:textSize="@null" />
 
                 <EditText
                     android:id="@+id/firstname_edittext"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter first name"
                     android:textColorHint="@color/edittext_hint_color"
-                    android:paddingStart="@dimen/margin_12"
-                    
-                    android:textSize="16sp" />
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
 
             <!--Middlename-->
@@ -80,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_firstname"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
@@ -90,7 +88,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Middle Name*"
                     android:textAppearance="@style/blur_txtview"
-                    
                     android:textSize="@null" />
 
                 <EditText
@@ -98,15 +95,14 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter middle name"
                     android:textColorHint="@color/edittext_hint_color"
-                    android:paddingStart="@dimen/margin_12"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
-                    
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
             </LinearLayout>
 
@@ -116,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_middlename"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
@@ -134,22 +130,22 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter surname"
                     android:textColorHint="@color/edittext_hint_color"
-                    android:paddingStart="@dimen/margin_12"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
                     android:id="@+id/surnamefield_mandatory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:textColor="@color/red"
                     android:text="This field is mandatory"
@@ -165,7 +161,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_lastname"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
@@ -176,41 +172,43 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Gender*"
                     android:textAppearance="@style/blur_txtview"
-                    
                     android:textSize="@null" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
                     <RadioButton
                         android:id="@+id/gender_male"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="start"
                         android:layout_weight="1"
+                        android:textSize="@dimen/select_language"
                         android:drawableEnd="@drawable/gender_male_svg"
                         android:text="Male" />
 
                     <RadioButton
                         android:id="@+id/gender_female"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/gender_margin"
+                        android:layout_marginEnd="@dimen/gender_margin"
                         android:layout_weight="1"
+                        android:textSize="@dimen/select_language"
                         android:drawableEnd="@drawable/gender_female_svg"
                         android:text="Female" />
 
                     <RadioButton
-                        android:id="@+id/gender_female"
+                        android:id="@+id/gender_other"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="end"
                         android:layout_weight="1"
+                        android:textSize="@dimen/select_language"
                         android:drawableEnd="@drawable/gender_other_svg"
                         android:text="Other" />
 
@@ -223,7 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_gender"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
@@ -241,17 +239,17 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:hint="Enter Date of Birth"
                     android:textColorHint="@color/edittext_hint_color"
-                    android:paddingStart="@dimen/margin_12"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingBottom="@dimen/margin_10"
                     
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
             </LinearLayout>
 
@@ -261,7 +259,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_dob"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
@@ -279,16 +277,16 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter Age"
                     android:textColorHint="@color/edittext_hint_color"
-                    android:paddingStart="@dimen/margin_12"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingBottom="@dimen/margin_10"
                     
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
 
             <!--Phone number-->
@@ -297,8 +295,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_age"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
@@ -321,34 +319,34 @@
                         style="@style/edittext_textcolor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_border"
                         android:drawableStart="@drawable/india_flag_svg"
                         android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                        android:drawablePadding="@dimen/margin_8"
+                        android:drawablePadding="@dimen/hamburger_margin_start"
                         android:text="+91"
-                        android:paddingStart="@dimen/margin_12"
+                        android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/edittext_textsize_16sp" />
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
                         style="@style/edittext_textcolor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_16"
-                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginStart="@dimen/fu_card_margin_updown"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_border"
                         android:text="7304154312"
-                        android:paddingStart="@dimen/margin_12"
+                        android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
-                        android:paddingEnd="@dimen/margin_16"
+                        android:paddingEnd="@dimen/fu_card_margin_updown"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/edittext_textsize_16sp" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -288,7 +288,7 @@
     </style>
 
     <style name="TabLayoutTextStyle">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/find_patient_hint_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:textAllCaps">false</item>
@@ -306,7 +306,7 @@
 
     <style name="personal_txtview">
         <item name="android:textSize">
-            @dimen/notifi_subtitle_size
+            @dimen/patregist_icon_title
         </item>
         <item name="android:textColor">
             #1B163A
@@ -315,7 +315,7 @@
 
     <style name="blur_txtview">
         <item name="android:textSize">
-            14sp
+            @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
             #7F7B92
@@ -324,7 +324,7 @@
 
     <style name="edittext_textcolor">
         <item name="android:textSize">
-            14sp
+            @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
             #1B163A
@@ -333,7 +333,7 @@
 
     <style name="registr_error_msg">
         <item name="android:textSize">
-            14sp
+            @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
             #FF475D
@@ -362,7 +362,7 @@
 
     <style name="negative_btn">
         <item name="android:textSize">
-            14sp
+            @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
             #2E1E91
@@ -371,7 +371,7 @@
 
     <style name="positive_btn">
         <item name="android:textSize">
-            14sp
+            @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
             #FFFFFF
