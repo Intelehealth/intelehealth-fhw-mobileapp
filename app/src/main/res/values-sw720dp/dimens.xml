@@ -468,7 +468,7 @@
     <dimen name="patregis_icon_text">20dp</dimen>
     <dimen name="margin_16dp">32dp</dimen>
     <dimen name="gender_margin">94dp</dimen>
-    <dimen name="edittext_height_44dp">64dp</dimen>
+    <dimen name="edittext_height_44dp">74dp</dimen>
     <dimen name="edittext_textsize_16sp">24sp</dimen>
     <dimen name="country_flag_icon_width">33dp</dimen>
     <dimen name="country_flag_icon_height">26dp</dimen>

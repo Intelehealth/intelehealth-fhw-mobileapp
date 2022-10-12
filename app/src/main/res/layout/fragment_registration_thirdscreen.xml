@@ -2,15 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_16"
-    android:layout_marginBottom="@dimen/margin_16"
+    android:layout_marginTop="@dimen/margin_16dp"
+    android:layout_marginBottom="@dimen/margin_16dp"
     android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24">
 
 
         <LinearLayout
@@ -33,13 +33,16 @@
                 android:id="@+id/relation_edittext"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:background="@drawable/edittext_border"
                 android:hint="Enter patient address"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
                 android:text="Rakesh Kaka"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
         <!--Occupation-->
@@ -48,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_relation"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -65,16 +68,16 @@
                 android:id="@+id/occupation_edittext"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:background="@drawable/edittext_border"
                 android:drawableEnd="@drawable/ui2_ic_chevron_down"
                 android:hint="Type occupation or select"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16"
+                android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
         <!--Caste-->
@@ -83,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_occupation"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -100,16 +103,16 @@
                 android:id="@+id/caste_edittext"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:background="@drawable/edittext_border"
                 android:drawableEnd="@drawable/ui2_ic_chevron_down"
                 android:hint="Type caste or select"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16"
+                android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
         <!--Education-->
@@ -118,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_caste"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -135,16 +138,16 @@
                 android:id="@+id/education_edittext"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:background="@drawable/edittext_border"
                 android:drawableEnd="@drawable/ui2_ic_chevron_down"
                 android:hint="Type education or select"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16"
+                android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
         <!--Economic Status-->
@@ -153,7 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_education"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -170,17 +173,17 @@
                 android:id="@+id/economicstatus_edittext"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:background="@drawable/edittext_border"
                 android:drawableEnd="@drawable/ui2_ic_chevron_down"
                 android:hint="Type economic or select"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16"
+                android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
 
