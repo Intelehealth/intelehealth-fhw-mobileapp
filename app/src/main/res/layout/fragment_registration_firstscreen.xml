@@ -63,12 +63,14 @@
                     android:id="@+id/firstname_edittext"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter first name"
                     android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
 

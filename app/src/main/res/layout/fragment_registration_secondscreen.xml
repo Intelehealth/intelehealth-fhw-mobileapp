@@ -2,15 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_16"
-    android:layout_marginBottom="@dimen/margin_16"
+    android:layout_marginTop="@dimen/margin_16dp"
+    android:layout_marginBottom="@dimen/margin_16dp"
     android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24">
 
 
         <!--Postal code and Country-->
@@ -41,20 +41,21 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter Postal code"
-                    android:paddingStart="@dimen/margin_12"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     android:textColor="@null"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -73,18 +74,19 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/edittext_border"
                     android:drawableStart="@drawable/india_flag_svg"
                     android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                    android:drawablePadding="@dimen/margin_8"
+                    android:drawablePadding="@dimen/common_edittext_margin_top"
                     android:hint="India"
-                    android:paddingStart="@dimen/margin_12"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16"
+                    android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     android:textColor="@null"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -93,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/postal_country"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -111,15 +113,15 @@
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:background="@drawable/edittext_border"
                 android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16"
+                android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
                 android:text="Maharashtra"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
         <!--District & City-->
@@ -128,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_state"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -152,21 +154,21 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/edittext_border"
                     android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                    android:paddingStart="@dimen/margin_12"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16"
+                    android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     android:text="Nashik"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_16dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -185,16 +187,16 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/edittext_border"
                     android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                    android:drawablePadding="@dimen/margin_8"
-                    android:paddingStart="@dimen/margin_12"
+                    android:drawablePadding="@dimen/common_edittext_margin_top"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16"
+                    android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     android:text="Sinnar"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -204,7 +206,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_distr_city"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -222,12 +224,15 @@
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:background="@drawable/edittext_border"
                 android:hint="Enter patient address"
-                android:paddingStart="@dimen/margin_12"
+                android:textColorHint="@color/edittext_hint_color"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
                 android:textColor="@null"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
         <!--Address 2-->
@@ -236,7 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_address1"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
@@ -254,13 +259,16 @@
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:background="@drawable/edittext_border"
                 android:hint="Enter patient address"
-                android:paddingStart="@dimen/margin_12"
+                android:textColorHint="@color/edittext_hint_color"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
                 android:textColor="@null"
-                android:textSize="16sp" />
+                android:textSize="@dimen/edittext_textsize_16sp" />
         </LinearLayout>
 
 
