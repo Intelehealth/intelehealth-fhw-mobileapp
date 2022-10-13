@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/personal_card"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="@dimen/margin_20"
-    android:layout_marginEnd="24dp"
-    app:cardCornerRadius="@dimen/margin_8"
+    android:layout_marginStart="@dimen/toolbar_margin_left"
+    android:layout_marginTop="@dimen/margin_20dp"
+    android:layout_marginEnd="@dimen/toolbar_margin_left"
+    app:cardCornerRadius="@dimen/hamburger_margin_start"
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginTop="@dimen/margin_12"
-        android:layout_marginEnd="@dimen/margin_12"
-        android:layout_marginBottom="@dimen/margin_16">
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginTop="@dimen/fu_margin_start"
+        android:layout_marginEnd="@dimen/fu_margin_start"
+        android:layout_marginBottom="@dimen/fu_card_margin_updown">
 
 
         <!--Personal Header-->
@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/personal_info_icon"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="@dimen/edittext_height_44dp"
+                android:layout_height="@dimen/edittext_height_44dp"
                 android:src="@drawable/addresslocation_icon_unselected" />
 
             <TextView
@@ -36,12 +36,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/margin_8"
+                android:layout_marginStart="@dimen/hamburger_margin_start"
                 android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:text="Address"
-                android:textAppearance="@style/patdetail_header1" />
+                android:textColor="@color/textview_color"
+                android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -57,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/relative_personal_header"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/fu_card_margin_updown"
             android:background="@color/notifi_divider_color" />
 
@@ -74,9 +75,8 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
                 android:text="Details"
-                android:textAppearance="@style/patdetail_header1"
-                android:textColor="@null"
-                android:textSize="@null" />
+                android:textColor="@color/textview_color"
+                android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_relative"
-            android:layout_marginTop="@dimen/margin_8">
+            android:layout_marginTop="@dimen/hamburger_margin_start">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -112,7 +112,7 @@
                         android:text="  Postal Code"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/postalcode"
@@ -122,7 +122,7 @@
                         android:text="422101"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Gender-->
@@ -142,7 +142,7 @@
                         android:text="  Country"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/country"
@@ -152,7 +152,7 @@
                         android:text="India"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Date of birth-->
@@ -172,7 +172,7 @@
                         android:text="  State"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/state"
@@ -182,7 +182,7 @@
                         android:text="Maharashtra"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Age-->
@@ -202,7 +202,7 @@
                         android:text="  District"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/district"
@@ -212,7 +212,7 @@
                         android:text="Nashik"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Phone number-->
@@ -232,7 +232,7 @@
                         android:text="  Village/Town/City"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/village"
@@ -242,7 +242,7 @@
                         android:text="Dwarka"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!-- Address 1-->
@@ -262,7 +262,7 @@
                         android:text="  Corresponding \n  Address 1"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/address1"
@@ -272,7 +272,7 @@
                         android:text="444, Kathe lane, Dwarka, Nasik"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
 

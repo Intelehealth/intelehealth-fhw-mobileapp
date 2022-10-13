@@ -78,8 +78,7 @@
                 android:text="Details"
                 android:textColor="@color/textview_color"
                 android:textSize="@dimen/txtsize_patdetail_16sp"
-                android:textColor="@null"
-                android:textSize="@null" />
+                />
 
             <ImageButton
                 android:layout_width="wrap_content"
