@@ -709,6 +709,11 @@
     <dimen name="info_videos_margin_end">22dp</dimen>
     <dimen name="info_pager_common_margin_top">10dp</dimen>
 
+    <dimen name="patdetail_profile_imgview_14sp">40dp</dimen>
+    <dimen name="up_down_icon_size">20dp</dimen>
+
+
+
     <!--UI2.0 Appointment-->
 
 
