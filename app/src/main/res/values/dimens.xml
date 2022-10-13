@@ -671,7 +671,7 @@
     <dimen name="patregist_profileimg_icon">64dp</dimen>
     <dimen name="patregis_icon_text">10dp</dimen>
     <dimen name="margin_16dp">16dp</dimen>
-    <dimen name="gender_margin">24dp</dimen>
+    <dimen name="gender_margin">10dp</dimen>
     <dimen name="edittext_height_44dp">44dp</dimen>
     <dimen name="edittext_textsize_16sp">16sp</dimen>
     <dimen name="country_flag_icon_width">23dp</dimen>
