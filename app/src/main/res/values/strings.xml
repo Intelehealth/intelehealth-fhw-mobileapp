@@ -1569,5 +1569,6 @@
     <string name="alert_for_draft">You have not completed it! Would you like to save it as a draft?</string>
     <string name="household_survey_draft">Draft Saved!</string>
     <string name="aid_types_missing">Patient AID types are missing!</string>
+    <string name="visit_failed_for_no_complaint">Visit Upload Failed! Make a valid complaint selection.</string>
 
 </resources>
