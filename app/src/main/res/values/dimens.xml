@@ -673,7 +673,7 @@
     <dimen name="patregist_profileimg_icon">64dp</dimen>
     <dimen name="patregis_icon_text">10dp</dimen>
     <dimen name="margin_16dp">16dp</dimen>
-    <dimen name="gender_margin">24dp</dimen>
+    <dimen name="gender_margin">10dp</dimen>
     <dimen name="edittext_height_44dp">44dp</dimen>
     <dimen name="edittext_textsize_16sp">16sp</dimen>
     <dimen name="country_flag_icon_width">23dp</dimen>
@@ -710,6 +710,11 @@
     <dimen name="info_videos_margin_start">22dp</dimen>
     <dimen name="info_videos_margin_end">22dp</dimen>
     <dimen name="info_pager_common_margin_top">10dp</dimen>
+
+    <dimen name="patdetail_profile_imgview_14sp">40dp</dimen>
+    <dimen name="up_down_icon_size">20dp</dimen>
+
+
 
     <!--UI2.0 Appointment-->
 

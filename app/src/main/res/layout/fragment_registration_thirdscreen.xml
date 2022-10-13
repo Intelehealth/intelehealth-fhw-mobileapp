@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:tag="thirdsc"
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginBottom="@dimen/margin_16dp"
     android:fillViewport="true">

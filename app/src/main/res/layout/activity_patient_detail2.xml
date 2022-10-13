@@ -109,16 +109,16 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                    android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                     android:layout_margin="2dp"
                     android:elevation="0dp"
-                    app:cardCornerRadius="20dp">
+                    app:cardCornerRadius="40dp">
 
                     <ImageView
                         android:id="@+id/profile_image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                        android:layout_height="@dimen/patdetail_profile_imgview_14sp"
 
                         android:src="@drawable/avatar1" />
                 </androidx.cardview.widget.CardView>
@@ -137,9 +137,9 @@
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="-3sp"
                         android:text="Kiran Devi Prakash"
-                        android:textAppearance="@style/patdetail_header1"
-                        android:textColor="@null"
-                        android:textSize="@null" />
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/txtsize_patdetail_16sp"
+                        />
 
                     <TextView
                         android:id="@+id/openmrsID_txt"
@@ -150,7 +150,7 @@
                         android:text="@string/fu_openmrsID"
                         android:textAppearance="@style/caption_fu_openmrsId"
                         android:textColor="@null"
-                        android:textSize="@dimen/fu_male_textsize" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </LinearLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
