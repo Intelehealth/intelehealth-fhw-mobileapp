@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="end"
+    app:cardCornerRadius="10dp"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginStart="@dimen/margin_10"
+    android:layout_marginBottom="@dimen/margin_10"
+    android:layout_marginEnd="@dimen/margin_30"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_marginVertical="@dimen/margin_15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.02"
+                android:text="From"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/date_frag_layout_text_size" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/date_frag_date_margin_top"
+                android:background="@drawable/ui2_date_picker_bg"
+                android:gravity="center_horizontal|center_vertical"
+                android:letterSpacing="0.02"
+                android:paddingEnd="@dimen/date_frag_date_padding_end"
+                android:text="23 May, 2020"
+                android:paddingStart="12dp"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/date_frag_date_text_size"
+                android:drawablePadding="50dp"
+                app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                app:drawableTint="@color/iconTintGray" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.02"
+                android:text="To"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/date_frag_layout_text_size" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/date_frag_date_margin_top"
+                android:background="@drawable/ui2_date_picker_bg"
+                android:gravity="center_horizontal|center_vertical"
+                android:letterSpacing="0.02"
+                android:paddingEnd="@dimen/date_frag_date_padding_end"
+                android:text="25 May, 2021"
+                android:paddingStart="12dp"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/date_frag_date_text_size"
+                android:drawablePadding="50dp"
+                app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                app:drawableTint="@color/iconTintGray" />
+
+        </LinearLayout>
+        </LinearLayout>
+
+</androidx.cardview.widget.CardView>

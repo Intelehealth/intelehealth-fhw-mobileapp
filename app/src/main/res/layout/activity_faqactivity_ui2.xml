@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingStart="@dimen/help_parent1_videos_padding_start"
-    android:paddingEnd="@dimen/help_parent_videos_padding_end"    tools:context=".help.activities.FAQActivity_New">
+    android:paddingEnd="@dimen/help_parent_videos_padding_end"    tools:context=".activities.help.activities.FAQActivity_New">
 
     <include
         android:id="@+id/toolbar_faq"
@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_help_faq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

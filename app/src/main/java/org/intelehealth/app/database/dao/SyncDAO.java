@@ -33,6 +33,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.utilities.exception.DAOException;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -119,6 +120,8 @@ public class SyncDAO {
                     boolean sync = false;
                     try {
                         sync = SyncData(response.body());
+                        Log.d(TAG, "onResponse: response body : " + response.body().toString());
+
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
@@ -303,8 +306,7 @@ public class SyncDAO {
         return true;
     }
 
-    public void setLocale(String appLanguage)
-    {
+    public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();

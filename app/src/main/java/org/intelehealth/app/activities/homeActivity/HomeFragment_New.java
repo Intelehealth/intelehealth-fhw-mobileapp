@@ -17,6 +17,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
@@ -52,6 +54,9 @@ public class HomeFragment_New extends Fragment {
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        bottomNav.setVisibility(View.VISIBLE);
+
     }
 
     @Override

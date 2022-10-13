@@ -243,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/fu_margin_start"
-                android:src="@drawable/frame_priority" />
+                android:src="@drawable/ui2_frame_priority" />
 
             <TextView
                 android:id="@+id/chief_complaint_txt"

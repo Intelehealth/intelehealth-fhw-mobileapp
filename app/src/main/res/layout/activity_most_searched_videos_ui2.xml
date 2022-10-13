@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingStart="@dimen/help_parent1_videos_padding_start"
     android:paddingEnd="@dimen/help_parent_videos_padding_end"
-    tools:context=".help.activities.MostSearchedVideosActivity">
+    tools:context=".activities.help.activities.MostSearchedVideosActivity_New">
 
     <include
         android:id="@+id/toolbar_videos"
@@ -61,7 +61,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_help_videos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

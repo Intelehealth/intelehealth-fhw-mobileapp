@@ -96,19 +96,13 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="@dimen/fu_card_margin_updown"
-                android:src="@drawable/frame_priority"
+                android:src="@drawable/ui2_frame_priority"
                 android:lineSpacingExtra="0sp"
                 android:layout_gravity="top|end|center"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginEnd="@dimen/margin_12"
                 />
-
         </LinearLayout>
-
-
     </RelativeLayout>
-
-
-
 </androidx.cardview.widget.CardView>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_all_appointments"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_5"
+    android:layout_marginTop="@dimen/margin_5"
+    android:layout_marginBottom="24dp"
+    app:cardCornerRadius="@dimen/margin_10"
+    app:cardElevation="@dimen/margin_5">
+
+    <RelativeLayout
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_member_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_margin="2dp"
+            android:elevation="0dp"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/avatar1" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:lineSpacingExtra="3sp"
+            android:text="Sarrah Paul"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_prescription_states1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/cal_margnin_start"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:drawableStart="@drawable/ui2_ic_icons8_treatment_1"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lineHeight="18dp"
+            android:lineSpacingExtra="3sp"
+            android:text="Received 3 hours ago new"
+            android:textAppearance="@style/caption"
+            android:textColor="@color/iconTintGray"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_priority_tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fu_card_margin_updown"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="top|end|center"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:lineSpacingExtra="0sp"
+            android:src="@drawable/ui2_frame_priority" />
+
+        <TextView
+            android:id="@+id/tv_prescription_states"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_prescription_states1"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:background="@drawable/ui2_bg_appointment_status"
+            android:drawableStart="@drawable/ui2_ic_icons8_treatment_1"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lineHeight="18dp"
+            android:lineSpacingExtra="3sp"
+            android:padding="6dp"
+            android:text="Received 3 hours ago"
+            android:textAppearance="@style/caption"
+            android:textColor="@color/textColorBlack"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

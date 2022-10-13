@@ -109,5 +109,9 @@
     <color name="textview_color">#1B163A</color>
     <color name="edittext_hint_color">#B0ADBE</color>
 
+    <color name="colorSuccess">#36c762</color>
+    <color name="buttonColorRed">#FF475D</color>
+
+
     <!--END-->
 </resources>

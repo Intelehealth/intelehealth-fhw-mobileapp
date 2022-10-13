@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:background="@color/white"
+    android:paddingEnd="16dp"
+    android:orientation="vertical"
+    tools:context=".activities.appointment.MyAppointmentActivity">
+
+    <include
+        android:id="@+id/toolbar_my_appointments"
+        layout="@layout/toolbar_common_new2_ui2" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_my_appointments"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/textColorBlack"
+        app:tabTextAppearance="@style/CustomTabText" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tablayout_appointments"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_my_appointments"
+        style="@style/NavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:foregroundTint="@color/colorPrimary"
+        app:elevation="8dip"
+        app:itemBackground="@drawable/bottom_nav_tab_background"
+        app:itemIconSize="@dimen/bottom_nav_icon_size"
+        app:itemRippleColor="@color/colorPrimary2"
+        app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_home_footer" />
+</RelativeLayout>

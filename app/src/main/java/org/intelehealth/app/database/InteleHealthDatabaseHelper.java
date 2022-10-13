@@ -3,6 +3,7 @@ package org.intelehealth.app.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import androidx.annotation.Nullable;
 
 import org.intelehealth.app.utilities.SessionManager;
@@ -93,9 +94,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "password TEXT UNIQUE," +
             "creator_uuid_cred TEXT," +
             "chwname TEXT," +
-            "provider_uuid_cred TEXT"+
+            "provider_uuid_cred TEXT" +
             ")";
-
 
 
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
@@ -208,6 +208,22 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
+    /* UI2.0  */
+    //table for storing health worker profile details
+    public static final String CREATE_PROVIDER_PROFILE = "CREATE TABLE IF NOT EXISTS tbl_provider_profile (" +
+            "provider_id TEXT PRIMARY KEY," +
+            "username TEXT," +
+            "first_name TEXT," +
+            "middle_name TEXT," +
+            "last_name TEXT," +
+            "gender TEXT," +
+            "date_of_birth integer(10)," +
+            "age integer(10)," +
+            "phone_number integer(10)," +
+            "country_code integer(10)," +
+            "email TEXT," +
+            "image_path TEXT" +
+            ")";
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -273,6 +289,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
+        db.execSQL(CREATE_PROVIDER_PROFILE);
         db.execSQL(CREATE_NOTIFICATIONS);
         uuidInsert(db);
         database = db;
