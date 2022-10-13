@@ -5,8 +5,10 @@
     android:id="@+id/layout_toolbar_home"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/home_toolbar_layout_margin"
-    android:layout_marginEnd="@dimen/common_all_card_end_margin">
+    android:layout_marginStart="@dimen/home_toolbar_layout_margin_start"
+    android:layout_marginBottom="@dimen/home_toolbar_layout_margin_bottom"
+    android:layout_marginTop="@dimen/home_toolbar_layout_margin_top"
+    android:layout_marginEnd="@dimen/home_toolbar_layout_margin_end">
 
     <ImageView
         android:id="@+id/iv_hamburger"

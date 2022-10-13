@@ -52,7 +52,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -61,9 +60,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
+import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
+import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.help.fragment.HelpFragment_New;
+import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.profile.MyProfileFragment_New;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
@@ -72,7 +74,7 @@ import org.intelehealth.app.ui2.customToolip.ActionItemCustom;
 import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
 import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
-import org.intelehealth.app.achievements.fragments.MyAchievementsFragmentNew;
+import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -117,9 +119,9 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         context = HomeScreenActivity_New.this;
 
         loadFragment(new HomeFragment_New());
-       // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-       // tx.replace(R.id.fragment_container, new HomeFragment_New());
-       // tx.commit();
+        // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        // tx.replace(R.id.fragment_container, new HomeFragment_New());
+        // tx.commit();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
@@ -151,11 +153,19 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
+                Intent intent = new Intent(HomeScreenActivity_New.this, MyAppointmentActivity.class);
                 startActivity(intent);
             }
         });
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
+        ImageView imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
+        imageViewIsNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivity_New.this, NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
         ivHamburger = findViewById(R.id.iv_hamburger);
 
         ivHamburger.setOnClickListener(new View.OnClickListener() {
@@ -358,15 +368,16 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     private void loadFragmentForBottomNav(Fragment fragment) {
         String tag = fragment.getClass().getSimpleName();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
-       // transaction.addToBackStack(null);
-       // transaction.commit();
-        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate (tag, 0);
+        // transaction.addToBackStack(null);
+        // transaction.commit();
+        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(tag, 0);
 
-        if (!fragmentPopped){
+        if (!fragmentPopped) {
             transaction.addToBackStack(tag);
             transaction.commit();
         }
@@ -412,11 +423,12 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.menu_my_achievements:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                fragment = new MyAchievementsFragmentNew();
+                fragment = new MyAchievementsFragment();
 
                 break;
             case R.id.menu_video_lib:
-
+                tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
+                fragment = new InformativeVideosFragment_New();
                 break;
             case R.id.menu_change_language:
 
@@ -459,8 +471,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
-            //UI2.0 if first time login then only show popup
-        if(sessionManager.getIsLoggedIn()){
+        //UI2.0 if first time login then only show popup
+        if (sessionManager.getIsLoggedIn()) {
             sessionManager.setIsLoggedIn(false);
             showLoggingInDialog();
 
@@ -707,7 +719,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
                             return true;
                         case R.id.bottom_nav_achievements:
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                            fragment = new MyAchievementsFragmentNew();
+                            fragment = new MyAchievementsFragment();
                             loadFragmentForBottomNav(fragment);
 
                             return true;

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="end"
+    app:cardCornerRadius="10dp"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginStart="@dimen/margin_10"
+    android:layout_marginBottom="@dimen/margin_10"
+    android:layout_marginEnd="@dimen/margin_30"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_marginVertical="@dimen/margin_15">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/upcoming_appointments"
+            android:drawablePadding="12dp"
+            android:drawableStart="@drawable/ui2_ic_circle"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:textSize="@dimen/fu_name_txt_size"
+            android:textColor="@color/header_title_color"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/notifi_divider_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/cancelled_appointments"
+            android:layout_marginTop="@dimen/margin_12"
+            android:drawablePadding="12dp"
+            android:drawableStart="@drawable/ui2_ic_circle"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:textSize="@dimen/fu_name_txt_size"
+            android:textColor="@color/header_title_color"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/notifi_divider_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/completed_appointments"
+            android:paddingEnd="@dimen/margin_50"
+            android:layout_marginTop="@dimen/margin_12"
+            android:drawablePadding="12dp"
+            android:drawableStart="@drawable/ui2_ic_circle"
+            android:textSize="@dimen/fu_name_txt_size"
+            android:textColor="@color/header_title_color"/>
+
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

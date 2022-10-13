@@ -880,6 +880,7 @@
     <string name="who_we_are">Who are we?</string>
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
+    <string name="profile_details_added">Profile details added successfully</string>
 
     <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant) .Share the information with the telemedicine doctor.</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
@@ -1610,6 +1611,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="enter_phone_number">Enter your phone number</string>
     <string name="email">Email</string>
     <string name="enter_your_email">Enter your email</string>
+    <string name="select_profile_image">Select profile image</string>
 
 
     <!--  Change Password UI2.0-->
@@ -1633,6 +1635,27 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="faq">FAQ</string>
     <string name="search_for_videos">Search for videos</string>
     <string name="search_for_faq">Search for FAQ</string>
+    <string name="type_here">Type here</string>
+    <string name="support_team">Support team</string>
+
+    <!-- Informative videos  -->
+    <string name="more_videos">More Videos</string>
+
+    <!-- Appointment  -->
+    <string name="my_appointments">My appointments</string>
+    <string name="todays">Today\'s</string>
+    <string name="all_appointments">All appointments</string>
+    <string name="search_patient">Search patient</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="completed">Completed</string>
+    <string name="upcoming_appointments">Upcoming appointments</string>
+    <string name="cancelled_appointments">Cancelled appointments</string>
+    <string name="completed_appointments">Completed appointments</string>
+    <string name="appointment_details">Appointment details
+</string>
+    <string name="remind_doctor">Remind doctor</string>
+
 
 
     <!--    Follow-up new screens -->

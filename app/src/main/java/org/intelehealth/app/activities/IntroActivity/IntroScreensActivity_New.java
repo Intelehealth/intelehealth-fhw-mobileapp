@@ -18,7 +18,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.onboarding.SetupPrivacyNoteActivity_New;
+import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
 
 public class IntroScreensActivity_New extends AppCompatActivity {
     private static final String TAG = "IntroScreensActivityNew";

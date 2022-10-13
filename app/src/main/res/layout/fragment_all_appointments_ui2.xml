@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/iv_calendar_all_app">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autotv_select_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ui2_background_input_field_new"
+                        android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                        android:drawablePadding="@dimen/find_patient_icon_padding"
+                        android:drawableTint="@color/iconTintGrayBottomNav"
+                        android:hint="@string/search_patient"
+                        android:importantForAutofill="no"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/common_edittext_padding_left"
+                        android:paddingTop="@dimen/common_edittext_padding_top"
+                        android:paddingEnd="@dimen/common_edittext_padding_right"
+                        android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                        android:singleLine="true"
+                        android:textSize="@dimen/common_hint_text_size"
+                        app:endIconDrawable="@drawable/ui2_ic_chevron_down"
+                        app:endIconMode="custom"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/iv_calendar_all_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@+id/iv_filter_all_app"
+                    android:background="@drawable/ui2_ic_filter_bg"
+                    android:padding="10dp"
+                    android:src="@drawable/ui2_ic_calendar" />
+
+                <ImageView
+                    android:id="@+id/iv_filter_all_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/ui2_ic_filter_bg"
+                    android:padding="10dp"
+                    android:src="@drawable/ui2_ic_filter" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ui2_background_input_field_new"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_upcoming_appointments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ui2_bg_selcted_card"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_upcoming_appointments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:lineHeight="26.4dp"
+                            android:text="3"
+                            android:textColor="@color/textColorBlack"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:lineHeight="18dp"
+                            android:lineSpacingExtra="2sp"
+                            android:text="@string/upcoming"
+                            android:textColor="@color/textColorBlack"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_cancelled_appointments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_cancelled_appointments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:lineHeight="26.4dp"
+                            android:text="2"
+                            android:textColor="@color/textColorBlack"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:lineHeight="18dp"
+                            android:lineSpacingExtra="2sp"
+                            android:text="@string/cancelled"
+                            android:textColor="@color/textColorBlack"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_completed_appointments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_completed_appointments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:lineHeight="26.4dp"
+                            android:text="2"
+                            android:textColor="@color/textColorBlack"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:lineHeight="18dp"
+                            android:lineSpacingExtra="2sp"
+                            android:text="@string/completed"
+                            android:textColor="@color/textColorBlack"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="24dp"
+                android:lineHeight="18dp"
+                android:lineSpacingExtra="2sp"
+                android:text="Upcoming (3)"
+                android:textColor="@color/textColorBlack"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_all_upcoming_appointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_todays_upcoming_appointments_ui2_new" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="24dp"
+                android:lineHeight="18dp"
+                android:lineSpacingExtra="2sp"
+                android:text="Cancelled (2)"
+                android:textColor="@color/textColorBlack"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_all_cancelled_appointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_todays_cancelled_appointments_ui2_new" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="24dp"
+                android:lineHeight="18dp"
+                android:lineSpacingExtra="2sp"
+                android:text="Completed (2)"
+                android:textColor="@color/textColorBlack"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_all_completed_appointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_todays_completed_appointments_ui2_new" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/filter_frame_all_appointments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/margin_45"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <include layout="@layout/layout_filter_all_appointments_ui2" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/filter_frame_date_appointments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/margin_45"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <include layout="@layout/layout_filter_all_appointments_by_date_ui2" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/view_nopatientfound_appointment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_relative"
+            android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
+            android:layout_marginTop="@dimen/search_empty_margin_top">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/search_bg_icon"
+                    android:layout_width="@dimen/search_icon_bg_dimens"
+                    android:layout_height="@dimen/search_icon_bg_dimens"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_search_icon_background" />
+
+                <TextView
+                    android:id="@+id/search_pat_not_found_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/search_bg_icon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"
+                    android:lineSpacingExtra="4sp"
+                    android:text="@string/search_pat_not_found_txt"
+                    android:textAppearance="@style/you_can_add"
+                    android:textColor="@null"
+                    android:textSize="@dimen/search_pat_notfound_txtsize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/search_pat_hint_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/search_pat_not_found_txt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="@dimen/fu_margin_start"
+                    android:gravity="center_horizontal|top"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/search_pat_hint_txt"
+                    android:textAppearance="@style/caption"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_name_txt_size"
+                    android:translationY="-1.58sp" />
+
+                <TextView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/frame_10007"
+                    android:layout_width="@dimen/search_addbtn_width"
+                    android:layout_height="@dimen/search_add_btn_height"
+                    android:layout_marginTop="@dimen/toolbar_margin_right"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/search_pat_hint_txt"
+                    android:background="@drawable/ic_add_patient_svg"
+                    />
+
+            </RelativeLayout>
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+</ScrollView>

@@ -41,12 +41,35 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".help.activities.FAQActivity_New"
+            android:name=".activities.appointment.VisitSummaryDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.appointment.AppointmentDetailsActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.appointment.MyAppointmentActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".help.activities.MostSearchedVideosActivity"
+            android:name=".ui2.SwipeDeleteTestActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.help.activities.FAQActivity_New"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.help.activities.MostSearchedVideosActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
@@ -68,8 +91,8 @@
         </activity>
         <activity
             android:name=".activities.notification.NotificationActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.followuppatients.FollowUp_VisitDetails"
             android:configChanges="uiMode"
@@ -88,12 +111,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".onboarding.PrivacyPolicyActivity_New"
+            android:name=".activities.onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".onboarding.TermsAndConditionsActivity_New"
+            android:name=".activities.onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -326,7 +349,7 @@
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".onboarding.SetupPrivacyNoteActivity_New"
+            android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
