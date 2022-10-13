@@ -153,6 +153,8 @@
     <dimen name="image_home_toolbar_icon_width">25dp</dimen>
     <dimen name="image_home_toolbar_icon_margintop">12dp</dimen>
     <dimen name="image_home_toolbar_icon_marginend">10dp</dimen>
+    <dimen name="image_home_toolbar_icon_margintop1">14dp</dimen>
+
     <!--Home Screen - Home fragment UI2.0-->
     <dimen name="home_parent_layout_padding">8dp</dimen>
     <dimen name="find_patient_padding_top">10dp</dimen>

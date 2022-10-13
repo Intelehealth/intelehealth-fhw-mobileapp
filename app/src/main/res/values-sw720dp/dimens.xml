@@ -32,6 +32,7 @@
     <dimen name="image_home_toolbar_icon_width">40dp</dimen>
     <dimen name="image_home_toolbar_icon_margintop">20dp</dimen>
     <dimen name="image_home_toolbar_icon_marginend">15dp</dimen>
+    <dimen name="image_home_toolbar_icon_margintop1">20dp</dimen>
 
     <!--Home Screen - Homefragment UI2.0-->
     <dimen name="home_parent_layout_padding">28dp</dimen>

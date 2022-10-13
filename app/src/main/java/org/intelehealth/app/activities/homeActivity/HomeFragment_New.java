@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
@@ -54,6 +55,16 @@ public class HomeFragment_New extends Fragment {
         ivNotification.setVisibility(View.VISIBLE);
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
+
+        CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);
+        cardAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 

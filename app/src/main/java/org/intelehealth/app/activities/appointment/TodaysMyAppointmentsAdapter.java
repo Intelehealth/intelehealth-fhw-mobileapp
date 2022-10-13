@@ -49,7 +49,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardParent = itemView.findViewById(R.id.card_all_appointments);
+            cardParent = itemView.findViewById(R.id.card_todays_appointments1);
 
         }
     }
