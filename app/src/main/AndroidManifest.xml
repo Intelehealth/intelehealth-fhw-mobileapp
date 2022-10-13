@@ -40,6 +40,24 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+
+        <activity
+            android:name=".activities.patientDetailActivity.PatientDetailActivity2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".activities.identificationActivity.IdentificationActivity_New"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".help.activities.FAQActivity_New"
             android:exported="true"
@@ -68,8 +86,8 @@
         </activity>
         <activity
             android:name=".activities.notification.NotificationActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.followuppatients.FollowUp_VisitDetails"
             android:configChanges="uiMode"
@@ -88,12 +106,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.PrivacyPolicyActivity_New"
+            android:name=".onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.TermsAndConditionsActivity_New"
+            android:name=".onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -326,7 +344,7 @@
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui2.onboarding.SetupPrivacyNoteActivity_New"
+            android:name=".onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -427,6 +445,10 @@
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
             android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

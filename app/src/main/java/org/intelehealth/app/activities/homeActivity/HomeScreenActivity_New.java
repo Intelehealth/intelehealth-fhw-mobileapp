@@ -61,6 +61,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.notification.NotificationActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.help.fragment.HelpFragment_New;
@@ -91,7 +92,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomeScreenActivity_New extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
-    ImageView imageViewIsInternet, ivHamburger;
+    ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
     private static final int ID_DOWN = 2;
     private QuickActionCustom quickAction;
@@ -137,6 +138,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         TextView tvAppVersion = findViewById(R.id.tv_app_version);
         LinearLayout menuResetApp = findViewById(R.id.layout_reset_app);
+        imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             //drawer is open
@@ -172,6 +174,11 @@ public class HomeScreenActivity_New extends AppCompatActivity {
             public void onClick(View v) {
                 quickAction.show(v);
             }
+        });
+
+        imageview_notifications_home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NotificationActivity.class);
+            startActivity(intent);
         });
 
         //nav header
@@ -353,7 +360,6 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
     private void loadFragment(Fragment fragment) {
         String tag = fragment.getClass().getSimpleName();
-        Log.d(TAG, "loadFragment: tag : "+tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);

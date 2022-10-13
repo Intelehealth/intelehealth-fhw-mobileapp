@@ -23,6 +23,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT PRIMARY KEY," +
             "visit_uuid TEXT," +
             "connection_info TEXT )";
+
     /**
      * This will keep the appointment listing
      */
@@ -45,6 +46,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "created_at TEXT," +
             "updated_at TEXT )";
 
+    /**
+     * This will maintain all the types of notifications and its data.
+     */
+    public static final String CREATE_NOTIFICATIONS = "CREATE TABLE IF NOT EXISTS tbl_notifications (" +
+            "patientuuid TEXT UNIQUE," +
+            "description TEXT," +
+            "obs_server_modified_date TEXT," +
+            "notification_type TEXT," +
+            "sync TEXT)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +
@@ -124,6 +134,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
             ")";
+
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
             "uuid TEXT PRIMARY KEY," +
             "patientuuid TEXT," +
@@ -139,7 +150,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "issubmitted Integer DEFAULT 0" +
             ")";
 
-
     public static final String CREATE_OBS_MAIN = "CREATE TABLE IF NOT EXISTS tbl_obs (" +
             "uuid TEXT PRIMARY KEY ," +
             "encounteruuid TEXT," +
@@ -152,6 +162,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
             "sync TEXT DEFAULT 'false' " +
             ")";
+
     SessionManager sessionManager = null;
 
     public static final String CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute_master (" +
@@ -262,6 +273,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
+        db.execSQL(CREATE_NOTIFICATIONS);
         uuidInsert(db);
         database = db;
 

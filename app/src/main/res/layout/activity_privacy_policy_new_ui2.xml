@@ -3,38 +3,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui2.onboarding.PrivacyPolicyActivity_New">
+    tools:context=".onboarding.PrivacyPolicyActivity_New">
 
-    <ImageView
-        android:id="@+id/iv_back_arrow_privacy"
-        android:layout_width="@dimen/back_arrow_width"
-        android:layout_height="@dimen/back_arrow_height"
-        android:layout_marginStart="@dimen/back_arrow_margin_start"
-        android:layout_marginTop="@dimen/back_arrow_margin_top"
-        android:src="@drawable/ui2_ic_arrow_back_new" />
 
-    <TextView
-        android:id="@+id/tv_title_privacy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/title_margin_start"
-        android:layout_marginTop="@dimen/title_margin_top"
-        android:layout_toEndOf="@+id/iv_back_arrow_privacy"
-        android:lineHeight="@dimen/title_margin_line_height"
-        android:text="@string/privacy_policy"
-        android:textSize="@dimen/setup_privacy_screen_info" />
+    <!--toolbar-->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/fu_toolbat_txt_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/common_title_margin_top"
+        android:layout_marginEnd="@dimen/toolbar_margin_right"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/frame_10011"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- arrow-right -->
+        <ImageButton
+            android:id="@+id/iv_back_arrow_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@null"
+            android:padding="@dimen/margin_5"
+            android:src="@drawable/ic_arrow_right"
+             />
+
+        <!-- Label -->
+        <TextView
+            android:id="@+id/tv_title_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_10"
+            android:gravity="top"
+            android:lineSpacingExtra="1sp"
+            android:text="@string/privacy_policy"
+            android:textAppearance="@style/label"
+            android:textColor="@null"
+            android:textSize="@dimen/toolbar_text_size"
+            android:translationY="-0.28sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/refresh"
+            android:layout_width="@dimen/margin_24"
+            android:layout_height="@dimen/margin_24"
+            android:background="@null"
+            android:src="@drawable/ic_refreshbtn" />
+    </LinearLayout>
+    </LinearLayout>
+    <!--toolbar end-->
 
     <LinearLayout
         android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
-        android:layout_below="@+id/tv_title_privacy">
+        android:layout_below="@+id/toolbar">
 
         <ScrollView
             android:layout_width="match_parent"
             android:scrollbars="vertical"
-            android:scrollbarSize="10dp"
             android:fadeScrollbars="false"
             android:layout_height="wrap_content">
 
@@ -42,16 +89,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/content_margin_start"
-                android:layout_marginTop="@dimen/content_margin_top"
+                android:layout_marginEnd="@dimen/content_margin_start"
+                android:layout_marginTop="@dimen/content_margin_start"
+                android:layout_marginBottom="@dimen/content_margin_start"
                 android:fontFamily="@font/lato_regular"
                 android:layout_toEndOf="@+id/iv_back_arrow_terms"
-                android:lineHeight="@dimen/content_line_height"
+                android:lineHeight="@dimen/margin_24"
                 android:text="@string/privacy_policy_content"
-                android:textSize="14sp" />
-
+                android:textSize="@dimen/info_options_text_size" />
         </ScrollView>
-
-
     </LinearLayout>
 
 
@@ -60,8 +106,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="@dimen/buttons_layout_margin_bottom"
+        android:layout_marginTop="@dimen/common_title_margin_top"
+        android:layout_marginBottom="@dimen/margin_24"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -69,12 +115,13 @@
             android:id="@+id/btn_decline_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/decline_button_margin_start"
-            android:layout_marginEnd="@dimen/decline_button_margin_end"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/common_edittext_margin_top"
             android:layout_weight="1"
             android:background="@drawable/ui2_common_primary_bg_disabled"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/padding_15"
+            android:padding="@dimen/hamburger_margin_top"
             android:text="@string/decline"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
@@ -84,13 +131,15 @@
             android:id="@+id/btn_accept_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/accept_button_margin_start"
-            android:layout_marginEnd="@dimen/accept_button_margin_end"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginEnd="@dimen/margin_24"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
-            android:padding="@dimen/padding_15"
+            android:padding="@dimen/hamburger_margin_top"
             android:text="@string/accept_new"
             android:textSize="@dimen/common_button_text_size" />
 

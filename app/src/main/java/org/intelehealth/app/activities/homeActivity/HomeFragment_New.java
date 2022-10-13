@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class HomeFragment_New extends Fragment {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
-    CardView followup_cardview;
+    CardView followup_cardview, addpatient_cardview;
     TextView textlayout_find_patient;
 
 
@@ -65,6 +66,7 @@ public class HomeFragment_New extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         followup_cardview = view.findViewById(R.id.followup_cardview);
+        addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
     }
 
@@ -79,6 +81,12 @@ public class HomeFragment_New extends Fragment {
 
         followup_cardview.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), FollowUpPatientActivity_New.class);
+            startActivity(intent);
+        });
+
+        addpatient_cardview.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+            intent.putExtra("add_patient", "add_patient");
             startActivity(intent);
         });
     }
