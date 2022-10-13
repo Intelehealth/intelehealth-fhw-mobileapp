@@ -7,18 +7,22 @@ package org.intelehealth.app.activities.householdSurvey;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
@@ -125,20 +129,89 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                     mSurveyData.getSurveyQuestions().add(survey);
             }
         }
-
+        preFillForEdit();
         mTotalStages = mSurveyData.getSurveyQuestions().size();
         showPage();
         mScreenBinding.btnNext.setOnClickListener(this);
         mScreenBinding.btnPrev.setOnClickListener(this);
     }
 
+    private void preFillForEdit() {
+        for (int i = 0; i < mSurveyData.getSurveyQuestions().size(); i++) {
+            Survey survey = mSurveyData.getSurveyQuestions().get(i);
+            for (int j = 0; j < survey.getQuestions().size(); j++) {
+                try {
+                    String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttributeByDesc(survey.getQuestions().get(j).getQuestion().trim());
+                    String value = new PatientsDAO().getPatientAttributeValueByTypeUUID(mPatientUUid, attributeTypeUuidForAidType);
+                    AnswerValue answerValue = new Gson().fromJson(value, AnswerValue.class);
+                    if (answerValue != null) {
+                        mSurveyData.getSurveyQuestions().get(i).getQuestions().get(j).setAnswerValue(answerValue);
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            answerChecking(true);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        answerChecking(true);
+    }
+
+    private void answerChecking(boolean isDraftMode) {
+        List<PatientAttributesDTO> attributesDTOList = filterAnsweredQuestions(isDraftMode);
+        if (attributesDTOList.isEmpty()) {
+            if (!isDraftMode) {
+                Toast.makeText(context, getString(R.string.empty_survey), Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                finish();
+            }
+        }
+
+        if (isDraftMode) {
+            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+
+            // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+            alertdialogBuilder.setMessage(R.string.alert_for_draft);
+            alertdialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    saveSurvey(attributesDTOList, isDraftMode);
+                }
+            });
+            alertdialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+
+            AlertDialog alertDialog = alertdialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+            positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+            //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            //IntelehealthApplication.setAlertDialogCustomTheme(this, aler
+        } else {
+            saveSurvey(attributesDTOList, isDraftMode);
+        }
     }
 
     private void showPage() {
@@ -191,7 +264,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         Logger.logV("Survey", String.valueOf(mStageNumber));
         if (view.getId() == R.id.btnNext) {
             if (mStageNumber == mTotalStages) {
-                saveSurvey();
+                answerChecking(false);
             } else {
                 mStageNumber++;
                 showPage();
@@ -202,7 +275,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void saveSurvey() {
+    private List<PatientAttributesDTO> filterAnsweredQuestions(boolean isDraftMode) {
         PatientsDAO patientsDAO = new PatientsDAO();
         List<PatientAttributesDTO> attributesDTOList = new ArrayList<>();
         for (int i = 0; i < mSurveyData.getSurveyQuestions().size(); i++) {
@@ -215,24 +288,32 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                     patientAttributesDTO.setPatientuuid(mPatientUUid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(attributeTypeUuid);
                     patientAttributesDTO.setValue(new Gson().toJson(mSurveyData.getSurveyQuestions().get(i).getQuestions().get(j).getAnswerValue()));
+
+                    patientAttributesDTO.setDraftStatus(String.valueOf(isDraftMode));
                     attributesDTOList.add(patientAttributesDTO);
                 }
             }
 
         }
+        return attributesDTOList;
+    }
+
+    private void saveSurvey(List<PatientAttributesDTO> attributesDTOList, boolean isDraftMode) {
+
         try {
-            if (attributesDTOList.isEmpty()) {
-                Toast.makeText(context, getString(R.string.empty_survey), Toast.LENGTH_SHORT).show();
-                return;
-            }
+            Log.v("attributesDTOList", new Gson().toJson(attributesDTOList));
+            PatientsDAO patientsDAO = new PatientsDAO();
             patientsDAO.SurveyupdatePatientToDB(mPatientUUid, attributesDTOList);
-            if (NetworkConnection.isOnline(this)) {
+            if (!isDraftMode && NetworkConnection.isOnline(this)) {
                 SyncDAO syncDAO = new SyncDAO();
                 syncDAO.pushDataApi();
-
+                Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
+            }
+            if (isDraftMode) {
+                Toast.makeText(context, getString(R.string.household_survey_draft), Toast.LENGTH_SHORT).show();
             }
 
-            Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
+
             finish();
         } catch (DAOException e) {
             e.printStackTrace();

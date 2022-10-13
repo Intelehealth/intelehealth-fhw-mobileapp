@@ -121,8 +121,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +
             "modified_date TEXT," +
+            "draft_status TEXT DEFAULT 'false', " +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
+
             ")";
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
             "uuid TEXT PRIMARY KEY," +

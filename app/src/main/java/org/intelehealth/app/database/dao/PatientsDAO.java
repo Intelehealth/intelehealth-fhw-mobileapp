@@ -234,6 +234,7 @@ public class PatientsDAO {
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "TRUE");
+                values.put("draft_status", patientAttributesDTOS.get(i).getDraftStatus());
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -246,12 +247,13 @@ public class PatientsDAO {
         return isInserted;
     }
 
+    //    used only for sync
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "' and draft_status = 'false'"; // exclude the draft items from sync process
             Cursor cursor = db.rawQuery(query, null, null);
             Attribute attribute = new Attribute();
             if (cursor.moveToFirst()) {
@@ -395,6 +397,7 @@ public class PatientsDAO {
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", false);
+                values.put("draft_status", patientAttributesDTOS.get(i).getDraftStatus());
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -454,6 +457,7 @@ public class PatientsDAO {
 
     /**
      * Get the PatientAttributeUUID by the description value
+     *
      * @param desc
      * @return
      */

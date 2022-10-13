@@ -19,6 +19,10 @@ public class PatientAttributesDTO {
     @Expose
     private String patientuuid;
 
+    @SerializedName("draft_status")
+    @Expose
+    private String draftStatus = "false";
+
 
     public String getUuid() {
         return uuid;
@@ -52,4 +56,11 @@ public class PatientAttributesDTO {
         this.patientuuid = patientuuid;
     }
 
+    public String getDraftStatus() {
+        return draftStatus;
+    }
+
+    public void setDraftStatus(String draftStatus) {
+        this.draftStatus = draftStatus;
+    }
 }

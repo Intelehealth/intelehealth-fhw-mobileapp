@@ -1565,5 +1565,7 @@
     <string name="empty_survey">Please enter/select the data for survey!</string>
     <string name="new_patient_fab_label">*Create a new record if you can\'t find a previous record</string>
     <string name="livelihood_needs_assessment">Needs Assessment</string>
+    <string name="alert_for_draft">You have not completed it! Would you like to save it as a draft?</string>
+    <string name="household_survey_draft">Draft Saved!</string>
 
 </resources>

@@ -1559,7 +1559,8 @@
     <string name="empty_survey">الرجاء إدخال / تحديد البيانات للمسح!</string>
     <string name="new_patient_fab_label">*أنشئ سجل جديد في حال لم تجد سجل سابق</string>
     <string name="livelihood_needs_assessment">تقييم الحاجات </string>
-
+    <string name="alert_for_draft">أنت لم تكملها! هل ترغب في حفظه كمسودة؟</string>
+    <string name="household_survey_draft">تم حفظ المسودة!</string>
 
 
 </resources>
