@@ -383,7 +383,7 @@
             @dimen/edittext_textsize_16sp
         </item>
         <item name="android:textColor">
-            #1B163A
+            @color/textview_color
         </item>
     </style>
 

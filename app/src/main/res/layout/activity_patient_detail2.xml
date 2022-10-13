@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginStart="@dimen/toolbar_margin_left"
-            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/toolbar_margin_right"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -74,7 +74,7 @@
                     android:id="@+id/refresh"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/margin_20"
+                    android:layout_marginEnd="@dimen/margin_20dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:src="@drawable/ic_refreshbtn" />
@@ -96,16 +96,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            app:cardCornerRadius="@dimen/margin_8"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            app:cardCornerRadius="@dimen/hamburger_margin_start"
             app:cardElevation="@dimen/margin_5">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_12">
+                android:layout_margin="@dimen/fu_margin_start">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
@@ -127,7 +127,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_12"
+                    android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_toEndOf="@+id/profile"
                     android:orientation="vertical">
 
@@ -184,9 +184,9 @@
                 android:id="@+id/nxt_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_24"
                 android:background="@drawable/start_visit_btn" />
 
         </RelativeLayout>

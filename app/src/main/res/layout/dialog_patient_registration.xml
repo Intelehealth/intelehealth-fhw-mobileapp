@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
     app:cardCornerRadius="@dimen/margin_16dp"
-    app:cardElevation="@dimen/common_edittext_margin_top">
+    app:cardElevation="@dimen/hamburger_margin_start">
 
     <RelativeLayout
         android:layout_width="match_parent"

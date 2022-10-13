@@ -476,6 +476,12 @@
     <dimen name="margin_32dp">64dp</dimen>
     <dimen name="margin_20dp">30dp</dimen>
     <dimen name="txtsize_20sp">26sp</dimen>
+    <dimen name="margin_40dp">50dp</dimen>
+    <dimen name="patdetail_editicon_width">120dp</dimen>
+    <dimen name="patdetail_editicon_height">42dp</dimen>
+    <dimen name="txtsize_patdetail_16sp">28sp</dimen>
+
+
 
 
 </resources>

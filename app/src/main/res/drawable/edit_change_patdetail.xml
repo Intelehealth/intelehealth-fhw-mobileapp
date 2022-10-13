@@ -1,7 +1,7 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="69dp"
-    android:height="22dp"
-    android:viewportWidth="69"
+    android:width="@dimen/patdetail_editicon_width"
+    android:height="@dimen/patdetail_editicon_height"
+    android:viewportWidth="70"
     android:viewportHeight="22">
   <group>
     <clip-path

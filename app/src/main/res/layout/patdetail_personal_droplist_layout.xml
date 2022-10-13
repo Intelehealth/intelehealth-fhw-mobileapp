@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/card_name_openmrsid"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="@dimen/padding_40"
-    android:layout_marginEnd="24dp"
-    app:cardCornerRadius="@dimen/margin_8"
+    android:layout_marginStart="@dimen/toolbar_margin_left"
+    android:layout_marginTop="@dimen/margin_40dp"
+    android:layout_marginEnd="@dimen/toolbar_margin_left"
+    app:cardCornerRadius="@dimen/hamburger_margin_start"
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginTop="@dimen/margin_12"
-        android:layout_marginEnd="@dimen/margin_12"
-        android:layout_marginBottom="@dimen/margin_16">
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginTop="@dimen/fu_margin_start"
+        android:layout_marginEnd="@dimen/fu_margin_start"
+        android:layout_marginBottom="@dimen/fu_card_margin_updown">
 
 
         <!--Personal Header-->
@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/personal_info_icon"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="@dimen/edittext_height_44dp"
+                android:layout_height="@dimen/edittext_height_44dp"
                 android:src="@drawable/addpatient_icon_unselected" />
 
             <TextView
@@ -36,12 +36,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/margin_8"
+                android:layout_marginStart="@dimen/hamburger_margin_start"
                 android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:text="Personal"
-                android:textAppearance="@style/patdetail_header1" />
+                android:textColor="@color/textview_color"
+                android:textSize="@dimen/txtsize_patdetail_16sp"
+                 />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -57,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/relative_personal_header"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/fu_card_margin_updown"
             android:background="@color/notifi_divider_color" />
 
@@ -74,7 +76,8 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
                 android:text="Details"
-                android:textAppearance="@style/patdetail_header1"
+                android:textColor="@color/textview_color"
+                android:textSize="@dimen/txtsize_patdetail_16sp"
                 android:textColor="@null"
                 android:textSize="@null" />
 
@@ -90,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_relative"
-            android:layout_marginTop="@dimen/margin_8">
+            android:layout_marginTop="@dimen/hamburger_margin_start">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -112,7 +115,7 @@
                         android:text="  Name"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/name"
@@ -122,7 +125,7 @@
                         android:text="Kiran Devi Prakash"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Gender-->
@@ -142,7 +145,7 @@
                         android:text="  Gender"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/gender"
@@ -152,7 +155,7 @@
                         android:text="Female"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Date of birth-->
@@ -172,7 +175,7 @@
                         android:text="  Date of birth"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/dob"
@@ -182,7 +185,7 @@
                         android:text="12th May 1988"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Age-->
@@ -202,7 +205,7 @@
                         android:text="  Age"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/age"
@@ -212,7 +215,7 @@
                         android:text="24 years"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
                 <!--Phone number-->
@@ -232,7 +235,7 @@
                         android:text="  Phone number"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
                         android:id="@+id/phone"
@@ -242,7 +245,7 @@
                         android:text="+91 9876543210"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/find_patient_hint_size" />
                 </TableRow>
 
 
