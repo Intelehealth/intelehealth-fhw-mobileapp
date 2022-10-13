@@ -939,6 +939,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 Log.d("visitUUID", "upload_click: " + visitUUID);
 
+                // The below condition has been added keeping in mind that no HW will be able to upload empty complaints: (Ticket SYR-171): Nishita Goyal
+                if(complaint.getValue()==null || complaintView.getText().equals("") || complaintView.getText().equals(" "))
+                {
+                    Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_failed_for_no_complaint), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
