@@ -3,12 +3,10 @@ package org.intelehealth.app.activities.homeActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,8 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
-import org.intelehealth.app.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Objects;
