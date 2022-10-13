@@ -84,6 +84,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -150,8 +151,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -597,8 +600,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         .putExtra("openMrsId", patient.getOpenmrs_id())
                         .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
                 );
-
-
             }
         });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
@@ -1228,17 +1229,34 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (famHistory.getValue() != null)
+                        if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
                             dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                         else
-                            dialogEditText.setText("");
+                        {
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                            {
+                                if (famHistory.getValue("ar") != null && !famHistory.getValue("ar").equalsIgnoreCase(""))
+                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("ar")));
+                                else
+                                    dialogEditText.setText("");
+                            }
+                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                            {
+                                if (famHistory.getValue("en") != null && !famHistory.getValue("en").equalsIgnoreCase(""))
+                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("en")));
+                                else
+                                    dialogEditText.setText("");
+                            }
+                            else
+                                dialogEditText.setText("");
+                        }
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //famHistory.setValue(dialogEditText.getText().toString());
-                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"), sessionManager.getAppLanguage());
+                                famHistory.setValue(dataStringValue);
                                 if (famHistory.getValue() != null) {
                                     famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                                     famHistView.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
@@ -1688,6 +1706,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         doQuery();
         getAppointmentDetails(visitUuid);
+    }
+
+    private String mapDataIntoJson(String dataString, String lang) {
+        Map<String, String> dataMapString = new HashMap<>();
+        if(lang.equalsIgnoreCase("ar"))
+        {
+            dataMapString.put("en", "");
+            dataMapString.put("ar", dataString);
+        }
+        else if(lang.equalsIgnoreCase("en"))
+        {
+            dataMapString.put("ar", "");
+            dataMapString.put("en", dataString);
+        }
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        dataString = gson.toJson(dataMapString);
+        return dataString;
     }
 
     @Override
