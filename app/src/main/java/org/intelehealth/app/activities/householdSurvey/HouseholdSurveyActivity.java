@@ -69,7 +69,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         mScreenBinding = ActivityHouseholdSurveyBinding.inflate(getLayoutInflater());
         View view = mScreenBinding.getRoot();
         setContentView(view);
-        setTitle(getString(R.string.household_survey));
+        setTitle(getString(R.string.livelihood_needs_assessment));
        /* getSupportFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new FirstScreenFragment())
                 .commit();*/
@@ -86,6 +86,10 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         try {
             String value = new PatientsDAO().getPatientAttributeValueByTypeUUID(mPatientUUid, attributeTypeUuidForAidType);
             AidTypeAnswerValue answerValue = new Gson().fromJson(value, AidTypeAnswerValue.class);
+            if (answerValue == null || answerValue.getEnValues().size() == 0 || answerValue.getArValues().size() == 0) {
+                Toast.makeText(context, getString(R.string.aid_types_missing), Toast.LENGTH_SHORT).show();
+                finish();
+            }
             Log.v("answerValue", answerValue.getEnValues().get(0));
 
             mPatientAidTypes = answerValue.getEnValues();
@@ -121,6 +125,7 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                         if (mPatientAidTypes.contains(survey.getQuestions().get(j).getAids().get(k))) {
                             questions.add(survey.getQuestions().get(j));
                             Log.v("answerValue", survey.getQuestions().get(j).getQuestion());
+                            break;
                         }
                     }
                 }
@@ -307,7 +312,10 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
             if (!isDraftMode && NetworkConnection.isOnline(this)) {
                 SyncDAO syncDAO = new SyncDAO();
                 syncDAO.pushDataApi();
-                Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
+                if (mIsTriageMode)
+                    Toast.makeText(context, getString(R.string.triage_survey_saved), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, getString(R.string.household_survey_saved), Toast.LENGTH_SHORT).show();
             }
             if (isDraftMode) {
                 Toast.makeText(context, getString(R.string.household_survey_draft), Toast.LENGTH_SHORT).show();

@@ -10,7 +10,7 @@
         android:orderInCategory="200"
         android:title="@string/video_call"
         android:visible="true"
-        app:showAsAction="always">
+        app:showAsAction="never">
 
     </item>
 

@@ -1552,7 +1552,8 @@
     <string name="previous">Previous</string>
     <string name="select_for">Select for : %1$s</string>
     <string name="enter_value">Enter Value</string>
-    <string name="household_survey_saved">Household Survey Saved!</string>
+    <string name="household_survey_saved">Needs Assessment submitted!</string>
+    <string name="triage_survey_saved">Triage survey submitted!</string>
 
     //-------setup Location string-----
     <string name="setup_select_state_str">Select State</string>
@@ -1567,5 +1568,6 @@
     <string name="livelihood_needs_assessment">Needs Assessment</string>
     <string name="alert_for_draft">You have not completed it! Would you like to save it as a draft?</string>
     <string name="household_survey_draft">Draft Saved!</string>
+    <string name="aid_types_missing">Patient AID types are missing!</string>
 
 </resources>
