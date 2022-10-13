@@ -639,6 +639,10 @@
     <dimen name="country_flag_icon_width">23dp</dimen>
     <dimen name="country_flag_icon_height">16dp</dimen>
     <dimen name="patregist_icon_title">12sp</dimen>
+    <dimen name="margin_32dp">32dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="txtsize_20sp">20sp</dimen>
+
 
 
 </resources>

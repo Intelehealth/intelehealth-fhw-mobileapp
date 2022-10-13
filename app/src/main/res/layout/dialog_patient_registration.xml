@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
-    app:cardCornerRadius="@dimen/margin_16"
-    app:cardElevation="@dimen/margin_8">
+    app:cardCornerRadius="@dimen/margin_16dp"
+    app:cardElevation="@dimen/common_edittext_margin_top">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,10 +13,10 @@
 
         <ImageView
             android:id="@+id/dialog_icon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/patregist_profileimg_icon"
+            android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_32"
+            android:layout_marginTop="@dimen/margin_32dp"
             android:src="@drawable/dialog_icon_complete" />
 
         <RelativeLayout
@@ -24,9 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialog_icon"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp">
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
 
             <TextView
                 android:id="@+id/dialog_title"
@@ -44,9 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dialog_title"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/margin_24"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
                 android:text="Does the patient want to start the \n visit now?"
@@ -55,13 +55,14 @@
                 android:textSize="@null" />
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dialog_subtitle"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_32dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -69,9 +70,11 @@
                     style="@style/negative_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_12"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
                     android:background="@drawable/white_bg_button"
-                    android:paddingHorizontal="@dimen/margin_20"
+                    android:paddingHorizontal="@dimen/margin_32dp"
+                    android:paddingVertical="@dimen/margin_20dp"
                     android:text="Cancel" />
 
                 <Button
@@ -79,10 +82,13 @@
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_toEndOf="@id/negative_btn"
                     android:background="@drawable/darkblue_bg_button"
-                    android:paddingHorizontal="@dimen/margin_20"
+                    android:paddingHorizontal="@dimen/margin_32dp"
+                    android:paddingVertical="@dimen/margin_20dp"
                     android:text="Continue" />
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </RelativeLayout>
