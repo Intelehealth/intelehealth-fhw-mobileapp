@@ -726,7 +726,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+963" + editText.getText().toString();
                                         String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                                                +"\t"+ whatsapp_url +"\t"+ getString(R.string.and_enter_your_patient_id) +"\t"+ idView.getText().toString();
 
                                         // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
@@ -2043,9 +2043,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                //Log.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                //Log.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_Button(view, webview_heightContent);
                 mWebView = null;
             }
@@ -2066,7 +2066,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
-        System.out.println(getString(R.string.current_time) + c.getTime());
+        //System.out.println(getString(R.string.current_time) + c.getTime());
 
         String[] columnsToReturn = {"startdate"};
         String visitIDorderBy = "startdate";
@@ -2119,7 +2119,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
         //AnswerValue answerValue = new Gson().fromJson(complaint.getValue(), AnswerValue.class);
         String mComplaint = complaint.getValue();//LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
-        Log.v("complaints", mComplaint);
+        //Log.v("complaints", mComplaint);
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
