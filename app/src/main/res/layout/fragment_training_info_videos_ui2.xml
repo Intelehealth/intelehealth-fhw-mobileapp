@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:id="@+id/autotv_select_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ui2_background_input_field_new"
+            android:drawableStart="@drawable/ui2_ic_search_icon_home"
+            android:drawablePadding="@dimen/find_patient_icon_padding"
+            android:drawableTint="@color/iconTintGrayBottomNav"
+            android:hint="@string/search_for_videos"
+            android:importantForAutofill="no"
+            android:maxLines="1"
+            android:paddingStart="@dimen/common_edittext_padding_left"
+            android:paddingTop="@dimen/common_edittext_padding_top"
+            android:paddingEnd="@dimen/common_edittext_padding_right"
+            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+            android:singleLine="true"
+            android:textSize="@dimen/common_hint_text_size"
+            app:endIconDrawable="@drawable/ui2_ic_chevron_down"
+            app:endIconMode="custom"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/video_tv_most_searched_margin_top"
+        android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+        android:text="@string/most_searched"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/common_label_text_size"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_most_searched_info_health"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/videos_rv_videos_margin_top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tv_more_videos_margin_top"
+        android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+        android:text="@string/more_videos"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/common_label_text_size"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_more_videos_info_health"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/rv_more_videos_margin_top" />
+</LinearLayout>

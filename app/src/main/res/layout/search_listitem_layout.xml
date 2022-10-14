@@ -127,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
                 android:layout_height="@dimen/search_priority_tag"
-                android:src="@drawable/frame_priority"
+                android:src="@drawable/ui2_frame_priority"
                 android:lineSpacingExtra="0sp"
                 android:layout_gravity="top|end|center"
                 android:gravity="center"

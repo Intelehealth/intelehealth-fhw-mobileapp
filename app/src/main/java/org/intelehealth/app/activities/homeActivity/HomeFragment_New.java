@@ -3,12 +3,10 @@ package org.intelehealth.app.activities.homeActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +15,12 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -28,7 +30,7 @@ public class HomeFragment_New extends Fragment {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
-    CardView followup_cardview;
+    CardView followup_cardview, addpatient_cardview;
     TextView textlayout_find_patient;
 
 
@@ -51,6 +53,19 @@ public class HomeFragment_New extends Fragment {
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        bottomNav.setVisibility(View.VISIBLE);
+
+        CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);
+        cardAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
@@ -65,6 +80,7 @@ public class HomeFragment_New extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         followup_cardview = view.findViewById(R.id.followup_cardview);
+        addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
     }
 
@@ -79,6 +95,12 @@ public class HomeFragment_New extends Fragment {
 
         followup_cardview.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), FollowUpPatientActivity_New.class);
+            startActivity(intent);
+        });
+
+        addpatient_cardview.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+            intent.putExtra("add_patient", "add_patient");
             startActivity(intent);
         });
     }

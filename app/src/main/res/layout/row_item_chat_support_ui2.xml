@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/item_chat_padding_top">
+
+    <TextView
+        android:id="@+id/tv_incoming_msg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineHeight="15.62dp"
+        android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+        android:paddingStart="@dimen/item_chat_msg_padding_start"
+        android:paddingEnd="@dimen/item_chat_msg_padding_end"
+        android:paddingBottom="@dimen/item_chat_msg_padding_bottom"
+        android:text="Mon at 5:41 PM"
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/tv_chat_time_text_size" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_incoming_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_incoming_msg_time"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/card_incoming_margin_start"
+        android:layout_marginTop="@dimen/card_incoming_margin_top"
+        android:background="@drawable/ui2_chat_incoming_msg_bg"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ui2_chat_incoming_msg_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
+                android:paddingStart="@dimen/tv_incoming_padding_start"
+                android:paddingTop="@dimen/tv_incoming_padding_top"
+                android:paddingEnd="@dimen/tv_incoming_padding_end"
+                android:paddingBottom="@dimen/tv_incoming_padding_bottom"
+                android:text="Hi! How to change language?"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/tv_chat_msg_text_size" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_incoming_msg"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/card_outgoing_margin_top"
+        android:layout_marginEnd="@dimen/card_outgoing_margin_end"
+        android:background="@drawable/ui2_chat_incoming_msg_bg"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ui2_chat_outgoing_msg_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:paddingStart="@dimen/tv_outgoing_padding_start"
+                android:paddingTop="@dimen/tv_outgoing_padding_top"
+                android:paddingEnd="@dimen/tv_outgoing_padding_end"
+                android:paddingBottom="@dimen/tv_outgoing_padding_bottom"
+                android:text="Go to My profile where there is a Change language option. From that list select the preferred language."
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/tv_chat_msg_text_size" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

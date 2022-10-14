@@ -114,6 +114,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getAge_FollowUp(String s, Context context) {
+        Log.d("TAG", "getAge_FollowUp: s : "+s);
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");

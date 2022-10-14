@@ -32,7 +32,7 @@
     <dimen name="common_imageview_back_height">30dp</dimen>
 
     <dimen name="common_tv_icon_padding">10dp</dimen>
-    <dimen name="common_title_margin_top">23dp</dimen>
+    <dimen name="common_title_margin_top">24dp</dimen>
     <dimen name="common_edittext_margin_top">10dp</dimen>
     <dimen name="common_title_line_spacing">14sp</dimen>
     <dimen name="common_forgotpass_margin_top">12dp</dimen>
@@ -65,8 +65,14 @@
 -->
 
     <!--Home Screen UI2.0-->
+    <dimen name="home_toolbar_layout_margin_top">0dp</dimen>
+    <dimen name="home_toolbar_layout_margin_start">8dp</dimen>
+    <dimen name="home_toolbar_layout_margin_bottom">8dp</dimen>
+    <dimen name="home_toolbar_layout_margin_end">12dp</dimen>
 
+<!--
     <dimen name="home_toolbar_layout_margin">8dp</dimen>
+-->
     <dimen name="hamburger_width">35dp</dimen>
     <dimen name="hamburger_height">40dp</dimen>
     <dimen name="hamburger_margin_end">15dp</dimen>
@@ -80,6 +86,7 @@
     <dimen name="image_home_toolbar_icon_width">40dp</dimen>
     <dimen name="image_home_toolbar_icon_margintop">18dp</dimen>
     <dimen name="image_home_toolbar_icon_marginend">15dp</dimen>
+    <dimen name="image_home_toolbar_icon_margintop1">18dp</dimen>
 
     <!--Home Screen - Homefragment UI2.0-->
     <dimen name="home_parent_layout_padding">16dp</dimen>
@@ -95,6 +102,8 @@
     <dimen name="find_patient_icon_padding">16dp</dimen>
     <dimen name="find_patient_margin_top">5dp</dimen>
     <dimen name="home_framelayout_margin_top">7dp</dimen>
+    <dimen name="home_framelayout_margin_bottom">20dp</dimen>
+    <dimen name="home_framelayout_padding_bottom">10dp</dimen>
 
     <dimen name="card_add_patient_home_height">140dp</dimen>
     <dimen name="card_add_patient_home_topmargin">40dp</dimen>
@@ -145,7 +154,7 @@
     <dimen name="bottom_nav_menu_text_size">40sp</dimen>
     <dimen name="bottom_nav_icon_size">34dp</dimen>
     <dimen name="followup_toolbar">94dp</dimen>
-    <dimen name="fu_toolbat_txt_height">34dp</dimen>
+    <dimen name="fu_toolbat_txt_height">44dp</dimen>
 
     <dimen name="design_bottom_navigation_text_size"
         tools:override="true">18sp</dimen>
@@ -354,7 +363,7 @@
     <dimen name="design_navigation_icon_size" tools:override="true">30dp</dimen>
 
     <!--Text Size-->
-    <dimen name="toolbar_text_size">22sp</dimen>
+    <dimen name="toolbar_text_size">28sp</dimen>
     <dimen name="fu_header_card_height">102dp</dimen>
     <dimen name="fu_card_margin_sides">24dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
@@ -371,7 +380,7 @@
     <dimen name="fu_vs_margin_start">12dp</dimen>
     <dimen name="fu_vs_margin_top">50dp</dimen>
     <dimen name="fu_date_txt_size">22sp</dimen>
-    <dimen name="fu_btn_size">68dp</dimen>
+    <dimen name="fu_btn_size">78dp</dimen>
     <dimen name="toolbar_margin_left">34dp</dimen>
     <dimen name="toolbar_margin_top">54dp</dimen>
     <dimen name="toolbar_margin_right">34dp</dimen>
@@ -510,6 +519,7 @@
     <dimen name="rv_faq_down_icon_height">30dp</dimen>
     <dimen name="rv_faq_tv_desc_margin_top">5dp</dimen>
     <dimen name="rv_faq_tv_desc_margin_bottom">10dp</dimen>
+    <dimen name="tv_faq_desc_text_size">20sp</dimen>
 
     <dimen name="help_options_margin_top">25dp</dimen>
     <dimen name="help_options_button_margin_top">14dp</dimen>
@@ -531,4 +541,87 @@
     <dimen name="item_video_card_margin_end">12dp</dimen>
     <dimen name="tv_video_desc_margin_top">4dp</dimen>
     <dimen name="video_list_view_margin_top">16dp</dimen>
+
+    <!--Help UI2.0 Chat screen-->
+    <dimen name="type_here_padding_start">18dp</dimen>
+    <dimen name="type_here_padding_top">14dp</dimen>
+    <dimen name="type_here_padding_end">22dp</dimen>
+    <dimen name="tv_chat_time_text_size">18sp</dimen>
+    <dimen name="tv_chat_msg_text_size">20sp</dimen>
+    <dimen name="chat_toolbar_padding_start">20dp</dimen>
+    <dimen name="chat_toolbar_padding_end">20dp</dimen>
+    <dimen name="chat_toolbar_padding_bottom">28dp</dimen>
+    <dimen name="chat_toolbar_padding_top">14dp</dimen>
+    <dimen name="rv_chat_margin_bottom">100dp</dimen>
+    <dimen name="tv_type_here_margin_end">16dp</dimen>
+    <dimen name="item_chat_padding_top">24dp</dimen>
+    <dimen name="item_chat_msg_padding_start">18dp</dimen>
+    <dimen name="item_chat_msg_padding_end">14dp</dimen>
+    <dimen name="item_chat_msg_padding_bottom">18dp</dimen>
+    <dimen name="card_incoming_margin_start">40dp</dimen>
+    <dimen name="card_incoming_margin_top">15dp</dimen>
+    <dimen name="tv_incoming_padding_start">16dp</dimen>
+    <dimen name="tv_incoming_padding_end">12dp</dimen>
+    <dimen name="tv_incoming_padding_top">16dp</dimen>
+    <dimen name="tv_incoming_padding_bottom">20dp</dimen>
+    <dimen name="card_outgoing_margin_top">28dp</dimen>
+    <dimen name="card_outgoing_margin_end">40dp</dimen>
+    <dimen name="tv_outgoing_padding_start">18dp</dimen>
+    <dimen name="tv_outgoing_padding_end">14dp</dimen>
+    <dimen name="tv_outgoing_padding_top">20dp</dimen>
+    <dimen name="tv_outgoing_padding_bottom">20dp</dimen>
+    <dimen name="image_chat_toolbar_icon_height">40dp</dimen>
+    <dimen name="image_chat_toolbar_icon_width">30dp</dimen>
+
+
+    <!--UI2.0 Informative Videos-->
+    <dimen name="layout_videos_margin_top">0dp</dimen>
+    <dimen name="layout_videos_padding_start">20dp</dimen>
+    <dimen name="layout_videos_padding_end">20dp</dimen>
+    <dimen name="layout_videos_padding_bottom">15dp</dimen>
+    <dimen name="video_tv_most_searched_margin_top">30dp</dimen>
+    <dimen name="videos_rv_videos_margin_top">20dp</dimen>
+    <dimen name="tv_more_videos_margin_top">32dp</dimen>
+    <dimen name="rv_more_videos_margin_top">20dp</dimen>
+
+    <dimen name="info_item_searched_video_card_width">300dp</dimen>
+    <dimen name="info_item_searched_video_card_height">170dp</dimen>
+    <dimen name="info_item_searched_margin_bottom">16dp</dimen>
+    <dimen name="item_info_searched_video_card_margin_end">12dp</dimen>
+    <dimen name="tv_searched_video_desc_margin_top">4dp</dimen>
+    <dimen name="tv_searched_video_view_margin_top">16dp</dimen>
+    <dimen name="info_item_more_videos_card_width">350dp</dimen>
+    <dimen name="info_item_more_videos_card_height">170dp</dimen>
+
+    <dimen name="info_videos_margin_top">10dp</dimen>
+    <dimen name="info_videos_margin_start">28dp</dimen>
+    <dimen name="info_videos_margin_end">28dp</dimen>
+    <dimen name="info_pager_common_margin_top">15dp</dimen>
+    <dimen name="margin_24">34dp</dimen>
+    <dimen name="content_margin_start">34dp</dimen>
+    <dimen name="margin_10">14dp</dimen>
+    <dimen name="icon_36dp">56dp</dimen>
+    <dimen name="line_66dp">76dp</dimen>
+    <dimen name="patregist_profileimg_icon">104dp</dimen>
+    <dimen name="patregis_icon_text">20dp</dimen>
+    <dimen name="margin_16dp">32dp</dimen>
+    <dimen name="gender_margin">94dp</dimen>
+    <dimen name="edittext_height_44dp">74dp</dimen>
+    <dimen name="edittext_textsize_16sp">24sp</dimen>
+    <dimen name="country_flag_icon_width">33dp</dimen>
+    <dimen name="country_flag_icon_height">26dp</dimen>
+    <dimen name="patregist_icon_title">18sp</dimen>
+    <dimen name="margin_32dp">64dp</dimen>
+    <dimen name="margin_20dp">30dp</dimen>
+    <dimen name="txtsize_20sp">26sp</dimen>
+    <dimen name="margin_40dp">50dp</dimen>
+    <dimen name="patdetail_editicon_width">120dp</dimen>
+    <dimen name="patdetail_editicon_height">42dp</dimen>
+    <dimen name="txtsize_patdetail_16sp">28sp</dimen>
+    <dimen name="patdetail_profile_imgview_14sp">70dp</dimen>
+    <dimen name="up_down_icon_size">30dp</dimen>
+
+
+
+
 </resources>
