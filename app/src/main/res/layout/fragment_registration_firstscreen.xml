@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/img_profile"
@@ -74,6 +75,21 @@
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />
+
+                <TextView
+                    android:id="@+id/firstname_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="end"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
 
             <!--Middlename-->
@@ -145,7 +161,7 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/surnamefield_mandatory"
+                    android:id="@+id/lastname_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -251,11 +267,14 @@
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:hint="Enter Date of Birth"
                     android:textColorHint="@color/edittext_hint_color"
+                    android:focusable="false"
+                    android:inputType=""
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingBottom="@dimen/margin_10"
-                    
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
             </LinearLayout>
@@ -322,7 +341,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/phoneno_edittext"
+                        android:id="@+id/countrycode_spinner"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
@@ -331,7 +350,7 @@
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
                         android:paddingBottom="@dimen/margin_10"
-                        style="@style/SpinnerTheme" />
+                        style="@style/SmallSpinnerTheme" />
 
                     <EditText
                         android:id="@+id/phoneno_edittext"

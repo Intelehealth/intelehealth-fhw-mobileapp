@@ -78,8 +78,8 @@
 
                 <Spinner
                     android:id="@+id/country_edittext"
-                    style="@style/SpinnerTheme"
-                    android:layout_width="wrap_content"
+                    style="@style/SmallSpinnerTheme"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -146,7 +146,7 @@
 
                 <Spinner
                     android:id="@+id/district_edittext"
-                    style="@style/SpinnerTheme"
+                    style="@style/SmallSpinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
@@ -176,8 +176,8 @@
 
                 <Spinner
                     android:id="@+id/city_edittext"
-                    style="@style/SpinnerTheme"
-                    android:layout_width="wrap_content"
+                    style="@style/SmallSpinnerTheme"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:paddingStart="@dimen/fu_margin_start"

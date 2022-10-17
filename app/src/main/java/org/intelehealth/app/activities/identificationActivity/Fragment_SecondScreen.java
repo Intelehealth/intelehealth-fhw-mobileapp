@@ -39,6 +39,8 @@ public class Fragment_SecondScreen extends Fragment {
         other_icon = getActivity().findViewById(R.id.other_icon);
         frag2_btn_back = getActivity().findViewById(R.id.frag2_btn_back);
         frag2_btn_next = getActivity().findViewById(R.id.frag2_btn_next);
+
+        String firstname = getArguments().getString("firstname");
     }
 
     @Override

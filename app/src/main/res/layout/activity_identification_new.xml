@@ -211,8 +211,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/frame_nxtbtn_viewgrp"
-        android:layout_below="@+id/title_text"
-        android:layout_marginBottom="@dimen/fu_card_margin_updown">
+        android:layout_below="@+id/title_text">
 
 <!--        <include layout="@layout/fragment_registration_firstscreen" />-->
 

@@ -1079,6 +1079,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAgeDays + getResources().getString(R.string.days);
             mAge.setText(age);
         }
+
+
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
