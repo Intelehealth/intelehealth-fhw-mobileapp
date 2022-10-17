@@ -1589,7 +1589,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 

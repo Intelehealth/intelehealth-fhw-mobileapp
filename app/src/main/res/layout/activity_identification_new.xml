@@ -219,6 +219,7 @@
     </FrameLayout>
 
 
+<!--
     <FrameLayout
         android:id="@+id/frame_nxtbtn_viewgrp"
         android:layout_width="match_parent"
@@ -268,5 +269,6 @@
                 android:background="@drawable/nxt_btn_secondscreen" />
         </LinearLayout>
     </FrameLayout>
+-->
 
 </RelativeLayout>

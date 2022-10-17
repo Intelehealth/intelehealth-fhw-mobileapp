@@ -31,9 +31,10 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/relative_btn"
+        android:layout_above="@+id/frame_nxtbtn_viewgrp"
         android:layout_below="@+id/add_picture"
         android:layout_marginTop="@dimen/margin_24"
+        android:layout_marginBottom="@dimen/margin_24"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -94,7 +95,7 @@
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/firstname_edittext"
+                    android:id="@+id/middlename_edittext"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -320,23 +321,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/phoneno_edittext"
-                        style="@style/edittext_textcolor"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:background="@drawable/edittext_border"
-                        android:drawableStart="@drawable/india_flag_svg"
-                        android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                        android:drawablePadding="@dimen/hamburger_margin_start"
-                        android:text="+91"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textSize="@dimen/edittext_textsize_16sp" />
+                        style="@style/SpinnerTheme" />
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
@@ -359,4 +354,31 @@
 
         </RelativeLayout>
     </ScrollView>
+
+
+    <FrameLayout
+        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_24">
+
+        <RelativeLayout
+            android:id="@+id/relative_firstscreen_nxt_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/frag1_nxt_btn_main"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:background="@drawable/registr_nxt_btn" />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+
 </RelativeLayout>

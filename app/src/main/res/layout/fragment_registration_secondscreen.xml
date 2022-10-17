@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_16dp"
-    android:layout_marginBottom="@dimen/margin_16dp"
-    android:fillViewport="true">
+    android:layout_marginBottom="@dimen/margin_16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/margin_24"
+        android:layout_above="@+id/frame_nxtbtn_viewgrp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -69,24 +76,17 @@
                     
                     android:textSize="@null" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/country_edittext"
-                    style="@style/edittext_textcolor"
+                    style="@style/SpinnerTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:background="@drawable/edittext_border"
-                    android:drawableStart="@drawable/india_flag_svg"
-                    android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                    android:drawablePadding="@dimen/common_edittext_margin_top"
-                    android:hint="India"
-                    android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
-                    
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -108,20 +108,16 @@
                 
                 android:textSize="@null" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/state_edittext"
-                style="@style/edittext_textcolor"
+                style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:background="@drawable/edittext_border"
-                android:drawableEnd="@drawable/ui2_ic_chevron_down"
                 android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
                 android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:text="Maharashtra"
-                android:textSize="@dimen/edittext_textsize_16sp" />
+                android:paddingBottom="@dimen/margin_10" />
         </LinearLayout>
 
         <!--District & City-->
@@ -146,23 +142,19 @@
                     android:lineSpacingExtra="3sp"
                     android:text="District*"
                     android:textAppearance="@style/blur_txtview"
-                    
                     android:textSize="@null" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/district_edittext"
-                    style="@style/edittext_textcolor"
+                    style="@style/SpinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:background="@drawable/edittext_border"
-                    android:drawableEnd="@drawable/ui2_ic_chevron_down"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
-                    android:text="Nashik"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -182,21 +174,17 @@
                     
                     android:textSize="@null" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/city_edittext"
-                    style="@style/edittext_textcolor"
+                    style="@style/SpinnerTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:background="@drawable/edittext_border"
-                    android:drawableEnd="@drawable/ui2_ic_chevron_down"
-                    android:drawablePadding="@dimen/common_edittext_margin_top"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
-                    android:text="Sinnar"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -273,4 +261,43 @@
 
 
     </RelativeLayout>
-</ScrollView>
+    </ScrollView>
+
+
+    <FrameLayout
+        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_24">
+
+        <LinearLayout
+            android:id="@+id/linear_secondscreen_nxt_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/frag2_btn_back"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/fu_card_margin_updown"
+                android:layout_weight="1"
+                android:background="@drawable/back_btn_patregistra" />
+
+            <Button
+                android:id="@+id/frag2_btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_toEndOf="@+id/btn_back_firstscreen"
+                android:layout_weight="1"
+                android:background="@drawable/nxt_btn_secondscreen" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+
+</RelativeLayout>
