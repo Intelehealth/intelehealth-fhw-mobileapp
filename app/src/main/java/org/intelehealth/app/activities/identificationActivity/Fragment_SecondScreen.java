@@ -1,10 +1,12 @@
 package org.intelehealth.app.activities.identificationActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.dto.PatientDTO;
+
+import java.util.List;
 
 /**
  * Created by Prajwal Waingankar on 13/10/22.
@@ -22,6 +27,7 @@ public class Fragment_SecondScreen extends Fragment {
     private View view;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag2_btn_back, frag2_btn_next;
+    private EditText postalcode_edittext;
 
 
     @Nullable
@@ -39,8 +45,12 @@ public class Fragment_SecondScreen extends Fragment {
         other_icon = getActivity().findViewById(R.id.other_icon);
         frag2_btn_back = getActivity().findViewById(R.id.frag2_btn_back);
         frag2_btn_next = getActivity().findViewById(R.id.frag2_btn_next);
+        postalcode_edittext = view.findViewById(R.id.postalcode_edittext);
 
-        String firstname = getArguments().getString("firstname");
+        PatientDTO patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
+        Log.v("ff", "ddd");
+        postalcode_edittext.setText(patientDTO.getFirstname());
+
     }
 
     @Override

@@ -51,6 +51,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,7 +76,7 @@ public class Fragment_FirstScreen extends Fragment {
     private MaterialAlertDialogBuilder mAgePicker;
     Calendar dob = Calendar.getInstance();
     Calendar today = Calendar.getInstance();
-    TextView firstname_error;
+    TextView firstname_error, middlename_error, lastname_error, gender_error, dob_error, age_error, phone_error;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
@@ -111,6 +112,12 @@ public class Fragment_FirstScreen extends Fragment {
         phoneno_edittext = view.findViewById(R.id.phoneno_edittext);
 
         firstname_error = view.findViewById(R.id.firstname_error);
+        middlename_error = view.findViewById(R.id.middlename_error);
+        lastname_error = view.findViewById(R.id.lastname_error);
+        gender_error = view.findViewById(R.id.gender_error);
+        dob_error = view.findViewById(R.id.dob_error);
+        age_error = view.findViewById(R.id.age_error);
+        phone_error = view.findViewById(R.id.phone_error);
 
         
     }
@@ -456,6 +463,8 @@ public class Fragment_FirstScreen extends Fragment {
 
         // dob validation
         if (dob.equals("") || dob.toString().equals("")) {
+            dob_error.setVisibility(View.VISIBLE);
+/*
             if (dob.after(today)) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getActivity());
                 alertDialogBuilder.setTitle(R.string.error);
@@ -478,6 +487,10 @@ public class Fragment_FirstScreen extends Fragment {
                 IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
                 return;
             }
+*/
+        }
+        else {
+            dob_error.setVisibility(View.GONE);
         }
         // dob valid - end
         
@@ -488,8 +501,11 @@ public class Fragment_FirstScreen extends Fragment {
                 phoneno_edittext.setError(getString(R.string.enter_10_digits));
                 return;
             }
+            phone_error.setVisibility(View.VISIBLE);
         }
-
+        else {
+            phone_error.setVisibility(View.GONE);
+        }
         // mobile no - end
 
         if (!firstname_edittext.getText().toString().equals("") && !lastname_edittext.getText().toString().equals("")
@@ -506,21 +522,41 @@ public class Fragment_FirstScreen extends Fragment {
                 firstname_error.setVisibility(View.GONE);
             }
 
+            if (middlename_edittext.getText().toString().equals("")) {
+                middlename_error.setVisibility(View.VISIBLE);
+            }
+            else {
+                middlename_error.setVisibility(View.GONE);
+            }
+
             if (lastname_edittext.getText().toString().equals("")) {
                 //   mLastName.setError(getString(R.string.error_field_required));
+                lastname_error.setVisibility(View.VISIBLE);
+            }
+            else {
+                lastname_error.setVisibility(View.GONE);
             }
 
             if (dob_edittext.getText().toString().equals("")) {
                 //  dob_edittext.setError(getString(R.string.error_field_required));
+                dob_error.setVisibility(View.VISIBLE);
+            }
+            else {
+                dob_error.setVisibility(View.GONE);
             }
 
             if (age_edittext.getText().toString().equals("")) {
                 //   age_edittext.setError(getString(R.string.error_field_required));
+                age_error.setVisibility(View.VISIBLE);
             }
+            else {
+                age_error.setVisibility(View.GONE);
+            }
+
 
             // gender valid - start
             if (!gender_female.isChecked() && !gender_male.isChecked() && !gender_other.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getActivity());
+                /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getActivity());
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -535,8 +571,11 @@ public class Fragment_FirstScreen extends Fragment {
                 Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
-
+                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);*/
+                gender_error.setVisibility(View.VISIBLE);
+            }
+            else {
+                gender_error.setVisibility(View.GONE);
             }
             // gender valid - end
 
@@ -576,11 +615,14 @@ public class Fragment_FirstScreen extends Fragment {
 
             // Bundle data
             Bundle bundle = new Bundle();
-            bundle.putString("firstname", patientdto.getFirstname());
-            bundle.putString("middlename", patientdto.getMiddlename());
-            bundle.putString("lastname", patientdto.getLastname());
-            bundle.putString("gender", patientdto.getGender());
-            bundle.putString("dob", patientdto.getDateofbirth());
+//            bundle.putString("firstname", patientdto.getFirstname());
+//            bundle.putString("middlename", patientdto.getMiddlename());
+//            bundle.putString("lastname", patientdto.getLastname());
+//            bundle.putString("gender", patientdto.getGender());
+//            bundle.putString("dob", patientdto.getDateofbirth());
+
+            bundle.putSerializable("patientDTO", (Serializable) patientdto);
+          //  bundle.putBundle("BUNDLE", bundle);
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
             getActivity().getSupportFragmentManager()

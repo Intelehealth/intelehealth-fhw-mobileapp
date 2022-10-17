@@ -80,8 +80,8 @@
                     android:id="@+id/firstname_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_gravity="end"
+                    android:visibility="gone"
                     tools:visibility="visible"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
@@ -124,6 +124,21 @@
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
+                <TextView
+                    android:id="@+id/middlename_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
+
             </LinearLayout>
 
             <!--Lastname-->
@@ -165,6 +180,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:textColor="@color/red"
@@ -236,6 +253,20 @@
                         android:text="Other" />
 
                 </RadioGroup>
+                <TextView
+                    android:id="@+id/gender_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
 
             <!--DOB-->
@@ -277,6 +308,21 @@
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
+                <TextView
+                    android:id="@+id/dob_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
+
             </LinearLayout>
 
             <!--Age-->
@@ -306,13 +352,31 @@
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
                     android:hint="Enter Age"
+                    android:focusable="false"
+                    android:inputType=""
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
                     android:paddingBottom="@dimen/margin_10"
-                    
                     android:textSize="@dimen/edittext_textsize_16sp" />
+
+                <TextView
+                    android:id="@+id/age_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
 
             <!--Phone number-->
@@ -361,13 +425,28 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_border"
-                        android:text="7304154312"
+                        android:hint="Enter phone number"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"
                         android:paddingBottom="@dimen/margin_10"
                         android:textSize="@dimen/edittext_textsize_16sp" />
+
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/phone_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
 
             </LinearLayout>
 
