@@ -67,6 +67,9 @@ public class UuidDictionary {
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
 
+    // Visit Attribute Types
+    public static final String ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK = "bde879f6-5622-4c2b-82cf-a37f26033e2b";
+
     //Survey Types
     public static final String RATING = "78284507-fb71-4354-9b34-046ab205e18f";
     public static final String COMMENTS = "36d207d6-bee7-4b3e-9196-7d053c6eddce";

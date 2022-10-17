@@ -1055,6 +1055,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     return;
                 }
 
+                String uploadTime = AppConstants.dateAndTimeUtils.currentDateTime();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
                 VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
@@ -1081,6 +1082,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 } catch (DAOException e) {
                     e.printStackTrace();
                     Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                }
+
+                VisitAttributeListDAO upload_time_attributes = new VisitAttributeListDAO();
+                boolean isUpdateUploadTimeDone = false;
+                try {
+                    if (!isVisitSpecialityExists) {
+                        isUpdateUploadTimeDone = upload_time_attributes.insertVisitAttributesUploadTime(visitUUID, uploadTime);
+                    }
+                } catch (DAOException exception) {
+                    exception.printStackTrace();
                 }
 
                 if (flag.isChecked()) {
