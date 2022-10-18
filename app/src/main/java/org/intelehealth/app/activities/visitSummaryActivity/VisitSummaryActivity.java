@@ -84,6 +84,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -150,8 +151,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -597,8 +600,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         .putExtra("openMrsId", patient.getOpenmrs_id())
                         .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
                 );
-
-
             }
         });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
@@ -1235,17 +1236,38 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (famHistory.getValue() != null)
+                        if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
                             dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
+                        /*if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
+                        else
+                        {
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                            {
+                                if (famHistory.getValue("ar") != null && !famHistory.getValue("ar").equalsIgnoreCase(""))
+                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("ar")));
+                                else
+                                    dialogEditText.setText("");
+                            }
+                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                            {
+                                if (famHistory.getValue("en") != null && !famHistory.getValue("en").equalsIgnoreCase(""))
+                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("en")));
+                                else
+                                    dialogEditText.setText("");
+                            }
+                            else
+                                dialogEditText.setText("");
+                        }*/
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //famHistory.setValue(dialogEditText.getText().toString());
-                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                famHistory.setValue(dataStringValue);
                                 if (famHistory.getValue() != null) {
                                     famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                                     famHistView.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
@@ -1339,7 +1361,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (complaint.getValue() != null) {
+                        if (complaint.getValue(sessionManager.getAppLanguage()) != null && !complaint.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase("")){
                             dialogEditText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                         } else {
                             dialogEditText.setText("");
@@ -1348,9 +1370,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                complaint.setValue(dataStringValue);
                                 if (complaint.getValue() != null) {
-//                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+//                                    famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                                     complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
@@ -1438,7 +1461,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
-                if (phyExam.getValue() != null)
+                if (phyExam.getValue(sessionManager.getAppLanguage()) != null && !phyExam.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
                     physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                 physicalText.setEnabled(false);
 
@@ -1448,16 +1471,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (phyExam.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
+                        if (phyExam.getValue(sessionManager.getAppLanguage()) != null && !phyExam.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                            dialogEditText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-                                phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                phyExam.setValue(dataStringValue);
                                 if (phyExam.getValue() != null) {
                                     physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                                     physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
@@ -1558,7 +1581,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (patHistory.getValue() != null)
+                        if (patHistory.getValue(sessionManager.getAppLanguage()) != null && !patHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
                             dialogEditText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
@@ -1567,9 +1590,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //patHistory.setValue(dialogEditText.getText().toString());
-                                patHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
-                                if (patHistory.getValue() != null) {
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                patHistory.setValue(dataStringValue);
+                                if (patHistory.getValue(sessionManager.getAppLanguage()) != null && !patHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase("")) {
                                     historyText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                                     patHistView.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                                 }
@@ -1695,6 +1718,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         doQuery();
         getAppointmentDetails(visitUuid);
+    }
+
+    private String mapDataIntoJson(String dataString) {
+        Map<String, String> dataMapString = new HashMap<>();
+        //In manual entry case, the same value has to be stored in the language in json object. This was suggested by Sagar under ticket SYR-166: Nishita Goyal
+        dataMapString.put("ar", dataString);
+        dataMapString.put("en", dataString);
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        dataString = gson.toJson(dataMapString);
+        return dataString;
     }
 
     @Override

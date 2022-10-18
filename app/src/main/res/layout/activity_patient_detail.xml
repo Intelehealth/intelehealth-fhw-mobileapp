@@ -452,6 +452,7 @@
                         <TableRow
                             android:id="@+id/tableRow_SDW"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -488,6 +489,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -555,6 +557,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Education_Status"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
