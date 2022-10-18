@@ -2,5 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/ui2_ic_achievements_primary"
         android:state_checked="true" />
-    <item android:drawable="@drawable/ui2_ic_acheivements_home_bottomnav13" />
+    <item android:drawable="@drawable/achiev_home_bottomnav" />
 </selector>

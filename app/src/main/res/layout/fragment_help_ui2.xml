@@ -28,7 +28,7 @@
                     android:id="@+id/autotv_select_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ui2_background_input_field_new"
+                    android:background="@drawable/bg_input_fieldnew"
                     android:drawableStart="@drawable/ui2_ic_search_icon_home"
                     android:drawablePadding="@dimen/find_patient_icon_padding"
                     android:drawableTint="@color/iconTintGrayBottomNav"

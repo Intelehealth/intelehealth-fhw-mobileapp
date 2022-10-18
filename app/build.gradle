@@ -11,9 +11,7 @@ static def getDateTime() {
 }
 android {
     compileSdkVersion 30
-    dataBinding {
-        enabled = true
-    }
+
     defaultConfig {
         applicationId "org.intelehealth.app"
         minSdkVersion 19
@@ -62,6 +60,11 @@ android {
         abi {
             enableSplit = true
         }
+    }
+
+    buildFeatures{
+        dataBinding true // for data binding
+        
     }
 }
 dependencies {

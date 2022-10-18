@@ -91,7 +91,7 @@
                     android:textSize="@null" />
 
                 <Spinner
-                    android:id="@+id/country_edittext"
+                    android:id="@+id/country_spinner"
                     style="@style/SmallSpinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"

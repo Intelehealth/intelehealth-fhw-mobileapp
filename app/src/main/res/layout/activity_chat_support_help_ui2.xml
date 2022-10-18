@@ -95,7 +95,7 @@
                 android:id="@+id/et_username_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ui2_background_input_field_new"
+                android:background="@drawable/bg_input_fieldnew"
                 android:drawableEnd="@drawable/ui2_icon_attachment"
                 android:drawablePadding="@dimen/common_tv_icon_padding"
                 android:hint="@string/type_here"

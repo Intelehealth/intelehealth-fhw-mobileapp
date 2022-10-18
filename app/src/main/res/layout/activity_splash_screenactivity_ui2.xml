@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_child1"
         android:layout_marginTop="60dp"
-        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:background="@drawable/top_rounded_whitebg"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

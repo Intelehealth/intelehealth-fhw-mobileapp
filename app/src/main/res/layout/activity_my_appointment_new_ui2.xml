@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/ui2_common_top_rounded_white_bg"
+        android:background="@drawable/top_rounded_whitebg"
         android:foregroundTint="@color/colorPrimary"
         app:elevation="8dip"
         app:itemBackground="@drawable/bottom_nav_tab_background"
