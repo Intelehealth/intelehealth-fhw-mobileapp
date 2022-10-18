@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:maxLines="1"
     android:text=""
-    android:textSize="14sp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    tools:text="Select"
+    android:textColor="@color/textview_color"
+    android:textSize="@dimen/edittext_textsize_16sp"
+    android:paddingStart="@dimen/margin_12"
+    android:paddingTop="@dimen/margin_10"
+    android:paddingBottom="@dimen/margin_10"
+    android:paddingEnd="@dimen/margin_50"
     android:fontFamily="@font/lato_regular">
 
 </TextView>
