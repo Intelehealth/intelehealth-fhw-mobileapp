@@ -42,6 +42,7 @@ import java.util.Objects;
  * Email: prajwalwaingankar@gmail.com
  */
 public class Fragment_SecondScreen extends Fragment {
+    private static final String TAG = Fragment_SecondScreen.class.getSimpleName();
     private View view;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -105,7 +106,37 @@ public class Fragment_SecondScreen extends Fragment {
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
 
-        loadUIfromConfigFile();
+        if (!sessionManager.getLicenseKey().isEmpty())
+            hasLicense = true;
+
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
+                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(getActivity(), AppConstants.CONFIG_FILE_NAME)));
+            }
+
+            //Display the fields on the Add Patient screen as per the config file
+            country1 = obj.getString("mCountry");
+            state = obj.getString("mState");
+
+//            if (obj.getBoolean("country_spinner")) {
+//                mFirstName.setVisibility(View.VISIBLE);
+//            } else {
+//                mFirstName.setVisibility(View.GONE);
+//            }
+        }
+        catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+//            Issue #627
+//            added the catch exception to check the config and throwing back to setup activity
+            Toast.makeText(getActivity(), "JsonException" + e, Toast.LENGTH_LONG).show();
+            //  showAlertDialogButtonClicked(e.toString());
+        }
 
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -113,6 +144,9 @@ public class Fragment_SecondScreen extends Fragment {
         country_spinner.setSelection(countryAdapter.getPosition(country1));
      //   country_spinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
 
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.states_india, R.layout.custom_spinner);
+        state_spinner.setSelection(stateAdapter.getPosition(state));
 
 
         // Back Button click event.
@@ -129,7 +163,122 @@ public class Fragment_SecondScreen extends Fragment {
         frag2_btn_next.setOnClickListener(v -> {
             onPatientCreateClicked();
         });
-        
+
+        // District based City - start
+        district_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    String district = adapterView.getItemAtPosition(i).toString();
+
+                    if (district.matches("Navi Mumbai")) {
+                        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                R.array.city, R.layout.custom_spinner);
+                        city_spinner.setAdapter(cityAdapter);
+                        // setting state according database when user clicks edit details
+
+                     /*   if (patientID_edit != null) // TODO: uncomment
+                            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        else*/
+                        city_spinner.setSelection(cityAdapter.getPosition(district));
+
+//                    } else if (state.matches("United States")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                                R.array.states_us, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        state_spinner.setAdapter(stateAdapter);
+//
+///*                        if (patientID_edit != null) { // TODO: uncomment
+//                            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        }*/
+//                    } else if (country.matches("Philippines")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                                R.array.states_philippines, R.layout.custom_spinner);
+//                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        state_spinner.setAdapter(stateAdapter);
+//
+//                        /*if (patientID_edit != null) { // TODO: uncomment
+//                            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        } else {*/
+//                        state_spinner.setSelection(stateAdapter.getPosition("Bukidnon"));
+//                        //  } // TODO: uncomment
+//
+
+                    } else {
+//                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                                R.array.district, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        state_spinner.setAdapter(stateAdapter);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        // District based city - end
+
+
+        // district based  state - start
+        state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    String state = adapterView.getItemAtPosition(i).toString();
+
+                    if (state.matches("Maharashtra")) {
+                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                R.array.district, R.layout.custom_spinner);
+                        district_spinner.setAdapter(districtAdapter);
+                        // setting state according database when user clicks edit details
+
+                     /*   if (patientID_edit != null) // TODO: uncomment
+                            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        else*/
+                        district_spinner.setSelection(districtAdapter.getPosition(state));
+
+//                    } else if (state.matches("United States")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                                R.array.states_us, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        state_spinner.setAdapter(stateAdapter);
+//
+///*                        if (patientID_edit != null) { // TODO: uncomment
+//                            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        }*/
+//                    } else if (country.matches("Philippines")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                                R.array.states_philippines, R.layout.custom_spinner);
+//                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        state_spinner.setAdapter(stateAdapter);
+//
+//                        /*if (patientID_edit != null) { // TODO: uncomment
+//                            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        } else {*/
+//                        state_spinner.setSelection(stateAdapter.getPosition("Bukidnon"));
+//                        //  } // TODO: uncomment
+//
+
+                    } else {
+//                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                                R.array.district, R.layout.custom_spinner);
+//                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        state_spinner.setAdapter(stateAdapter);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        // State based district - end
+
         // country - start
         country_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -189,39 +338,6 @@ public class Fragment_SecondScreen extends Fragment {
 
     }
 
-    private void loadUIfromConfigFile() {
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
-
-        //Check for license key and load the correct config file
-        try {
-            JSONObject obj = null;
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(getActivity(), AppConstants.CONFIG_FILE_NAME)));
-            }
-
-            //Display the fields on the Add Patient screen as per the config file
-            country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
-
-//            if (obj.getBoolean("country_spinner")) {
-//                mFirstName.setVisibility(View.VISIBLE);
-//            } else {
-//                mFirstName.setVisibility(View.GONE);
-//            }
-        }
-        catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-//            Issue #627
-//            added the catch exception to check the config and throwing back to setup activity
-            Toast.makeText(getActivity(), "JsonException" + e, Toast.LENGTH_LONG).show();
-          //  showAlertDialogButtonClicked(e.toString());
-        }
-        }
 
     private void onPatientCreateClicked() {
         Gson gson = new Gson();
@@ -244,6 +360,27 @@ public class Fragment_SecondScreen extends Fragment {
             country_error.setVisibility(View.GONE);
         }
 
+        if (state_spinner.getSelectedItemPosition() == 0) {
+            state_error.setVisibility(View.VISIBLE);
+        }
+        else {
+            state_error.setVisibility(View.GONE);
+        }
+
+        if (district_spinner.getSelectedItemPosition() == 0) {
+            district_error.setVisibility(View.VISIBLE);
+        }
+        else {
+            district_error.setVisibility(View.GONE);
+        }
+
+        if (city_spinner.getSelectedItemPosition() == 0) {
+            city_error.setVisibility(View.VISIBLE);
+        }
+        else {
+            city_error.setVisibility(View.GONE);
+        }
+
         // validation - end
 
         /**
@@ -254,6 +391,12 @@ public class Fragment_SecondScreen extends Fragment {
         } else {
             patientDTO.setPostalcode(postalcode_edittext.getText().toString());
             patientDTO.setCountry(StringUtils.getValue(country_spinner.getSelectedItem().toString()));
+            patientDTO.setStateprovince(StringUtils.getValue(state_spinner.getSelectedItem().toString()));
+            patientDTO.setCityvillage(StringUtils.getValue(district_spinner.getSelectedItem().toString() + ":" + city_spinner.getSelectedItem().toString()));
+            Log.v("fragmemt_2", "values: " + country_spinner.getSelectedItem().toString() + "\n" +
+                            state_spinner.getSelectedItem().toString() + "\n" +
+                    district_spinner.getSelectedItem().toString()
+                    + "\n" + city_spinner.getSelectedItem().toString());
         }
 
 

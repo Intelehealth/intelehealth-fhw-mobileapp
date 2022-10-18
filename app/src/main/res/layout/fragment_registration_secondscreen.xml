@@ -147,6 +147,7 @@
                 android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
                 android:paddingEnd="@dimen/margin_16dp"
+                android:entries="@array/states_india"
                 android:paddingBottom="@dimen/margin_10" />
 
             <TextView

@@ -60,6 +60,24 @@
         <item>-1</item>
     </string-array>
 
+    <string-array name="district">
+        <item>Select</item>
+        <item>Kurla</item>
+        <item>Navi Mumbai</item>
+    </string-array>
+
+    <string-array name="city">
+        <item>Select</item>
+        <item>Thane</item>
+        <item>Mulund</item>
+        <item>Bhandup</item>
+        <item>Airoli</item>
+        <item>Ghansoli</item>
+        <item>Rabale</item>
+    </string-array>
+
+
+
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
