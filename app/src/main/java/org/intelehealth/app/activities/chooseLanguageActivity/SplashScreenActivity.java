@@ -69,8 +69,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         btnNextToIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*setLocale(sessionManager.getAppLanguage());
-                if (sessionManager.isFirstTimeLaunch()) {
+                setLocale(sessionManager.getAppLanguage());
+             /*   if (sessionManager.isFirstTimeLaunch()) {
                     Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivity_New.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);

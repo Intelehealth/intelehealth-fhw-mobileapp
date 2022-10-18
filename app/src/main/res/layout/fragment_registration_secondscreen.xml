@@ -200,6 +200,7 @@
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
+                    android:entries="@array/district"
                     />
 
                 <TextView
@@ -245,6 +246,7 @@
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
+                    android:entries="@array/city"
                     />
 
                 <TextView

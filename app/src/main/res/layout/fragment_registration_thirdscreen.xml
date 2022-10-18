@@ -43,10 +43,10 @@
             <EditText
                 android:id="@+id/relation_edittext"
                 style="@style/edittext_textcolor"
+                android:background="@drawable/edittext_border"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:background="@drawable/edittext_border"
                 android:hint="Enter your relation with patient"
                 android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
@@ -89,9 +89,10 @@
                 android:textColor="@null"
                 android:textSize="@null" />
 
-            <Spinner
-                android:id="@+id/occupation_spinner"
-                style="@style/SpinnerTheme"
+            <EditText
+                android:id="@+id/occupation_editText"
+                style="@style/edittext_textcolor"
+                android:background="@drawable/edittext_border"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/edittext_textsize_16sp"

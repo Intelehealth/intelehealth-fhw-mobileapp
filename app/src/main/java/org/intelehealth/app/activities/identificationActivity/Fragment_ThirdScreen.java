@@ -1,29 +1,41 @@
 package org.intelehealth.app.activities.identificationActivity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,8 +46,12 @@ public class Fragment_ThirdScreen extends Fragment {
     private static final String TAG = Fragment_ThirdScreen.class.getSimpleName();
     private PatientDTO patientDTO;
     private View view;
-    private EditText relation_edittext;
-    private Spinner occupation_spinner, caste_spinner, education_spinner, economicstatus_spinner;
+    SessionManager sessionManager = null;
+    private ArrayAdapter<CharSequence> educationAdapter;
+    private ArrayAdapter<CharSequence> casteAdapter;
+    private ArrayAdapter<CharSequence> economicStatusAdapter;
+    private EditText relation_edittext, occupation_editText;
+    private Spinner caste_spinner, education_spinner, economicstatus_spinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
     private TextView relation_error, occupation_error, caste_error, education_error, economic_error;
@@ -50,6 +66,8 @@ public class Fragment_ThirdScreen extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sessionManager = new SessionManager(getActivity());
+
         if (getArguments() != null)
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
 
@@ -61,7 +79,7 @@ public class Fragment_ThirdScreen extends Fragment {
         frag3_btn_next = getActivity().findViewById(R.id.frag3_btn_next);
 
         relation_edittext = view.findViewById(R.id.relation_edittext);
-        occupation_spinner = view.findViewById(R.id.occupation_spinner);
+        occupation_editText = view.findViewById(R.id.occupation_editText);
         caste_spinner = view.findViewById(R.id.caste_spinner);
         education_spinner = view.findViewById(R.id.education_spinner);
         economicstatus_spinner = view.findViewById(R.id.economicstatus_spinner);
@@ -93,8 +111,52 @@ public class Fragment_ThirdScreen extends Fragment {
 //                Intent intent = new Intent(getActivity(), PatientDetailActivity2.class);
 //                startActivity(intent);
             onPatientCreateClicked();
-
         });
+
+        // caste spinner
+        Resources res = getResources();
+        try {
+            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
+            int castes = res.getIdentifier(casteLanguage, "array", getActivity().getApplicationContext().getPackageName());
+            if (castes != 0) {
+                casteAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        castes, R.layout.custom_spinner);
+            }
+            caste_spinner.setAdapter(casteAdapter);
+        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // education spinner
+        try {
+            String educationLanguage = "education_" + sessionManager.getAppLanguage();
+            int educations = res.getIdentifier(educationLanguage, "array", getActivity().getApplicationContext().getPackageName());
+            if (educations != 0) {
+                educationAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        educations, R.layout.custom_spinner);
+            }
+            education_spinner.setAdapter(educationAdapter);
+        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        // economic spinner
+        try {
+            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
+            int economics = res.getIdentifier(economicLanguage, "array", getActivity().getApplicationContext().getPackageName());
+            if (economics != 0) {
+                economicStatusAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        economics, R.layout.custom_spinner);
+            }
+            economicstatus_spinner.setAdapter(economicStatusAdapter);
+        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+        
+        
 
     }
 
@@ -116,6 +178,37 @@ public class Fragment_ThirdScreen extends Fragment {
             relation_error.setVisibility(View.GONE);
         }
 
+        if (occupation_editText.getText().toString().equals("")) {
+            occupation_error.setVisibility(View.VISIBLE);
+            return;
+        }
+        else {
+            occupation_error.setVisibility(View.GONE);
+        }
+
+        if (caste_spinner.getSelectedItemPosition() == 0) {
+            caste_error.setVisibility(View.VISIBLE);
+            return;
+        }
+        else {
+            caste_error.setVisibility(View.GONE);
+        }
+
+        if (education_spinner.getSelectedItemPosition() == 0) {
+            education_error.setVisibility(View.VISIBLE);
+            return;
+        }
+        else {
+            education_error.setVisibility(View.GONE);
+        }
+
+        if (economicstatus_spinner.getSelectedItemPosition() == 0) {
+            economic_error.setVisibility(View.VISIBLE);
+            return;
+        }
+        else {
+            economic_error.setVisibility(View.GONE);
+        }
         // validation - end
 
 
@@ -125,15 +218,87 @@ public class Fragment_ThirdScreen extends Fragment {
         if (cancel) {
             focusView.requestFocus();
         } else {
+            String uuid = patientDTO.getUuid();
 
+            // son/daughter/wife of
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(patientDTO.getUuid());
+            patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
             patientAttributesDTO.setValue(StringUtils.getValue(relation_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-          //  patientDTO.s(postalcode_edittext.getText().toString());
+            // occupation
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(occupation_editText.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // caste
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
+
+            // education
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(education_spinner));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            // economic status
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(economicstatus_spinner));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
+            patientDTO.setSyncd(false);
+            Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
+        }
+        
+        // inserting data in db and uploading to server...
+        try {
+            Logger.logD(TAG, "insertpatinet ");
+            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
+          //  boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid); // todo: uncomment later.
+
+            if (NetworkConnection.isOnline(getActivity().getApplication())) {
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean push = syncDAO.pushDataApi();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+            }
+
+            if (isPatientInserted /*&& isPatientImageInserted*/) { // todo: uncomment later.
+                Logger.logD(TAG, "inserted");
+                Intent i = new Intent(getActivity().getApplication(), PatientDetailActivity2.class);
+                i.putExtra("patientUuid", patientDTO.getUuid());
+                i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                i.putExtra("tag", "newPatient");
+                i.putExtra("hasPrescription", "false");
+                //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
+             //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                getActivity().getApplication().startActivity(i);
+            } else {
+                Toast.makeText(getActivity(), "Error of adding the data", Toast.LENGTH_SHORT).show();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+
 
 
 //            Log.v("fragmemt_2", "values: " + country_spinner.getSelectedItem().toString()
@@ -142,7 +307,7 @@ public class Fragment_ThirdScreen extends Fragment {
 //                    + "\n" + city_spinner.getSelectedItem().toString()
 //                    + "\n" + address1_edittext.getText().toString()
 //                    + "\n" + address2_edittext.getText().toString());
-        }
+        
 
         // Bundle data
        /* Bundle bundle = new Bundle();
@@ -155,7 +320,9 @@ public class Fragment_ThirdScreen extends Fragment {
                 .commit();*/
 
         Intent intent = new Intent(getActivity(), PatientDetailActivity2.class);
-        intent.putExtra("patientDTO", (Serializable) patientDTO);
+        Bundle args = new Bundle();
+        args.putSerializable("patientDTO", (Serializable) patientDTO);
+        intent.putExtra("BUNDLE",args);
         startActivity(intent);
 
     }

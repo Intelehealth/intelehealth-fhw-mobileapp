@@ -52,6 +52,7 @@ public class Fragment_SecondScreen extends Fragment {
     private Spinner country_spinner, state_spinner, district_spinner, city_spinner;
     Context context;
     private String country1, state;
+    ArrayAdapter<String> districtAdapter, cityAdapter;
 
     private PatientDTO patientDTO;
     private Fragment_ThirdScreen fragment_thirdScreen;
@@ -139,15 +140,32 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         Resources res = getResources();
-        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.countries, R.layout.custom_spinner);
-        country_spinner.setSelection(countryAdapter.getPosition(country1));
-     //   country_spinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.states_india, R.layout.custom_spinner);
+        // country
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.countries));
+//        country_spinner.setSelection(countryAdapter.getPosition(country1));
+        country_spinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
+
+       /* ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.states_india, android.R.layout.simple_spinner_dropdown_item);
         state_spinner.setSelection(stateAdapter.getPosition(state));
+*/
 
+        //state
+        ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item,  getResources().getStringArray(R.array.states_india));
+        state_spinner.setAdapter(stateAdapter);
+
+        //district
+        districtAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item,  getResources().getStringArray(R.array.district));
+        district_spinner.setAdapter(districtAdapter);
+
+        //city
+        cityAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item,  getResources().getStringArray(R.array.city));
+        city_spinner.setAdapter(cityAdapter);
 
         // Back Button click event.
         frag2_btn_back.setOnClickListener(v -> {
@@ -173,18 +191,18 @@ public class Fragment_SecondScreen extends Fragment {
 
                     if (district.matches("Navi Mumbai")) {
                         ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.city, R.layout.custom_spinner);
+                                R.array.city, android.R.layout.simple_spinner_dropdown_item);
                         city_spinner.setAdapter(cityAdapter);
                         // setting state according database when user clicks edit details
 
                      /*   if (patientID_edit != null) // TODO: uncomment
                             state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         else*/
-                        city_spinner.setSelection(cityAdapter.getPosition(district));
+                       // city_spinner.setSelection(cityAdapter.getPosition(district));
 
 //                    } else if (state.matches("United States")) {
 //                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                                R.array.states_us, R.layout.custom_spinner);
+//                                R.array.states_us, android.R.layout.simple_spinner_dropdown_item);
 //                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                        state_spinner.setAdapter(stateAdapter);
 //
@@ -193,7 +211,7 @@ public class Fragment_SecondScreen extends Fragment {
 //                        }*/
 //                    } else if (country.matches("Philippines")) {
 //                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                                R.array.states_philippines, R.layout.custom_spinner);
+//                                R.array.states_philippines, android.R.layout.simple_spinner_dropdown_item);
 //                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                        state_spinner.setAdapter(stateAdapter);
 //
@@ -206,7 +224,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                     } else {
 //                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                                R.array.district, R.layout.custom_spinner);
+//                                R.array.district, android.R.layout.simple_spinner_dropdown_item);
 //                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                        state_spinner.setAdapter(stateAdapter);
                     }
@@ -231,7 +249,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                     if (state.matches("Maharashtra")) {
                         ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.district, R.layout.custom_spinner);
+                                R.array.district, android.R.layout.simple_spinner_dropdown_item);
                         district_spinner.setAdapter(districtAdapter);
                         // setting state according database when user clicks edit details
 
@@ -242,7 +260,7 @@ public class Fragment_SecondScreen extends Fragment {
 
 //                    } else if (state.matches("United States")) {
 //                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                                R.array.states_us, R.layout.custom_spinner);
+//                                R.array.states_us, android.R.layout.simple_spinner_dropdown_item);
 //                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                        state_spinner.setAdapter(stateAdapter);
 //
@@ -251,7 +269,7 @@ public class Fragment_SecondScreen extends Fragment {
 //                        }*/
 //                    } else if (country.matches("Philippines")) {
 //                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                                R.array.states_philippines, R.layout.custom_spinner);
+//                                R.array.states_philippines, android.R.layout.simple_spinner_dropdown_item);
 //                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                        state_spinner.setAdapter(stateAdapter);
 //
@@ -264,7 +282,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                     } else {
 //                        ArrayAdapter<CharSequence> districtAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                                R.array.district, R.layout.custom_spinner);
+//                                R.array.district, android.R.layout.simple_spinner_dropdown_item);
 //                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                        state_spinner.setAdapter(stateAdapter);
                     }
@@ -288,7 +306,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                     if (country.matches("India")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.states_india, R.layout.custom_spinner);
+                                R.array.states_india, android.R.layout.simple_spinner_dropdown_item);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         state_spinner.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
@@ -296,11 +314,11 @@ public class Fragment_SecondScreen extends Fragment {
                      /*   if (patientID_edit != null) // TODO: uncomment
                             state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         else*/
-                            state_spinner.setSelection(stateAdapter.getPosition(state));
+                         //   state_spinner.setSelection(stateAdapter.getPosition(state));
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.states_us, R.layout.custom_spinner);
+                                R.array.states_us, android.R.layout.simple_spinner_dropdown_item);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         state_spinner.setAdapter(stateAdapter);
 
@@ -309,7 +327,7 @@ public class Fragment_SecondScreen extends Fragment {
                         }*/
                     } else if (country.matches("Philippines")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.states_philippines, R.layout.custom_spinner);
+                                R.array.states_philippines, android.R.layout.simple_spinner_dropdown_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         state_spinner.setAdapter(stateAdapter);
 
@@ -321,7 +339,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                     } else {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                                R.array.state_error, R.layout.custom_spinner);
+                                R.array.state_error, android.R.layout.simple_spinner_dropdown_item);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         state_spinner.setAdapter(stateAdapter);
                     }
