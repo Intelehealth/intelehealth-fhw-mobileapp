@@ -99,7 +99,7 @@ public class IntroActivity extends AppCompatActivity {
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
 
-        BASE_URL = "https://syrianatest.intelehealth.org:3004/api/openmrs/";
+        BASE_URL = "https://sila.swaida.org:3004/api/openmrs/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -321,7 +321,7 @@ public class IntroActivity extends AppCompatActivity {
                                                 for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
                                                     village_name = entry;
                                                 }
-                                                TestSetup("syrianatest.intelehealth.org", "nurse1", "Nurse123", "", village_name);
+                                                TestSetup("sila.swaida.org", "nurse1", "Nurse@123", "", village_name);
                                             }
                                         }
                                     } else {
