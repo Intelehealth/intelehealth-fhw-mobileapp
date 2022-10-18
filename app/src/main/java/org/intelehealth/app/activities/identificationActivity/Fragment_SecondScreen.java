@@ -110,9 +110,9 @@ public class Fragment_SecondScreen extends Fragment {
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.countries, R.layout.custom_spinner);
-        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        country_spinner.setAdapter(countryAdapter);
         country_spinner.setSelection(countryAdapter.getPosition(country1));
+     //   country_spinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
+
 
 
         // Back Button click event.

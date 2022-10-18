@@ -398,7 +398,6 @@
 
     <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/small_spinner_bg</item>
-        <item name="android:textColor">@color/textview_color</item>
     </style>
 
 

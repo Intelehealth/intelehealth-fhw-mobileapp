@@ -64,7 +64,8 @@
         <item>Please select country first</item>
     </string-array>
     <string-array name="countries">
-        <item>Select Country</item>
+<!--        <item>Select Country</item>-->
+        <item>Select</item>
         <item>India</item>
         <item>United States</item>
         <item>Philippines</item>
