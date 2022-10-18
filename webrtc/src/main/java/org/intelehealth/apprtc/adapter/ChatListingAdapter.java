@@ -97,7 +97,8 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private String parseDate(String rawTime) throws ParseException {
         //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         //Fri, 16 Apr 2021 06:37:30 GM
-        SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+        //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+        SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
         //rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = rawSimpleDateFormat.parse(rawTime);
         //Log.v("date", date.toString());

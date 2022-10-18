@@ -216,8 +216,10 @@ public class ChatActivity extends AppCompatActivity {
         Collections.sort(mChatList, new Comparator<JSONObject>() {
             public int compare(JSONObject o1, JSONObject o2) {
                 try {
-                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
-                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    //Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
+                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(o1.getString("createdAt"));
+                    //Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(o2.getString("createdAt"));
                     return b.compareTo(a);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -403,7 +405,8 @@ public class ChatActivity extends AppCompatActivity {
                 jsonObject.put("type", Constants.LEFT_ITEM);
             }
             if (!jsonObject.has("createdAt")) {
-                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
                 rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
             }
@@ -470,5 +473,6 @@ public class ChatActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }
