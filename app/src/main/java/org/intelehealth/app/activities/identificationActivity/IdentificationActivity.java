@@ -315,6 +315,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
+
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
@@ -469,6 +470,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.countries, R.layout.custom_spinner);
         //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
+
 //        ArrayAdapter<CharSequence> countryAdapter = null;
 //        try {
 //

@@ -118,8 +118,6 @@ public class Fragment_FirstScreen extends Fragment {
         dob_error = view.findViewById(R.id.dob_error);
         age_error = view.findViewById(R.id.age_error);
         phone_error = view.findViewById(R.id.phone_error);
-
-        
     }
 
     @Override
@@ -455,6 +453,7 @@ public class Fragment_FirstScreen extends Fragment {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+
         uuid = UUID.randomUUID().toString();
         patientdto.setUuid(uuid);
         Gson gson = new Gson();

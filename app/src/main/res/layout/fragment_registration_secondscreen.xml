@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginBottom="@dimen/margin_16dp">
 
@@ -55,8 +56,22 @@
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
-                    
                     android:textSize="@dimen/edittext_textsize_16sp" />
+
+                <TextView
+                    android:id="@+id/postalcode_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -73,7 +88,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="Country*"
                     android:textAppearance="@style/blur_txtview"
-                    
                     android:textSize="@null" />
 
                 <Spinner
@@ -87,6 +101,21 @@
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     />
+                
+                <TextView
+                    android:id="@+id/country_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -109,7 +138,7 @@
                 android:textSize="@null" />
 
             <Spinner
-                android:id="@+id/state_edittext"
+                android:id="@+id/state_spinner"
                 style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -118,6 +147,21 @@
                 android:paddingTop="@dimen/margin_10"
                 android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10" />
+
+            <TextView
+                android:id="@+id/state_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="This field is mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
+
         </LinearLayout>
 
         <!--District & City-->
@@ -145,7 +189,7 @@
                     android:textSize="@null" />
 
                 <Spinner
-                    android:id="@+id/district_edittext"
+                    android:id="@+id/district_spinner"
                     style="@style/SmallSpinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -155,6 +199,21 @@
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     />
+
+                <TextView
+                    android:id="@+id/district_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -175,7 +234,7 @@
                     android:textSize="@null" />
 
                 <Spinner
-                    android:id="@+id/city_edittext"
+                    android:id="@+id/city_spinner"
                     style="@style/SmallSpinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -185,6 +244,21 @@
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     />
+
+                <TextView
+                    android:id="@+id/city_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:textColor="@color/red"
+                    android:text="This field is mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textSize="@null" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -219,8 +293,22 @@
                 android:paddingStart="@dimen/fu_margin_start"
                 android:paddingTop="@dimen/margin_10"
                 android:paddingBottom="@dimen/margin_10"
-                
                 android:textSize="@dimen/edittext_textsize_16sp" />
+
+            <TextView
+                android:id="@+id/address1_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="This field is mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
+
         </LinearLayout>
 
         <!--Address 2-->
@@ -257,6 +345,21 @@
                 android:paddingBottom="@dimen/margin_10"
                 
                 android:textSize="@dimen/edittext_textsize_16sp" />
+
+            <TextView
+                android:id="@+id/address2_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="This field is mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
+
         </LinearLayout>
 
 
