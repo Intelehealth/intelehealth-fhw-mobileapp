@@ -1622,18 +1622,22 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
         } else {
             if (mFirstName.getText().toString().equals("")) {
+                focusView = mFirstName;
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
             if (mLastName.getText().toString().equals("")) {
+                focusView = mLastName;
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
             if (mDOB.getText().toString().equals("")) {
+                focusView = mDOB;
                 mDOB.setError(getString(R.string.error_field_required));
             }
 
             if (mAge.getText().toString().equals("")) {
+                focusView = mAge;
                 mAge.setError(getString(R.string.error_field_required));
             }
 
@@ -1697,6 +1701,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
             }
 
+            focusView.requestFocus();
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
@@ -3024,18 +3029,22 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 Log.v(TAG, "Result");
             } else {
                 if (mFirstName.getText().toString().equals("")) {
+                    focusView = mFirstName;
                     mFirstName.setError(getString(R.string.error_field_required));
                 }
 
                 if (mLastName.getText().toString().equals("")) {
+                    focusView = mLastName;
                     mLastName.setError(getString(R.string.error_field_required));
                 }
 
                 if (mDOB.getText().toString().equals("")) {
+                    focusView = mDOB;
                     mDOB.setError(getString(R.string.error_field_required));
                 }
 
                 if (mAge.getText().toString().equals("")) {
+                    focusView = mAge;
                     mAge.setError(getString(R.string.error_field_required));
                 }
 
@@ -3097,6 +3106,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
                 }
 
+                focusView.requestFocus();
                 Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
                 return;
             }
@@ -3247,18 +3257,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
 
             if (cancel) {
-//                focusView.requestFocus();
+                focusView.requestFocus();
                 // the below changes are done for the requirement raised in ticket SYR-160
-                View finalFocusView = focusView;
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int vLeft = finalFocusView.getLeft();
-                        int vRight = finalFocusView.getRight();
-                        int sWidth = scrollView.getWidth();
-                        scrollView.smoothScrollTo(((vLeft + vRight - sWidth) / 4), 1);
-                    }
-                });
+//                View finalFocusView = focusView;
+//                new Handler().post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        int vLeft = finalFocusView.getLeft();
+//                        int vRight = finalFocusView.getRight();
+//                        int sWidth = scrollView.getWidth();
+//                        scrollView.smoothScrollTo(((vLeft + vRight - sWidth) / 4), 1);
+//                    }
+//                });
                 Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
             } else {
                 if (mCurrentPhotoPath == null)
