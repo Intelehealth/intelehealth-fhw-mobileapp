@@ -120,7 +120,7 @@ public class Fragment_ThirdScreen extends Fragment {
             int castes = res.getIdentifier(casteLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (castes != 0) {
                 casteAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        castes, R.layout.custom_spinner);
+                        castes, android.R.layout.simple_spinner_dropdown_item);
             }
             caste_spinner.setAdapter(casteAdapter);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class Fragment_ThirdScreen extends Fragment {
             int educations = res.getIdentifier(educationLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (educations != 0) {
                 educationAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        educations, R.layout.custom_spinner);
+                        educations, android.R.layout.simple_spinner_dropdown_item);
             }
             education_spinner.setAdapter(educationAdapter);
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class Fragment_ThirdScreen extends Fragment {
             int economics = res.getIdentifier(economicLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        economics, R.layout.custom_spinner);
+                        economics, android.R.layout.simple_spinner_dropdown_item);
             }
             economicstatus_spinner.setAdapter(economicStatusAdapter);
         } catch (Exception e) {
