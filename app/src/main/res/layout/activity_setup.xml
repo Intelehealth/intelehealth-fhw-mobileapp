@@ -84,7 +84,7 @@
                                 android:hint="@string/enter_url"
                                 android:inputType="textUri"
                                 android:textAlignment="viewStart"
-                                android:text="syrianatest.intelehealth.org"
+                                android:text="sila.swaida.org"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
