@@ -2176,8 +2176,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
-            }
+                //The below change is done to fix the string out of bound exception reported in ticket SYR-172,173. The comparison length is kept to 20 and the text length is counted as 20 in crshlytics: Nishita Goyal
+                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3): "";            }
         } else {
 
         }
@@ -2185,8 +2185,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (mComplaint.contains("الأعراض المرافقة")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3);
-            }
+                //The below change is done to fix the string out of bound exception reported in ticket SYR-172,173. The comparison length is kept to 20 and the text length is counted as 20 in crshlytics: Nishita Goyal
+                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3) : "";            }
         } else {
 
         }
