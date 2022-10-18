@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -29,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -175,6 +177,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     private ActivityIdentificationBinding binding;
     MaterialCheckBox fhhSurveyCB, generalCB, studentCB, emergencyCB;
     ArrayList<String> selectedAid_en, selectedAid_ar;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -3244,7 +3247,18 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
 
             if (cancel) {
-                focusView.requestFocus();
+//                focusView.requestFocus();
+                // the below changes are done for the requirement raised in ticket SYR-160
+                View finalFocusView = focusView;
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int vLeft = finalFocusView.getLeft();
+                        int vRight = finalFocusView.getRight();
+                        int sWidth = scrollView.getWidth();
+                        scrollView.smoothScrollTo(((vLeft + vRight - sWidth) / 4), 1);
+                    }
+                });
                 Toast.makeText(this, getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
             } else {
                 if (mCurrentPhotoPath == null)
@@ -3500,6 +3514,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
     }
 
     private void initUI() {
+        scrollView = findViewById(R.id.identification_scrollView);
         mFirstName = findViewById(R.id.identification_first_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mMiddleName = findViewById(R.id.identification_middle_name);
