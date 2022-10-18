@@ -355,6 +355,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         if (country_spinner.getSelectedItemPosition() == 0) {
             country_error.setVisibility(View.VISIBLE);
+            return;
         }
         else {
             country_error.setVisibility(View.GONE);
@@ -362,6 +363,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         if (state_spinner.getSelectedItemPosition() == 0) {
             state_error.setVisibility(View.VISIBLE);
+            return;
         }
         else {
             state_error.setVisibility(View.GONE);
@@ -369,6 +371,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         if (district_spinner.getSelectedItemPosition() == 0) {
             district_error.setVisibility(View.VISIBLE);
+            return;
         }
         else {
             district_error.setVisibility(View.GONE);
@@ -376,31 +379,52 @@ public class Fragment_SecondScreen extends Fragment {
 
         if (city_spinner.getSelectedItemPosition() == 0) {
             city_error.setVisibility(View.VISIBLE);
+            return;
         }
         else {
             city_error.setVisibility(View.GONE);
         }
 
+        if (address1_edittext.getText().toString().equals("")) {
+            address1_error.setVisibility(View.VISIBLE);
+            return;
+        }
+        else {
+            address1_error.setVisibility(View.GONE);
+        }
+
+        if (address2_edittext.getText().toString().equals("")) {
+            address2_error.setVisibility(View.VISIBLE);
+            return;
+        }
+        else {
+            address2_error.setVisibility(View.GONE);
+        }
         // validation - end
 
         /**
          *  entering value in dataset start
-          */
+         */
         if (cancel) {
             focusView.requestFocus();
         } else {
             patientDTO.setPostalcode(postalcode_edittext.getText().toString());
             patientDTO.setCountry(StringUtils.getValue(country_spinner.getSelectedItem().toString()));
             patientDTO.setStateprovince(StringUtils.getValue(state_spinner.getSelectedItem().toString()));
-            patientDTO.setCityvillage(StringUtils.getValue(district_spinner.getSelectedItem().toString() + ":" + city_spinner.getSelectedItem().toString()));
-            Log.v("fragmemt_2", "values: " + country_spinner.getSelectedItem().toString() + "\n" +
-                            state_spinner.getSelectedItem().toString() + "\n" +
-                    district_spinner.getSelectedItem().toString()
-                    + "\n" + city_spinner.getSelectedItem().toString());
+            patientDTO.setCityvillage(StringUtils.getValue(district_spinner.getSelectedItem().toString() +
+                    ":" + city_spinner.getSelectedItem().toString()));
+            patientDTO.setAddress1(address1_edittext.getText().toString());
+            patientDTO.setAddress2(address2_edittext.getText().toString());
+
+            Log.v("fragmemt_2", "values: " + country_spinner.getSelectedItem().toString()
+                    + "\n" + state_spinner.getSelectedItem().toString()
+                    + "\n" + district_spinner.getSelectedItem().toString()
+                    + "\n" + city_spinner.getSelectedItem().toString()
+                    + "\n" + address1_edittext.getText().toString()
+                    + "\n" + address2_edittext.getText().toString());
         }
 
-
-
+        // Bundle data
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
