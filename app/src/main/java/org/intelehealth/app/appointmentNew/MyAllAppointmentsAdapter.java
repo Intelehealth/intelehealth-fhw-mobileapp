@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.appointment;
+package org.intelehealth.app.appointmentNew;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,24 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 
-public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAppointmentsAdapter.MyViewHolder> {
+public class MyAllAppointmentsAdapter extends RecyclerView.Adapter<MyAllAppointmentsAdapter.MyViewHolder> {
     Context context;
 
-    public TodaysMyAppointmentsAdapter(Context context) {
+    public MyAllAppointmentsAdapter(Context context) {
         this.context = context;
 
     }
 
     @Override
-    public TodaysMyAppointmentsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todays_appointments_ui2_new, parent, false);
-        TodaysMyAppointmentsAdapter.MyViewHolder myViewHolder = new TodaysMyAppointmentsAdapter.MyViewHolder(view);
+    public MyAllAppointmentsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_appointments_ui2_new, parent, false);
+        MyAllAppointmentsAdapter.MyViewHolder myViewHolder = new MyAllAppointmentsAdapter.MyViewHolder(view);
 
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(TodaysMyAppointmentsAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyAllAppointmentsAdapter.MyViewHolder holder, int position) {
         holder.cardParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +49,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardParent = itemView.findViewById(R.id.card_todays_appointments1);
+            cardParent = itemView.findViewById(R.id.card_all_appointments);
 
         }
     }

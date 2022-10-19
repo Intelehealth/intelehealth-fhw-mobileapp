@@ -1,9 +1,8 @@
-package org.intelehealth.app.activities.appointment;
+package org.intelehealth.app.appointmentNew;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,9 +18,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
-import org.intelehealth.app.activities.help.activities.HelpFragment_New;
-import org.intelehealth.app.activities.homeActivity.HomeFragment_New;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 
 public class MyAppointmentActivity extends AppCompatActivity {

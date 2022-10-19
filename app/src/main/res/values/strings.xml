@@ -1655,6 +1655,10 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="appointment_details">Appointment details
 </string>
     <string name="remind_doctor">Remind doctor</string>
+    <string name="end_visit">End visit</string>
+    <string name="view_patient_history">View patient history</string>
+    <string name="reschedule">Reschedule</string>
+
 
 
 
@@ -1697,7 +1701,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="add_new_patient">Add new patient</string>
 
     <string name="caption">Name</string>
-
 
 
     <!--END-->

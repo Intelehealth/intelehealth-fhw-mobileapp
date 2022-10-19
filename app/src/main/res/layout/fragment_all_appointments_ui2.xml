@@ -6,71 +6,78 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/layout_all_appoints_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutLocation"
+                android:layout_width="match_parent"
+                app:endIconMode="clear_text"
+                app:endIconDrawable="@drawable/ui2_ic_close_drawer"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/iv_calendar_all_app">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autotv_select_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ui2_background_input_field_new"
+                    android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                    android:drawablePadding="@dimen/find_patient_icon_padding"
+                    android:drawableTint="@color/iconTintGrayBottomNav"
+                    android:hint="@string/search_patient"
+                    android:importantForAutofill="no"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size"
+                    app:endIconDrawable="@drawable/ui2_ic_chevron_down"
+                    app:endIconMode="custom"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_calendar_all_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@+id/iv_filter_all_app"
+                android:background="@drawable/ui2_ic_filter_bg"
+                android:padding="10dp"
+                android:src="@drawable/ui2_ic_calendar" />
+
+            <ImageView
+                android:id="@+id/iv_filter_all_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/ui2_ic_filter_bg"
+                android:padding="10dp"
+                android:src="@drawable/ui2_ic_filter" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/layout_all_appoints_filter"
             android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/iv_calendar_all_app">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autotv_select_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ui2_background_input_field_new"
-                        android:drawableStart="@drawable/ui2_ic_search_icon_home"
-                        android:drawablePadding="@dimen/find_patient_icon_padding"
-                        android:drawableTint="@color/iconTintGrayBottomNav"
-                        android:hint="@string/search_patient"
-                        android:importantForAutofill="no"
-                        android:maxLines="1"
-                        android:paddingStart="@dimen/common_edittext_padding_left"
-                        android:paddingTop="@dimen/common_edittext_padding_top"
-                        android:paddingEnd="@dimen/common_edittext_padding_right"
-                        android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                        android:singleLine="true"
-                        android:textSize="@dimen/common_hint_text_size"
-                        app:endIconDrawable="@drawable/ui2_ic_chevron_down"
-                        app:endIconMode="custom"
-                        tools:ignore="SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageView
-                    android:id="@+id/iv_calendar_all_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_toStartOf="@+id/iv_filter_all_app"
-                    android:background="@drawable/ui2_ic_filter_bg"
-                    android:padding="10dp"
-                    android:src="@drawable/ui2_ic_calendar" />
-
-                <ImageView
-                    android:id="@+id/iv_filter_all_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/ui2_ic_filter_bg"
-                    android:padding="10dp"
-                    android:src="@drawable/ui2_ic_filter" />
-
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -216,7 +223,7 @@
                 android:layout_marginTop="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_todays_upcoming_appointments_ui2_new" />
+                tools:listitem="@layout/item_all_appointments_ui2_new" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -237,7 +244,7 @@
                 android:layout_marginTop="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"
-                tools:listitem="@layout/item_todays_cancelled_appointments_ui2_new" />
+                tools:listitem="@layout/item_all_appointments_ui2_new" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -258,7 +265,7 @@
                 android:layout_marginTop="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="1"
-                tools:listitem="@layout/item_todays_completed_appointments_ui2_new" />
+                tools:listitem="@layout/item_all_appointments_ui2_new" />
 
             <View
                 android:layout_width="match_parent"
@@ -297,9 +304,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_relative"
-            android:visibility="gone"
             android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
-            android:layout_marginTop="@dimen/search_empty_margin_top">
+            android:layout_marginTop="@dimen/search_empty_margin_top"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -343,16 +350,14 @@
                     android:textSize="@dimen/fu_name_txt_size"
                     android:translationY="-1.58sp" />
 
-                <TextView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/frame_10007"
                     android:layout_width="@dimen/search_addbtn_width"
                     android:layout_height="@dimen/search_add_btn_height"
-                    android:layout_marginTop="@dimen/toolbar_margin_right"
-                    android:layout_centerHorizontal="true"
                     android:layout_below="@id/search_pat_hint_txt"
-                    android:background="@drawable/ic_add_patient_svg"
-                    />
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/toolbar_margin_right"
+                    android:background="@drawable/ic_add_patient_svg" />
 
             </RelativeLayout>
         </FrameLayout>

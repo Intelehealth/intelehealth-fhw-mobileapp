@@ -40,16 +40,25 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+        <activity
+            android:name=".appointmentNew.ScheduleAppointmentActivity_New"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
 
+
+        </activity>
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"
@@ -59,18 +68,28 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.appointment.VisitSummaryDetailsActivity"
+            android:name=".appointmentNew.VisitSummaryDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.appointment.AppointmentDetailsActivity"
+            android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".activities.appointment.MyAppointmentActivity"
+            android:name=".appointmentNew.MyAppointmentActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+
+
+        </activity>
         <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
@@ -100,13 +119,7 @@
             android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.notification.NotificationActivity"
             android:exported="false"
@@ -177,7 +190,7 @@
         <activity
             android:name=".appointment.ScheduleListingActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
 
         <receiver
             android:name=".utilities.RTCMessageReceiver"

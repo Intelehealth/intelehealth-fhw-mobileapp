@@ -143,7 +143,7 @@
     <dimen name="hamburger_width">25dp</dimen>
     <dimen name="hamburger_height">30dp</dimen>
     <dimen name="hamburger_margin_end">10dp</dimen>
-    <dimen name="hamburger_margin_top">15dp</dimen>
+    <dimen name="hamburger_margin_top">13dp</dimen> <!--15-->
     <dimen name="hamburger_margin_start">8dp</dimen>
 
     <dimen name="home_location_margin_top">15dp</dimen>
@@ -560,10 +560,9 @@
     <dimen name="btn_save_pass_padding_start">25dp</dimen>
 
     <!--Custom toolbar UI2.0-->
-
     <dimen name="custom_tool_margin_start">10dp</dimen>
     <dimen name="custom_tool_margin_top">8dp</dimen>
-    <dimen name="custom_tool_title_margin_top">17dp</dimen>
+    <dimen name="custom_tool_title_margin_top">15dp</dimen><!-- 17-->
     <dimen name="toolbar_home_tv_title_size">18sp</dimen>
 
     <!--My Profile UI2.0-->

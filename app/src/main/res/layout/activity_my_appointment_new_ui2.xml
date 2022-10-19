@@ -8,7 +8,7 @@
     android:background="@color/white"
     android:paddingEnd="16dp"
     android:orientation="vertical"
-    tools:context=".activities.appointment.MyAppointmentActivity">
+    tools:context=".appointmentNew.MyAppointmentActivity">
 
     <include
         android:id="@+id/toolbar_my_appointments"
