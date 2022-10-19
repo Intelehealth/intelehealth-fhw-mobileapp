@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">इंटेलेहेल्थ</string>
+    <string name="app_name" translatable="false">स्मार्ट केयर डॉक्</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">इंटेलीहेल्थ</string>
+    <string name="title_activity_login">स्मार्ट केयर डॉक्</string>
     <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
     <string name="prompt_password" translatable="false">कुंजिका</string>
     <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
@@ -589,8 +589,8 @@
     <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है|</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
-    <string name="intelehealth_a_telemedicine_platform">इंटेलेहेल्थ एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
-    <string name="intelehealth_name">इंटेलेहेल्थ</string>
+    <string name="intelehealth_a_telemedicine_platform">स्मार्ट केयर डॉक् एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_name">स्मार्ट केयर डॉक्</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">सक्रिय</string>
@@ -816,7 +816,7 @@
     <string name = "visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
 
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें -"</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, इंटेलहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, स्मार्ट केयर डॉक् का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
 
 
     <string name="yes">हां</string>
@@ -827,5 +827,5 @@
     <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करने में असमर्थ हैं। प्रोटोकॉल डाउनलोड का पुन: प्रयास करने के लिए \'हां\' दबाएं। डेमो प्रोटोकॉल के साथ जारी रखने के लिए \'नहीं\' दबाएं।</string>
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
-    <string name="app_version_string">App Version - %1$s</string>
+    <string name="app_version_string">ऐप संस्करण - %1$s</string>
 </resources>
