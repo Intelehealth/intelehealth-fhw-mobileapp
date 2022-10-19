@@ -54,6 +54,7 @@
                     android:hint="Enter Postal code"
                     android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
+                    android:inputType="number"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />

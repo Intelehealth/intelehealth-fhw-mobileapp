@@ -443,6 +443,7 @@
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"
                         android:paddingBottom="@dimen/margin_10"
+                        android:inputType="phone"
                         android:textSize="@dimen/edittext_textsize_16sp" />
 
                 </LinearLayout>
