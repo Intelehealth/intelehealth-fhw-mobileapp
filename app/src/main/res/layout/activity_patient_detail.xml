@@ -403,6 +403,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:paddingRight="@dimen/padding_card_action"
                                 android:text="@string/row_phone_number"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
