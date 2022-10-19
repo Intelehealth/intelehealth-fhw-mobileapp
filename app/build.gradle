@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "org.sonarqube"
+apply plugin: 'jacoco'
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -42,6 +43,9 @@ android {
             }
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+          testCoverageEnabled true
         }
     }
     // use the bundle block to control which types of configuration APKs
@@ -104,7 +108,9 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //Uncomment below line to enable multidex support for Kitkat
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.android.support:multidex:2.0.1'
+    
     //camera view
     implementation 'com.github.google:cameraview:9bbe07ba44'
     //Google Guava
@@ -141,4 +147,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-config'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
-apply from: "$project.rootDir/app/jacoco.gradle"
+//apply from: "$project.rootDir/app/jacoco.gradle"
