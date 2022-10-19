@@ -262,7 +262,8 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
-            patientDTO.setSyncd(false);
+//            patientDTO.setSyncd(false); // todo:uncomment later
+            patientDTO.setSyncd(true); // todo: remove ...just for testing.
             Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
         }
         
@@ -272,25 +273,29 @@ public class Fragment_ThirdScreen extends Fragment {
             boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
           //  boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid); // todo: uncomment later.
 
-            if (NetworkConnection.isOnline(getActivity().getApplication())) {
+          /*  if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
             }
-
+*/
             if (isPatientInserted /*&& isPatientImageInserted*/) { // todo: uncomment later.
                 Logger.logD(TAG, "inserted");
-                Intent i = new Intent(getActivity().getApplication(), PatientDetailActivity2.class);
-                i.putExtra("patientUuid", patientDTO.getUuid());
-                i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
-                i.putExtra("tag", "newPatient");
-                i.putExtra("hasPrescription", "false");
+                Intent intent = new Intent(getActivity().getApplication(), PatientDetailActivity2.class);
+                intent.putExtra("patientUuid", patientDTO.getUuid());
+                intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                intent.putExtra("tag", "newPatient");
+                intent.putExtra("hasPrescription", "false");
                 //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
              //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                getActivity().getApplication().startActivity(i);
+                Bundle args = new Bundle();
+                args.putSerializable("patientDTO", (Serializable) patientDTO);
+                intent.putExtra("BUNDLE",args);
+                getActivity().startActivity(intent);
+                startActivity(intent);
             } else {
                 Toast.makeText(getActivity(), "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
@@ -319,11 +324,10 @@ public class Fragment_ThirdScreen extends Fragment {
                 .replace(R.id.frame_firstscreen, fragment_thirdScreen)
                 .commit();*/
 
-        Intent intent = new Intent(getActivity(), PatientDetailActivity2.class);
-        Bundle args = new Bundle();
-        args.putSerializable("patientDTO", (Serializable) patientDTO);
-        intent.putExtra("BUNDLE",args);
-        startActivity(intent);
+
+       /* Intent intent = new Intent(getActivity(), PatientDetailActivity2.class);
+        intent.putExtra("patientUUID", patientDTO.getUuid());
+        getActivity().startActivity(intent);*/
 
     }
 
