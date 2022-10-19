@@ -42,8 +42,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+
+
         <activity
-            android:name="org.intelehealth.ezazi.activities.epartogramActivity.Epartogram"
+            android:name="org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_epartogram"

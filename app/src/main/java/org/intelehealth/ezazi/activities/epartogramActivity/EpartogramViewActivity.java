@@ -12,10 +12,12 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+
+
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
-public class Epartogram extends AppCompatActivity {
+public class EpartogramViewActivity extends AppCompatActivity {
     WebView webView;
     String patientUuid, visitUuid;
     Intent intent;
@@ -39,11 +41,20 @@ public class Epartogram extends AppCompatActivity {
 
         webView = findViewById(R.id.webview_epartogram);
         mySwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipeContainer);
-        customProgressDialog = new CustomProgressDialog(Epartogram.this);
+        customProgressDialog = new CustomProgressDialog(EpartogramViewActivity.this);
 
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+
+        webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+
+        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webView.setScrollbarFadingEnabled(false);
+
+
         webView.setWebViewClient(new WebViewClient() {
 
             @Override

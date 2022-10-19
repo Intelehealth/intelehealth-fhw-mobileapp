@@ -24,8 +24,7 @@ import com.google.gson.Gson;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.epartogramActivity.Epartogram;
-import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
+import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
@@ -124,10 +123,10 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             float smallestWidth = Math.min(widthDp, heightDp);
             Log.v("epartog", "smallest width: " + smallestWidth);
 
-            if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
+            /*if (smallestWidth >= 720) { // 8inch = 720 and 7inch == 600
                 //Device is a 8" tablet
                 // Call webview here...
-                Intent intent = new Intent(this, Epartogram.class);
+                Intent intent = new Intent(this, EpartogramViewActivity.class);
                 intent.putExtra("patientuuid", mPatientUuid);
                 intent.putExtra("visituuid", mVisitUUID);
                 startActivity(intent);
@@ -135,8 +134,13 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             else {
                 DialogUtils dialogUtils = new DialogUtils();
                 dialogUtils.showOkDialog(PartogramDataCaptureActivity.this, "",
-                        context.getString(R.string.this_option_available_tablet_device) /*+ ": " + dpi*/, context.getString(R.string.ok));
-            }
+                        context.getString(R.string.this_option_available_tablet_device) *//*+ ": " + dpi*//*, context.getString(R.string.ok));
+            }*/
+
+            Intent intent = new Intent(this, EpartogramViewActivity.class);
+            intent.putExtra("patientuuid", mPatientUuid);
+            intent.putExtra("visituuid", mVisitUUID);
+            startActivity(intent);
 
 //            int dpi = context.getResources().getConfiguration().densityDpi;
 //            Log.i("Timeline", "Screen size in DP: " + dpi);

@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,7 +41,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.epartogramActivity.Epartogram;
+import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -58,7 +57,6 @@ import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -298,7 +296,7 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         log.put("action", "showEpartogram");
         TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         Logger.logV("PHONE_TYPE_NONE", String.valueOf(Objects.requireNonNull(manager).getPhoneType()));
-        if (getResources().getBoolean(R.bool.isTablet)) {
+        /*if (getResources().getBoolean(R.bool.isTablet)) {
             Intent intent = new Intent(context, Epartogram.class);
             intent.putExtra("patientuuid", patientUuid);
             intent.putExtra("visituuid", visitUuid);
@@ -310,7 +308,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(TimelineVisitSummaryActivity.this, "",
                     context.getString(R.string.this_option_available_tablet_device) , context.getString(R.string.ok));
-        }
+        }*/
+        Intent intent = new Intent(context, EpartogramViewActivity.class);
+        intent.putExtra("patientuuid", patientUuid);
+        intent.putExtra("visituuid", visitUuid);
+        startActivity(intent);
         FirebaseRealTimeDBUtils.logData(log);
        /* DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
