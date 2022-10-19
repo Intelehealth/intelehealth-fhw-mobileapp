@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
+import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
@@ -55,6 +56,8 @@ public class Fragment_ThirdScreen extends Fragment {
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
     private TextView relation_error, occupation_error, caste_error, education_error, economic_error;
+    ImagesDAO imagesDAO = new ImagesDAO();
+
 
     @Nullable
     @Override
@@ -220,6 +223,14 @@ public class Fragment_ThirdScreen extends Fragment {
         } else {
             String uuid = patientDTO.getUuid();
 
+            // mobile no adding in patient attributes.
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(patientDTO.getPhonenumber()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
             // son/daughter/wife of
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -262,8 +273,8 @@ public class Fragment_ThirdScreen extends Fragment {
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
-//            patientDTO.setSyncd(false); // todo:uncomment later
-            patientDTO.setSyncd(true); // todo: remove ...just for testing.
+            patientDTO.setSyncd(false); // todo:uncomment later
+          //  patientDTO.setSyncd(true); // todo: remove ...just for testing.
             Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
         }
         
@@ -271,16 +282,16 @@ public class Fragment_ThirdScreen extends Fragment {
         try {
             Logger.logD(TAG, "insertpatinet ");
             boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
-          //  boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid); // todo: uncomment later.
+            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
 
-          /*  if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
+            if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
             }
-*/
-            if (isPatientInserted /*&& isPatientImageInserted*/) { // todo: uncomment later.
+
+            if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
                 Intent intent = new Intent(getActivity().getApplication(), PatientDetailActivity2.class);
                 intent.putExtra("patientUuid", patientDTO.getUuid());
@@ -302,33 +313,6 @@ public class Fragment_ThirdScreen extends Fragment {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
-
-
-
-//            Log.v("fragmemt_2", "values: " + country_spinner.getSelectedItem().toString()
-//                    + "\n" + state_spinner.getSelectedItem().toString()
-//                    + "\n" + district_spinner.getSelectedItem().toString()
-//                    + "\n" + city_spinner.getSelectedItem().toString()
-//                    + "\n" + address1_edittext.getText().toString()
-//                    + "\n" + address2_edittext.getText().toString());
-        
-
-        // Bundle data
-       /* Bundle bundle = new Bundle();
-        bundle.putSerializable("patientDTO", (Serializable) patientDTO);
-        fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
-
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_firstscreen, fragment_thirdScreen)
-                .commit();*/
-
-
-       /* Intent intent = new Intent(getActivity(), PatientDetailActivity2.class);
-        intent.putExtra("patientUUID", patientDTO.getUuid());
-        getActivity().startActivity(intent);*/
-
     }
 
 

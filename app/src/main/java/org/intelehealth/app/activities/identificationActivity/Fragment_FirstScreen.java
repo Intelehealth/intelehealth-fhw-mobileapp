@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static android.app.Activity.RESULT_OK;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
@@ -14,6 +15,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,10 +36,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
@@ -51,6 +57,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +68,8 @@ import java.util.UUID;
 
 public class Fragment_FirstScreen extends Fragment {
     private View view;
+    private String patientUuid = "";
+    private ImageView patient_imgview;
     private Button frag1_nxt_btn_main;
     SessionManager sessionManager = null;
     private ImageView personal_icon, address_icon, other_icon;
@@ -70,6 +79,7 @@ public class Fragment_FirstScreen extends Fragment {
     PatientDTO patientdto = new PatientDTO();
     private String mGender;
     String uuid = "";
+    private String mCurrentPhotoPath;
     RadioButton gender_male, gender_female, gender_other;
     private static final String TAG = Fragment_FirstScreen.class.getSimpleName();
     private DatePickerDialog mDOBPicker;
@@ -95,6 +105,8 @@ public class Fragment_FirstScreen extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
+
+        patient_imgview = view.findViewById(R.id.patient_imgview);
         frag1_nxt_btn_main = view.findViewById(R.id.frag1_nxt_btn_main);
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
         address_icon = getActivity().findViewById(R.id.addresslocation_icon);
@@ -147,6 +159,30 @@ public class Fragment_FirstScreen extends Fragment {
         } else {
             mGender = "O";
         }
+
+        // setting patient profile
+        patient_imgview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String patientTemp = "";
+                if (patientUuid.equalsIgnoreCase("")) {
+                  //  patientTemp = patientID_edit; // todo: uncomment later
+                } else {
+                    patientTemp = patientUuid;
+                }
+
+                File filePath = new File(AppConstants.IMAGE_PATH + patientTemp);
+                if (!filePath.exists()) {
+                    filePath.mkdir();
+                }
+
+                Intent cameraIntent = new Intent(getActivity(), CameraActivity.class);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
+                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+            }
+        });
+
 
         gender_female.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -586,6 +622,7 @@ public class Fragment_FirstScreen extends Fragment {
         if (cancel) {
             focusView.requestFocus();
         } else {
+            patientdto.setPatientPhoto(mCurrentPhotoPath);
             patientdto.setFirstname(firstname_edittext.getText().toString());
             patientdto.setMiddlename(middlename_edittext.getText().toString());
             patientdto.setLastname(lastname_edittext.getText().toString());
@@ -630,8 +667,28 @@ public class Fragment_FirstScreen extends Fragment {
                     .commit();
         }
         // end
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v(TAG, "Result Received");
+        if (requestCode == CameraActivity.TAKE_IMAGE) {
+            Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE);
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "Result OK");
+                mCurrentPhotoPath = data.getStringExtra("RESULT");
+                Log.v("IdentificationActivity", mCurrentPhotoPath);
 
+                Glide.with(getActivity())
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(patient_imgview);
+            }
+        }
     }
 
 

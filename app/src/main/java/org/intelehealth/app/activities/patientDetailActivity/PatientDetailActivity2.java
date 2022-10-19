@@ -48,8 +48,10 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edi
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -75,10 +77,12 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +91,14 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+
 public class PatientDetailActivity2 extends AppCompatActivity {
+    private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone, 
             postalcode, patientcountry, patientstate, patientdistrict, village, address1,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus;
@@ -103,8 +114,9 @@ public class PatientDetailActivity2 extends AppCompatActivity {
     String patientName, mGender;
     ImagesDAO imagesDAO = new ImagesDAO();
     float float_ageYear_Month;
-
-
+    ImageView profile_image;
+    Myreceiver reMyreceive;
+    IntentFilter filter;
 
 
     @Override
@@ -125,6 +137,9 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         }
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        filter = new IntentFilter("OpenmrsID");
+        reMyreceive = new Myreceiver();
+
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -143,6 +158,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
     }
 
     private void initUI() {
+        profile_image = findViewById(R.id.profile_image);
         name_txtview = findViewById(R.id.name_txtview);
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
 
@@ -287,29 +303,31 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         patientname.setText(patientName);
         
        
-        // todo: uncomment and hande this later.
-       /* try {
+        // setting profile image of patient
+        try {
             profileImage = imagesDAO.getPatientProfileChangeTime(patientDTO.getUuid());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
-            if (NetworkConnection.isOnline(getApplication())) {
-                profilePicDownloaded();
+
+            if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
+                if (NetworkConnection.isOnline(getApplication())) {
+                    profilePicDownloaded();
+                }
             }
-        }
-        if (!profileImage.equalsIgnoreCase(profileImage1)) {
-            if (NetworkConnection.isOnline(getApplication())) {
-                profilePicDownloaded();
+            if (!profileImage.equalsIgnoreCase(profileImage1)) {
+                if (NetworkConnection.isOnline(getApplication())) {
+                    profilePicDownloaded();
+                }
             }
-        }
-        Glide.with(PatientDetailActivity.this)
-                .load(patient_new.getPatient_photo())
-                .thumbnail(0.3f)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(photoView);*/
+            Glide.with(this)
+                    .load(patient_new.getPatient_photo())
+                    .thumbnail(0.3f)
+                    .centerCrop()
+                    .error(R.drawable.avatar1)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(profile_image);
 
         // setting openmrs id
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
@@ -778,5 +796,85 @@ public class PatientDetailActivity2 extends AppCompatActivity {
             patientoccupation.setText("");
         }
     }
+
+    // profile pic download
+    public void profilePicDownloaded() {
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(patientDTO.getUuid());
+        Logger.logD(TAG, "profileimage url" + url);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, patientDTO.getUuid());
+                        Logger.logD(TAG, file.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        boolean updated = false;
+                        try {
+                            updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                        if (updated) {
+                            Glide.with(PatientDetailActivity2.this)
+                                    .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
+                                    .thumbnail(0.3f)
+                                    .centerCrop()
+                                    .error(R.drawable.avatar1)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(profile_image);
+                        }
+                        ImagesDAO imagesDAO = new ImagesDAO();
+                        boolean isImageDownloaded = false;
+                        try {
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH +
+                                    patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }
+                });
+    }
+
+    // Receiver class for Openmrs ID
+    public class Myreceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            setTitle(openmrsID_txt.getText());
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        registerReceiver(reMyreceive, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(reMyreceive);
+        super.onDestroy();
+    }
+
 
 }
