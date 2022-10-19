@@ -107,7 +107,8 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("en"));
             itemList.add(jsonObject);
 
-            jsonObject = new JSONObject();
+            //Commenting out additional languages as not required for release 1.
+            /*jsonObject = new JSONObject();
             jsonObject.put("name", "ଓଡିଆ");
             jsonObject.put("code", "or");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("or"));
@@ -165,7 +166,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
             jsonObject.put("name", "தமிழ்");
             jsonObject.put("code", "ta");
             jsonObject.put("selected", sessionManager.getAppLanguage().isEmpty() || sessionManager.getAppLanguage().equalsIgnoreCase("ta"));
-            itemList.add(jsonObject);
+            itemList.add(jsonObject);*/
 
             LanguageListAdapter languageListAdapter = new LanguageListAdapter(ChooseLanguageActivity.this, itemList, new ItemSelectionListener() {
                 @Override
