@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+    <string name="app_name" translatable="false">Smart Care Doc</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">Intelehealth</string>
+    <string name="title_activity_login">Smart Care Doc</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -559,7 +559,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Smart Care Doc. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
@@ -597,8 +597,8 @@
     <string name="please_help">\" and I am not able to login, please help.</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    <string name="intelehealth_a_telemedicine_platform">Smart Care Doc is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Smart Care Doc</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
