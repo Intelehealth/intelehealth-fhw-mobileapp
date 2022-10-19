@@ -82,6 +82,7 @@
                     android:hint="Enter first name"
                     android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
+                    android:inputType="textCapWords"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />
@@ -130,6 +131,7 @@
                     android:hint="Enter middle name"
                     android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
+                    android:inputType="textCapWords"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp" />
@@ -180,6 +182,7 @@
                     android:hint="Enter surname"
                     android:textColorHint="@color/edittext_hint_color"
                     android:paddingStart="@dimen/fu_margin_start"
+                    android:inputType="textCapWords"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     

@@ -206,7 +206,7 @@ public class Fragment_FirstScreen extends Fragment {
         // Gender - end
         
         // DOB - start
-        mDOBPicker = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+        mDOBPicker = new DatePickerDialog(getActivity(), R.style.datepicker,
                 new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -214,8 +214,10 @@ public class Fragment_FirstScreen extends Fragment {
                 dob.set(year, monthOfYear, dayOfMonth);
                 dob_edittext.setError(null);
                 age_edittext.setError(null);
+
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+
                 // Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
@@ -283,7 +285,7 @@ public class Fragment_FirstScreen extends Fragment {
                 age_edittext.setText(ageS);
 
             }
-        }, mDOBYear, mDOBMonth, mDOBDay);
+        }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE)); // so that todays date as shown as default selection.
 
         //DOB Picker is shown when clicked
         mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -360,6 +362,8 @@ public class Fragment_FirstScreen extends Fragment {
                         mAgeDays = Integer.valueOf(value);
                     }
                 }, dayText);
+
+
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
@@ -376,25 +380,6 @@ public class Fragment_FirstScreen extends Fragment {
                     mDOBMonth = calendar.get(Calendar.MONTH);
                     mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-//                    int curYear = calendar.get(Calendar.YEAR);
-//                    //int birthYear = curYear - yearPicker.getValue();
-//                    int birthYear = curYear - mAgeYears;
-//                    int curMonth = calendar.get(Calendar.MONTH);
-//                    //int birthMonth = curMonth - monthPicker.getValue();
-//                    int birthMonth = curMonth - mAgeMonths;
-//                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
-//                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
-//                    mDOBYear = birthYear;
-//                    mDOBMonth = birthMonth;
-//
-//                    if (birthDay < 0) {
-//                        mDOBDay = birthDay + totalDays - 1;
-//                        mDOBMonth--;
-//
-//                    } else {
-//                        mDOBDay = birthDay;
-//                    }
-//                    //   Locale.setDefault(Locale.ENGLISH);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
                             Locale.ENGLISH);
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
