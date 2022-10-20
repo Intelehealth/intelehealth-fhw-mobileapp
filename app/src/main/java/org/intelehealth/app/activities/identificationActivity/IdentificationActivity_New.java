@@ -124,6 +124,7 @@ public class IdentificationActivity_New extends AppCompatActivity {
         // Bundle data
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientdto);
+        bundle.putString("patientUuid", patientdto.getUuid());
         bundle.putBoolean("fromSecondScreen", true);
         fragment.setArguments(bundle); // passing data to Fragment
 

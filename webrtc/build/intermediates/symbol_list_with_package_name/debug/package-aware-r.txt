@@ -2555,6 +2555,7 @@ style Animation_AppCompat_Tooltip
 style Animation_Design_BottomSheetDialog
 style Animation_MaterialComponents_BottomSheetDialog
 style AppTheme
+style AppThemeMaterialNew
 style AppTheme_AppBarOverlay
 style AppTheme_Call
 style AppTheme_NoActionBar

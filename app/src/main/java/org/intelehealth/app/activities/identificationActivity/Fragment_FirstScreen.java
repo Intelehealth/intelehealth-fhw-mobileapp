@@ -96,6 +96,7 @@ public class Fragment_FirstScreen extends Fragment {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the dob_edittext editText value and add in the db.
     boolean fromSecondScreen = false;
+    String patientID_edit;
 
 
     @Nullable
@@ -127,6 +128,8 @@ public class Fragment_FirstScreen extends Fragment {
         age_edittext = view.findViewById(R.id.age_edittext);
         countryCodePicker = view.findViewById(R.id.countrycode_spinner);
         phoneno_edittext = view.findViewById(R.id.phoneno_edittext);
+        countryCodePicker.registerCarrierNumberEditText(phoneno_edittext); // attaches the ccp spinner with the edittext
+
 
         firstname_error = view.findViewById(R.id.firstname_error);
         middlename_error = view.findViewById(R.id.middlename_error);
@@ -148,6 +151,7 @@ public class Fragment_FirstScreen extends Fragment {
 
         if (getArguments() != null) {
             patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
+            patientID_edit = getArguments().getString("patientUuid");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
         }
 
@@ -156,9 +160,62 @@ public class Fragment_FirstScreen extends Fragment {
             firstname_edittext.setText(patientdto.getFirstname());
             middlename_edittext.setText(patientdto.getMiddlename());
             lastname_edittext.setText(patientdto.getLastname());
-            dob_edittext.setText(patientdto.getDateofbirth());
-            countryCodePicker.setFullNumber(patientdto.getPhonenumber());
-            phoneno_edittext.setText(patientdto.getPhonenumber());
+            
+            //if patient update then age will be set
+                //dob to be displayed based on translation...
+                String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientdto.getDateofbirth());
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                    String dob_text = en__te_dob(dob); //to show text of English into Telugu...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                    String dob_text = en__mr_dob(dob); //to show text of English into marathi...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String dob_text = en__as_dob(dob); //to show text of English into assame...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                    String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    String dob_text = en__kn_dob(dob); //to show text of English into kannada...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String dob_text = en__ru_dob(dob); //to show text of English into kannada...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
+                    dob_edittext.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
+                    dob_edittext.setText(dob_text);
+                } else {
+                    dob_edittext.setText(dob);
+                }
+
+                // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+                //get year month days
+                String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientdto.getDateofbirth(), getActivity());
+
+                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientdto.getDateofbirth()).split(" ");
+                mAgeYears = Integer.valueOf(ymdData[0]);
+                mAgeMonths = Integer.valueOf(ymdData[1]);
+                mAgeDays = Integer.valueOf(ymdData[2]);
+                String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                        mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+                        mAgeDays + getResources().getString(R.string.days);
+                age_edittext.setText(age);
+
+            countryCodePicker.setFullNumber(patientdto.getPhonenumber()); // automatically assigns cc to spinner and number to edittext field.
+         //   phoneno_edittext.setText(patientdto.getPhonenumber());
             
             // Gender edit
                 if (patientdto.getGender().equals("M")) {
@@ -210,7 +267,6 @@ public class Fragment_FirstScreen extends Fragment {
             onPatientCreateClicked();
         });
 
-        countryCodePicker.registerCarrierNumberEditText(phoneno_edittext);
 
         // Gender - start
         if (gender_male.isChecked()) {
@@ -532,70 +588,16 @@ public class Fragment_FirstScreen extends Fragment {
 
 
     private void onPatientCreateClicked() {
-        PatientsDAO patientsDAO = new PatientsDAO();
-        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
-
         uuid = UUID.randomUUID().toString();
-        patientdto.setUuid(uuid);
-        Gson gson = new Gson();
-        boolean cancel = false;
-        View focusView = null;
 
-        // dob validation
-        if (dob.equals("") || dob.toString().equals("")) {
-            dob_error.setVisibility(View.VISIBLE);
-/*
-            if (dob.after(today)) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getActivity());
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-                //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                mDOBPicker.show();
-                alertDialog.show();
-
-                Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
-                return;
-            }
-*/
+        Log.v(TAG, "reltion: " + patientID_edit);
+        if (patientID_edit != null) {
+            patientdto.setUuid(patientID_edit);
         }
         else {
-            dob_error.setVisibility(View.GONE);
+            patientdto.setUuid(uuid);
         }
-        // dob valid - end
-        
-        // mobile no - start
-        if (phoneno_edittext.getText().toString().trim().length() > 0) {
-            if (phoneno_edittext.getText().toString().trim().length() < 10) {
-                phoneno_edittext.requestFocus();
-                phoneno_edittext.setError(getString(R.string.enter_10_digits));
-                return;
-            }
-            phone_error.setVisibility(View.VISIBLE);
-        }
-        else {
-            phone_error.setVisibility(View.GONE);
-        }
-        // mobile no - end
 
-        if (!firstname_edittext.getText().toString().equals("") && !lastname_edittext.getText().toString().equals("")
-                && !dob_edittext.getText().toString().equals("") && !age_edittext.getText().toString().equals("")
-                && (gender_female.isChecked() || gender_male.isChecked() || gender_other.isChecked())) {
-
-            Log.v(TAG, "Result");
-
-        } else {
             frag1_nxt_btn_main.setBackground(getResources().getDrawable(R.drawable.disabled_patient_reg_btn));
             if (firstname_edittext.getText().toString().equals("")) {
                 firstname_error.setVisibility(View.VISIBLE);
@@ -658,14 +660,20 @@ public class Fragment_FirstScreen extends Fragment {
                 phone_error.setVisibility(View.GONE);
             }
 
-            Toast.makeText(getActivity(), R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
-        }
+            // mobile no - start
+            if (phoneno_edittext.getText().toString().trim().length() > 0) {
+                if (phoneno_edittext.getText().toString().trim().length() < 10) {
+                    phoneno_edittext.requestFocus();
+                    phoneno_edittext.setError(getString(R.string.enter_10_digits));
+                    return;
+                }
+                phone_error.setVisibility(View.VISIBLE);
+            }
+            else {
+                phone_error.setVisibility(View.GONE);
+            }
+            // mobile no - end
 
-        // entering value in dataset start
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
             patientdto.setPatientPhoto(mCurrentPhotoPath);
             patientdto.setFirstname(firstname_edittext.getText().toString());
             patientdto.setMiddlename(middlename_edittext.getText().toString());
@@ -673,7 +681,8 @@ public class Fragment_FirstScreen extends Fragment {
             patientdto.setGender(StringUtils.getValue(mGender));
 
             //get unformatted number with prefix "+" i.e "+14696641766"
-            patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
+         //   patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
+            patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
 
             String[] dob_array = dob_edittext.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
@@ -704,7 +713,6 @@ public class Fragment_FirstScreen extends Fragment {
                     .beginTransaction()
                     .replace(R.id.frame_firstscreen, fragment_secondScreen)
                     .commit();
-        }
         // end
     }
 

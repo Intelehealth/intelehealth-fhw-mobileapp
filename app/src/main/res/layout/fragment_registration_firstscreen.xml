@@ -5,6 +5,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/frame_nxtbtn_viewgrp"
+        android:layout_marginBottom="@dimen/margin_24"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <!--Firstname-->
+        <RelativeLayout
+            android:id="@+id/relative_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/img_profile"
         android:layout_width="@dimen/patregist_profileimg_icon"
@@ -38,29 +55,14 @@
         android:textColor="@null"
         android:translationY="-1.39sp" />
 
-    <ScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/frame_nxtbtn_viewgrp"
-        android:layout_below="@+id/add_picture"
-        android:layout_marginTop="@dimen/margin_24"
-        android:layout_marginBottom="@dimen/margin_24"
-        android:fillViewport="true"
-        android:scrollbars="none">
 
-        <!--Firstname-->
-        <RelativeLayout
-            android:id="@+id/relative_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_24">
 
             <LinearLayout
                 android:id="@+id/linear_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_below="@+id/add_picture"
                 android:orientation="vertical">
 
                 <TextView
