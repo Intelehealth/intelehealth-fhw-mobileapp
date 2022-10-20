@@ -207,7 +207,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
         Toolbar toolbar = findViewById(R.id.toolbar);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -217,7 +217,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -263,10 +263,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
@@ -303,7 +302,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     @Override
     public void fabClickedAtEnd() {
 
-         AnswerResult answerResult = physicalExamMap.checkAllRequiredAnsweredPhy(PhysicalExamActivity.this);
+        AnswerResult answerResult = physicalExamMap.checkAllRequiredAnsweredPhy(PhysicalExamActivity.this);
         if (!answerResult.result) {
             // show alert dialog
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -318,7 +317,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Dialog alertDialog = alertDialogBuilder.show();
             Log.v(TAG, answerResult.requiredStrings);
             return;
-        }else {
+        } else {
             complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
             if (complaintConfirmed) {
@@ -403,7 +402,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (!question.isTerminal() && question.isSelected()) {
                 Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
             }
-        }else if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && physicalExamMap.getOption(groupPosition).anySubSelected()) {
+        } else if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && physicalExamMap.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
@@ -456,6 +455,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     if (!filePath.exists()) {
                         filePath.mkdirs();
                     }
+                    imageName = UUID.randomUUID().toString();
                     Node.handleQuestion(question, PhysicalExamActivity.this, adapter, filePath.toString(), imageName);
                 } else {
                     Node.handleQuestion(question, PhysicalExamActivity.this, adapter, null, null);
@@ -471,7 +471,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         //adapter.updateNode(currentNode);
         adapter.notifyDataSetChanged();
     }
-
 
 
     /**
