@@ -239,6 +239,85 @@ public class PhysicalExam extends Node {
         return allAnswered;
     }
 
+    public String generateFindings(String language) {
+        String mLanguage = "";
+        Set<String> rootStrings = new HashSet<>();
+        List<String> stringsList = new ArrayList<>();
+
+        int total = this.totalExams;
+        for (int i = 0; i < total; i++) {
+            Node node = getExamNode(i);
+
+            String title = getTitle(i, language);
+            String[] split = title.split(" : ");
+            String levelOne = split[0];
+            if ((node.isSelected() | node.anySubSelected())) {
+                boolean checkSet = rootStrings.add(levelOne);
+
+                if (checkSet) {
+                    if(node.getInputType().equalsIgnoreCase("")) {
+                        //This means chip is selected as answer...
+                        if (language.equalsIgnoreCase("ar"))
+                            stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay(language)); //Chip UI
+                        else
+                            stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay(language));
+                    }
+                    else {
+                        stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
+                        //input's other than Text as for text input: text and language both are same.
+                    }
+                    // stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
+                }
+                else {
+                    stringsList.add(bullet + " " + node.getLanguage());
+                }
+
+                if (!node.isTerminal()) {
+                    String lang = "";
+                    if (language.equalsIgnoreCase("ar"))
+                        lang = node.formLanguage(language);
+                    else
+                        lang = node.formLanguage();
+                    Log.i(TAG, "generateFindings: "+ lang);
+                    stringsList.add(lang);
+                }
+            }
+        }
+
+
+        String languageSeparator = next_line;
+
+        for (int i = 0; i < stringsList.size(); i++) {
+            mLanguage = mLanguage.concat(stringsList.get(i) + languageSeparator);
+//            if (i == 0) {
+//                if (!stringsList.get(i).isEmpty()) {
+//                    mLanguage = mLanguage.concat(stringsList.get(i));
+//                }
+//            } else {
+//                if (!stringsList.get(i).isEmpty()) {
+//                    mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+//                }
+//            }
+        }
+
+//        mLanguage = removeCharsFindings(mLanguage);
+        mLanguage = mLanguage.replaceAll("\\. -", ".");
+        mLanguage = mLanguage.replaceAll("\\.", "\\. ");
+        mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
+        mLanguage = mLanguage.replaceAll("% - ", "");
+        mLanguage = mLanguage.replace(next_line,"-");
+        mLanguage = mLanguage.replaceAll("-"+ bullet, next_line + bullet);
+        mLanguage = mLanguage.replaceAll("-"+"<b>", next_line +"<b>");
+        mLanguage = mLanguage.replaceAll("</b>"+ bullet,"</b>"+ next_line + bullet);
+
+        if(StringUtils.right(mLanguage,2).equals(" -")){
+            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        }
+
+        mLanguage = mLanguage.replaceAll("%-"," ");
+        return mLanguage;
+    }
+
     //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
@@ -255,9 +334,30 @@ public class PhysicalExam extends Node {
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
 
-                if (checkSet)
-                    stringsList.add("<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
-                else stringsList.add(bullet + " " + node.getLanguage());
+                if (checkSet) {
+                    if(node.getInputType().equalsIgnoreCase("")) {
+                        //This means chip is selected as answer...
+                        stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay("en")); //Chip UI
+                    }
+                    else {
+                        stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
+                        //input's other than Text as for text input: text and language both are same.
+                    }
+
+                    //  stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
+                }
+                else  {
+                    if(node.getInputType().equalsIgnoreCase("")) {
+                        //This means chip is not selected as answer...
+                        stringsList.add(bullet + " " + node.findDisplay("en")); //Chip UI
+                    }
+                    else {
+                        stringsList.add(bullet + " " + node.getLanguage());
+                        //input's other than Text as for text input: text and language both are same.
+                    }
+                    // stringsList.add(bullet + " " + node.getLanguage());
+                }
+
                 if (!node.isTerminal()) {
                     String lang = node.formLanguage();
                     Log.i(TAG, "generateFindings: "+ lang);
@@ -311,5 +411,28 @@ public class PhysicalExam extends Node {
         return formatted;
     }
 
+    private List<String> determineTitles(String language) {
+        List<String> titles = new ArrayList<>();
 
+        for (Node node : selectedNodes) {
+            for (Node subNode : node.getOptionsList()) {
+                if (language.equalsIgnoreCase("ar")) {
+                    titles.add(node.getDisplay_arabic() + " : " + subNode.getDisplay_arabic());
+                } else {
+                    titles.add(node.getText() + " : " + subNode.getText());
+                }
+            }
+        }
+
+        return titles;
+    }
+
+    public String getTitle(int index, String language) {
+        if (language.equalsIgnoreCase("ar")) {
+            List<String> pageTitles = determineTitles(language);
+            return pageTitles.get(index);
+        } else {
+            return pageTitles.get(index);
+        }
+    }
 }

@@ -21,17 +21,18 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
     <org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator
         android:id="@+id/recyclerViewIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        app:spi_visibleDotCount="21"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
         app:spi_dotSelectedColor="@color/colorPrimary"
-android:layout_gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+        app:spi_visibleDotCount="21">
 
     </org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator>
 
@@ -39,17 +40,16 @@ android:layout_gravity="center"
         android:id="@+id/family_history_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/recyclerViewIndicator"
-        android:scrollbars="vertical"
-        android:visibility="visible"
         android:fadeScrollbars="false"
         android:scrollbarThumbVertical="@color/colorAccent"
-       />
+        android:scrollbars="vertical"
+        android:visibility="visible" />
 
-    <include layout="@layout/content_family_history"
+    <include
+        layout="@layout/content_family_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -57,6 +57,7 @@ android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="TODO"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_done_24dp" />
 

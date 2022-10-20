@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.physcialExamActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +13,8 @@ import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,9 +52,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -118,15 +124,18 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the org should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
+
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+
+//        String language = sessionManager.getAppLanguage();
+//        //In case of crash still the org should hold the current lang fix.
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -277,8 +286,16 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
 
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
 
     private boolean insertDb(String value) {
         Log.i(TAG, "insertDb: ");
@@ -308,9 +325,32 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
+
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
+            String physicalStringArabic = physicalExamMap.generateFindings("ar");
+            if (physicalStringArabic != null && !physicalStringArabic.isEmpty()) {
+                physicalStringArabic = physicalStringArabic
+                        .replace("Eyes: Pallor", "العيون: شحوب")
+                        .replace("Arm", "ذراع")
+                        .replace("Head", "رأس")
+                        .replace("Mouth", "فم")
+                        .replace("Abdomen", "البطن")
+                        .replace("Joint", "مشترك")
+                        .replace("Any Location", "اي موقع")
+                        .replace("Arm", "ذراع")
+                        .replace("Nail abnormality", "آفات الأظافر")
+                        .replace("Nail anemia", "فقر دم الأظافر")
+                        .replace("Ankle", "كاحل")
+                        .replace("Skin Rash", "الطفح الجلدي")
+                        .replace("Eyes: Jaundice", "العيون: اليرقان");
+            }
+            Map<String, String> physicalStringMap = new HashMap<>();
+            physicalStringMap.put("en", physicalString);
+            physicalStringMap.put("ar", physicalStringArabic);
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            String physicalStringJson = gson.toJson(physicalStringMap);
 
             List<String> imagePathList = physicalExamMap.getImagePathList();
 
@@ -321,7 +361,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             }
 
             if (intentTag != null && intentTag.equals("edit")) {
-                updateDatabase(physicalString);
+                updateDatabase(physicalStringJson);
                 Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
@@ -342,7 +382,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 // intent.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent);
             } else {
-                boolean obsId = insertDb(physicalString);
+                boolean obsId = insertDb(physicalStringJson);
                 Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
@@ -657,8 +697,25 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            String arabicPhysicalExam = String.valueOf(Html.fromHtml(physicalExamMap.generateFindings("ar")));
+            if (arabicPhysicalExam != null && !arabicPhysicalExam.isEmpty()) {
+                arabicPhysicalExam = arabicPhysicalExam
+                        .replace("Eyes: Pallor", "العيون: شحوب")
+                        .replace("Arm", "ذراع")
+                        .replace("Head", "رأس")
+                        .replace("Mouth", "فم")
+                        .replace("Abdomen", "البطن")
+                        .replace("Joint", "مشترك")
+                        .replace("Any Location", "اي موقع")
+                        .replace("Arm", "ذراع")
+                        .replace("Nail abnormality", "آفات الأظافر")
+                        .replace("Nail anemia", "فقر دم الأظافر")
+                        .replace("Ankle", "كاحل")
+                        .replace("Skin Rash", "الطفح الجلدي")
+                        .replace("Eyes: Jaundice", "العيون: اليرقان");
+            }
+            alertDialogBuilder.setMessage(arabicPhysicalExam);
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
         }

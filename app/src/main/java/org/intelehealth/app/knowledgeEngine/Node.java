@@ -70,20 +70,21 @@ public class Node implements Serializable {
     private String id;
     private String text;
     private String display;
-    private String display_oriya;
+    private String display_arabic;
+
+    /*private String display_oriya;
     private String display_cebuno;
     private String display_gujarati;
     private String display_bengali;
     private String display_tamil;
     private String display_hindi;
-    //telugu
-
     private String display_telugu;
     private String display_kannada;
     private String display_malyalam;
-    ;
     private String display_marathi;
-    private String display_assamese;
+    private String display_assamese;*/
+
+
     private String language;
     private String choiceType;
     private String inputType;
@@ -93,8 +94,11 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
     private String pop_up;
-    private String pop_up_hi;
-    private String pop_up_or;
+    private String pop_up_ar;
+
+    /*private String pop_up_hi;
+    private String pop_up_or;*/
+
     private String gender;
     private String min_age;
     private String max_age;
@@ -186,7 +190,16 @@ public class Node implements Serializable {
                 this.display = this.text;
             }
 
-            this.display_gujarati = jsonNode.optString("display-gj");
+            this.display_arabic = jsonNode.optString("display-ar");
+            if (this.display_arabic.isEmpty()) {
+                this.display_arabic = jsonNode.optString("display-ar");
+            }
+            if (this.display_arabic.isEmpty()) {
+                this.display_arabic = this.display;
+            }
+
+
+            /*this.display_gujarati = jsonNode.optString("display-gj");
             if (this.display_gujarati.isEmpty()) {
                 this.display_gujarati = jsonNode.optString("display-gj");
             }
@@ -273,7 +286,7 @@ public class Node implements Serializable {
             }
             if (this.display_kannada.isEmpty()) {
                 this.display_kannada = this.display;
-            }
+            }*/
 
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
@@ -317,7 +330,12 @@ public class Node implements Serializable {
 
             this.pop_up = jsonNode.optString("pop-up");
 
-            this.pop_up_hi = jsonNode.optString("pop-up-hi"); //pop-up for Hindi...
+            this.pop_up_ar = jsonNode.optString("pop-up-ar"); //pop-up for Arabic...
+            if (this.pop_up_ar.isEmpty()) {
+                this.pop_up_ar = this.pop_up;
+            }
+
+            /*this.pop_up_hi = jsonNode.optString("pop-up-hi"); //pop-up for Hindi...
             if (this.pop_up_hi.isEmpty()) {
                 this.pop_up_hi = this.pop_up;
             }
@@ -325,10 +343,10 @@ public class Node implements Serializable {
             this.pop_up_or = jsonNode.optString("pop-up-or"); //pop-up for Odiya...
             if (this.pop_up_or.isEmpty()) {
                 this.pop_up_or = this.pop_up;
-            }
+            } */
 
             // this.hasPopUp = !pop_up.isEmpty();
-            if (!pop_up.isEmpty() || !pop_up_hi.isEmpty() || !pop_up_or.isEmpty()) {
+            if (!pop_up.isEmpty() || !pop_up_ar.isEmpty() /*!pop_up_hi.isEmpty() || !pop_up_or.isEmpty()*/ ) {
                 this.hasPopUp = true;
             }
 
@@ -347,7 +365,8 @@ public class Node implements Serializable {
         //this.id = source.id;
         this.text = source.text;
         this.display = source.display;
-        this.display_oriya = source.display_oriya;
+        this.display_arabic = source.display_arabic;
+        /*this.display_oriya = source.display_oriya;
         this.display_gujarati = source.display_gujarati;
         this.display_bengali = source.display_bengali;
         this.display_tamil = source.display_tamil;
@@ -356,7 +375,7 @@ public class Node implements Serializable {
         this.display_kannada = source.display_kannada;
         this.display_assamese = source.display_assamese;
         this.display_malyalam = source.display_malyalam;
-        this.display_marathi = source.display_marathi;
+        this.display_marathi = source.display_marathi;*/
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -367,8 +386,9 @@ public class Node implements Serializable {
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
         this.pop_up = source.pop_up;
-        this.pop_up_hi = source.pop_up_hi;
-        this.pop_up_or = source.pop_up_or;
+        this.pop_up_ar = source.pop_up_ar;
+        /*this.pop_up_hi = source.pop_up_hi;
+        this.pop_up_or = source.pop_up_or;*/
         this.jobAidFile = source.jobAidFile;
         this.jobAidType = source.jobAidType;
         this.aidAvailable = source.aidAvailable;
@@ -395,6 +415,7 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
         ImageView imageView = convertView.findViewById(R.id.dialog_subquestion_image_view);
+
         if (node.isAidAvailable()) {
             if (node.getJobAidType().equals("image")) {
                 String drawableName = node.getJobAidFile();
@@ -495,161 +516,51 @@ public class Node implements Serializable {
 
         SessionManager sessionManager = null;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-
-//        String locale = Locale.getDefault().getLanguage();
         String locale = sessionManager.getCurrentLang();
 
         switch (locale) {
-            case "en": {
-                //Log.i(TAG, "findDisplay: eng");
-                if (display != null && display.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: eng txt");
-                    return text;
-                } else {
-                    //Log.i(TAG, "findDisplay: eng dis");
-                    return display;
-                }
-            }
-            case "gu": {
-                if (display_gujarati != null && !display_gujarati.isEmpty()) {
-                    return display_gujarati;
+            case "ar": {
+                if (display_arabic != null && !display_arabic.isEmpty()) {
+                    return display_arabic;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "bn": {
-                if (display_bengali != null && !display_bengali.isEmpty()) {
-                    return display_bengali;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "ta": {
-                if (display_tamil != null && !display_tamil.isEmpty()) {
-                    return display_tamil;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "or": {
-                //Log.i(TAG, "findDisplay: ori");
-                if (display_oriya != null && !display_oriya.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: ori dis");
-                    return display_oriya;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
 
             }
-            case "hi": {
-                //Log.i(TAG, "findDisplay: cb");
-                if (display_hindi != null && !display_hindi.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: cb ");
-                    return display_hindi;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "te": {
-                if (display_telugu != null && !display_telugu.isEmpty()) {
-                    return display_telugu;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "mr": {
-                if (display_marathi != null && !display_marathi.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: mr ");
-                    return display_marathi;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }  //Assamese language support...
-            case "as": {
-                if (display_assamese != null && !display_assamese.isEmpty()) {
-                    return display_assamese;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-
-            //Malyalam language support...
-            case "ml": {
-                if (display_malyalam != null && !display_malyalam.isEmpty()) {
-                    return display_malyalam;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-            case "kn": {
-                if (display_kannada != null && !display_kannada.isEmpty()) {
-                    return display_kannada;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-
             default: {
-                {
                     if (display != null && display.isEmpty()) {
                         return text;
                     } else {
                         return display;
                     }
+            }
+        }
+    }
+
+    public String findDisplay(String language) {
+
+        switch (language) {
+            case "ar": {
+                if (display_arabic != null && !display_arabic.isEmpty()) {
+                    return display_arabic;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+
+            }
+            default: {
+                if (display != null && display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
                 }
             }
         }
@@ -794,11 +705,21 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
-                } else {
-                    node.addLanguage(dialogEditText.getText().toString());
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_",  dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
@@ -808,10 +729,29 @@ public class Node implements Serializable {
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                // node.setSelected(true);
+                adapter.notifyDataSetChanged();
                 dialog.cancel();
             }
         });
         AlertDialog dialog = textInput.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -823,22 +763,9 @@ public class Node implements Serializable {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
-                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                            (associatedTest.trim().equals("H/o specific illness")) ||
-                            (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("الأعراض المرافقة"))) {
 
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
-                                (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                                (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
-                                (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                                || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                                || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("الأعراض المرافقة")) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -866,14 +793,80 @@ public class Node implements Serializable {
                 } else {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                            || associatedTest.trim().equals("الأعراض المرافقة"))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+    public String generateLanguage(String language) {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("الأعراض المرافقة"))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("الأعراض المرافقة")) {
+                            if (!generateAssociatedSymptomsOrHistory(node_opt, language).isEmpty()) {
+                                raw = raw + (generateAssociatedSymptomsOrHistory(node_opt, language)) + next_line;
+                                raw = raw.substring(6);
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt, language)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                raw = raw + bullet + " " + node_opt.formLanguage(language) + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage(language)) + next_line;
+                            } else {
+                                if (language.equalsIgnoreCase("ar"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_arabic() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else
+                                    raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
+                            }
+                            Log.e("FinalText= ", raw);
+
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("الأعراض المرافقة"))) {
+                        if (!generateAssociatedSymptomsOrHistory(node_opt, language).isEmpty()) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory(node_opt, language)) + next_line;
                             raw = raw.substring(6);
                             Log.e("FinalText= ", raw);
                         } else {
@@ -984,16 +977,9 @@ public class Node implements Serializable {
         if (optionsList != null && !optionsList.isEmpty()) {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected() && node_opt.hasPopUp) {
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        messages.add(node_opt.pop_up_hi);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        messages.add(node_opt.pop_up_or);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        messages.add(node_opt.pop_up_or);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                        messages.add(node_opt.pop_up_ar);
                     }
-//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                        messages.add(node_opt.pop_up_or);
-//                    }
                     else {
                         messages.add(node_opt.pop_up);
                     }
@@ -1253,16 +1239,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-                // String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
-                //translate back to English from Hindi if present...
-//                String unit_text = "";
-//                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
-//                unit_text = or_en(unit_text); //for Odiya...
-
-                //String durationString = quantityPicker.getValue() + " " + unit_text;
                 String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
-
-
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
@@ -1302,7 +1279,7 @@ public class Node implements Serializable {
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
-                context.getString(R.string.Years)}; //supports Hindi Translations as well...
+                context.getString(R.string.Years)}; //supports Arabic Translations as well...
 
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
@@ -1314,16 +1291,9 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-                //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
-                //translate back to English from Hindi if present...
+                //translate back to English from Arabic if present...
                 String unit_text = "";
-                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
-                unit_text = or_en(unit_text); //for Odiya...
-                unit_text = te_en(unit_text); //for telugu...
-                unit_text = mr_en(unit_text); //for telugu...
-                unit_text = gu_en(unit_text); //for Gujarati...
-                unit_text = bn_en(unit_text); //for Bengali...
-                unit_text = ta_en(unit_text); //for Tamil...
+                unit_text = ar_en(units[unitPicker.getValue()]); //for Arabic...
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {
@@ -1348,26 +1318,26 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    private static String hi_en(String unit) {
+    private static String ar_en(String unit) {
 
         switch (unit) {
-            case "घंटे":
+            case "ساعات":
                 unit = "Hours";
                 break;
 
-            case "दिन":
+            case "أيام":
                 unit = "Days";
                 break;
 
-            case "हफ्तों":
+            case "أسابيع":
                 unit = "Weeks";
                 break;
 
-            case "महीने":
+            case "شهور":
                 unit = "Months";
                 break;
 
-            case "वर्षों":
+            case "سنوات":
                 unit = "Years";
                 break;
 
@@ -1377,192 +1347,6 @@ public class Node implements Serializable {
 
         return unit;
     }
-
-    private static String gu_en(String unit) {
-
-        switch (unit) {
-            case "કલાક":
-                unit = "Hours";
-                break;
-
-            case "દિવસ":
-                unit = "Days";
-                break;
-
-            case "અઠવાડિયું":
-                unit = "Weeks";
-                break;
-
-            case "માસ":
-                unit = "Months";
-                break;
-
-            case "વર્ષ":
-                unit = "Years";
-                break;
-
-            default:
-                return unit;
-        }
-
-        return unit;
-    }
-
-    private static String bn_en(String unit) {
-
-        switch (unit) {
-            case "ঘন্টার":
-                unit = "Hours";
-                break;
-
-            case "দিনগুলি":
-                unit = "Days";
-                break;
-
-            case "সপ্তাহ":
-                unit = "Weeks";
-                break;
-
-            case "মাস":
-                unit = "Months";
-                break;
-
-            case "বছর":
-                unit = "Years";
-                break;
-
-            default:
-                return unit;
-        }
-
-        return unit;
-    }
-
-    private static String ta_en(String unit) {
-
-        switch (unit) {
-            case "மணி":
-                unit = "Hours";
-                break;
-
-            case "நாட்கள்":
-                unit = "Days";
-                break;
-
-            case "வாரங்கள்":
-                unit = "Weeks";
-                break;
-
-            case "மாதங்கள்":
-                unit = "Months";
-                break;
-
-            case "ஆண்டுகள்":
-                unit = "Years";
-                break;
-
-            default:
-                return unit;
-        }
-
-        return unit;
-    }
-
-    private static String or_en(String unit) {
-
-        switch (unit) {
-            case "ଘଣ୍ଟା":
-                unit = "Hours";
-                break;
-
-            case "ଦିନ":
-                unit = "Days";
-                break;
-
-            case "ସପ୍ତାହ":
-                unit = "Weeks";
-                break;
-
-            case "ମାସ":
-                unit = "Months";
-                break;
-
-            case "ବର୍ଷ":
-                unit = "Years";
-                break;
-
-            default:
-                return unit;
-        }
-
-        return unit;
-    }
-
-    /**
-     * telugu
-     */
-    private static String te_en(String unit) {
-        switch (unit) {
-            case "గంటలు":
-                unit = "Hours";
-                break;
-
-            case "రోజులు":
-                unit = "Days";
-                break;
-
-            case "వారాలు":
-                unit = "Weeks";
-                break;
-
-            case "నెలలు":
-                unit = "Months";
-                break;
-
-            case "సంవత్సరాలు":
-                unit = "Years";
-                break;
-
-            default:
-                return unit;
-        }
-
-        return unit;
-    }
-
-    /**
-     * marathi
-     */
-    private static String mr_en(String unit) {
-
-        switch (unit) {
-            case "तास":
-                unit = "Hours";
-                break;
-
-            case "दिवस":
-                unit = "Days";
-                break;
-
-            case "आठवडे":
-                unit = "Weeks";
-                break;
-
-            case "महीने":
-                unit = "Months";
-                break;
-
-            case "वर्षे":
-                unit = "Years";
-                break;
-
-            default:
-                return unit;
-        }
-
-        return unit;
-    }
-
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
@@ -1876,7 +1660,7 @@ public class Node implements Serializable {
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
-                context.getString(R.string.Years)}; //supports Hindi Translations as well...
+                context.getString(R.string.Years)}; //supports Arabic Translations as well...
 
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
@@ -1889,15 +1673,9 @@ public class Node implements Serializable {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
                 // String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
-                //translate back to English from Hindi if present...
+                //translate back to English from Arabic if present...
                 String unit_text = "";
-                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
-                unit_text = or_en(unit_text); //for Odiya...
-                unit_text = te_en(unit_text); //for Telugu...
-                unit_text = mr_en(unit_text); //for Marathi...
-                unit_text = gu_en(unit_text); //for Gujarati...
-                unit_text = bn_en(unit_text); //for Bengali...
-                unit_text = ta_en(unit_text); //for Tamil...
+                unit_text = ar_en(units[unitPicker.getValue()]); //for Arabic...
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -2022,6 +1800,98 @@ public class Node implements Serializable {
         return mLanguage;
     }
 
+    public String formLanguage(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+
+                    if (language.equalsIgnoreCase("ar"))
+                        test = mOptions.get(i).getDisplay_arabic();
+
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    if (language.equalsIgnoreCase("ar"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    if (language.equalsIgnoreCase("ar") && !mOptions.get(i).getDisplay_arabic().startsWith("["))
+                                        stringsList.add(mOptions.get(i).getDisplay_arabic());
+                                    else
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).findDisplay(language));
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageArabic(language));
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "سؤال لم يتم الإجابة عليه");
+        return mLanguage;
+    }
+
     public AlertDialog displayImage(final Activity context, final String path, final String name) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
@@ -2139,7 +2009,15 @@ public class Node implements Serializable {
         this.display = display;
     }
 
-    public String getDisplay_gujarati() {
+    public String getDisplay_arabic() {
+        return display_arabic;
+    }
+
+    public void setDisplay_arabic(String display_arabic) {
+        this.display_arabic = display_arabic;
+    }
+
+   /* public String getDisplay_gujarati() {
         return display_gujarati;
     }
 
@@ -2221,7 +2099,7 @@ public class Node implements Serializable {
 
     public void setDisplay_malyalam(String display_malyalam) {
         this.display_malyalam = display_malyalam;
-    }
+    } */
 
     public void setOptionsList(List<Node> optionsList) {
         this.optionsList = optionsList;
@@ -2432,6 +2310,118 @@ public class Node implements Serializable {
 
     }
 
+    private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode, String language) {
+
+        List<String> positiveAssociations = new ArrayList<>();
+        List<String> negativeAssociations = new ArrayList<>();
+        List<String> finalTexts = new ArrayList<>();
+        List<Node> mOptions = associatedSymptomNode.getOptionsList();
+        boolean flagPositive = false;
+        boolean flagNegative = false;
+//        String mLanguagePositive = associatedSymptomNode.positiveCondition;
+        String mLanguagePositive = "Patient reports -" + next_line;
+//        String mLanguageNegative = associatedSymptomNode.negativeCondition;
+        String mLanguageNegative = "Patient denies -" + next_line;
+
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
+
+
+        for (int i = 0; i < mOptions.size(); i++) {
+
+
+            if (mOptions.get(i).isSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        positiveAssociations.add(mOptions.get(i).getText());
+                    } else {
+                        positiveAssociations.add(mOptions.get(i).getDisplay_arabic());
+                    }
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    if (positiveAssociations.size() > 0) {
+                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
+                                mOptions.get(i).formLanguage("ar");
+
+                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                    }
+                }
+
+            } else if (mOptions.get(i).isNoSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        negativeAssociations.add(mOptions.get(i).getText());
+                    } else {
+                        negativeAssociations.add(mOptions.get(i).getDisplay_arabic());
+                    }
+                }
+            }
+
+
+//            else {
+//                if (mOptions.get(i).getLanguage().equals("%")) {
+//                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+//                    negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+//                } else if (mOptions.get(i).getLanguage().isEmpty()) {
+//                    negativeAssociations.add(mOptions.get(i).getText());
+//                } else {
+//                    negativeAssociations.add(mOptions.get(i).getLanguage());
+//                }
+//            }
+        }
+
+        if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : positiveAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                if (!flagPositive) {
+                    flagPositive = true;
+                    finalTexts.add(mLanguagePositive + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+
+        if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : negativeAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                if (!flagNegative) {
+                    flagNegative = true;
+                    finalTexts.add(mLanguageNegative + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+        String final_language = "";
+
+        if (!finalTexts.isEmpty()) {
+            for (int l = 0; l < finalTexts.size(); l++) {
+                final_language = final_language + ", " + finalTexts.get(l);
+            }
+        }
+
+        final_language = final_language.replaceAll("- ,", "- ");
+        final_language = final_language.replaceAll("of,", "of");
+        final_language = final_language.replaceAll("\\, \\[", " [");
+        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
+
+        return final_language;
+
+    }
+
+
 
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
@@ -2447,9 +2437,7 @@ public class Node implements Serializable {
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("الأعراض المرافقة"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
@@ -2481,11 +2469,7 @@ public class Node implements Serializable {
                 }
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("الأعراض المرافقة")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
@@ -2552,7 +2536,8 @@ public class Node implements Serializable {
                 ", min_age='" + min_age + '\'' +
                 ", max_age='" + max_age + '\'' +
                 ", display='" + display + '\'' +
-                ", display_gujarati='" + display_gujarati + '\'' +
+                ", display_arabic='" + display_arabic + '\'' +
+                /*", display_gujarati='" + display_gujarati + '\'' +
                 ", display_malyalam='" + display_malyalam + '\'' +
                 ", display_marathi='" + display_marathi + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
@@ -2562,7 +2547,7 @@ public class Node implements Serializable {
                 ", display_tamil='" + display_tamil + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
-                ", display_hindi='" + display_hindi + '\'' +
+                ", display_hindi='" + display_hindi + '\'' +*/
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
@@ -2572,8 +2557,9 @@ public class Node implements Serializable {
                 ", jobAidFile='" + jobAidFile + '\'' +
                 ", jobAidType='" + jobAidType + '\'' +
                 ", pop_up='" + pop_up + '\'' +
-                ", pop_up_hi='" + pop_up_hi + '\'' +
-                ", pop_up_or='" + pop_up_or + '\'' +
+                ", pop_up_ar='" + pop_up_ar + '\'' +
+                /*", pop_up_hi='" + pop_up_hi + '\'' +
+                ", pop_up_or='" + pop_up_or + '\'' + */
                 ", positiveCondition='" + positiveCondition + '\'' +
                 ", negativeCondition='" + negativeCondition + '\'' +
                 ", rootNode=" + rootNode +
@@ -2833,6 +2819,175 @@ public class Node implements Serializable {
         no.remove(index);
     }
 
+    public String formLanguageArabic(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                    if (language.equalsIgnoreCase("ar"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageArabic());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "سؤال لم يتم الإجابة عليه");
+        return mLanguage;
+    }
+
+    public String formLanguageArabic() {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageArabic());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "سؤال لم يتم الإجابة عليه");
+        return mLanguage;
+    }
 
 }
 

@@ -13,6 +13,10 @@ public class PatientAttributeTypeMasterDTO {
     @Expose
     private String name;
 
+    @SerializedName("description")
+    @Expose
+    private String description;
+
     public String getUuid() {
         return uuid;
     }
@@ -29,4 +33,11 @@ public class PatientAttributeTypeMasterDTO {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

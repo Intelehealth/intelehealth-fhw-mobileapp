@@ -97,7 +97,7 @@ public class SlotListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext)
                             .setMessage(mContext.getString(R.string.appointment_booking_confirmation_txt)
                                     + "\n\n" + mContext.getString(R.string.slot_info) + "- \n" + slotInfo.getSlotDate()
-                                    + "\n" + slotInfo.getSlotTime()
+                                    + "\n" + StringUtils.getTranslatedSlot(slotInfo.getSlotTime(),new SessionManager(mContext).getAppLanguage())
                                     + "\n" + StringUtils.getTranslatedDays(slotInfo.getSlotDay(), new SessionManager(mContext).getAppLanguage())
                             )
                             //set positive button

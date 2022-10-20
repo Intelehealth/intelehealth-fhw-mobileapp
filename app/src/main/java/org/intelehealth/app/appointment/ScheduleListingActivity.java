@@ -75,17 +75,9 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         TextView specialityTextView = findViewById(R.id.tvSpeciality);
         specialityTextView.setText(speciality);
 
-        if (sessionManager.getAppLanguage().equals("ru")) {
-            if (speciality.equalsIgnoreCase("Infectionist")) {
-                specialityTextView.setText("Инфекционист");
-            } else if (speciality.equalsIgnoreCase("Neurologist")) {
-                specialityTextView.setText("Невролог");
-            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
-                specialityTextView.setText("Семейный врач");
-            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
-                specialityTextView.setText("Педиатр");
-            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
-                specialityTextView.setText("Неонатолог");
+        if (sessionManager.getAppLanguage().equals("ar")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("طبيب عام");
             }
         }
 
@@ -167,9 +159,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setSlotDuration(slotInfo.getSlotDuration());
         request.setSlotDurationUnit(slotInfo.getSlotDurationUnit());
         request.setSlotTime(slotInfo.getSlotTime());
-
         request.setSpeciality(slotInfo.getSpeciality());
-
         request.setUserUuid(slotInfo.getUserUuid());
         request.setDrName(slotInfo.getDrName());
         request.setVisitUuid(visitUuid);
@@ -178,6 +168,13 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setOpenMrsId(openMrsId);
         request.setLocationUuid(new SessionManager(ScheduleListingActivity.this).getLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
+
+        //doing the below changes for the new push packet created for sila.swaida.org server
+        if (appointmentId == 0) {
+            request.setReason("Patient needs consultation");
+        } else {
+            request.setReason("Patient not available");
+        }
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");

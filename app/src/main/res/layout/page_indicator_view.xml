@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dip">
+
+    <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="24dip"
+        android:layout_height="24dip"
+        android:background="@drawable/ic_baseline_lens_24_1"
+        android:gravity="center"
+        android:text="1"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.questionNodeActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +34,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +47,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -118,16 +123,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the org should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//        String language = sessionManager.getAppLanguage();
+//        //In case of crash still the org should hold the current lang fix.
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         filePath = new File(AppConstants.IMAGE_PATH);
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -228,6 +235,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
         Log.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
@@ -324,15 +336,61 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
             String complaintString = currentNode.generateLanguage();
+            String complaintStringArabic = currentNode.generateLanguage("ar");
+
+            //changes done to handle null pointer exception crash
+            if(complaintStringArabic!=null && !complaintStringArabic.isEmpty()) {
+                complaintStringArabic = complaintStringArabic
+                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                        .replace("Patient reports -", "يقر المريض ب-")
+                        .replace("Patient denies -", "ينفي المريض ب-")
+                        .replace("Hours", "ساعات")
+                        .replace("Days", "أيام")
+                        .replace("Weeks", "أسابيع")
+                        .replace("Months", "شهور")
+                        .replace("Years", "سنوات")
+                        .replace("times per hour", "مرات في الساعة")
+                        .replace("time per day", "الوقت في اليوم")
+                        .replace("times per week", "مرات بالأسبوع")
+                        .replace("times per month", "مرات في الشهر")
+                        .replace("times per year", "مرات في السنة")
+                        .replace("Jan", "كانون الثاني")
+                        .replace("Feb", "شهر شباط")
+                        .replace("Mar", "شهر اذار")
+                        .replace("Apr", "أشهر نيسان")
+                        .replace("May", "شهر أيار")
+                        .replace("Jun", "شهر حزيران")
+                        .replace("Jul", "شهر تموز")
+                        .replace("Aug", "شهر أب")
+                        .replace("Sep", "شهر أيلول")
+                        .replace("Oct", "شهر تشرين الأول")
+                        .replace("Nov", "شهر تشرين الثاني")
+                        .replace("Dec", "شهر كانون الأول");
+            }
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
-                //    complaintDetails.put(complaint, complaintFormatted);
-
-//                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+                ObsDTO obsDTO = new ObsDTO();
+                obsDTO.setValue(insertion);
+                insertion = obsDTO.getValue(null);
+                String insertionArabic = obsDTO.getValue("ar");
+                if (insertion.equalsIgnoreCase(insertionArabic)) {
+                    insertionArabic = Node.bullet_arrow + "<b>" + currentNode.getDisplay_arabic() + "</b>" + ": " +
+                            Node.next_line + complaintStringArabic + " ";
+                } else {
+                    insertionArabic = insertionArabic.concat(Node.bullet_arrow + "<b>" + currentNode.getDisplay_arabic() + "</b>" + ": " +
+                            Node.next_line + complaintStringArabic + " ");
+                }
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+
+                Map<String, String> complaintData = new HashMap<>();
+                complaintData.put("en", insertion);
+                complaintData.put("ar", insertionArabic);
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                insertion = gson.toJson(complaintData);
+
             } else {
                 String complaint = currentNode.getText();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
@@ -416,6 +474,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         adapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
 
     }
 
@@ -515,6 +575,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
+
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
@@ -533,9 +596,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ") || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("জড়িত লক্ষণগুলি")))) {
+                    .equalsIgnoreCase("الأعراض المرافقة"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
@@ -552,6 +613,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void setRecyclerViewIndicator() {
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
+
     }
 
     private void removeDuplicateSymptoms() {
@@ -579,31 +643,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("id", "ID_294177528");
                 assoSympObj.put("text", "Associated symptoms");
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
-                assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
-                assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
-                assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
-                assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
-                assoSympObj.put("display-te", "మీకు ఈ క్రింది లక్షణం (లు) ఉన్నాయా?");
-                assoSympObj.put("display-mr", "तुम्हाला खालील लक्षणे आहेत का?");
-                assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
-                assoSympObj.put("display-ml", "നിങ്ങൾക്ക് ഇനിപ്പറയുന്ന രോഗലക്ഷണം ഉണ്ടോ?");
-                assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত লক্ষণগুলি রয়েছে?");
-                assoSympObj.put("display-ta", "பின்வரும் அறிகுறி (கள்) உங்களிடம் உள்ளதா?");
+                assoSympObj.put("display-ar", "هل لديك أحد الأعراض التالية؟");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
-                finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
-                finalAssoSympObj.put("display-ml", "ബന്ധപ്പെട്ട രോഗലക്ഷണങ്ങൾ");
-                finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
-                finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
-                finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
-                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
-                finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
-                finalAssoSympObj.put("display-ta", "தொடர்புடைய அறிகுறிகள்");
-                finalAssoSympObj.put("display-bn", "জড়িত লক্ষণগুলি");
-                finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
+                finalAssoSympObj.put("display-ar", "الأعراض المرافقة");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -643,155 +689,39 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String a = currentNode.formQuestionAnswer(0);
-            Log.d("tag", a);
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "सवाल का जवाब नहीं दिया")
-                    .replace("Patient reports -", "पेशेंट ने सूचित किया -")
-                    .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
-                    .replace("Hours", "घंटे").replace("Days", "दिन")
-                    .replace("Weeks", "हफ्तों").replace("Months", "महीने")
-                    .replace("Years", "वर्ष")
-                    .replace("times per hour", "प्रति घंटे बार")
-                    .replace("time per day", "प्रति दिन का समय")
-                    .replace("times per week", "प्रति सप्ताह बार")
-                    .replace("times per month", "प्रति माह बार")
-                    .replace("times per year", "प्रति वर्ष बार")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
-                    .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
-                    .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
-                    .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
-                    .replace("Weeks", "ସପ୍ତାହ").replace("Months", "ମାସ")
-                    .replace("Years", "ବର୍ଷ")
-                    .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା")
-                    .replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
-                    .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ")
-                    .replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
-                    .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
-                    .replace("Patient reports -", "દરદી રિપોર્ટ કરે છે -")
-                    .replace("Patient denies -", "દરદી મના કરે છે -")
-                    .replace("Hours", "કલાક").replace("Days", "દિવસ")
-                    .replace("Weeks", "અઠવાડિયું").replace("Months", "માસ")
-                    .replace("Years", "વર્ષ")
-                    .replace("times per hour", "કલાક દીઠ વખત")
-                    .replace("time per day", "દિવસ દીઠ વખત")
-                    .replace("times per week", "દર અઠવાડિયે વખત")
-                    .replace("times per month", "દર મહિને વખત")
-                    .replace("times per year", "વર્ષ દીઠ વખત")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
-                    .replace("Patient reports -", "రోగి నివేదికలు -")
-                    .replace("Patient denies -", "రోగి నిరాకరించాడు -")
-                    .replace("Hours", "గంటలు").replace("Days", "రోజులు")
-                    .replace("Weeks", "వారాలు").replace("Months", "నెలల")
-                    .replace("Years", "సంవత్సరాలు")
-                    .replace("times per hour", "గంటకు సార్లు")
-                    .replace("time per day", "రోజుకు సార్లు")
-                    .replace("times per week", "వారానికి సార్లు")
-                    .replace("times per month", "నెలకు సార్లు")
-                    .replace("times per year", "సంవత్సరానికి సార్లు")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
-                    .replace("Patient reports -", "रुग्ण अहवाल-")
-                    .replace("Patient denies -", "रुग्ण नकार देतो-")
-                    .replace("Hours", "तास")
-                    .replace("Days", "दिवस")
-                    .replace("Weeks", "आठवडे")
-                    .replace("Months", "महिने")
-                    .replace("Years", "वर्षे")
-                    .replace("times per hour", "प्रति तास")
-                    .replace("time per day", "दररोज वेळा")
-                    .replace("times per week", "आठवड्यातून काही वेळा")
-                    .replace("times per month", "दरमहा वेळा")
-                    .replace("times per year", "दरवर्षी वेळा")
-                    .replace("Jan", "जानेवारी")
-                    .replace("Feb", "फेब्रुवारी")
-                    .replace("Mar", "मार्च")
-                    .replace("Apr", "एप्रिल")
-                    .replace("May", "मे")
-                    .replace("Jun", "जून")
-                    .replace("Jul", "जुलै")
-                    .replace("Aug", "ऑगस्ट")
-                    .replace("Sept", "सप्टेंबर")
-                    .replace("Oct", "ऑक्टोबर")
-                    .replace("Nov", "नोव्हेंबर")
-                    .replace("Dec", "डिसेंबर")
-            ));
-
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಲಾಗಿಲ್ಲ")
-                    .replace("Patient reports -", "ರೋಗಿಯ ವರದಿಗಳು-")
-                    .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-")
-                    .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
-                    .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
-                    .replace("Years", "ವರ್ಷಗಳು")
-                    .replace("times per hour", "ಗಂಟೆಗೆ ಬಾರಿ").replace("time per day", "ದಿನಕ್ಕೆ ಬಾರಿ")
-                    .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ").replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
-                    .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই")
-                    .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
-                    .replace("Patient denies -", "ৰোগীয়ে অস্বীকাৰ কৰে -")
-                    .replace("Hours", "ঘণ্টা").replace("Days", "দিনসমূহ")
-                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাহ")
-                    .replace("Years", "বছৰ")
-                    .replace("times per hour", "প্ৰতি ঘণ্টাত সময়")
-                    .replace("time per day", "প্ৰতিদিনে সময়")
-                    .replace("times per week", "প্ৰতি সপ্তাহত সময়")
-                    .replace("times per month", "প্ৰতি মাহে সময়")
-                    .replace("times per year", "প্ৰতি বছৰে সময়")));
-        }
-        //Malyalam Language Support...
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "ചോദ്യത്തിന് ഉത്തരം ലഭിച്ചില്ല")
-                    .replace("Patient reports -", "രോഗിയുടെ റിപ്പോർട്ടുകൾ -")
-                    .replace("Patient denies -", "രോഗി നിരസിക്കുന്നു -")
-                    .replace("Hours", "മണിക്കൂറുകൾ").replace("Days", "ദിവസങ്ങളിൽ")
-                    .replace("Weeks", "ആഴ്ചകൾ").replace("Months", "മാസങ്ങൾ")
-                    .replace("Years", "വർഷങ്ങൾ")
-                    .replace("times per hour", "മണിക്കൂറിൽ തവണ")
-                    .replace("time per day", "പ്രതിദിനം തവണ")
-                    .replace("times per week", "ആഴ്ചയിൽ തവണ")
-                    .replace("times per month", "മാസത്തിൽ തവണ")
-                    .replace("times per year", "വർഷത്തിൽ തവണ")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
-                    .replace("Patient reports -", "রোগীর রিপোর্ট-")
-                    .replace("Patient denies -", "রোগী অস্বীকার করে-")
-                    .replace("Hours", "ঘন্টার").replace("Days", "দিনগুলি")
-                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
-                    .replace("Years", "বছর")
-                    .replace("times per hour", "প্রতি ঘন্টা")
-                    .replace("time per day", "দিনে বার")
-                    .replace("times per week", "প্রতি সপ্তাহে বার")
-                    .replace("times per month", "প্রতি মাসে বার")
-                    .replace("times per year", "প্রতি বছর বার")));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "கேள்விக்கு பதில் அளிக்கப்படவில்லை")
-                    .replace("Patient reports -", "நோயாளி கூறுகிறார்-")
-                    .replace("Patient denies -", "நோயாளி மறுக்கிறார்-")
-                    .replace("Hours", "மணி").replace("Days", "நாட்கள்")
-                    .replace("Weeks", "வாரங்கள்").replace("Months", "மாதங்கள்")
-                    .replace("Years", "ஆண்டுகள்")
-                    .replace("times per hour", "ஒரு மணி நேரத்திற்கு முறை")
-                    .replace("time per day", "ஒரு நாளைக்கு முறை")
-                    .replace("times per week", "வாரத்திற்கு முறை")
-                    .replace("times per month", "மாதம் முறை")
-                    .replace("times per year", "வருடத்திற்கு முறை")));
-        } else {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            String message = Html.fromHtml(currentNode.formQuestionAnswer(0)).toString();
+            //changes done to handle null pointer exception crash
+            if(message!=null && !message.isEmpty()) {
+                message = message
+                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                        .replace("Patient reports -", "يقر المريض ب-")
+                        .replace("Patient denies -", "ينفي المريض ب-")
+                        .replace("Hours", "ساعات")
+                        .replace("Days", "أيام")
+                        .replace("Weeks", "أسابيع")
+                        .replace("Months", "شهور")
+                        .replace("Years", "سنوات")
+                        .replace("times per hour", "مرات في الساعة")
+                        .replace("time per day", "الوقت في اليوم")
+                        .replace("times per week", "مرات بالأسبوع")
+                        .replace("times per month", "مرات في الشهر")
+                        .replace("times per year", "مرات في السنة")
+                        .replace("Jan", "كانون الثاني")
+                        .replace("Feb", "شهر شباط")
+                        .replace("Mar", "شهر اذار")
+                        .replace("Apr", "أشهر نيسان")
+                        .replace("May", "شهر أيار")
+                        .replace("Jun", "شهر حزيران")
+                        .replace("Jul", "شهر تموز")
+                        .replace("Aug", "شهر أب")
+                        .replace("Sep", "شهر أيلول")
+                        .replace("Oct", "شهر تشرين الأول")
+                        .replace("Nov", "شهر تشرين الثاني")
+                        .replace("Dec", "شهر كانون الأول");
+            }
+            alertDialogBuilder.setMessage(message);
+        }  else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 

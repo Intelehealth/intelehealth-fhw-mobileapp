@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.splash_activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,6 +33,7 @@ import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -64,6 +66,10 @@ public class SplashActivity extends AppCompatActivity {
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
         initFirebaseRemoteConfig();
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     private void initFirebaseRemoteConfig() {

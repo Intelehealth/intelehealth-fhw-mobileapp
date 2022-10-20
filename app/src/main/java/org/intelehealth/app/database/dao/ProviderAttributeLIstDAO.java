@@ -101,7 +101,9 @@ public class ProviderAttributeLIstDAO {
             while (idCursor.moveToNext()) {
                 dto = new ProviderAttributeListDTO();
                 dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                listDTOArrayList.add(dto.getValue());
+                //Only "General Physician" speciality is required for Syria project
+                if(dto.getValue().equalsIgnoreCase("General Physician"))
+                    listDTOArrayList.add(dto.getValue());
             }
         }
         idCursor.close();

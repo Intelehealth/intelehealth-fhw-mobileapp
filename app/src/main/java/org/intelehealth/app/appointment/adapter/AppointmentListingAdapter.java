@@ -92,17 +92,9 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private String getSpeciality(String speciality) {
-        if (new SessionManager(mContext).getAppLanguage().equals("ru")) {
-            if (speciality.equalsIgnoreCase("Infectionist")) {
-                return "Инфекционист";
-            } else if (speciality.equalsIgnoreCase("Neurologist")) {
-                return "Невролог";
-            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
-                return "Семейный врач";
-            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
-                return "Педиатр";
-            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
-                return "Неонатолог";
+        if (new SessionManager(mContext).getAppLanguage().equals("ar")) {
+            if (speciality.equalsIgnoreCase("General Physician")) {
+                return "طبيب عام";
             }
         } else {
             return speciality;

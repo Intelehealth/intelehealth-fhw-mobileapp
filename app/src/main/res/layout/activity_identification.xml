@@ -128,6 +128,7 @@
                                         android:maxLength="25"
                                         android:maxLines="1"
                                         android:singleLine="true"
+                                        android:textAlignment="viewStart"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -153,6 +154,7 @@
                                         android:maxLines="1"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
+                                        android:textAlignment="viewStart"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -178,6 +180,7 @@
                                         android:maxLength="25"
                                         android:maxLines="1"
                                         android:singleLine="true"
+                                        android:textAlignment="viewStart"
                                         android:textSize="@dimen/card_content_sub_text_size" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -204,7 +207,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:weightSum="2">
 
                             <RadioButton
                                 android:id="@+id/identification_gender_male"
@@ -239,8 +242,9 @@
                                 android:drawableLeft="@drawable/female_icon"
                                 android:fontFamily="@font/lato_regular"
                                 android:maxLines="1"
-                                android:text="Other"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:text="@string/other"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:visibility="gone" />
 
                         </RadioGroup>
 
@@ -268,6 +272,7 @@
                                 android:inputType=""
                                 android:maxLines="1"
                                 android:singleLine="true"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
@@ -295,6 +300,7 @@
                                 android:inputType=""
                                 android:maxLines="1"
                                 android:singleLine="true"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -324,6 +330,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -390,7 +397,60 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:paddingBottom="2dp"
+                                        android:weightSum="4">
+
+                                        <EditText
+                                            android:id="@+id/identification_country"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2"
+                                            android:clickable="false"
+                                            android:cursorVisible="false"
+                                            android:drawableStart="@drawable/country_flag_icon"
+                                            android:drawableLeft="@drawable/country_flag_icon"
+                                            android:drawablePadding="10dp"
+                                            android:focusable="false"
+                                            android:focusableInTouchMode="false"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:freezesText="true"
+                                            android:imeOptions="actionUnspecified"
+                                            android:inputType="textCapWords"
+                                            android:maxLines="1"
+                                            android:text="@string/identification_screen_prompt_country"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                        <Spinner
+                                            android:id="@+id/spinner_country"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2"
+                                            android:textAlignment="viewStart" />
+
+                                    </LinearLayout>
+
+
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="5dp"
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
@@ -430,155 +490,68 @@
                                             android:id="@+id/spinner_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="2" />
-
+                                            android:layout_weight="2"
+                                            android:textAlignment="viewStart" />
                                     </LinearLayout>
 
 
                                 </com.google.android.material.textfield.TextInputLayout>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <EditText
-                                android:id="@+id/identification_city"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="false"
-                                android:cursorVisible="false"
-                                android:drawableStart="@drawable/state_list_icon"
-                                android:drawableLeft="@drawable/state_list_icon"
-                                android:drawablePadding="10dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:fontFamily="@font/lato_regular"
-                                android:freezesText="true"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="textCapWords"
-                                android:maxLines="1"
-                                android:text="@string/district"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <Spinner
-                                android:id="@+id/spinner_city"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="5dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <EditText
-                                    android:id="@+id/identification_block"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:clickable="false"
-                                    android:cursorVisible="false"
-                                    android:drawableStart="@drawable/state_list_icon"
-                                    android:drawableLeft="@drawable/state_list_icon"
-                                    android:drawablePadding="10dp"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
-                                    android:inputType="textCapWords"
-                                    android:maxLines="1"
-                                    android:text="@string/block"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                                <Spinner
-                                    android:id="@+id/spinner_block"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
-
                             </LinearLayout>
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
-                                <EditText
-                                    android:id="@+id/identification_village"
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:clickable="false"
-                                    android:cursorVisible="false"
-                                    android:drawableStart="@drawable/state_list_icon"
-                                    android:drawableLeft="@drawable/state_list_icon"
-                                    android:drawablePadding="10dp"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
-                                    android:inputType="textCapWords"
-                                    android:maxLines="1"
-                                    android:text="@string/village"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
+                                    android:layout_weight="1"
+                                    android:weightSum="4">
 
-                                <Spinner
-                                    android:id="@+id/spinner_village"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:paddingBottom="2dp">
 
+                                        <EditText
+                                            android:id="@+id/identification_village"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2"
+                                            android:clickable="false"
+                                            android:cursorVisible="false"
+                                            android:drawableStart="@drawable/state_list_icon"
+                                            android:drawableLeft="@drawable/state_list_icon"
+                                            android:drawablePadding="10dp"
+                                            android:focusable="false"
+                                            android:focusableInTouchMode="false"
+                                            android:fontFamily="@font/lato_regular"
+                                            android:freezesText="true"
+                                            android:imeOptions="actionUnspecified"
+                                            android:inputType="textCapWords"
+                                            android:maxLines="1"
+                                            android:text="@string/village"
+                                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                                        <Spinner
+                                            android:id="@+id/spinner_village"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="2"
+                                            android:textAlignment="viewStart" />
+                                    </LinearLayout>
+
+
+                                </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/textinputlayout_blockVillageOther"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_block_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/enter_block_name_other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_village_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/enter_village_name_other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
 
                         </LinearLayout>
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -594,13 +567,40 @@
                                 android:ems="10"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="@string/household_number"
+                                android:hint="@string/identification_screen_prompt_address"
                                 android:imeOptions="actionUnspecified"
-                                android:inputType="number"
+                                android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
                                 android:singleLine="false"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <EditText
+                                android:id="@+id/identification_address2"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/home_icon"
+                                android:drawableLeft="@drawable/home_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="@string/identification_screen_prompt_address2"
+                                android:imeOptions="actionUnspecified"
+                                android:inputType="textCapWords"
+                                android:maxLength="50"
+                                android:maxLines="2"
+                                android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -622,19 +622,18 @@
                                 android:hint="@string/identification_screen_prompt_postal_code"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="number"
-                                android:maxLength="6"
+                                android:maxLength="9"
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
+                                android:textAlignment="viewStart"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
-
                 </androidx.cardview.widget.CardView>
 
-                <!--                Rosters - start-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -657,13 +656,13 @@
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
-                        android:text="@string/txt_hedingRosters"
+                        android:text="@string/aid_type"
                         android:textSize="@dimen/card_content_text_size" />
 
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview4"
+                    android:id="@+id/cardview_aid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -683,7 +682,199 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="@string/txt_what_is_your_relationship_with_head_of_household"
+                            android:text="@string/patient_aid_type"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbEmergency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/emergency_survey" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbGeneralAid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_aid_survey" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbStudentAid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/student_aid_survey" />
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbFHHSurvey"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fhh_survey" />
+
+
+
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        app:srcCompat="@drawable/svg_other_details"></ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:ems="10"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/other"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview401"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false">
+                <LinearLayout android:padding="8dip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:text="@string/are_you_head_of_the_family"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/hoh_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/hoh_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:text="@string/yes"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/hoh_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:text="@string/no"
+                            android:textSize="14sp" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                       <!-- <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/are_you_head_of_the_family"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+
+                        <RadioGroup
+                            android:id="@+id/hoh_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/hoh_yes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/yes"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.radiobutton.MaterialRadioButton
+                                android:id="@+id/hoh_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="@string/no"
+                                android:textSize="14sp" />
+
+                        </RadioGroup>
+-->
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/txt_what_is_your_relationship_with_household_members_you_support"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -693,34 +884,11 @@
                         <Spinner
                             android:id="@+id/spinner_whatisyourrelation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/relationshipHoH_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_whatisyourrelation_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
-                            <!--On the Left or Right of textview or Editext-->
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_whatisyourrelation_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -744,8 +912,180 @@
                         <Spinner
                             android:id="@+id/spinner_maritualstatus"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:paddingStart="5dp"
+                            android:text="@string/husband_status"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_husband_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/do_you_stay_independent_residence"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_independent_residence"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/what_made_you_main_official"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_main_official"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/family_needed_you_as_main_tendency"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_main_tendency_for_breadwinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/reason_changing_condition_for_support"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_reason_changing_condition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/since_change_happened"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <EditText
+                            android:id="@+id/ET_since_change_happened"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:textAlignment="viewStart" />
+
 
                         <Space
                             android:layout_width="10dp"
@@ -773,8 +1113,7 @@
                         <Spinner
                             android:id="@+id/spinner_education"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/maritual_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -802,150 +1141,7 @@
                         <Spinner
                             android:id="@+id/spinner_occupation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/occupation_identification_en" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_occupation_other"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:visibility="visible">
-                            <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
-                            <!--On the Left or Right of textview or Editext-->
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_occupation_other"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:hint="@string/other"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-                            android:paddingStart="5dp"
-                            android:text="@string/txt_phone_ownership"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <Spinner
-                            android:id="@+id/spinner_phoneownership"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/phoneownership_en" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <LinearLayout
-                            android:id="@+id/ll18"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_when_was_the_last_time_you_got_your_bp_checked"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_bpchecked"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/bp_en" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="@string/txt_when_was_the_last_time_you_got_your_sugar_level_checked"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_sugarchecked"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/sugar_en" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:text="@string/txt_when_was_the_last_time_you_got_your_hb_level_tested"
-                            android:textSize="@dimen/card_content_sub_text_size" />
-
-                        <Space
-                            android:layout_width="10dp"
-                            android:layout_height="10dp" />
-
-                        <Spinner
-                            android:id="@+id/spinner_hbchecked"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/hb_en" />
+                            android:layout_height="wrap_content" />
 
                         <Space
                             android:layout_width="10dp"
@@ -959,10 +1155,11 @@
                             android:background="?android:attr/listDivider" />
 
                         <TextView
+                            android:id="@+id/identification_residence_nature"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="@string/txt_bmi_height_and_weight_checked"
+                            android:text="@string/what_is_residence_nature"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -970,222 +1167,99 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_bmi"
+                            android:id="@+id/spinner_residence_nature"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:id="@+id/identification_residence_link_nature"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/bmi_en" />
+                            android:paddingStart="5dp"
+                            android:text="@string/what_is_residence_link_nature"
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <!--                        <LinearLayout-->
-                        <!--                            android:id="@+id/llHelath"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:orientation="vertical"-->
-                        <!--                            android:visibility="gone"-->
-                        <!--                            tools:visibility="visible">-->
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
 
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
+                        <Spinner
+                            android:id="@+id/spinner_residence_link_nature"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
 
-                        <!--                            <TextView-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:paddingStart="5dp"-->
-                        <!--                                android:text="@string/txt_what_health_issue_is_reported"-->
-                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
 
-                        <!--                            <Spinner-->
-                        <!--                                android:id="@+id/spinner_healthissuereported"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:entries="@array/healthissuereported_en" />-->
+                        <TextView
+                            android:id="@+id/identification_percentage_income"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/percentage_of_income"
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
 
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
+                        <Spinner
+                            android:id="@+id/spinner_percentage_income"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-                        <!--                            <TextView-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:paddingStart="5dp"-->
-                        <!--                                android:text="@string/txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue"-->
-                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
 
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
 
-                        <!--                            <Spinner-->
-                        <!--                                android:id="@+id/spinner_primaryhealthprovider"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:entries="@array/primaryhealthprovider_en" />-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
 
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
+                        <TextView
+                            android:id="@+id/identification_since_when_supporting_family"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/since_when_you_are_supporting_family"
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
 
-                        <!--                            <TextView-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:paddingStart="5dp"-->
-                        <!--                                android:text="@string/txt_first_location_of_visit_interaction"-->
-                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
+                        <EditText
+                            android:id="@+id/et_since_when_supporting_family"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_duration"
+                            android:textAlignment="viewStart" />
 
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <Spinner-->
-                        <!--                                android:id="@+id/spinner_firstlocation"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:entries="@array/firstlocation_en" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
-
-                        <!--                            <TextView-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:paddingStart="5dp"-->
-                        <!--                                android:text="@string/txt_referred_to"-->
-                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <Spinner-->
-                        <!--                                android:id="@+id/spinner_referredto"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:entries="@array/referredto_en" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
-
-                        <!--                            <TextView-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:paddingStart="5dp"-->
-                        <!--                                android:text="@string/txt_what_is_the_mode_of_transportations_used_to_reach_facility_provider"-->
-                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <Spinner-->
-                        <!--                                android:id="@+id/spinner_modeoftransport"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:entries="@array/modetransport_en" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
-
-                        <!--                            <EditText-->
-                        <!--                                android:id="@+id/edittext_noofepisodes"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:hint="@string/txt_no_of_episodes_in_the_last_year" />-->
-
-                        <!--                            <EditText-->
-                        <!--                                android:id="@+id/edittext_avgcosttravel"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:hint="@string/txt_average_cost_incurred_on_travel_and_stay_per_episode" />-->
-
-                        <!--                            <EditText-->
-                        <!--                                android:id="@+id/edittext_avgcostconsult"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:hint="@string/txt_average_cost_incurred_on_consultation_fees_per_episode" />-->
-
-                        <!--                            <EditText-->
-                        <!--                                android:id="@+id/edittext_avgcostmedicines"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:hint="@string/txt_averagecost_incurred_on_medicines_per_episode" />-->
-
-                        <!--                            <TextView-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:paddingStart="5dp"-->
-                        <!--                                android:text="@string/txt_score_for_experience_of_treatment"-->
-                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <Spinner-->
-                        <!--                                android:id="@+id/spinner_experiencerscore"-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:entries="@array/scoreexperience_en" />-->
-
-                        <!--                            <Space-->
-                        <!--                                android:layout_width="10dp"-->
-                        <!--                                android:layout_height="10dp" />-->
-
-                        <!--                            <View-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="1dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:layout_marginBottom="10dp"-->
-                        <!--                                android:background="?android:attr/listDivider" />-->
-                        <!--                        </LinearLayout>-->
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -1196,7 +1270,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <!--Title-->
                     <LinearLayout
@@ -1233,6 +1308,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
+                        android:visibility="gone"
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
                         app:cardPreventCornerOverlap="false">
@@ -1273,8 +1349,7 @@
                             <Spinner
                                 android:id="@+id/spinner_pregnantpasttwoyrs"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/pasttwoyrs_en" />
+                                android:layout_height="wrap_content" />
 
                             <Space
                                 android:layout_width="10dp"
@@ -1360,9 +1435,11 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/app_bar_view">

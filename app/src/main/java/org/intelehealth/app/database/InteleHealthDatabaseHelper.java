@@ -121,8 +121,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +
             "modified_date TEXT," +
+            "draft_status TEXT DEFAULT 'false', " +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
+
             ")";
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
             "uuid TEXT PRIMARY KEY," +
@@ -157,6 +159,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute_master (" +
             "uuid TEXT PRIMARY KEY," +
             "name TEXT," +
+            "description TEXT," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
@@ -240,8 +243,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('a86ac96e-2e07-47a7-8e72-8216a1a75bfd','VISIT_TELEMEDICINE')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
-
-
         }
     }
 
@@ -260,6 +261,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
+        db.execSQL(CREATE_LOCATION_NEW);
         db.execSQL(CREATE_RTC_LOGS);
         db.execSQL(CREATE_APPOINTMENTS);
         uuidInsert(db);
@@ -292,4 +294,21 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         else
             return getWritableDatabase();
     }
+
+    public static final String CREATE_LOCATION_NEW= "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
+            "location_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
+            "country TEXT," +
+            "state TEXT," +
+            "district TEXT," +
+            "tehsil TEXT," +
+            "village TEXT," +
+            "latitude TEXT," +
+            "longitude TEXT," +
+            "parent_location integer(11)," +
+            "locationuuid TEXT," +
+            "modified_date TEXT," +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
+            ")";
 }

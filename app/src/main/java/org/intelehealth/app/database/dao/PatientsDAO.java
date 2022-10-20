@@ -234,6 +234,7 @@ public class PatientsDAO {
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "TRUE");
+                values.put("draft_status", patientAttributesDTOS.get(i).getDraftStatus());
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -246,12 +247,13 @@ public class PatientsDAO {
         return isInserted;
     }
 
+    //    used only for sync
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "' and draft_status = 'false'"; // exclude the draft items from sync process
             Cursor cursor = db.rawQuery(query, null, null);
             Attribute attribute = new Attribute();
             if (cursor.moveToFirst()) {
@@ -281,7 +283,7 @@ public class PatientsDAO {
         db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE",
-                    new String[]{patientuuid, "be8e386b-ca22-447d-82a1-b80366e5f848"});
+                    new String[]{patientuuid, "22b8bf9f-f142-4247-85d2-6e1dcd56b238"});
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -383,6 +385,9 @@ public class PatientsDAO {
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
         boolean isInserted = true;
         ContentValues values = new ContentValues();
+        if (db == null) {
+            db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        }
         db.beginTransaction();
         try {
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
@@ -392,6 +397,7 @@ public class PatientsDAO {
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", false);
+                values.put("draft_status", patientAttributesDTOS.get(i).getDraftStatus());
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -418,6 +424,7 @@ public class PatientsDAO {
             for (int i = 0; i < patientAttributeTypeMasterDTOS.size(); i++) {
                 values.put("uuid", patientAttributeTypeMasterDTOS.get(i).getUuid());
                 values.put("name", patientAttributeTypeMasterDTOS.get(i).getName());
+                values.put("description", patientAttributeTypeMasterDTOS.get(i).getDescription());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "TRUE");
                 db.insertWithOnConflict("tbl_patient_attribute_master", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -438,6 +445,26 @@ public class PatientsDAO {
         String attributeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+
+        return attributeUuid;
+    }
+
+    /**
+     * Get the PatientAttributeUUID by the description value
+     *
+     * @param desc
+     * @return
+     */
+    public String getUuidForAttributeByDesc(String desc) {
+        String attributeUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where description = ? COLLATE NOCASE", new String[]{desc});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
@@ -585,6 +612,29 @@ public class PatientsDAO {
         cursor.close();
 
         return gender;
+    }
+
+    public String getPatientAttributeValueByTypeUUID(String patientUuid, String typeUuid) throws DAOException {
+        String value = null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        // @Lincon changes on 15/09/2022
+        // modified the query for getting the latest record. bcz patient attributes are inserting duplicate record for one attibute type
+        //
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? order by modified_date desc limit 1", new String[]{patientUuid, typeUuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        }
+        idCursor.close();
+
+        return value;
     }
 
 }

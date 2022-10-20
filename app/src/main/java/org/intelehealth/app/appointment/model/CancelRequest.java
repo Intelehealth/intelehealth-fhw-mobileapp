@@ -12,6 +12,12 @@ public class CancelRequest implements Serializable {
     @SerializedName("visitUuid")
     private String visitUuid;
 
+    @SerializedName("hwUUID")
+    private String hwUuid;
+
+    @SerializedName("reason")
+    private String reason;
+
 
     public String getVisitUuid() {
         return visitUuid;
@@ -21,11 +27,27 @@ public class CancelRequest implements Serializable {
         this.visitUuid = visitUuid;
     }
 
-    public int isId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getHwUuid() {
+        return hwUuid;
+    }
+
+    public void setHwUuid(String hwUuid) {
+        this.hwUuid = hwUuid;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

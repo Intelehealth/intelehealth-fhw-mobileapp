@@ -50,12 +50,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -148,7 +150,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit, button_householdSurvey;
+    Button newVisit, button_householdSurvey, mTriageSurveyButton;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -163,6 +165,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+    ArrayList<String> selectedAid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +194,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
         button_householdSurvey = findViewById(R.id.button_householdSurvey);
+        mTriageSurveyButton = findViewById(R.id.button_triageSurvey);
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -275,6 +279,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentsurvey = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
                 intentsurvey.putExtra("patientUuid", patientUuid);
+                startActivity(intentsurvey);
+            }
+        });
+        mTriageSurveyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentsurvey = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentsurvey.putExtra("patientUuid", patientUuid);
+                intentsurvey.putExtra("IsTriageMode", true);
                 startActivity(intentsurvey);
             }
         });
@@ -525,8 +538,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("occupation")) {
+                if (name.equalsIgnoreCase("Employment status")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("patient aid type")) {
+                    patient_new.setPatientAidType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("blockSurvey")) {
                     patient_new.setBlockSurvey(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -566,7 +582,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
+        TextView aidTypeView = findViewById(R.id.textView_aid_type);
         TableRow occuRow = findViewById(R.id.tableRow_Occupation);
+        TableRow aidTypeRow = findViewById(R.id.tableRow_aid_type);
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
@@ -675,36 +693,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
             dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String dob_text = en__te_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String dob_text = en__mr_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String dob_text = en__as_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String dob_text = en__ml_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String dob_text = en__kn_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String dob_text = en__ru_dob(dob); //to show text of English into Russian...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-            dobView.setText(dob_text);
         } else {
             dobView.setText(dob);
         }
@@ -713,7 +701,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
             genderView.setVisibility(View.GONE);
         } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 if (patient_new.getGender().equalsIgnoreCase("M")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
@@ -721,87 +709,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else {
+            }  else {
                 genderView.setText(patient_new.getGender());
             }
 
@@ -1107,19 +1015,23 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if (patient_new.getOccupation() != null) {
             if (patient_new.getOccupation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                education_statusView.setText("नहीं दिया गया");
+                    sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                education_statusView.setText("غير مزود");
             } else {
-                String occupation = getOccupationsIdentification_Edit(patient_new.getOccupation(), sessionManager.getAppLanguage());
+                String occupation = patient_new.getOccupation();
                 occuView.setText(occupation);
             }
         }
-//        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-//            occuView.setText(patient_new.getOccupation());
-//        } else {
-//           occuRow.setVisibility(View.GONE);
-//            occuView.setText("");
-//        }
+
+        if (patient_new.getPatientAidType() != null) {
+            if (patient_new.getPatientAidType().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+                aidTypeView.setText("غير مزود");
+            } else {
+                String rawAidType = patient_new.getPatientAidType();
+                aidTypeView.setText(rawAidType.substring(1,rawAidType.length()-1));
+            }
+        }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);
@@ -1168,7 +1080,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+91" + phoneView.getText().toString();
+                String phoneNumberWithCountryCode = "+963" + phoneView.getText().toString();
 //                String message =
 //                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
 //                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
@@ -1261,8 +1173,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         final Boolean past_visit;
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            visitString = org.intelehealth.app.utilities.StringUtils.en_ar_dob(visitString);
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
@@ -1480,6 +1393,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         famHistCursor.close();
                     }
 
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(famHistValue);
+                    famHistValue = obsDTO.getValue(sessionManager.getAppLanguage());
                     if (famHistValue != null && !famHistValue.equals("")) {
                         famHistView.setText(Html.fromHtml(famHistValue));
                     } else {
@@ -1552,6 +1468,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         medHistCursor.close();
                     }
 
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(medHistValue);
+                    medHistValue = obsDTO.getValue(sessionManager.getAppLanguage());
                     Log.v(TAG, medHistValue);
                     if (medHistValue != null && !medHistValue.equals("")) {
                         medHistView.setText(Html.fromHtml(medHistValue));
@@ -1610,6 +1529,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (previsitCursor.moveToLast() && previsitCursor != null) {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        ObsDTO obsDTO = new ObsDTO();
+                        obsDTO.setValue(visitValue);
+                        visitValue = obsDTO.getValue(sessionManager.getAppLanguage());
                         if (visitValue != null && !visitValue.isEmpty()) {
 
                             visitValue = visitValue.replace("?<b>", Node.bullet_arrow);

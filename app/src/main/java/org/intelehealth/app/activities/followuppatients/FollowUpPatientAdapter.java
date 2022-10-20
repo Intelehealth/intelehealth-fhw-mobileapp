@@ -1,7 +1,10 @@
 package org.intelehealth.app.activities.followuppatients;
 
+import static org.intelehealth.app.utilities.RTLUtils.isArabicText;
+
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +62,9 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             else
                 holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
 
+            if(isArabicText(patinet.getFirst_name() + " " + patinet.getLast_name()))
+                holder.headTextView.setGravity(Gravity.END);
+
             holder.bodyTextView.setText(body);
 
             if(!patinet.getFollowup_date().equalsIgnoreCase("null")) {
@@ -71,11 +77,10 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                 holder.linearLayout.setVisibility(View.GONE);
                 holder.indicatorTextView.setVisibility(View.GONE);
             }
-            if(patinet.getVisit_speciality().equalsIgnoreCase("TLD Query") || patinet.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
-                    patinet.getVisit_speciality().contains("Gynecologist") || patinet.getVisit_speciality().contains("Ayurvedic Physician"))
+            if(patinet.getVisit_speciality()!=null)
                 holder.speciality_tag.setText(patinet.getVisit_speciality());
             else
-                holder.speciality_tag.setText("Agent Resolution");
+                holder.speciality_tag.setVisibility(View.GONE);
         }
 
         holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));

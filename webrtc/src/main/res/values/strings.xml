@@ -51,4 +51,5 @@
     <string name="call_end_aler_txt">Do you want to end the video call ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="mesg_hints">Type text here ...</string>
 </resources>

@@ -42,6 +42,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,6 +84,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.R;
@@ -90,6 +92,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
@@ -128,6 +131,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -147,8 +151,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -204,13 +210,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
     ObsDTO resp = new ObsDTO();
-    ObsDTO bldglucose = new ObsDTO();
-    ObsDTO bldglucose_random = new ObsDTO();
-    ObsDTO bldglucose_post_prandial = new ObsDTO();
-    ObsDTO bldglucose_fasting = new ObsDTO();
-    ObsDTO hemoGlobin = new ObsDTO();
-    ObsDTO uricAcid = new ObsDTO();
-    ObsDTO totalCholesterol = new ObsDTO();
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -221,7 +220,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String followUpDate = "";
 
     ImageButton editVitals;
-    ImageButton editDiagnostics;
     ImageButton editComplaint;
     ImageButton editPhysical;
     ImageButton editFamHist;
@@ -248,14 +246,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView glucose;
-    TextView glucoseRandom;
-    TextView glucosePostPrandial;
-    TextView glucoseFasting;
-    TextView hemoglobin;
-    TextView uricAcid_textview;
-    TextView totalCholesterol_textview;
-    //    //    Respiratory added by mahiti dev team
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -416,20 +406,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.summary_home: {
-//                NavUtils.navigateUpFromSameTask(this);
                 Intent i = new Intent(this, HomeActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 return true;
             }
-//            case R.id.summary_print: {
-//                try {
-//                    doWebViewPrint_Button();
-//                } catch (ParseException e) {
-//                    FirebaseCrashlytics.getInstance().recordException(e);
-//                }
-//                return true;
-//            }
             case R.id.summary_sms: {
                 //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
                 return true;
@@ -447,8 +428,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //meera
         if (downloaded) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
             alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                 @Override
@@ -471,7 +450,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         } else {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
             alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                 @Override
@@ -480,7 +458,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
     }
@@ -490,10 +467,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager1 = new SessionManager(this);
-        appLanguage = sessionManager1.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
-        }
+//        appLanguage = sessionManager1.getAppLanguage();
+//        if (!appLanguage.equalsIgnoreCase("")) {
+//            setLocale(appLanguage);
+//        }
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -510,7 +487,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
 //            hasPrescription = intent.getStringExtra("hasPrescription");
-
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
             physicalExams.clear();
@@ -533,7 +509,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }
-            prescription1 = obj.getString("presciptionHeader1");
+
+            prescription1 = obj.getString("presciptionHeader0") + "<br/> " + obj.getString("presciptionHeader1");
 
             prescription2 = obj.getString("presciptionHeader2");
 
@@ -607,11 +584,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             @Override
             public void onClick(View v) {
                 doQuery();
-                if (speciality_selected == null
-                        || speciality_selected.isEmpty()
-                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
-                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
-                ) {
+                if (speciality_selected == null || speciality_selected.isEmpty() || "Select Specialization".equalsIgnoreCase(speciality_selected)) {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -627,13 +600,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         .putExtra("openMrsId", patient.getOpenmrs_id())
                         .putExtra("speciality", speciality_selected), SCHEDULE_LISTING_INTENT
                 );
-
-
             }
         });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
-
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
         prescriptionCard = findViewById(R.id.cardView_rx);
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
@@ -732,6 +702,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         }
                     };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                        partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrlArabic();
                     String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
@@ -753,9 +725,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                        String phoneNumber = "+91" + editText.getText().toString();
+                                        String phoneNumber = "+963" + editText.getText().toString();
                                         String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                                                +"\t"+ whatsapp_url +"\t"+ getString(R.string.and_enter_your_patient_id) +"\t"+ idView.getText().toString();
 
                                         // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
@@ -809,7 +781,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
-
         ivPrescription = findViewById(R.id.iv_prescription);
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
@@ -897,7 +868,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         editVitals = findViewById(R.id.imagebutton_edit_vitals);
-        editDiagnostics = findViewById(R.id.imagebutton_edit_diagnostics);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
@@ -905,12 +875,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
-
-        //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
-
-        //additionalDocumentsDownlaod.setVisibility(View.GONE);
-
         physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
         onExaminationDownload.setVisibility(View.GONE);
 
@@ -934,7 +899,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
-            editDiagnostics.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
@@ -975,6 +939,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             public void onClick(View view) {
 
                 Log.d("visitUUID", "upload_click: " + visitUUID);
+
+                // The below condition has been added keeping in mind that no HW will be able to upload empty complaints: (Ticket SYR-171): Nishita Goyal
+                if(complaint.getValue()==null || complaintView.getText().equals("") || complaintView.getText().equals(" "))
+                {
+                    Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_failed_for_no_complaint), Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
@@ -1046,12 +1017,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         //
                     }
 
-
-//                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
-//                        .setBackgroundColor(Color.BLACK)
-//                        .setTextColor(Color.WHITE)
-//                        .show();
-
                     if (NetworkConnection.isOnline(getApplication())) {
                         Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
@@ -1122,79 +1087,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         nameView.setText(patientName);
         ageView.setText(DateAndTimeUtils.getAgeInYearMonth(patient.getDate_of_birth(), this));
 
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-            } else {
-                genderView.setText(gender_tv);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
             if (gender_tv.equalsIgnoreCase("M")) {
                 genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
             } else if (gender_tv.equalsIgnoreCase("F")) {
@@ -1212,16 +1105,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         pulseView = findViewById(R.id.textView_pulse_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
-        glucose = findViewById(R.id.textView_glucose_value);
-        glucoseRandom = findViewById(R.id.textView_glucose_random_value);
-        glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
-        glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
-        hemoglobin = findViewById(R.id.textView_hemoglobin_value);
-        uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
-        totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);
-
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
+
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -1299,52 +1185,20 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
-//        tempView.setText(temperature.getValue());
+
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+            complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
         if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            famHistView.setText(Node.bullet + Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
         if (patHistory.getValue() != null)
-            patHistView.setText(Html.fromHtml(patHistory.getValue()));
+            patHistView.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
         if (phyExam.getValue() != null)
-            physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
-
-        if (bldglucose.getValue() != null)
-            glucose.setText(bldglucose.getValue());
-        if (bldglucose_random.getValue() != null)
-            glucoseRandom.setText(bldglucose_random.getValue());
-        if (bldglucose_post_prandial.getValue() != null)
-            glucosePostPrandial.setText(bldglucose_post_prandial.getValue());
-        if (bldglucose_fasting.getValue() != null)
-            glucoseFasting.setText(bldglucose_fasting.getValue());
-        if (hemoGlobin.getValue() != null)
-            hemoglobin.setText(hemoGlobin.getValue());
-        if (uricAcid.getValue() != null)
-            uricAcid_textview.setText(uricAcid.getValue());
-        if (totalCholesterol.getValue() != null)
-            totalCholesterol_textview.setText(totalCholesterol.getValue());
-
+            physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
 
         editVitals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
-                intent1.putExtra("patientUuid", patientUuid);
-                intent1.putExtra("visitUuid", visitUuid);
-                intent1.putExtra("gender", patientGender);
-                intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("gender", patientGender);
-                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-            }
-        });
-
-        editDiagnostics.setOnClickListener(new View.OnClickListener() { // Edit Diagnostics
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
@@ -1372,7 +1226,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                    famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                 famHistText.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1382,20 +1236,41 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (famHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
+                        if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
+                        /*if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
+                        else
+                        {
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                            {
+                                if (famHistory.getValue("ar") != null && !famHistory.getValue("ar").equalsIgnoreCase(""))
+                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("ar")));
+                                else
+                                    dialogEditText.setText("");
+                            }
+                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+                            {
+                                if (famHistory.getValue("en") != null && !famHistory.getValue("en").equalsIgnoreCase(""))
+                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("en")));
+                                else
+                                    dialogEditText.setText("");
+                            }
+                            else
+                                dialogEditText.setText("");
+                        }*/
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //famHistory.setValue(dialogEditText.getText().toString());
-                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                famHistory.setValue(dataStringValue);
                                 if (famHistory.getValue() != null) {
-                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
-                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
+                                    famHistView.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
@@ -1476,7 +1351,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                    complaintText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                 }
                 complaintText.setEnabled(false);
 
@@ -1486,8 +1361,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (complaint.getValue() != null) {
-                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
+                        if (complaint.getValue(sessionManager.getAppLanguage()) != null && !complaint.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase("")){
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                         } else {
                             dialogEditText.setText("");
                         }
@@ -1495,10 +1370,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                complaint.setValue(dataStringValue);
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+//                                    famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -1585,8 +1461,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
-                if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                if (phyExam.getValue(sessionManager.getAppLanguage()) != null && !phyExam.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                    physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1595,19 +1471,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (phyExam.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
+                        if (phyExam.getValue(sessionManager.getAppLanguage()) != null && !phyExam.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                            dialogEditText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-                                phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                phyExam.setValue(dataStringValue);
                                 if (phyExam.getValue() != null) {
-                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
-                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
@@ -1696,7 +1572,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
                 if (patHistory.getValue() != null)
-                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                    historyText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                 historyText.setEnabled(false);
 
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1705,8 +1581,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (patHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
+                        if (patHistory.getValue(sessionManager.getAppLanguage()) != null && !patHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+                            dialogEditText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -1714,11 +1590,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //patHistory.setValue(dialogEditText.getText().toString());
-                                patHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
-
-                                if (patHistory.getValue() != null) {
-                                    historyText.setText(Html.fromHtml(patHistory.getValue()));
-                                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+                                String dataStringValue = mapDataIntoJson(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                patHistory.setValue(dataStringValue);
+                                if (patHistory.getValue(sessionManager.getAppLanguage()) != null && !patHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase("")) {
+                                    historyText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
+                                    patHistView.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(patHistory.getValue(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
@@ -1842,6 +1718,21 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         doQuery();
         getAppointmentDetails(visitUuid);
+    }
+
+    private String mapDataIntoJson(String dataString) {
+        Map<String, String> dataMapString = new HashMap<>();
+        //In manual entry case, the same value has to be stored in the language in json object. This was suggested by Sagar under ticket SYR-166: Nishita Goyal
+        dataMapString.put("ar", dataString);
+        dataMapString.put("en", dataString);
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        dataString = gson.toJson(dataMapString);
+        return dataString;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
 //    private void doConnect() {
@@ -1969,41 +1860,24 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         return isExists;
     }
 
-    public void setLocale(String appLanguage) {
+
+    //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//    public void setLocale(String appLanguage) {
+//        Resources res = getResources();
+//        Configuration conf = res.getConfiguration();
 //        Locale locale = new Locale(appLanguage);
 //        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
-        Resources res = getResources();
-        Configuration conf = res.getConfiguration();
-        Locale locale = new Locale(appLanguage);
-        Locale.setDefault(locale);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf);
-        }
-        DisplayMetrics dm = res.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(new LocaleList(locale));
-        } else {
-            conf.locale = locale;
-        }
-        res.updateConfiguration(conf, dm);
-    }
-
-//    private String convertCtoF(String temperature) {
-//
-//        String result = "";
-//        double a = Double.parseDouble(String.valueOf(temperature));
-//        Double b = (a * 9 / 5) + 32;
-//
-//        DecimalFormat dtime = new DecimalFormat("#.##");
-//        b = Double.valueOf(dtime.format(b));
-//
-//        result = String.valueOf(b);
-//        return result;
-//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            conf.setLocale(locale);
+//            getApplicationContext().createConfigurationContext(conf);
+//        }
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            conf.setLocales(new LocaleList(locale));
+//        } else {
+//            conf.locale = locale;
+//        }
+//        res.updateConfiguration(conf, dm);
 //    }
 
     private String convertCtoF(String temperature) {
@@ -2013,9 +1887,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         double a = Double.parseDouble(temperature);
         double b = (a * 9 / 5) + 32;
         nf.format(b);
-//        DecimalFormat dtime = new DecimalFormat("0.00");
-//        b = Double.parseDouble(dtime.format(b));
-//        int IntValue = (int) Math.round(b);
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
@@ -2043,6 +1914,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "FROM tbl_visit a " +
                     "WHERE a.uuid = '" + visitUUID + "'";
 
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             final Cursor cursor = db.rawQuery(query, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -2157,8 +2029,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
     private String stringToWeb(String input) {
+        Log.v("VS", input);
         String formatted = "";
         if (input != null && !input.isEmpty()) {
+            //AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
+            //String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
 
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
@@ -2201,9 +2076,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                //Log.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                //Log.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_Button(view, webview_heightContent);
                 mWebView = null;
             }
@@ -2224,7 +2099,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
-        System.out.println(getString(R.string.current_time) + c.getTime());
+        //System.out.println(getString(R.string.current_time) + c.getTime());
 
         String[] columnsToReturn = {"startdate"};
         String visitIDorderBy = "startdate";
@@ -2267,7 +2142,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getString(R.string.prescription_temp_f) + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
@@ -2275,8 +2150,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-        String mComplaint = complaint.getValue();
-
+        //AnswerValue answerValue = new Gson().fromJson(complaint.getValue(), AnswerValue.class);
+        String mComplaint = complaint.getValue();//LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+        //Log.v("complaints", mComplaint);
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
@@ -2284,6 +2160,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String mComplaint_new = "";
         if (complaints != null) {
             for (String comp : complaints) {
+                Log.v("complaints", comp);
                 if (!comp.trim().isEmpty()) {
                     mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
 
@@ -2299,17 +2176,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
-            }
+                //The below change is done to fix the string out of bound exception reported in ticket SYR-172,173. The comparison length is kept to 20 and the text length is counted as 20 in crshlytics: Nishita Goyal
+                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3): "";            }
         } else {
 
         }
 
-        if (mComplaint.contains("जुड़े लक्षण")) {
+        if (mComplaint.contains("الأعراض المرافقة")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
-            }
+                //The below change is done to fix the string out of bound exception reported in ticket SYR-172,173. The comparison length is kept to 20 and the text length is counted as 20 in crshlytics: Nishita Goyal
+                mComplaint = mComplaint.length() > 20 ? mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3) : "";            }
         } else {
 
         }
@@ -2450,11 +2327,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-
+            String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + doctSp + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
@@ -2471,16 +2348,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     /* doctorDetailStr +*/
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
+                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_age) + ": %s | " + getString(R.string.prescription_gender) + ": %s  </p>" +
+                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_address_contact) + ": %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_patient_id) + ": %s | " + getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
+                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getString(R.string.prescription_vitals) + "</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getString(R.string.prescription_ht) + ": %s | " + getString(R.string.prescription_wt) + ": %s | " + getString(R.string.prescription_bmi) + ": %s | " + getString(R.string.prescription_bp) + ": %s | " + getString(R.string.prescription_pulse) + ": %s | %s | " + getString(R.string.prescription_rr) + ": %s |  %s </p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_pre_comp) + "</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>"
 
                             , heading, heading2, heading3, mPatientName, age, mGender, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
@@ -2488,27 +2365,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                             /*pat_hist, fam_hist,*/ mComplaint);
 
             if (!diagnosis_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_diagnosis) + "</p></b></u>" +
                         "%s<br>", diagnosis_web));
             }
 
             if (!rx_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_med_plan) + "</p></b></u>" +
                         "%s<br>", rx_web));
             }
 
             if (!tests_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_rec_investigation) + "</p></b></u>" +
                         "%s<br>", tests_web));
             }
 
             if (!advice_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_general_advice) + "</p></b></u>" +
                         "%s<br>", advice_web));
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                         "%s<br>", followUp_web));
             }
 
@@ -2519,6 +2396,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                     "</div>", doctor_web));
 
+            if (LocaleHelper.isArabic(this))
+                htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -2527,16 +2406,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" +
-                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
-                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_age) + ": %s | " + getString(R.string.prescription_gender) + ": %s  </p>" +
+                                    "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_address_contact) + ": %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_patient_id) + ": %s | " + getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
+                                    "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getString(R.string.prescription_vitals) + "</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getString(R.string.prescription_ht) + ": %s | " + getString(R.string.prescription_wt) + ": %s | " + getString(R.string.prescription_bmi) + ": %s | " + getString(R.string.prescription_bp) + ": %s | " + getString(R.string.prescription_pulse) + ": %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_pre_comp) + "</p></b>" +
+
                                     para_open + "%s" + para_close + "<br><br>"
 
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
@@ -2545,27 +2425,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
             if (!diagnosis_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_diagnosis) + "</p></b></u>" +
                         "%s<br>", diagnosis_web));
             }
 
             if (!rx_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_med_plan) + "</p></b></u>" +
                         "%s<br>", rx_web));
             }
 
             if (!tests_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_rec_investigation) + "</p></b></u>" +
                         "%s<br>", tests_web));
             }
 
             if (!advice_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_general_advice) + "</p></b></u>" +
                         "%s<br>", advice_web));
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                         "%s<br>", followUp_web));
             }
 
@@ -2574,7 +2454,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     doctorDetailStr +
                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                     "</div>", doctor_web));
-
+            if (LocaleHelper.isArabic(this))
+                htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
@@ -3602,11 +3483,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             patHistory.setValue(medHistText);
 
             if (medHistText != null && !medHistText.isEmpty()) {
-
                 medHistory = patHistory.getValue();
-
-
-                medHistory = medHistory.replace("\"", "");
+//                medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
                 do {
                     medHistory = medHistory.replace("  ", "");
@@ -3626,7 +3504,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        parseData(dbConceptID, dbValue);
+                        if (dbValue.startsWith("{")) {
+                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                        } else {
+                            parseData(dbConceptID, dbValue);
+                        }
                     } while (visitCursor.moveToNext());
                 }
                 if (visitCursor != null) {
@@ -3645,7 +3528,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    if (dbValue.startsWith("{")) {
+                        AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                    } else {
+                        parseData(dbConceptID, dbValue);
+                    }
                 } while (encountercursor.moveToNext());
             }
             if (encountercursor != null) {
@@ -3716,41 +3604,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GLUCOSE_ID: // Glucose
-            {
-                bldglucose.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
-            {
-                bldglucose_random.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
-            {
-                bldglucose_post_prandial.setValue(value);
-                break;
-            }
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING_ID: // Glucose
-            {
-                bldglucose_fasting.setValue(value);
-                break;
-            }
-            case UuidDictionary.HEMOGLOBIN_ID: // Hemoglobin
-            {
-                hemoGlobin.setValue(value);
-                break;
-            }
-            case UuidDictionary.URIC_ACID_ID: // Uric Acid
-            {
-                uricAcid.setValue(value);
-                break;
-            }
-            case UuidDictionary.TOTAL_CHOLESTEROL_ID: // Cholestrol
-            {
-                totalCholesterol.setValue(value);
-                break;
-            }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = diagnosisReturned + ",\n" + value;
@@ -3762,6 +3615,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 diagnosisTextView.setText(diagnosisReturned);
                 //checkForDoctor();
+                if (LocaleHelper.isArabic(this)) {
+                    diagnosisTextView.setGravity(Gravity.END);
+                }
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
@@ -3778,6 +3634,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 prescriptionTextView.setText(rxReturned);
                 //checkForDoctor();
+                if (LocaleHelper.isArabic(this)) {
+                    prescriptionTextView.setGravity(Gravity.END);
+                }
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -3821,6 +3680,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
                 Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
                 //checkForDoctor();
+                if (LocaleHelper.isArabic(this)) {
+                    medicalAdviceTextView.setGravity(Gravity.END);
+                }
                 break;
             }
             case UuidDictionary.REQUESTED_TESTS: {
@@ -3831,6 +3693,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
+                }
+                if (LocaleHelper.isArabic(this)) {
+                    requestedTestsTextView.setGravity(Gravity.END);
                 }
                 requestedTestsTextView.setText(testsReturned);
                 //checkForDoctor();
@@ -3892,17 +3757,20 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             frameLayout_doctor.setVisibility(View.VISIBLE);
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
-
+            String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
-                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? doctSp : "") + "</span><br>" +
                     // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
-
+            if (LocaleHelper.isArabic(this)) {
+                doctorDetailStr = "<html dir=\"rtl\" lang=\"\"><body>" + doctorDetailStr + "</body></html>";
+                mDoctorName.setGravity(Gravity.END);
+            }
             mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
         }
     }
@@ -4335,6 +4203,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 EncounterDAO encounterDAO = new EncounterDAO();
                 String encounterIDSelection = "visituuid = ? AND voided = ?";
                 String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
@@ -4388,7 +4257,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
-                        parseData(dbConceptID, dbValue);
+                        if (dbValue.startsWith("{")) {
+                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                        } else {
+                            parseData(dbConceptID, dbValue);
+                        }
                     } while (visitCursor.moveToNext());
                 }
                 visitCursor.close();
@@ -4442,7 +4316,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
-                parseData(dbConceptID, dbValue);
+                if (dbValue.startsWith("{")) {
+                    AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                } else {
+                    parseData(dbConceptID, dbValue);
+                }
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
@@ -4468,10 +4347,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (downloadPrescriptionService != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
+
+        //In onStop() it will check and unregister the receiver...
+        //This is done in onStop as we are registering them in onStart()
         if (receiver != null) {
             unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            receiver = null;
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        isReceiverRegistered = false;
+
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -4701,7 +4587,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                 mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
                                         org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
                                         mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
-                                        mAppointmentDetailsResponse.getData().getSlotTime()
+                                        org.intelehealth.app.utilities.StringUtils.getTranslatedSlot(mAppointmentDetailsResponse.getData().getSlotTime(), new SessionManager(VisitSummaryActivity.this).getAppLanguage())
                                 );
 
                             } catch (Exception e) {
@@ -4745,6 +4631,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         CancelRequest request = new CancelRequest();
                         request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
                         request.setId(mAppointmentDetailsResponse.getData().getId());
+                        request.setHwUuid((new SessionManager(VisitSummaryActivity.this).getProviderID()));
+                        request.setReason("Patient not available");
                         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
                         ApiClientAppointment.getInstance(baseurl).getApi()
                                 .cancelAppointment(request)
@@ -4834,15 +4722,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // String docDigitallySign = "";
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
-
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No:" +
+            String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                     objClsDoctorDetails.getRegistrationNumber() : "";
 
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
                     "<br><span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
                             "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
-                            + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                            + " " + doctSp + "</span><br>" +
                             doctrRegistartionNum;
 
             Log.e("precs", "htmlpresc_doctor: " + Html.fromHtml(doctorDetailStr).toString());
@@ -4971,10 +4859,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
 
-        if (mComplaint.contains("जुड़े लक्षण")) {
+        if (mComplaint.contains("الأعراض المرافقة")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+                mComplaint = mComplaint.substring(0, compla.indexOf("الأعراض المرافقة") - 3);
             }
         } else {
 
@@ -5117,36 +5005,36 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
                         "<br><br>" +
                         "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
-                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
+                        "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getString(R.string.prescription_age) + ": %s | " + getString(R.string.prescription_gender) + ": %s  </b>" +
                         "<br><br>", heading, heading2, mPatientName, age, mGender);
 
         // If the Diagnosis is not empty, only then the details will be displayed in the Prescription
         if (!diagnosis_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_diagnosis) + " <br>" +
                     "%s </b><br>", diagnosis_web));
         }
 
         // If the Medication Plan provided is not empty, only then will the details be displayed in the Prescription
         if (!rx_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_med_plan) + " <br>" +
                     "%s </b><br>", rx_web));
         }
 
         // If the Tests provided is not empty, only then will the details be displayed in the Prescription
         if (!tests_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_rec_investigation) + " <br>" +
                     "%s " + "</b><br>", tests_web));
         }
 
         // If the Advice provided is not empty, only then will the details be displayed in the Prescription
         if (!advice_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + " <br>" +
                     "%s" + "</b><br>", advice_web));
         }
 
         // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription
         if (!followUp_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
+            htmlDocument = htmlDocument.concat(String.format("<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_follow_up_date) + " <br>" +
                     "%s" + "</b><br>", followUp_web));
         }
 
@@ -5224,10 +5112,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String formatted = "";
         if (input != null && !input.isEmpty()) {
 
+            AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
+            String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+
             String para_open = "<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</b><br>";
             formatted = para_open + "- " +
-                    input.replaceAll("\n", para_close + para_open + "- ")
+                    _input.replaceAll("\n", para_close + para_open + "- ")
                     + para_close;
         }
         return formatted;

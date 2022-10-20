@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.todayPatientActivity;
 
+import static org.intelehealth.app.utilities.RTLUtils.isArabicText;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -9,6 +11,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,18 +76,8 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     @Override
     public void onBindViewHolder(TodayPatientViewHolder holder, int position) {
         final TodayPatientModel todayPatientModel = todayPatientModelList.get(position);
-        String header;
-        if (todayPatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
-        } else {
-            header = String.format("%s %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name());
-        }
-//        int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYears(todayPatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
-//        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, todayPatientModel.getGender()) + ")</b>");
 
         if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
@@ -96,6 +89,8 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         }
 
         holder.getHeadTextView().setText(String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()));
+        if(isArabicText(String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name())))
+            holder.getHeadTextView().setGravity(Gravity.END);
         holder.getBodyTextView().setText(todayPatientModel.getOpenmrs_id());
         holder.tvAgeGender.setText(body);
         if (todayPatientModel.getEnddate() == null) {

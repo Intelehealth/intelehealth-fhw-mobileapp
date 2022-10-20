@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.complaintNodeActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -33,6 +34,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -83,16 +85,18 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the org should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//        String language = sessionManager.getAppLanguage();
+//        //In case of crash still the org should hold the current lang fix.
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -315,6 +319,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 ////        }, 1000);
 
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
 
     /**
      * Method to confirm all the complaints that were selected, and ensure that the conversation with the patient is thorough.

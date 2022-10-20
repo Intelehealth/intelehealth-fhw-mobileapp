@@ -26,17 +26,26 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
+    private static Gson gson = new Gson();
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -179,16 +188,12 @@ public final class StringUtils {
         String val = "-";
         if (spinner.getSelectedItemPosition() == 0)
             val = "Not provided";
-
-
         else if (spinner.getSelectedItem() == null) {
             val = "Not provided";
-
         } else {
             val = spinner.getSelectedItem().toString();
         }
-
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        /*SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
@@ -233,8 +238,7 @@ public final class StringUtils {
             val = switch_ta_caste(val);
             val = switch_ta_economic(val);
             val = switch_ta_education(val);
-        }
-
+        }*/
         return val;
     }
 
@@ -1811,6 +1815,25 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_ar_dob(String dob) {
+        String mdob_text = dob
+                .replace("Seen on", "رأيت على") //this is added for the patient details activity.
+                .replace("January", "كانون الثاني")
+                .replace("February", "شهر شباط")
+                .replace("March", "شهر اذار")
+                .replace("April", "أشهر نيسان")
+                .replace("May", "شهر أيار")
+                .replace("June", "شهر حزيران")
+                .replace("July", "شهر تموز")
+                .replace("August", "شهر أب")
+                .replace("September", "شهر أيلول")
+                .replace("October", "شهر تشرين الأول")
+                .replace("November", "شهر تشرين الثاني")
+                .replace("December", "شهر كانون الأول");
+
+        return mdob_text;
+    }
+
     public static String en__as_dob(String dob) { //English dob is replaced to marathi text.
         String mdob_text = dob
                 .replace("January", "জানুৱাৰী")
@@ -3307,93 +3330,61 @@ public final class StringUtils {
 
     public static String getTranslatedDays(String val, String locale) {
 
-        if (locale.equalsIgnoreCase("ru")) {
+        if (locale.equalsIgnoreCase("ar")) {
             switch (val) {
                 case "Sunday":
-                    val = "Воскресенье";
+                    val = "الأحد";
                     break;
                 case "Monday":
-                    val = "понедельник";
+                    val = "الاثنين";
                     break;
                 case "Tuesday":
-                    val = "вторник";
+                    val = "يوم الثلاثاء";
                     break;
                 case "Wednesday":
-                    val = "среда";
+                    val = "الأربعاء";
                     break;
-
                 case "Thursday":
-                    val = "Четверг";
+                    val = "يوم الخميس";
                     break;
                 case "Friday":
-                    val = "Пятница";
+                    val = "جمعة";
                     break;
                 case "Saturday":
-                    val = "Суббота";
+                    val = "السبت";
                     break;
                 default:
                     return val;
             }
-
-        } else if (locale.equalsIgnoreCase("mr")) {
-            switch (val) {
-                case "Sunday":
-                    val = "रविवार";
-                    break;
-                case "Monday":
-                    val = "सोमवार";
-                    break;
-                case "Tuesday":
-                    val = "मंगळवार";
-                    break;
-                case "Wednesday":
-                    val = "बुधवार";
-                    break;
-                case "Thursday":
-                    val = "गुरुवार";
-                    break;
-                case "Friday":
-                    val = "शुक्रवार";
-                    break;
-                case "Saturday":
-                    val = "शनिवार";
-                    break;
-                default:
-                    return val;
-            }
-
         }
 
         return val;
     }
 
-    public static String getAppointmentBookStatus(String val, String locale) {
-        if (locale.equalsIgnoreCase("ru")) {
-            switch (val.toLowerCase()) {
-                case "booked":
-                    val = "забронировано";
-                    break;
-                case "cancelled":
-                    val = "отменен";
-                    break;
-                default:
-                    return val;
+    public static String getTranslatedSlot(String val, String locale) {
+        if (locale.equalsIgnoreCase("ar")) {
+            if(val.contains("AM"))
+                val = val.replaceAll("AM","ص");
+            if(val.contains("PM"))
+                val = val.replaceAll("PM"," م");
             }
+        return val;
+        }
 
-        } else if (locale.equalsIgnoreCase("mr")) {
+    public static String getAppointmentBookStatus(String val, String locale) {
+        if (locale.equalsIgnoreCase("ar")) {
             switch (val.toLowerCase()) {
                 case "booked":
-                    val = "बुक केले";
+                    val = "حجز";
                     break;
                 case "cancelled":
-                    val = "रद्द केले";
+                    val = "ألغيت";
                     break;
                 default:
                     return val;
             }
 
         }
-
         return val;
     }
 
@@ -6733,5 +6724,60 @@ public final class StringUtils {
                 value = updatedContext.getString(R.string.more_than_twenty_km);
         }
         return value;
+    }
+
+    public static String arrayValueInLocale(Context context, String value, @ArrayRes int sourceArrayId, @ArrayRes int targetArrayId) {
+        String[] sourceArray = context.getResources().getStringArray(sourceArrayId);
+        String[] targetArray = context.getResources().getStringArray(targetArrayId);
+        if (sourceArray == null && targetArray == null)
+            return null;
+        for (int i = 0; i < sourceArray.length; i++) {
+            if (sourceArray[i].equalsIgnoreCase(value))
+                return targetArray[i];
+        }
+        return null;
+    }
+
+
+    public static String arrayValueInJson(Context context, String appLanguage, String value, @ArrayRes int array_en, @ArrayRes int array_ar) {
+        int sourceArray, targetArray;
+        String targetValue = "", targetLanguage;
+        sourceArray = array_en;
+        targetArray = array_ar;
+        targetLanguage = "ar";
+
+        Map<String, String> resultMap = new HashMap<>();
+        targetValue = arrayValueInLocale(context, value, sourceArray, targetArray);
+        if (targetValue == null) {
+            targetValue = arrayValueInLocale(context, value, targetArray, sourceArray);
+            if (targetValue != null) {
+                resultMap.put("en", targetValue);
+                resultMap.put(appLanguage, value);
+            } else {
+                resultMap.put("en", value);
+            }
+        }
+        else {
+
+//        resultMap.put(appLanguage,value);
+            resultMap.put("en", value);
+            resultMap.put(targetLanguage, targetValue);
+        }
+        return gson.toJson(resultMap);
+    }
+
+    public static String getValueForAppLanguage(String string) {
+        try {
+            SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+            String appLanguage = sessionManager.getAppLanguage();
+            JSONObject jsonObject = new JSONObject(string);
+            String s = jsonObject.optString(appLanguage);
+            if (s == null)
+                return string;
+            else
+                return s;
+        } catch (Exception e) {
+            return string;
+        }
     }
 }

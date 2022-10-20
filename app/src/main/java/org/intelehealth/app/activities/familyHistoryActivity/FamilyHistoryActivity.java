@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.familyHistoryActivity;
 
 import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +10,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,6 +18,8 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +30,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,13 +45,17 @@ import android.widget.TextView;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
+import org.intelehealth.app.utilities.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import org.intelehealth.app.R;
@@ -76,7 +86,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String patientGender;
     String intentTag;
     private float float_ageYear_Month;
-
+    JSONObject jsonObject = new JSONObject();
     ArrayList<String> physicalExams;
     String mFileName = "famHist.json";
     int lastExpandedPosition = -1;
@@ -106,16 +116,18 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the org should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//        String language = sessionManager.getAppLanguage();
+//        //In case of crash still the org should hold the current lang fix.
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);
@@ -135,7 +147,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
             if (edit_FamHist == null)
-                new_result = getFamilyHistoryVisitData();
+                new_result = getValue(getFamilyHistoryVisitData(), sessionManager.getAppLanguage());
         }
 
         boolean past = sessionManager.isReturning();
@@ -158,7 +170,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             textView.setSingleLine(false);
             Log.v(TAG, new_result);
 
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                 textView.setText(Html.fromHtml(getUpdateTranslations(new_result)));
             } else {
                 textView.setText(Html.fromHtml(new_result));
@@ -278,6 +290,9 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(family_history_recyclerView);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+            recyclerViewIndicator.setScaleX(-1);
+
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
 
@@ -288,6 +303,11 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 return false;
             }
         });*/
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     private String getFamilyHistoryVisitData() {
@@ -345,33 +365,38 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
         // Depending on the app language, our alert dialog text will be translated
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)
-                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
-                    .replace("Patient reports -", "रुग्ण अहवाल-")
-                    .replace("Patient denies -", "रुग्ण नकार देतो-")
-                    .replace("Hours", "तास")
-                    .replace("Days", "दिवस")
-                    .replace("Weeks", "आठवडे")
-                    .replace("Months", "महिने")
-                    .replace("Years", "वर्षे")
-                    .replace("times per hour", "प्रति तास")
-                    .replace("time per day", "दररोज वेळा")
-                    .replace("times per week", "आठवड्यातून काही वेळा")
-                    .replace("times per month", "दरमहा वेळा")
-                    .replace("times per year", "दरवर्षी वेळा")
-                    .replace("Jan", "जानेवारी")
-                    .replace("Feb", "फेब्रुवारी")
-                    .replace("Mar", "मार्च")
-                    .replace("Apr", "एप्रिल")
-                    .replace("May", "मे")
-                    .replace("Jun", "जून")
-                    .replace("Jul", "जुलै")
-                    .replace("Aug", "ऑगस्ट")
-                    .replace("Sept", "सप्टेंबर")
-                    .replace("Oct", "ऑक्टोबर")
-                    .replace("Nov", "नोव्हेंबर")
-                    .replace("Dec", "डिसेंबर")));
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
+            String message = Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)).toString();
+            //changes done to handle null pointer exception crash
+            if(message!=null && !message.isEmpty()) {
+                message = message
+                        .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
+                        .replace("Patient reports -", "يقر المريض ب-")
+                        .replace("Patient denies -", "ينفي المريض ب-")
+                        .replace("Hours", "ساعات")
+                        .replace("Days", "أيام")
+                        .replace("Weeks", "أسابيع")
+                        .replace("Months", "شهور")
+                        .replace("Years", "سنوات")
+                        .replace("times per hour", "مرات في الساعة")
+                        .replace("time per day", "الوقت في اليوم")
+                        .replace("times per week", "مرات بالأسبوع")
+                        .replace("times per month", "مرات في الشهر")
+                        .replace("times per year", "مرات في السنة")
+                        .replace("Jan", "كانون الثاني")
+                        .replace("Feb", "شهر شباط")
+                        .replace("Mar", "شهر اذار")
+                        .replace("Apr", "أشهر نيسان")
+                        .replace("May", "شهر أيار")
+                        .replace("Jun", "شهر حزيران")
+                        .replace("Jul", "شهر تموز")
+                        .replace("Aug", "شهر أب")
+                        .replace("Sep", "شهر أيلول")
+                        .replace("Oct", "شهر تشرين الأول")
+                        .replace("Nov", "شهر تشرين الثاني")
+                        .replace("Dec", "شهر كانون الأول");
+            }
+            alertDialogBuilder.setMessage(message);
         } else {
             // Else case handles the English language
             alertDialogBuilder.setMessage(Html.fromHtml(familyHistoryMap.formQuestionAnswer(0)));
@@ -393,15 +418,22 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         if (familyHistoryMap.anySubSelected()) {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = node.generateLanguage();
-                    String toInsert = node.getText() + " : " + familyString;
+                    String familyString = Node.bullet + node.getText() + " : " + node.generateLanguage();
+                    String familyStringArabic = Node.bullet + node.getDisplay_arabic() + " : " + node.generateLanguage("ar");
+                    Map<String, String> complaintData = new HashMap<>();
+                    complaintData.put("en", familyString);
+                    complaintData.put("ar", familyStringArabic);
+                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                    familyString = gson.toJson(complaintData);
+                    String toInsert = familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
                     if (StringUtils.right(toInsert, 2).equals(", ")) {
                         toInsert = toInsert.substring(0, toInsert.length() - 2);
                     }
-                    toInsert = toInsert + ".<br/>";
+                    //this is not requiring for this as we are storing data in json format and parsing is not possible after appending this.
+//                    toInsert = toInsert + ".<br/>";
                     insertionList.add(toInsert);
                 }
             }
@@ -409,7 +441,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         for (int i = 0; i < insertionList.size(); i++) {
             if (i == 0) {
-                insertion = Node.bullet + insertionList.get(i);
+                insertion = insertionList.get(i);
             } else {
                 insertion = insertion + " " + Node.bullet + insertionList.get(i);
             }
@@ -476,19 +508,21 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     public boolean insertDb(String value) {
-        ObsDAO obsDAO = new ObsDAO();
-        ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-        obsDTO.setEncounteruuid(encounterAdultIntials);
-        obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
         boolean isInserted = false;
-        try {
-            isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
+        if (!value.isEmpty() && !value.equalsIgnoreCase("") && !value.equalsIgnoreCase(" ")) {
+            ObsDAO obsDAO = new ObsDAO();
+            ObsDTO obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(value));
+            try {
+                isInserted = obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
-
         return isInserted;
     }
 
@@ -505,27 +539,32 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private void updateDatabase(String string) {
 
-        ObsDTO obsDTO = new ObsDTO();
-        ObsDAO obsDAO = new ObsDAO();
-        try {
-            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-            obsDTO.setEncounteruuid(encounterAdultIntials);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
-
-            obsDAO.updateObs(obsDTO);
-
-        } catch (DAOException dao) {
-            FirebaseCrashlytics.getInstance().recordException(dao);
+        //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
+        if (!string.isEmpty() && !string.equalsIgnoreCase("") && !string.equalsIgnoreCase(" ")) {
+            ObsDTO obsDTO = new ObsDTO();
+            ObsDAO obsDAO = new ObsDAO();
+            try {
+                obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                obsDTO.setEncounteruuid(encounterAdultIntials);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(string);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
+                obsDAO.updateObs(obsDTO);
+            } catch (DAOException dao) {
+                FirebaseCrashlytics.getInstance().recordException(dao);
+            }
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+                encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
-
-        EncounterDAO encounterDAO = new EncounterDAO();
-        try {
-            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
-            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        else
+        {
+            //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
+            //update previous obs value's void = 1
         }
     }
 
@@ -582,23 +621,36 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     private String getUpdateTranslations(String text) {
-        text = text
-                .replace("High BP", "उच्च रक्तदाब")
-                .replace("Heart Disease", "हृदयरोग")
-                .replace("Stroke", "अर्धांगवायू")
-                .replace("Diabetes", "मधुमेह")
-                .replace("Asthma", "दमा")
-                .replace("Tuberculosis", "क्षयरोग")
-                .replace("Jaundice", "काविळ")
-                .replace("Cancer", "कर्करोग")
-                .replace("Other", "इतर")
-                .replace("Mother", "आई")
-                .replace("Father", "वडील")
-                .replace("Sister", "बहीण")
-                .replace("Brother", "भाऊ")
-                .replace("Do you have a family history of any of the following?", "तुमच्या कुटुंबात खालीलपैकी कोणत्याही आजाराचा इतिहास आहे का?");
-
+        if(text!=null && !text.isEmpty()) {
+            text = text
+                    .replace("High BP", "ارتفاع ضغط الدم")
+                    .replace("Heart Disease", "مرض قلبي بسن < 50")
+                    .replace("Stroke", " سكتة دماغية")
+                    .replace("Diabetes", "داء السكري")
+                    .replace("Asthma", "الربو")
+                    .replace("Tuberculosis", "مرض السل")
+                    .replace("Jaundice", "يرقان")
+                    .replace("Cancer", "سرطان")
+                    .replace("Other", "أمراض أخرى")
+                    .replace("Mother", "الأم")
+                    .replace("Father", "أب")
+                    .replace("Sister", "أخت")
+                    .replace("Brother", "أخ")
+                    .replace("Do you have a family history of any of the following?", "هل لديك قصة عائلية لأي من الأمراض التالية ؟");
+        }
         return text;
+    }
+
+    public String getValue(String value, String language) {
+        try {
+            jsonObject = new JSONObject(value);
+            if (TextUtils.isEmpty(language))
+                return jsonObject.optString("en");
+            else
+                return jsonObject.optString(language);
+        } catch (Exception e) {
+            return value;
+        }
     }
 }
 

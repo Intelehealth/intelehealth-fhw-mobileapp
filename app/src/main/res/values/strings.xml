@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--    <string name="app_name" translatable="false">Intelehealth</string>-->
-    <string name="app_name">Arogya Sampada</string>
+    <string name="app_name">Sila</string>
     <string name="notification_title">Realtime sync is ON!</string>
-    //Generic
+    <!--//Generic-->
     <string name="generic_the_flipping_word_next">Next</string>
     <string name="hint_required">Required</string>
     <string name="hint_optional">Optional</string>
@@ -22,7 +22,7 @@
     <string name="generic_deleted">Deleted</string>
 
 
-    //Database Schema Names
+    <!-- //Database Schema Names-->
     <string name="db_first_name" translatable="false">first_name</string>
     <string name="db_middle_name" translatable="false">middle_name</string>
     <string name="db_last_name" translatable="false">last_name</string>
@@ -40,9 +40,9 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
     <string name="db_open_mrs_id" translatable="false">openmrs_id</string>
 
-    //Login Screen
+    <!--//Login Screen-->
     <!--    <string name="title_activity_login">Intelehealth</string>-->
-    <string name="title_activity_login">Arogya Sampada</string>
+    <string name="title_activity_login">Sila</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -67,10 +67,10 @@
     <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
     <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
 
-    //Home Screen (after login)
+    <!--//Home Screen (after login)-->
     <string name="title_home_screen">Home</string>
     <string name="button_new_pt">New Patient</string>
-    <string name="button_find_pt">Find Patient</string>
+    <string name="button_find_pt">Find/Create Patient</string>
     <string name="button_diagnostic_tests">Diagnostic Tests</string>
     <string name="button_active_pt">Active Patients</string>
     <string name="menu_option_sync">Refresh Data</string>
@@ -79,7 +79,7 @@
     <string name="menu_option_logout">Logout</string>
 
 
-    //Identification Screen
+    <!--//Identification Screen-->
     <string name="title_activity_identification">Add New Patient</string>
     <string name="identification_screen_prompt_first_name">First name *</string>
     <string name="identification_screen_prompt_middle_name">Middle name</string>
@@ -115,14 +115,14 @@
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
 
-    //Active Patients Screen
+    <!--//Active Patients Screen-->
     <string name="title_activity_active_patient">Active Visits</string>
 
-    //Patient History Screen
+    <!--//Patient History Screen-->
     <string name="title_activity_get_patient_history">Patient History</string>
     <string name="title_activity_search_patient">Patient Lookup</string>
 
-    //Complaint Node Screen
+    <!--//Complaint Node Screen-->
     <string name="title_activity_complaint_select">Select Complaints</string>
     <string name="title_activity_complaint_questions">Answer All Questions</string>
     <string name="title_activity_complaint_node">Select Complaints</string>
@@ -131,7 +131,7 @@
     <string name="complaint_dialog_title">Reason for visit</string>
     <string name="complaint_required">Complaint must be selected!</string>
 
-    //Question Node Screen
+    <!--//Question Node Screen-->
     <string name="title_activity_question_node">QuestionNodeActivity</string>
     <string name="complaint_change_selected">Modify</string>
     <string name="question_answer_all">Are you sure you have answered all questions.</string>
@@ -146,7 +146,7 @@
     <string name="question_frequency_picker">Please enter how many times</string>
 
 
-    //Table Exam Screen
+    <!--//Table Exam Screen-->
     <string name="title_activity_vitals">Vitals &amp; Diagnostics</string>
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
@@ -159,15 +159,15 @@
     <string name="table_temp">Temperature (C)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
-    //Patient Search Screen
+    <!--//Patient Search Screen-->
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
     <string name="alert_none_found">Please check username and pasword entered</string>
 
-    //Past Medical History Screen
+    <!--//Past Medical History Screen-->
     <string name="title_activity_patient_history">Past Medical History</string>
 
-    //Visit Summary Screen
+    <!--//Visit Summary Screen-->
     <string name="title_activity_family_history">Family History</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="title_activity_patient_summary">Visit Summary</string>
@@ -202,14 +202,14 @@
     <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>
 
 
-    //Diagnostic Tests Screen
+    <!--//Diagnostic Tests Screen-->
     <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
 
-    //Physical Exam Dialog
+    <!--//Physical Exam Dialog-->
     <string name="wash_hands">Remember to wash your hands</string>
 
 
-    //Patient Detail Screen
+    <!--//Patient Detail Screen-->
     <string name="header_patient_detail">Patient information</string>
     <string name="button_history">Patient History</string>
     <string name="title_activity_patient_detail">Patient Detail</string>
@@ -271,7 +271,7 @@
     <string name="generic_erase_redo">Erase and Re-Do</string>
     <string name="visit_summary_edit_vitals">You can re-do the vitals from the vitals screen</string>
 
-    //Camera Permissions
+    <!--//Camera Permissions-->
     <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
     <string name="permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
     <string name="permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
@@ -286,7 +286,7 @@
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
 
-    //SEND SMS Permissions
+    <!--//SEND SMS Permissions-->
     <string name="permission_sms_rationale">SMS permission is needed to send SMS.</string>
     <string name="permission_sms_denied">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
     <string name="permission_sms_never_askagain">SMS permission was denied with never ask again.</string>
@@ -294,7 +294,7 @@
     <string name="button_save">Save</string>
     <string name="button_delete">Delete</string>
 
-    //Camera Dialog
+    <!--//Camera Dialog-->
     <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
 
     <!--Offline Login Errors-->
@@ -313,7 +313,7 @@
     <string name="logging_in">Logging in</string>
     <string name="error_downloading_protocols">Error Downloading Mind Maps</string>
 
-    //Sync strings
+    <!--//Sync strings-->
     <string name="sync_stopped">Stopped</string>
     <string name="sync_in_progress">In progress</string>
     <string name="sync_complete">Complete</string>
@@ -346,7 +346,7 @@
     <string name="show_text">SHOW</string>
 
     <string name="new_patient">New Patient</string>
-    <string name="find_patient">Find Patients</string>
+    <string name="find_patient">Find/Create Patients</string>
     <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
@@ -599,7 +599,7 @@
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
     <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="arogya_sampada_a_telemedicine_platform">Arogya Sampada is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="arogya_sampada_a_telemedicine_platform">Sila is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
     <string name="intelehealth_name">Intelehealth</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
@@ -743,6 +743,8 @@
     <string name="prescription_follow_up_date">Follow Up Date</string>
     <string name="prescription_temp_c">Temperature (C) : </string>
     <string name="prescription_temp_f">Temperature (F) : </string>
+    <string name="prescription_spo2">SpO2(%): </string>
+
 
     <string name="intro_text_1">
         Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare.
@@ -821,7 +823,7 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="type_to_search">Type to Search..</string>
+    <string name="type_to_search">Type to search..</string>
 
     <!--    Questions for HoH -->
     <string name="select">Select</string>
@@ -1089,7 +1091,7 @@
     <string name="gender_other">Other</string>
     <string name="enter_in_completed_years">Enter in Completed Years</string>
     <string name="what_is_name_s_marital_status">What is %1$s\'s marital status?</string>
-    <string name="what_is_your_marital_status">What is your marital status?*</string>
+    <string name="what_is_your_marital_status">What is your marital status?</string>
     <string name="currently_married">Currently Married</string>
     <string name="married_gauna_not_performed">Married, Gauna Not Performed</string>
     <string name="widowed">Widowed</string>
@@ -1099,7 +1101,7 @@
     <string name="nas_never_married">Never Married</string>
 
     <string name="what_is_name_s_education_status">What is %1$s\'s education status?</string>
-    <string name="what_is_your_education_status">What is your education status?*</string>
+    <string name="what_is_your_education_status">What is your education status?</string>
     <string name="cannot_read_or_write">Cannot Read or Write</string>
     <string name="can_read_and_write">Can Read and Write</string>
     <string name="primary_education_till_class_five">Primary Education (Till Class 5)</string>
@@ -1110,7 +1112,7 @@
     <string name="postgraduate">Graduate</string>
     <string name="nas_none">None</string>
 
-    <string name="nas_occupation">Occupation*</string>
+    <string name="nas_occupation">Occupation</string>
     <string name="phone_ownership">Phone ownership</string>
     <string name="shared">Shared</string>
     <string name="owns_smartphone">Owns Smartphone</string>
@@ -1319,13 +1321,18 @@
 
     <string name="txt_hedingRosters">Rosters</string>
     <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
-    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
-    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
+    <string name="txt_what_is_your_relationship_with_household_members_you_support">What is your relationship with the household members you support?</string>
+    <string name="txt_what_is_your_maritual_status">What is your marital status?</string>
     <string name="txt_phone_ownership">Phone Ownership*</string>
     <string name="txt_bp_checked">BP checked</string>
     <string name="txt_sugar_checked">Sugar Checked</string>
     <string name="txt_hb_test">HB test</string>
-
+    <string name="do_you_stay_independent_residence">Do you have an independent residence ?</string>
+    <string name="what_made_you_main_official">What made you the main breadwinner in your family?</string>
+    <string name="family_needed_you_as_main_tendency">Did your status as the main breadwinner in the family changes recently?</string>
+    <string name="husband_status">For married women, what is the status of the husband?</string>
+    <string name="reason_changing_condition_for_support">What is the reason for the change in your status as the main breadwinner?</string>
+    <string name="since_change_happened">Since when did this change happen? (Years)</string>
     <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?*</string>
     <string name="txt_what_health_issue_is_reported">What Health issue is reported?</string>
     <string name="txt_generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, Which is the primary health provider you interacted with for this health issue?</string>
@@ -1521,6 +1528,47 @@
     <string name="_main_connected_fail">connect fail</string>
     <string name="_main_disconnect">" disconnected"</string>
     <string name="printing">Printing...</string>
-    <string name="visit_confirmation">"Are you sure that you want to start the visit? "</string>
+    <string name="visit_confirmation">Are you sure that you want to start the visit?</string>
     <string name="save_prescription">Save Prescription</string>
+
+
+    //Sila
+    <string name="what_is_residence_nature">What is the nature of your residential complex?</string>
+    <string name="what_is_residence_link_nature">What is the nature of the link to the place of residence?</string>
+    <string name="family_member_count">How many family member(s) live in the same dwelling?</string>
+    <string name="enter_number">Enter Number</string>
+    <string name="enter_duration">Enter Duration</string>
+    <string name="percentage_of_income">Excluding aid, what is the percentage of income that you provide in relation to the total income of the family?</string>
+    <string name="since_when_you_are_supporting_family">Since when have you been the main responsible for supporting your family?</string>
+    <string name="are_you_head_of_the_family">Are you the main responsible for providing for yourself and your family?</string>
+    <string name="fhh_survey">FHH Survey</string>
+    <string name="general_aid_survey">General Aid</string>
+    <string name="student_aid_survey">Student Aid</string>
+    <string name="emergency_survey">Emergency Need Evaluation</string>
+    <string name="syriana">Sila</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household">What is your family relationship with the household members you support?</string>
+    <string name="aid_type">Aid Type</string>
+    <string name="patient_aid_type">Select Patient\'s aid type*</string>
+    <string name="previous">Previous</string>
+    <string name="select_for">Select for : %1$s</string>
+    <string name="enter_value">Enter Value</string>
+    <string name="household_survey_saved">Needs Assessment submitted!</string>
+    <string name="triage_survey_saved">Triage survey submitted!</string>
+
+    //-------setup Location string-----
+    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
+    <string name="setup_select_district_str">Select District</string>
+    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
+    <string name="setup_select_village_str">Select Village</string>
+    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="triage_survey">Triage Survey</string>
+    <string name="empty_survey">Please enter/select the data for survey!</string>
+    <string name="new_patient_fab_label">*Create a new record if you can\'t find a previous record</string>
+    <string name="livelihood_needs_assessment">Needs Assessment</string>
+    <string name="alert_for_draft">You have not completed it! Would you like to save it as a draft?</string>
+    <string name="household_survey_draft">Draft Saved!</string>
+    <string name="aid_types_missing">Patient AID types are missing!</string>
+    <string name="visit_failed_for_no_complaint">Visit Upload Failed! Make a valid complaint selection.</string>
+
 </resources>

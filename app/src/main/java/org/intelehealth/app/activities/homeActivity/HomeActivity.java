@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothHeadset;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -20,8 +19,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -57,7 +54,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -65,13 +61,11 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
-import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothStatus;
+
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
-import org.intelehealth.app.activities.devicesActivity.DevicesActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.homeActivity.bluetooth.BTAdapter;
 import org.intelehealth.app.activities.householdSurvey.DraftSurveyActivity;
@@ -92,6 +86,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
@@ -127,8 +122,7 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity implements
-        BluetoothService.OnBluetoothScanCallback,BTAdapter.ItemClickListener{
+public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -165,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements
     private BTAdapter btAdapter;
     private boolean mScanning;
     private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothService mService;
+    //private BluetoothService mService;
     private MaterialAlertDialogBuilder dialog;
     private AlertDialog alertDialog;
     MenuItem bluetoothCheck = null;
@@ -349,7 +343,7 @@ public class HomeActivity extends AppCompatActivity implements
 
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mService = BluetoothService.getDefaultInstance();
+        //mService = BluetoothService.getDefaultInstance();
 
         // manualSyncButton.setText(R.string.sync_now);
 //        manualSyncButton.setText(R.string.refresh);
@@ -358,7 +352,7 @@ public class HomeActivity extends AppCompatActivity implements
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+917005308163";
+                String phoneNumberWithCountryCode = "+919503692181";
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
                                 /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
@@ -576,11 +570,11 @@ public class HomeActivity extends AppCompatActivity implements
         inflater.inflate(R.menu.menu_home, menu);
         bluetoothCheck = menu.findItem(R.id.bluetooth);
 
-        if(mService.getStatus() == BluetoothStatus.CONNECTED) {
+        /*if(mService.getStatus() == BluetoothStatus.CONNECTED) {
             if(bluetoothCheck != null) {
                 bluetoothCheck.setIcon(R.drawable.bluetooth_connected);
             }
-        }
+        }*/
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -588,19 +582,19 @@ public class HomeActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bluetooth:
-              showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
+                showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
                 return true;
 
             case R.id.draftSurvey:
                 draftSurvey();
                 return true;
 
-            case R.id.devicesOption:
+            /*case R.id.devicesOption:
             {
                 Intent intent = new Intent(this, DevicesActivity.class);
                 startActivity(intent);
                 return true;
-            }
+            }*/
 
             case R.id.settingsOption:
                 settings();
@@ -844,7 +838,7 @@ public class HomeActivity extends AppCompatActivity implements
         }
     }
 
-    
+
     /**
      * This method starts intent to another activity to change settings
      *
@@ -960,7 +954,7 @@ public class HomeActivity extends AppCompatActivity implements
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-      //  unregisterReceiver(bluetoothReceiver);
+        //  unregisterReceiver(bluetoothReceiver);
     }
 
     private boolean keyVerified(String key) {
@@ -992,7 +986,7 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
-               // curPrinterInterface = null;
+                // curPrinterInterface = null;
                 // finish();
             }
         });
@@ -1295,8 +1289,8 @@ public class HomeActivity extends AppCompatActivity implements
             ContextCompat.startForegroundService(this, serviceIntent);
         }
 
-        if (mService != null)
-            mService.stopScan();
+       /* if (mService != null)
+            mService.stopScan();*/
 
     }
 
@@ -1433,13 +1427,12 @@ public class HomeActivity extends AppCompatActivity implements
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, 101);
             return;
-        }
-        else { // Bluetooth is turned ON.
+        } else { // Bluetooth is turned ON.
 
         }
 
         // checking if location is enabled
-        if (!BluetoothService.isLocationEnabled(getApplicationContext())) {
+        /*if (!BluetoothService.isLocationEnabled(getApplicationContext())) {
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.please_enable_location),
                     Toast.LENGTH_LONG).show();
@@ -1452,27 +1445,27 @@ public class HomeActivity extends AppCompatActivity implements
             mService.startScan();
         } else {
             mService.stopScan();
-        }
+        }*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 101 && resultCode == RESULT_OK) {
+        if (requestCode == 101 && resultCode == RESULT_OK) {
             startStopScan();
         }
     }
 
     private void showBluetoothDeviceChooseDialog() {
-        if(mService != null) {
+        /*if(mService != null) {
             mService.disconnect();
             if(mService.getStatus().equals(BluetoothStatus.CONNECTED))
                 Toast.makeText(this, R.string.disconnected, Toast.LENGTH_SHORT).show();
         }
 
         // init BT adapter and service
-        mService.setOnScanCallback(this);
+        mService.setOnScanCallback(this);*/
         startStopScan();
 
         // show dialog
@@ -1483,16 +1476,16 @@ public class HomeActivity extends AppCompatActivity implements
         progress_view = layoutInflater.findViewById(R.id.progress_view);
         progress_view.setVisibility(View.VISIBLE);
         re_view.setLayoutManager(new LinearLayoutManager(this));
-        btAdapter = new BTAdapter(HomeActivity.this, new ArrayList<BluetoothDevice>());
-        btAdapter.setClickListener(this);
+        //btAdapter = new BTAdapter(HomeActivity.this, new ArrayList<BluetoothDevice>());
+        //btAdapter.setClickListener(this);
         re_view.setAdapter(btAdapter);
         dialog.setView(layoutInflater);
 
         dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (mService != null)
-                    mService.stopScan();
+               /* if (mService != null)
+                    mService.stopScan();*/
                 dialogInterface.cancel();
             }
         });
@@ -1516,7 +1509,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
 
-    @Override
+    /*@Override
     public void onDeviceDiscovered(BluetoothDevice bluetoothDevice, int i) {
         Log.v("Blue", "Ble: " + bluetoothDevice.getName());
         progress_view.setVisibility(View.GONE);
@@ -1570,6 +1563,11 @@ public class HomeActivity extends AppCompatActivity implements
         if(alertDialog != null) {
             alertDialog.cancel();
         }
+    }*/
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
 }

@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.activePatientsActivity;
 
+import static org.intelehealth.app.utilities.RTLUtils.isArabicText;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -9,6 +11,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +105,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
 
         holder.getHeadTextView().setText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()));
+        if(isArabicText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name())))
+            holder.getHeadTextView().setGravity(Gravity.END);
         holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
         holder.tvAgeGender.setText(body);
         if (activePatientModel.getEnddate() == null) {

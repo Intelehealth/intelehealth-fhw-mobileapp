@@ -34,6 +34,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 
@@ -140,6 +141,13 @@ public class PatientSurveyActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
+
 
     private void resetScale() {
         ArrayList<ImageButton> scale = new ArrayList<>();

@@ -555,8 +555,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     private EndVisitEncounterPrescription getVisitCompleteDataModel() {
         // For now it was added static values...need to discuss with team how we are going to send this data.
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
-        doctorDetails.setWhatsapp("7005308163");
-        doctorDetails.setPhoneNumber("7005308163");
+        doctorDetails.setWhatsapp("9503692181");
+        doctorDetails.setPhoneNumber("9503692181");
         doctorDetails.setFontOfSign("Pacifico");
         doctorDetails.setName("Demo doctor1");
         doctorDetails.setSpecialization("Neurologist");

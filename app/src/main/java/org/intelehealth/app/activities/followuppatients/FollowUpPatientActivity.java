@@ -5,12 +5,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,11 +25,13 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +53,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     TextView msg;
     private SQLiteDatabase db;
     int limit = Integer.MAX_VALUE, offset = 0;
+    JSONObject jsonObject = new JSONObject();
 
 
     @Override
@@ -61,18 +66,19 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
+//        String language = sessionManager.getAppLanguage();
 
-        //In case of crash still the app should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        //this language code is no longer required as we are moving towards more optimised as well as generic code for localisation. Check "attachBaseContext".
+//        //In case of crash still the app should hold the current lang fix.
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+//
+//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
@@ -85,6 +91,11 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.new_patient).setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
 
     @Override
@@ -118,7 +129,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         if (searchCursor.moveToFirst()) {
             do {
                 try {
-                    String followUpDate = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                    String followUpDate = getValue(searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")), sessionManager.getAppLanguage()).substring(0, 10);
                     Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
                     Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
                     int value = followUp.compareTo(currentD);
@@ -132,7 +143,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
+                                followUpDate,
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
                     } else if (value == 0) {
                         modelList.add(new FollowUpModel(
@@ -177,6 +188,18 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    public String getValue(String value, String language) {
+        try {
+            jsonObject = new JSONObject(value);
+            if (TextUtils.isEmpty(language))
+                return jsonObject.optString("en");
+            else
+                return jsonObject.optString(language);
+        } catch (Exception e) {
+            return value;
+        }
     }
 
 }

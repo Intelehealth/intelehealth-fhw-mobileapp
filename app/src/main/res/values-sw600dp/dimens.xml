@@ -1,5 +1,8 @@
 <resources>
 
     <dimen name="physical_exam_img_max_height">200dp</dimen>
+    <dimen name="common_padding">8dip</dimen>
+    <dimen name="header_text_size">16sp</dimen>
+    <dimen name="content_text_size">13sp</dimen>
 
 </resources>

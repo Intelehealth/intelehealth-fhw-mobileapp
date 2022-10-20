@@ -1,8 +1,12 @@
 
 package org.intelehealth.app.models.dto;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONObject;
 
 public class ObsDTO {
 
@@ -103,5 +107,18 @@ public class ObsDTO {
 
     public void setObservationTime(String observationTime) {
         this.observationTime = observationTime;
+    }
+
+    JSONObject jsonObject = new JSONObject();
+    public String getValue(String language) {
+        try {
+            jsonObject = new JSONObject(value);
+            if (TextUtils.isEmpty(language))
+                return jsonObject.optString("en");
+            else
+                return jsonObject.optString(language);
+        } catch (Exception e) {
+            return value;
+        }
     }
 }
