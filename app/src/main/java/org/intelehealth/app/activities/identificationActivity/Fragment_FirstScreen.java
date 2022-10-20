@@ -596,6 +596,7 @@ public class Fragment_FirstScreen extends Fragment {
             Log.v(TAG, "Result");
 
         } else {
+            frag1_nxt_btn_main.setBackground(getResources().getDrawable(R.drawable.disabled_patient_reg_btn));
             if (firstname_edittext.getText().toString().equals("")) {
                 firstname_error.setVisibility(View.VISIBLE);
                 return;
@@ -620,6 +621,16 @@ public class Fragment_FirstScreen extends Fragment {
             else {
                 lastname_error.setVisibility(View.GONE);
             }
+
+            // gender valid - start
+            if (!gender_female.isChecked() && !gender_male.isChecked() && !gender_other.isChecked()) {
+                gender_error.setVisibility(View.VISIBLE);
+                return;
+            }
+            else {
+                gender_error.setVisibility(View.GONE);
+            }
+            // gender valid - end
 
             if (dob_edittext.getText().toString().equals("")) {
                 //  dob_edittext.setError(getString(R.string.error_field_required));
@@ -646,32 +657,6 @@ public class Fragment_FirstScreen extends Fragment {
             else {
                 phone_error.setVisibility(View.GONE);
             }
-
-
-            // gender valid - start
-            if (!gender_female.isChecked() && !gender_male.isChecked() && !gender_other.isChecked()) {
-                /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getActivity());
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);*/
-                gender_error.setVisibility(View.VISIBLE);
-            }
-            else {
-                gender_error.setVisibility(View.GONE);
-            }
-            // gender valid - end
 
             Toast.makeText(getActivity(), R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
