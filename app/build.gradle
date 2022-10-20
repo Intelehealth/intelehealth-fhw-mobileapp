@@ -148,6 +148,8 @@ dependencies {
     //for tooltip
     implementation 'com.github.piruin:quickaction:2.4.3'
 
+    implementation 'com.hbb20:ccp:2.6.1'
+
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

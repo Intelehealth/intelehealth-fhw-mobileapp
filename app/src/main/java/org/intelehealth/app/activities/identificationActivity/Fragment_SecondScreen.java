@@ -56,6 +56,7 @@ public class Fragment_SecondScreen extends Fragment {
 
     private PatientDTO patientDTO;
     private Fragment_ThirdScreen fragment_thirdScreen;
+    private Fragment_FirstScreen firstScreen;
     private TextView postalcode_error, country_error, state_error, district_error, city_error, address1_error, address2_error;
 
 
@@ -102,6 +103,7 @@ public class Fragment_SecondScreen extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        firstScreen = new Fragment_FirstScreen();
         fragment_thirdScreen = new Fragment_ThirdScreen();
         personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon));
@@ -170,10 +172,12 @@ public class Fragment_SecondScreen extends Fragment {
         // Back Button click event.
         frag2_btn_back.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            //   bundle.putString("");
+            bundle.putSerializable("patientDTO", (Serializable) patientDTO);
+            bundle.putBoolean("fromSecondScreen", true);
+            firstScreen.setArguments(bundle); // passing data to Fragment
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.frame_firstscreen, new Fragment_FirstScreen())
+                    .replace(R.id.frame_firstscreen, firstScreen)
                     .commit();
         });
 

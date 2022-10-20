@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
@@ -86,12 +87,14 @@ public class Fragment_FirstScreen extends Fragment {
     private MaterialAlertDialogBuilder mAgePicker;
     Calendar dob = Calendar.getInstance();
     Calendar today = Calendar.getInstance();
+    private CountryCodePicker countryCodePicker;
     TextView firstname_error, middlename_error, lastname_error, gender_error, dob_error, age_error, phone_error;
     private int mDOBYear, mDOBMonth, mDOBDay, mAgeYears = 0, mAgeMonths = 0, mAgeDays = 0;
     int dob_indexValue = 15;
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the dob_edittext editText value and add in the db.
+    boolean fromSecondScreen = false;
 
 
     @Nullable
@@ -121,6 +124,7 @@ public class Fragment_FirstScreen extends Fragment {
         gender_other = view.findViewById(R.id.gender_other);
         dob_edittext = view.findViewById(R.id.dob_edittext);
         age_edittext = view.findViewById(R.id.age_edittext);
+        countryCodePicker = view.findViewById(R.id.countrycode_spinner);
         phoneno_edittext = view.findViewById(R.id.phoneno_edittext);
 
         firstname_error = view.findViewById(R.id.firstname_error);
@@ -130,6 +134,7 @@ public class Fragment_FirstScreen extends Fragment {
         dob_error = view.findViewById(R.id.dob_error);
         age_error = view.findViewById(R.id.age_error);
         phone_error = view.findViewById(R.id.phone_error);
+
     }
 
     @Override
@@ -140,6 +145,15 @@ public class Fragment_FirstScreen extends Fragment {
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_unselected));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
 
+        if (getArguments() != null) {
+            patientdto = (PatientDTO) getArguments().getSerializable("patientDTO");
+            fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+        }
+
+        // Setting up the screen when user came from SEcond screen.
+        if (fromSecondScreen) {
+            firstname_edittext.setText(patientdto.getFirstname());
+        }
         // next btn click
         frag1_nxt_btn_main.setOnClickListener(v -> {
           /*  if (patientID_edit != null) {
@@ -150,6 +164,8 @@ public class Fragment_FirstScreen extends Fragment {
 
             onPatientCreateClicked();
         });
+
+        countryCodePicker.registerCarrierNumberEditText(phoneno_edittext);
 
         // Gender - start
         if (gender_male.isChecked()) {
@@ -537,6 +553,7 @@ public class Fragment_FirstScreen extends Fragment {
         } else {
             if (firstname_edittext.getText().toString().equals("")) {
                 firstname_error.setVisibility(View.VISIBLE);
+                return;
             }
             else {
                 firstname_error.setVisibility(View.GONE);
@@ -544,6 +561,7 @@ public class Fragment_FirstScreen extends Fragment {
 
             if (middlename_edittext.getText().toString().equals("")) {
                 middlename_error.setVisibility(View.VISIBLE);
+                return;
             }
             else {
                 middlename_error.setVisibility(View.GONE);
@@ -552,6 +570,7 @@ public class Fragment_FirstScreen extends Fragment {
             if (lastname_edittext.getText().toString().equals("")) {
                 //   mLastName.setError(getString(R.string.error_field_required));
                 lastname_error.setVisibility(View.VISIBLE);
+                return;
             }
             else {
                 lastname_error.setVisibility(View.GONE);
@@ -560,6 +579,7 @@ public class Fragment_FirstScreen extends Fragment {
             if (dob_edittext.getText().toString().equals("")) {
                 //  dob_edittext.setError(getString(R.string.error_field_required));
                 dob_error.setVisibility(View.VISIBLE);
+                return;
             }
             else {
                 dob_error.setVisibility(View.GONE);
@@ -568,9 +588,18 @@ public class Fragment_FirstScreen extends Fragment {
             if (age_edittext.getText().toString().equals("")) {
                 //   age_edittext.setError(getString(R.string.error_field_required));
                 age_error.setVisibility(View.VISIBLE);
+                return;
             }
             else {
                 age_error.setVisibility(View.GONE);
+            }
+
+            if (phoneno_edittext.getText().toString().equals("")) {
+                phone_error.setVisibility(View.VISIBLE);
+                return;
+            }
+            else {
+                phone_error.setVisibility(View.GONE);
             }
 
 
@@ -612,8 +641,9 @@ public class Fragment_FirstScreen extends Fragment {
             patientdto.setMiddlename(middlename_edittext.getText().toString());
             patientdto.setLastname(lastname_edittext.getText().toString());
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setPhonenumber(StringUtils.getValue(phoneno_edittext.getText().toString()));
 
+            //get unformatted number with prefix "+" i.e "+14696641766"
+            patientdto.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
 
             String[] dob_array = dob_edittext.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
@@ -636,14 +666,7 @@ public class Fragment_FirstScreen extends Fragment {
 
             // Bundle data
             Bundle bundle = new Bundle();
-//            bundle.putString("firstname", patientdto.getFirstname());
-//            bundle.putString("middlename", patientdto.getMiddlename());
-//            bundle.putString("lastname", patientdto.getLastname());
-//            bundle.putString("gender", patientdto.getGender());
-//            bundle.putString("dob", patientdto.getDateofbirth());
-
             bundle.putSerializable("patientDTO", (Serializable) patientdto);
-          //  bundle.putBundle("BUNDLE", bundle);
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
             getActivity().getSupportFragmentManager()

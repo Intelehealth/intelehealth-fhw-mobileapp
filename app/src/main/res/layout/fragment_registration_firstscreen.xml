@@ -417,28 +417,28 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <Spinner
+                    <com.hbb20.CountryCodePicker
                         android:id="@+id/countrycode_spinner"
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:paddingStart="@dimen/fu_margin_start"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingEnd="@dimen/margin_16"
-                        android:paddingBottom="@dimen/margin_10"
-                        style="@style/SmallSpinnerTheme" />
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:gravity="center_vertical"
+                        app:ccp_countryPreference="us,in"
+                        app:ccp_textSize="@dimen/txtsize_patdetail_16sp"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:background="@drawable/edittext_border"
+                        />
 
                     <EditText
                         android:id="@+id/phoneno_edittext"
                         style="@style/edittext_textcolor"
                         android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginStart="@dimen/fu_card_margin_updown"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:layout_weight="1"
                         android:background="@drawable/edittext_border"
-                        android:hint="Enter phone number"
+                        android:hint="7304154312"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"
