@@ -153,6 +153,15 @@ public class Fragment_FirstScreen extends Fragment {
         // Setting up the screen when user came from SEcond screen.
         if (fromSecondScreen) {
             firstname_edittext.setText(patientdto.getFirstname());
+            middlename_edittext.setText(patientdto.getMiddlename());
+            lastname_edittext.setText(patientdto.getLastname());
+            dob_edittext.setText(patientdto.getDateofbirth());
+            countryCodePicker.setFullNumber(patientdto.getPhonenumber());
+            phoneno_edittext.setText(patientdto.getPhonenumber());
+
+         /*   firstname_edittext.setText(patientdto.getFirstname());
+            firstname_edittext.setText(patientdto.getFirstname());
+            firstname_edittext.setText(patientdto.getFirstname());*/
         }
         // next btn click
         frag1_nxt_btn_main.setOnClickListener(v -> {
