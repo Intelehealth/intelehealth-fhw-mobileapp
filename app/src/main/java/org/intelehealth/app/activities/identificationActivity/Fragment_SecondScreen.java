@@ -58,6 +58,7 @@ public class Fragment_SecondScreen extends Fragment {
     private Fragment_ThirdScreen fragment_thirdScreen;
     private Fragment_FirstScreen firstScreen;
     private TextView postalcode_error, country_error, state_error, district_error, city_error, address1_error, address2_error;
+    boolean fromThirdScreen = false;
 
 
     @Nullable
@@ -72,9 +73,6 @@ public class Fragment_SecondScreen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = Fragment_SecondScreen.this.context;
         sessionManager = new SessionManager(getActivity());
-
-        if (getArguments() != null)
-            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
 
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
         address_icon = getActivity().findViewById(R.id.addresslocation_icon);
@@ -97,7 +95,6 @@ public class Fragment_SecondScreen extends Fragment {
         city_error = view.findViewById(R.id.city_error);
         address1_error = view.findViewById(R.id.address1_error);
         address2_error = view.findViewById(R.id.address2_error);
-
     }
 
     @Override
@@ -108,6 +105,11 @@ public class Fragment_SecondScreen extends Fragment {
         personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon_unselected));
+
+        if (getArguments() != null) {
+            patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
+            fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
+        }
 
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -168,6 +170,21 @@ public class Fragment_SecondScreen extends Fragment {
         cityAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item,  getResources().getStringArray(R.array.city));
         city_spinner.setAdapter(cityAdapter);
+
+        // Setting up the screen when user came from SEcond screen.
+        if (fromThirdScreen) {
+            postalcode_edittext.setText(patientDTO.getPostalcode());
+            address1_edittext.setText(patientDTO.getAddress1());
+            address2_edittext.setText(patientDTO.getAddress2());
+
+            country_spinner.setSelection(countryAdapter.getPosition(String.valueOf(patientDTO.getCountry())));
+            state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
+            String[] district_city = patientDTO.getCityvillage().trim().split(":");
+            String district = district_city[0];
+            String city_village = district_city[1];
+            district_spinner.setSelection(districtAdapter.getPosition(district));
+            city_spinner.setSelection(cityAdapter.getPosition(city_village));
+        }
 
         // Back Button click event.
         frag2_btn_back.setOnClickListener(v -> {

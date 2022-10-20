@@ -57,6 +57,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private Button frag3_btn_back, frag3_btn_next;
     private TextView relation_error, occupation_error, caste_error, education_error, economic_error;
     ImagesDAO imagesDAO = new ImagesDAO();
+    private Fragment_SecondScreen secondScreen;
 
 
     @Nullable
@@ -98,15 +99,20 @@ public class Fragment_ThirdScreen extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        secondScreen = new Fragment_SecondScreen();
         personal_icon.setImageDrawable(getResources().getDrawable(R.drawable.addpatient_icon_done));
         address_icon.setImageDrawable(getResources().getDrawable(R.drawable.addresslocation_icon_done));
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
+            bundle.putSerializable("patientDTO", (Serializable) patientDTO);
+            bundle.putBoolean("fromThirdScreen", true);
+            secondScreen.setArguments(bundle); // passing data to Fragment
+
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.frame_firstscreen, new Fragment_SecondScreen())
+                    .replace(R.id.frame_firstscreen, secondScreen)
                     .commit();
         });
 
