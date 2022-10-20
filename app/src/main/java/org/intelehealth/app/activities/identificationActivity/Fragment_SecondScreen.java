@@ -108,7 +108,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
+            fromThirdScreen = getArguments().getBoolean("fromSecondScreen");
         }
 
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -179,11 +179,13 @@ public class Fragment_SecondScreen extends Fragment {
 
             country_spinner.setSelection(countryAdapter.getPosition(String.valueOf(patientDTO.getCountry())));
             state_spinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-            String[] district_city = patientDTO.getCityvillage().trim().split(":");
-            String district = district_city[0];
-            String city_village = district_city[1];
-            district_spinner.setSelection(districtAdapter.getPosition(district));
-            city_spinner.setSelection(cityAdapter.getPosition(city_village));
+            if (patientDTO.getCityvillage() != null) {
+                String[] district_city = patientDTO.getCityvillage().trim().split(":");
+                String district = district_city[0];
+                String city_village = district_city[1];
+                district_spinner.setSelection(districtAdapter.getPosition(district));
+                city_spinner.setSelection(cityAdapter.getPosition(city_village));
+            }
         }
 
         // Back Button click event.
@@ -466,6 +468,7 @@ public class Fragment_SecondScreen extends Fragment {
         // Bundle data
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
+        bundle.putBoolean("fromSecondScreen", true);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()

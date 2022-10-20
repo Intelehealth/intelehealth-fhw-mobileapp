@@ -1,11 +1,12 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -16,29 +17,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.homeActivity.HomeFragment_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
-import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
-import org.intelehealth.app.utilities.CustomEditText;
 import org.intelehealth.app.utilities.SessionManager;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -62,7 +56,11 @@ public class IdentificationActivity_New extends AppCompatActivity {
     Intent i_privacy;
     String privacy_value;
     Patient patient1 = new Patient();
-    String patientID_edit;
+    String patientID_edit, patient_detail;
+    TextView label;
+    private Fragment_FirstScreen firstScreen;
+    private Fragment_SecondScreen secondScreen;
+    private Fragment_ThirdScreen thirdScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +68,10 @@ public class IdentificationActivity_New extends AppCompatActivity {
 //        binding = ActivityIdentificationNewBinding.inflate(getLayoutInflater());
 //        setContentView(binding.getRoot());
         sessionManager = new SessionManager(this);
+        firstScreen = new Fragment_FirstScreen();
+        secondScreen = new Fragment_SecondScreen();
+        thirdScreen = new Fragment_ThirdScreen();
+
         String language = sessionManager.getAppLanguage();
         Log.d("lang", "lang: " + language);
         //In case of crash still the org should hold the current lang fix.
@@ -92,11 +94,49 @@ public class IdentificationActivity_New extends AppCompatActivity {
 
         initUI();
 
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            if (intent.hasExtra("patientUuid")) {
+                label.setText(R.string.update_patient_identification);
+                patientID_edit = intent.getStringExtra("patientUuid");
+                patient_detail = intent.getStringExtra("patient_detail");
+                patient1.setUuid(patientID_edit);
+
+                Bundle args = intent.getBundleExtra("BUNDLE");
+                patientdto = (PatientDTO) args.getSerializable("patientDTO");
+
+                if (patient_detail.equalsIgnoreCase("personal_edit")) {
+                    setscreen(firstScreen);
+                }
+                else if (patient_detail.equalsIgnoreCase("address_edit")) {
+                    setscreen(secondScreen);
+                }
+                else if (patient_detail.equalsIgnoreCase("others_edit")) {
+                    setscreen(thirdScreen);
+                }
+
+            }
+        }
+
+    }
+
+    private void setscreen(Fragment fragment) {
+        // Bundle data
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("patientDTO", (Serializable) patientdto);
+        bundle.putBoolean("fromSecondScreen", true);
+        fragment.setArguments(bundle); // passing data to Fragment
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_firstscreen, fragment)
+                .commit();
     }
 
     private void initUI() {
         i_privacy = getIntent();
         context = IdentificationActivity_New.this;
+        label = findViewById(R.id.label);
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         getSupportFragmentManager()
@@ -108,38 +148,12 @@ public class IdentificationActivity_New extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-        final LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
-        alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
-
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.close_patient_svg));
-        dialog_title.setText("Close patient registration?");
-        dialog_subtitle.setText("Are you sure you want to close the patient registration?");
-        positive_btn.setText("No");
-        negative_btn.setText("Yes");
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        negative_btn.setOnClickListener(v -> {
-            Intent i_back = new Intent(getApplicationContext(), HomeScreenActivity_New.class);
-            startActivity(i_back);
-        });
-
-        positive_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
-        });
-
-        alertDialog.show();
+        patientRegistrationDialog(context,
+                getResources().getDrawable(R.drawable.close_patient_svg),
+                "Close patient registration?",
+                "Are you sure you want to close the patient registration?",
+                "No",
+                "Yes");
     }
 
 }

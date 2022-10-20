@@ -17,6 +17,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -158,20 +159,54 @@ public class Fragment_FirstScreen extends Fragment {
             dob_edittext.setText(patientdto.getDateofbirth());
             countryCodePicker.setFullNumber(patientdto.getPhonenumber());
             phoneno_edittext.setText(patientdto.getPhonenumber());
+            
+            // Gender edit
+                if (patientdto.getGender().equals("M")) {
+                    gender_male.setChecked(true);
+                    if (gender_female.isChecked())
+                        gender_female.setChecked(false);
+                    if (gender_other.isChecked())
+                        gender_other.setChecked(false);
+                    Log.v(TAG, "yes");
+                } else if (patientdto.getGender().equals("F")) {
+                    gender_female.setChecked(true);
+                    if (gender_male.isChecked())
+                        gender_male.setChecked(false);
+                    if (gender_other.isChecked())
+                        gender_other.setChecked(false);
+                    Log.v(TAG, "yes");
+                } else {
+                    gender_other.setChecked(true);
+                    if (gender_male.isChecked())
+                        gender_male.setChecked(false);
+                    if (gender_female.isChecked())
+                        gender_female.setChecked(false);
+                }
+                
+            if (gender_male.isChecked()) {
+                mGender = "M";
+            } else if (gender_female.isChecked()) {
+                mGender = "F";
+            } else {
+                mGender = "O";
+            }
+            
+            // profile image edit
+            if (patientdto.getPatientPhoto() != null && !patientdto.getPatientPhoto().trim().isEmpty()) {
+                //  patient_imgview.setImageBitmap(BitmapFactory.decodeFile(patientdto.getPatientPhoto()));
+                Glide.with(getActivity())
+                        .load(new File(patientdto.getPatientPhoto()))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(patient_imgview);
 
-         /*   firstname_edittext.setText(patientdto.getFirstname());
-            firstname_edittext.setText(patientdto.getFirstname());
-            firstname_edittext.setText(patientdto.getFirstname());*/
+            }
         }
 
         // next btn click
         frag1_nxt_btn_main.setOnClickListener(v -> {
-          /*  if (patientID_edit != null) {
-                onPatientUpdateClicked(patient1);
-            } else {
-                onPatientCreateClicked();
-            }*/
-
             onPatientCreateClicked();
         });
 
@@ -677,6 +712,7 @@ public class Fragment_FirstScreen extends Fragment {
             // Bundle data
             Bundle bundle = new Bundle();
             bundle.putSerializable("patientDTO", (Serializable) patientdto);
+            bundle.putBoolean("fromSecondScreen", true);
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
             getActivity().getSupportFragmentManager()

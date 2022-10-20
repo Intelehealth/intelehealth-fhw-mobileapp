@@ -180,7 +180,7 @@
             android:visibility="visible">
 
             <Button
-                android:id="@+id/nxt_btn"
+                android:id="@+id/startVisitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_24"

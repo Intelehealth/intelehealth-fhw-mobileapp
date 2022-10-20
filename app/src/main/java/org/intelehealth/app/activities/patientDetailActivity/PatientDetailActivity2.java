@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
@@ -60,6 +61,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -70,6 +72,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -87,6 +91,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -114,9 +119,10 @@ public class PatientDetailActivity2 extends AppCompatActivity {
     String patientName, mGender;
     ImagesDAO imagesDAO = new ImagesDAO();
     float float_ageYear_Month;
-    ImageView profile_image;
+    ImageView profile_image, personal_edit, address_edit, others_edit;
     Myreceiver reMyreceive;
     IntentFilter filter;
+    Button startVisitBtn;
 
 
     @Override
@@ -155,6 +161,50 @@ public class PatientDetailActivity2 extends AppCompatActivity {
 
         initUI();
         setDisplay(patientDTO.getUuid());
+
+        personal_edit.setOnClickListener(v -> {
+            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+            intent2.putExtra("patientUuid", patientDTO.getUuid());
+            intent2.putExtra("patient_detail", "personal_edit");
+
+            Bundle args = new Bundle();
+            args.putSerializable("patientDTO", (Serializable) patientDTO);
+            intent2.putExtra("BUNDLE",args);
+            startActivity(intent2);
+        });
+
+        address_edit.setOnClickListener(v -> {
+            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+            intent2.putExtra("patientUuid", patientDTO.getUuid());
+            intent2.putExtra("patient_detail", "address_edit");
+
+            Bundle args = new Bundle();
+            args.putSerializable("patientDTO", (Serializable) patientDTO);
+            intent2.putExtra("BUNDLE",args);
+            startActivity(intent2);
+        });
+
+        others_edit.setOnClickListener(v -> {
+            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+            intent2.putExtra("patientUuid", patientDTO.getUuid());
+            intent2.putExtra("patient_detail", "others_edit");
+
+            Bundle args = new Bundle();
+            args.putSerializable("patientDTO", (Serializable) patientDTO);
+            intent2.putExtra("BUNDLE",args);
+            startActivity(intent2);
+        });
+
+
+
+        startVisitBtn.setOnClickListener(v -> {
+            patientRegistrationDialog(context,
+                    getResources().getDrawable(R.drawable.dialog_icon_complete),
+                    "Patient Registered!",
+                    "Does the patient want to start the visit now?",
+                    "Continue",
+                    "Cancel");
+        });
     }
 
     private void initUI() {
@@ -180,6 +230,12 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         patientcaste = findViewById(R.id.caste);
         patienteducation = findViewById(R.id.education);
         patienteconomicstatus = findViewById(R.id.economicstatus);
+
+        personal_edit = findViewById(R.id.personal_edit);
+        address_edit = findViewById(R.id.address_edit);
+        others_edit = findViewById(R.id.others_edit);
+
+        startVisitBtn = findViewById(R.id.startVisitBtn);
     }
 
     public void setDisplay(String dataString) {
