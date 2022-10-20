@@ -148,8 +148,14 @@ public class Fragment_ThirdScreen extends Fragment {
             fromThirdScreen = getArguments().getBoolean("fromSecondScreen");
             patientID_edit = getArguments().getString("patientUuid");
 
-            patient1.setUuid(patientDTO.getUuid());
-            setscreen(patientDTO.getUuid());
+            if (patientID_edit != null) {
+                patient1.setUuid(patientID_edit);
+                setscreen(patientID_edit);
+            }
+            else {
+                patient1.setUuid(patientDTO.getUuid());
+                setscreen(patientDTO.getUuid());
+            }
         }
 
 
@@ -488,8 +494,20 @@ public class Fragment_ThirdScreen extends Fragment {
         // inserting data in db and uploading to server...
         try {
             Logger.logD(TAG, "insertpatinet ");
-            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
-            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
+            boolean isPatientInserted = false;
+            boolean isPatientImageInserted = false;
+
+            if (patientID_edit != null) {
+                /*isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientID_edit);
+                isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);*/
+
+                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientID_edit, patientAttributesDTOList);
+                isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);
+            }
+            else {
+                isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());
+                isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
+            }
 
             if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
                 SyncDAO syncDAO = new SyncDAO();
@@ -512,6 +530,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE",args);
+                intent.putExtra("patientUuid", patientID_edit);
                 getActivity().startActivity(intent);
                 startActivity(intent);
             } else {

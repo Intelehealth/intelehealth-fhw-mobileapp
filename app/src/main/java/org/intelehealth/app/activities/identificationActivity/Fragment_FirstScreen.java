@@ -707,6 +707,7 @@ public class Fragment_FirstScreen extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable("patientDTO", (Serializable) patientdto);
             bundle.putBoolean("fromSecondScreen", true);
+            bundle.putString("patientUuid", patientID_edit);
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
             getActivity().getSupportFragmentManager()
