@@ -75,6 +75,7 @@ import org.intelehealth.app.ui2.customToolip.QuickActionCustom;
 import org.intelehealth.app.ui2.customToolip.QuickIntentActionCustom;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
+import org.intelehealth.app.ui2.visit.VisitCreationActivity;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -132,7 +133,8 @@ public class HomeScreenActivity_New extends AppCompatActivity {
 
         initUI();
 
-
+    // temp
+    startActivity(new Intent(this, VisitCreationActivity.class));
     }
 
     private void initUI() {

@@ -35,21 +35,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/skip_new"
-        android:textAllCaps="false"
         android:layout_marginStart="@dimen/button_skip_margin_start"
+        android:layout_marginEnd="@dimen/button_skip_margin_end"
         android:layout_marginBottom="@dimen/button_skip_margin_bottom"
-        android:lineHeight="@dimen/button_skip_line_height"
+        android:background="@drawable/ui2_common_primary_bg"
         android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
         android:drawableTint="@color/iconTintWhite"
-        android:textSize="@dimen/common_button_text_size"
+        android:lineHeight="@dimen/button_skip_line_height"
         android:paddingStart="@dimen/common_button_padding_left"
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
-        android:layout_marginEnd="@dimen/button_skip_margin_end"
-        android:background="@drawable/ui2_common_primary_bg"
+        android:text="@string/skip_new"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-         />
+        android:textSize="@dimen/common_button_text_size" />
 
 </RelativeLayout>

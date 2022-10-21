@@ -214,6 +214,28 @@
 
     <style name="label_misc_txt_14sp">
         <item name="android:textColor">#B0ADBE</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="label_misc_txt_14sp_dark">
+        <item name="android:textColor">#1B163A</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="label_misc_txt_14sp_dark_bold">
+        <item name="android:textColor">#1B163A</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="label_misc_txt_14sp_primary">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="label_misc_txt_12sp_primary">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="label_16sp">
@@ -294,6 +316,7 @@
         <item name="android:textAllCaps">false</item>
 
     </style>
+
     <style name="CustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/achieve_tab_title_text_size</item>
         <item name="android:textColor">@color/textColorBlack</item>
@@ -328,6 +351,15 @@
         </item>
         <item name="android:textColor">
             #1B163A
+        </item>
+    </style>
+
+    <style name="success_text_color">
+        <item name="android:textSize">
+            @dimen/card_content_normal_text_size
+        </item>
+        <item name="android:textColor">
+            #0FD197
         </item>
     </style>
 

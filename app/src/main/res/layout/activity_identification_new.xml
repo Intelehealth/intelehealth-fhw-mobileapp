@@ -214,7 +214,7 @@
         android:layout_below="@+id/title_text"
         android:layout_marginBottom="@dimen/fu_card_margin_updown">
 
-<!--        <include layout="@layout/fragment_registration_firstscreen" />-->
+        <!--        <include layout="@layout/fragment_registration_firstscreen" />-->
 
     </FrameLayout>
 
