@@ -66,6 +66,7 @@ dependencies {
     implementation files('libs/base_java.jar')
     implementation files('libs/libjingle_peerconnection.jar')
     //implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.android.volley:volley:1.2.0'
