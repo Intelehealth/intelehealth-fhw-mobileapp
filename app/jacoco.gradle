@@ -65,7 +65,8 @@ def createVariantCoverage(variant) {
         description = "Generate Jacoco coverage reports for the ${variantName.capitalize()} build."
 
         reports {
-            html.enabled = true
+            //html.enabled = true Enabling XML 
+            xml.enabled = true
         }
 
         def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir, excludes: project.excludes)
@@ -82,7 +83,8 @@ def createVariantCoverage(variant) {
         getExecutionData().setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/${variantName}UnitTest/${testTaskName}.exec"))
 
         doLast {
-            def m = new File("${project.buildDir}/reports/jacoco/${testTaskName}Coverage/html/index.html")
+            //def m = new File("${project.buildDir}/reports/jacoco/${testTaskName}Coverage/html/index.html") Adding XML files
+            def m = new File("${project.buildDir}/reports/jacoco/${testTaskName}Coverage/xml/jacocoTestReport.xml")
                     .text =~ /Total[^%]*>(\d?\d?\d?%)/
             if (m) {
                 println "Test coverage: ${m[0][1]}"
