@@ -36,6 +36,8 @@ android {
     }
     buildTypes {
         release {
+        //Adding testCoverage in release
+        testCoverageEnabled true 
             lintOptions {
                 disable 'MissingTranslation'
                 checkReleaseBuilds false
