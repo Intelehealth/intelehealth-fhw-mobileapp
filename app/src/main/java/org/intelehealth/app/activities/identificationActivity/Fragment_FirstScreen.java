@@ -661,8 +661,9 @@ public class Fragment_FirstScreen extends Fragment {
             }
 
             // mobile no - start
-            if (phoneno_edittext.getText().toString().trim().length() > 0) {
-                if (phoneno_edittext.getText().toString().trim().length() < 10) {
+//        String s = phoneno_edittext.getText().toString().replaceAll("\\s+", "");
+            if (phoneno_edittext.getText().toString().replaceAll("\\s+", "").length() > 0) {
+                if (phoneno_edittext.getText().toString().replaceAll("\\s+", "").length() < 10) {
                     phoneno_edittext.requestFocus();
                     phoneno_edittext.setError(getString(R.string.enter_10_digits));
                     return;
