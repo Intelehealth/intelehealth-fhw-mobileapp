@@ -40,16 +40,21 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-
         <activity
-            android:name=".activities.patientDetailActivity.PatientDetailActivity2"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".VisitSummaryActivity_New"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        <activity
+            android:name=".activities.patientDetailActivity.PatientDetailActivity2"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"

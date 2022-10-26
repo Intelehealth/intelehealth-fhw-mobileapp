@@ -70,7 +70,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setLocale(sessionManager.getAppLanguage());
-                if (sessionManager.isFirstTimeLaunch()) {
+               /* if (sessionManager.isFirstTimeLaunch()) {
                     Intent intent = new Intent(SplashScreenActivity.this, IntroScreensActivity_New.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);
@@ -81,12 +81,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intent.putExtra("password", "");
                     startActivity(intent);
                 }
-                finish(); // TODO: uncomment
+                finish(); // TODO: uncomment*/
 
-/*
                 Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity_New.class);
                 startActivity(intent); // TODO: remove this intent code later.
-*/
 
             }
         });
