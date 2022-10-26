@@ -174,7 +174,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView3"
+            android:id="@+id/closedVisitsCardView"
             android:layout_width="match_parent"
             android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:layout_height="wrap_content"
@@ -254,7 +254,7 @@
             android:layout_marginTop="@dimen/options_card_margin_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+            app:layout_constraintTop_toBottomOf="@+id/closedVisitsCardView">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView4_appointment"

@@ -22,6 +22,7 @@ import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Objects;
@@ -57,10 +58,21 @@ public class HomeFragment_New extends Fragment {
         bottomNav.setVisibility(View.VISIBLE);
 
         CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);
+        CardView closedVisitsCardView = view.findViewById(R.id.closedVisitsCardView);
+
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // TODO: remove this block logic later as its only for testing Visit summary screen.
+        closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
                 startActivity(intent);
             }
         });

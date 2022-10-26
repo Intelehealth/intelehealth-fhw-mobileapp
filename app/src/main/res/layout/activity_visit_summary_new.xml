@@ -9,7 +9,7 @@
 
    <!-- Toolbar - start-->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/frame_10021"
+        android:id="@+id/relativeCardview"
         android:layout_width="0dp"
         android:layout_height="@dimen/followup_toolbar"
         android:layout_alignParentLeft="true"
@@ -101,33 +101,51 @@
     </RelativeLayout>
     <!--Toolbar - end-->
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeCardview"
+        android:layout_above="@+id/btn_bottom"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_head"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fu_header_card_height"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/frame_10021"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/fu_card_margin_sides"
+        android:layout_marginLeft="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
-        android:layout_marginRight="@dimen/fu_card_margin_sides"
+        android:layout_marginRight="@dimen/toolbar_margin_left"
         android:elevation="16dp"
         app:cardCornerRadius="@dimen/margin_5"
         app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <!-- Frame 100340 -->
         <LinearLayout
             android:id="@+id/frame_10034"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/fu_margin_start"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginEnd="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/fu_margin_start"
+            android:layout_marginBottom="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:weightSum="1">
 
             <!--1st-->
             <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1">
 
                 <androidx.cardview.widget.CardView
@@ -148,7 +166,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_toEndOf="@+id/profile"
                     android:orientation="vertical">
@@ -163,7 +181,7 @@
                         <TextView
                             android:id="@+id/patname_txt"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center_horizontal|center_vertical"
                             android:lineSpacingExtra="-3sp"
@@ -178,7 +196,7 @@
                         <TextView
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
@@ -222,9 +240,359 @@
                     android:src="@drawable/ui2_ic_chevron_down" />
 
             </LinearLayout>
-
         </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/frame_10034"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
+                android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                android:background="@color/notifi_divider_color" />
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
+                android:layout_marginBottom="@dimen/fu_margin_start"
+                android:shrinkColumns="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="  CHW worker"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Kiran Devi Prakash"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <!--Gender-->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="  Visit ID"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="XXX543573"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+            </TableLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
+
+    <!--Vitals and Other cards - start-->
+    <RelativeLayout
+        android:id="@+id/vitalsRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview_head"
+        android:layout_marginTop="@dimen/margin_40dp">
+
+        <ImageButton
+            android:id="@+id/openall_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:src="@drawable/open_all_btn" />
+
+        <include
+            layout="@layout/visit_summary_itemscard" />
+
+    </RelativeLayout>
+    <!--Vitals and Other cards - end-->
+
+            <!--Additional notes - start-->
+            <RelativeLayout
+                android:id="@+id/add_notes_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vitalsRelativeLayout"
+                android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+                <TextView
+                    android:id="@+id/add_notes_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Additional notes"
+                    style="@style/vs_title_head_14sp"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:layout_below="@+id/add_notes_title"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:hint="Leave a note for doctor"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:gravity="top"
+                    android:paddingTop="@dimen/margin_12"
+                    android:paddingStart="@dimen/margin_12"
+                    android:background="@drawable/edittext_border"/>
+
+            </RelativeLayout>
+            <!--Additional docs - end-->
+
+
+            <RelativeLayout
+                android:id="@+id/add_doc_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_notes_relative"
+                android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginEnd="@dimen/toolbar_margin_left">
+
+                <TextView
+                    android:id="@+id/add_docs_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add additional document (2)"
+                    style="@style/vs_title_head_14sp"
+                    android:textStyle="bold"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/add_doc_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/add_docs_title"
+                    tools:listitem="@layout/additional_docs_listitem"
+                    tools:itemCount="3"
+                    android:layout_marginTop="@dimen/margin_8" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:background="@drawable/visit_summary_add_doc_cardbg"
+                    android:layout_below="@+id/add_doc_recyclerview">
+
+                    <ImageButton
+                        android:id="@+id/add_doc_addBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/add_doc_addbtn"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginBottom="@dimen/margin_12"
+                        android:background="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/add_doc_addBtn"
+                        style = "@style/blur_txtview"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:text="Add additional documents like reports, prescriptions, etc.\u000D" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <!--Doctor Speciality card-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/doc_speciality_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_doc_relative"
+            android:elevation="16dp"
+            app:cardCornerRadius="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_40dp"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fu_card_margin_sides">
+
+            <TextView
+                android:id="@+id/doc_speciality_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Doctor's specialty"
+                android:textColor="@color/colorPrimary"
+                style="@style/vs_title_head_14sp"
+                android:textStyle="bold"/>
+
+            <Spinner
+                android:id="@+id/doc_speciality_spinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/doc_speciality_title"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginBottom="@dimen/margin_16dp"
+                android:gravity="center_vertical"
+                android:hint="Select Speciality"
+                android:entries="@array/speciality_values"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingStart="@dimen/margin_12"
+                android:paddingBottom="@dimen/margin_10"
+                android:textSize="@dimen/edittext_textsize_16sp" />
+
+
+        </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+<!--            Priority Visit-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/priority_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/doc_speciality_card"
+            android:elevation="16dp"
+            app:cardCornerRadius="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_40dp"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:layout_marginBottom="@dimen/margin_20dp"
+            app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fu_card_margin_sides">
+
+            <TextView
+                android:id="@+id/doc_speciality_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Priority Visit"
+                android:layout_centerVertical="true"
+                android:textColor="@color/colorPrimary"
+                style="@style/vs_title_head_14sp"
+                android:textStyle="bold"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/question_mark_helpicon"
+                android:layout_toEndOf="@+id/doc_speciality_title"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_centerVertical="true"
+                android:background="@null" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:theme="@style/AppTheme.switchColorStyle"
+                />
+
+        </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/btn_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="@dimen/margin_12"
+        android:layout_marginBottom="@dimen/fu_card_margin_sides"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_decline_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/common_edittext_margin_top"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:lineHeight="@dimen/button_line_height"
+            android:padding="@dimen/hamburger_margin_top"
+            android:text="Appointment"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_button_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_accept_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:lineHeight="@dimen/button_line_height"
+            android:padding="@dimen/hamburger_margin_top"
+            android:text="Send visit"
+            android:textSize="@dimen/common_button_text_size" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

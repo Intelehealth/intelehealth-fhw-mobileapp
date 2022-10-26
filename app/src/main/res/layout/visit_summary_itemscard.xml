@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/openall_btn"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--Vitals card-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/vitalsCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/margin_5"
+        android:layout_marginTop="@dimen/fu_card_margin_sides"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_20dp"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fu_card_margin_sides">
+
+            <ImageView
+                android:id="@+id/vs_icon"
+                android:layout_width="@dimen/edittext_height_44dp"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:src="@drawable/vitals_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/vs_icon"
+                android:text="Vitals"
+                style="@style/text_title_style"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_centerVertical="true" />
+
+            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/downBtn"
+                android:layout_width="@dimen/fu_icon_width"
+                android:layout_height="@dimen/fu_icon_height"
+                android:background="@null"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ui2_ic_chevron_down" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <!--Visit Reason card-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/visitReasonCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/margin_5"
+        android:layout_below="@+id/vitalsCard"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_20dp"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fu_card_margin_sides">
+
+            <ImageView
+                android:id="@+id/vs_icon"
+                android:layout_width="@dimen/edittext_height_44dp"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:src="@drawable/visit_reason_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/vs_icon"
+                android:text="Visit reason"
+                style="@style/text_title_style"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_centerVertical="true" />
+
+            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/downBtn"
+                android:layout_width="@dimen/fu_icon_width"
+                android:layout_height="@dimen/fu_icon_height"
+                android:background="@null"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ui2_ic_chevron_down" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+<!--    Phys exam card-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/physExamCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_20dp"
+        android:layout_below="@+id/visitReasonCard"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/margin_5"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fu_card_margin_sides">
+
+            <ImageView
+                android:id="@+id/vs_icon"
+                android:layout_width="@dimen/edittext_height_44dp"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:src="@drawable/phys_exam_icon" />
+
+            <TextView
+                style="@style/text_title_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toEndOf="@+id/vs_icon"
+                android:text="Physical examination" />
+
+            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/downBtn"
+                android:layout_width="@dimen/fu_icon_width"
+                android:layout_height="@dimen/fu_icon_height"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="@drawable/ui2_ic_chevron_down" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+<!--    Medical History Card-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/medHistCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_below="@+id/physExamCard"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/margin_5"
+        app:cardElevation="@dimen/margin_5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fu_card_margin_sides">
+
+            <ImageView
+                android:id="@+id/vs_icon"
+                android:layout_width="@dimen/edittext_height_44dp"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:src="@drawable/med_history_icon" />
+
+            <TextView
+                style="@style/text_title_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toEndOf="@+id/vs_icon"
+                android:text="Medical history" />
+
+            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/downBtn"
+                android:layout_width="@dimen/fu_icon_width"
+                android:layout_height="@dimen/fu_icon_height"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="@drawable/ui2_ic_chevron_down" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

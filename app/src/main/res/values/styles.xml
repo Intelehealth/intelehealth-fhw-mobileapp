@@ -407,4 +407,29 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="text_title_style">
+        <item name="android:textSize">
+            @dimen/txtsize_patdetail_16sp
+        </item>
+        <item name="android:textColor">
+            @color/textview_color
+        </item>
+    </style>
+
+    <style name="vs_title_head_14sp">
+        <item name="android:textSize">
+            14sp
+        </item>
+        <item name="android:textColor">
+            @color/textview_color
+        </item>
+    </style>
+
+
+    <style name="AppTheme.switchColorStyle" parent="Theme.AppCompat.Light">
+        <!-- colorAccent is used as the default value for colorControlActivated,
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/lite_red</item>
+    </style>
+
 </resources>
