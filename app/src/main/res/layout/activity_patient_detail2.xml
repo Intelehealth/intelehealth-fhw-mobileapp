@@ -119,7 +119,6 @@
                         android:id="@+id/profile_image"
                         android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                         android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-
                         android:src="@drawable/avatar1" />
                 </androidx.cardview.widget.CardView>
 
@@ -181,7 +180,7 @@
             android:visibility="visible">
 
             <Button
-                android:id="@+id/nxt_btn"
+                android:id="@+id/startVisitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_24"

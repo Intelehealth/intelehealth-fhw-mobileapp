@@ -79,6 +79,7 @@
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <ImageButton
+                android:id="@+id/address_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

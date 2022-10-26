@@ -22,7 +22,7 @@
             android:background="@color/transparent"
             android:padding="10dp"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
+            app:srcCompat="@drawable/keyboard_backspace" />
 
         <TextView
             android:layout_width="wrap_content"

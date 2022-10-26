@@ -315,6 +315,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
+
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
@@ -469,6 +470,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.countries, R.layout.custom_spinner);
         //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
+
 //        ArrayAdapter<CharSequence> countryAdapter = null;
 //        try {
 //
@@ -807,8 +809,8 @@ public class IdentificationActivity extends AppCompatActivity {
                                 R.array.states_india, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
-                        // setting state according database when user clicks edit details
 
+                        // setting state according database when user clicks edit details
                         if (patientID_edit != null)
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         else
@@ -1079,6 +1081,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAgeDays + getResources().getString(R.string.days);
             mAge.setText(age);
         }
+
+
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1589,7 +1593,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 

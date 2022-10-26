@@ -809,7 +809,7 @@
     <string name = "prescription_temp_c">तापमान (C): </string>
     <string name = "prescription_temp_f">तापमान (F): </string>
 
-    <string name = "route_Optional">रूट (वैकल्पिक)</string>
+<!--    <string name = "route_Optional">रूट (वैकल्पिक)</string>-->
     <string name = "choose_a_date">एक तारीख चुनें</string>
     <string name="follow_up_remark">अनुवर्ती टिप्पणी</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया नुस्खे देने का प्रयास करने से पहले पहले अपलोड करें।</string>

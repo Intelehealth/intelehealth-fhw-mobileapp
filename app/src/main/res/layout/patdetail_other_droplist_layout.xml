@@ -79,6 +79,7 @@
                 android:textSize="@null" />
 
             <ImageButton
+                android:id="@+id/others_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

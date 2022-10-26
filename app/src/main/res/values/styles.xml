@@ -350,7 +350,7 @@
             @dimen/find_patient_hint_size
         </item>
         <item name="android:textColor">
-            #1B163A
+            @color/textview_color
         </item>
     </style>
 
@@ -417,6 +417,26 @@
         <item name="android:textColor">
             @color/textview_color
         </item>
+    </style>
+
+    <style name="RadioButtonStyleSelection" parent="Theme.AppCompat.Light">
+<!--        <item name="colorControlNormal">@color/indigo</item>-->
+        <item name="colorControlActivated">@color/colorPrimary1</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/spinner_bg</item>
+    </style>
+
+    <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/small_spinner_bg</item>
+    </style>
+
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
 </resources>

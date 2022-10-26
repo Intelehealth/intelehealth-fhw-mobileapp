@@ -4,7 +4,9 @@ package org.intelehealth.app.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PatientAttributesDTO {
+import java.io.Serializable;
+
+public class PatientAttributesDTO implements Serializable {
 
     @SerializedName("uuid")
     @Expose
@@ -52,4 +54,13 @@ public class PatientAttributesDTO {
         this.patientuuid = patientuuid;
     }
 
+    @Override
+    public String toString() {
+        return "PatientAttributesDTO{" +
+                "uuid='" + uuid + '\'' +
+                ", value='" + value + '\'' +
+                ", personAttributeTypeUuid='" + personAttributeTypeUuid + '\'' +
+                ", patientuuid='" + patientuuid + '\'' +
+                '}';
+    }
 }
