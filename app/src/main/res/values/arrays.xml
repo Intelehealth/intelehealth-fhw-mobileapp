@@ -66,8 +66,8 @@
     <string-array name="countries">
         <item>Select Country</item>
         <item>India</item>
-        <item>United States</item>
-        <item>Philippines</item>
+<!--        <item>United States</item>-->
+<!--        <item>Philippines</item>-->
     </string-array>
     <string-array name="economic_gu">
         <item>પસંદ કરો</item>
