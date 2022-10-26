@@ -282,18 +282,17 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[] {visit_uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{visit_uuid});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
 
                 speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                speciality.setAttributeType(cursor.getString
-                        (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                speciality.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
                 speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
                 list.add(speciality);
             }
-            }
+        }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -409,8 +408,7 @@ public class VisitsDAO {
         try {
             values.put("isdownloaded", isupdated);
             updatedcount = db.update("tbl_visit", values, whereclause, whereargs);
-            if (updatedcount != 0)
-                isUpdated = true;
+            if (updatedcount != 0) isUpdated = true;
             Logger.logD("visit", "updated isdownloaded" + updatedcount);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
@@ -448,4 +446,27 @@ public class VisitsDAO {
         return isDownloaded;
     }
 
+    public String getDateFromVisitUUID(String visitUUID) throws DAOException {
+        String date = null;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT startdate FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    date = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+        return date;
+    }
 }

@@ -188,6 +188,28 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_visit_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/date_of_visit"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_visit_date_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -1807,11 +1829,11 @@
             android:gravity="center"
             android:onClick="generateBill"
             android:text="@string/generate_bill"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
 
         <!-- <Button
