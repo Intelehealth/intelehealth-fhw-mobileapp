@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/visit_summary_add_doc_cardbg">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/add_doc_addBtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="@dimen/margin_12"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginBottom="@dimen/margin_12"
+        app:cardCornerRadius="@dimen/margin_5">
+
+        <ImageView
+            android:id="@+id/add_doc_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/avatar1"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

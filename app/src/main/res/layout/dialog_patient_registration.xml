@@ -36,6 +36,7 @@
                 android:lineSpacingExtra="4sp"
                 android:text="Patient Registered!"
                 android:textAppearance="@style/dialog_title"
+                android:textStyle="bold"
                 android:textColor="@null"
                 android:textSize="@null" />
 

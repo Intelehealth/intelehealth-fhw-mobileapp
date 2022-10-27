@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_below="@+id/openall_btn"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
 
     <!--Vitals card-->
     <androidx.cardview.widget.CardView
@@ -20,7 +28,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/vitals_header_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/fu_card_margin_sides">
 
             <ImageView
@@ -39,13 +52,315 @@
                 android:layout_centerVertical="true" />
 
             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/downBtn"
+                android:id="@+id/btn_up_vitals_header"
                 android:layout_width="@dimen/fu_icon_width"
                 android:layout_height="@dimen/fu_icon_height"
                 android:background="@null"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ui2_ic_chevron_down" />
+        </RelativeLayout>
+
+            <!--Expanded Vitals-->
+            <RelativeLayout
+                android:id="@+id/vs_vitals_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vitals_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/vitals_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_below="@+id/divider">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="Details"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/vitals_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:shrinkColumns="1">
+
+                    <!--height-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  Height(cm)"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="168"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--weight-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  Weight(kg)"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="72"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--BMI-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  BMI"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="25.51"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--BP-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  BP"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="130/85"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--Pulse-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  Pulse"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="75"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--Temperature(F)-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  Temperature(F)"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="99"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+
+                    <!--SpO2-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  SpO2 (%)"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAppearance="@style/caption"
+                            android:text="No information"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+
+                    <!--Respiratory Rate-->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  Respiratory rate"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No information"
+                            android:textColor="@color/hint_text_color"
+                            android:textAppearance="@style/caption"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+
+                </TableLayout>
+            </RelativeLayout>
 
 
         </RelativeLayout>
@@ -67,7 +382,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/chiefcomplaint_header_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/fu_card_margin_sides">
 
             <ImageView
@@ -86,13 +406,220 @@
                 android:layout_centerVertical="true" />
 
             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/downBtn"
+                android:id="@+id/btn_up_visitreason_header"
                 android:layout_width="@dimen/fu_icon_width"
                 android:layout_height="@dimen/fu_icon_height"
                 android:background="@null"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ui2_ic_chevron_down" />
+        </RelativeLayout>
+
+            <!--Chief Complaint - expanded view-->
+            <RelativeLayout
+                android:id="@+id/vs_visitreason_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/chiefcomplaint_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Chief Complaint Headers only title-->
+                <RelativeLayout
+                    android:id="@+id/cc_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/divider"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="Chief complaint(s)"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/cc_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_below="@+id/cc_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Abdominal Pain"
+                        android:paddingHorizontal="@dimen/margin_8"
+                        android:layout_marginEnd="@dimen/margin_8"
+                        android:paddingVertical="@dimen/margin_4"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:background="@drawable/ui2_common_primary_bg" />
+                </LinearLayout>
+                <!--End-->
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/chiefcomplaint_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cc_linear"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="Details"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+<!--                cc - data - start-->
+                <TextView
+                    android:id="@+id/cc_textview_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/chiefcomplaint_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="here comes the data in html format."
+                    android:layout_marginTop="@dimen/hamburger_margin_start" />
+                <!--Chief Complaint details - end-->
+
+
+                <!--Associated symp - start-->
+                <RelativeLayout
+                    android:id="@+id/associ_sym_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cc_textview_data"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="@string/associated_symptoms"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+                <!--Patient - reports-->
+                <RelativeLayout
+                    android:id="@+id/reports_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_below="@+id/associ_sym_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/pat_reports_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Patient reports:"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textview_color"
+                        android:layout_marginTop="4dp"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        android:layout_marginStart="@dimen/margin_10"
+                        android:text="Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
+                        android:layout_below="@+id/pat_reports_txtview" />
+                </RelativeLayout>
+
+                <!--Patient - Denies-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_below="@+id/reports_relative"
+                    android:layout_marginBottom="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/pat_reports_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Patient denies:"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textview_color"
+                        android:layout_marginTop="4dp"
+                        android:textSize="@dimen/find_patient_hint_size"
+                        android:layout_marginStart="@dimen/margin_10"
+                        android:text="Vomiting, Diarrhea, Fever, Belching/Burping, Blood in stool, change in frequency of urination, Color change in urine, Hiccups, Vaginal discharge(describe), Burning felling in a throat at night/early in the morning, Post nasal drip, Recent severe stress."
+                        android:layout_below="@+id/pat_reports_txtview" />
+
+                </RelativeLayout>
+
+
+                <!--Associated symp - end -->
+            </RelativeLayout>
 
 
         </RelativeLayout>
@@ -114,6 +641,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/physExam_header_relative"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/fu_card_margin_sides">
 
@@ -133,13 +665,88 @@
                 android:text="Physical examination" />
 
             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/downBtn"
+                android:id="@+id/btn_up_phyexam_header"
                 android:layout_width="@dimen/fu_icon_width"
                 android:layout_height="@dimen/fu_icon_height"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:src="@drawable/ui2_ic_chevron_down" />
+        </RelativeLayout>
+
+            <!--Expanable View-->
+            <RelativeLayout
+                android:id="@+id/vs_phyexam_header_expandview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/physExam_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/physexam_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_below="@+id/divider">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="General exams"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/physexam_textview_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/physexam_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="here comes the phys exam data in html format."
+                    android:layout_marginTop="@dimen/hamburger_margin_start" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recy_physexam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:orientation="horizontal"
+                    app:reverseLayout="true"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/general_exam_images_listitem"
+                    android:layout_below="@+id/physexam_textview_data"
+                     />
+
+            </RelativeLayout>
+
 
 
         </RelativeLayout>
@@ -160,36 +767,170 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/fu_card_margin_sides">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/vs_icon"
-                android:layout_width="@dimen/edittext_height_44dp"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:src="@drawable/med_history_icon" />
+            <RelativeLayout
+                android:id="@+id/pathistory_header_relative"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
-            <TextView
-                style="@style/text_title_style"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/vs_icon"
+                    android:layout_width="@dimen/edittext_height_44dp"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:src="@drawable/med_history_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/vs_icon"
+                    android:text="Medical history" />
+
+                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/btn_up_medhist_header"
+                    android:layout_width="@dimen/fu_icon_width"
+                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/vs_medhist_header_expandview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/margin_8"
-                android:layout_toEndOf="@+id/vs_icon"
-                android:text="Medical history" />
+                android:layout_below="@+id/pathistory_header_relative"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/downBtn"
-                android:layout_width="@dimen/fu_icon_width"
-                android:layout_height="@dimen/fu_icon_height"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:src="@drawable/ui2_ic_chevron_down" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                    android:background="@color/notifi_divider_color" />
+
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/pathist_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_below="@+id/divider">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="Patient history"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/pathist_textview_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pathist_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="here comes the patient history data in html format."
+                    android:layout_marginTop="@dimen/hamburger_margin_start" />
+
+
+                <!--Fam History-->
+                <!--Personal Sub-Child-->
+                <RelativeLayout
+                    android:id="@+id/famhist_details_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_below="@+id/pathist_textview_data">
+
+                    <TextView
+                        android:id="@+id/details_personal_txtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="-3sp"
+                        android:text="Family history"
+                        style="@style/vs_title_head_14sp"
+                        android:textStyle="bold"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/personal_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:src="@drawable/edit_change_patdetail" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/pathist_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/famhist_details_relative"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:text="Do you have a family history of any of the following?"
+                    android:layout_marginTop="@dimen/hamburger_margin_start" />
+
+                <TextView
+                    android:id="@+id/physexam_textview_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pathist_subtitle"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:text="here comes data with bullets...."
+                    android:layout_marginTop="@dimen/margin_4" />
+
+            </RelativeLayout>
+
+
 
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
 
-</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+</ScrollView>

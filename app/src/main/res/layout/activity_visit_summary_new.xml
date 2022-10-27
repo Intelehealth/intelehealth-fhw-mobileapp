@@ -233,7 +233,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/frame_26088"
+                    android:id="@+id/btn_up_header"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:background="@null"
@@ -243,6 +243,7 @@
         </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/vs_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/frame_10034"
@@ -385,6 +386,7 @@
                     android:gravity="top"
                     android:paddingTop="@dimen/margin_12"
                     android:paddingStart="@dimen/margin_12"
+                    android:textSize="@dimen/find_patient_hint_size"
                     android:background="@drawable/edittext_border"/>
 
             </RelativeLayout>
@@ -505,7 +507,7 @@
             android:layout_marginTop="@dimen/margin_40dp"
             android:layout_marginStart="@dimen/toolbar_margin_left"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
-            android:layout_marginBottom="@dimen/margin_20dp"
+            android:layout_marginBottom="@dimen/margin_50"
             app:cardElevation="@dimen/margin_5">
 
         <RelativeLayout
@@ -561,7 +563,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_decline_privacy"
+            android:id="@+id/btn_vs_appointment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_5"
@@ -577,7 +579,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_accept_privacy"
+            android:id="@+id/btn_vs_sendvisit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_5"
