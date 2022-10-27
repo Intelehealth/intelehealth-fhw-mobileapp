@@ -29,7 +29,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
-            btn_up_phyexam_header, btn_up_medhist_header;
+            btn_up_phyexam_header, btn_up_medhist_header, openall_btn;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview,
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview;
 
@@ -57,6 +57,26 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     }
 
     private void expandableCardVisibilityHandling() {
+        openall_btn.setOnClickListener(v -> {
+
+            Drawable drawable = openall_btn.getDrawable();
+            if (drawable.getConstantState().equals(getResources().getDrawable(R.drawable.open_all_btn).getConstantState())) {
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
+                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
+                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
+                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
+            }
+            else {
+                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                vs_vitals_header_expandview.setVisibility(View.GONE);
+                vs_visitreason_header_expandview.setVisibility(View.GONE);
+                vs_phyexam_header_expandview.setVisibility(View.GONE);
+                vs_medhist_header_expandview.setVisibility(View.GONE);
+            }
+
+        });
+
         btn_up_header.setOnClickListener(v -> {
             if (vs_header_expandview.getVisibility() == View.VISIBLE)
                 vs_header_expandview.setVisibility(View.GONE);
@@ -95,6 +115,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
     private void initUI() {
         btn_up_header = findViewById(R.id.btn_up_header);
+        openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
         btn_up_visitreason_header = findViewById(R.id.btn_up_visitreason_header);
         btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
