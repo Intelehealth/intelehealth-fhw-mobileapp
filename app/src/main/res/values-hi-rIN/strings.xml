@@ -828,4 +828,47 @@
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
     <string name="app_version_string">ऐप संस्करण - %1$s</string>
+
+    <!-- Thermal Printers -->
+    <string name="please_connect">उपलब्ध डिवाइस का चयन करें</string>
+    <string name="disconnect">डिस्कनेक्ट</string>
+    <string name="connect">जुडिये</string>
+    <string name="choose_bluetooth_device">ब्लूटूथ डिवाइस चुनें</string>
+    <string name="paired_devices">युग्मित</string>
+    <string name="tip_have_no_paired_device">कोई युग्मित उपकरण नहीं</string>
+    <string name="tip_have_no_found_bluetooth_device">उपकरण नहीं</string>
+    <string name="search_device">खोज</string>
+    <string name="dialog_cancel">रद्द करें</string>
+    <string name="dialog_ok">ठीक है</string>
+    <string name="dialog_tip">टिप</string>
+    <string name="main_pls_choose_device">कृपया एक उपकरण चुनें</string>
+    <string name="dialog_back">पीछे</string>
+    <string name="main_discon_click_repeatedly">डिवाइस काट दिया गया है, बार-बार क्लिक करने की आवश्यकता नहीं है</string>
+    <string name="_main_connected">- कनेक्ट सफलता</string>
+    <string name="_main_connected_fail">कनेक्ट विफल</string>
+    <string name="_main_disconnect">डिस्कनेक्ट किया गया</string>
+
+    <!--<string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+    <string name="please_enter_text">Please enter text.</string>
+    <string name="small_font">Small Font</string>
+    <string name="anti_white">Anti white</string>
+    <string name="double_width">Double Width</string>
+    <string name="double_height">Double Height</string>
+    <string name="bold">Bold</string>
+    <string name="underline">Underline</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
+    <string name="text_encode">Text Encode:</string>
+    <string name="dialog_title_chartset_setting">Chartset name settings</string>
+    <string name="spin_default_esc_font">Please choose a Font</string>
+    <string name="tv_font_select">Font Choose：</string>
+    <string name="btn_clk_sel_font">Click to choose the printed font</string>
+    <string name="label_setting">Label Setting</string>-->
+    <string name="bluetooth_notsupported_device">इस डिवाइस पर ब्लूटूथ समर्थित नहीं है</string>
+    <string name="turn_on_bluetooth">कृपया ब्लूटूथ चालू करें</string>
+    <string name="no_presc_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है</string>
 </resources>

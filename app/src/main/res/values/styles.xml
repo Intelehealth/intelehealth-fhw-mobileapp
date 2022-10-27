@@ -98,4 +98,17 @@
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
+    <!-- Thermal Printer -->
+    <style name="BaseLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/stroke_gray_color</item>
+    </style>
+
+    <style name="SmallIcon">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
 </resources>
