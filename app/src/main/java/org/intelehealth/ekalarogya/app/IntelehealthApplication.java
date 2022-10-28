@@ -16,6 +16,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import androidx.appcompat.app.AppCompatDelegate;
+
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
@@ -41,6 +43,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private Activity currentActivity;
     SessionManager sessionManager;
     public static boolean isInBackground;
+
     public static Context getAppContext() {
         return mContext;
     }
@@ -51,6 +54,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
@@ -113,7 +117,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
 
     }
 
@@ -159,10 +163,11 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     /**
      * for setting the Alert Dialog Custom Font.
+     *
      * @param context
      * @param builderDialog
      */
-    public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog){
+    public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         // Getting the view elements
         TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
         TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
@@ -177,12 +182,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void onMoveToForeground() {
         // app moved to foreground
-        isInBackground=false;
+        isInBackground = false;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onMoveToBackground() {
         // app moved to background
-        isInBackground =true;
+        isInBackground = true;
     }
 }
