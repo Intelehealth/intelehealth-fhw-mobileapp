@@ -20,6 +20,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -67,6 +69,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
@@ -169,6 +172,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     String gender_tv;
     String mFileName = "config.json";
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    private TextView physcialExaminationDownloadText;
+
 
 
     @Override
@@ -411,6 +416,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             patientDenies_txtview.setText(Html.fromHtml(patientDenies));
         }
         // complaints data - end
+
+        // phys exam data
+        if (phyExam.getValue() != null) {
+            String value = phyExam.getValue();
+            String valueArray[] = value.split("<b>General exams: </b><br/>");
+            physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+        }
+        //image download for physcialExamination documents
+        Paint p = new Paint();
+        physcialExaminationDownloadText.setPaintFlags(p.getColor());
+        physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        physcialExaminationImagesDownload();
+        // phys exam data - end
     }
 
     private void initUI() {
@@ -471,6 +489,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
         spO2View = findViewById(R.id.textView_pulseox_value);
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
@@ -482,6 +501,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         patientReports_txtview = findViewById(R.id.patientReports_txtview);
         patientDenies_txtview = findViewById(R.id.patientDenies_txtview);
         // complaint ids - end
+
+        // Phys exam ids
+        physFindingsView = findViewById(R.id.physFindingsView);
+        mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
+        physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
+        // Phys exam ids - end
+
 
 
         btn_vs_sendvisit = findViewById(R.id.btn_vs_sendvisit);
@@ -1169,5 +1195,38 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         return resultVal;
     }
 
+    /*PhysExam images downlaod*/
+    private void physcialExaminationImagesDownload() {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+            for (String images : imageList) {
+                if (imagesDAO.isLocalImageUuidExists(images))
+                    physcialExaminationDownloadText.setVisibility(View.GONE);
+                else
+                    physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+                physcialExaminationDownloadText.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void startDownload(String imageType) {
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("encounterUuidVitals", encounterVitals);
+        intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        intent.putExtra("ImageType", imageType);
+        startService(intent);
+    }
+    /*PhysExam images downlaod - end*/
 
 }

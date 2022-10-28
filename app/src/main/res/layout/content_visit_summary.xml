@@ -534,7 +534,7 @@
                     android:fontFamily="@font/lato_medium"
                     android:text="@string/click_to_download_the_images"
                     android:textSize="@dimen/card_content_sub_text_size"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
