@@ -1596,46 +1596,48 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 if (patient1.getWaterSupplyStatus() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.householdRunningWaterRadioGroup, patient1.getWaterSupplyStatus(), updatedContext, context, sessionManager.getAppLanguage());
-                }
 
-                if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
-                        !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    String[] timeArray = patient1.getWaterSupplyHoursPerDay().split(" ");
-                    if (timeArray.length == 2) {
-                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                        binding.runningWaterHoursEditText.setText(time);
+                    if (patient1.getWaterSupplyHoursPerDay() != null && !patient1.getWaterSupplyStatus().equalsIgnoreCase("") &&
+                            !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.generic_no))) {
+                        String[] timeArray = patient1.getWaterSupplyHoursPerDay().split(" ");
+                        if (timeArray.length == 2) {
+                            String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                            binding.runningWaterHoursEditText.setText(time);
+                        }
                     }
-                }
 
-                if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
-                        !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    String[] timeArray = patient1.getWaterSupplyDaysPerWeek().split(" ");
-                    if (timeArray.length == 2) {
-                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                        binding.runningWaterDaysEditText.setText(time);
+                    if (patient1.getWaterSupplyDaysPerWeek() != null && !patient1.getWaterSupplyDaysPerWeek().equalsIgnoreCase("") &&
+                            !patient1.getWaterSupplyStatus().equalsIgnoreCase(getString(R.string.generic_no))) {
+                        String[] timeArray = patient1.getWaterSupplyDaysPerWeek().split(" ");
+                        if (timeArray.length == 2) {
+                            String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                            binding.runningWaterDaysEditText.setText(time);
+                        }
                     }
+
                 }
 
                 if (patient1.getElectricityStatus() != null && !patient1.getElectricityStatus().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.householdElectricityRadioGroup, patient1.getElectricityStatus(), updatedContext, context, sessionManager.getAppLanguage());
-                }
 
-                if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
-                        && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    String[] timeArray = patient1.getLoadSheddingHoursPerDay().split(" ");
-                    if (timeArray.length == 2) {
-                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                        binding.loadSheddingHoursEditText.setText(time);
+                    if (patient1.getLoadSheddingHoursPerDay() != null && !patient1.getLoadSheddingHoursPerDay().equalsIgnoreCase("")
+                            && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.generic_no))) {
+                        String[] timeArray = patient1.getLoadSheddingHoursPerDay().split(" ");
+                        if (timeArray.length == 2) {
+                            String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                            binding.loadSheddingHoursEditText.setText(time);
+                        }
                     }
-                }
 
-                if (patient1.getLoadSheddingDaysPerWeek() != null && !patient1.getLoadSheddingDaysPerWeek().equalsIgnoreCase("")
-                        && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.survey_no))) {
-                    String[] timeArray = patient1.getLoadSheddingDaysPerWeek().split(" ");
-                    if (timeArray.length == 2) {
-                        String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
-                        binding.loadSheddingDaysEditText.setText(time);
+                    if (patient1.getLoadSheddingDaysPerWeek() != null && !patient1.getLoadSheddingDaysPerWeek().equalsIgnoreCase("")
+                            && !patient1.getElectricityStatus().equalsIgnoreCase(getString(R.string.generic_no))) {
+                        String[] timeArray = patient1.getLoadSheddingDaysPerWeek().split(" ");
+                        if (timeArray.length == 2) {
+                            String time = timeArray[0] + " " + getTimeStrings(timeArray[1], updatedContext, context, sessionManager.getAppLanguage());
+                            binding.loadSheddingDaysEditText.setText(time);
+                        }
                     }
+
                 }
 
                 if (patient1.getAverageAnnualHouseholdIncome() != null && !patient1.getAverageAnnualHouseholdIncome().equalsIgnoreCase("")) {
@@ -1660,7 +1662,7 @@ public class IdentificationActivity extends AppCompatActivity implements Alcohol
 
                 if (patient1.getOpenDefecationStatus() != null && !patient1.getOpenDefecationStatus().equalsIgnoreCase("")) {
                     setSelectedCheckboxes(binding.openDefecationRadioGroup, patient1.getOpenDefecationStatus(), updatedContext, context, sessionManager.getAppLanguage());
-                    if (patient1.getOpenDefecationStatus().equalsIgnoreCase(getString(R.string.survey_yes)))
+                    if (patient1.getOpenDefecationStatus().equalsIgnoreCase(getString(R.string.generic_yes)))
                         binding.llReasonForOpenDefecation.setVisibility(View.VISIBLE);
                     else
                         binding.llReasonForOpenDefecation.setVisibility(View.GONE);

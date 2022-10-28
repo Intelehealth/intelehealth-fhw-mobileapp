@@ -145,21 +145,21 @@ public class MedicalHistoryDialog extends DialogFragment {
         MedicalHistory medicalHistory = new MedicalHistory();
 
         medicalHistory.setHypertension(getMedicalHistoryStrings(
-                ((RadioButton) binding.hypertensionRadioGroup.findViewById(binding.hypertensionRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                ((RadioButton) binding.hypertensionRadioGroup.findViewById(binding.hypertensionRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
                 requireContext(),
                 updatedContext,
                 sessionManager.getAppLanguage()
         ));
 
         medicalHistory.setDiabetes(getMedicalHistoryStrings(
-                ((RadioButton) binding.diabetesRadioGroup.findViewById(binding.diabetesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                ((RadioButton) binding.diabetesRadioGroup.findViewById(binding.diabetesRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
                 requireContext(),
                 updatedContext,
                 sessionManager.getAppLanguage()
         ));
 
         medicalHistory.setArthritis(getMedicalHistoryStrings(
-                ((RadioButton) binding.arthritisRadioGroup.findViewById(binding.arthritisRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                ((RadioButton) binding.arthritisRadioGroup.findViewById(binding.arthritisRadioGroup.getCheckedRadioButtonId())).getText().toString().trim(),
                 requireContext(),
                 updatedContext,
                 sessionManager.getAppLanguage()

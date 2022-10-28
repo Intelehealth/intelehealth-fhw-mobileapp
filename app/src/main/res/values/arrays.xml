@@ -774,35 +774,35 @@
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
         <item>@string/yes_personal</item>
-        <item>@string/survey_no</item>
+        <item>@string/generic_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_hi">
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
         <item>@string/yes_personal</item>
-        <item>@string/survey_no</item>
+        <item>@string/generic_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_or">
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
         <item>@string/yes_personal</item>
-        <item>@string/survey_no</item>
+        <item>@string/generic_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_gu">
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
         <item>@string/yes_personal</item>
-        <item>@string/survey_no</item>
+        <item>@string/generic_no</item>
     </string-array>
 
     <string-array name="familymember_whatsapp_as">
         <item>@string/select</item>
         <item>@string/yes_family_member</item>
         <item>@string/yes_personal</item>
-        <item>@string/survey_no</item>
+        <item>@string/generic_no</item>
     </string-array>
 
     <string-array name="sourcewater_spinner_en">

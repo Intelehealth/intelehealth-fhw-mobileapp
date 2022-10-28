@@ -3372,12 +3372,12 @@ public final class StringUtils {
         // If the app language is not in English, only in that case will the strings be translated.
         if (!locale.equalsIgnoreCase("en")) {
             // Translate string Yes to English
-            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_yes);
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
             }
             // Translate string No to English
-            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
             // Translate string No Expense to English
             if (context.getString(R.string.no_expense).equalsIgnoreCase(text)) {
@@ -3448,12 +3448,12 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.more_than_twenty_five_thousand);
             }
             // Translate string Yes to English
-            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_yes);
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
             }
             // Translate string No to English
-            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
             // Translate string Yes, Card Seen to English
             if (context.getString(R.string.yes_card_seen).equalsIgnoreCase(text)) {
@@ -3507,12 +3507,12 @@ public final class StringUtils {
         // If the app language is not in English, only in that case will the strings be translated.
         if (!locale.equalsIgnoreCase("en")) {
             // Translate string Yes to English
-            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_yes);
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
             }
             // Translate string No to English
-            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
             // Translate string Electricity to English
             if (context.getString(R.string.electricity).equalsIgnoreCase(text)) {
@@ -3755,12 +3755,12 @@ public final class StringUtils {
         // If the app language is not in English, only in that case will the strings be translated.
         if (!locale.equalsIgnoreCase("en")) {
             // Translate string Yes to English
-            if (context.getString(R.string.survey_yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_yes);
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
             }
             // Translate string No to English
-            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
 
             // Translate string Hours to English
@@ -4053,13 +4053,13 @@ public final class StringUtils {
         // If the app language is not in English, only in that case will the strings be translated.
         if (!locale.equalsIgnoreCase("en")) {
             // Translate string Yes to English
-            if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.yes);
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
             }
 
             // Translate string No to English
-            if (context.getString(R.string.no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
         }
         return text;
@@ -4146,16 +4146,16 @@ public final class StringUtils {
         text = getSurveyValue(text);
         if (!locale.equalsIgnoreCase("en")) {
             // Translate string Yes to English
-            if (context.getString(R.string.yes).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.yes);
+            if (context.getString(R.string.generic_yes).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_yes);
             }
             // Translate string No or Denied to English
             if (context.getString(R.string.no_denied).equalsIgnoreCase(text)) {
                 return updatedContext.getString(R.string.no_denied);
             }
             // Translate string No to English
-            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
             // Translate string Denied to Answer
             if (context.getString(R.string.denied_to_answer).equalsIgnoreCase(text)) {
@@ -4330,8 +4330,8 @@ public final class StringUtils {
                 return updatedContext.getString(R.string.yes_personal);
             }
             // Translate string No to English
-            if (context.getString(R.string.survey_no).equalsIgnoreCase(text)) {
-                return updatedContext.getString(R.string.survey_no);
+            if (context.getString(R.string.generic_no).equalsIgnoreCase(text)) {
+                return updatedContext.getString(R.string.generic_no);
             }
         }
         return text;
