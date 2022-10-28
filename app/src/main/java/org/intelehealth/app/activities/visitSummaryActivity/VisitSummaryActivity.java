@@ -893,6 +893,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         });
+
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

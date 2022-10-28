@@ -472,11 +472,11 @@
                 android:textStyle="bold"/>
 
             <Spinner
-                android:id="@+id/doc_speciality_spinner"
+                android:id="@+id/speciality_spinner"
                 style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_below="@+id/doc_speciality_title"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginBottom="@dimen/margin_16dp"
                 android:gravity="center_vertical"
@@ -530,7 +530,7 @@
                 android:background="@null" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switch1"
+                android:id="@+id/flaggedcheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

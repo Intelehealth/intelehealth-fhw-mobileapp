@@ -37,14 +37,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -55,6 +60,8 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
@@ -143,8 +150,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
-    //added checkbox flag .m
-    CheckBox flag;
 
     // new
     TextView nameView;
@@ -177,11 +182,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     String gender_tv;
     String mFileName = "config.json";
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    String speciality_selected = "";
     private TextView physcialExaminationDownloadText;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     String encounterUuid;
     ImageButton editAddDocs;
+    Spinner speciality_spinner;
+    SwitchMaterial flag;
+
 
 
 
@@ -466,8 +475,89 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
                 startActivity(addDocs);
             }
         });
-
         // additional doc data - end
+
+        // speciality data
+        //if row is present i.e. if true is returned by the function then the spinner will be disabled.
+        Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
+        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+        if (isVisitSpecialityExists)
+            speciality_spinner.setEnabled(false);
+
+        //spinner is being populated with the speciality values...
+        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+
+        List<String> items = providerAttributeLIstDAO.getAllValues();
+        Log.d("specc", "spec: " + visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        //Hashmap to List<String> add all value
+        ArrayAdapter<String> stringArrayAdapter;
+
+        //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
+        if (items != null) {
+            items.add(0, getString(R.string.select_specialization_text));
+            stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item, items);
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        } else {
+            stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item,
+                                    getResources().getStringArray(R.array.speciality_values));
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        }
+
+        if (special_value != null) {
+            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            speciality_spinner.setSelection(spinner_position);
+        } else {
+
+        }
+
+        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                speciality_selected = adapterView.getItemAtPosition(i).toString();
+                Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        // todo: speciality code comes in upload btn as well so add that too....later...
+        // speciality data - end
+
+        // Priority data
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String emergencyUuid = "";
+        try {
+            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+            flag.setChecked(true);
+        }
+
+        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                try {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    encounterDAO.setEmergency(visitUuid, isChecked);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+        });
+        // todo: this code is present in uoload btn too so handle that later...
+        // Priority data - end
     }
 
     private void initUI() {
@@ -559,6 +649,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // additional doc
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         // additional doc - end
+
+        // speciality ids
+        speciality_spinner = findViewById(R.id.speciality_spinner);
+        // speciality ids - end
+
+        // priority id
+        flag = findViewById(R.id.flaggedcheckbox);
+        // priority id - end
 
         btn_vs_sendvisit = findViewById(R.id.btn_vs_sendvisit);
     }
@@ -1440,6 +1538,30 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             downloadButton.setEnabled(true);
             downloadButton.setVisibility(View.VISIBLE);
         }*/
+    }
+
+    // speciality alrady exists checking
+    /**
+     * @param uuid the visit uuid of the patient visit records is passed to the function.
+     * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
+     */
+    private boolean speciality_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
+                new String[]{uuid});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
     }
 
 
