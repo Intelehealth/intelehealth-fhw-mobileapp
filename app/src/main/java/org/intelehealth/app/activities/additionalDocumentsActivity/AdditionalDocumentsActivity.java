@@ -113,7 +113,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
             RecyclerView recyclerView = findViewById(R.id.document_RecyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -139,21 +138,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 saveImage(mCurrentPhotoPath);
-//                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-//                File photo = new File(mCurrentPhotoPath);
-//                if (photo.exists()) {
-//                    try{
-//
-//                        long length = photo.length();
-//                        length = length/1024;
-//                        Log.e("------->>>>",length+"");
-//                    }catch(Exception e){
-//                        System.out.println("File not found : " + e.getMessage() + e);
-//                    }
-//
-//                    recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-//                    updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
-//                }
             }
         }
         else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
@@ -176,6 +160,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }
+
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {

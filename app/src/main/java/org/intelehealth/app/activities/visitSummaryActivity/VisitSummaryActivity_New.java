@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -26,9 +27,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.LocaleList;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -47,6 +52,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -54,7 +60,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -64,12 +72,15 @@ import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
+import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.services.DownloadService;
+import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -85,9 +96,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 public class VisitSummaryActivity_New extends AppCompatActivity {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
+    private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+
     SQLiteDatabase db;
 
     Button btn_vs_sendvisit;
@@ -108,6 +122,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     VisitSummaryActivity.DownloadPrescriptionService downloadPrescriptionService;
     private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager, mPhysicalExamsLayoutManager;
+    private AdditionalDocumentAdapter recyclerViewAdapter;
+
     boolean hasLicense = false;
     private String hasPrescription = "";
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
@@ -190,6 +206,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     ImageButton editAddDocs;
     Spinner speciality_spinner;
     SwitchMaterial flag;
+    private Handler mBackgroundHandler;
+    private List<DocumentObject> rowListItem;
+
+
 
 
 
@@ -464,15 +484,41 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // medical history data - end
 
         // additional doc data
+        ImagesDAO imagesDAO = new ImagesDAO();
+        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<File> fileList = new ArrayList<File>();
+        try {
+            fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            for (String fileuuid : fileuuidList) {
+                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                if (new File(filename).exists()) {
+                    fileList.add(new File(filename));
+                }
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        rowListItem = new ArrayList<>();
+
+        for (File file : fileList)
+            rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mAdditionalDocsRecyclerView.setHasFixedSize(true);
+        mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
+        recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH);
+        mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
+
         editAddDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addDocs = new Intent(VisitSummaryActivity_New.this, AdditionalDocumentsActivity.class);
+                /*Intent addDocs = new Intent(VisitSummaryActivity_New.this, AdditionalDocumentsActivity.class);
                 addDocs.putExtra("patientUuid", patientUuid);
                 addDocs.putExtra("visitUuid", visitUuid);
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
                 addDocs.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                startActivity(addDocs);
+                startActivity(addDocs);*/
+                selectImage();
             }
         });
         // additional doc data - end
@@ -560,6 +606,34 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // Priority data - end
     }
 
+    /**
+     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     */
+    private void selectImage() {
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this);
+        builder.setTitle(R.string.additional_doc_image_picker_title);
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    Intent cameraIntent = new Intent(VisitSummaryActivity_New.this, CameraActivity.class);
+                    String imageName = UUID.randomUUID().toString();
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+
+                } else if (item == 1) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
     private void initUI() {
         // textview - start
         nameView = findViewById(R.id.textView_name_value);
@@ -644,11 +718,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
         // additonal doc
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
-        // additonal doc - end
-
-        // additional doc
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-        // additional doc - end
+        // additonal doc - end
 
         // speciality ids
         speciality_spinner = findViewById(R.id.speciality_spinner);
@@ -829,7 +900,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     };
 
     private void physicalDoumentsUpdates() {
-
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
@@ -1414,6 +1484,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     };
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (receiver != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            receiver = null;
+        }
+        if (downloadPrescriptionService != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            downloadPrescriptionService = null;
+        }
+        isReceiverRegistered = false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -1428,6 +1512,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
         callBroadcastReceiver();
 
+        // showing additional images...
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
@@ -1439,11 +1524,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
                     fileList.add(new File(filename));
                 }
             }
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+
+          /*  HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity_New.this,
                     LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
-            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);*/
+
+            RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            mAdditionalDocsRecyclerView.setHasFixedSize(true);
+            mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH);
+            mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
@@ -1564,6 +1657,100 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         return isExists;
     }
 
+    // start activity for result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CameraActivity.TAKE_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                saveImage(mCurrentPhotoPath);
+            }
+        }
+        else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            if(data!=null) {
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.v("path", picturePath + "");
+
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
+            }
+        }
+    }
+
+    // save image
+    private void saveImage(String picturePath) {
+        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        File photo = new File(picturePath);
+        if (photo.exists()) {
+            try {
+                long length = photo.length();
+                length = length / 1024;
+                Log.e("------->>>>", length + "");
+            } catch (Exception e) {
+                System.out.println("File not found : " + e.getMessage() + e);
+            }
+
+            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+        }
+    }
+
+    private Handler getBackgroundHandler() {
+        if (mBackgroundHandler == null) {
+            HandlerThread thread = new HandlerThread("background");
+            thread.start();
+            mBackgroundHandler = new Handler(thread.getLooper());
+        }
+        return mBackgroundHandler;
+    }
+
+    // compress image
+    /**
+     * @param filePath Final Image path to compress.
+     *
+     * */
+    void compressImageAndSave(final String filePath) {
+        getBackgroundHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                boolean flag = BitmapUtils.fileCompressed(filePath);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (flag) {
+                            saveImage(filePath);
+                        } else
+                            Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong),
+                                    Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    // update image database
+    private void updateImageDatabase(String imageuuid) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
 
 
 }

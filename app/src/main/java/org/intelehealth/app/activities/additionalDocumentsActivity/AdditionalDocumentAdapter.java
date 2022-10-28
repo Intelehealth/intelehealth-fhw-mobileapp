@@ -72,18 +72,15 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     @Override
     public AdditionalDocumentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_additional_doc, null);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.additional_docs_listitem, null);
         AdditionalDocumentViewHolder rcv = new AdditionalDocumentViewHolder(layoutView);
         return rcv;
     }
 
     @Override
     public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
-
-//        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         holder.getDocumentNameTextView().setText
                 (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
-
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 

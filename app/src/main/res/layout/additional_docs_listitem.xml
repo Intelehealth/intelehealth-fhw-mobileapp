@@ -16,7 +16,7 @@
         app:cardCornerRadius="@dimen/margin_5">
 
         <ImageView
-            android:id="@+id/add_doc_image"
+            android:id="@+id/document_photo_ImageView"
             android:layout_width="@dimen/edittext_height_44dp"
             android:layout_height="@dimen/edittext_height_44dp"
             android:scaleType="fitXY"
@@ -26,6 +26,7 @@
     </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/document_name_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/add_doc_addBtn"
@@ -35,7 +36,7 @@
             android:text="Red eye" />
 
     <ImageButton
-        android:id="@+id/cancelbtn"
+        android:id="@+id/document_delete_button_ImageView"
         android:layout_width="@dimen/margin_10"
         android:layout_height="@dimen/margin_10"
         android:background="@null"
