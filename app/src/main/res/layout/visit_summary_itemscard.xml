@@ -138,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="168"
+                            android:text="No information"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -168,7 +168,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="72"
+                            android:text="No information"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -198,7 +198,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="25.51"
+                            android:text="No information"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -228,7 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="130/85"
+                            android:text="No information"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -258,7 +258,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="75"
+                            android:text="No information"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -271,7 +271,25 @@
                         android:layout_marginTop="@dimen/margin_4"
                         android:layout_weight="2">
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
                         <TextView
+                            android:id="@+id/textView_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="  Temperature(C)"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/textView_temp_faren"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -282,13 +300,15 @@
                             android:textAppearance="@style/caption"
                             android:textColor="@color/hint_text_color"
                             android:textSize="@dimen/find_patient_hint_size" />
+                        </RelativeLayout>
+
 
                         <TextView
                             android:id="@+id/textView_temp_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="99"
+                            android:text="No information"
                             android:textAppearance="@style/caption"
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -321,7 +341,7 @@
                             android:layout_weight="1"
                             android:textAppearance="@style/caption"
                             android:text="No information"
-                            android:textColor="@color/hint_text_color"
+                            android:textColor="@color/textview_color"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </TableRow>
 
@@ -334,6 +354,7 @@
                         android:layout_weight="2">
 
                         <TextView
+                            android:id="@+id/textView_respiratory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -351,7 +372,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="No information"
-                            android:textColor="@color/hint_text_color"
+                            android:textColor="@color/textview_color"
                             android:textAppearance="@style/caption"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </TableRow>
@@ -513,7 +534,7 @@
 
 <!--                cc - data - start-->
                 <TextView
-                    android:id="@+id/cc_textview_data"
+                    android:id="@+id/textView_content_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/chiefcomplaint_details_relative"
@@ -530,7 +551,7 @@
                     android:id="@+id/associ_sym_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cc_textview_data"
+                    android:layout_below="@+id/textView_content_complaint"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start">
@@ -574,6 +595,7 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
+                        android:id="@+id/patientReports_txtview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/textview_color"
@@ -604,6 +626,7 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
+                        android:id="@+id/patientDenies_txtview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/textview_color"

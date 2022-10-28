@@ -53,17 +53,22 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 public class VisitSummaryActivity_New extends AppCompatActivity {
@@ -145,14 +150,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     TextView tempView;
     TextView spO2View;
     TextView bmiView;
-    TextView complaintView;
+    TextView complaintView, patientReports_txtview, patientDenies_txtview;
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    //    //    Respiratory added by mahiti dev team
+
     TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
@@ -162,6 +167,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     String filePathPhyExam;
     File obsImgdir;
     String gender_tv;
+    String mFileName = "config.json";
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -340,8 +348,69 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // header title set - end
 
         // vitals values set.
+        if (height.getValue() != null) {
+            if (height.getValue().trim().equals("0")) {
+                heightView.setText("-");
+            } else {
+                heightView.setText(height.getValue());
+            }
+        }
 
+        weightView.setText(weight.getValue());
+
+        Log.d(TAG, "onCreate: " + weight.getValue());
+        String mWeight = weight.getValue();
+        String mHeight = height.getValue();
+        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+            double numerator = Double.parseDouble(mWeight) * 10000;
+            double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+            double bmi_value = numerator / denominator;
+            mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+        } else {
+            mBMI = "";
+        }
+        bmiView.setText(mBMI);
+
+        String bpText = bpSys.getValue() + "/" + bpDias.getValue();
+        if (bpText.equals("/")) {  //when new patient is being registered we get / for BP
+            bpView.setText("");
+        } else if (bpText.equalsIgnoreCase("null/null")) {
+            //when we setup app and get data from other users, we get null/null from server...
+            bpView.setText("");
+        } else {
+            bpView.setText(bpText);
+        }
+
+        pulseView.setText(pulse.getValue());
+        spO2View.setText(spO2.getValue());
+
+        if (isRespiratory) {
+            respiratoryText.setVisibility(View.VISIBLE);
+            respiratory.setVisibility(View.VISIBLE);
+        } else {
+            respiratoryText.setVisibility(View.GONE);
+            respiratory.setVisibility(View.GONE);
+        }
+        respiratory.setText(resp.getValue());
         // vitals values set - end
+
+        // complaints data
+        if (complaint.getValue() != null) {
+            String value = complaint.getValue();
+            String valueArray[] = value.split("►<b>Associated symptoms</b>: <br/>");
+
+            String assoValueBlock[] = valueArray[1].split("• Patient denies -<br/>");
+            String reports[] = assoValueBlock[0].split("• Patient reports -<br/>");
+
+            String patientReports = reports[1];
+            String patientDenies = assoValueBlock[1];
+
+
+            complaintView.setText(Html.fromHtml(valueArray[0]));
+            patientReports_txtview.setText(Html.fromHtml(patientReports));
+            patientDenies_txtview.setText(Html.fromHtml(patientDenies));
+        }
+        // complaints data - end
     }
 
     private void initUI() {
@@ -367,6 +436,53 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         vs_phyexam_header_expandview = findViewById(R.id.vs_phyexam_header_expandview);
         vs_medhist_header_expandview = findViewById(R.id.vs_medhist_header_expandview);
         // up-down btn - end
+
+        // vitals ids
+        heightView = findViewById(R.id.textView_height_value);
+        weightView = findViewById(R.id.textView_weight_value);
+        pulseView = findViewById(R.id.textView_pulse_value);
+        bpView = findViewById(R.id.textView_bp_value);
+        tempView = findViewById(R.id.textView_temp_value);
+
+        tempfaren = findViewById(R.id.textView_temp_faren);
+        tempcel = findViewById(R.id.textView_temp);
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity_New.this, mFileName)));
+            }
+            if (obj.getBoolean("mCelsius")) {
+                tempcel.setVisibility(View.VISIBLE);
+                tempfaren.setVisibility(View.GONE);
+                tempView.setText(temperature.getValue());
+                Log.d("temp", "temp_C: " + temperature.getValue());
+            } else if (obj.getBoolean("mFahrenheit")) {
+                tempfaren.setVisibility(View.VISIBLE);
+                tempcel.setVisibility(View.GONE);
+                if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
+                    tempView.setText(convertCtoF(temperature.getValue()));
+                    Log.d("temp", "temp_F: " + tempView.getText().toString());
+                }
+            }
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        spO2View = findViewById(R.id.textView_pulseox_value);
+        respiratory = findViewById(R.id.textView_respiratory_value);
+        respiratoryText = findViewById(R.id.textView_respiratory);
+        bmiView = findViewById(R.id.textView_bmi_value);
+        // vitals ids - end
+
+        // complaint ids
+        complaintView = findViewById(R.id.textView_content_complaint);
+        patientReports_txtview = findViewById(R.id.patientReports_txtview);
+        patientDenies_txtview = findViewById(R.id.patientDenies_txtview);
+        // complaint ids - end
+
 
         btn_vs_sendvisit = findViewById(R.id.btn_vs_sendvisit);
     }
@@ -1040,6 +1156,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         downloadDoctorDetails();
     }
 
+
+    /*temperature convert*/
+    private String convertCtoF(String temperature) {
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
+    }
 
 
 }
