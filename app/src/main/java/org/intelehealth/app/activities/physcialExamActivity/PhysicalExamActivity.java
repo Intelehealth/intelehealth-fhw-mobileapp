@@ -39,7 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -318,7 +318,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
             if (intentTag != null && intentTag.equals("edit")) {
                 updateDatabase(physicalString);
-                Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity_New.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("gender",mgender);
@@ -339,7 +339,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 startActivity(intent);
             } else {
                 boolean obsId = insertDb(physicalString);
-                Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
+                Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);

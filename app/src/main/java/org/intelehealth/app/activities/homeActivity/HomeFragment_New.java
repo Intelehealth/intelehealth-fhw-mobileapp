@@ -72,8 +72,8 @@ public class HomeFragment_New extends Fragment {
         closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+//                startActivity(intent);
             }
         });
 

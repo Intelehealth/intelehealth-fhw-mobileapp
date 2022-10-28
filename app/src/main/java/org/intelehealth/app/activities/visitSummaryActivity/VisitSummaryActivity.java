@@ -493,6 +493,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
+
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
         if (!sessionManager.getLicenseKey().isEmpty())
