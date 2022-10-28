@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/visit_summary_add_doc_cardbg">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/add_doc_addBtn"

@@ -885,7 +885,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/pathist_textview_data"
+                    android:id="@+id/textView_content_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pathist_details_relative"
@@ -905,7 +905,7 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_below="@+id/pathist_textview_data">
+                    android:layout_below="@+id/textView_content_pathist">
 
                     <TextView
                         android:id="@+id/details_personal_txtview"
@@ -934,10 +934,12 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:text="Do you have a family history of any of the following?"
+                    android:fontFamily="@font/lato_bold"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/hamburger_margin_start" />
 
                 <TextView
-                    android:id="@+id/physFindingsView"
+                    android:id="@+id/textView_content_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pathist_subtitle"

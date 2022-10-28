@@ -406,7 +406,7 @@
                     android:textStyle="bold"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/add_doc_recyclerview"
+                    android:id="@+id/recy_additional_documents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/add_docs_title"
@@ -419,10 +419,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_12"
                     android:background="@drawable/visit_summary_add_doc_cardbg"
-                    android:layout_below="@+id/add_doc_recyclerview">
+                    android:layout_below="@+id/recy_additional_documents">
 
                     <ImageButton
-                        android:id="@+id/add_doc_addBtn"
+                        android:id="@+id/imagebutton_edit_additional_document"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/add_doc_addbtn"
@@ -434,7 +434,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/add_doc_addBtn"
+                        android:layout_toEndOf="@+id/imagebutton_edit_additional_document"
                         style = "@style/blur_txtview"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_12"
