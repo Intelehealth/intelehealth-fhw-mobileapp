@@ -686,6 +686,7 @@
     <dimen name="patdetail_editicon_width">70dp</dimen>
     <dimen name="patdetail_editicon_height">22dp</dimen>
     <dimen name="txtsize_patdetail_16sp">16sp</dimen>
+    <dimen name="txtsize_patdetail_14sp">14sp</dimen>
 
     <!--UI2.0 Informative Videos-->
     <dimen name="layout_videos_margin_top">0dp</dimen>

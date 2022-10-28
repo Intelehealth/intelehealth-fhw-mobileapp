@@ -544,6 +544,7 @@
     <dimen name="patdetail_editicon_width">120dp</dimen>
     <dimen name="patdetail_editicon_height">42dp</dimen>
     <dimen name="txtsize_patdetail_16sp">28sp</dimen>
+    <dimen name="txtsize_patdetail_14sp">24sp</dimen>
     <dimen name="patdetail_profile_imgview_14sp">70dp</dimen>
     <dimen name="up_down_icon_size">30dp</dimen>
 

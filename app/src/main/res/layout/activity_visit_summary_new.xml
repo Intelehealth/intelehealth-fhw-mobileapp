@@ -182,30 +182,25 @@
                             android:id="@+id/patname_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:lineSpacingExtra="-3sp"
                             android:maxLines="1"
                             android:fontFamily="@font/lato_bold"
                             android:textStyle="bold"
                             android:text="@string/fu_visit_name"
                             android:textAppearance="@style/label_16sp"
                             android:textColor="@null"
-                            android:textSize="@dimen/fu_name_txt_size" />
+                            android:textSize="@dimen/txtsize_patdetail_16sp" />
 
                         <TextView
                             android:id="@+id/gender_age_txt"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/fu_male_margin_start"
                             android:layout_toEndOf="@+id/patname_txt"
                             android:gravity="center_vertical"
-                            android:lineSpacingExtra="-2sp"
                             android:text="@string/misc_txt"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
-                            android:textSize="@dimen/fu_male_textsize" />
+                            android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     </LinearLayout>
 
@@ -220,7 +215,7 @@
                         android:text="@string/fu_openmrsID"
                         android:textAppearance="@style/caption_fu_openmrsId"
                         android:textColor="@null"
-                        android:textSize="@dimen/fu_male_textsize" />
+                        android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                 </LinearLayout>
             </RelativeLayout>
