@@ -1035,6 +1035,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
+
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
         } else {
@@ -3302,6 +3303,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
+
         PatientsDAO patientsDAO = new PatientsDAO();
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {patientUuid};

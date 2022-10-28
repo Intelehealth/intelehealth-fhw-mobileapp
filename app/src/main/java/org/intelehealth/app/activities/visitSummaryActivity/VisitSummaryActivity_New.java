@@ -16,6 +16,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -46,6 +48,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
@@ -59,6 +62,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -129,7 +133,35 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     //added checkbox flag .m
     CheckBox flag;
 
-
+    // new
+    TextView nameView;
+    TextView genderView;
+    TextView idView;
+    TextView visitView;
+    TextView heightView;
+    TextView weightView;
+    TextView pulseView;
+    TextView bpView;
+    TextView tempView;
+    TextView spO2View;
+    TextView bmiView;
+    TextView complaintView;
+    TextView famHistView;
+    TextView patHistView;
+    TextView physFindingsView;
+    TextView mDoctorTitle;
+    TextView mDoctorName;
+    TextView mCHWname;
+    //    //    Respiratory added by mahiti dev team
+    TextView respiratory;
+    TextView respiratoryText;
+    TextView tempfaren;
+    TextView tempcel;
+    String medHistory;
+    String baseDir;
+    String filePathPhyExam;
+    File obsImgdir;
+    String gender_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,9 +175,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
         initUI();
         fetchingIntent();
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        setViewsData();
         expandableCardVisibilityHandling();
 
         btn_vs_sendvisit.setOnClickListener(v -> {
@@ -164,7 +198,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             setLocale(appLanguage);
         }
 
-        final Intent intent = this.getIntent(); // The intent was passed to the activity
+        // todo: uncomment this block later for testing it is commented.
+     /*   final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
@@ -186,7 +221,40 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
+        }*/
+        // todo: testing - start
+        patientUuid = "6b4b3de2-8f1f-4ad6-9d54-6b8dd0ed724a";
+        visitUuid = "559ef1d2-feef-4eae-a30c-950561e0a56c";
+        patientGender = "M";
+        encounterVitals = "ae1cfff3-b18d-4e52-954e-562c8a7dc11e";
+        encounterUuidAdultIntial = "3ab5860d-c9a5-4f53-afdc-6713fc116cc5";
+        EncounterAdultInitial_LatestVisit = "";
+        mSharedPreference = this.getSharedPreferences(
+                "visit_summary", Context.MODE_PRIVATE);
+        patientName = "Praj Waing";
+        float_ageYear_Month = 0.0f;
+        intentTag = "new";
+        isPastVisit = false;
+//            hasPrescription = intent.getStringExtra("hasPrescription");
+
+      //  Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
+        Set<String> selectedExams = new HashSet<>();
+        selectedExams.add("");
+        selectedExams.add("Abdomen:Distension");
+        selectedExams.add("Abdomen:Scars");
+        selectedExams.add("Abdomen:Peristaltic sound");
+        selectedExams.add("Physical Growth:Sexual Maturation");
+        selectedExams.add("Abdomen:Tenderness");
+        selectedExams.add("Abdomen:Lumps");
+        selectedExams.add("Abdomen:Rebound tenderness");
+
+        if (physicalExams == null) physicalExams = new ArrayList<>();
+        physicalExams.clear();
+        if (selectedExams != null && !selectedExams.isEmpty()) {
+            physicalExams.addAll(selectedExams);
         }
+        // todo: testing - end
+
 
         // receiver
         registerBroadcastReceiverDynamically();
@@ -252,7 +320,40 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         });
     }
 
+    private void setViewsData() {
+        queryData(String.valueOf(patientUuid));
+
+        // header title set
+        nameView.setText(patientName);
+
+        gender_tv = patientGender;
+        setgender(genderView);
+
+        if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
+            idView.setText(patient.getOpenmrs_id());
+        } else {
+            idView.setText(getString(R.string.patient_not_registered));
+        }
+
+        mCHWname = findViewById(R.id.chw_details);
+        mCHWname.setText(sessionManager.getChwname()); //session manager provider
+        // header title set - end
+
+        // vitals values set.
+
+        // vitals values set - end
+    }
+
     private void initUI() {
+        // textview - start
+        nameView = findViewById(R.id.textView_name_value);
+        genderView = findViewById(R.id.textView_gender_value);
+        //OpenMRS Id
+        idView = findViewById(R.id.textView_id_value);
+        visitView = findViewById(R.id.textView_visit_value);
+        // textview - end
+
+        // up-down btn - start
         btn_up_header = findViewById(R.id.btn_up_header);
         openall_btn = findViewById(R.id.openall_btn);
         btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
@@ -265,8 +366,95 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         vs_visitreason_header_expandview = findViewById(R.id.vs_visitreason_header_expandview);
         vs_phyexam_header_expandview = findViewById(R.id.vs_phyexam_header_expandview);
         vs_medhist_header_expandview = findViewById(R.id.vs_medhist_header_expandview);
+        // up-down btn - end
 
         btn_vs_sendvisit = findViewById(R.id.btn_vs_sendvisit);
+    }
+
+    private void setgender(TextView genderView) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            if (gender_tv.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else if (gender_tv.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else {
+                genderView.setText(gender_tv);
+            }
+        } else {
+            genderView.setText(gender_tv);
+        }
     }
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
@@ -694,6 +882,162 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
         //    mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim()); // todo: handle later
         }
+    }
+
+    // query data
+    /**
+     * This methods retrieves patient data from database.
+     *
+     * @param dataString variable of type String
+     * @return void
+     */
+    public void queryData(String dataString) {
+        String patientSelection = "uuid = ?";
+        String[] patientArgs = {dataString};
+
+        String table = "tbl_patient";
+        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name",
+                "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                patient.setFirst_name(idCursor.getString(idCursor.getColumnIndex("first_name")));
+                patient.setMiddle_name(idCursor.getString(idCursor.getColumnIndex("middle_name")));
+                patient.setLast_name(idCursor.getString(idCursor.getColumnIndex("last_name")));
+                patient.setDate_of_birth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")));
+                patient.setAddress1(idCursor.getString(idCursor.getColumnIndex("address1")));
+                patient.setAddress2(idCursor.getString(idCursor.getColumnIndex("address2")));
+                patient.setCity_village(idCursor.getString(idCursor.getColumnIndex("city_village")));
+                patient.setState_province(idCursor.getString(idCursor.getColumnIndex("state_province")));
+                patient.setCountry(idCursor.getString(idCursor.getColumnIndex("country")));
+                patient.setPostal_code(idCursor.getString(idCursor.getColumnIndex("postal_code")));
+                patient.setPhone_number(idCursor.getString(idCursor.getColumnIndex("phone_number")));
+                patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                patient.setPatient_photo(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
+        PatientsDAO patientsDAO = new PatientsDAO();
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                if (name.equalsIgnoreCase("caste")) {
+                    patient.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patient.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education Level")) {
+                    patient.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Economic Status")) {
+                    patient.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+        String[] columns = {"value", " conceptuuid"};
+
+        try {
+            String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+            Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
+            famHistCursor.moveToLast();
+            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            famHistory.setValue(famHistText);
+            famHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            famHistory.setValue(""); // if family history does not exist
+        }
+
+        try {
+            String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+
+            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+
+            Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            patHistory.setValue(medHistText);
+
+            if (medHistText != null && !medHistText.isEmpty()) {
+
+                medHistory = patHistory.getValue();
+
+
+                medHistory = medHistory.replace("\"", "");
+                medHistory = medHistory.replace("\n", "");
+                do {
+                    medHistory = medHistory.replace("  ", "");
+                } while (medHistory.contains("  "));
+            }
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            patHistory.setValue(""); // if medical history does not exist
+        }
+//vitals display code
+        String visitSelection = "encounteruuid = ? AND voided!='1'";
+        String[] visitArgs = {encounterVitals};
+        if (encounterVitals != null) {
+            try {
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                if (visitCursor != null && visitCursor.moveToFirst()) {
+                    do {
+                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        parseData(dbConceptID, dbValue);
+                    } while (visitCursor.moveToNext());
+                }
+                if (visitCursor != null) {
+                    visitCursor.close();
+                }
+            } catch (SQLException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+//adult intails display code
+        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
+        String[] encounterargs = {encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
+        Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
+        try {
+            if (encountercursor != null && encountercursor.moveToFirst()) {
+                do {
+                    String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
+                    String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                    parseData(dbConceptID, dbValue);
+                } while (encountercursor.moveToNext());
+            }
+            if (encountercursor != null) {
+                encountercursor.close();
+            }
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+        }
+
+        downloadPrescriptionDefault();
+        downloadDoctorDetails();
     }
 
 

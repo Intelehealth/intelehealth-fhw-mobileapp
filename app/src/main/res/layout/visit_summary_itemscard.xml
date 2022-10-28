@@ -11,8 +11,6 @@
         android:layout_height="wrap_content">
 
 
-
-
     <!--Vitals card-->
     <androidx.cardview.widget.CardView
         android:id="@+id/vitalsCard"
@@ -136,7 +134,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/name"
+                            android:id="@+id/textView_height_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -166,7 +164,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_weight_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -196,7 +194,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_bmi_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -226,7 +224,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_bp_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -256,7 +254,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_pulse_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -286,7 +284,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_temp_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -317,7 +315,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_pulseox_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -348,7 +346,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/textView_respiratory_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
