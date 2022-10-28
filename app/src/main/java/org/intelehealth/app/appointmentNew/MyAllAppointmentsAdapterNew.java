@@ -13,24 +13,26 @@ import org.intelehealth.app.R;
 
 import java.util.List;
 
-public class MyAllAppointmentsAdapter extends RecyclerView.Adapter<MyAllAppointmentsAdapter.MyViewHolder> {
+public class MyAllAppointmentsAdapterNew extends RecyclerView.Adapter<MyAllAppointmentsAdapterNew.MyViewHolder> {
     Context context;
+    List<String> modelList;
 
-    public MyAllAppointmentsAdapter(Context context) {
+    public MyAllAppointmentsAdapterNew(Context context, List<String> modelList) {
         this.context = context;
+        this.modelList = modelList;
 
     }
 
     @Override
-    public MyAllAppointmentsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyAllAppointmentsAdapterNew.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_appointments_ui2_new, parent, false);
-        MyAllAppointmentsAdapter.MyViewHolder myViewHolder = new MyAllAppointmentsAdapter.MyViewHolder(view);
+        MyAllAppointmentsAdapterNew.MyViewHolder myViewHolder = new MyAllAppointmentsAdapterNew.MyViewHolder(view);
 
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MyAllAppointmentsAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyAllAppointmentsAdapterNew.MyViewHolder holder, int position) {
         holder.cardParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -716,7 +716,68 @@
 
 
     <!--UI2.0 Appointment-->
+    <dimen name="my_appointment_padding">16dp</dimen>
+    <dimen name="my_appointments_tab_margin_top">10dp</dimen>
+    <dimen name="today_apps_parent_margin_top">10dp</dimen>
+    <dimen name="today_apps_options_margin_top">20dp</dimen>
+    <dimen name="card_apps_options_padding">12dp</dimen>
+    <dimen name="card_apps_options_text_size">20sp</dimen>
+    <dimen name="card_apps_options_line_height">26.4dp</dimen>
+    <dimen name="card_apps_title_margin_top">5dp</dimen>
+    <dimen name="card_apps_title_line_height">18dp</dimen>
+    <dimen name="card_apps_title_line_spacing">3sp</dimen>
+    <dimen name="card_apps_title_text_size">12sp</dimen>
+    <dimen name="title_lists_apps_margin_start">2dp</dimen>
+    <dimen name="title_lists_apps_margin_top">24dp</dimen>
+    <dimen name="title_lists_apps_text_size">14sp</dimen>
+    <dimen name="title_lists_apps_line_spacing">2sp</dimen>
+    <dimen name="lists_apps_margin_top">16dp</dimen>
+    <dimen name="all_apps_options_margin_top">10dp</dimen>
+    <dimen name="results_for_margin_start">2dp</dimen>
+    <dimen name="results_for_margin_top">24dp</dimen>
+    <dimen name="results_for_line_height">21dp</dimen>
+    <dimen name="results_for_text_size">14sp</dimen>
+    <dimen name="chip_group_apps_height">40dp</dimen>
+    <dimen name="chip_apps_height">45dp</dimen>
+    <dimen name="chip_apps_padding_start">6dp</dimen>
+    <dimen name="chip_apps_padding_top">4dp</dimen>
+    <dimen name="chip_apps_text_size">12sp</dimen>
+    <dimen name="chip_group_apps_margin_top">8dp</dimen>
 
+    <!--UI2.0 Appointment Details-->
+    <dimen name="apps_details_parent_padding">16dp</dimen>
+    <dimen name="apps_details_toolbar_margin_start">5dp</dimen>
+    <dimen name="apps_details_toolbar_margin_end">5dp</dimen>
+    <dimen name="apps_details_profile_card_height">72dp</dimen>
+    <dimen name="apps_details_profile_card_margin_top">32dp</dimen>
+    <dimen name="apps_details_profile_card_elevation">16dp</dimen>
+    <dimen name="apps_details_profile_card_margin_start_end">5dp</dimen>
+    <dimen name="apps_details_profile_card_corner_radius">5dp</dimen>
+    <dimen name="apps_details_profile_card_corner_elevation">5dp</dimen>
+    <dimen name="apps_details_profile_margin">12dp</dimen>
+    <dimen name="apps_details_profile_iv_height">40dp</dimen>
+    <dimen name="apps_details_profile_iv_width">40dp</dimen>
+    <dimen name="apps_details_profile_iv_radius">20dp</dimen>
+    <dimen name="card_profile_details_margin_start">12dp</dimen>
+    <dimen name="card_profile_name_text_size">16sp</dimen>
+    <dimen name="cp_gender_margin_start">4dp</dimen>
+    <dimen name="fu_gender_text_size">14sp</dimen>
+    <dimen name="cp_pencil_width">14dp</dimen>
+    <dimen name="cp_pencil_height">14dp</dimen>
+    <dimen name="cp_openmrsid_margin_top">4dp</dimen>
+    <dimen name="cp_openmrsid_text_size">14sp</dimen>
+    <dimen name="cp_icons_margin_top">18dp</dimen>
+    <dimen name="cp_option_icon_width">28dp</dimen>
+    <dimen name="cp_option_icon_height">28dp</dimen>
+    <dimen name="cp_option_margin_start">12dp</dimen>
+    <dimen name="cp_vs_margin_top">40dp</dimen>
+    <dimen name="cp_vs_margin_start">5dp</dimen>
+    <dimen name="cp_margin_start">12dp</dimen>
+    <dimen name="cp_name_txt_size">16sp</dimen>
+    <dimen name="cp_male_textsize">14sp</dimen>
+    <dimen name="cp_card_margin_updown">16dp</dimen>
+    <dimen name="ps_app_time_margin_start">18dp</dimen>
+    <dimen name="ll1_margin_top">4dp</dimen>
 
 
 

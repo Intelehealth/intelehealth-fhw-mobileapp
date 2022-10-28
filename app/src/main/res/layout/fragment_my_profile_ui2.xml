@@ -2,15 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/layout_parent_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/layout_parent_profile"
         android:background="@color/white"
+        android:orientation="vertical"
         android:padding="@dimen/layout_profile_padding">
 
         <FrameLayout
@@ -224,7 +224,7 @@
             android:weightSum="3">
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/rb_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -241,7 +241,7 @@
                 android:textSize="@dimen/common_info_text_size" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/rb_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -258,7 +258,7 @@
                 android:textSize="@dimen/common_info_text_size" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/rb_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -312,10 +312,10 @@
             android:weightSum="1">
 
             <TextView
+                android:id="@+id/tv_date_of_birth_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:id="@+id/tv_date_of_birth_profile"
                 android:background="@drawable/ui2_background_input_field_new"
                 android:drawableEnd="@drawable/ui2_ic_calendar"
                 android:gravity="center_vertical"
@@ -329,11 +329,11 @@
                 android:textSize="@dimen/common_info_text_size" />
 
             <TextView
+                android:id="@+id/tv_age_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dob_age_margin_start"
                 android:layout_weight="0.4"
-                android:id="@+id/tv_age_profile"
                 android:background="@drawable/ui2_background_input_field_new"
                 android:drawableEnd="@drawable/ui2_ic_calendar"
                 android:drawableTint="@color/transparent"
@@ -374,7 +374,8 @@
                     android:id="@+id/spinner_countries_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/spinner_countries_margin" />
+                    android:spinnerMode="dialog"
+                android:layout_margin="@dimen/spinner_countries_margin" />
 
             </LinearLayout>
 
@@ -392,10 +393,10 @@
                     android:background="@drawable/ui2_background_input_field_new"
                     android:hint="@string/enter_phone_number"
                     android:imeOptions="actionNext"
+                    android:inputType="number"
                     android:lineSpacingExtra="3sp"
                     android:maxLength="10"
                     android:paddingStart="@dimen/common_edittext_padding_left"
-                    android:inputType="number"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingEnd="@dimen/common_edittext_padding_right"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
@@ -421,8 +422,8 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
                 android:id="@+id/et_email_profile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ui2_background_input_field_new"
                 android:hint="@string/enter_your_email"

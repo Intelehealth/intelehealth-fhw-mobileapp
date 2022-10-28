@@ -101,6 +101,7 @@ public class MyProfileFragment_New extends Fragment {
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private Handler mBackgroundHandler;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+    RadioButton rbMale, rbFemale, rbOther;
 
     @Override
     public void onResume() {
@@ -186,6 +187,9 @@ public class MyProfileFragment_New extends Fragment {
         tvAge = view.findViewById(R.id.tv_age_profile);
         Button btnSave = view.findViewById(R.id.btn_save_profile);
         layoutParent = view.findViewById(R.id.layout_parent_profile);
+        rbMale = view.findViewById(R.id.rb_male);
+        rbFemale = view.findViewById(R.id.rb_female);
+        rbOther = view.findViewById(R.id.rb_other);
 
 
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -232,6 +236,11 @@ public class MyProfileFragment_New extends Fragment {
             dobToDb = year + "-" + sMonth + "-" + sDay;
 
             dobToShow = sDay + "-" + sMonth + "-" + year;
+            tvDob.setText(dobToShow);
+            tvDob.setText(DateAndTimeUtils.getDisplayDateFromApp(dobToDb));
+
+            String age = DateAndTimeUtils.getAge_FollowUp(dobToDb, getActivity());
+            tvAge.setText(age);
 
         };
         tvChangePhoto = view.findViewById(R.id.tv_change_photo_profile);
@@ -247,21 +256,34 @@ public class MyProfileFragment_New extends Fragment {
         try {
             ProviderProfileDTO providerProfileDTO = providerProfileDao.getProvidersDetails();
             etUsername.setText(providerProfileDTO.getUsername());
-            etFirstName.setText(providerProfileDTO.getUsername());
-            etMiddleName.setText(providerProfileDTO.getUsername());
-            etLastName.setText(providerProfileDTO.getUsername());
-            etEmail.setText(providerProfileDTO.getUsername());
-            etMobileNo.setText(providerProfileDTO.getUsername());
-            tvDob.setText(providerProfileDTO.getUsername());
-            tvAge.setText(providerProfileDTO.getUsername());
+            etFirstName.setText(providerProfileDTO.getFirstName());
+            etMiddleName.setText(providerProfileDTO.getMiddleName());
+            etLastName.setText(providerProfileDTO.getLastName());
+            etEmail.setText(providerProfileDTO.getEmail());
+            etMobileNo.setText(providerProfileDTO.getPhoneNumber());
+            tvDob.setText(DateAndTimeUtils.getDisplayDateFromApp(providerProfileDTO.getDateOfBirth()));
+            tvAge.setText(providerProfileDTO.getAge());
+
             //spinnerCountries.setse(providerProfileDTO.getUsername());
             // rgGroupGender.setText(providerProfileDTO.getUsername());
             String gender = providerProfileDTO.getGender();
             if (gender != null && !gender.isEmpty()) {
-                //rgGroupGender.set
+
+                if (gender.equalsIgnoreCase("male")) {
+                    rbMale.setChecked(true);
+                } else if (gender.equalsIgnoreCase("female")) {
+                    rbFemale.setChecked(true);
+
+                } else if (gender.equalsIgnoreCase("other")) {
+                    rbOther.setChecked(true);
+
+                }
             }
 
-            if(providerProfileDTO.getImagePath()!=null && !providerProfileDTO.getImagePath().isEmpty()){
+            Log.d(TAG, "initUI: path : " + providerProfileDTO.getImagePath());
+
+/*
+            if (providerProfileDTO.getImagePath() != null && !providerProfileDTO.getImagePath().isEmpty()) {
                 Bitmap bitmap = BitmapFactory.decodeFile(providerProfileDTO.getImagePath());
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
@@ -269,7 +291,7 @@ public class MyProfileFragment_New extends Fragment {
                 ivProfileImage.setImageBitmap(bitmap);
             }
 
-
+*/
 
         } catch (DAOException e) {
             e.printStackTrace();
@@ -313,7 +335,7 @@ public class MyProfileFragment_New extends Fragment {
         ProviderProfileDTO providerProfileDTO = new ProviderProfileDTO(sessionManager.getProviderID(), etUsername.getText().toString(),
                 etFirstName.getText().toString(),
                 etMiddleName.getText().toString(), etLastName.getText().toString(), selectedGender,
-                dobToDb, age, etMobileNo.getText().toString(),
+                dobToDb, tvAge.getText().toString(), etMobileNo.getText().toString(),
                 spinnerCountries.getSelectedItem().toString(), etEmail.getText().toString(), "None");
         providersDetails.add(providerProfileDTO);
         try {

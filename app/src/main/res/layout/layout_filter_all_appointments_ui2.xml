@@ -11,15 +11,75 @@
     android:layout_marginEnd="@dimen/margin_30"
     app:cardElevation="5dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginEnd="@dimen/margin_12"
-        android:layout_marginVertical="@dimen/margin_15">
+        <RadioGroup
+            android:id="@+id/rg_filter_appointments"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:layout_marginVertical="@dimen/margin_15"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
+            <RadioButton
+                android:id="@+id/rb_upcoming_appointments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                android:layout_marginBottom="@dimen/margin_12"
+                android:paddingStart="10dp"
+                android:button="@drawable/ui2_ic_circle"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:padding="@dimen/radio_gender_padding"
+                android:checked="false"
+                android:paddingEnd="@dimen/radio_gender_padding_end"
+                android:text="@string/upcoming_appointments"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_info_text_size" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/notifi_divider_color" />
+
+            <RadioButton
+                android:id="@+id/rb_cancelled_appointments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                android:checked="false"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginBottom="@dimen/margin_12"
+                android:button="@drawable/ui2_ic_circle"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:paddingStart="12dp"
+                android:padding="@dimen/radio_gender_padding"
+                android:paddingEnd="@dimen/radio_gender_padding_end"
+                android:text="@string/cancelled_appointments"
+
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_info_text_size" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/notifi_divider_color" />
+
+            <RadioButton
+                android:id="@+id/rb_completed_appointments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/radio_gender_margin_end"
+                android:checked="false"
+                android:button="@drawable/ui2_ic_circle"
+                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                android:paddingStart="12dp"
+                android:layout_marginTop="@dimen/margin_12"
+                android:padding="@dimen/radio_gender_padding"
+                android:paddingEnd="@dimen/radio_gender_padding_end"
+                android:text="@string/completed_appointments"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_info_text_size" />
+        </RadioGroup>
+
+      <!--  <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/upcoming_appointments"
@@ -59,12 +119,7 @@
             android:drawablePadding="12dp"
             android:drawableStart="@drawable/ui2_ic_circle"
             android:textSize="@dimen/fu_name_txt_size"
-            android:textColor="@color/header_title_color"/>
-
-
-
-
-    </LinearLayout>
+            android:textColor="@color/header_title_color"/>-->
 
 
 </androidx.cardview.widget.CardView>
