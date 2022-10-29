@@ -40,6 +40,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.BitmapUtils;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -66,24 +67,13 @@ public class CameraActivity extends AppCompatActivity {
      * message before starting the camera.
      */
     public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
-    private static final int[] FLASH_OPTIONS = {
-            CameraView.FLASH_AUTO,
-            CameraView.FLASH_OFF,
-            CameraView.FLASH_ON,
-    };
-    private static final int[] FLASH_ICONS = {
-            R.drawable.ic_flash_auto,
-            R.drawable.ic_flash_off,
-            R.drawable.ic_flash_on,
-    };
-    private static final int[] FLASH_TITLES = {
-            R.string.flash_auto,
-            R.string.flash_off,
-            R.string.flash_on,
-    };
+    private static final int[] FLASH_OPTIONS = {CameraView.FLASH_AUTO, CameraView.FLASH_OFF, CameraView.FLASH_ON,};
+    private static final int[] FLASH_ICONS = {R.drawable.ic_flash_auto, R.drawable.ic_flash_off, R.drawable.ic_flash_on,};
+    private static final int[] FLASH_TITLES = {R.string.flash_auto, R.string.flash_off, R.string.flash_on,};
     private final String TAG = CameraActivity.class.getSimpleName();
     private CameraView mCameraView;
     private FloatingActionButton mFab;
+    private FloatingActionButton mRotateCamera;
     private int mCurrentFlash;
 
     private Handler mBackgroundHandler;
@@ -94,8 +84,7 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
-    private CameraView.Callback mCallback
-            = new CameraView.Callback() {
+    private CameraView.Callback mCallback = new CameraView.Callback() {
 
         @Override
         public void onCameraOpened(CameraView cameraView) {
@@ -110,8 +99,7 @@ public class CameraActivity extends AppCompatActivity {
         @Override
         public void onPictureTaken(CameraView cameraView, final byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
-            Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT).show();
             //compressImageAndSave(data);
             // check and correct the image rotation
             try {
@@ -124,7 +112,6 @@ public class CameraActivity extends AppCompatActivity {
         }
 
     };
-
 
     void compressImageAndSave(Bitmap bitmap) {
         getBackgroundHandler().post(new Runnable() {
@@ -212,8 +199,7 @@ public class CameraActivity extends AppCompatActivity {
 
                     Canvas canvas = new Canvas(scaledBitmap);
                     canvas.setMatrix(scaleMatrix);
-                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
-                            Paint.FILTER_BITMAP_FLAG));
+                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
 
                     ExifInterface exif;
                     try {
@@ -232,8 +218,7 @@ public class CameraActivity extends AppCompatActivity {
                             matrix.postRotate(270);
                             Log.e("EXIF", "Exif: " + orientation);
                         }
-                        scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(),
-                                matrix, true);
+                        scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -297,18 +282,16 @@ public class CameraActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey(SET_IMAGE_NAME))
-                mImageName = extras.getString(SET_IMAGE_NAME);
+            if (extras.containsKey(SET_IMAGE_NAME)) mImageName = extras.getString(SET_IMAGE_NAME);
             if (extras.containsKey(SHOW_DIALOG_MESSAGE))
                 mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
-            if (extras.containsKey(SET_IMAGE_PATH))
-                mFilePath = extras.getString(SET_IMAGE_PATH);
+            if (extras.containsKey(SET_IMAGE_PATH)) mFilePath = extras.getString(SET_IMAGE_PATH);
         }
 
         setContentView(R.layout.activity_camera);
         mCameraView = findViewById(R.id.camera_surface_CameraView);
         mFab = findViewById(R.id.take_picture);
-
+        mRotateCamera = findViewById(R.id.rotate_camera);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -325,6 +308,18 @@ public class CameraActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (mCameraView != null) {
                         mCameraView.takePicture();
+                    }
+                }
+            });
+        }
+
+        if (mRotateCamera != null) {
+            mRotateCamera.setOnClickListener(v -> {
+                if (mCameraView != null) {
+                    if (mCameraView.getFacing() == CameraView.FACING_BACK) {
+                        mCameraView.setFacing(CameraView.FACING_FRONT);
+                    } else {
+                        mCameraView.setFacing(CameraView.FACING_BACK);
                     }
                 }
             });
@@ -366,8 +361,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
@@ -375,37 +369,31 @@ public class CameraActivity extends AppCompatActivity {
     @NeedsPermission(Manifest.permission.CAMERA)
     void startCamera() {
         if (mDialogMessage != null) {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                    .setMessage(mDialogMessage)
-                    .setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this).setMessage(mDialogMessage).setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             AlertDialog dialog = builder.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
         }
-        if (mCameraView != null)
-            mCameraView.start();
+        if (mCameraView != null) mCameraView.start();
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(final PermissionRequest request) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                .setMessage(getString(R.string.permission_camera_rationale))
-                .setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton(getString(R.string.button_deny), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.cancel();
-                    }
-                });
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this).setMessage(getString(R.string.permission_camera_rationale)).setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                request.proceed();
+            }
+        }).setNegativeButton(getString(R.string.button_deny), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                request.cancel();
+            }
+        });
         AlertDialog dialog = builder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
     }
