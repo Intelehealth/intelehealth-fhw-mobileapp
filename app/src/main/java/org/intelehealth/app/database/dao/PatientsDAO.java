@@ -110,8 +110,7 @@ public class PatientsDAO {
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
-            if (patientAttributesList != null)
-                insertPatientAttributes(patientAttributesList, db);
+            if (patientAttributesList != null) insertPatientAttributes(patientAttributesList, db);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();
@@ -283,7 +282,7 @@ public class PatientsDAO {
                 while (cursor.moveToNext()) {
                     FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
@@ -517,19 +516,24 @@ public class PatientsDAO {
         String gender = "";
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
-                new String[]{patientUuid}, null, null, null);
+        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?", new String[]{patientUuid}, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
         return gender;
     }
 
-
+    public boolean isPatientPresent(String firstName) {
+        boolean isPresent = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.query("tbl_query", new String[]{"first_name"}, "first_name = ?", new String[]{firstName}, null, null, null);
+        isPresent = cursor.moveToFirst() && cursor.getCount() != 0;
+        cursor.close();
+        return isPresent;
+    }
 }
