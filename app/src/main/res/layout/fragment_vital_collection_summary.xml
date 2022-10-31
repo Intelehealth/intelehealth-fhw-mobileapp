@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui2.visit.VitalCollectionSummaryFragment">
+    android:layout_height="match_parent" android:background="@color/white"
+    tools:context=".ui2.visit.vital.VitalCollectionSummaryFragment">
 
     <RelativeLayout
         android:id="@+id/toolbar"

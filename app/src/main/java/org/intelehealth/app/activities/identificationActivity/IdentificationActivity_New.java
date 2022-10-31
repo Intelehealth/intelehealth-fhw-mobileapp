@@ -30,6 +30,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.Serializable;
@@ -160,7 +161,12 @@ public class IdentificationActivity_New extends AppCompatActivity {
                 "Close patient registration?",
                 "Are you sure you want to close the patient registration?",
                 "No",
-                "Yes");
+                "Yes", new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+
+                    }
+                });
     }
 
 }

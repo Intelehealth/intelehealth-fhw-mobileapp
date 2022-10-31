@@ -112,6 +112,19 @@
     <color name="colorSuccess">#36c762</color>
     <color name="buttonColorRed">#FF475D</color>
 
+    <color name="ui2_green">#0FD197</color>
+
+    <color name="ui2_bmi1">#03A9F4</color>
+    <color name="ui2_bmi2">#0FD197</color>
+    <color name="ui2_bmi3">#FFC107</color>
+    <color name="ui2_bmi4">#FF9800</color>
+    <color name="ui2_bmi5">#EF724B</color>
+    <color name="ui2_bmi6">#FF1100</color>
+
+    <color name="ui2_chat_edit_bubble_color">#0FD197</color>
+    <color name="ui2_chat_bubble_color">#E6FFF3</color>
+    <color name="ui2_black_text_color">#1B163A</color>
+
 
     <!--END-->
 </resources>

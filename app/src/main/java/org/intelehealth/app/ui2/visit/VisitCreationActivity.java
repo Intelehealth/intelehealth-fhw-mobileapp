@@ -6,11 +6,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.ui2.visit.reason.VisitReasonCaptureFragment;
+import org.intelehealth.app.ui2.visit.vital.VitalCollectionFragment;
+import org.intelehealth.app.ui2.visit.vital.VitalCollectionSummaryFragment;
 import org.intelehealth.app.utilities.SessionManager;
 
 public class VisitCreationActivity extends AppCompatActivity implements VisitCreationActionListener {
@@ -41,6 +48,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
 
     private FrameLayout mSummaryFrameLayout;
+    private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         }
         mSummaryFrameLayout = findViewById(R.id.fl_steps_summary);
+        mStep1ProgressBar = findViewById(R.id.prog_bar_step1);
+        mStep2ProgressBar = findViewById(R.id.prog_bar_step2);
+        mStep3ProgressBar = findViewById(R.id.prog_bar_step3);
+        mStep4ProgressBar = findViewById(R.id.prog_bar_step4);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -69,6 +81,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
             Log.v(TAG, "Intent Tag: " + intentTag);
+            ((TextView)findViewById(R.id.tv_title)).setText(patientName);
+
         }
 
 
@@ -78,7 +92,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         bundle.putString("encounterUuidVitals", encounterVitals);
 
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(bundle), VITAL_FRAGMENT).
+                replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent()), VITAL_FRAGMENT).
                 commit();
     }
 
@@ -87,14 +101,29 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     @Override
-    public void onFormSubmitted(int nextAction) {
+    public void onFormSubmitted(int nextAction, Object object) {
         mCurrentStep = nextAction;
         switch (nextAction) {
             case STEP_1_VITAL_SUMMARY:
-                Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                mStep1ProgressBar.setProgress(100);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(), VITAL_SUMMARY_FRAGMENT).
+                        replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance((VitalsObject) object), VITAL_SUMMARY_FRAGMENT).
+                        commit();
+                break;
+                case STEP_1_VITAL:
+                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                mSummaryFrameLayout.setVisibility(View.GONE);
+
+                break;
+            case STEP_2_VISIT_REASON:
+                mStep2ProgressBar.setProgress(20);
+                ((TextView)findViewById(R.id.tv_sub_title)).setText("2/4 Visit reason");
+                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                mSummaryFrameLayout.setVisibility(View.GONE);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, VisitReasonCaptureFragment.newInstance(getIntent()), VITAL_FRAGMENT).
                         commit();
                 break;
         }

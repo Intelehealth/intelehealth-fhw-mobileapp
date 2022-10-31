@@ -20,6 +20,13 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public class DialogUtils {
+    public interface CustomDialogListener {
+        public static final int POSITIVE_CLICK = 0;
+        public static final int NEGATIVE_CLICK = 1;
+        public static final int CANCELLED = 2;
+
+        public void onDialogActionDone(int action);
+    }
 
     public void showOkDialog(Context context, String title, String message, String ok) {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
@@ -60,7 +67,7 @@ public class DialogUtils {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    public static void patientRegistrationDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
+    public static void patientRegistrationDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt, CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
@@ -90,12 +97,13 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            Intent i_back = new Intent(context.getApplicationContext(), HomeScreenActivity_New.class);
-            context.startActivity(i_back);
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
         alertDialog.show();

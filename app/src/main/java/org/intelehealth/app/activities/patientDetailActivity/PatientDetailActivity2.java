@@ -46,9 +46,6 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -57,44 +54,55 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableRow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.ui2.visit.VisitCreationActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -104,7 +112,7 @@ import okhttp3.ResponseBody;
 
 public class PatientDetailActivity2 extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
-    TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone, 
+    TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus;
     SessionManager sessionManager = null;
@@ -124,6 +132,14 @@ public class PatientDetailActivity2 extends AppCompatActivity {
     IntentFilter filter;
     Button startVisitBtn;
 
+    String privacy_value_selected;
+    String phistory = "";
+    String fhistory = "";
+    LinearLayout previousVisitsList;
+    String visitValue;
+    private String encounterVitals = "";
+    private String encounterAdultIntials = "";
+    private boolean returning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +173,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         if (intent != null) {
             Bundle args = intent.getBundleExtra("BUNDLE");
             patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+
+            privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
         }
 
         initUI();
@@ -169,7 +187,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
 
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE",args);
+            intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
         });
 
@@ -180,7 +198,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
 
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE",args);
+            intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
         });
 
@@ -191,10 +209,9 @@ public class PatientDetailActivity2 extends AppCompatActivity {
 
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE",args);
+            intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
         });
-
 
 
         startVisitBtn.setOnClickListener(v -> {
@@ -203,9 +220,124 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     "Patient Registered!",
                     "Does the patient want to start the visit now?",
                     "Continue",
-                    "Cancel");
+                    "Cancel", new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                startVisit();
+                            }
+                        }
+                    });
         });
     }
+
+
+    private void startVisit() {
+        // before starting, we determine if it is new visit for a returning patient
+        // extract both FH and PMH
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        String[] cols = {"value"};
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+                phistory = phistory + cursor.getString(0);
+
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+
+//                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+//                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
+//                        null, null, null);
+//                if (cursor1.moveToFirst()) {
+//                    // rows present
+//                    do {
+//                        fhistory = fhistory + cursor1.getString(0);
+//                    }
+//                    while (cursor1.moveToNext());
+//                    returning = true;
+//                    sessionManager.setReturning(returning);
+//                }
+//                cursor1.close();
+
+        // Will display data for patient as it is present in database
+        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+        Intent intent2 = new Intent(PatientDetailActivity2.this, VisitCreationActivity.class);
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        String patientUuid = patient_new.getUuid();
+        intent2.putExtra("patientUuid", patientUuid);
+
+        VisitDTO visitDTO = new VisitDTO();
+
+        visitDTO.setUuid(uuid);
+        visitDTO.setPatientuuid(patient_new.getUuid());
+        visitDTO.setStartdate(thisDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // visitUuid = String.valueOf(visitLong);
+//                localdb.close();
+        intent2.putExtra("patientUuid", patientUuid);
+        intent2.putExtra("visitUuid", uuid);
+        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+        intent2.putExtra("name", fullName);
+        intent2.putExtra("gender", mGender);
+        intent2.putExtra("tag", "new");
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
+    }
+
 
     private void initUI() {
         profile_image = findViewById(R.id.profile_image);
@@ -307,7 +439,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        
+
         if (!sessionManager.getLicenseKey().isEmpty()) {
             hasLicense = true;
         }
@@ -353,12 +485,12 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         } else {
             patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
         }
-        
+
         // setting patient name to the name textviews.
         name_txtview.setText(patientName);
         patientname.setText(patientName);
-        
-       
+
+
         // setting profile image of patient
         try {
             profileImage = imagesDAO.getPatientProfileChangeTime(patientDTO.getUuid());
@@ -366,24 +498,24 @@ public class PatientDetailActivity2 extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-            if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
-                if (NetworkConnection.isOnline(getApplication())) {
-                    profilePicDownloaded();
-                }
+        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
+            if (NetworkConnection.isOnline(getApplication())) {
+                profilePicDownloaded();
             }
-            if (!profileImage.equalsIgnoreCase(profileImage1)) {
-                if (NetworkConnection.isOnline(getApplication())) {
-                    profilePicDownloaded();
-                }
+        }
+        if (!profileImage.equalsIgnoreCase(profileImage1)) {
+            if (NetworkConnection.isOnline(getApplication())) {
+                profilePicDownloaded();
             }
-            Glide.with(this)
-                    .load(patient_new.getPatient_photo())
-                    .thumbnail(0.3f)
-                    .centerCrop()
-                    .error(R.drawable.avatar1)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(profile_image);
+        }
+        Glide.with(this)
+                .load(patient_new.getPatient_photo())
+                .thumbnail(0.3f)
+                .centerCrop()
+                .error(R.drawable.avatar1)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(profile_image);
 
         // setting openmrs id
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
@@ -392,8 +524,8 @@ public class PatientDetailActivity2 extends AppCompatActivity {
             openmrsID_txt.setText(getString(R.string.patient_not_registered));
         }
 
-       // setTitle(patient_new.getOpenmrs_id());
-        
+        // setTitle(patient_new.getOpenmrs_id());
+
         // setting age
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
         patientage.setText(age);
@@ -437,7 +569,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         } else {
             patientdob.setText(dob);
         }
-        
+
         // setting gender
         mGender = patient_new.getGender();
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
@@ -448,7 +580,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -458,7 +590,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -468,7 +600,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -478,7 +610,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -490,7 +622,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     gender.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
@@ -498,7 +630,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -510,7 +642,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     gender.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
@@ -518,9 +650,9 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }  else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     gender.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -528,7 +660,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -538,7 +670,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     gender.setText(patient_new.getGender());
@@ -550,17 +682,17 @@ public class PatientDetailActivity2 extends AppCompatActivity {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     gender.setText(patient_new.getGender());
                 }
             } else {
                 gender.setText(patient_new.getGender());
             }
         }
-        
+
         // setting address1
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
-          //  address1.setVisibility(View.GONE);
+            //  address1.setVisibility(View.GONE);
             address1.setText("No address added");
         } else {
             address1.setText(patient_new.getAddress1());
@@ -579,7 +711,7 @@ public class PatientDetailActivity2 extends AppCompatActivity {
             country = "No country added";
         }
         patientcountry.setText(country);
-        
+
         // setting state
         String state;
         if (patient_new.getState_province() != null) {
@@ -593,20 +725,20 @@ public class PatientDetailActivity2 extends AppCompatActivity {
         String[] district_city = patient_new.getCity_village().trim().split(":");
         String district = district_city[0];
         String city_village = district_city[1];
-        
+
         if (district != null) {
             patientdistrict.setText(district);
         } else {
             patientdistrict.setText("No district added");
         }
-        
+
         if (city_village != null) {
             village.setText(city_village);
         } else {
             village.setText("No city added");
         }
         // end - city and district
-        
+
         // setting postal code
         if (patient_new.getPostal_code() != null) {
             postalcode.setText(patient_new.getPostal_code());

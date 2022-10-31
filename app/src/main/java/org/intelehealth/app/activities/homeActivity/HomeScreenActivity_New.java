@@ -134,7 +134,7 @@ public class HomeScreenActivity_New extends AppCompatActivity {
         initUI();
 
     // temp
-    startActivity(new Intent(this, VisitCreationActivity.class));
+    //startActivity(new Intent(this, VisitCreationActivity.class));
     }
 
     private void initUI() {

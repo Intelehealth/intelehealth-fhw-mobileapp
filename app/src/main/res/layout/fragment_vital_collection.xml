@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui2.visit.VitalCollectionFragment">
+    tools:context=".ui2.visit.vital.VitalCollectionFragment">
 
     <Button
         android:id="@+id/btn_submit"
@@ -143,19 +143,19 @@
                     style="@style/edittext_textcolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:hint="Auto-Calculate"
                     android:lineSpacingExtra="1sp"
-                    android:text="21.1 kg/m"
+                    android:text=""
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
                 <TextView
                     android:id="@+id/tv_bmi_status"
-                    style="@style/success_text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_16"
+                    android:layout_marginStart="@dimen/margin_10"
                     android:lineSpacingExtra="1sp"
-                    android:text="(Normal)"
+                    android:text=""
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
             </LinearLayout>

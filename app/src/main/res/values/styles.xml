@@ -359,7 +359,7 @@
             @dimen/card_content_normal_text_size
         </item>
         <item name="android:textColor">
-            #0FD197
+            @color/ui2_green
         </item>
     </style>
 
