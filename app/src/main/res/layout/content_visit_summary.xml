@@ -532,6 +532,7 @@
                     android:layout_below="@id/recy_physexam"
                     android:backgroundTint="@color/cardview_dark_background"
                     android:fontFamily="@font/lato_medium"
+                    android:padding="@dimen/padding_card"
                     android:text="@string/click_to_download_the_images"
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:visibility="gone" />
