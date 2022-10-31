@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Smart Care Doc</string>
+    <string name="app_name">Smart Care Doc</string>
     <string name="notification_title">Realtime sync is ON!</string>
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -22,21 +22,21 @@
 
 
     //Database Schema Names
-    <string name="db_first_name" translatable="false">first_name</string>
-    <string name="db_middle_name" translatable="false">middle_name</string>
-    <string name="db_last_name" translatable="false">last_name</string>
-    <string name="db_dob" translatable="false">date_of_birth</string>
-    <string name="db_phone_number" translatable="false">phone_number</string>
-    <string name="db_address_line1" translatable="false">address1</string>
-    <string name="db_address_line2" translatable="false">address2</string>
-    <string name="db_city" translatable="false">city_village</string>
-    <string name="db_state" translatable="false">state_province</string>
-    <string name="db_postal_code" translatable="false">postal_code</string>
-    <string name="db_country" translatable="false">country</string>
-    <string name="db_gender" translatable="false">gender</string>
-    <string name="db_patient_id1" translatable="false">patient_identifier1</string>
-    <string name="db_patient_id2" translatable="false">patient_identifier2</string>
-    <string name="db_patient_id3" translatable="false">patient_identifier3</string>
+    <string name="db_first_name">first_name</string>
+    <string name="db_middle_name">middle_name</string>
+    <string name="db_last_name">last_name</string>
+    <string name="db_dob">date_of_birth</string>
+    <string name="db_phone_number">phone_number</string>
+    <string name="db_address_line1">address1</string>
+    <string name="db_address_line2">address2</string>
+    <string name="db_city">city_village</string>
+    <string name="db_state">state_province</string>
+    <string name="db_postal_code">postal_code</string>
+    <string name="db_country">country</string>
+    <string name="db_gender">gender</string>
+    <string name="db_patient_id1">patient_identifier1</string>
+    <string name="db_patient_id2">patient_identifier2</string>
+    <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
     <string name="title_activity_login">Smart Care Doc</string>
@@ -51,15 +51,15 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
-    <string name="error_network" translatable="false">Network Error</string>
+    <string name="error_network">Network Error</string>
     <string name="error_location_not_selected">Please select a value form the location dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
-    <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
+    <string name="permission_rationale">Contacts permissions are needed for providing email completions.
     </string>
     <string name="device_id">Device ID:</string>
     <string name="identification_screen_prompt_time">Time:</string>
-    <string name="identification_screen_picker_hours" translatable="false">Hours</string>
-    <string name="identification_screen_picker_minute" translatable="false">Minutes</string>
+    <string name="identification_screen_picker_hours">Hours</string>
+    <string name="identification_screen_picker_minute">Minutes</string>
     <string name="cant_login_user">Can\'t log in?</string>
     <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
     <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
@@ -795,7 +795,7 @@
     <string name="reason_optional">Reason (Optional)</string>
     <string name="choose_a_date">Choose a date</string>
     <string name="follow_up_remark">Follow up remark</string>
-    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
+    <string name="visit_summary_upload_reminder_prescription">Please upload first before attempting to give prescription.</string>
     <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
 
     <string name="yes">Yes</string>

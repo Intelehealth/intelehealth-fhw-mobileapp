@@ -40,9 +40,9 @@
 
     //Login Screen
     <string name="title_activity_login">स्मार्ट केयर डॉक्</string>
-    <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
-    <string name="prompt_password" translatable="false">कुंजिका</string>
-    <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
+    <string name="prompt_email">उपयोगकर्ता नाम</string>
+    <string name="prompt_password">कुंजिका</string>
+    <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>
     <string name="action_sign_in" translatable="false">लॉग इन करें</string>
     <string name="action_sign_in_short" translatable="false">शाइन ईन करें</string>
     <string name="url_invalid" translatable="false">अपना यूआरएल चेक करें</string>
