@@ -57,6 +57,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -68,6 +70,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
@@ -79,18 +82,24 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.services.DownloadService;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -107,6 +116,12 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class VisitSummaryActivity_New extends AppCompatActivity {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
@@ -137,6 +152,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     boolean hasLicense = false;
     private String hasPrescription = "";
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
+    Button uploadButton;
     ImageView ivPrescription;   // todo: not needed here
 
     Patient patient = new Patient();
@@ -224,6 +240,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     ImageButton editFamHist;
     ImageButton editMedHist;
     ImageButton editAddDocs;
+    ImageView profile_image;
+    String profileImage = "";
+    String profileImage1 = "";
+
+    ImagesDAO imagesDAO = new ImagesDAO();
+
 
 
 
@@ -248,13 +270,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
-
-        btn_vs_sendvisit.setOnClickListener(v -> {
-            visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
-                    "Are you sure you want to send the visit to the doctor?",
-                    "Yes", "No");
-        });
-
+        
     }
 
     private void fetchingIntent() {
@@ -337,8 +353,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
-//            uploadButton.setVisibility(View.GONE); // todo: uncomment handle later.
-//            btnSignSubmit.setVisibility(View.GONE);
+            uploadButton.setVisibility(View.GONE); 
+//            btnSignSubmit.setVisibility(View.GONE);// todo: uncomment handle later.
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -418,6 +434,40 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     private void setViewsData() {
         queryData(String.valueOf(patientUuid));
 
+        // Patient Photo
+        //1.
+        try {
+            profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        //2.
+        if (patient.getPatient_photo() == null || patient.getPatient_photo().equalsIgnoreCase("")) {
+            if (NetworkConnection.isOnline(context)) {
+                profilePicDownloaded(patient);
+            }
+        }
+        //3.
+        if (!profileImage.equalsIgnoreCase(profileImage1)) {
+            if (NetworkConnection.isOnline(context)) {
+                profilePicDownloaded(patient);
+            }
+        }
+
+        if (patient.getPatient_photo() != null) {
+            Glide.with(context)
+                    .load(patient.getPatient_photo())
+                    .thumbnail(0.3f)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(profile_image);
+        }
+        else {
+            profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+        }
+        // photo - end
+
         // header title set
         nameView.setText(patientName);
 
@@ -484,16 +534,27 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // complaints data
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
-            String valueArray[] = value.split("►<b>Associated symptoms</b>: <br/>");
+            Log.v(TAG, "complaint: "  + value);
+            String valueArray[] = value.replace("<br>►Associated symptoms: <br>", "►<b>Associated symptoms</b>: <br/>")
+                    .split("►<b>Associated symptoms</b>: <br/>");
 
-            String assoValueBlock[] = valueArray[1].split("• Patient denies -<br/>");
-            String reports[] = assoValueBlock[0].split("• Patient reports -<br/>");
+            String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                    .split("• Patient denies -<br/>");
+            String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
 
             String patientReports = reports[1];
             String patientDenies = assoValueBlock[1];
 
+            // todo: testing:
+            String data = "►Abdominal Pain: <br><span style=\"color:#7F7B92\">• Site</span> &emsp;&emsp; Upper (R) - Right Hypochondrium.<br>" +
+                    "• Pain does not radiate.<br>• 4 Hours.<br><span style=\"color:#7F7B92\">• Onset</span> &emsp;&emsp; Gradual.<br><span style=\"color:#7F7B92\">• Timing</span> &emsp;&emsp; Morning.<br>" +
+                    "<span style=\"color:#7F7B92\">• Character of the pain*</span> &emsp;&emsp; Constant.<br><span style=\"color:#7F7B92\">• Severity</span> &emsp;&emsp; Mild, 1-3.<br>" +
+                    "<span style=\"color:#7F7B92\">• Exacerbating Factors</span> &emsp;&emsp; Hunger.<br><span style=\"color:#7F7B92\">• Relieving Factors</span> &emsp;&emsp; Food.<br><span style=\"color:#7F7B92\">• Prior treatment sought</span> &emsp;&emsp; None.";
+            complaintView.setText(Html.fromHtml(data));
+            // todo: testin end
+        //    complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
-            complaintView.setText(Html.fromHtml(valueArray[0]));
+            // associated symp.
             patientReports_txtview.setText(Html.fromHtml(patientReports));
             patientDenies_txtview.setText(Html.fromHtml(patientDenies));
         }
@@ -502,7 +563,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // phys exam data
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
-            String valueArray[] = value.split("<b>General exams: </b><br/>");
+            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
+                    .split("<b>General exams: </b><br/>");
             physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
         }
         //image download for physcialExamination documents
@@ -1094,10 +1156,64 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
             }
         });
-
-
         // edit listeners - end
+        
+        // upload btn click - start
+      /*  uploadButton.setOnClickListener(v -> {
+            visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
+                    "Are you sure you want to send the visit to the doctor?",
+                    "Yes", "No");
+        });*/
+
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
+                        "Are you sure you want to send the visit to the doctor?",
+                        "Yes", "No");
+
+
+            }
+        });
+        
+        // upload btn click - end
     }
+
+    private String showVisitID() {
+        if (visitUUID != null && !visitUUID.isEmpty()) {
+            String hideVisitUUID = visitUUID;
+            hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
+            visitView.setText("XXXX" + hideVisitUUID);
+        }
+        return visitView.getText().toString();
+    }
+
+    private void showSelectSpeciliatyErrorDialog() {
+        TextView t = (TextView) speciality_spinner.getSelectedView();
+        t.setError(getString(R.string.please_select_specialization_msg));
+        t.setTextColor(Color.RED);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this)
+                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.generic_ok),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    }
+
 
     /**
      *   Open dialog to Select douments from Image and Camera as Per the Choices
@@ -1129,6 +1245,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
     private void initUI() {
         // textview - start
+        profile_image = findViewById(R.id.profile_image);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);
         //OpenMRS Id
@@ -1229,12 +1346,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-
-
         // edit - end
-        
 
-        btn_vs_sendvisit = findViewById(R.id.btn_vs_sendvisit);
+
+        uploadButton = findViewById(R.id.btn_vs_sendvisit);
     }
 
     private void setgender(TextView genderView) {
@@ -1354,13 +1469,118 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
             positive_btn.setOnClickListener(v -> {
                 alertDialog.dismiss();
-                visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
-                        "Visit successfully sent!",
-                        "Patient's visit has been successfully sent to the doctor.",
-                        "Okay");
+                visitUploadBlock();
             });
 
             alertDialog.show();
+    }
+
+    private void visitUploadBlock() {
+        Log.d("visitUUID", "upload_click: " + visitUUID);
+
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        if (speciality_spinner.getSelectedItemPosition() != 0) {
+            VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+            boolean isUpdateVisitDone = false;
+            try {
+                if (!isVisitSpecialityExists) {
+                    isUpdateVisitDone = speciality_attributes
+                            .insertVisitAttributes(visitUuid, speciality_selected);
+                }
+                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+            } catch (DAOException e) {
+                e.printStackTrace();
+                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+            }
+
+            if (isVisitSpecialityExists)
+                speciality_spinner.setEnabled(false);
+
+            if (flag.isChecked()) {
+                try {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    encounterDAO.setEmergency(visitUuid, true);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                String patientSelection = "uuid = ?";
+                String[] patientArgs = {String.valueOf(patient.getUuid())};
+                String table = "tbl_patient";
+                String[] columnsToReturn = {"openmrs_id"};
+                final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+                if (idCursor.moveToFirst()) {
+                    do {
+                        patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                    } while (idCursor.moveToNext());
+                }
+                idCursor.close();
+            }
+
+            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+            }
+
+            if (visitUUID == null || visitUUID.isEmpty()) {
+                String visitIDSelection = "uuid = ?";
+                String[] visitIDArgs = {visitUuid};
+                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+                if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                }
+                if (visitIDCursor != null)
+                    visitIDCursor.close();
+            }
+
+            if (!flag.isChecked()) {
+                //
+            }
+
+            if (NetworkConnection.isOnline(getApplication())) {
+                Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+
+                SyncDAO syncDAO = new SyncDAO();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+//                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
+                        //Do something after 100ms
+                        SyncUtils syncUtils = new SyncUtils();
+                        boolean isSynced = syncUtils.syncForeground("visitSummary");
+                        if (isSynced) {
+                            // ie. visit is uploded successfully.
+                          visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
+                        "Visit successfully sent!",
+                        "Patient's visit has been successfully sent to the doctor.",
+                        "Okay");
+
+
+                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);
+                            isSynedFlag = "1";
+                            //
+                            showVisitID();
+                            Log.d("visitUUID", "showVisitID: " + visitUUID);
+                            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                            if (isVisitSpecialityExists)
+                                speciality_spinner.setEnabled(false);
+                        } else {
+                            AppConstants.notificationUtils.DownloadDone(patientName + " " +
+                                    getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+
+                        }
+                        uploaded = true;
+                    }
+                }, 4000);
+            } else {
+                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+            }
+        } else {
+            showSelectSpeciliatyErrorDialog();
+        }
     }
 
     private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle,
@@ -1390,6 +1610,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
 
         positive_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
             alertDialog.dismiss();
         });
 
@@ -1768,6 +1990,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
         if (idCursor.moveToFirst()) {
             do {
+                patient.setUuid(patientUuid);
                 patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
                 patient.setFirst_name(idCursor.getString(idCursor.getColumnIndex("first_name")));
                 patient.setMiddle_name(idCursor.getString(idCursor.getColumnIndex("middle_name")));
@@ -2289,6 +2512,61 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+    }
+
+    // profile pic downalod
+    public void profilePicDownloaded(Patient patientModel) {
+        sessionManager = new SessionManager(context);
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(patientModel.getUuid());
+        Logger.logD("TAG", "profileimage url" + url);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, patientModel.getUuid());
+                        Logger.logD("TAG", file.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("TAG", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD("TAG", "complete" + patientModel.getPatient_photo());
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        boolean updated = false;
+                        try {
+                            updated = patientsDAO.updatePatientPhoto(patientModel.getUuid(),
+                                    AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg");
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                        if (updated) {
+                            Glide.with(context)
+                                    .load(AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg")
+                                    .thumbnail(0.3f)
+                                    .centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(profile_image);
+                        }
+                        ImagesDAO imagesDAO = new ImagesDAO();
+                        boolean isImageDownloaded = false;
+                        try {
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
+                                    AppConstants.IMAGE_PATH + patientModel.getUuid() + ".jpg", patientModel.getUuid());
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                }
+                });
     }
 
 }

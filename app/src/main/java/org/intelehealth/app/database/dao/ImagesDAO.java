@@ -259,7 +259,8 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where patientuuid=? AND image_type = ? COLLATE NOCASE", new String[]{patientUuid, "PP"});
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where patientuuid=? AND image_type = ? COLLATE NOCASE",
+                    new String[]{patientUuid, "PP"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     datetime = idCursor.getString(idCursor.getColumnIndexOrThrow("obs_time_date"));

@@ -102,6 +102,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             else {
                 holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
+            // photo - end
 
             // Patient Name section
             if (model.getOpenmrs_id() != null) {
