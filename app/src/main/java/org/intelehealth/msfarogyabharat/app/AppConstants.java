@@ -47,6 +47,8 @@ public class AppConstants {
     public static final String MINIMUM_BP_DSYS = "30";
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
+    public static final String MINIMUM_BLOOD_GLUCOSE = "";
+    public static final String MAXIMUM_BLOOD_GLUCOSE = "";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
     public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";

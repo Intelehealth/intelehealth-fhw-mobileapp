@@ -357,6 +357,7 @@
     <string name="height_error">Height should be between 10 and %1$s cm</string>
     <string name="spo_error">SpO2 should be in between %1$s and %2$s</string>
     <string name="pulse_error">Pulse should be in between %1$s and %2$s</string>
+    <string name="blood_glucose_error">Blood Glucose should be in between %1$s and %2$s</string>
     <string name="bpsys_error">Systolic pressure should be in between %1$s and %2$s</string>
     <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
@@ -786,6 +787,7 @@ bread
     <string name="call_over">Are you done with the call?</string>
     <string name="type_to_search">Type to search</string>
     <string name="prescription_not_found">Prescription not found</string>
+    <string name="table_blood_glucose">Blood Glucose</string>
 
 
 </resources>

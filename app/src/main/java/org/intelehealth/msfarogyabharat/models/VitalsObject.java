@@ -9,6 +9,7 @@ public class VitalsObject {
     private String bpsys;
     private String bpdia;
     private String pulse;
+    private String bloodGlucose;
     private String temperature;
     private String spo2;
     private String resp;
@@ -91,5 +92,13 @@ public class VitalsObject {
 
     public void setResp(String resp) {
         this.resp = resp;
+    }
+
+    public String getBloodGlucose() {
+        return bloodGlucose;
+    }
+
+    public void setBloodGlucose(String bloodGlucose) {
+        this.bloodGlucose = bloodGlucose;
     }
 }

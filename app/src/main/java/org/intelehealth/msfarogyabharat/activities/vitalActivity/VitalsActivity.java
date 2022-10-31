@@ -69,7 +69,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String encounterVitals;
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
-    String heightvalue="";
+    String heightvalue = "";
     String weightvalue, heightVal;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
     AmazingSpinner mheightSpinner;
@@ -77,7 +77,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    EditText mHeight, mWeight, mBloodGlucose, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
     TextInputLayout mTemperatureTIL, mtempfarenTIL;
 
     @Override
@@ -115,9 +115,9 @@ public class VitalsActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
 
         mHeight = findViewById(R.id.table_height);
-        mheightSpinner=findViewById(R.id.heightSpinner);
+        mheightSpinner = findViewById(R.id.heightSpinner);
         mWeight = findViewById(R.id.table_weight);
-        mPulse = findViewById(R.id.table_pulse);
+        mBloodGlucose = findViewById(R.id.table_blood_glucose);
         mBpSys = findViewById(R.id.table_bpsys);
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
@@ -139,29 +139,22 @@ public class VitalsActivity extends AppCompatActivity {
             JSONObject obj = null;
 //            #633 #632
             if (!sessionManager.getLicenseKey().isEmpty()) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
-                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }//Load the config file
             //Display the fields on the Vitals screen as per the config file
             if (obj.getBoolean("mHeight")) {
-               // mHeight.setVisibility(View.VISIBLE);
+                // mHeight.setVisibility(View.VISIBLE);
                 mheightSpinner.setVisibility(View.VISIBLE);
             } else {
-               // mHeight.setVisibility(View.GONE);
+                // mHeight.setVisibility(View.GONE);
                 mheightSpinner.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mWeight")) {
                 mWeight.setVisibility(View.VISIBLE);
             } else {
                 mWeight.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mPulse")) {
-                mPulse.setVisibility(View.VISIBLE);
-            } else {
-                mPulse.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mBpSys")) {
                 mBpSys.setVisibility(View.VISIBLE);
@@ -227,8 +220,7 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height = 1;
                     heightvalue = mHeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEIGHT)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEIGHT)) {
                         mHeight.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
                     } else {
                         mHeight.setError(null);
@@ -272,11 +264,9 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight = 1;
                     weightvalue = mWeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_WEIGHT)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_WEIGHT)) {
                         mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
-                    }
-                    else {
+                    } else {
                         mWeight.setError(null);
                     }
                 } else {
@@ -318,8 +308,7 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
                         mSpo2.setError(getResources().getString(R.string.spo_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                     } else {
                         mSpo2.setError(null);
@@ -349,8 +338,7 @@ public class VitalsActivity extends AppCompatActivity {
 
                 if (configUtils.celsius()) {
                     if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
                             mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
                         } else {
                             mTemperature.setError(null);
@@ -359,8 +347,7 @@ public class VitalsActivity extends AppCompatActivity {
                     }
                 } else if (configUtils.fahrenheit()) {
                     if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
                             mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
                         } else {
                             mTemperature.setError(null);
@@ -391,8 +378,7 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_RESPIRATORY) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_RESPIRATORY)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_RESPIRATORY) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_RESPIRATORY)) {
                         mResp.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
                     } else {
                         mResp.setError(null);
@@ -411,7 +397,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mPulse.addTextChangedListener(new TextWatcher() {
+        mBloodGlucose.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -420,11 +406,10 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_PULSE) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_PULSE)) {
-                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_BLOOD_GLUCOSE) || Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_BLOOD_GLUCOSE)) {
+                        mBloodGlucose.setError(getString(R.string.blood_glucose_error, AppConstants.MINIMUM_BLOOD_GLUCOSE, AppConstants.MAXIMUM_BLOOD_GLUCOSE));
                     } else {
-                        mPulse.setError(null);
+                        mBloodGlucose.setError(null);
                     }
                 }
             }
@@ -432,8 +417,8 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if (mPulse.getText().toString().startsWith(".")) {
-                    mPulse.setText("");
+                if (mBloodGlucose.getText().toString().startsWith(".")) {
+                    mBloodGlucose.setText("");
                 } else {
 
                 }
@@ -449,8 +434,7 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
                         mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
                     } else {
                         mBpSys.setError(null);
@@ -478,8 +462,7 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
                         mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
                     } else {
                         mBpDia.setError(null);
@@ -503,13 +486,13 @@ public class VitalsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mheightSpinner.getText().toString().trim().length()>0){
+                if (mheightSpinner.getText().toString().trim().length() > 0) {
                     flag_height = 1;
                     ConvertHeightIntoCm(mheightSpinner.getText().toString().trim());
                     calculateBMI();
                 }
                 if (mBMI.getText().toString() != null && !mBMI.getText().toString().trim().equals("")) {
-                    if(Double.valueOf(mBMI.getText().toString())>25){
+                    if (Double.valueOf(mBMI.getText().toString()) > 25) {
                         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
                         alertDialogBuilder.setTitle(getResources().getString(R.string.bmi_dialog_heading));
                         alertDialogBuilder.setMessage(getResources().getString(R.string.bmi_dialog));
@@ -523,43 +506,37 @@ public class VitalsActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alertDialogBuilder.show();
                         alertDialog.setCancelable(false);
                         IntelehealthApplication.setAlertDialogCustomTheme(VitalsActivity.this, alertDialog);
-                    }
-                    else
-                        validateTable();
-                }
-                else
-                    validateTable();
+                    } else validateTable();
+                } else validateTable();
             }
         });
     }
 
-    public void ConvertHeightIntoCm(String height){
-        height=height.replaceAll(getString(R.string.table_height_feet),"").replaceAll(getString(R.string.table_height_inche),"");
-        String []heightArr=height.split(" ");
-        int feets=Integer.parseInt(heightArr[0])*12;
-        int inches=Integer.parseInt(heightArr[1]);
-        int val=(int)((feets+inches)*2.54)+1;
-        heightvalue=val+"";
-        System.out.println("value of height="+val);
+    public void ConvertHeightIntoCm(String height) {
+        height = height.replaceAll(getString(R.string.table_height_feet), "").replaceAll(getString(R.string.table_height_inche), "");
+        String[] heightArr = height.split(" ");
+        int feets = Integer.parseInt(heightArr[0]) * 12;
+        int inches = Integer.parseInt(heightArr[1]);
+        int val = (int) ((feets + inches) * 2.54) + 1;
+        heightvalue = val + "";
+        System.out.println("value of height=" + val);
     }
 
-    public String ConvertHeightIntoFeets(String height){
-        int val=Integer.parseInt(height);
-        double centemeters=val/2.54;
-        int inche=(int)centemeters%12;
-        int feet=(int)centemeters/12;
-        String heightVal=feet+getString(R.string.table_height_feet)+" "+inche+getString(R.string.table_height_inche);
-        System.out.println("value of height="+val);
+    public String ConvertHeightIntoFeets(String height) {
+        int val = Integer.parseInt(height);
+        double centemeters = val / 2.54;
+        int inche = (int) centemeters % 12;
+        int feet = (int) centemeters / 12;
+        String heightVal = feet + getString(R.string.table_height_feet) + " " + inche + getString(R.string.table_height_inche);
+        System.out.println("value of height=" + val);
         return heightVal;
     }
 
     public void calculateBMI() {
-        if (flag_height == 1 && flag_weight == 1 ||
-                (heightvalue.trim().length()>0/*mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/ && (mWeight.getText().toString().trim().length() > 0 &&
-                        !mWeight.getText().toString().startsWith(".")))) {
+        if (flag_height == 1 && flag_weight == 1 || (heightvalue.trim().length() > 0/*mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/ && (mWeight.getText().toString().trim().length() > 0 && !mWeight.getText().toString().startsWith(".")))) {
             mBMI.getText().clear();
             double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
-           // double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+            // double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
             double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
@@ -575,8 +552,7 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
-        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
-                weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
+        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") && weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
 
             mBMI.getText().clear();
             double numerator = Double.parseDouble(weight) * 10000;
@@ -613,18 +589,18 @@ public class VitalsActivity extends AppCompatActivity {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
                 //mHeight.setText(value);
-                if(!value.equalsIgnoreCase("0")) {
-                    heightvalue=value;
+                if (!value.equalsIgnoreCase("0")) {
+                    heightvalue = value;
                     String height = ConvertHeightIntoFeets(value);
-                    int pos=heightAdapter.getPosition(height);
+                    int pos = heightAdapter.getPosition(height);
                     mheightSpinner.setText(mheightSpinner.getAdapter().getItem(pos).toString(), false);
                 }
                 break;
             case UuidDictionary.WEIGHT: //Weight
                 mWeight.setText(value);
                 break;
-            case UuidDictionary.PULSE: //Pulse
-                mPulse.setText(value);
+            case UuidDictionary.BLOOD_GLUCOSE: //Blood Glucose
+                mBloodGlucose.setText(value);
                 break;
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
                 mBpSys.setText(value);
@@ -656,7 +632,7 @@ public class VitalsActivity extends AppCompatActivity {
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
         if (mBMI.getText().toString().equalsIgnoreCase("")) {
-           // calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
+            // calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
             calculateBMI_onEdit(heightvalue, mWeight.getText().toString());
         }
     }
@@ -666,8 +642,7 @@ public class VitalsActivity extends AppCompatActivity {
         View focusView = null;
 
         //BP vaidations added by Prajwal.
-        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
-                !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() || !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
             if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
@@ -683,7 +658,7 @@ public class VitalsActivity extends AppCompatActivity {
         ArrayList<EditText> values = new ArrayList<EditText>();
         //values.add(mHeight);
         values.add(mWeight);
-        values.add(mPulse);
+        values.add(mBloodGlucose);
         values.add(mBpSys);
         values.add(mBpDia);
         values.add(mTemperature);
@@ -709,22 +684,22 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else*/ if (i == 0) {
+            } else*/
+            if (i == 0) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
-                    if (Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_WEIGHT))) {
+                    if (Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_WEIGHT))) {
                         et.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
                         focusView = et;
                         cancel = true;
                         break;
-                    } else if(mheightSpinner.getText().toString().trim().length()<=0){
+                    } else if (mheightSpinner.getText().toString().trim().length() <= 0) {
                         mheightSpinner.setError(getString(R.string.error_height_required));
                         focusView = mheightSpinner;
                         cancel = true;
                         return;
-                    }else{
+                    } else {
                         cancel = false;
                     }
 //       }
@@ -736,9 +711,8 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc2 = et.getText().toString().trim();
                 if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
-                    if ((Double.parseDouble(abc2) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
-                            (Double.parseDouble(abc2) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
-                        et.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                    if ((Double.parseDouble(abc2) > Double.parseDouble(AppConstants.MAXIMUM_BLOOD_GLUCOSE)) || (Double.parseDouble(abc2) < Double.parseDouble(AppConstants.MINIMUM_BLOOD_GLUCOSE))) {
+                        et.setError(getString(R.string.blood_glucose_error, AppConstants.MINIMUM_BLOOD_GLUCOSE, AppConstants.MAXIMUM_BLOOD_GLUCOSE));
                         focusView = et;
                         cancel = true;
                         break;
@@ -754,8 +728,7 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
                         et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
                         focusView = et;
                         cancel = true;
@@ -772,8 +745,7 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
                         et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
                         focusView = et;
                         cancel = true;
@@ -791,8 +763,7 @@ public class VitalsActivity extends AppCompatActivity {
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if (configUtils.celsius()) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
+                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
                             et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
                             focusView = et;
                             cancel = true;
@@ -801,8 +772,7 @@ public class VitalsActivity extends AppCompatActivity {
                             cancel = false;
                         }
                     } else if (configUtils.fahrenheit()) {
-                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
-                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
+                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
                             et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
                             focusView = et;
                             cancel = true;
@@ -818,8 +788,7 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
                         et.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
                         focusView = et;
                         cancel = true;
@@ -835,8 +804,7 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) || (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
                         et.setError(getString(R.string.spo_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                         focusView = et;
                         cancel = true;
@@ -866,8 +834,8 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mWeight.getText() != null) {
                     results.setWeight((mWeight.getText().toString()));
                 }
-                if (mPulse.getText() != null) {
-                    results.setPulse((mPulse.getText().toString()));
+                if (mBloodGlucose.getText() != null) {
+                    results.setBloodGlucose((mBloodGlucose.getText().toString()));
                 }
                 if (mBpDia.getText() != null) {
                     results.setBpdia((mBpDia.getText().toString()));
@@ -928,11 +896,11 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDAO.updateObs(obsDTO);
 
                 obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.PULSE);
+                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getPulse());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
+                obsDTO.setValue(results.getBloodGlucose());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GLUCOSE));
 
                 obsDAO.updateObs(obsDTO);
 
@@ -1036,10 +1004,10 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
             obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.PULSE);
+            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getPulse());
+            obsDTO.setValue(results.getBloodGlucose());
 
             try {
                 obsDAO.insertObs(obsDTO);

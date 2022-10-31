@@ -76,7 +76,6 @@
 
                             <EditText
                                 android:id="@+id/table_height"
-                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
@@ -86,7 +85,8 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:visibility="gone" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,24 +96,21 @@
                             android:layout_margin="3dp">
 
                             <com.rosemaryapp.amazingspinner.AmazingSpinner
-                                style="@style/Widget.AppCompat.Spinner.DropDown"
                                 android:id="@+id/heightSpinner"
-                                android:popupBackground="@color/white"
-                                android:paddingTop="5dp"
+                                style="@style/Widget.AppCompat.Spinner.DropDown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:hint="@string/table_height_str"/>
+                                android:hint="@string/table_height_str"
+                                android:paddingTop="5dp"
+                                android:popupBackground="@color/white"
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="@color/medium_gray"/>
+                                android:background="@color/medium_gray" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
-
-
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -274,11 +271,11 @@
                             android:layout_height="wrap_content">
 
                             <EditText
-                                android:id="@+id/table_pulse"
+                                android:id="@+id/table_blood_glucose"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_pulse"
+                                android:hint="@string/table_blood_glucose"
                                 android:imeOptions="actionUnspecified"
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
@@ -310,9 +307,9 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/table_temp_til"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/table_temp_til">
+                            android:layout_height="wrap_content">
 
                             <EditText
                                 android:id="@+id/table_temp"
@@ -332,9 +329,9 @@
 
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/table_temp_faren_til"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/table_temp_faren_til">
+                            android:layout_height="wrap_content">
 
                             <EditText
                                 android:id="@+id/table_temp_faren"
