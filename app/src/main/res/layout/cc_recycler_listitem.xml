@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_4"
+    >
 
     <TextView
         android:id="@+id/cc_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_4"
-        android:layout_marginTop="@dimen/margin_4"
-        android:layout_marginEnd="@dimen/margin_4"
-        android:layout_marginBottom="@dimen/margin_4"
         android:background="@drawable/ui2_common_primary_bg"
         android:maxLines="1"
         android:paddingHorizontal="@dimen/margin_8"
         android:paddingVertical="@dimen/margin_4"
-        android:singleLine="true"
         android:text="Abdominal Pain"
         android:textColor="@color/white"
         android:textSize="12sp" />
