@@ -54,9 +54,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="20dp"
-                        android:layout_marginEnd="20dp"
                         android:text="@string/visit_summary_patient_details"
                         android:textColor="@color/white"
                         android:textSize="@dimen/card_content_text_size" />
@@ -217,8 +217,7 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Weight-->
-                    <TableRow
-                        android:layout_width="match_parent">
+                    <TableRow android:layout_width="match_parent">
 
                         <TextView
                             android:id="@+id/textView_weight"
@@ -238,7 +237,7 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
-                    <TableRow >
+                    <TableRow>
 
                         <TextView
                             android:id="@+id/textView_bmi"
@@ -289,16 +288,16 @@
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textView_pulse"
+                            android:id="@+id/textView_blood_glucose"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:fontFamily="@font/lato_bold"
-                            android:text="@string/visit_summary_pulse"
+                            android:text="@string/visit_summary_blood_glucose"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
-                            android:id="@+id/textView_pulse_value"
+                            android:id="@+id/textView_blood_glucose_value"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -661,8 +660,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_additional_document_images"
-                    android:padding="@dimen/padding_card">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:padding="@dimen/padding_card"></androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/additional_documents_download"
@@ -734,8 +732,7 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Prescription contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -788,8 +785,7 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Medical Advice contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_medical_advice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -827,7 +823,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView android:id="@+id/textView_content_medical_advice"
+                        <TextView
+                            android:id="@+id/textView_content_medical_advice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -923,7 +920,8 @@
 
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_below="@id/textView_heading_additional_comments"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_additional_comments"
                     android:padding="@dimen/padding_card">
 
                     <!--Additional Comments-->
@@ -931,7 +929,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView android:id="@+id/textView_content_additional_comments"
+                        <TextView
+                            android:id="@+id/textView_content_additional_comments"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -944,8 +943,7 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_follow_up_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -974,7 +972,8 @@
 
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_below="@id/textView_heading_follow_up_date"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_follow_up_date"
                     android:padding="@dimen/padding_card">
 
                     <!--Additional Comments-->
@@ -982,7 +981,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView android:id="@+id/textView_content_follow_up_date"
+                        <TextView
+                            android:id="@+id/textView_content_follow_up_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -995,50 +995,50 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-<FrameLayout
-    android:id="@+id/frame_doctor"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/doctor_details_cardview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/padding_card"
-        android:layout_marginBottom="@dimen/padding_card"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:cardElevation="2dp"
-        app:cardUseCompatPadding="true">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/title_doctor"
+        <FrameLayout
+            android:id="@+id/frame_doctor"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="12dp"
-            android:paddingStart="20dp"
-            android:text="@string/doctor"
-            android:background="@color/titleBar_cardview"
-            android:textColor="@color/white"
-            android:textSize="@dimen/card_content_text_size" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/doctor_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_doctor"
-            android:padding="@dimen/padding_card"
-            android:textSize="16sp" />
+            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/doctor_details_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
 
-    </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title_doctor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/titleBar_cardview"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/doctor"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <TextView
+                        android:id="@+id/doctor_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title_doctor"
+                        android:padding="@dimen/padding_card"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
 
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/chw_and_doctor_details"
@@ -1099,23 +1099,23 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/speciality"
                     android:background="@color/titleBar_cardview"
                     android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:textColor="@color/white" android:textSize="@dimen/card_content_text_size"/>
+                    android:text="@string/speciality"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <Spinner
                     android:id="@+id/speciality_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="25dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:focusable="true"
                     android:entries="@array/speciality_values"
-                   />
+                    android:focusable="true" />
 
             </LinearLayout>
 
@@ -1240,8 +1240,7 @@
         <!--</android.support.v7.widget.CardView>-->
 
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -1310,8 +1309,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="5dp"
-                    app:srcCompat="@drawable/ic_cloud_download">
-                </ImageView>
+                    app:srcCompat="@drawable/ic_cloud_download"></ImageView>
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -1319,95 +1317,92 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_card"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="@dimen/padding_card">
+            android:weightSum="2">
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_print"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
-
-            <RelativeLayout
-                android:id="@+id/relative_print"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_print"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/relative_print"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/print_imageview"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
-                    android:paddingStart="10dp"
-                    android:text="@string/view_print"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:background="@color/colorPrimary">
 
-                <ImageView
-                    android:id="@+id/print_imageview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="15dp"
-                    android:paddingVertical="10dp"
-                    app:srcCompat="@drawable/ic_print_24dp">
-                </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/print_imageview"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_horizontal"
+                        android:paddingStart="10dp"
+                        android:text="@string/view_print"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/print_imageview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="15dp"
+                        android:paddingVertical="10dp"
+                        app:srcCompat="@drawable/ic_print_24dp"></ImageView>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_share"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
-
-            <RelativeLayout
-                android:id="@+id/relative_share"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_share"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/relative_share"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
-                    android:text="@string/share"
-                    android:layout_toEndOf="@+id/share_imageview"
-                    android:textAlignment="center"
-                    android:layout_marginStart="15dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:background="@color/colorPrimary">
 
-                <ImageView
-                    android:id="@+id/share_imageview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="35dp"
-                    android:paddingVertical="10dp"
-                    app:srcCompat="@drawable/ic_baseline_sms_24">
-                </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_toEndOf="@+id/share_imageview"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_horizontal"
+                        android:text="@string/share"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/share_imageview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="35dp"
+                        android:paddingVertical="10dp"
+                        app:srcCompat="@drawable/ic_baseline_sms_24"></ImageView>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
 
