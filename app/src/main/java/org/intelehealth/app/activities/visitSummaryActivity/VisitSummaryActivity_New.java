@@ -7,6 +7,7 @@ import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDial
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -47,6 +49,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -63,10 +66,17 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
@@ -119,7 +129,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
-    VisitSummaryActivity.DownloadPrescriptionService downloadPrescriptionService;
+    VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
     private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager, mPhysicalExamsLayoutManager;
     private AdditionalDocumentAdapter recyclerViewAdapter;
@@ -203,13 +213,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     String encounterUuid;
-    ImageButton editAddDocs;
     Spinner speciality_spinner;
     SwitchMaterial flag;
     private Handler mBackgroundHandler;
     private List<DocumentObject> rowListItem;
 
-
+    ImageButton editVitals;
+    ImageButton editComplaint;
+    ImageButton editPhysical;
+    ImageButton editFamHist;
+    ImageButton editMedHist;
+    ImageButton editAddDocs;
 
 
 
@@ -314,6 +328,34 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         registerDownloadPrescription();
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
+
+        // past visit checking based on intent - start
+        if (isPastVisit) {
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+//            uploadButton.setVisibility(View.GONE); // todo: uncomment handle later.
+//            btnSignSubmit.setVisibility(View.GONE);
+            invalidateOptionsMenu();
+        } else {
+            String visitIDorderBy = "startdate";
+            String visitIDSelection = "uuid = ?";
+            String[] visitIDArgs = {visitUuid};
+            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                visitIDCursor.moveToFirst();
+                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            }
+            if (visitIDCursor != null) visitIDCursor.close();
+            if (visitUUID != null && !visitUUID.isEmpty()) {
+                addDownloadButton();
+
+            }
+        }
+        // past visit checking based on intent - end
     }
 
     private void expandableCardVisibilityHandling() {
@@ -604,6 +646,457 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         });
         // todo: this code is present in uoload btn too so handle that later...
         // Priority data - end
+        
+        // edit listeners - start
+        editVitals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity_New.this, VitalsActivity.class);
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("gender", patientGender);
+                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+            }
+        });
+
+        // complaint
+        editComplaint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                complaintDialog.setView(convertView);
+
+                final TextView complaintText = convertView.findViewById(R.id.textView_entry);
+                if (complaint.getValue() != null) {
+                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                }
+                complaintText.setEnabled(false);
+
+                complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                        textInput.setTitle(R.string.question_text_input);
+                        final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        if (complaint.getValue() != null) {
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
+                        } else {
+                            dialogEditText.setText("");
+                        }
+                        textInput.setView(dialogEditText);
+                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                if (complaint.getValue() != null) {
+                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                }
+                                updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
+                                dialog.dismiss();
+                            }
+                        });
+                        textInput.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = textInput.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Deleting the old image in physcial examination
+                        if (obsImgdir.exists()) {
+                            ImagesDAO imagesDAO = new ImagesDAO();
+
+                            try {
+                                List<String> imageList = imagesDAO.getImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                                for (String obsImageUuid : imageList) {
+                                    String imageName = obsImageUuid + ".jpg";
+                                    new File(obsImgdir, imageName).deleteOnExit();
+                                }
+                                imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                            } catch (DAOException e1) {
+                                FirebaseCrashlytics.getInstance().recordException(e1);
+                            }
+                        }
+
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, ComplaintNodeActivity.class);
+                        intent1.putExtra("patientUuid", patientUuid);
+                        intent1.putExtra("visitUuid", visitUuid);
+                        intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent1.putExtra("tag", "edit");
+                        startActivity(intent1);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                complaintDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                //complaintDialog.show();
+                AlertDialog alertDialog = complaintDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+            }
+        });
+
+        // physical exam
+        editPhysical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                physicalDialog.setView(convertView);
+
+                final TextView physicalText = convertView.findViewById(R.id.textView_entry);
+                if (phyExam.getValue() != null)
+                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                physicalText.setEnabled(false);
+
+                physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                        textInput.setTitle(R.string.question_text_input);
+                        final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        if (phyExam.getValue() != null)
+                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
+                        else
+                            dialogEditText.setText("");
+                        textInput.setView(dialogEditText);
+                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                if (phyExam.getValue() != null) {
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                }
+                                updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
+                                dialog.dismiss();
+                            }
+                        });
+                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = textInput.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, dialog);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (obsImgdir.exists()) {
+                            ImagesDAO imagesDAO = new ImagesDAO();
+
+                            try {
+                                List<String> imageList = imagesDAO.getImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                                for (String obsImageUuid : imageList) {
+                                    String imageName = obsImageUuid + ".jpg";
+                                    new File(obsImgdir, imageName).deleteOnExit();
+                                }
+                                imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                            } catch (DAOException e1) {
+                                FirebaseCrashlytics.getInstance().recordException(e1);
+                            }
+                        }
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, PhysicalExamActivity.class);
+                        intent1.putExtra("patientUuid", patientUuid);
+                        intent1.putExtra("visitUuid", visitUuid);
+                        intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent1.putExtra("tag", "edit");
+                        //    intent1.putStringArrayListExtra("exams", physicalExams);
+                        for (String string : physicalExams)
+                            Log.i(TAG, "onClick: " + string);
+                        startActivity(intent1);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                physicalDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialog = physicalDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+            }
+        });
+
+        // medical history
+        editMedHist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MaterialAlertDialogBuilder historyDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                historyDialog.setView(convertView);
+
+                final TextView historyText = convertView.findViewById(R.id.textView_entry);
+                if (patHistory.getValue() != null)
+                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                historyText.setEnabled(false);
+
+                historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                        textInput.setTitle(R.string.question_text_input);
+                        final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        if (patHistory.getValue() != null)
+                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
+                        else
+                            dialogEditText.setText("");
+                        textInput.setView(dialogEditText);
+                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //patHistory.setValue(dialogEditText.getText().toString());
+                                patHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+
+                                if (patHistory.getValue() != null) {
+                                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+                                }
+                                updateDatabase(patHistory.getValue(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+                                dialog.dismiss();
+                            }
+                        });
+                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = textInput.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, dialog);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, PastMedicalHistoryActivity.class);
+                        intent1.putExtra("patientUuid", patientUuid);
+                        intent1.putExtra("visitUuid", visitUuid);
+                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("edit_PatHist", "edit_PatHist");
+                        intent1.putExtra("gender", patientGender);
+//                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                      /*  if(EncounterAdultInitial_LatestVisit != null &&
+                                !EncounterAdultInitial_LatestVisit.isEmpty()) {
+                            intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        }
+                        else {
+                            intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        }*/
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent1.putExtra("tag", "edit");
+                        startActivity(intent1);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                historyDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+//                historyDialog.show();
+                AlertDialog alertDialog = historyDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+            }
+        });
+
+        // family history
+        editFamHist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this,R.style.AlertDialogStyle);
+                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                famHistDialog.setView(convertView);
+
+                final TextView famHistText = convertView.findViewById(R.id.textView_entry);
+                if (famHistory.getValue() != null)
+                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                famHistText.setEnabled(false);
+
+                famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                        // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                        textInput.setTitle(R.string.question_text_input);
+                        final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                        if (famHistory.getValue() != null)
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
+                        else
+                            dialogEditText.setText("");
+                        textInput.setView(dialogEditText);
+                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //famHistory.setValue(dialogEditText.getText().toString());
+                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+
+                                if (famHistory.getValue() != null) {
+                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+                                }
+                                updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                                dialog.dismiss();
+                            }
+                        });
+                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = textInput.show();
+                        dialogInterface.dismiss();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+                    }
+                });
+
+                famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                famHistDialog.setNegativeButton(R.string.generic_erase_redo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, FamilyHistoryActivity.class);
+                        intent1.putExtra("patientUuid", patientUuid);
+                        intent1.putExtra("visitUuid", visitUuid);
+                        intent1.putExtra("gender", patientGender);
+                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("edit_FamHist", "edit_FamHist");
+                        intent1.putExtra("gender", patientGender);
+                     /*   if(EncounterAdultInitial_LatestVisit != null &&
+                                !EncounterAdultInitial_LatestVisit.isEmpty()) {
+                            intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        }
+                        else {
+                            intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        }*/
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent1.putExtra("tag", "edit");
+                        startActivity(intent1);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+//                famHistDialog.show();
+                AlertDialog alertDialog = famHistDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                //nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+            }
+        });
+
+
+        // edit listeners - end
     }
 
     /**
@@ -728,6 +1221,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // priority id
         flag = findViewById(R.id.flaggedcheckbox);
         // priority id - end
+        
+        // edit - start
+        editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
+        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
+        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
+        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
+        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+
+
+        // edit - end
+        
 
         btn_vs_sendvisit = findViewById(R.id.btn_vs_sendvisit);
     }
@@ -1752,5 +2257,38 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         }
     }
 
+
+    // udpate database block
+    /**
+     * This method updates patient details to database.
+     *
+     * @param string    variable of type String
+     * @param conceptID variable of type int
+     */
+    private void updateDatabase(String string, String conceptID) {
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(String.valueOf(conceptID));
+            obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterUuidAdultIntial, String.valueOf(conceptID)));
+
+            obsDAO.updateObs(obsDTO);
+
+
+        } catch (DAOException dao) {
+            FirebaseCrashlytics.getInstance().recordException(dao);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterUuidAdultIntial);
+            encounterDAO.updateEncounterModifiedDate(encounterUuidAdultIntial);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
 
 }

@@ -97,7 +97,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_vitals"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -472,7 +472,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_complaint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -524,7 +524,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_vitals"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -567,7 +567,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_vitals"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -733,7 +733,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_physexam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -876,7 +876,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_pathist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -918,7 +918,7 @@
                         />
 
                     <ImageButton
-                        android:id="@+id/personal_edit"
+                        android:id="@+id/imagebutton_edit_famhist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
