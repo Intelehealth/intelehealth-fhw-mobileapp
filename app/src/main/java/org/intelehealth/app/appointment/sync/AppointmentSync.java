@@ -2,8 +2,7 @@ package org.intelehealth.app.appointment.sync;
 
 import android.content.Context;
 import android.util.Log;
-
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import android.util.Patterns;
 
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -25,7 +24,7 @@ public class AppointmentSync {
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
         String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
 
-        try {
+        if (Patterns.WEB_URL.matcher(baseurl).matches()) {
             ApiClientAppointment
                     .getInstance(baseurl)
                     .getApi()
@@ -52,9 +51,6 @@ public class AppointmentSync {
                             Log.v("onFailure", t.getMessage());
                         }
                     });
-
-        } catch (Exception exception) {
-            FirebaseCrashlytics.getInstance().recordException(exception);
         }
     }
 }
