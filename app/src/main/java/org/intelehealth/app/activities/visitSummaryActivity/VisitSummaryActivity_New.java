@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -109,6 +110,7 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -145,9 +147,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
     VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
-    private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView;
+    private RecyclerView mAdditionalDocsRecyclerView, mPhysicalExamsRecyclerView, cc_recyclerview;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager, mPhysicalExamsLayoutManager;
+    private RecyclerView.LayoutManager cc_recyclerview_gridlayout;
     private AdditionalDocumentAdapter recyclerViewAdapter;
+    private ComplaintHeaderAdapter cc_adapter;
 
     boolean hasLicense = false;
     private String hasPrescription = "";
@@ -538,6 +542,21 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             String valueArray[] = value.replace("<br>►Associated symptoms: <br>", "►<b>Associated symptoms</b>: <br/>")
                     .split("►<b>Associated symptoms</b>: <br/>");
 
+            String[] headerchips = valueArray[0].split("►");
+            List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
+            List<String> cc_list = new ArrayList<>();
+            
+            for (int i = 0; i < cc_tempvalues.size(); i++) {
+                if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
+                    cc_list.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+            }
+
+            cc_recyclerview_gridlayout = new GridLayoutManager(this, 3, RecyclerView.HORIZONTAL, true);
+            cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
+            cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
+            cc_recyclerview.setAdapter(cc_adapter);
+
+
             String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
                     .split("• Patient denies -<br/>");
             String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
@@ -550,9 +569,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
                     "• Pain does not radiate.<br>• 4 Hours.<br><span style=\"color:#7F7B92\">• Onset</span> &emsp;&emsp; Gradual.<br><span style=\"color:#7F7B92\">• Timing</span> &emsp;&emsp; Morning.<br>" +
                     "<span style=\"color:#7F7B92\">• Character of the pain*</span> &emsp;&emsp; Constant.<br><span style=\"color:#7F7B92\">• Severity</span> &emsp;&emsp; Mild, 1-3.<br>" +
                     "<span style=\"color:#7F7B92\">• Exacerbating Factors</span> &emsp;&emsp; Hunger.<br><span style=\"color:#7F7B92\">• Relieving Factors</span> &emsp;&emsp; Food.<br><span style=\"color:#7F7B92\">• Prior treatment sought</span> &emsp;&emsp; None.";
-            complaintView.setText(Html.fromHtml(data));
+         //   complaintView.setText(Html.fromHtml(data));
             // todo: testin end
-        //    complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+            complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
             // associated symp.
             patientReports_txtview.setText(Html.fromHtml(patientReports));
@@ -1310,6 +1329,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // vitals ids - end
 
         // complaint ids
+        cc_recyclerview = findViewById(R.id.cc_recyclerview);
+
+
         complaintView = findViewById(R.id.textView_content_complaint);
         patientReports_txtview = findViewById(R.id.patientReports_txtview);
         patientDenies_txtview = findViewById(R.id.patientDenies_txtview);

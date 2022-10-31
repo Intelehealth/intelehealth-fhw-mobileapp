@@ -480,8 +480,20 @@
                         android:src="@drawable/edit_change_patdetail" />
                 </RelativeLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cc_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_below="@+id/cc_title"
+                    tools:itemCount="3"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/cc_recycler_listitem"/>
+<!--
                 <LinearLayout
-                    android:id="@+id/cc_linear"
+                    android:id="@+id/cc_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -501,6 +513,7 @@
                         android:textSize="12sp"
                         android:background="@drawable/ui2_common_primary_bg" />
                 </LinearLayout>
+-->
                 <!--End-->
 
                 <!--Personal Sub-Child-->
@@ -508,7 +521,7 @@
                     android:id="@+id/chiefcomplaint_details_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cc_linear"
+                    android:layout_below="@+id/cc_recyclerview"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start">
@@ -756,15 +769,15 @@
                     android:id="@+id/recy_physexam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_marginEnd="@dimen/fu_margin_start"
-                    android:orientation="horizontal"
-                    app:reverseLayout="true"
-                    android:layout_marginBottom="@dimen/fu_margin_start"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/general_exam_images_listitem"
                     android:layout_below="@+id/physFindingsView"
-                     />
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="true"
+                    tools:listitem="@layout/general_exam_images_listitem" />
 
                 <TextView
                     android:id="@+id/physcial_examination_download"
