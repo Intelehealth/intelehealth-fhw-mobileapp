@@ -547,7 +547,11 @@
     <dimen name="txtsize_patdetail_14sp">24sp</dimen>
     <dimen name="patdetail_profile_imgview_14sp">70dp</dimen>
     <dimen name="up_down_icon_size">30dp</dimen>
-
+    <dimen name="cardcornerradius_imagev">40dp</dimen>
+    <dimen name="margin_8">12dp</dimen>
+    <dimen name="margin_4">8dp</dimen>
+    <dimen name="vs_notes_big_edittext_height">172dp</dimen>
+    <dimen name="vs_adddoc_listitem_bg_height">88dp</dimen>
 
 
 

@@ -394,6 +394,7 @@
 
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_bg</item>
+        <item name="android:textSize">@dimen/txtsize_patdetail_16sp</item>
     </style>
 
     <style name="SmallSpinnerTheme" parent="android:Widget.Spinner">
@@ -418,7 +419,7 @@
 
     <style name="vs_title_head_14sp">
         <item name="android:textSize">
-            14sp
+            @dimen/txtsize_patdetail_14sp
         </item>
         <item name="android:textColor">
             @color/textview_color

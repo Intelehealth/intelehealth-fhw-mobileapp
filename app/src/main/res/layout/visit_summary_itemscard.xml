@@ -89,8 +89,7 @@
                     <TextView
                         android:id="@+id/details_personal_txtview"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="-3sp"
+                        android:layout_height="match_parent"
                         android:text="Details"
                         style="@style/vs_title_head_14sp"
                         android:textStyle="bold"
@@ -554,6 +553,7 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:textSize="@dimen/find_patient_hint_size"
                     android:text="here comes the data in html format."
                     android:layout_marginTop="@dimen/hamburger_margin_start" />
                 <!--Chief Complaint details - end-->
@@ -761,6 +761,7 @@
                     android:layout_below="@+id/physexam_details_relative"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:textSize="@dimen/find_patient_hint_size"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:text="here comes the phys exam data in html format."
                     android:layout_marginTop="@dimen/hamburger_margin_start" />
@@ -784,11 +785,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/recy_physexam"
-                    android:backgroundTint="@color/cardview_dark_background"
+                    android:textColor="@color/cardview_dark_background"
                     android:fontFamily="@font/lato_medium"
                     android:text="@string/click_to_download_the_images"
-                    android:layout_marginStart="@dimen/margin_12"
-                    android:layout_marginBottom="@dimen/margin_12"
+                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_marginBottom="@dimen/fu_margin_start"
                     android:textSize="@dimen/txtsize_patdetail_14sp"
                     android:visibility="visible" />
 
@@ -905,6 +906,7 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:layout_marginBottom="@dimen/fu_margin_start"
+                    android:textSize="@dimen/find_patient_hint_size"
                     android:text="here comes the patient history data in html format."
                     android:layout_marginTop="@dimen/hamburger_margin_start" />
 
@@ -958,6 +960,7 @@
                     android:layout_below="@+id/pathist_subtitle"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginEnd="@dimen/fu_margin_start"
+                    android:textSize="@dimen/find_patient_hint_size"
                     android:layout_marginBottom="@dimen/fu_margin_start"
                     android:text="here comes data with bullets...."
                     android:layout_marginTop="@dimen/margin_4" />

@@ -15,7 +15,7 @@
         android:paddingVertical="@dimen/margin_4"
         android:text="Abdominal Pain"
         android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:textSize="@dimen/txtsize_patdetail_14sp" />
 
 
 </LinearLayout>

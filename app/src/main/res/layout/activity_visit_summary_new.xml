@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:layout_marginTop="-3500dp"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity_New">
 
    <!-- Toolbar - start-->
@@ -150,17 +151,17 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                    android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                     android:layout_centerVertical="true"
                     android:elevation="0dp"
                     android:layout_marginStart="2dp"
-                    app:cardCornerRadius="20dp">
+                    app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                     <ImageView
                         android:id="@+id/profile_image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                        android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                         android:src="@drawable/avatar1" />
                 </androidx.cardview.widget.CardView>
 
@@ -229,8 +230,8 @@
 
                 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/btn_up_header"
-                    android:layout_width="@dimen/fu_icon_width"
-                    android:layout_height="@dimen/fu_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/ui2_ic_chevron_down" />
 
@@ -372,14 +373,14 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="88dp"
+                    android:layout_height="@dimen/vs_notes_big_edittext_height"
                     android:layout_below="@+id/add_notes_title"
                     android:layout_marginTop="@dimen/margin_8"
                     android:hint="Leave a note for doctor"
                     android:textColorHint="@color/edittext_hint_color"
                     android:gravity="top"
-                    android:paddingTop="@dimen/margin_12"
-                    android:paddingStart="@dimen/margin_12"
+                    android:paddingTop="@dimen/fu_margin_start"
+                    android:paddingStart="@dimen/fu_margin_start"
                     android:textSize="@dimen/find_patient_hint_size"
                     android:background="@drawable/edittext_border"/>
 
@@ -416,7 +417,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginTop="@dimen/fu_margin_start"
                     android:background="@drawable/visit_summary_add_doc_cardbg"
                     android:layout_below="@+id/recy_additional_documents">
 
@@ -425,9 +426,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/add_doc_addbtn"
-                        android:layout_marginTop="@dimen/margin_12"
-                        android:layout_marginStart="@dimen/margin_12"
-                        android:layout_marginBottom="@dimen/margin_12"
+                        android:layout_marginTop="@dimen/fu_margin_start"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/fu_margin_start"
                         android:background="@null" />
 
                     <TextView
@@ -435,8 +436,9 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@+id/imagebutton_edit_additional_document"
                         style = "@style/blur_txtview"
+                        android:background="@null"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginStart="@dimen/fu_margin_start"
                         android:text="Add additional documents like reports, prescriptions, etc.\u000D" />
 
                 </RelativeLayout>
@@ -476,15 +478,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:layout_below="@+id/doc_speciality_title"
-                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginBottom="@dimen/margin_16dp"
                 android:gravity="center_vertical"
                 android:hint="Select Speciality"
                 android:entries="@array/speciality_values"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingStart="@dimen/margin_12"
+                android:paddingStart="@dimen/fu_margin_start"
                 android:paddingBottom="@dimen/margin_10"
-                android:textSize="@dimen/edittext_textsize_16sp" />
+                />
 
 
         </RelativeLayout>
@@ -505,9 +507,9 @@
             app:cardElevation="@dimen/margin_5">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/fu_card_margin_sides">
+            >
 
             <TextView
                 android:id="@+id/doc_speciality_title"
@@ -517,6 +519,9 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/colorPrimary"
                 style="@style/vs_title_head_14sp"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
                 android:textStyle="bold"/>
 
             <ImageButton
@@ -533,6 +538,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
                 android:theme="@style/AppTheme.switchColorStyle"
                 />
 
@@ -551,7 +558,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingTop="@dimen/margin_12"
+        android:paddingTop="@dimen/fu_margin_start"
         android:layout_marginBottom="@dimen/fu_card_margin_sides"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -585,6 +592,7 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/hamburger_margin_top"
+            android:textStyle="bold"
             android:text="Send visit"
             android:textSize="@dimen/common_button_text_size" />
 
