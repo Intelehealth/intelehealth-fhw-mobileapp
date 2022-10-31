@@ -33,6 +33,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.LocaleList;
@@ -286,7 +287,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         }
 
         // todo: uncomment this block later for testing it is commented.
-     /*   final Intent intent = this.getIntent(); // The intent was passed to the activity
+        final Intent intent = this.getIntent(); // The intent was passed to the activity
+/*
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
@@ -308,18 +310,30 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
-        }*/
+
+            Log.v(TAG, "inte_value: \n: " + patientUuid + "\n" +
+                    visitUuid + "\n" +
+                    patientGender + "\n" +
+                    encounterVitals + "\n" +
+                    encounterUuidAdultIntial + "\n" +
+                    EncounterAdultInitial_LatestVisit + "\n" +
+                    patientName + "\n" +
+                    float_ageYear_Month + "\n" +
+                    intentTag + "\n" +
+                    isPastVisit + "\n");
+        }
+*/
         // todo: testing - start
-        patientUuid = "6b4b3de2-8f1f-4ad6-9d54-6b8dd0ed724a";
-        visitUuid = "559ef1d2-feef-4eae-a30c-950561e0a56c";
+        patientUuid = "5beb27c8-4bae-4d8e-91a1-1fa5dabb51c8";
+        visitUuid = "f133d3ca-f448-44c0-b1b4-5889f85e7d5a";
         patientGender = "M";
-        encounterVitals = "ae1cfff3-b18d-4e52-954e-562c8a7dc11e";
-        encounterUuidAdultIntial = "3ab5860d-c9a5-4f53-afdc-6713fc116cc5";
+        encounterVitals = "1c4b19a7-0c1d-48a8-a0a0-a9222018ccef";
+        encounterUuidAdultIntial = "e4e5b1f1-72cf-437f-978f-c42a4a0d1183";
         EncounterAdultInitial_LatestVisit = "";
         mSharedPreference = this.getSharedPreferences(
                 "visit_summary", Context.MODE_PRIVATE);
-        patientName = "Praj Waing";
-        float_ageYear_Month = 0.0f;
+        patientName = "Testing Banana";
+        float_ageYear_Month = 48.0f;
         intentTag = "new";
         isPastVisit = false;
 //            hasPrescription = intent.getStringExtra("hasPrescription");
@@ -436,6 +450,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     }
 
     private void setViewsData() {
+        physicalDoumentsUpdates();
+
         queryData(String.valueOf(patientUuid));
 
         // Patient Photo
@@ -551,7 +567,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
                     cc_list.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
             }
 
-            cc_recyclerview_gridlayout = new GridLayoutManager(this, 3, RecyclerView.HORIZONTAL, true);
+            cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
             cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
             cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
             cc_recyclerview.setAdapter(cc_adapter);
@@ -1370,8 +1386,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         // edit - end
 
-
         uploadButton = findViewById(R.id.btn_vs_sendvisit);
+
+        // file set
+        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+        obsImgdir = new File(AppConstants.IMAGE_PATH);
     }
 
     private void setgender(TextView genderView) {

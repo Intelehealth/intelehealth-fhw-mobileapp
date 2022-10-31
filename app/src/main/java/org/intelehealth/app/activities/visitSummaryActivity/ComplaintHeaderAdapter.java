@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class ComplaintHeaderAdapter extends RecyclerView.Adapter<ComplaintHeader
         String complaint = stringList.get(position);
 
         if (complaint != null && !complaint.isEmpty() && !complaint.equalsIgnoreCase("")) {
-            holder.textView.setText(complaint);
+            holder.textView.setText(Html.fromHtml(complaint));
         }
     }
 

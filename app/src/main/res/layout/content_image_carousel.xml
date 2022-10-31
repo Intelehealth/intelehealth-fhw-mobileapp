@@ -8,9 +8,9 @@
     android:layout_marginRight="10dp">
 
     <ImageView
+        android:id="@+id/imageView_medical"
         android:layout_height="match_parent"
         android:layout_width="150dp"
-        android:id="@+id/imageView_medical"
         android:contentDescription="TODO"
         android:scaleType="centerCrop">
         </ImageView>

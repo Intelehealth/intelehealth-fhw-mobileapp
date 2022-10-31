@@ -347,8 +347,7 @@
             android:layout_marginEnd="@dimen/toolbar_margin_left"
             android:src="@drawable/open_all_btn" />
 
-        <include
-            layout="@layout/visit_summary_itemscard" />
+        <include layout="@layout/visit_summary_itemscard" />
 
     </RelativeLayout>
     <!--Vitals and Other cards - end-->
