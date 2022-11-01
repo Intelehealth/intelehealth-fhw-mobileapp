@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
+import static org.intelehealth.app.database.dao.NotificationDAO.deleteNotification;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 
@@ -74,6 +75,7 @@ import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivi
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
@@ -90,6 +92,7 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.FollowUpModel;
+import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.services.DownloadService;
@@ -126,7 +129,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class VisitSummaryActivity_New extends AppCompatActivity {
+public class VisitSummaryActivity_New extends AppCompatActivity  implements AdapterInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
 
@@ -217,6 +220,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
+    TextView add_docs_title;
 
     TextView respiratory;
     TextView respiratoryText;
@@ -288,6 +292,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
 
         // todo: uncomment this block later for testing it is commented.
         final Intent intent = this.getIntent(); // The intent was passed to the activity
+/*
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
@@ -321,8 +326,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
                     intentTag + "\n" +
                     isPastVisit + "\n");
         }
+*/
 
-       /* // todo: testing - start
+        // todo: testing - start
         patientUuid = "5beb27c8-4bae-4d8e-91a1-1fa5dabb51c8";
         visitUuid = "f133d3ca-f448-44c0-b1b4-5889f85e7d5a";
         patientGender = "M";
@@ -353,7 +359,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         if (selectedExams != null && !selectedExams.isEmpty()) {
             physicalExams.addAll(selectedExams);
         }
-        // todo: testing - end*/
+        // todo: testing - end
 
 
         // receiver
@@ -644,8 +650,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mAdditionalDocsRecyclerView.setHasFixedSize(true);
         mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
-        recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH);
+        recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this);
         mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
+        add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
+
 
         editAddDocs.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1364,6 +1372,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         // medical history - end
 
         // additonal doc
+        add_docs_title = findViewById(R.id.add_docs_title);
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         // additonal doc - end
@@ -1719,6 +1728,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
         registerReceiver(downloadPrescriptionService, filter);
+    }
+
+    @Override
+    public void deleteNotifi_Item(List<NotificationModel> list, int position) {
+
+    }
+
+    @Override
+    public void deleteAddDoc_Item(List<DocumentObject> documentList, int position) {
+        documentList.remove(position);
+        add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
     }
 
     // download pres service class
@@ -2302,8 +2322,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity {
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
             mAdditionalDocsRecyclerView.setLayoutManager(linearLayoutManager);
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterUuidAdultIntial, rowListItem, AppConstants.IMAGE_PATH, this);
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
+            add_docs_title.setText("Add additional document (" + recyclerViewAdapter.getItemCount() + ")");
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);

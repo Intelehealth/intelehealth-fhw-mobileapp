@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -55,9 +56,11 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private String filePath;
     String mEncounterUUID;
     ImagesDAO imagesDAO = new ImagesDAO();
+    private AdapterInterface anInterface;
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, String edult,List<DocumentObject> documentList, String filePath) {
+    public AdditionalDocumentAdapter(Context context, String edult,
+                                     List<DocumentObject> documentList, String filePath, AdapterInterface anInterface) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -66,7 +69,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         screen_width = displayMetrics.widthPixels;
         mEncounterUUID=edult;
         this.filePath = filePath;
-
+        this.anInterface = anInterface;
     }
 
     @Override
@@ -102,9 +105,11 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             @Override
             public void onClick(View v) {
                 if (image.exists()) image.delete();
-                documentList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, documentList.size());
+
+                anInterface.deleteAddDoc_Item(documentList, holder.getLayoutPosition());
+                notifyItemRemoved(holder.getLayoutPosition());
+                notifyItemRangeChanged(holder.getLayoutPosition(), documentList.size());
+                notifyDataSetChanged(); // this line is imp else it leaves empty space on delete.
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
 
@@ -115,6 +120,8 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
                         }
                         imagesDAO.deleteImageFromDatabase(imageList.get(position));
+
+
                     } catch (DAOException e) {
 
                         e.printStackTrace();
@@ -125,6 +132,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
     }
+
 
     public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
