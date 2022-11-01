@@ -292,7 +292,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
 
         // todo: uncomment this block later for testing it is commented.
         final Intent intent = this.getIntent(); // The intent was passed to the activity
-/*
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
@@ -326,9 +325,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
                     intentTag + "\n" +
                     isPastVisit + "\n");
         }
-*/
 
-        // todo: testing - start
+       /* // todo: testing - start
         patientUuid = "5beb27c8-4bae-4d8e-91a1-1fa5dabb51c8";
         visitUuid = "f133d3ca-f448-44c0-b1b4-5889f85e7d5a";
         patientGender = "M";
@@ -359,7 +357,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
         if (selectedExams != null && !selectedExams.isEmpty()) {
             physicalExams.addAll(selectedExams);
         }
-        // todo: testing - end
+        // todo: testing - end*/
 
 
         // receiver
