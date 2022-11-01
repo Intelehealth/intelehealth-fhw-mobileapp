@@ -7,17 +7,17 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/add_doc_addBtn"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="@dimen/margin_12"
-        android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginBottom="@dimen/margin_12"
+        android:layout_width="@dimen/vs_phsexam_imgview_140dp"
+        android:layout_height="@dimen/vs_phsexam_imgview_140dp"
+        android:layout_marginTop="@dimen/fu_margin_start"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginBottom="@dimen/fu_margin_start"
         app:cardCornerRadius="@dimen/margin_5">
 
         <ImageView
             android:id="@+id/imageView_medical"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="@dimen/vs_phsexam_imgview_140dp"
+            android:layout_height="@dimen/vs_phsexam_imgview_140dp"
             android:scaleType="fitXY"
             android:src="@drawable/avatar1"
             />

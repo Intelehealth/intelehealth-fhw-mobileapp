@@ -717,6 +717,8 @@
     <dimen name="cardcornerradius_imagev">20dp</dimen>
     <dimen name="vs_notes_big_edittext_height">88dp</dimen>
     <dimen name="vs_adddoc_listitem_bg_height">68dp</dimen>
+    <dimen name="vs_phsexam_imgview_140dp">140dp</dimen>
+    <dimen name="corner_radius_5dp">5dp</dimen>
 
 
     <!--UI2.0 Appointment-->
