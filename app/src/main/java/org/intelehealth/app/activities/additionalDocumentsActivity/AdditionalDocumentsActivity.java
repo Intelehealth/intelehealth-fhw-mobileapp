@@ -88,6 +88,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
                 onBackPressed();
             }
         });
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");

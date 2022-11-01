@@ -2510,6 +2510,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity  implements Adap
      * @param filePath Final Image path to compress.
      *
      * */
+    // TODO: crash as there is no permission given in setup app section for firsttime user.
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
