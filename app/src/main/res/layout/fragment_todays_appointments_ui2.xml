@@ -80,6 +80,7 @@
                         android:layout_marginTop="@dimen/card_apps_title_margin_top"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_title_line_height"
+                        android:layout_marginBottom="10dp"
                         android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                         android:text="@string/upcoming"
                         android:textColor="@color/textColorBlack"
@@ -100,7 +101,7 @@
                     android:background="@drawable/ui2_ic_bg_options_appointment"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="12dp">
+                    android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
                         android:id="@+id/tv_cancelled_appointments"
@@ -119,6 +120,7 @@
                         android:layout_marginTop="5dp"
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_title_line_height"
+                        android:layout_marginBottom="10dp"
                         android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                         android:text="@string/cancelled"
                         android:textColor="@color/textColorBlack"
@@ -139,7 +141,7 @@
                     android:background="@drawable/ui2_ic_bg_options_appointment"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="12dp">
+                    android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
                         android:id="@+id/tv_completed_appointments"
@@ -159,6 +161,7 @@
                         android:gravity="center"
                         android:lineHeight="@dimen/card_apps_title_line_height"
                         android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
+                        android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                         android:text="@string/completed"
                         android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/card_apps_title_text_size"
@@ -208,7 +211,6 @@
                 android:id="@+id/layout_cancelled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_upcoming"
                 android:orientation="vertical">
 
                 <TextView

@@ -881,6 +881,8 @@
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
     <string name="profile_details_added">Profile details added successfully</string>
+    <string name="profile_details_updated_new">Profile details updated successfully</string>
+    <string name="profile_photo_updated_new">Profile photo updated successfully</string>
 
     <string name="take_patient_visits_intro">Collect detailed patient data and perform physical exam using Ayu (Digital health assistant) .Share the information with the telemedicine doctor.</string>
     <string name="provide_prescriptions">Provide prescriptions</string>
@@ -1658,8 +1660,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="end_visit">End visit</string>
     <string name="view_patient_history">View patient history</string>
     <string name="reschedule">Reschedule</string>
-
-
 
 
     <!--    Follow-up new screens -->

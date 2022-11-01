@@ -4,6 +4,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.appointment.adapter.AppointmentListingAdapter;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 
+import java.util.List;
 import java.util.Objects;
 
 public class TodaysMyAppointmentsFragment extends Fragment {
+    private static final String TAG = "TodaysMyAppointmentsFra";
     View view;
     LinearLayout cardUpcomingAppointments, cardCancelledAppointments, cardCompletedAppointments, layoutMainAppOptions,
             layoutUpcoming, layoutCancelled, layoutCompleted;
@@ -63,6 +69,25 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter1 = new TodaysMyAppointmentsAdapter(getActivity());
         rvCompletedApp.setAdapter(todaysMyAppointmentsAdapter1);
 
+
+        cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+        cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+        layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+        cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+        Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
+        cardUpcomingAppointments.startAnimation(fadeOut);
+
+        layoutUpcoming.setVisibility(View.VISIBLE);
+        layoutCompleted.setVisibility(View.VISIBLE);
+        layoutCancelled.setVisibility(View.VISIBLE);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+        params.weight = 1.0f;
+        params.gravity = Gravity.TOP;
+
+        layoutUpcoming.setLayoutParams(params);
+
+        getAppointments();
     }
 
     private void clickListeners() {
@@ -125,10 +150,29 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             layoutCompleted.setLayoutParams(params);
 
         });
-
-
     }
 
+    private void getAppointments() {
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
+        Log.d(TAG, "getAppointments: list size : "+appointmentInfoList.size());
+
+        for (int i = 0; i < appointmentInfoList.size(); i++) {
+            AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
+            Log.d(TAG, "getAppointments: "+appointmentInfo.getCreatedAt());
+        }
+ /*       AppointmentListingAdapter appointmentListingAdapter = new AppointmentListingAdapter(rvAppointments, this, appointmentInfoList, new AppointmentListingAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(AppointmentInfo appointmentInfo) {
+
+            }
+        });*/
+     /*   rvAppointments.setAdapter(appointmentListingAdapter);
+        if (appointmentInfoList.isEmpty()) {
+            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
+        }*/
+    }
 
 
 }

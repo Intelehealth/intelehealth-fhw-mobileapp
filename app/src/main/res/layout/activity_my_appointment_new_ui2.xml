@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
     android:orientation="vertical"
-    android:paddingStart="@dimen/my_appointment_padding"
-    android:paddingEnd="@dimen/my_appointment_padding"
+    android:paddingStart="@dimen/my_appointment_parent_padding"
+    android:paddingEnd="@dimen/my_appointment_parent_padding"
     tools:context=".appointmentNew.MyAppointmentActivity">
 
     <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/toolbar_my_appointments"
         layout="@layout/toolbar_common_new2_ui2" />
 

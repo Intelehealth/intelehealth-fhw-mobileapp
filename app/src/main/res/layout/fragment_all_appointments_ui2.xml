@@ -9,7 +9,7 @@
         android:id="@+id/layout_parent_all_appointments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/today_apps_parent_margin_top">
 
         <RelativeLayout
             android:id="@+id/layout_all_appoints_filter"
@@ -38,7 +38,7 @@
                     android:paddingStart="@dimen/common_edittext_padding_left"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingEnd="@dimen/common_edittext_padding_right"
-                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom1"
                     android:singleLine="true"
                     android:textSize="@dimen/common_hint_text_size"
                     app:endIconDrawable="@drawable/ui2_ic_chevron_down"
@@ -49,24 +49,26 @@
 
             <ImageView
                 android:id="@+id/iv_calendar_all_app"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="@dimen/icon_filters_width"
+                android:layout_height="@dimen/icon_filters_height"
+                android:layout_marginStart="@dimen/ma_icon_margin_start"
+                android:layout_marginTop="@dimen/ma_icon_margin_top"
+                android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                android:layout_marginBottom="5dp"
                 android:layout_toStartOf="@+id/iv_filter_all_app"
                 android:background="@drawable/ui2_ic_filter_bg"
-                android:padding="10dp"
+                android:padding="@dimen/my_appointment_padding"
                 android:src="@drawable/ui2_ic_calendar" />
 
             <ImageView
                 android:id="@+id/iv_filter_all_app"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/icon_filters_width"
+                android:layout_height="@dimen/icon_filters_height"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/ma_icon_margin_top"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/ui2_ic_filter_bg"
-                android:padding="10dp"
+                android:padding="@dimen/my_appointment_padding"
                 android:src="@drawable/ui2_ic_filter" />
 
         </RelativeLayout>
@@ -75,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/layout_all_appoints_filter"
-            android:layout_marginTop="@dimen/all_apps_options_margin_top"
+            android:layout_marginTop="@dimen/all1_apps_options_margin_top"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -83,7 +85,6 @@
                 android:id="@+id/layout_parent_all1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/all_apps_options_margin_top"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -124,6 +125,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/card_apps_title_margin_top"
                                 android:gravity="center"
+                                android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                                 android:lineHeight="@dimen/card_apps_title_line_height"
                                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                                 android:text="@string/upcoming"
@@ -143,10 +145,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/ui2_ic_bg_options_appointment"
-
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="12dp">
+                            android:padding="@dimen/card_apps_options_padding">
 
                             <TextView
                                 android:id="@+id/tv_cancelled_appointments"
@@ -162,6 +163,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                                 android:layout_marginTop="@dimen/card_apps_title_margin_top"
                                 android:gravity="center"
                                 android:lineHeight="@dimen/card_apps_title_line_height"
@@ -185,7 +187,7 @@
                             android:background="@drawable/ui2_ic_bg_options_appointment"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="12dp">
+                            android:padding="@dimen/card_apps_options_padding">
 
                             <TextView
                                 android:id="@+id/tv_completed_appointments"
@@ -203,6 +205,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/card_apps_title_margin_top"
                                 android:gravity="center"
+                                android:layout_marginBottom="@dimen/tv_card_info_margin_bottom"
                                 android:lineHeight="@dimen/card_apps_title_line_height"
                                 android:lineSpacingExtra="@dimen/card_apps_title_line_spacing"
                                 android:text="@string/completed"

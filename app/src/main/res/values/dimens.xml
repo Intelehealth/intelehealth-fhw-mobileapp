@@ -714,12 +714,14 @@
     <dimen name="up_down_icon_size">20dp</dimen>
 
 
-
     <!--UI2.0 Appointment-->
-    <dimen name="my_appointment_padding">16dp</dimen>
+    <dimen name="my_appointment_parent_padding">18dp</dimen>
+
+    <dimen name="my_appointment_padding">10dp</dimen>
     <dimen name="my_appointments_tab_margin_top">10dp</dimen>
     <dimen name="today_apps_parent_margin_top">10dp</dimen>
     <dimen name="today_apps_options_margin_top">20dp</dimen>
+    <dimen name="all1_apps_options_margin_top">20dp</dimen>
     <dimen name="card_apps_options_padding">12dp</dimen>
     <dimen name="card_apps_options_text_size">20sp</dimen>
     <dimen name="card_apps_options_line_height">26.4dp</dimen>
@@ -732,7 +734,7 @@
     <dimen name="title_lists_apps_text_size">14sp</dimen>
     <dimen name="title_lists_apps_line_spacing">2sp</dimen>
     <dimen name="lists_apps_margin_top">16dp</dimen>
-    <dimen name="all_apps_options_margin_top">10dp</dimen>
+    <dimen name="all_apps_options_margin_top">20dp</dimen>
     <dimen name="results_for_margin_start">2dp</dimen>
     <dimen name="results_for_margin_top">24dp</dimen>
     <dimen name="results_for_line_height">21dp</dimen>
@@ -746,8 +748,8 @@
 
     <!--UI2.0 Appointment Details-->
     <dimen name="apps_details_parent_padding">16dp</dimen>
-    <dimen name="apps_details_toolbar_margin_start">5dp</dimen>
-    <dimen name="apps_details_toolbar_margin_end">5dp</dimen>
+    <dimen name="apps_details_toolbar_margin_start">2dp</dimen>
+    <dimen name="apps_details_toolbar_margin_end">2dp</dimen>
     <dimen name="apps_details_profile_card_height">72dp</dimen>
     <dimen name="apps_details_profile_card_margin_top">32dp</dimen>
     <dimen name="apps_details_profile_card_elevation">16dp</dimen>
@@ -778,7 +780,71 @@
     <dimen name="cp_card_margin_updown">16dp</dimen>
     <dimen name="ps_app_time_margin_start">18dp</dimen>
     <dimen name="ll1_margin_top">4dp</dimen>
-
-
+    <dimen name="reschedule_time_line_spacing">3sp</dimen>
+    <dimen name="reschedule_time_margin_start">60dp</dimen>
+    <dimen name="rt_card_margin_updown">16dp</dimen>
+    <dimen name="tv_reschedule_time_margin_start">18dp</dimen>
+    <dimen name="tv_reschedule_time_margin_top">4dp</dimen>
+    <dimen name="tv_reschedule1_time_margin_start">6dp</dimen>
+    <dimen name="tv_reschedule1_time_drawable_padding">8dp</dimen>
+    <dimen name="tv_reschedule1_time_line_ht">21dp</dimen>
+    <dimen name="dividerqq_margin_top">40dp</dimen>
+    <dimen name="ad_male_margin_start">4dp</dimen>
+    <dimen name="ad_text_margin_start">16sp</dimen>
+    <dimen name="ad_icons_margin_top">18dp</dimen>
+    <dimen name="ad_icon_width">28dp</dimen>
+    <dimen name="ad_icon_height">28dp</dimen>
+    <dimen name="btn_visit_margin_end">16dp</dimen>
+    <dimen name="btn_visit_margin_bottom">10dp</dimen>
+    <dimen name="btn_visit_text_size">14sp</dimen>
+    <dimen name="state_presc_margin_bottom">16dp</dimen>
+    <dimen name="ad_card_margin_updown">4dp</dimen>
+    <dimen name="visit_details_text_size">16sp</dimen>
+    <dimen name="ad_card_margin_top">4dp</dimen>
+    <dimen name="btn_end_visit_margin_top">10dp</dimen>
+    <dimen name="presc_btns_margin_bottom">10dp</dimen>
+    <dimen name="ad_fab_help_margin_bottom">32dp</dimen>
+    <dimen name="ad_fab_max_image_size">25dp</dimen>
+    <dimen name="item_ta_margin_top">5dp</dimen>
+    <dimen name="item_ta_margin_bottom">24dp</dimen>
+    <dimen name="item_ta_margin_horizontal">5dp</dimen>
+    <dimen name="item_ta_card_corner_radius">10dp</dimen>
+    <dimen name="item_ta_card_elevation">5dp</dimen>
+    <dimen name="item_ta_card_padding">12dp</dimen>
+    <dimen name="item_ta_member_image_width">40dp</dimen>
+    <dimen name="item_ta_member_image_height">40dp</dimen>
+    <dimen name="item_ta_member_iv_margin_top">2dp</dimen>
+    <dimen name="item_ta_member_iv_card_radius">20dp</dimen>
+    <dimen name="item_ta_tv_name_margin_start">12dp</dimen>
+    <dimen name="item_ta_tv_name_text_size">14sp</dimen>
+    <dimen name="cal_size_new">16dp</dimen>
+    <dimen name="item_ta_iv_name_margin_start">6dp</dimen>
+    <dimen name="item_ta_tv_date_margin_start">4dp</dimen>
+    <dimen name="item_ta_tv_date_margin_top">4dp</dimen>
+    <dimen name="item_ta_tv_date_text_size">14sp</dimen>
+    <dimen name="item_ta_priority_tag_height">16dp</dimen>
+    <dimen name="item_ta_priority_tag_margin_top">5dp</dimen>
+    <dimen name="item_ta_priority_tag_margin_end">12dp</dimen>
+    <!--UI2.0 Appointment - my appointments-->
+    <dimen name="ma_icon_margin_top">12dp</dimen>
+    <dimen name="ma_icon_margin_start">16dp</dimen>
+    <dimen name="ma_icon_margin_end">16dp</dimen>
+    <dimen name="presc_rec_margin_start">12dp</dimen>
+    <dimen name="presc_rec_margin_top">4dp</dimen>
+    <dimen name="presc_rec_drawable_padding">4dp</dimen>
+    <dimen name="presc_rec_line_ht">18dp</dimen>
+    <dimen name="presc_rec_line_spacing">3sp</dimen>
+    <dimen name="presc_states_margin_top">8dp</dimen>
+    <dimen name="presc_states_drawable_padding">8dp</dimen>
+    <dimen name="presc_states_padding">6dp</dimen>
+    <dimen name="presc_states_text_size">12sp</dimen>
+    <dimen name="presc_rec_text_size">14sp</dimen>
+    <dimen name="common_edittext_padding_bottom1">12dp</dimen>
+    <dimen name="icon_filters_height">46dp</dimen>
+    <dimen name="icon_filters_width">46dp</dimen>
+    <dimen name="tv_card_info_margin_bottom">10dp</dimen>
+    <dimen name="ad_title_text_size">16sp</dimen>
+    <dimen name="cp_option_icon_padding">30dp</dimen>
+    <dimen name="cp_option_icon_padding_whts">7dp</dimen>
 
 </resources>
