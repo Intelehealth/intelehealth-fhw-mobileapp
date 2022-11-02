@@ -652,6 +652,15 @@ public class SetupActivity extends AppCompatActivity {
 
         }
 
+        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
+            cancel = true;
+            focusView = mDropdownLocation;
+            TextView t = (TextView) mDropdownLocation.getSelectedView();
+            t.setError(getResources().getString(R.string.login_location_select));
+            t.setTextColor(Color.RED);
+            Toast.makeText(SetupActivity.this,getResources().getString(R.string.login_location_select), Toast.LENGTH_LONG).show();
+        }
+
         //spinner...
 //        if (spinner_state.getSelectedItemPosition() <= 0) {
 //            cancel = true;

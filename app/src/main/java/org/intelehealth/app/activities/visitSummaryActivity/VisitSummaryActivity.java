@@ -4414,8 +4414,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
                                 mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
                                 mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                                mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
-                                mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
+                                mDoctorAppointmentBookingTextView.setText(getResources().getString(R.string.reschedule_appointment));
+                                mInfoAppointmentBookingTextView.setText(getResources().getString(R.string.appointment_booked) + ":\n\n" +
                                         org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
                                         mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
                                         mAppointmentDetailsResponse.getData().getSlotTime()

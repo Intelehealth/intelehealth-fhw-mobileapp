@@ -40,9 +40,9 @@
 
     //Login Screen
     <string name="title_activity_login">स्मार्ट केयर डॉक्</string>
-    <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
-    <string name="prompt_password" translatable="false">कुंजिका</string>
-    <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
+    <string name="prompt_email">उपयोगकर्ता नाम</string>
+    <string name="prompt_password">कुंजिका</string>
+    <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>
     <string name="action_sign_in" translatable="false">लॉग इन करें</string>
     <string name="action_sign_in_short" translatable="false">शाइन ईन करें</string>
     <string name="url_invalid" translatable="false">अपना यूआरएल चेक करें</string>
@@ -586,7 +586,7 @@
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">हेलो आयु, एक डिजिटल स्वस्थ्य सहायक| आयें शुरु करें!</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">हेलो आयु, एक डिजिटल स्वस्थ्य सहायक| आयें शुरु करें!</string>
     <string name="hello_my_name_is">हेलो ! मेरा नाम है</string>
-    <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है|</string>
+    <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है| यहाँ मेरा विवरण है</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
     <string name="intelehealth_a_telemedicine_platform">स्मार्ट केयर डॉक् एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
@@ -827,5 +827,6 @@
     <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करने में असमर्थ हैं। प्रोटोकॉल डाउनलोड का पुन: प्रयास करने के लिए \'हां\' दबाएं। डेमो प्रोटोकॉल के साथ जारी रखने के लिए \'नहीं\' दबाएं।</string>
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
+    <string name="and">और</string>
     <string name="app_version_string">ऐप संस्करण - %1$s</string>
 </resources>
