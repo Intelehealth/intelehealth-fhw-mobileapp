@@ -787,7 +787,7 @@ bread
     <string name="call_over">Are you done with the call?</string>
     <string name="type_to_search">Type to search</string>
     <string name="prescription_not_found">Prescription not found</string>
-    <string name="table_blood_glucose">Blood Glucose</string>
+    <string name="table_blood_glucose">Blood Glucose (ml/dl)</string>
     <string name="visit_summary_blood_glucose">Blood Glucose</string>
 
 
