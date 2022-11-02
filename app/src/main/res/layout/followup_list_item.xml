@@ -81,6 +81,17 @@
                         android:textColor="@null"
                         android:textSize="@dimen/fu_male_textsize" />
 
+                    <ImageButton
+                        android:id="@+id/end_visit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/end_btn_icon"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_below="@+id/fu_date_txtview"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:background="@null" />
+
                 </RelativeLayout>
             </RelativeLayout>
 

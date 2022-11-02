@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +17,8 @@ import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_N
 
 public class VisitPendingFragment extends Fragment {
     private RecyclerView recycler_today, recycler_week, recycler_month;
+    private CardView visit_pending_card_header;
+
 
     @Nullable
     @Override
@@ -25,6 +29,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void initUI(View view) {
+        visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
         recycler_today = view.findViewById(R.id.recycler_today);
         recycler_week = view.findViewById(R.id.rv_thisweek);
         recycler_month = view.findViewById(R.id.rv_thismonth);
@@ -33,6 +38,11 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void visitData() {
+        visit_pending_card_header.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
+            startActivity(intent);
+        });
+
         todays_Visits();
         thisWeeks_Visits();
         thisMonths_Visits();
@@ -40,7 +50,7 @@ public class VisitPendingFragment extends Fragment {
 
 
     private void todays_Visits() {
-        FollowUpPatientAdapter_New adapter_new = new FollowUpPatientAdapter_New(getActivity());
+        VisitAdapter adapter_new = new VisitAdapter(getActivity());
         recycler_today.setAdapter(adapter_new);
 
         /*try {
@@ -63,12 +73,12 @@ public class VisitPendingFragment extends Fragment {
 
 
     private void thisWeeks_Visits() {
-        FollowUpPatientAdapter_New adapter_new = new FollowUpPatientAdapter_New(getActivity());
+        VisitAdapter adapter_new = new VisitAdapter(getActivity());
         recycler_week.setAdapter(adapter_new);
     }
 
     private void thisMonths_Visits() {
-        FollowUpPatientAdapter_New adapter_new = new FollowUpPatientAdapter_New(getActivity());
+        VisitAdapter adapter_new = new VisitAdapter(getActivity());
         recycler_month.setAdapter(adapter_new);
     }
 

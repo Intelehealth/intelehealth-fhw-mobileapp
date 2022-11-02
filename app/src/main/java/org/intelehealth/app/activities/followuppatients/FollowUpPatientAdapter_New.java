@@ -152,8 +152,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
     @Override
     public int getItemCount() {
-//        return patients.size(); // todo: uncomment
-        return 2;   // todo: testing
+        return patients.size(); // todo: uncomment
+     //   return 2;   // todo: testing
     }
 
     class Myholder extends RecyclerView.ViewHolder {

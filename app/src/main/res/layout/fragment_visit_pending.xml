@@ -27,9 +27,8 @@
         android:id="@+id/search_relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/fu_margin_start"
-        android:layout_marginEnd="@dimen/fu_margin_start"
-
+        android:layout_marginStart="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_5"
         >
 
         <EditText
@@ -64,14 +63,14 @@
 
     <!--Card Header - start-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/visit_card_header"
+        android:id="@+id/visit_pending_card_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_relative"
         android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginStart="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_5"
         app:cardCornerRadius="@dimen/corner_radius_5dp"
-        android:layout_marginStart="@dimen/fu_margin_start"
-        android:layout_marginEnd="@dimen/fu_margin_start"
         >
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -132,7 +131,7 @@
                 android:lineSpacingExtra="3sp"
                 android:text="Today's visits"
                 android:textStyle="bold"
-                android:layout_below="@+id/visit_card_header"
+                android:layout_below="@+id/visit_pending_card_header"
                 android:layout_marginTop="@dimen/margin_24"
                 android:textAppearance="@style/you_can_add"
                 android:textSize="@dimen/fu_male_textsize" />
