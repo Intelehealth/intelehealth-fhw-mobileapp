@@ -29,12 +29,12 @@ public class VisitPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 1:
-                return new VisitReceivedFragment();
+                return new VisitPendingFragment();
 
             case 0:
 
             default:
-                return new VisitPendingFragment();
+                return new VisitReceivedFragment();
         }
     }
 

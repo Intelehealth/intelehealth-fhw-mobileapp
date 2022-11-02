@@ -99,6 +99,17 @@
 
     <!--Tablayout - end -->
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_below="@+id/tablayout_appointments">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
     <!--Search-->
     <RelativeLayout
         android:id="@+id/search_relative"
@@ -107,7 +118,7 @@
         android:layout_marginTop="@dimen/margin_25"
         android:layout_marginStart="@dimen/fu_margin_start"
         android:layout_marginEnd="@dimen/fu_margin_start"
-        android:layout_below="@+id/tablayout_appointments"
+
         >
 
         <EditText
@@ -208,8 +219,11 @@
         android:layout_below="@+id/visit_card_header"
         android:visibility="visible"
         android:layout_marginTop="@dimen/margin_24"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
