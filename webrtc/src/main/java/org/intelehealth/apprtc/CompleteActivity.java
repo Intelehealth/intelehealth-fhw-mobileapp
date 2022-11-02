@@ -127,11 +127,7 @@ public class CompleteActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         Window window = getWindow();
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-        );
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         super.onAttachedToWindow();
     }
@@ -144,8 +140,7 @@ public class CompleteActivity extends AppCompatActivity {
         mIsInComingRequest = getIntent().getBooleanExtra("isInComingRequest", false);
         if (getIntent().hasExtra("doctorname"))
             mDoctorName = getIntent().getStringExtra("doctorname");
-        if (getIntent().hasExtra("nurseId"))
-            mNurseId = getIntent().getStringExtra("nurseId");
+        if (getIntent().hasExtra("nurseId")) mNurseId = getIntent().getStringExtra("nurseId");
 
         if (mIsInComingRequest) {
             binding.callingLayout.setVisibility(View.VISIBLE);
@@ -215,9 +210,8 @@ public class CompleteActivity extends AppCompatActivity {
         binding.callEndImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (socket != null)
-                    socket.emit("bye");
-                    disconnectAll();
+                if (socket != null) socket.emit("bye");
+                disconnectAll();
             }
         });
         binding.videoImv.setOnClickListener(new View.OnClickListener() {
@@ -270,13 +264,14 @@ public class CompleteActivity extends AppCompatActivity {
 
         start();
 
+        catchFCMMessageData();
+
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
         registerReceiver(mPhoneStateBroadcastReceiver, filter);
     }
 
     private void stopRinging() {
-        if (mRingtone != null && mRingtone.isPlaying())
-            mRingtone.stop();
+        if (mRingtone != null && mRingtone.isPlaying()) mRingtone.stop();
     }
 
     @Override
@@ -289,8 +284,7 @@ public class CompleteActivity extends AppCompatActivity {
         alertdialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (socket != null)
-                    socket.emit("bye");
+                if (socket != null) socket.emit("bye");
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.no, null);
@@ -410,8 +404,7 @@ public class CompleteActivity extends AppCompatActivity {
     }
 
     private boolean checkAndRequestPermissions() {
-        int cameraPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA);
+        int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int recordAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -564,10 +557,8 @@ public class CompleteActivity extends AppCompatActivity {
         Log.v(TAG, "doCall()");
         MediaConstraints sdpMediaConstraints = new MediaConstraints();
 
-        sdpMediaConstraints.mandatory.add(
-                new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
-        sdpMediaConstraints.mandatory.add(
-                new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"));
+        sdpMediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
+        sdpMediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"));
         peerConnection.createOffer(new SimpleSdpObserver() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
@@ -817,4 +808,19 @@ public class CompleteActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        catchFCMMessageData();
+    }
+
+    private void catchFCMMessageData() {
+        if (getIntent().getExtras() != null) {
+            Bundle callEndBundle = getIntent().getExtras();
+            if (callEndBundle.containsKey("callEnded") && !callEndBundle.getBoolean("callEnded")) {
+                disconnectAll();
+            }
+        }
+    }
 }

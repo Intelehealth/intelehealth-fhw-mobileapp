@@ -802,7 +802,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url,context);
+        ApiClient.changeApiBaseUrl(url, context);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);

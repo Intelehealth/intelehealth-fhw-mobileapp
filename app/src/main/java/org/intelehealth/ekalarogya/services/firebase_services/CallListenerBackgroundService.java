@@ -139,6 +139,7 @@ public class CallListenerBackgroundService extends Service {
                     bundle.putString("roomId", String.valueOf(value.get("roomId")));
                     bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
                     bundle.putString("actionType", "VIDEO_CALL");
+                    bundle.putBoolean("callEnded", Boolean.parseBoolean(String.valueOf(value.get("callEnded"))));
 
                     boolean isOldNotification = true;
                     if (value.containsKey("timestamp")) {

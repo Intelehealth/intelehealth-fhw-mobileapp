@@ -21,3 +21,5 @@ salt.env
 /webrtc/build/.transforms/e65ef6d70743a61fbf3ea2ffab2ee0b7.bin
 
 app/src/main/assets/fonts/
+
+app/release/
