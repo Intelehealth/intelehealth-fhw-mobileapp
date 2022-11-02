@@ -129,6 +129,10 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+/**
+ * Created by: Prajwal Waingankar On: 2/Nov/2022
+ * Github: prajwalmw
+ */
 public class VisitSummaryActivity_New extends AppCompatActivity  implements AdapterInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;

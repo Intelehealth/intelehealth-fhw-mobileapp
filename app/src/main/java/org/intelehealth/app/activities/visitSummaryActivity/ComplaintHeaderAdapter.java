@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 
 import java.util.List;
-
+/**
+ * Created by: Prajwal Waingankar On: 2/Nov/2022
+ * Github: prajwalmw
+ */
 public class ComplaintHeaderAdapter extends RecyclerView.Adapter<ComplaintHeaderAdapter.MyHolder> {
     private Context context;
     private List<String> stringList;

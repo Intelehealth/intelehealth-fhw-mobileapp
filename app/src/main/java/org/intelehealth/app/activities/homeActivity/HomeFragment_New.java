@@ -22,6 +22,7 @@ import org.intelehealth.app.activities.appointment.MyAppointmentActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.activities.visit.VisitActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -72,7 +73,8 @@ public class HomeFragment_New extends Fragment {
         closedVisitsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+              //  Intent intent = new Intent(getActivity(), VisitSummaryActivity_New.class);
+                Intent intent = new Intent(getActivity(), VisitActivity.class);
                 startActivity(intent);
             }
         });

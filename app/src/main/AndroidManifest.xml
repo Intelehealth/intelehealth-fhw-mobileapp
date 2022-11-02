@@ -42,6 +42,15 @@
         tools:replace="allowBackup">
 
         <activity
+            android:name=".activities.visit.VisitActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">

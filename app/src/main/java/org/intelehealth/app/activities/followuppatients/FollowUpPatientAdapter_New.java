@@ -55,6 +55,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         this.context = context;
     }
 
+    public FollowUpPatientAdapter_New(Context context) {
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public FollowUpPatientAdapter_New.Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,6 +69,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
     @Override
     public void onBindViewHolder(@NonNull FollowUpPatientAdapter_New.Myholder holder, int position) {
+        if (patients != null) {
         final FollowUpModel model = patients.get(position);
         holder.setIsRecyclable(false);
 
@@ -98,8 +103,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
-            }
-            else {
+            } else {
                 holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
             }
             // photo - end
@@ -107,19 +111,18 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             // Patient Name section
             if (model.getOpenmrs_id() != null) {
                 holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name() + ", " + model.getOpenmrs_id());
-            }
-            else {
+            } else {
                 holder.fu_patname_txtview.setText(model.getFirst_name() + " " + model.getLast_name());
             }
 
-        // Followup Date section
-        if (!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
-            String followupDate = model.getFollowup_date();
-            followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
-            holder.fu_date_txtview.setText("Follow up on " + followupDate);
-        }
+            // Followup Date section
+            if (!model.getFollowup_date().equalsIgnoreCase("null") || !model.getFollowup_date().isEmpty()) {
+                String followupDate = model.getFollowup_date();
+                followupDate = DateAndTimeUtils.date_formatter(followupDate, "dd-MM-yyyy", "dd MMMM");
+                holder.fu_date_txtview.setText("Follow up on " + followupDate);
+            }
 
-        // Emergency/Priority tag code.
+            // Emergency/Priority tag code.
             if (model.isEmergency())
                 holder.fu_priority_tag.setVisibility(View.VISIBLE);
             else
@@ -131,7 +134,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
         holder.cardView.setOnClickListener(v -> {
             Intent i = new Intent(context, FollowUp_VisitDetails.class);
-            i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1) + "."); // Eg. Prajwal W.
+            i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1) + "."); // Eg. Prajwal W.
             i.putExtra("gender", model.getGender());
             i.putExtra("age", age);
             i.putExtra("openmrsID", model.getOpenmrs_id());
@@ -145,10 +148,12 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             context.startActivity(i);
         });
     }
+    }
 
     @Override
     public int getItemCount() {
-        return patients.size();
+//        return patients.size(); // todo: uncomment
+        return 2;   // todo: testing
     }
 
     class Myholder extends RecyclerView.ViewHolder {
@@ -166,6 +171,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
             profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
+
+            fu_date_txtview.setText("22 June"); // todo: testing.
         }
 
         public View getRootView() {
